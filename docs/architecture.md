@@ -86,6 +86,9 @@ All motion is switched off for people who ask their system for reduced motion.
   `#` never reaches any server. The QR code shows the same link.
 - **Courses** are opened by access code on "My learning"; units before their
   release date are folded and greyed out, but every item stays reachable.
+- **Projects** show their phases as a numbered, folded list; a phase opens to
+  its text, its challenges and the content linked to it. A link to
+  `#challenge-2` opens exactly that part.
 - **The map** is drawn as SVG with a small force layout of our own; hovering a
   node brings out its neighbours.
 

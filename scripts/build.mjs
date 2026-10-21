@@ -65,6 +65,7 @@ function clientIndex(site, lang) {
       };
     }),
     paths: site.paths.map((p) => ({ id: p.id, code: p.lead.code, url: site.url(p, lang), title: site.localize(p, lang).title })),
+    projects: site.projects.map((p) => ({ id: p.id, code: p.lead.code, url: site.url(p, lang), title: site.localize(p, lang).title })),
     courses: site.courses.map((c) => ({
       id: c.id,
       code: c.lead.code,
@@ -128,6 +129,8 @@ function render(site) {
     writePage(lang, pages.items(site, lang));
     writePage(lang, pages.paths(site, lang));
     writePage(lang, pages.map(site, lang));
+    writePage(lang, pages.projects(site, lang));
+    for (const doc of site.projects) writePage(lang, pages.project(site, doc, lang));
     writePage(lang, pages.learning(site, lang));
     for (const doc of site.items) writePage(lang, pages.item(site, doc, lang));
     for (const doc of site.paths) writePage(lang, pages.path(site, doc, lang));

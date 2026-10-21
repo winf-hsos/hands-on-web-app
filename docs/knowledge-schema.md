@@ -34,6 +34,10 @@ knowledge/
     dup-2026-27-ws/      curated collections per course and semester
       de.md
       en.md
+  projects/
+    lifi/                projects in phases and challenges
+      de.md
+      en.md
   pages/
     home/                text of the start page (kind: page)
       de.md
@@ -283,6 +287,58 @@ prose belongs in the language files. Without a server, `available_from` is a
 display rule and not a lock: the item is shown as "available from 28 October"
 in the course, but remains reachable directly, which is fine because all
 content is public.
+
+## 9a. Projects
+
+A project is a larger undertaking that learners carry out over weeks, such as
+the LiFi project. It is divided into **phases**, and a phase may contain
+**challenges**. Relevant content is linked where it is needed: to the project
+as a whole, to a phase or to a single challenge.
+
+The lead file holds the structure and the links, the text holds titles and
+prose. A heading with an id marks a phase (`##`) or a challenge (`###`);
+headings without an id are ordinary sections, such as "What you need".
+
+```yaml
+---
+kind: project
+code: 4577
+title: "LiFi: Daten mit Licht übertragen"
+summary: …
+level: 1
+topics: [transferring-information, representing-information]
+modules: [dup]
+items: [petzold-code]          # optional: content for the whole project
+phases:
+  - id: word
+    items: [knock-code]        # optional: content for this phase
+    challenges:                # optional
+      - id: challenge-2
+        items: [code-as-agreement, prefix-free-code]
+status: draft
+updated: 2026-10-22
+---
+
+Introduction …
+
+## Aus Farben werden Buchstaben {#word}
+Text of the phase …
+
+### Challenge 2: Das Wort {#challenge-2}
+Text of the challenge …
+
+## Was ihr braucht
+An ordinary section …
+```
+
+The build checks that phases and challenges in the front matter and the
+headings with ids match, in order and in every language, so a challenge can
+neither be forgotten in one language nor linked to the wrong place. Each
+phase and challenge can be linked directly as `…/projects/lifi/#challenge-2`.
+
+A project describes the content and is independent of a semester: dates,
+assessment and bonus rules belong to the course, as in the separation of
+`02 - Lehrinhalte` and `03 - Module pro Semester`.
 
 ## 10. Vocabulary
 

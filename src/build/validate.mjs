@@ -3,6 +3,7 @@
 // prints warnings without stopping. Each doc gets `lead` and `leadLang`.
 
 import { iconExists } from './icons.mjs';
+import { splitProject } from './project.mjs';
 
 const ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
@@ -62,6 +63,14 @@ function shapes(vocabulary) {
       null
     );
   };
+  const part = (allowed) => (v) => {
+    if (!v || typeof v !== 'object' || Array.isArray(v)) return `expected { ${allowed.join(', ')} }`;
+    const extra = Object.keys(v).find((k) => !allowed.includes(k));
+    if (extra) return `unknown field ${extra} (allowed: ${allowed.join(', ')})`;
+    return id(v.id) ?? (v.items === undefined ? null : list(id)(v.items));
+  };
+  const challenge = part(['id', 'items']);
+  const phase = (v) => part(['id', 'items', 'challenges'])(v) ?? (v.challenges === undefined ? null : list(challenge)(v.challenges));
   const translation = {
     required: { title: text, summary: text, translation_of: oneOf(['de', 'en'], 'language'), based_on: date },
     optional: {},
@@ -137,6 +146,23 @@ function shapes(vocabulary) {
       },
       translation,
     },
+    projects: {
+      lead: {
+        required: {
+          kind: oneOf(['project'], 'kind'),
+          code: int(1000, 9999),
+          title: text,
+          summary: text,
+          level: int(1, 4),
+          topics: list(oneOf(topics, 'topic'), 1),
+          phases: list(phase, 1),
+          status,
+          updated: date,
+        },
+        optional: { modules: list(oneOf(modules, 'module')), items: list(id) },
+      },
+      translation,
+    },
     pages: {
       lead: {
         required: { kind: oneOf(['page'], 'kind'), title: text, summary: text, updated: date },
@@ -209,16 +235,16 @@ export function validate({ vocabulary, sections, problems }) {
   if (errors.length) return { errors, warnings };
 
   // Across files
-  const { content, paths, courses, pages } = sections;
+  const { content, paths, courses, projects, pages } = sections;
   const items = new Map(content.map((d) => [d.id, d]));
   const pathIds = new Set(paths.map((d) => d.id));
-  const allIds = new Set([...items.keys(), ...pathIds, ...courses.map((d) => d.id)]);
+  const allIds = new Set([...items.keys(), ...pathIds, ...courses.map((d) => d.id), ...projects.map((d) => d.id)]);
   const needItem = (where, target) => {
     if (!items.has(target)) errors.push(`${where}: unknown item "${target}"`);
   };
 
   const codes = new Map();
-  for (const doc of [...content, ...paths, ...courses]) {
+  for (const doc of [...content, ...paths, ...courses, ...projects]) {
     const owner = codes.get(doc.lead.code);
     if (owner) errors.push(`${doc.section}/${doc.id}: code ${doc.lead.code} is already used by ${owner}`);
     codes.set(doc.lead.code, `${doc.section}/${doc.id}`);
@@ -248,6 +274,28 @@ export function validate({ vocabulary, sections, problems }) {
     course.lead.units.forEach((unit, n) => {
       for (const s of stepsOf(unit.items)) needItem(`courses/${course.id} units[${n + 1}]`, s.id);
     });
+  }
+  for (const project of projects) {
+    const where = `projects/${project.id}`;
+    for (const i of project.lead.items ?? []) needItem(`${where} items`, i);
+    const seen = new Set();
+    for (const phase of project.lead.phases) {
+      for (const part of [phase, ...(phase.challenges ?? [])]) {
+        if (seen.has(part.id)) errors.push(`${where}: id ${part.id} is used twice`);
+        seen.add(part.id);
+        for (const i of part.items ?? []) needItem(`${where} ${part.id}`, i);
+      }
+    }
+    // Structure and text must match: every phase a "## … {#id}", every
+    // challenge a "### … {#id}" below its phase, in every language.
+    for (const file of Object.values(project.files)) {
+      const text = splitProject(file.body);
+      const expected = project.lead.phases.map((p) => `${p.id}: ${(p.challenges ?? []).map((c) => c.id).join(' ')}`).join(' | ');
+      const found = text.phases.map((p) => `${p.id}: ${p.challenges.map((c) => c.id).join(' ')}`).join(' | ');
+      if (expected !== found)
+        errors.push(`${file.path}: headings with {#id} do not match phases and challenges in the front matter (front matter: ${expected}; text: ${found})`);
+      for (const orphan of text.orphans) errors.push(`${file.path}: challenge {#${orphan}} stands before any phase`);
+    }
   }
   for (const page of pages) {
     if (page.lead.featured_path && !pathIds.has(page.lead.featured_path))

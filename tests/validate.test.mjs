@@ -83,3 +83,19 @@ test('an outdated translation is a warning, not an error', () => {
   assert.deepEqual(errors, []);
   assert.ok(warnings.includes('content/knock-code/en.md: translation is older than its lead file'));
 });
+
+test('project phases and challenges must match the headings in every language', () => {
+  const { errors } = check(({ find }) => {
+    const file = find('projects', 'lifi').files.en;
+    file.body = file.body.replace('{#challenge-2}', '{#challenge-two}');
+  });
+  assert.equal(errors.length, 1);
+  assert.match(errors[0], /^projects\/lifi\/en\.md: headings with \{#id\} do not match/);
+});
+
+test('items linked in a project must exist', () => {
+  const { errors } = check(({ find }) => {
+    lead(find('projects', 'lifi')).phases[0].challenges[0].items = ['nowhere'];
+  });
+  assert.deepEqual(errors, ['projects/lifi challenge-0: unknown item "nowhere"']);
+});

@@ -7,7 +7,7 @@ this page is the short version.
 - `content/<id>/` holds one learning item: a lesson, demo, experiment, term,
   story, tool, quiz, source or paper.
 - `paths/<id>/` holds a learning path, `courses/<id>/` a course for one
-  semester.
+  semester, `projects/<id>/` a project in phases and challenges.
 - Each folder has one Markdown file per language, `de.md` and `en.md`. The file
   without `translation_of` is the **lead file** and holds the shared
   metadata; the other is its translation and holds only title, summary and

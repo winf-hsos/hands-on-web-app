@@ -113,7 +113,7 @@ input.addEventListener('input', async () => {
   const query = input.value.trim();
   if (!query) return show([]);
   const { mini, data } = await engine();
-  const byCode = [...data.items, ...data.paths, ...data.courses].find((d) => String(d.code) === query);
+  const byCode = [...data.items, ...data.paths, ...data.projects, ...data.courses].find((d) => String(d.code) === query);
   const hits = mini.search(query);
   show(byCode ? [byCode, ...hits.filter((h) => h.id !== byCode.id)] : hits);
 });

@@ -6,7 +6,7 @@ import { join, relative } from 'node:path';
 import yaml from 'js-yaml';
 
 export const LANGS = ['de', 'en'];
-export const SECTIONS = ['content', 'paths', 'courses', 'pages'];
+export const SECTIONS = ['content', 'paths', 'courses', 'projects', 'pages'];
 
 const FRONT_MATTER = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/;
 

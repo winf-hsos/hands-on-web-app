@@ -177,6 +177,13 @@ export function item(site, doc, lang) {
             lead.license && [t(lang, 'license'), lead.license],
             lead.when && [t(lang, 'when'), lead.when],
             lead.born && [t(lang, 'lived'), lead.died ? `${lead.born}–${lead.died}` : `${t(lang, 'born')} ${lead.born}`],
+            site.inProjects(doc.id, lang).length > 0 && [
+              t(lang, 'in_projects'),
+              site.inProjects(doc.id, lang).map(
+                (ref, i) =>
+                  html`${i > 0 && ', '}<a href="${site.url(ref.project, lang)}${ref.anchor && `#${ref.anchor}`}">${site.localize(ref.project, lang).title}${ref.title && html` (${ref.title})`}</a>`,
+              ),
+            ],
             inPaths.length > 0 && [t(lang, 'in_paths'), inPaths.map((p, i) => html`${i > 0 && ', '}<a href="${site.url(p, lang)}">${site.localize(p, lang).title}</a>`)],
             [t(lang, 'code'), html`<code>${lead.code}</code>`],
             [t(lang, 'updated'), formatDate(lead.updated, lang)],
@@ -291,6 +298,114 @@ export function course(site, doc, lang) {
           </details>`;
         })}
         ${more(t(lang, 'about_course'), html`<div class="prose" lang="${text.lang}">${raw(site.body(doc, lang))}</div>`)}
+      </article>
+    `,
+  };
+}
+
+// --- projects ------------------------------------------------------------------
+
+const projectIcon = raw(iconSvg('hammer'));
+
+export function projects(site, lang) {
+  return {
+    path: url(lang, 'projects'),
+    title: t(lang, 'nav_projects'),
+    current: 'projects',
+    content: html`
+      <h1>${t(lang, 'nav_projects')}</h1>
+      <ul class="rows">
+        ${site.projects.map((p) => {
+          const text = site.localize(p, lang);
+          const challenges = p.lead.phases.flatMap((phase) => phase.challenges ?? []).length;
+          return html`<li class="row" style="--topic: ${site.topicColor(p)}">
+            <a class="row-link" href="${site.url(p, lang)}">
+              ${projectIcon}
+              <span class="row-head">
+                <span class="row-title" style="view-transition-name: t-${p.id}">${text.title}</span>
+                <span class="row-meta">
+                  <span>${count(lang, p.lead.phases.length, 'phases')}</span>
+                  ${challenges > 0 && html`<span>${count(lang, challenges, 'challenges')}</span>`}
+                </span>
+              </span>
+              <span class="row-summary">${text.summary}</span>
+            </a>
+          </li>`;
+        })}
+      </ul>
+    `,
+  };
+}
+
+export function project(site, doc, lang) {
+  const text = site.localize(doc, lang);
+  const parts = site.projectText(doc, lang);
+  const md = (source) => raw(site.markdown(source, lang, text.lang));
+  const related = (ids = []) =>
+    ids.length > 0 &&
+    html`<div class="related"><h4>${t(lang, 'related_content')}</h4>
+      <ul class="rows">${ids.map((id) => itemRow(site, site.item.get(id), lang, { summary: false }))}</ul></div>`;
+  const v = site.vocabulary;
+  const lead = doc.lead;
+  return {
+    path: site.url(doc, lang),
+    title: text.title,
+    description: text.summary,
+    current: 'projects',
+    scripts: ['project'],
+    content: html`
+      <article class="page project" style="--topic: ${site.topicColor(doc)}">
+        <header class="page-head">
+          <p class="kicker">${projectIcon}<span>${t(lang, 'project')}</span><span>${count(lang, lead.phases.length, 'phases')}</span></p>
+          <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}">${text.title}</h1>
+          <p class="lead" lang="${text.lang}">${text.summary}</p>
+        </header>
+        ${text.missing && html`<p class="notice">${t(lang, 'missing_translation')}</p>`}
+        ${parts.intro && html`<div class="prose" lang="${text.lang}">${md(parts.intro)}</div>`}
+        <ol class="phases">
+          ${lead.phases.map((phase, p) => {
+            const part = parts.phases[p];
+            return html`<li class="phase" id="${phase.id}">
+              <details class="phase-box">
+                <summary>
+                  <span class="phase-number" aria-hidden="true">${p + 1}</span>
+                  <span class="phase-head">
+                    <span class="phase-title">${part.title}</span>
+                    ${part.challenges.length === 1 && html`<span class="phase-meta">${part.challenges[0].title}</span>`}
+                    ${part.challenges.length > 1 && html`<span class="phase-meta">${count(lang, part.challenges.length, 'challenges')}</span>`}
+                  </span>
+                </summary>
+                <div class="phase-body">
+                  ${part.md && html`<div class="prose" lang="${text.lang}">${md(part.md)}</div>`}
+                  ${related(phase.items)}
+                  ${(phase.challenges ?? []).map((challenge, c) => {
+                    const cpart = part.challenges[c];
+                    return html`<details class="challenge" id="${challenge.id}">
+                      <summary>${cpart.title}</summary>
+                      <div class="challenge-body">
+                        <div class="prose" lang="${text.lang}">${md(cpart.md)}</div>
+                        ${related(challenge.items)}
+                      </div>
+                    </details>`;
+                  })}
+                </div>
+              </details>
+            </li>`;
+          })}
+        </ol>
+        ${related(lead.items)}
+        ${parts.sections.map((section) => more(section.title, html`<div class="prose" lang="${text.lang}">${md(section.md)}</div>`))}
+        ${more(
+          t(lang, 'details'),
+          facts([
+            [t(lang, 'level'), v.levels[lead.level][lang]],
+            [t(lang, 'topics'), lead.topics.map((k) => v.topics[k][lang]).join(', ')],
+            lead.modules?.length && [t(lang, 'modules'), lead.modules.map((k) => v.modules[k][lang]).join(', ')],
+            [t(lang, 'code'), html`<code>${lead.code}</code>`],
+            [t(lang, 'updated'), formatDate(lead.updated, lang)],
+            [t(lang, 'status'), t(lang, lead.status)],
+          ]),
+        )}
       </article>
     `,
   };

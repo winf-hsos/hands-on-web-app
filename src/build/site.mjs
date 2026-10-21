@@ -3,17 +3,19 @@
 // durations and URLs.
 import { renderMarkdown } from './markdown.mjs';
 import { stepsOf } from './validate.mjs';
+import { splitProject } from './project.mjs';
 
 export const url = (lang, ...parts) => `/${[lang, ...parts].join('/')}/`.replace(/\/+/g, '/');
 
-const SECTION_PATH = { content: 'items', paths: 'paths', courses: 'courses' };
+const SECTION_PATH = { content: 'items', paths: 'paths', courses: 'courses', projects: 'projects' };
 
 export function createSite({ vocabulary, sections }) {
   const item = new Map(sections.content.map((d) => [d.id, d]));
   const path = new Map(sections.paths.map((d) => [d.id, d]));
   const course = new Map(sections.courses.map((d) => [d.id, d]));
   const page = new Map(sections.pages.map((d) => [d.id, d]));
-  const byId = new Map([...item, ...path, ...course]);
+  const project = new Map(sections.projects.map((d) => [d.id, d]));
+  const byId = new Map([...item, ...path, ...course, ...project]);
 
   const docUrl = (doc, lang) => url(lang, SECTION_PATH[doc.section], doc.id);
 
@@ -31,23 +33,22 @@ export function createSite({ vocabulary, sections }) {
     };
   }
 
+  /** Markdown written in `textLang`, with links pointing to pages in `lang`. */
+  const markdown = (md, lang, textLang = lang, quiz = false) =>
+    renderMarkdown(md, {
+      lang: textLang,
+      quiz,
+      resolve: (id) => {
+        const target = byId.get(id);
+        return target ? { url: docUrl(target, lang), title: localize(target, lang).title } : null;
+      },
+    });
+
   const rendered = new Map();
   function body(doc, lang) {
     const text = localize(doc, lang);
     const key = `${doc.section}/${doc.id}/${text.lang}/${lang}`;
-    if (!rendered.has(key)) {
-      rendered.set(
-        key,
-        renderMarkdown(text.file.body, {
-          lang: text.lang,
-          quiz: doc.lead.type === 'quiz',
-          resolve: (id) => {
-            const target = byId.get(id);
-            return target ? { url: docUrl(target, lang), title: localize(target, lang).title } : null;
-          },
-        }),
-      );
-    }
+    if (!rendered.has(key)) rendered.set(key, markdown(text.file.body, lang, text.lang, doc.lead.type === 'quiz'));
     return rendered.get(key);
   }
 
@@ -89,6 +90,26 @@ export function createSite({ vocabulary, sections }) {
     return { required, optional };
   }
 
+  /** The project text in `lang`, cut into intro, sections, phases and challenges. */
+  const projectText = (doc, lang) => splitProject(localize(doc, lang).file.body);
+
+  /** Where an item is linked in projects: [{ project, anchor, title }]. */
+  function inProjects(itemId, lang) {
+    const refs = [];
+    for (const doc of sections.projects) {
+      const text = projectText(doc, lang);
+      if ((doc.lead.items ?? []).includes(itemId)) refs.push({ project: doc, anchor: '', title: '' });
+      doc.lead.phases.forEach((phase, p) => {
+        if ((phase.items ?? []).includes(itemId)) refs.push({ project: doc, anchor: phase.id, title: text.phases[p].title });
+        (phase.challenges ?? []).forEach((challenge, c) => {
+          if ((challenge.items ?? []).includes(itemId))
+            refs.push({ project: doc, anchor: challenge.id, title: text.phases[p].challenges[c].title });
+        });
+      });
+    }
+    return refs;
+  }
+
   const topicColor = (doc) => `#${vocabulary.topics[doc.lead.topics[0]].color ?? '009EE3'}`;
 
   return {
@@ -96,6 +117,8 @@ export function createSite({ vocabulary, sections }) {
     items: sections.content,
     paths: sections.paths,
     courses: sections.courses,
+    projects: sections.projects,
+    project,
     item,
     path,
     course,
@@ -103,6 +126,9 @@ export function createSite({ vocabulary, sections }) {
     url: docUrl,
     localize,
     body,
+    markdown,
+    projectText,
+    inProjects,
     relations,
     duration,
     steps: stepsOf,

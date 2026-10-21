@@ -10,6 +10,7 @@ export function layout({ lang, path, title, description, current, content, scrip
   const nav = [
     ['items', t(lang, 'nav_items')],
     ['paths', t(lang, 'nav_paths')],
+    ['projects', t(lang, 'nav_projects')],
     ['map', t(lang, 'nav_map')],
   ];
   const full = title === 'Hands-on Computer Science' ? title : `${title} – Hands-on Computer Science`;
