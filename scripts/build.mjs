@@ -10,6 +10,7 @@ import { loadKnowledge, LANGS } from '../src/build/load.mjs';
 import { validate } from '../src/build/validate.mjs';
 import { createSite, url } from '../src/build/site.mjs';
 import { t } from '../src/build/i18n.mjs';
+import { iconSvg } from '../src/build/icons.mjs';
 import { layout } from '../src/templates/layout.mjs';
 import * as pages from '../src/templates/pages.mjs';
 
@@ -58,6 +59,7 @@ function clientIndex(site, lang) {
         title: text.title,
         summary: text.summary,
         meta: `${v.types[i.lead.type][lang]}, ${i.lead.duration} ${t(lang, 'minutes')}`,
+        icon: iconSvg(v.types[i.lead.type].icon),
         color: site.topicColor(i),
         body: plain(text.file.body),
       };

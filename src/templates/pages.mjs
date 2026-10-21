@@ -4,7 +4,8 @@
 import { html, raw, json } from '../build/html.mjs';
 import { t, count, formatDate, isoDay } from '../build/i18n.mjs';
 import { url } from '../build/site.mjs';
-import { itemRow, progressBar, more, facts, icons } from './parts.mjs';
+import { itemRow, progressBar, more, facts, icons, typeIcon } from './parts.mjs';
+import { iconSvg, iconShapes } from '../build/icons.mjs';
 
 const typeLabel = (site, item, lang) => site.vocabulary.types[item.lead.type][lang];
 
@@ -79,7 +80,7 @@ export function items(site, lang) {
         <fieldset class="chips">
           <legend class="visually-hidden">${t(lang, 'nav_items')}</legend>
           <label class="chip"><input type="radio" name="type" value="" checked><span>${t(lang, 'all')}</span></label>
-          ${types.map(([key, label]) => html`<label class="chip"><input type="radio" name="type" value="${key}"><span>${label[lang]}</span></label>`)}
+          ${types.map(([key, label]) => html`<label class="chip"><input type="radio" name="type" value="${key}"><span>${raw(iconSvg(label.icon))}${label[lang]}</span></label>`)}
         </fieldset>
         ${more(
           t(lang, 'more_filters'),
@@ -129,7 +130,7 @@ export function item(site, doc, lang) {
     content: html`
       <article class="page item" data-item-page="${doc.id}" style="--topic: ${site.topicColor(doc)}">
         <header class="page-head">
-          <p class="kicker"><span class="dot"></span><span>${typeLabel(site, doc, lang)}</span><span>${lead.duration} ${t(lang, 'minutes')}</span>${lead.optional && html`<span>${t(lang, 'optional')}</span>`}</p>
+          <p class="kicker">${typeIcon(site, doc)}<span>${typeLabel(site, doc, lang)}</span><span>${lead.duration} ${t(lang, 'minutes')}</span></p>
           <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}">${text.title}</h1>
           <p class="lead" lang="${text.lang}">${text.summary}</p>
           ${before.length > 0 && html`<p class="before">${t(lang, 'before')} ${before.map((b, i) => html`${i > 0 && ', '}${link(b)}`)}</p>`}
@@ -139,7 +140,11 @@ export function item(site, doc, lang) {
         <div class="prose" lang="${text.lang}" ${isQuiz && raw(`data-check="${t(lang, 'check_answer')}" data-correct="${t(lang, 'correct')}" data-wrong="${t(lang, 'wrong')}" data-again="${t(lang, 'try_again')}"`)}>
           ${raw(site.body(doc, lang))}
         </div>
-        ${lead.url && html`<p><a class="button button-quiet" href="${lead.url}" rel="noopener">${new URL(lead.url).host}</a></p>`}
+        ${(lead.url || lead.buy) &&
+        html`<p class="links">
+          ${lead.url && html`<a class="button button-quiet" href="${lead.url}" rel="noopener">${new URL(lead.url).host.replace(/^www\./, '')}</a>`}
+          ${lead.buy && html`<a class="button button-quiet" href="${lead.buy}" rel="noopener">${t(lang, 'buy_at')} ${new URL(lead.buy).host.replace(/^www\./, '')}</a>`}
+        </p>`}
         <div class="finish">
           <button type="button" class="button done-toggle" data-mark-done aria-pressed="false" data-open="${t(lang, 'mark_done')}" data-done="${t(lang, 'marked_done')}">
             ${icons.check}<span>${t(lang, 'mark_done')}</span>
@@ -166,6 +171,7 @@ export function item(site, doc, lang) {
             lead.authors && [t(lang, 'authors'), lead.authors.join(', ')],
             lead.year && [t(lang, 'year'), lead.year],
             lead.publisher && [t(lang, 'publisher'), lead.publisher],
+            lead.isbn && [t(lang, 'isbn'), lead.isbn],
             lead.venue && [t(lang, 'venue'), lead.venue],
             lead.doi && [t(lang, 'doi'), html`<a href="https://doi.org/${lead.doi}" rel="noopener">${lead.doi}</a>`],
             lead.license && [t(lang, 'license'), lead.license],
@@ -298,6 +304,7 @@ function mapData(site, lang) {
       id: i.id,
       title: site.localize(i, lang).title,
       type: i.lead.type,
+      icon: iconShapes(site.vocabulary.types[i.lead.type].icon),
       topics: i.lead.topics,
       color: site.topicColor(i),
       url: site.url(i, lang),

@@ -2,6 +2,8 @@
 // a line naming file and field; the build stops if there is any error and
 // prints warnings without stopping. Each doc gets `lead` and `leadLang`.
 
+import { iconExists } from './icons.mjs';
+
 const ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
 // --- field checks: each returns an error message or nothing --------------
@@ -80,10 +82,11 @@ function shapes(vocabulary) {
         },
         optional: {
           modules: list(oneOf(modules, 'module')),
-          optional: bool,
           relations,
           access: oneOf(['public', 'code'], 'access'),
           url,
+          buy: url,
+          isbn: (v) => (typeof v === 'string' && /^(\d{9}[\dX]|97[89]\d{10})$/.test(v.replace(/-/g, '')) ? null : 'expected an ISBN like 978-0-13-790910-0'),
           license: text,
           authors: list(text, 1),
           year: int(1000, 2100),
@@ -171,6 +174,10 @@ export function validate({ vocabulary, sections, problems }) {
   const warnings = [];
   for (const key of ['types', 'relations', 'levels', 'topics', 'modules']) {
     if (!vocabulary[key]) errors.push(`vocabulary.yaml: ${key} is missing`);
+  }
+  for (const [type, def] of Object.entries(vocabulary.types ?? {})) {
+    if (!def.icon) errors.push(`vocabulary.yaml: type ${type} has no icon`);
+    else if (!iconExists(def.icon)) errors.push(`vocabulary.yaml: type ${type}: there is no Lucide icon "${def.icon}" (see lucide.dev/icons)`);
   }
   if (errors.length) return { errors, warnings };
   const shape = shapes(vocabulary);

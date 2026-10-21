@@ -10,7 +10,6 @@ when: um 1838
 level: 1
 duration: 8
 topics: [representing-information, transferring-information]
-optional: true
 relations:
   example_of: [code-as-agreement]
   see_also: [prefix-free-code]

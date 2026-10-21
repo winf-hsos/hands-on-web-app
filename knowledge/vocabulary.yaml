@@ -2,17 +2,19 @@
 # The website builds its filters from this file; a new entry here needs no
 # change to the code. Proposal of 2026-10-21, see docs/knowledge-schema.md.
 
+# `icon` names an icon from Lucide (https://lucide.dev/icons); the build
+# checks that it exists. Colour comes from the topic, the shape from the type.
 types:
-  lesson:     { de: Lektion,         en: Lesson }
-  demo:       { de: Demo,            en: Demo }
-  experiment: { de: Experiment,      en: Experiment }
-  term:       { de: Begriff,         en: Term }
-  story:      { de: Geschichte,      en: Story }
-  tool:       { de: Werkzeug,        en: Tool }
-  quiz:       { de: Quiz,            en: Quiz }
-  source:     { de: Literaturquelle, en: Source }
-  paper:      { de: Paper,           en: Paper }
-  person:     { de: Person,          en: Person }
+  lesson:     { de: Lektion,         en: Lesson,     icon: book-open }
+  demo:       { de: Demo,            en: Demo,       icon: circle-play }
+  experiment: { de: Experiment,      en: Experiment, icon: flask-conical }
+  term:       { de: Begriff,         en: Term,       icon: tag }
+  story:      { de: Geschichte,      en: Story,      icon: history }
+  tool:       { de: Werkzeug,        en: Tool,       icon: wrench }
+  quiz:       { de: Quiz,            en: Quiz,       icon: circle-question-mark }
+  source:     { de: Literaturquelle, en: Source,     icon: book-marked }
+  paper:      { de: Paper,           en: Paper,      icon: file-text }
+  person:     { de: Person,          en: Person,     icon: user-round }
 
 # Each relation is stored at A and points to B; `inverse` is how B shows it.
 relations:

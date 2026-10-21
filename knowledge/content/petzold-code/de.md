@@ -9,12 +9,13 @@ summary: >-
 authors: [Charles Petzold]
 year: 2022
 publisher: Microsoft Press
+isbn: 978-0-13-790910-0
+buy: https://www.informit.com/store/code-the-hidden-language-of-computer-hardware-and-software-9780137909100
 level: 1
 duration: 5
 topics: [representing-information, processing-information]
-optional: true
 relations:
-  see_also: [code-as-agreement, morse-and-the-type-case]
+  see_also: [morse-code, code-as-agreement, morse-and-the-type-case]
 status: draft
 updated: 2026-10-22
 ---
@@ -24,7 +25,7 @@ updated: 2026-10-22
 Charles Petzold erklärt, wie ein Computer funktioniert, und fängt dafür ganz
 unten an. Am Anfang stehen zwei Kinder, die sich abends über die Straße hinweg
 mit Taschenlampen Nachrichten blinken wollen. Daraus entwickelt er Schritt für
-Schritt alles, was ein Computer braucht: über Morsecode und Braille kommt er zu
+Schritt alles, was ein Computer braucht: über [[morse-code|Morsecode]] und Braille kommt er zu
 Bits, über Schalter und Relais zu Logikgattern, aus Gattern baut er ein
 Addierwerk, dann Speicher und schließlich einen einfachen Prozessor, der ein
 Programm ausführt. Kein Schritt setzt mehr voraus als der vorige, und am Ende

@@ -1,6 +1,7 @@
 // Small pieces shared by several pages.
 import { html, raw } from '../build/html.mjs';
 import { t } from '../build/i18n.mjs';
+import { iconSvg } from '../build/icons.mjs';
 
 const svg = (body, size = 20) =>
   raw(
@@ -19,6 +20,9 @@ export const mark = raw(
   '<svg class="mark" width="26" height="14" viewBox="0 0 26 14" aria-hidden="true"><rect x="0.5" y="0.5" width="11" height="13" rx="2.5" fill="currentColor"/><rect x="14.5" y="0.5" width="11" height="13" rx="2.5" fill="none" stroke="currentColor"/></svg>',
 );
 
+/** The icon of an item's type, coloured by its topic through --topic. */
+export const typeIcon = (site, item) => raw(iconSvg(site.vocabulary.types[item.lead.type].icon));
+
 /** One item as a row: topic dot, title, type and duration, one quiet line of summary. */
 export function itemRow(site, item, lang, { optional = false, summary = true, number, data = {} } = {}) {
   const text = site.localize(item, lang);
@@ -27,12 +31,13 @@ export function itemRow(site, item, lang, { optional = false, summary = true, nu
   return html`<li class="row" data-progress-id="${item.id}"${attributes} style="--topic: ${site.topicColor(item)}">
     ${number !== undefined && html`<span class="row-step" aria-hidden="true"><span>${number}</span>${icons.check}</span>`}
     <a class="row-link" href="${site.url(item, lang)}">
+      ${typeIcon(site, item)}
       <span class="row-head">
         <span class="row-title" style="view-transition-name: t-${item.id}" lang="${text.lang}">${text.title}</span>
         <span class="row-meta">
           <span>${site.vocabulary.types[lead.type][lang]}</span>
           <span>${lead.duration} ${t(lang, 'minutes')}</span>
-          ${(optional || lead.optional) && html`<span class="row-optional">${t(lang, 'optional')}</span>`}
+          ${optional && html`<span class="row-optional">${t(lang, 'optional')}</span>`}
         </span>
       </span>
       ${summary && html`<span class="row-summary" lang="${text.lang}">${text.summary}</span>`}

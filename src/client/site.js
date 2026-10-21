@@ -72,7 +72,7 @@ async function engine() {
   const [{ default: MiniSearch }, data] = await Promise.all([import('minisearch'), loadIndex()]);
   const mini = new MiniSearch({
     fields: ['title', 'summary', 'body', 'code'],
-    storeFields: ['title', 'summary', 'url', 'meta', 'color'],
+    storeFields: ['title', 'summary', 'url', 'meta', 'color', 'icon'],
     extractField: (doc, field) => (field === 'code' ? String(doc.code) : doc[field]),
     searchOptions: { prefix: true, fuzzy: 0.2, boost: { title: 3, code: 5, summary: 2 } },
   });
@@ -100,7 +100,9 @@ function show(results) {
       a.setAttribute('role', 'option');
       a.setAttribute('aria-selected', String(i === 0));
       const span = (className, text) => Object.assign(document.createElement('span'), { className, textContent: text });
-      a.append(span('r-title', r.title), span('r-meta', r.meta ?? ''), span('r-summary', r.summary ?? ''));
+      const icon = span('r-icon', '');
+      icon.innerHTML = r.icon ?? ''; // built from the icon set, not from user input
+      a.append(icon, span('r-title', r.title), span('r-meta', r.meta ?? ''), span('r-summary', r.summary ?? ''));
       li.append(a);
       return li;
     }),

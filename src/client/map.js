@@ -94,7 +94,9 @@ function mount(figure) {
   const nodeEls = nodes.map((node) => {
     const g = el('g', { class: 'map-node', tabindex: '0', role: 'link', 'aria-label': node.title });
     g.style.setProperty('--node', node.color);
-    g.append(el('circle', { r: 9 }), Object.assign(el('text', { dy: '0.35em' }), { textContent: node.title }));
+    const icon = el('svg', { class: 'map-icon', x: -7, y: -7, width: 14, height: 14, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': 2.4, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+    icon.innerHTML = node.icon; // shapes from the icon set, built into the page
+    g.append(el('circle', { r: 13 }), icon, Object.assign(el('text', { dy: '0.35em' }), { textContent: node.title }));
     g.addEventListener('click', () => (location.href = node.url));
     g.addEventListener('keydown', (e) => e.key === 'Enter' && (location.href = node.url));
     svg.append(g);
@@ -140,7 +142,7 @@ function mount(figure) {
     });
     nodeEls.forEach((g, i) => g.setAttribute('transform', `translate(${points[i].x} ${points[i].y})`));
   }
-  nodeEls.forEach((g) => g.querySelector('text').setAttribute('x', 14));
+  nodeEls.forEach((g) => g.querySelector('text').setAttribute('x', 19));
 
   const { width, height } = svg.getBoundingClientRect();
   const steps = layout(nodes, links, width && height ? width / height : 1.4);
@@ -152,14 +154,25 @@ function mount(figure) {
     // layout settles, for a little over a second.
     nodeEls.forEach((g, i) => g.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 400, delay: 80 + i * 40, fill: 'backwards' }));
     linkEls.forEach((l) => l.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 600, delay: 400, fill: 'backwards' }));
+    let finished = false;
     const frame = () => {
+      if (finished) return;
       let next;
       for (let i = 0; i < 4; i++) next = steps.next();
       if (next.value) unit = next.value.map((p) => ({ ...p }));
       draw();
-      if (!next.done) requestAnimationFrame(frame);
+      if (next.done) finished = true;
+      else requestAnimationFrame(frame);
     };
     requestAnimationFrame(frame);
+    // A window in the background gets no animation frames: then show the
+    // finished map instead of an empty one.
+    setTimeout(() => {
+      if (finished) return;
+      finished = true;
+      for (const p of steps) unit = p;
+      draw();
+    }, 2000);
   }
   new ResizeObserver(draw).observe(svg);
 

@@ -384,21 +384,24 @@ select {
   min-width: 0;
   display: grid;
   gap: 0.15rem;
-  padding: 0.85rem 0.5rem 0.85rem 1.4rem;
+  padding: 0.85rem 0.5rem 0.85rem 2.1rem;
   color: var(--ink);
   text-decoration: none;
   position: relative;
 }
 
-.row-link::before {
-  content: '';
+/* The type icon: its shape says what kind of item it is, its colour the topic. */
+.type-icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: none;
+  color: color-mix(in srgb, var(--topic, var(--accent)) 72%, var(--ink));
+}
+
+.row-link > .type-icon {
   position: absolute;
-  left: 0.3rem;
-  top: 1.4rem;
-  width: 0.55rem;
-  height: 0.55rem;
-  border-radius: 50%;
-  background: var(--topic, var(--accent));
+  left: 0.25rem;
+  top: 1.05rem;
 }
 
 .row-link:hover {
@@ -467,13 +470,13 @@ select {
   border-bottom: 0;
 }
 
-.trail .row-link::before {
-  display: none;
+.trail .row-link {
+  padding-left: 2.6rem;
+  border-radius: 0.6rem;
 }
 
-.trail .row-link {
-  padding-left: 0.75rem;
-  border-radius: 0.6rem;
+.trail .row-link > .type-icon {
+  left: 0.85rem;
 }
 
 .row-step {
@@ -548,7 +551,10 @@ select {
   font-size: 0.95rem;
 }
 
-.kicker .dot,
+.kicker .type-icon {
+  margin-right: -0.5rem;
+}
+
 .chip .dot {
   width: 0.6rem;
   height: 0.6rem;
@@ -765,6 +771,13 @@ select {
   border-color: var(--accent-ink);
 }
 
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
 .button-quiet {
   background: transparent;
   color: var(--accent-ink);
@@ -832,6 +845,13 @@ select {
 
 .chip .dot {
   margin-right: 0;
+}
+
+.chip .type-icon {
+  width: 1rem;
+  height: 1rem;
+  color: inherit;
+  margin-left: -0.2rem;
 }
 
 .chip > span:hover {
@@ -1292,9 +1312,14 @@ select {
   pointer-events: none;
 }
 
+.map-icon {
+  color: #fff;
+  pointer-events: none;
+}
+
 .map-node:hover circle,
 .map-node:focus-visible circle {
-  r: 13;
+  r: 16;
 }
 
 .map.is-focused .map-node:not(.is-near),
@@ -1383,13 +1408,9 @@ select {
   text-decoration: none;
 }
 
-.search-results a::before {
-  content: '';
-  width: 0.55rem;
-  height: 0.55rem;
-  border-radius: 50%;
-  background: var(--topic);
+.search-results .r-icon {
   align-self: center;
+  display: flex;
 }
 
 .search-results a[aria-selected='true'],

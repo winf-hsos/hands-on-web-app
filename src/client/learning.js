@@ -71,7 +71,7 @@ function renderDone(progress) {
         { className: 'row is-done' },
         el(
           'a',
-          { className: 'row-link', href: item.url },
+          { className: 'row-link', href: item.url, innerHTML: item.icon },
           el('span', { className: 'row-head' }, el('span', { className: 'row-title', textContent: item.title }), el('span', { className: 'row-meta', textContent: day })),
         ),
       );

@@ -13,7 +13,7 @@ based_on: 2026-10-22
 Charles Petzold explains how a computer works and starts at the very bottom.
 At the beginning are two children who want to flash messages to each other
 across the street at night. From there he develops, step by step, everything
-a computer needs: through Morse code and Braille he arrives at bits, through
+a computer needs: through [[morse-code|Morse code]] and Braille he arrives at bits, through
 switches and relays at logic gates; from gates he builds an adding machine,
 then memory and finally a simple processor that runs a program. No step
 assumes more than the one before, and in the end you have understood a

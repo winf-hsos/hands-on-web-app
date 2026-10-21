@@ -57,7 +57,7 @@ dist/  de/…, en/…, de/index.json, en/index.json, assets/
 
 Dependencies are deliberately few: `js-yaml` for front matter, the unified
 family for Markdown, MiniSearch for search, `qrcode-generator` for the QR
-code, and the Atkinson Hyperlegible fonts, which are served from the site
+code, the Lucide icons for the content types, and the Atkinson Hyperlegible fonts, which are served from the site
 itself rather than from Google. The browser loads ES modules directly through
 an import map; there is no bundler.
 

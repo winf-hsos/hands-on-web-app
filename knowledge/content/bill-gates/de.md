@@ -9,7 +9,6 @@ born: 1955
 level: 1
 duration: 8
 topics: [solving-problems]
-optional: true
 status: draft
 updated: 2026-10-22
 ---

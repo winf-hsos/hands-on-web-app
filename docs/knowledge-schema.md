@@ -111,7 +111,6 @@ level: 1                           # required, 1–4, see vocabulary.yaml
 duration: 20                       # required, minutes of focused work
 topics: [representing-information] # required, at least one, see vocabulary.yaml
 modules: [dup]                     # optional, modules this item is written for
-optional: false                    # optional, true marks enrichment (demos etc.)
 relations:                         # optional, see section 5
   requires: [number-systems]
   see_also: [prefix-free-code]
@@ -127,7 +126,7 @@ Type-specific fields:
 |---|---|
 | `demo` | `url` if the demo runs elsewhere; otherwise its files sit in `media/` |
 | `tool` | `url`, `license` (of the tool) |
-| `source`, `paper` | `authors`, `year`, `url` or `doi`, `publisher` or `venue` |
+| `source`, `paper` | `authors`, `year`, `url` or `doi`, `publisher` or `venue`, `isbn`, `buy` (a page where the book can be bought) |
 | `story` | `when` (year or span, free text such as `1838` or `um 1840`) |
 | `person` | `born`, and `died` where it applies, as years |
 | `quiz` | none; the questions are in the body, see section 7 |
@@ -138,6 +137,10 @@ Fields deliberately **not** in an item:
   the item. The same item can then sit at different places in several courses.
 - **Release dates.** They depend on the course and semester, so they live in
   the course file.
+- **"Optional".** An item is only optional with respect to a path or a course,
+  so it is marked at the step there (`optional: true`), never at the item.
+  An item-level field existed until 2026-10-22 and was removed on Nicolas'
+  remark that it makes no sense outside such a context.
 - **Names of people.** Authors of sources are fine, people from teaching
   records never (see `_regeln/datenschutz.md` in the steering folder).
 
@@ -284,7 +287,10 @@ content is public.
 ## 10. Vocabulary
 
 `knowledge/vocabulary.yaml` defines the closed lists with labels in both
-languages: content types, relation types, levels, topics and modules. The
+languages: content types, relation types, levels, topics and modules. Every
+content type names an `icon` from Lucide (lucide.dev/icons), which the site
+shows wherever an item appears, coloured by its topic; the build fails if the
+icon does not exist. The
 website builds its filters from it, so a new topic or type is one entry there
 and no change to the code.
 
