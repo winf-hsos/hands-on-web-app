@@ -1,0 +1,195 @@
+---
+import Base from '../../../layouts/Base.astro';
+import ItemCard from '../../../components/ItemCard.astro';
+import { knowledge, localize } from '../../../lib/knowledge';
+import { t } from '../../../lib/i18n';
+import { langPaths } from '../../../lib/routes';
+import { vocabulary, type Lang } from '../../../lib/vocabulary';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const k = await knowledge();
+
+// Plain text of a Markdown body, good enough for full-text search.
+const plain = (md = '') =>
+  md
+    .replace(/\[\[[a-z0-9-]+\|([^\]]+)\]\]/g, '$1')
+    .replace(/\[\[([a-z0-9-]+)\]\]/g, '$1')
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/[#>*_`|[\]-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+const index = k.items.map((item) => {
+  const text = localize(item, lang);
+  return { id: item.id, code: String(item.lead.code), title: text.title, summary: text.summary, body: plain(text.entry.body) };
+});
+const used = (key: 'type' | 'topics' | 'modules') =>
+  new Set(k.items.flatMap((i) => (Array.isArray(i.lead[key]) ? i.lead[key] : [i.lead[key]]) as string[]));
+const types = Object.entries(vocabulary.types).filter(([key]) => used('type').has(key));
+const topics = Object.entries(vocabulary.topics).filter(([key]) => used('topics').has(key));
+const modules = Object.entries(vocabulary.modules).filter(([key]) => used('modules').has(key));
+const levels = Object.entries(vocabulary.levels);
+---
+
+<Base lang={lang} title={t(lang, 'nav_items')} current="items">
+  <h1>{t(lang, 'nav_items')}</h1>
+  <form class="filters" id="filters">
+    <label class="filter-search">
+      <span class="visually-hidden">{t(lang, 'search_label')}</span>
+      <input name="q" type="search" placeholder={t(lang, 'search_placeholder')} autocomplete="off" />
+    </label>
+    <label>
+      <span>{t(lang, 'type')}</span>
+      <select name="type">
+        <option value="">{t(lang, 'all')}</option>
+        {types.map(([key, label]) => <option value={key}>{label[lang]}</option>)}
+      </select>
+    </label>
+    <label>
+      <span>{t(lang, 'topic')}</span>
+      <select name="topic">
+        <option value="">{t(lang, 'all')}</option>
+        {topics.map(([key, label]) => <option value={key}>{label[lang]}</option>)}
+      </select>
+    </label>
+    <label>
+      <span>{t(lang, 'level')}</span>
+      <select name="level">
+        <option value="">{t(lang, 'all')}</option>
+        {levels.map(([key, label]) => <option value={key}>{label[lang]}</option>)}
+      </select>
+    </label>
+    {
+      modules.length > 1 && (
+        <label>
+          <span>{t(lang, 'module')}</span>
+          <select name="module">
+            <option value="">{t(lang, 'all')}</option>
+            {modules.map(([key, label]) => (
+              <option value={key}>{label[lang]}</option>
+            ))}
+          </select>
+        </label>
+      )
+    }
+    <label>
+      <span>{t(lang, 'progress')}</span>
+      <select name="progress">
+        <option value="">{t(lang, 'all')}</option>
+        <option value="open">{t(lang, 'open')}</option>
+        <option value="done">{t(lang, 'done')}</option>
+      </select>
+    </label>
+    <label>
+      <span>{t(lang, 'sort')}</span>
+      <select name="sort">
+        <option value="title">{t(lang, 'sort_title')}</option>
+        <option value="level">{t(lang, 'sort_level')}</option>
+        <option value="duration">{t(lang, 'sort_duration')}</option>
+        <option value="code">{t(lang, 'sort_code')}</option>
+      </select>
+    </label>
+  </form>
+  <p class="result-count" aria-live="polite"><span id="count">{k.items.length}</span> {t(lang, 'results')}</p>
+  <div class="cards" id="cards">
+    {
+      k.items
+        .slice()
+        .sort((a, b) => localize(a, lang).title.localeCompare(localize(b, lang).title, lang))
+        .map((item) => (
+          <div
+            class="card-slot"
+            data-id={item.id}
+            data-type={item.lead.type}
+            data-topics={item.lead.topics.join(' ')}
+            data-modules={item.lead.modules.join(' ')}
+            data-level={item.lead.level}
+            data-duration={item.lead.duration}
+            data-code={item.lead.code}
+            data-title={localize(item, lang).title}
+          >
+            <ItemCard item={item} lang={lang} headingLevel="h2" />
+          </div>
+        ))
+    }
+  </div>
+  <p class="empty" id="empty" hidden>
+    {t(lang, 'no_results')} <button type="button" class="link-button" id="reset">{t(lang, 'reset')}</button>
+  </p>
+  <script type="application/json" id="search-index" set:html={JSON.stringify(index)} />
+</Base>
+
+<script>
+  import MiniSearch from 'minisearch';
+  import { load, isDone } from '../../../scripts/progress';
+
+  type Doc = { id: string; code: string; title: string; summary: string; body: string };
+  const docs: Doc[] = JSON.parse(document.getElementById('search-index')!.textContent!);
+  const search = new MiniSearch<Doc>({
+    fields: ['title', 'summary', 'body', 'code'],
+    storeFields: [],
+    searchOptions: { prefix: true, fuzzy: 0.2, boost: { title: 3, code: 5, summary: 2 } },
+  });
+  search.addAll(docs);
+
+  const form = document.getElementById('filters') as HTMLFormElement;
+  const cards = document.getElementById('cards')!;
+  const slots = [...cards.querySelectorAll<HTMLElement>('.card-slot')];
+  const field = (name: string) => form.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | null;
+
+  // Filters live in the URL, so that a filtered list can be bookmarked or shared.
+  const params = new URLSearchParams(location.search);
+  for (const [key, value] of params) {
+    const f = field(key);
+    if (f) f.value = value;
+  }
+
+  function apply() {
+    const value = (name: string) => field(name)?.value ?? '';
+    const query = value('q').trim();
+    const ranked = query ? search.search(query) : null;
+    const score = new Map(ranked?.map((r) => [r.id as string, r.score]));
+    const progress = load();
+    const visible = slots.filter((slot) => {
+      const d = slot.dataset;
+      if (ranked && !score.has(d.id!)) return false;
+      if (value('type') && d.type !== value('type')) return false;
+      if (value('topic') && !d.topics!.split(' ').includes(value('topic'))) return false;
+      if (value('module') && !d.modules!.split(' ').includes(value('module'))) return false;
+      if (value('level') && d.level !== value('level')) return false;
+      if (value('progress') === 'done' && !isDone(progress, d.id!)) return false;
+      if (value('progress') === 'open' && isDone(progress, d.id!)) return false;
+      return true;
+    });
+    const sort = value('sort');
+    const lang = document.documentElement.lang;
+    visible.sort((a, b) => {
+      if (ranked && sort === 'title') return score.get(b.dataset.id!)! - score.get(a.dataset.id!)!;
+      if (sort === 'level' || sort === 'duration' || sort === 'code')
+        return Number(a.dataset[sort]) - Number(b.dataset[sort]);
+      return a.dataset.title!.localeCompare(b.dataset.title!, lang);
+    });
+    for (const slot of slots) slot.hidden = !visible.includes(slot);
+    cards.append(...visible);
+    document.getElementById('count')!.textContent = String(visible.length);
+    document.getElementById('empty')!.hidden = visible.length > 0;
+
+    const next = new URLSearchParams();
+    for (const name of ['q', 'type', 'topic', 'level', 'module', 'progress', 'sort']) {
+      const v = value(name);
+      if (v && !(name === 'sort' && v === 'title')) next.set(name, v);
+    }
+    history.replaceState(null, '', next.size ? `?${next}` : location.pathname);
+  }
+
+  form.addEventListener('input', apply);
+  form.addEventListener('submit', (e) => e.preventDefault());
+  document.getElementById('reset')!.addEventListener('click', () => {
+    form.reset();
+    apply();
+  });
+  document.addEventListener('progress-change', apply);
+  apply();
+</script>

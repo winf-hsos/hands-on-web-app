@@ -17,5 +17,5 @@ this page is the short version.
 - Links between items are written `[[id]]` or `[[id|link text]]`.
 - `vocabulary.yaml` defines types, relations, levels, topics and modules.
 
-Status: proposal of 2026-10-21. The five items in `content/` and the path in
-`paths/` are pilot drafts that illustrate the schema.
+Status: schema approved on 2026-10-21. The five items in `content/`, the path in
+`paths/` and the course in `courses/` are pilot drafts.

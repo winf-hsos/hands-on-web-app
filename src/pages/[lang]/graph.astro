@@ -1,0 +1,150 @@
+---
+import Base from '../../layouts/Base.astro';
+import { knowledge, localize } from '../../lib/knowledge';
+import { t, url } from '../../lib/i18n';
+import { langPaths } from '../../lib/routes';
+import { vocabulary, type Lang } from '../../lib/vocabulary';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const k = await knowledge();
+
+const graph = {
+  nodes: k.items.map((item) => ({
+    id: item.id,
+    label: localize(item, lang).title,
+    type: item.lead.type,
+    typeLabel: vocabulary.types[item.lead.type][lang],
+    topics: item.lead.topics,
+    color: `#${vocabulary.topics[item.lead.topics[0]].color ?? '009EE3'}`,
+    url: url(lang, 'items', item.id),
+  })),
+  edges: k.items.flatMap((item) =>
+    Object.entries(item.lead.relations ?? {}).flatMap(([relation, targets]) =>
+      (targets ?? []).map((target) => ({ source: item.id, target, relation, label: vocabulary.relations[relation][lang] })),
+    ),
+  ),
+};
+const topics = Object.entries(vocabulary.topics).filter(([key]) => k.items.some((i) => i.lead.topics.includes(key)));
+---
+
+<Base lang={lang} title={t(lang, 'nav_graph')} current="graph">
+  <h1>{t(lang, 'nav_graph')}</h1>
+  <p>{t(lang, 'graph_intro')}</p>
+  <div class="graph-tools">
+    <label>
+      <span>{t(lang, 'graph_filter')}</span>
+      <select id="graph-topic">
+        <option value="">{t(lang, 'all')}</option>
+        {topics.map(([key, label]) => <option value={key}>{label[lang]}</option>)}
+      </select>
+    </label>
+    <ul class="legend">
+      {
+        topics.map(([, label]) => (
+          <li style={`--topic: #${label.color}`}>{label[lang]}</li>
+        ))
+      }
+    </ul>
+  </div>
+  <div id="graph" class="graph" role="img" aria-label={t(lang, 'nav_graph')}></div>
+  <noscript>
+    <ul>{graph.nodes.map((n) => <li><a href={n.url}>{n.label}</a></li>)}</ul>
+  </noscript>
+  <script type="application/json" id="graph-data" set:html={JSON.stringify(graph)} />
+</Base>
+
+<script>
+  import cytoscape from 'cytoscape';
+  import { load, isDone } from '../../scripts/progress';
+
+  type Node = { id: string; label: string; type: string; topics: string[]; color: string; url: string };
+  type Edge = { source: string; target: string; relation: string; label: string };
+  const data: { nodes: Node[]; edges: Edge[] } = JSON.parse(document.getElementById('graph-data')!.textContent!);
+  const css = getComputedStyle(document.documentElement);
+  const color = (name: string) => css.getPropertyValue(name).trim();
+
+  // Shape by content type, so that colour can stay with the topic.
+  const shapes: Record<string, cytoscape.Css.NodeShape> = {
+    lesson: 'round-rectangle',
+    term: 'ellipse',
+    experiment: 'diamond',
+    demo: 'hexagon',
+    story: 'round-tag',
+    quiz: 'star',
+    tool: 'barrel',
+    source: 'rectangle',
+    paper: 'rectangle',
+  };
+  const progress = load();
+  const cy = cytoscape({
+    container: document.getElementById('graph'),
+    elements: [
+      ...data.nodes.map((n) => ({ data: { ...n, done: isDone(progress, n.id) ? 1 : 0 } })),
+      ...data.edges.map((e) => ({ data: { id: `${e.source}-${e.relation}-${e.target}`, ...e } })),
+    ],
+    style: [
+      {
+        selector: 'node',
+        style: {
+          'background-color': 'data(color)',
+          shape: (n: cytoscape.NodeSingular) => shapes[n.data('type')] ?? 'ellipse',
+          label: 'data(label)',
+          color: color('--text'),
+          'font-size': 11,
+          'font-family': getComputedStyle(document.body).fontFamily,
+          'text-valign': 'bottom',
+          'text-margin-y': 5,
+          'text-wrap': 'wrap',
+          'text-max-width': '120px',
+          width: 26,
+          height: 26,
+        },
+      },
+      { selector: 'node[done = 1]', style: { 'border-width': 3, 'border-color': color('--done') } },
+      {
+        selector: 'edge',
+        style: {
+          width: 1.5,
+          'line-color': color('--line'),
+          'target-arrow-color': color('--line'),
+          'target-arrow-shape': 'triangle',
+          'curve-style': 'bezier',
+          label: 'data(label)',
+          'font-size': 9,
+          color: color('--muted'),
+          'text-rotation': 'autorotate',
+          'text-background-color': color('--bg'),
+          'text-background-opacity': 1,
+        },
+      },
+      { selector: 'edge[relation = "see_also"]', style: { 'line-style': 'dashed', 'target-arrow-shape': 'none' } },
+      { selector: '.faded', style: { opacity: 0.15 } },
+    ],
+    layout: {
+      name: 'cose',
+      animate: false,
+      padding: 40,
+      nodeRepulsion: () => 400000,
+      idealEdgeLength: () => 150,
+      nodeOverlap: 40,
+      componentSpacing: 150,
+      randomize: true,
+    },
+    wheelSensitivity: 0.3,
+    // A small graph would otherwise be blown up to fill the whole frame.
+    maxZoom: 1.3,
+    minZoom: 0.3,
+  });
+  cy.on('tap', 'node', (e) => (location.href = e.target.data('url')));
+  cy.on('mouseover', 'node', () => (cy.container()!.style.cursor = 'pointer'));
+  cy.on('mouseout', 'node', () => (cy.container()!.style.cursor = ''));
+
+  document.getElementById('graph-topic')!.addEventListener('change', (e) => {
+    const topic = (e.target as HTMLSelectElement).value;
+    cy.elements().removeClass('faded');
+    if (!topic) return;
+    const keep = cy.nodes().filter((n) => n.data('topics').includes(topic));
+    cy.elements().not(keep.union(keep.edgesWith(keep))).addClass('faded');
+  });
+</script>

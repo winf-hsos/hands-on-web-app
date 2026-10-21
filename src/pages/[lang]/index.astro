@@ -1,0 +1,54 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ItemCard from '../../components/ItemCard.astro';
+import { knowledge, localize } from '../../lib/knowledge';
+import { t, url } from '../../lib/i18n';
+import { langPaths } from '../../lib/routes';
+import type { Lang } from '../../lib/vocabulary';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const k = await knowledge();
+const home = k.pages.find((p) => p.id === 'home')!;
+const text = localize(home, lang);
+const { Content } = await render(text.entry);
+const featured = home.lead.featured_path ? k.path.get(home.lead.featured_path) : undefined;
+const samples = home.lead.samples.map((id) => k.item.get(id)!);
+---
+
+<Base lang={lang} title={text.title} description={text.summary}>
+  <section class="hero">
+    <h1>{text.title}</h1>
+    <p class="lead">{text.summary}</p>
+    <div class="prose"><Content /></div>
+  </section>
+
+  <section class="entries" aria-label={t(lang, 'start_here')}>
+    <a class="entry" href={featured ? url(lang, 'paths', featured.id) : url(lang, 'paths')}>
+      <span class="entry-title">{t(lang, 'start_here')}</span>
+      <span class="entry-text">{featured ? localize(featured, lang).title : t(lang, 'start_here_text')}</span>
+    </a>
+    <a class="entry" href={url(lang, 'items')}>
+      <span class="entry-title">{t(lang, 'browse')}</span>
+      <span class="entry-text">{t(lang, 'browse_text')}</span>
+    </a>
+    <a class="entry" href={url(lang, 'courses')}>
+      <span class="entry-title">{t(lang, 'course_code')}</span>
+      <span class="entry-text">{t(lang, 'course_code_text')}</span>
+    </a>
+  </section>
+
+  {
+    samples.length > 0 && (
+      <section>
+        <h2>{t(lang, 'samples')}</h2>
+        <div class="cards">
+          {samples.map((item) => (
+            <ItemCard item={item} lang={lang} />
+          ))}
+        </div>
+      </section>
+    )
+  }
+</Base>

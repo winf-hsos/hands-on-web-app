@@ -1,0 +1,100 @@
+---
+import '../styles/global.css';
+import { knowledge, localize } from '../lib/knowledge';
+import { t, url } from '../lib/i18n';
+import type { Lang } from '../lib/vocabulary';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description?: string;
+  /** Section of the navigation to highlight. */
+  current?: 'items' | 'paths' | 'courses' | 'graph' | 'progress';
+}
+
+const { lang, title, description, current } = Astro.props;
+const other: Lang = lang === 'de' ? 'en' : 'de';
+const otherPath = Astro.url.pathname.replace(/^\/(de|en)\//, `/${other}/`);
+const k = await knowledge();
+
+// Small lookup table for every page: codes for the search box and for
+// encoding progress, access codes for courses. All of it is public anyway.
+const siteData = {
+  lang,
+  items: k.items.map((i) => ({ id: i.id, code: i.lead.code, title: localize(i, lang).title, url: url(lang, 'items', i.id) })),
+  paths: k.paths.map((p) => ({ id: p.id, code: p.lead.code, title: localize(p, lang).title, url: url(lang, 'paths', p.id) })),
+  courses: k.courses.map((c) => ({
+    id: c.id,
+    code: c.lead.code,
+    access: c.lead.access_code,
+    title: localize(c, lang).title,
+    url: url(lang, 'courses', c.id),
+  })),
+  labels: { done: t(lang, 'progress_summary'), of: t(lang, 'of') },
+};
+const nav = [
+  ['items', t(lang, 'nav_items')],
+  ['paths', t(lang, 'nav_paths')],
+  ['courses', t(lang, 'nav_courses')],
+  ['graph', t(lang, 'nav_graph')],
+  ['progress', t(lang, 'nav_progress')],
+] as const;
+const pageTitle = title === 'Hands-on Computer Science' ? title : `${title} · Hands-on Computer Science`;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" hreflang={other} href={otherPath} />
+    <script is:inline>
+      try {
+        const theme = localStorage.getItem('hocs-theme');
+        if (theme) document.documentElement.dataset.theme = theme;
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">{t(lang, 'skip')}</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href={url(lang)}>
+          <span class="brand-mark" aria-hidden="true">&gt;_</span>
+          <span class="brand-name">Hands-on Computer Science</span>
+        </a>
+        <form class="header-search" action={url(lang, 'items')} role="search">
+          <label class="visually-hidden" for="site-search">{t(lang, 'search_label')}</label>
+          <input id="site-search" name="q" type="search" placeholder={t(lang, 'search_placeholder')} autocomplete="off" />
+        </form>
+        <div class="header-tools">
+          <a class="lang-switch" href={otherPath} hreflang={other} lang={other}>
+            <span class="lang-long">{t(lang, 'other_language')}</span>
+            <span class="lang-short" aria-hidden="true">{other.toUpperCase()}</span>
+          </a>
+          <button class="theme-toggle" type="button" title={t(lang, 'theme_toggle')} aria-label={t(lang, 'theme_toggle')}>
+            <span aria-hidden="true">◐</span>
+          </button>
+        </div>
+      </div>
+      <nav class="site-nav" aria-label="Navigation">
+        {nav.map(([key, label]) => (
+          <a href={url(lang, key)} aria-current={current === key ? 'page' : undefined}>{label}</a>
+        ))}
+      </nav>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <p>Hands-on Computer Science · Hochschule Osnabrück</p>
+    </footer>
+    <script type="application/json" id="site-data" set:html={JSON.stringify(siteData)} />
+    <script>
+      import '../scripts/site';
+    </script>
+  </body>
+</html>

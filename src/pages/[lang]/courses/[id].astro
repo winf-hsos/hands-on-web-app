@@ -1,0 +1,80 @@
+---
+import { render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import ItemCard from '../../../components/ItemCard.astro';
+import ProgressBar from '../../../components/ProgressBar.astro';
+import { knowledge, localize, steps, LANGS } from '../../../lib/knowledge';
+import { t, formatDate } from '../../../lib/i18n';
+import { vocabulary, type Lang } from '../../../lib/vocabulary';
+
+export async function getStaticPaths() {
+  const k = await knowledge();
+  return LANGS.flatMap((lang) => k.courses.map((course) => ({ params: { lang, id: course.id } })));
+}
+
+const lang = Astro.params.lang as Lang;
+const k = await knowledge();
+const course = k.courses.find((c) => c.id === Astro.params.id)!;
+const text = localize(course, lang);
+const { Content } = await render(text.entry);
+const all = course.lead.units.flatMap((u) => steps(u.items).filter((s) => !s.optional).map((s) => s.id));
+---
+
+<Base lang={lang} title={text.title} description={text.summary} current="courses">
+  <header class="item-head" data-course={course.id}>
+    <div class="card-meta">
+      <span class="badge badge-type">{vocabulary.modules[course.lead.module][lang]}</span>
+      <span class="badge">{course.lead.semester}</span>
+      {course.lead.status === 'draft' && <span class="badge badge-draft">{t(lang, 'draft')}</span>}
+    </div>
+    <h1 lang={text.lang}>{text.title}</h1>
+    <p class="lead" lang={text.lang}>{text.summary}</p>
+    <ProgressBar ids={all} />
+  </header>
+  <div class="prose" lang={text.lang}><Content /></div>
+  {
+    course.lead.units.map((unit) => {
+      const from = unit.available_from?.toISOString().slice(0, 10);
+      return (
+        <section class="unit" data-available-from={from}>
+          <h2>
+            {unit.title[lang]}
+            {from && (
+              <span class="unit-date">
+                {t(lang, 'available_from')} {formatDate(unit.available_from!, lang)}
+              </span>
+            )}
+          </h2>
+          <ol class="steps">
+            {steps(unit.items).map((s) => (
+              <li>
+                <ItemCard item={k.item.get(s.id)!} lang={lang} optional={s.optional} />
+              </li>
+            ))}
+          </ol>
+        </section>
+      );
+    })
+  }
+</Base>
+
+<script>
+  import { load, save } from '../../../scripts/progress';
+
+  // Release dates are a display rule, not a lock: units before their date
+  // are greyed out, but every item stays reachable.
+  const today = new Date().toISOString().slice(0, 10);
+  for (const unit of document.querySelectorAll<HTMLElement>('[data-available-from]')) {
+    const later = unit.dataset.availableFrom! > today;
+    unit.classList.toggle('is-later', later);
+    unit.querySelector('.unit-date')?.toggleAttribute('hidden', !later);
+  }
+
+  // Opening a course page adds it to "my courses".
+  const id = document.querySelector<HTMLElement>('[data-course]')!.dataset.course!;
+  const progress = load();
+  if (!progress.courses.includes(id)) {
+    progress.courses.push(id);
+    save(progress);
+  }
+</script>

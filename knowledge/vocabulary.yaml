@@ -22,7 +22,7 @@ relations:
   deepens:
     de: Vertieft
     en: Deepens
-    inverse: { de: Vertieft in, en: Deepened by }
+    inverse: { de: Vertieft durch, en: Deepened by }
   example_of:
     de: Beispiel für
     en: Example of
@@ -47,13 +47,14 @@ levels:
   4: { de: Vertiefung,      en: Expert }
 
 # Topics are the questions a learner can start from. The first five follow
-# the families of the LiFi concept map, rephrased for this platform.
+# the families of the LiFi concept map, rephrased for this platform; the
+# colours are the family colours decided there on 2026-09-07.
 topics:
-  solving-problems:          { de: Probleme lösen,             en: Solving problems }
-  representing-information:  { de: Information darstellen,     en: Representing information }
-  storing-information:       { de: Information speichern,      en: Storing information }
-  transferring-information:  { de: Information übertragen,     en: Transferring information }
-  processing-information:    { de: Information verarbeiten,    en: Processing information }
+  solving-problems:         { de: Probleme lösen,         en: Solving problems,         color: "7D868F" }
+  representing-information: { de: Information darstellen, en: Representing information, color: "F5A623" }
+  storing-information:      { de: Information speichern,  en: Storing information,      color: "2EB872" }
+  transferring-information: { de: Information übertragen, en: Transferring information, color: "D6336C" }
+  processing-information:   { de: Information verarbeiten, en: Processing information,  color: "009EE3" }
 
 modules:
   dup: { de: Digitalisierung und Programmierung, en: Digitalisation and Programming }

@@ -1,0 +1,153 @@
+---
+import { render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import { knowledge, localize, relationsOf, steps, LANGS } from '../../../lib/knowledge';
+import { t, url, formatDate } from '../../../lib/i18n';
+import { vocabulary, type Lang } from '../../../lib/vocabulary';
+
+export async function getStaticPaths() {
+  const k = await knowledge();
+  return LANGS.flatMap((lang) => k.items.map((item) => ({ params: { lang, id: item.id } })));
+}
+
+const lang = Astro.params.lang as Lang;
+const k = await knowledge();
+const item = k.item.get(Astro.params.id!)!;
+const text = localize(item, lang);
+const { Content } = await render(text.entry);
+const { before, after, other } = relationsOf(item, k, lang);
+const inPaths = k.paths.filter((p) => steps(p.lead.steps).some((s) => s.id === item.id));
+const lead = item.lead;
+const link = (id: string) => url(lang, 'items', id);
+const titleOf = (id: string) => localize(k.item.get(id)!, lang).title;
+const isQuiz = lead.type === 'quiz';
+---
+
+<Base lang={lang} title={text.title} description={text.summary} current="items">
+  <article
+    class="item"
+    data-item-page={item.id}
+    style={`--topic: #${vocabulary.topics[lead.topics[0]].color ?? '009EE3'}`}
+  >
+    <header class="item-head">
+      <div class="card-meta">
+        <span class="badge badge-type">{vocabulary.types[lead.type][lang]}</span>
+        {lead.optional && <span class="badge">{t(lang, 'optional')}</span>}
+        {lead.status === 'draft' && <span class="badge badge-draft">{t(lang, 'draft')}</span>}
+        <span class="card-code" title={t(lang, 'code')}>{lead.code}</span>
+      </div>
+      <h1 lang={text.lang}>{text.title}</h1>
+      <p class="lead" lang={text.lang}>{text.summary}</p>
+      <dl class="facts">
+        <div><dt>{t(lang, 'level')}</dt><dd>{vocabulary.levels[lead.level][lang]}</dd></div>
+        <div><dt>{t(lang, 'duration')}</dt><dd>{lead.duration} {t(lang, 'minutes')}</dd></div>
+        <div>
+          <dt>{t(lang, 'topic')}</dt>
+          <dd>{lead.topics.map((topic) => vocabulary.topics[topic][lang]).join(', ')}</dd>
+        </div>
+        {lead.when && <div><dt>{t(lang, 'when')}</dt><dd>{lead.when}</dd></div>}
+      </dl>
+    </header>
+
+    {text.missing && <p class="notice">{t(lang, 'missing_translation')}</p>}
+    {text.stale && <p class="notice">{t(lang, 'stale_translation')}</p>}
+
+    {
+      before.length > 0 && (
+        <aside class="relations relations-before">
+          <h2>{t(lang, 'before')}</h2>
+          <ul>
+            {before[0].items.map((r) => (
+              <li data-progress-id={r.id}>
+                <a href={link(r.id)}>{titleOf(r.id)}</a>
+                <span class="done-mark" aria-hidden="true">✓</span>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )
+    }
+
+    <div class="prose" lang={text.lang}>
+      {isQuiz && (
+        <span
+          hidden
+          data-quiz-labels
+          data-check={t(lang, 'check_answer')}
+          data-correct={t(lang, 'correct')}
+          data-wrong={t(lang, 'wrong')}
+          data-again={t(lang, 'try_again')}
+        />
+      )}
+      <Content />
+    </div>
+
+    {
+      lead.url && (
+        <p>
+          <a class="button" href={lead.url} rel="noopener">{lead.url}</a>
+        </p>
+      )
+    }
+
+    <p class="done-row">
+      <button
+        type="button"
+        class="button"
+        data-mark-done
+        aria-pressed="false"
+        data-label-open={t(lang, 'mark_done')}
+        data-label-done={`✓ ${t(lang, 'marked_done')}`}
+      >
+        {t(lang, 'mark_done')}
+      </button>
+      <span class="updated">{formatDate(lead.updated, lang)}</span>
+    </p>
+
+    {
+      (after.length > 0 || other.length > 0 || inPaths.length > 0) && (
+        <footer class="relations">
+          {after.map((g) => (
+            <section>
+              <h2>{t(lang, 'after')}</h2>
+              <ul>
+                {g.items.map((r) => (
+                  <li data-progress-id={r.id}>
+                    <a href={link(r.id)}>{titleOf(r.id)}</a>
+                    <span class="done-mark" aria-hidden="true">✓</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+          {other.map((g) => (
+            <section>
+              <h2>{g.label}</h2>
+              <ul>
+                {g.items.map((r) => (
+                  <li data-progress-id={r.id}>
+                    <a href={link(r.id)}>{titleOf(r.id)}</a>
+                    <span class="badge">{vocabulary.types[r.lead.type][lang]}</span>
+                    <span class="done-mark" aria-hidden="true">✓</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+          {inPaths.length > 0 && (
+            <section>
+              <h2>{t(lang, 'in_paths')}</h2>
+              <ul>
+                {inPaths.map((p) => (
+                  <li>
+                    <a href={url(lang, 'paths', p.id)}>{localize(p, lang).title}</a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+        </footer>
+      )
+    }
+  </article>
+</Base>

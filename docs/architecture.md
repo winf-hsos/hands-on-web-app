@@ -1,6 +1,6 @@
 ---
 title: Technical architecture
-status: proposal, awaiting a decision by Nicolas
+status: decided by Nicolas on 2026-10-21 (variant A, Astro)
 date: 2026-10-21
 ---
 

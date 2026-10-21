@@ -1,6 +1,6 @@
 ---
 title: Knowledge base schema
-status: proposal, awaiting approval by Nicolas
+status: approved by Nicolas, 2026-10-21
 date: 2026-10-21
 ---
 
@@ -32,6 +32,10 @@ knowledge/
       en.md
   courses/
     dup-2026-27-ws/      curated collections per course and semester
+      de.md
+      en.md
+  pages/
+    home/                text of the start page (kind: page)
       de.md
       en.md
 ```
@@ -292,7 +296,7 @@ Levels, following basiswissen-ki.de:
 | 3 | Fortgeschritten | Advanced |
 | 4 | Vertiefung | Expert |
 
-## 11. Progress records (for later)
+## 11. Progress records
 
 The schema has to make progress possible without a server and usable later by
 a learning agent. A progress record therefore refers to items by **id**, never
@@ -302,12 +306,17 @@ by URL or title, and contains only what the browser observed:
 {
   "v": 1,
   "items": {
-    "code-as-agreement": { "seen": "2026-10-28T10:14" },
-    "code-systems-quiz": { "seen": "2026-10-28T10:40", "quiz": { "q1": 1, "q2": 0, "q3": 1 } }
+    "code-as-agreement": { "seen": "2026-10-28", "done": "2026-10-28" },
+    "code-systems-quiz": { "seen": "2026-10-28", "quiz": { "q1": 1, "q2": 0, "q3": 1 } }
   },
   "courses": ["dup-2026-27-ws"]
 }
 ```
+
+`seen` is set on the first visit, `done` when the learner marks the item as
+done, or for a quiz automatically once every question was answered correctly.
+Progress bars count `done`. Dates are days, not timestamps, because the time of
+day would say more about a person than the record needs.
 
 For transfer to another browser it is compressed and encoded, see
 `docs/architecture.md`. Because ids never change, a record from the first
@@ -315,7 +324,8 @@ semester remains valid later.
 
 ## 12. Validation
 
-A small check runs before every build and fails it on errors:
+The check runs in every build (`src/content.config.ts` for single files,
+`src/lib/knowledge.ts` for everything across files) and fails it on errors:
 
 - every folder has exactly one lead file, and its required fields are present
   and well-formed;
@@ -328,20 +338,19 @@ A small check runs before every build and fails it on errors:
 Warnings, which do not stop the build: missing translation, translation older
 than its lead, `draft` items referenced by a published path or course.
 
-## Open decisions
+## Decisions
 
-1. **Language of the lead file.** Proposed: free per item, whichever language
-   it was written in first. Alternative: always German.
-2. **Four-digit numeric codes**, random and never reused. Alternative: four
-   letters and digits without confusable characters (more codes, harder to say
-   aloud).
-3. **Relation `checks`** (quiz tests an item) in addition to the five from the
-   concept.
-4. **Type list.** Proposed to start with: `lesson`, `demo`, `experiment`,
-   `term`, `story`, `tool`, `quiz`, `source`, `paper`. `source` and `paper`
-   could be one type `source` with a field `kind`.
+Approved by Nicolas on 2026-10-21 as proposed:
+
+1. **Language of the lead file** is free per item, whichever language it was
+   written in first.
+2. **Four-digit numeric codes**, random and never reused; `npm run new-code`
+   prints an unused one.
+3. **Relation `checks`** (a quiz tests an item) in addition to the five from
+   the concept.
+4. **Type list** to start with: `lesson`, `demo`, `experiment`, `term`,
+   `story`, `tool`, `quiz`, `source`, `paper`.
 5. **Levels** 1–4 with the labels above.
-6. **Access codes for courses**: a readable word code such as `LICHT-26`
-   (proposed, easier to write on a slide) or the course's four-digit code.
-7. **`access: code`** for items only reachable after unlocking: keep the field
-   now, without effect, or leave it out until it is needed.
+6. **Access codes for courses** are readable word codes such as `LICHT-26`;
+   case, spaces and hyphens are ignored when typing them in.
+7. **`access: code`** exists in the schema but has no effect yet.

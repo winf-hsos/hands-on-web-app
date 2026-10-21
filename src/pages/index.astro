@@ -1,0 +1,19 @@
+---
+// Language choice for the bare domain: the browser's preference, German otherwise.
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <title>Hands-on Computer Science</title>
+    <meta http-equiv="refresh" content="1; url=/de/" />
+    <script is:inline>
+      const lang = (navigator.languages || [navigator.language]).find((l) => /^(de|en)/i.test(l));
+      location.replace(lang && /^en/i.test(lang) ? '/en/' : '/de/');
+    </script>
+  </head>
+  <body>
+    <p><a href="/de/">Deutsch</a> · <a href="/en/">English</a></p>
+  </body>
+</html>
