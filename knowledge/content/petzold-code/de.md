@@ -15,7 +15,7 @@ level: 1
 duration: 5
 topics: [representing-information, processing-information]
 relations:
-  see_also: [morse-code, code-as-agreement, morse-and-the-type-case]
+  see_also: [morse-code, code-as-agreement, morse-and-the-type-case, logic-gates, nand-gate]
 status: draft
 updated: 2026-10-22
 ---
@@ -26,7 +26,7 @@ Charles Petzold erklärt, wie ein Computer funktioniert, und fängt dafür ganz
 unten an. Am Anfang stehen zwei Kinder, die sich abends über die Straße hinweg
 mit Taschenlampen Nachrichten blinken wollen. Daraus entwickelt er Schritt für
 Schritt alles, was ein Computer braucht: über [[morse-code|Morsecode]] und Braille kommt er zu
-Bits, über Schalter und Relais zu Logikgattern, aus Gattern baut er ein
+Bits, über Schalter und Relais zu [[logic-gates|Logikgattern]], aus Gattern baut er ein
 Addierwerk, dann Speicher und schließlich einen einfachen Prozessor, der ein
 Programm ausführt. Kein Schritt setzt mehr voraus als der vorige, und am Ende
 hat man eine Maschine verstanden, die man vorher nur benutzt hat.
@@ -37,7 +37,9 @@ Das Buch geht denselben Weg wie die Inhalte hier, vom Zeichen über den Code bis
 zur Maschine. Wer [[code-as-agreement]] gelesen hat, findet in den ersten
 Kapiteln dieselbe Frage aus einem anderen Blickwinkel, und der Morsecode aus
 [[morse-and-the-type-case|der Geschichte vom Setzkasten]] ist auch dort einer
-der Ausgangspunkte.
+der Ausgangspunkte. Die Gatter, aus denen Petzold sein Addierwerk baut, fasst
+die Lektion [[logic-gates]] zusammen, und das [[nand-gate]] kommt bei ihm
+ebenso vor wie hier.
 
 ## Ausgaben
 

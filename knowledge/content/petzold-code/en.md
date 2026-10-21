@@ -14,7 +14,7 @@ Charles Petzold explains how a computer works and starts at the very bottom.
 At the beginning are two children who want to flash messages to each other
 across the street at night. From there he develops, step by step, everything
 a computer needs: through [[morse-code|Morse code]] and Braille he arrives at bits, through
-switches and relays at logic gates; from gates he builds an adding machine,
+switches and relays at [[logic-gates|logic gates]]; from gates he builds an adding machine,
 then memory and finally a simple processor that runs a program. No step
 assumes more than the one before, and in the end you have understood a
 machine you had only used until then.
@@ -25,7 +25,9 @@ The book follows the same path as the content here, from characters through
 codes to the machine. If you have read [[code-as-agreement]], you will find
 the same question from another angle in the first chapters, and the Morse code
 from [[morse-and-the-type-case|the story of the type case]] is one of its
-starting points as well.
+starting points as well. The gates Petzold builds his adding machine from are
+summarised in the lesson [[logic-gates]], and the [[nand-gate]] appears in his
+book just as it does here.
 
 ## Editions
 
