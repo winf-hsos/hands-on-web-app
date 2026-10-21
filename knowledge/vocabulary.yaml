@@ -1,0 +1,59 @@
+# Closed lists used by the knowledge base, with labels in both languages.
+# The website builds its filters from this file; a new entry here needs no
+# change to the code. Proposal of 2026-10-21, see docs/knowledge-schema.md.
+
+types:
+  lesson:     { de: Lektion,         en: Lesson }
+  demo:       { de: Demo,            en: Demo }
+  experiment: { de: Experiment,      en: Experiment }
+  term:       { de: Begriff,         en: Term }
+  story:      { de: Geschichte,      en: Story }
+  tool:       { de: Werkzeug,        en: Tool }
+  quiz:       { de: Quiz,            en: Quiz }
+  source:     { de: Literaturquelle, en: Source }
+  paper:      { de: Paper,           en: Paper }
+
+# Each relation is stored at A and points to B; `inverse` is how B shows it.
+relations:
+  requires:
+    de: Setzt voraus
+    en: Requires
+    inverse: { de: Darauf baut auf, en: Builds on this }
+  deepens:
+    de: Vertieft
+    en: Deepens
+    inverse: { de: Vertieft in, en: Deepened by }
+  example_of:
+    de: Beispiel für
+    en: Example of
+    inverse: { de: Beispiele, en: Examples }
+  part_of:
+    de: Gehört zu
+    en: Part of
+    inverse: { de: Teile, en: Parts }
+  checks:
+    de: Prüft
+    en: Checks
+    inverse: { de: Teste dich selbst, en: Test yourself }
+  see_also:
+    de: Siehe auch
+    en: See also
+    symmetric: true
+
+levels:
+  1: { de: Einstieg,        en: Beginner }
+  2: { de: Grundlagen,      en: Foundations }
+  3: { de: Fortgeschritten, en: Advanced }
+  4: { de: Vertiefung,      en: Expert }
+
+# Topics are the questions a learner can start from. The first five follow
+# the families of the LiFi concept map, rephrased for this platform.
+topics:
+  solving-problems:          { de: Probleme lösen,             en: Solving problems }
+  representing-information:  { de: Information darstellen,     en: Representing information }
+  storing-information:       { de: Information speichern,      en: Storing information }
+  transferring-information:  { de: Information übertragen,     en: Transferring information }
+  processing-information:    { de: Information verarbeiten,    en: Processing information }
+
+modules:
+  dup: { de: Digitalisierung und Programmierung, en: Digitalisation and Programming }
