@@ -164,6 +164,7 @@ export function item(site, doc, lang) {
             [t(lang, 'topics'), lead.topics.map((k) => v.topics[k][lang]).join(', ')],
             lead.modules?.length && [t(lang, 'modules'), lead.modules.map((k) => v.modules[k][lang]).join(', ')],
             lead.when && [t(lang, 'when'), lead.when],
+            lead.born && [t(lang, 'lived'), lead.died ? `${lead.born}–${lead.died}` : `${t(lang, 'born')} ${lead.born}`],
             inPaths.length > 0 && [t(lang, 'in_paths'), inPaths.map((p, i) => html`${i > 0 && ', '}<a href="${site.url(p, lang)}">${site.localize(p, lang).title}</a>`)],
             [t(lang, 'code'), html`<code>${lead.code}</code>`],
             [t(lang, 'updated'), formatDate(lead.updated, lang)],

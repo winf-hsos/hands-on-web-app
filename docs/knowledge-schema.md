@@ -129,6 +129,7 @@ Type-specific fields:
 | `tool` | `url`, `license` (of the tool) |
 | `source`, `paper` | `authors`, `year`, `url` or `doi`, `publisher` or `venue` |
 | `story` | `when` (year or span, free text such as `1838` or `um 1840`) |
+| `person` | `born`, and `died` where it applies, as years |
 | `quiz` | none; the questions are in the body, see section 7 |
 
 Fields deliberately **not** in an item:
@@ -352,7 +353,8 @@ Approved by Nicolas on 2026-10-21 as proposed:
 3. **Relation `checks`** (a quiz tests an item) in addition to the five from
    the concept.
 4. **Type list** to start with: `lesson`, `demo`, `experiment`, `term`,
-   `story`, `tool`, `quiz`, `source`, `paper`.
+   `story`, `tool`, `quiz`, `source`, `paper`; `person` added on 2026-10-22,
+   when Nicolas asked for an entry on Bill Gates.
 5. **Levels** 1–4 with the labels above.
 6. **Access codes for courses** are readable word codes such as `LICHT-26`;
    case, spaces and hyphens are ignored when typing them in.

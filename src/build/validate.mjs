@@ -91,6 +91,8 @@ function shapes(vocabulary) {
           publisher: text,
           venue: text,
           when: text,
+          born: int(1000, 2100),
+          died: int(1000, 2100),
         },
       },
       translation,

@@ -12,6 +12,7 @@ types:
   quiz:       { de: Quiz,            en: Quiz }
   source:     { de: Literaturquelle, en: Source }
   paper:      { de: Paper,           en: Paper }
+  person:     { de: Person,          en: Person }
 
 # Each relation is stored at A and points to B; `inverse` is how B shows it.
 relations:
