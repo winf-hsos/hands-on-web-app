@@ -80,8 +80,8 @@ based_on: 2026-10-21     # the lead file's `updated` this translation follows
 ---
 ```
 
-The rule that identifies the lead is simple: **the file with a `type` field is
-the lead**, and each folder has exactly one. The lead language can therefore
+The rule that identifies the lead is simple: **the file without
+`translation_of` is the lead**, and each folder has exactly one. The lead language can therefore
 differ from item to item; an item first written in English simply has its
 metadata in `en.md`.
 
@@ -324,11 +324,14 @@ semester remains valid later.
 
 ## 12. Validation
 
-The check runs in every build (`src/content.config.ts` for single files,
-`src/lib/knowledge.ts` for everything across files) and fails it on errors:
+The check runs in every build (`src/build/validate.mjs`, called by
+`scripts/build.mjs`) in two stages, first each file on its own, then everything
+across files, and fails the build on errors. `npm test` breaks each rule once on
+purpose to make sure the check still catches it. The errors:
 
 - every folder has exactly one lead file, and its required fields are present
-  and well-formed;
+  and well-formed; unknown fields are errors too, so that a misspelt field name
+  does not go unnoticed;
 - codes are unique and four digits;
 - every relation, `[[link]]`, path step and course item points to an existing id;
 - no cycle in `requires`;

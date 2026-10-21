@@ -9,7 +9,7 @@ this page is the short version.
 - `paths/<id>/` holds a learning path, `courses/<id>/` a course for one
   semester.
 - Each folder has one Markdown file per language, `de.md` and `en.md`. The file
-  with a `type` (or `kind`) field is the **lead file** and holds the shared
+  without `translation_of` is the **lead file** and holds the shared
   metadata; the other is its translation and holds only title, summary and
   text.
 - The folder name is the item's id. Never rename a published folder, since

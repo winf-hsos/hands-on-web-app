@@ -1,46 +1,39 @@
-// Remark plugin for the conventions of docs/knowledge-schema.md, section 6–7:
+// Remark plugin for the conventions of docs/knowledge-schema.md, sections 6–7:
 // [[id]] and [[id|text]] links, GitHub-style callouts, and quiz questions.
+// Options: lang, quiz (boolean), resolve(id) -> { url, title } | null.
 import { visit, SKIP } from 'unist-util-visit';
-import { knowledgeIndex, locate } from './knowledge-index.mjs';
 
 const CALLOUT = /^\[!(NOTE|TIP|WARNING|IMPORTANT|CAUTION)\]\s*/;
-const WIKI = /\[\[([a-z0-9-]+)(?:\|([^\]]+))?\]\]/g;
+const WIKI = /\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g;
 const CALLOUT_TITLES = {
   de: { NOTE: 'Hinweis', TIP: 'Tipp', WARNING: 'Achtung', IMPORTANT: 'Wichtig', CAUTION: 'Vorsicht' },
   en: { NOTE: 'Note', TIP: 'Tip', WARNING: 'Warning', IMPORTANT: 'Important', CAUTION: 'Caution' },
 };
 
-export function remarkKnowledge() {
-  return (tree, file) => {
-    const where = locate(file.path ?? file.history?.[0]);
-    if (!where) return;
-    const index = knowledgeIndex();
-    wikiLinks(tree, where.lang, index, file);
-    callouts(tree, where.lang);
-    if (index.get(where.id)?.type === 'quiz') quiz(tree);
+export function remarkKnowledge({ lang, quiz: isQuiz = false, resolve }) {
+  return (tree) => {
+    wikiLinks(tree, resolve);
+    callouts(tree, lang);
+    if (isQuiz) quiz(tree);
   };
 }
 
-function wikiLinks(tree, lang, index, file) {
+function wikiLinks(tree, resolve) {
   visit(tree, 'text', (node, position, parent) => {
     if (!parent || position === undefined || !node.value.includes('[[')) return;
     const parts = [];
     let last = 0;
     for (const match of node.value.matchAll(WIKI)) {
       const [whole, id, text] = match;
-      const target = index.get(id);
-      if (!target) {
-        // Reported again, with context, by src/lib/knowledge.ts; failing here
-        // as well would hide the other errors of the same build.
-        file.message(`Unknown link target [[${id}]]`);
-        continue;
-      }
+      // Unknown ids are reported by validate.mjs before rendering starts.
+      const target = resolve(id);
+      if (!target) continue;
       if (match.index > last) parts.push({ type: 'text', value: node.value.slice(last, match.index) });
       parts.push({
         type: 'link',
-        url: `/${lang}/${target.section}/${id}/`,
-        data: { hProperties: { className: ['wiki-link'], 'data-id': id } },
-        children: [{ type: 'text', value: text ?? target.titles[lang] ?? target.titles.de ?? target.titles.en ?? id }],
+        url: target.url,
+        data: { hProperties: { className: ['wiki-link'] } },
+        children: [{ type: 'text', value: text ?? target.title }],
       });
       last = match.index + whole.length;
     }
@@ -84,7 +77,7 @@ function quiz(tree) {
       if (explicit) tail.value = tail.value.slice(0, explicit.index);
       current = {
         type: 'quizQuestion',
-        data: { hName: 'section', hProperties: { className: ['quiz-question'], 'data-question': explicit?.[1] ?? `q${number}` } },
+        data: { hName: 'section', hProperties: { className: ['quiz-question'], dataQuestion: explicit?.[1] ?? `q${number}` } },
         children: [node],
       };
       out.push(current);
@@ -96,9 +89,9 @@ function quiz(tree) {
     }
     if (node.type === 'list' && node.children.some((item) => typeof item.checked === 'boolean')) {
       const correct = node.children.filter((item) => item.checked).length;
-      node.data = { hName: 'ul', hProperties: { className: ['quiz-options'], 'data-multiple': correct > 1 ? 'true' : 'false' } };
+      node.data = { hName: 'ul', hProperties: { className: ['quiz-options'], dataMultiple: correct > 1 ? 'true' : 'false' } };
       for (const item of node.children) {
-        item.data = { hProperties: { className: ['quiz-option'], 'data-correct': item.checked ? 'true' : 'false' } };
+        item.data = { hProperties: { className: ['quiz-option'], dataCorrect: item.checked ? 'true' : 'false' } };
         item.checked = null;
       }
     } else if (node.type === 'blockquote') {

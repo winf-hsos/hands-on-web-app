@@ -1,0 +1,85 @@
+// The rules of the knowledge base, each broken once on purpose.
+// Usage: npm test
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { loadKnowledge } from '../src/build/load.mjs';
+import { validate } from '../src/build/validate.mjs';
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', 'knowledge');
+
+/** A fresh copy of the real knowledge base, changed by `change`. */
+function check(change = () => {}) {
+  const knowledge = loadKnowledge(ROOT);
+  const find = (section, id) => knowledge.sections[section].find((d) => d.id === id);
+  change({ ...knowledge, find });
+  return validate(knowledge);
+}
+
+const lead = (doc) => doc.files.de.data;
+
+test('the knowledge base as it is has no errors', () => {
+  assert.deepEqual(check().errors, []);
+});
+
+test('a missing required field is named', () => {
+  const { errors } = check(({ find }) => delete lead(find('content', 'knock-code')).level);
+  assert.deepEqual(errors, ['content/knock-code/de.md: level is missing']);
+});
+
+test('an unknown type lists the known ones', () => {
+  const { errors } = check(({ find }) => (lead(find('content', 'knock-code')).type = 'experimnt'));
+  assert.match(errors[0], /type: "experimnt" is not a known type \(lesson, /);
+});
+
+test('an unknown field is an error, so typos in field names do not go unnoticed', () => {
+  const { errors } = check(({ find }) => (lead(find('content', 'knock-code')).duratoin = 5));
+  assert.deepEqual(errors, ['content/knock-code/de.md: unknown field duratoin']);
+});
+
+test('codes are unique', () => {
+  const { errors } = check(({ find }) => (lead(find('content', 'knock-code')).code = 4821));
+  assert.deepEqual(errors, ['content/knock-code: code 4821 is already used by content/code-as-agreement']);
+});
+
+test('relations, path steps, course items and links must point to existing ids', () => {
+  const { errors } = check(({ find }) => {
+    lead(find('content', 'knock-code')).relations.requires = ['nowhere'];
+    lead(find('paths', 'codes-in-one-hour')).steps.push('nowhere-path');
+    lead(find('courses', 'dup-2026-27-ws')).units[0].items.push('nowhere-course');
+    find('content', 'knock-code').files.de.body += '\n[[nowhere-link]]\n';
+  });
+  assert.deepEqual(errors.sort(), [
+    'content/knock-code relations.requires: unknown item "nowhere"',
+    'content/knock-code/de.md: link to unknown id [[nowhere-link]]',
+    'courses/dup-2026-27-ws units[1]: unknown item "nowhere-course"',
+    'paths/codes-in-one-hour steps: unknown item "nowhere-path"',
+  ]);
+});
+
+test('a cycle in requires is an error', () => {
+  const { errors } = check(({ find }) => {
+    lead(find('content', 'code-as-agreement')).relations = { requires: ['knock-code'] };
+  });
+  assert.deepEqual(errors, ['requires has a cycle: code-as-agreement -> knock-code -> code-as-agreement']);
+});
+
+test('a quiz question needs a correct answer', () => {
+  const { errors } = check(({ find }) => {
+    const file = find('content', 'code-systems-quiz').files.de;
+    file.body = file.body.replace('- [x] Drei', '- [ ] Drei');
+  });
+  assert.deepEqual(errors, ['content/code-systems-quiz/de.md: question 2 has no correct answer (- [x] …)']);
+});
+
+test('a folder needs exactly one lead file', () => {
+  const { errors } = check(({ find }) => delete find('content', 'knock-code').files.en.data.translation_of);
+  assert.match(errors[0], /content\/knock-code: expected exactly one lead file/);
+});
+
+test('an outdated translation is a warning, not an error', () => {
+  const { errors, warnings } = check(({ find }) => (lead(find('content', 'knock-code')).updated = new Date('2027-01-01')));
+  assert.deepEqual(errors, []);
+  assert.ok(warnings.includes('content/knock-code/en.md: translation is older than its lead file'));
+});

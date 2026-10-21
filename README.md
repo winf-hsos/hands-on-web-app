@@ -2,20 +2,21 @@
 
 Source of the learning platform planned for hands-on-computer-science.de: a
 knowledge base of learning items in Markdown, with typed relations between
-them, from which a static, bilingual (German and English) website with
-courses, learning paths and local progress is built.
+them, from which our own build script makes a static, bilingual (German and
+English) website with courses, learning paths and local progress.
 
 ## Layout
 
 | Folder | Content |
 |---|---|
 | `knowledge/` | the knowledge base, the only source of what the site shows |
-| `docs/` | design documents: schema of the knowledge base, architecture |
-| `src/content.config.ts` | schema of each file, checked at build time |
-| `src/lib/knowledge.ts` | joins lead files and translations, checks links and relations |
-| `src/markdown/` | `[[links]]`, callouts and quizzes in Markdown |
-| `src/pages/` | the pages, under `/de/` and `/en/` |
-| `src/scripts/` | browser code: progress, search box, quizzes |
+| `docs/` | schema of the knowledge base, architecture |
+| `scripts/` | build, local preview, new short codes |
+| `src/build/` | reading, checking and rendering the knowledge base |
+| `src/templates/` | the pages |
+| `src/client/` | browser modules |
+| `src/styles/` | the stylesheet |
+| `tests/` | checks of the knowledge base rules |
 
 ## Working on it
 
@@ -23,15 +24,11 @@ Requires Node 22 or later.
 
 ```
 npm install
-npm run dev        # local preview at http://localhost:4321
-npm run check      # type check and full build, including the knowledge base checks
-npm run build      # static site in dist/
+npm run dev        # preview at http://localhost:4321, rebuilds on every save
+npm run build      # static site in dist/, stops with a list if the knowledge base has errors
+npm test           # each rule of the knowledge base broken once on purpose
 npm run new-code   # an unused four-digit short code for a new item
 ```
-
-A build fails with a list of errors if the knowledge base breaks a rule of
-`docs/knowledge-schema.md`, for example a missing field, a duplicate code or a
-relation to an id that does not exist.
 
 ## Status
 

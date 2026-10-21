@@ -1,0 +1,58 @@
+// Small pieces shared by several pages.
+import { html, raw } from '../build/html.mjs';
+import { t } from '../build/i18n.mjs';
+
+const svg = (body, size = 20) =>
+  raw(
+    `<svg class="icon" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${body}</svg>`,
+  );
+
+export const icons = {
+  search: svg('<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>'),
+  theme: svg('<circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor"/>'),
+  check: svg('<path d="m5 12.5 4.5 4.5L19 7.5"/>', 16),
+  close: svg('<path d="M6 6l12 12M18 6 6 18"/>'),
+};
+
+/** Two cells, one set and one not: the smallest picture of a bit. */
+export const mark = raw(
+  '<svg class="mark" width="26" height="14" viewBox="0 0 26 14" aria-hidden="true"><rect x="0.5" y="0.5" width="11" height="13" rx="2.5" fill="currentColor"/><rect x="14.5" y="0.5" width="11" height="13" rx="2.5" fill="none" stroke="currentColor"/></svg>',
+);
+
+/** One item as a row: topic dot, title, type and duration, one quiet line of summary. */
+export function itemRow(site, item, lang, { optional = false, summary = true, number, data = {} } = {}) {
+  const text = site.localize(item, lang);
+  const lead = item.lead;
+  const attributes = Object.entries(data).map(([key, value]) => html` data-${key}="${value}"`);
+  return html`<li class="row" data-progress-id="${item.id}"${attributes} style="--topic: ${site.topicColor(item)}">
+    ${number !== undefined && html`<span class="row-step" aria-hidden="true"><span>${number}</span>${icons.check}</span>`}
+    <a class="row-link" href="${site.url(item, lang)}">
+      <span class="row-head">
+        <span class="row-title" style="view-transition-name: t-${item.id}" lang="${text.lang}">${text.title}</span>
+        <span class="row-meta">
+          <span>${site.vocabulary.types[lead.type][lang]}</span>
+          <span>${lead.duration} ${t(lang, 'minutes')}</span>
+          ${(optional || lead.optional) && html`<span class="row-optional">${t(lang, 'optional')}</span>`}
+        </span>
+      </span>
+      ${summary && html`<span class="row-summary" lang="${text.lang}">${text.summary}</span>`}
+    </a>
+    ${number === undefined && html`<span class="row-done" title="${t(lang, 'done')}">${icons.check}</span>`}
+  </li>`;
+}
+
+export const progressBar = (ids, lang) =>
+  html`<div class="meter" data-progress-ids="${ids.join(' ')}" data-of="${t(lang, 'of')}" data-done="${t(lang, 'done')}">
+    <div class="meter-track"><div class="meter-fill"></div></div>
+    <span class="meter-label"></span>
+  </div>`;
+
+/** A disclosure for everything that is detail rather than overview. */
+export const more = (summary, content, { open = false, className = '' } = {}) =>
+  html`<details class="more ${className}" ${open && raw('open')}>
+    <summary>${summary}</summary>
+    <div class="more-body">${content}</div>
+  </details>`;
+
+export const facts = (rows) =>
+  html`<dl class="facts">${rows.filter(Boolean).map(([term, value]) => html`<div><dt>${term}</dt><dd>${value}</dd></div>`)}</dl>`;
