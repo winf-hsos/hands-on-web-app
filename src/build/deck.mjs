@@ -1,6 +1,7 @@
 // Where a slides item keeps its stagekit deck. The deck is the one HTML file
 // in slides/: decks made since 2026-09-24 are named after their title
-// (cutting-the-lifi-project.html), older ones are called index.html. The PDF
+// (cutting-the-lifi-project.html), as stagekit requires; a deck still called
+// index.html works, but its PDF would download as index.pdf. The PDF
 // comes from stagekit's export, export/<deck>.pdf, or, for decks taken over
 // before that, slides.pdf.
 import { existsSync, readdirSync } from 'node:fs';

@@ -209,8 +209,8 @@ function slidesBlock(site, doc, lang) {
       </div>
       <figcaption class="deck-actions">
         <button type="button" class="button button-quiet" data-fullscreen=".deck-frame iframe">${t(lang, 'fullscreen')}</button>
-        <a class="text-button" href="${src}" target="_blank" rel="noopener">${t(lang, 'new_window')}</a>
-        ${pdf && html`<a class="text-button" href="/decks/${doc.id}/${pdf}" download>${t(lang, 'pdf')}</a>`}
+        <a class="button button-quiet" href="${src}" target="_blank" rel="noopener">${t(lang, 'new_window')}</a>
+        ${pdf && html`<a class="button button-quiet" href="/decks/${doc.id}/${pdf}" download="${pdf.split('/').pop()}">${t(lang, 'pdf')}</a>`}
         ${lead.deck_lang && lead.deck_lang !== lang && html`<span class="muted">${t(lang, lead.deck_lang === 'en' ? 'slides_in_english' : 'slides_in_german')}</span>`}
       </figcaption>
     </figure>
