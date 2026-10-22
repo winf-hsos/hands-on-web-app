@@ -91,9 +91,10 @@ function block(object, indent, order = []) {
 export function serialize(section, data, body, isLead, previous = '') {
   const order = isLead ? ORDER[section] : ORDER.translation;
   const text = body.replace(/^(\r?\n)+/, '');
-  const end = text.endsWith('\n') ? text : `${text}\n`;
+  // a file without text (a slides item, say) ends right after the front matter
+  const end = !text.trim() ? '' : `\n${text.endsWith('\n') ? text : `${text}\n`}`;
   const old = previous.replace(/\r\n/g, '\n').match(/^---\n([\s\S]*?)\n---\n/);
-  if (!old) return `---\n${block(data, 0, order)}\n---\n\n${end}`;
+  if (!old) return `---\n${block(data, 0, order)}\n---\n${end}`;
 
   // the old front matter cut into top-level fields with their own lines
   const blocks = [];
@@ -114,7 +115,7 @@ export function serialize(section, data, body, isLead, previous = '') {
     const at = out.findIndex((o) => rank(o.key) > rank(key));
     out.splice(at < 0 ? out.length : at, 0, { key, text: fresh(key) });
   }
-  return `---\n${out.map((o) => o.text).join('\n')}\n---\n\n${end}`;
+  return `---\n${out.map((o) => o.text).join('\n')}\n---\n${end}`;
 }
 
 /** Equal as data, with dates compared by day. */

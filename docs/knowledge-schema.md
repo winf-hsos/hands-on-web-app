@@ -133,6 +133,7 @@ Type-specific fields:
 | `source`, `paper` | `authors`, `year`, `url` or `doi`, `publisher` or `venue`, `isbn`, `buy` (a page where the book can be bought) |
 | `story` | `when` (year or span, free text such as `1838` or `um 1840`) |
 | `person` | `born`, and `died` where it applies, as years |
+| `slides` | a stagekit deck in the folder `slides/` (with `index.html`, optionally `slides.pdf`); `deck_lang` if the slides are in one language only; `recordings` later, as `{ title, url, slide }` with YouTube links per part |
 | `quiz` | none; the questions are in the body, see section 7 |
 
 Fields deliberately **not** in an item:
@@ -288,6 +289,25 @@ display rule and not a lock: the item is shown as "available from 28 October"
 in the course, but remains reachable directly, which is fine because all
 content is public.
 
+## 8a. Slides
+
+A slides item is a stagekit deck, kept as it was built, in `slides/` next to
+the item's `de.md` and `en.md`:
+
+```
+knowledge/content/problem-decomposition/
+  de.md, en.md        title and summary only; slides have no text of their own
+  slides/
+    index.html        the deck
+    deck.js, theme.css, img/
+    slides.pdf        optional, offered for download
+```
+
+The deck loads the stagekit runtime from `../../stagekit/`, as in the folders
+where decks are made; the repository keeps that runtime in `vendor/stagekit/`
+and the build publishes it next to the decks. The build fails if the deck or
+any file it loads is missing, or if it loads anything from another site.
+
 ## 9a. Projects
 
 A project is a larger undertaking that learners carry out over weeks, such as
@@ -420,7 +440,8 @@ Approved by Nicolas on 2026-10-21 as proposed:
    the concept.
 4. **Type list** to start with: `lesson`, `demo`, `experiment`, `term`,
    `story`, `tool`, `quiz`, `source`, `paper`; `person` added on 2026-10-22,
-   when Nicolas asked for an entry on Bill Gates.
+   when Nicolas asked for an entry on Bill Gates; `slides` added on 2026-10-22
+   for stagekit decks, which come without text of their own.
 5. **Levels** 1–4 with the labels above.
 6. **Access codes for courses** are readable word codes such as `LICHT-26`;
    case, spaces and hyphens are ignored when typing them in.

@@ -15,6 +15,7 @@ types:
   source:     { de: Literaturquelle, en: Source,     icon: book-marked }
   paper:      { de: Paper,           en: Paper,      icon: file-text }
   person:     { de: Person,          en: Person,     icon: user-round }
+  slides:     { de: Folien,          en: Slides,     icon: presentation }
 
 # Each relation is stored at A and points to B; `inverse` is how B shows it.
 relations:

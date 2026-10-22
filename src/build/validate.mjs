@@ -2,6 +2,8 @@
 // a line naming file and field; the build stops if there is any error and
 // prints warnings without stopping. Each doc gets `lead` and `leadLang`.
 
+import { existsSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { iconExists } from './icons.mjs';
 import { splitProject } from './project.mjs';
 
@@ -54,6 +56,15 @@ function shapes(vocabulary) {
     return null;
   };
   const status = oneOf(['draft', 'published', 'archived'], 'status');
+  // A recording of one part of a slide deck, on YouTube.
+  const recording = (v) => {
+    if (!v || typeof v !== 'object' || Array.isArray(v)) return 'expected { title, url }';
+    const extra = Object.keys(v).find((k) => !['title', 'url', 'slide'].includes(k));
+    if (extra) return `unknown field ${extra} (allowed: title, url, slide)`;
+    if (text(v.title)) return `title: ${text(v.title)}`;
+    if (url(v.url) || !/^https:\/\/(www\.)?(youtube\.com|youtu\.be)\//.test(v.url)) return 'url: expected a YouTube link (https://www.youtube.com/… or https://youtu.be/…)';
+    return v.slide === undefined ? null : int(1, 999)(v.slide);
+  };
   const unit = (v) => {
     if (!v || typeof v !== 'object') return 'expected { title, available_from, items }';
     return (
@@ -105,6 +116,8 @@ function shapes(vocabulary) {
           when: text,
           born: int(1000, 2100),
           died: int(1000, 2100),
+          deck_lang: oneOf(['de', 'en'], 'language'),
+          recordings: list(recording, 1),
         },
       },
       translation,
@@ -350,6 +363,26 @@ export function validate({ vocabulary, sections, problems }) {
     state.set(current, 'done');
   };
   for (const item of content) visit(item.id, []);
+
+  // Slides: the deck exists and every file it loads is there.
+  for (const item of content.filter((d) => d.lead.type === 'slides')) {
+    const deck = join(item.dir, 'slides');
+    const where = `content/${item.id}/slides/index.html`;
+    if (!existsSync(join(deck, 'index.html'))) {
+      errors.push(`${where}: missing; a slides item keeps its stagekit deck in slides/`);
+      continue;
+    }
+    const html = readFileSync(join(deck, 'index.html'), 'utf8');
+    for (const [, ref] of html.matchAll(/(?:src|href)="([^"#?]+)[^"]*"/g)) {
+      if (/^(https?:|data:|mailto:)/.test(ref)) {
+        errors.push(`${where}: loads ${ref} from elsewhere; everything a deck shows must be in the knowledge base`);
+        continue;
+      }
+      // decks find the stagekit runtime two folders up, as where they are made
+      const file = ref.startsWith('../../stagekit/') ? join(item.dir, '../../../vendor/stagekit', ref.slice(15)) : join(deck, ref);
+      if (!existsSync(file)) errors.push(`${where}: ${ref} does not exist`);
+    }
+  }
 
   // Quizzes: every question needs options and at least one correct one.
   for (const item of content.filter((d) => d.lead.type === 'quiz')) {

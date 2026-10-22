@@ -42,6 +42,9 @@ npm run editor     # http://localhost:4322, starts the site preview on 4321 if n
 | Delete | removes the folder for good; id and code become free and learner progress for it is lost; refused while anything still points to it |
 | Commit | commits the changes in `knowledge/` to the local git repository with a message; nothing is pushed |
 
+A slides item needs its deck in `slides/` before it can be saved; copy the
+folder of the deck there first, then create or edit the item.
+
 Courses and projects edit their structure (units, phases and challenges) as
 YAML in a text field for now; everything else of them uses the forms.
 

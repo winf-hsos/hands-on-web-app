@@ -59,6 +59,11 @@ render(load());
 document.addEventListener('progress-change', (e) => render(e.detail));
 addEventListener('storage', (e) => e.key === 'hocs-progress' && render(load()));
 
+// Full screen for embedded slide decks.
+for (const button of document.querySelectorAll('[data-fullscreen]')) {
+  button.addEventListener('click', () => document.querySelector(button.dataset.fullscreen)?.requestFullscreen());
+}
+
 // --- search dialog -------------------------------------------------------------
 
 const dialog = document.querySelector('dialog.search');

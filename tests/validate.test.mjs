@@ -119,3 +119,19 @@ test('archived content may point to anything', () => {
   });
   assert.deepEqual(errors, []);
 });
+
+test('a slides item needs its deck and every file the deck loads', () => {
+  const { errors } = check(({ find }) => {
+    const item = find('content', 'problem-decomposition');
+    item.dir = item.dir.replace('problem-decomposition', 'no-such-folder');
+  });
+  assert.deepEqual(errors, ['content/problem-decomposition/slides/index.html: missing; a slides item keeps its stagekit deck in slides/']);
+});
+
+test('recordings must be YouTube links', () => {
+  const { errors } = check(({ find }) => {
+    lead(find('content', 'problem-decomposition')).recordings = [{ title: 'Part 1', url: 'https://example.com/video' }];
+  });
+  assert.equal(errors.length, 1);
+  assert.match(errors[0], /recordings: url: expected a YouTube link/);
+});

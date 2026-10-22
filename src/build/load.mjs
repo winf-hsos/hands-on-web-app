@@ -28,7 +28,7 @@ export function loadKnowledge(root) {
     if (!existsSync(dir)) continue;
     for (const entry of readdirSync(dir, { withFileTypes: true })) {
       if (!entry.isDirectory()) continue;
-      const doc = { section, id: entry.name, files: {} };
+      const doc = { section, id: entry.name, dir: join(dir, entry.name), files: {} };
       for (const lang of LANGS) {
         const file = join(dir, entry.name, `${lang}.md`);
         if (!existsSync(file)) continue;

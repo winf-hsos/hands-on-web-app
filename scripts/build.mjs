@@ -2,7 +2,7 @@
 // renders every page in both languages and copies the browser assets.
 // Exits with a list of errors if the knowledge base breaks a rule.
 // Usage: node scripts/build.mjs
-import { mkdirSync, rmSync, writeFileSync, readFileSync, readdirSync, copyFileSync, renameSync } from 'node:fs';
+import { mkdirSync, rmSync, writeFileSync, readFileSync, readdirSync, copyFileSync, renameSync, cpSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -112,6 +112,13 @@ function render(site) {
     copyFileSync(source, target);
     hashes[name] = createHash('sha1').update(readFileSync(source)).digest('hex').slice(0, 8);
   }
+  // Slide decks as they are, next to the stagekit runtime they expect two
+  // folders up: /decks/<id>/index.html loads ../../stagekit/stagekit.js.
+  cpSync(join(ROOT, 'vendor/stagekit'), join(DIST, 'stagekit'), { recursive: true });
+  for (const item of site.items.filter((i) => i.lead.type === 'slides')) {
+    cpSync(join(item.dir, 'slides'), join(DIST, 'decks', item.id), { recursive: true });
+  }
+
   const asset = (name) => {
     if (!hashes[name]) throw new Error(`unknown asset ${name}`);
     return name.startsWith('fonts/') ? `/assets/${name}` : `/assets/${name}?v=${hashes[name]}`;

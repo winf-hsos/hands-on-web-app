@@ -6,6 +6,8 @@ import { t, count, formatDate, isoDay } from '../build/i18n.mjs';
 import { url } from '../build/site.mjs';
 import { itemRow, progressBar, more, facts, icons, typeIcon } from './parts.mjs';
 import { iconSvg, iconShapes } from '../build/icons.mjs';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 
 const typeLabel = (site, item, lang) => site.vocabulary.types[item.lead.type][lang];
 
@@ -137,6 +139,7 @@ export function item(site, doc, lang) {
         </header>
         ${text.missing && html`<p class="notice">${t(lang, 'missing_translation')}</p>`}
         ${text.stale && html`<p class="notice">${t(lang, 'stale_translation')}</p>`}
+        ${lead.type === 'slides' && slidesBlock(site, doc, lang)}
         <div class="prose" lang="${text.lang}" ${isQuiz && raw(`data-check="${t(lang, 'check_answer')}" data-correct="${t(lang, 'correct')}" data-wrong="${t(lang, 'wrong')}" data-again="${t(lang, 'try_again')}"`)}>
           ${raw(site.body(doc, lang))}
         </div>
@@ -193,6 +196,30 @@ export function item(site, doc, lang) {
       </article>
     `,
   };
+}
+
+/** A stagekit deck embedded in the page, with full screen, a window of its own and the PDF. */
+function slidesBlock(site, doc, lang) {
+  const lead = doc.lead;
+  const src = `/decks/${doc.id}/index.html`;
+  const hasPdf = existsSync(join(doc.dir, 'slides', 'slides.pdf'));
+  return html`<figure class="deck">
+      <div class="deck-frame">
+        <iframe src="${src}" title="${site.localize(doc, lang).title}" loading="lazy" allowfullscreen></iframe>
+      </div>
+      <figcaption class="deck-actions">
+        <button type="button" class="button button-quiet" data-fullscreen=".deck-frame iframe">${t(lang, 'fullscreen')}</button>
+        <a class="text-button" href="${src}" target="_blank" rel="noopener">${t(lang, 'new_window')}</a>
+        ${hasPdf && html`<a class="text-button" href="/decks/${doc.id}/slides.pdf" download>${t(lang, 'pdf')}</a>`}
+        ${lead.deck_lang && lead.deck_lang !== lang && html`<span class="muted">${t(lang, lead.deck_lang === 'en' ? 'slides_in_english' : 'slides_in_german')}</span>`}
+      </figcaption>
+    </figure>
+    ${lead.recordings?.length > 0 &&
+    html`<section class="section"><h2>${t(lang, 'recordings')}</h2>
+      <ul class="rows">${lead.recordings.map(
+        (r) => html`<li class="row"><a class="row-link" href="${r.url}" target="_blank" rel="noopener">
+          <span class="row-head"><span class="row-title">${r.title}</span>${r.slide && html`<span class="row-meta">${t(lang, 'from_slide')} ${r.slide}</span>`}</span></a></li>`,
+      )}</ul></section>`}`;
 }
 
 // --- learning paths ----------------------------------------------------------

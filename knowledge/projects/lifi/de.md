@@ -12,6 +12,7 @@ modules: [dup]
 items: [petzold-code]
 phases:
   - id: start
+    items: [problem-decomposition]
     challenges:
       - id: challenge-0
   - id: alphabet

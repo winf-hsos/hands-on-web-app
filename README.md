@@ -17,6 +17,7 @@ English) website with courses, learning paths and local progress.
 | `src/templates/` | the pages |
 | `src/client/` | browser modules |
 | `src/styles/` | the stylesheet |
+| `vendor/stagekit/` | the stagekit runtime for slide decks |
 | `tests/` | checks of the knowledge base rules |
 
 ## Working on it

@@ -25,6 +25,7 @@ const TYPE_FIELDS = {
   demo: ['url'],
   story: ['when'],
   person: ['born', 'died'],
+  slides: ['deck_lang'],
 };
 const FIELD_LABEL = {
   authors: 'Von (durch Komma getrennt)',
@@ -39,6 +40,7 @@ const FIELD_LABEL = {
   when: 'Zeit (z. B. „um 1838“)',
   born: 'Geboren (Jahr)',
   died: 'Gestorben (Jahr)',
+  deck_lang: 'Sprache der Folien (de oder en)',
 };
 const NUMBER_FIELDS = new Set(['year', 'born', 'died', 'duration', 'level']);
 // Fields the forms handle; everything else of a lead file appears as YAML.
