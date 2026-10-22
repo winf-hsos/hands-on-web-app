@@ -374,6 +374,8 @@ export function validate({ vocabulary, sections, problems }) {
       continue;
     }
     const where = `content/${item.id}/slides/${found.file}`;
+    // the script is what a learning assistant reads instead of the slides
+    if (!existsSync(join(deck, 'skript.md'))) warnings.push(`content/${item.id}/slides: no skript.md (the text to the slides, kept off the site)`);
     const html = readFileSync(join(deck, found.file), 'utf8');
     for (const [, ref] of html.matchAll(/(?:src|href)="([^"#?]+)[^"]*"/g)) {
       if (/^(https?:|data:|mailto:)/.test(ref)) {

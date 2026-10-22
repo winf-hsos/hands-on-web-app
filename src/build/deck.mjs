@@ -25,6 +25,12 @@ export function deckPdf(itemDir, file) {
   return null;
 }
 
-/** Files of a deck folder that are working material, not part of the deck. */
-export const isWorkingFile = (relative) =>
-  /^img[\\/]original([\\/]|$)/.test(relative) || (/^export[\\/]/.test(relative) && !relative.endsWith('.pdf'));
+/**
+ * Files of a deck folder that stay in the knowledge base but never go on the
+ * site: the script (skript.md, the text a learning assistant reads), drafts
+ * and other Markdown, the generator's original photos, and the export's frames.
+ */
+export const isUnpublished = (relative) =>
+  /\.md$/i.test(relative) ||
+  /^img[\\/]original([\\/]|$)/.test(relative) ||
+  (/^export[\\/]/.test(relative) && !relative.endsWith('.pdf'));

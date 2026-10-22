@@ -302,9 +302,17 @@ knowledge/content/problem-decomposition/
                       the deck's title in newer decks (cutting-the-lifi-project.html)
     deck.js, theme.css, img/
     export/<deck>.pdf the PDF from stagekit's export, offered for download
+    skript.md         the script: the text to the slides, in their order
 ```
 
-Working material stays out of the site and out of git: the generator's
+**The script belongs to the knowledge base but not to the site** (Nicolas,
+2026-10-22). It is the text a learning assistant reads instead of the slides,
+so every deck has one, and the build warns when it is missing; the website
+never shows it, and the build does not publish any Markdown from a deck
+folder. As stagekit requires, every change to a deck changes its script in
+the same step.
+
+Working material stays out of the site, and the first two out of git as well: the generator's
 original photos in `img/original/` and the export's frames in `export/`
 (only the PDF is kept). Decks are exported from the built site, where the
 stagekit runtime sits next to them:
