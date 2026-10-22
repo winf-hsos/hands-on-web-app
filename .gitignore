@@ -2,3 +2,7 @@ node_modules/
 dist/
 .astro/
 .dist-*/
+# stagekit working material: generator originals and export frames, but keep the PDF
+knowledge/content/*/slides/img/original/
+knowledge/content/*/slides/export/*
+!knowledge/content/*/slides/export/*.pdf

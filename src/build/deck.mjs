@@ -1,0 +1,30 @@
+// Where a slides item keeps its stagekit deck. The deck is the one HTML file
+// in slides/: decks made since 2026-09-24 are named after their title
+// (cutting-the-lifi-project.html), older ones are called index.html. The PDF
+// comes from stagekit's export, export/<deck>.pdf, or, for decks taken over
+// before that, slides.pdf.
+import { existsSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
+
+/** The deck's HTML file name, or an error message. */
+export function deckFile(itemDir) {
+  const dir = join(itemDir, 'slides');
+  if (!existsSync(dir)) return { error: 'missing; a slides item keeps its stagekit deck in slides/' };
+  const html = readdirSync(dir).filter((f) => f.endsWith('.html'));
+  if (html.length === 1) return { file: html[0] };
+  if (!html.length) return { error: 'has no deck (an .html file)' };
+  return { error: `has ${html.length} .html files; a deck folder holds exactly one` };
+}
+
+/** The deck's PDF as a path inside slides/, if there is one. */
+export function deckPdf(itemDir, file) {
+  const name = file.replace(/\.html$/, '');
+  for (const candidate of [`export/${name}.pdf`, 'slides.pdf']) {
+    if (existsSync(join(itemDir, 'slides', candidate))) return candidate;
+  }
+  return null;
+}
+
+/** Files of a deck folder that are working material, not part of the deck. */
+export const isWorkingFile = (relative) =>
+  /^img[\\/]original([\\/]|$)/.test(relative) || (/^export[\\/]/.test(relative) && !relative.endsWith('.pdf'));

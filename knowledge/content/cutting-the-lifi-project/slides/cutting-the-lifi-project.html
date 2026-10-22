@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>cutting the lifi project</title>
+  <link rel="stylesheet" href="theme.css?v=5">
+  <link rel="stylesheet" href="../../stagekit/stagekit.css?v=5">
+  <style>
+    /* the photo shows a scene across its whole width: with text on the left it
+       goes to 64 % height (starting near x 690) and the text keeps to 30 % */
+    .slide img.photo.beside-text {
+      height: 64%; top: auto; bottom: 0;
+      /* the table is not black: it runs to the bottom edge, and the left edge fades out */
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 22%);
+      mask-image: linear-gradient(to right, transparent, #000 22%);
+    }
+    .slide .photo-text { width: 30%; }
+  </style>
+</head>
+<body>
+<div class="deck" data-title="cutting the lifi project"
+     data-subtitle="digitalisierung und programmierung · prof. dr. nicolas meseth"
+     data-parts='["the elephant", "cutting along the way"]'>
+
+  <section class="slide title"></section>
+  <section class="slide agenda"></section>
+
+  <!-- opening photo, before the first part -->
+  <section class="slide">
+    <img class="photo beside-text" src="img/lifi-link.jpg" alt="">
+    <div class="photo-text">this is your<br>elephant.</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">Nach dem allgemeinen Teil der Elefant, an dem ihr im Projekt sitzt: zwei kleine Geräte, dazwischen Licht, und am Ende soll darüber eine ganze Datei laufen.</aside>
+  </section>
+
+  <!-- ===== part 1: the elephant ===== -->
+  <section class="slide part" data-part="the elephant">
+    <aside class="notes">Zuerst das Projekt als Ganzes, und wie es geschnitten ist.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="statement">transfer a file from one laptop<br>to another, using light.</div>
+    </div>
+    <aside class="notes">Das ist die Aufgabe des Projekts, in einem Satz. So, als ein Stück, kann das niemand lösen, kein Profi, keine KI und ihr auch nicht; interessante Probleme sind am Anfang immer zu groß.</aside>
+  </section>
+
+  <section class="slide" data-on-show="drawCut" data-on-step="drawCut">
+    <h2>the same problem, cut</h2>
+    <div class="figure" id="fig-cut"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <aside class="notes">Schritt 1: Dasselbe Problem, geschnitten, sind vier Teile: Farben auseinanderhalten, Buchstaben in Farben übersetzen, Anfang und Ende finden, eine ganze Datei übertragen. Jedes Teil ist lösbar, von euch. Schritt 2: Das Projekt ist genau entlang dieser Zerlegung gebaut, die vier Teile heißen Challenge 1 bis 4.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>start smaller: the challenges are the stairs</h2>
+    <div class="figure" id="fig-stairs"></div>
+    <aside class="notes">Dasselbe Muster wie im allgemeinen Teil, hier mit euren Stufen: erst Licht an und aus, dann mehrere Farben, dann ein Zeichen, dann ein Wort, am Ende eine ganze Datei. Die Stufen sind die Challenges 0 bis 4, und auf der untersten beginnt ihr.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>one question, four questions</h2>
+    <div class="figure" id="fig-map"></div>
+    <aside class="notes">Hinter der Zerlegung steckt die Karte des ganzen Moduls. Die große Frage lautet: Wie lösen wir komplexe Probleme mit Computern? Darunter vier Fragen über Information: darstellen, speichern, übertragen, verarbeiten. Die Lichtstrecke ist das Übertragen, aber ihr stellt auch Farben als Symbole dar, ihr speichert eine Datei, und ihr verarbeitet sie mit einer Prüfsumme. Jedes Konzept arbeitet an einer der vier Fragen.</aside>
+  </section>
+
+  <!-- ===== part 2: cutting along the way ===== -->
+  <section class="slide part" data-part="cutting along the way">
+    <aside class="notes">Zerlegen hört nicht auf, wenn die Challenges stehen. Es begleitet euch durch jede davon.</aside>
+  </section>
+
+  <section class="slide" data-on-show="drawDebug" data-on-step="drawDebug">
+    <h2>when nothing arrives</h2>
+    <div class="figure" id="fig-debug"></div>
+    <span data-step="1"></span>
+    <aside class="notes">Im Projekt heißt eure Kette Sender, LED, Luft, Sensor, Empfänger, und ihr werdet sie oft entlanglaufen, wenn nichts ankommt. Schritt 1: Testet in der Mitte. Leuchtet die LED überhaupt? Sieht der Sensor eine Taschenlampe? Jeder Test in der Mitte halbiert die Kette der Verdächtigen.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>one person per end of the link</h2>
+    <div class="figure" id="fig-team"></div>
+    <aside class="notes">Im Zweierteam gilt, was für die Party galt: eine Person je Ende der Strecke, und alles, was die Grenze überquert, etwa welche Farbe welches Zeichen bedeutet, steht auf Papier. Wie ernst das wird, merkt ihr in Challenge 3, wenn ein fremdes Team eure Absprache lesen und umsetzen muss.</aside>
+  </section>
+
+  <section class="slide" data-on-show="drawProject" data-on-step="drawProject">
+    <h2>a testable piece of the project</h2>
+    <div class="figure" id="fig-project"></div>
+    <span data-step="1"></span>
+    <aside class="notes">„Der Empfänger funktioniert“ ist ein Gefühl. Schritt 1: „Rot oder Blau, 50-mal in Folge richtig erkannt“ ist ein Messwert. Genau so sind alle Challenges formuliert, und genau so laufen die Abnahmen: Es gibt immer einen Test, der Ja oder Nein sagt.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawMachine" data-on-step="drawMachine">
+    <h2>and the assistant gets small pieces</h2>
+    <div class="figure" id="fig-machine"></div>
+    <span data-step="1"></span>
+    <div class="punch">you cut the problem, the assistant solves the pieces, and you check each one.</div>
+    <aside class="notes">Den großen Wunsch kann der Agent nicht gut erfüllen, und ihr könntet das Ergebnis nicht einmal prüfen. Schritt 1: Der kleine Auftrag sagt genau, was herauskommen soll, und nennt den Test gleich mit: Sensor zuhalten, dann muss der Mittelwert unter 10 bleiben; rote LED an, dann über 100. Das könnt ihr in zehn Sekunden nachprüfen, ohne dem Assistenten glauben zu müssen. Deshalb steht Zerlegen in den vier Zielen dieses Moduls.</aside>
+  </section>
+
+</div>
+<script src="../../stagekit/draw.js?v=5"></script>
+<script src="deck.js?v=5"></script>
+<script src="../../stagekit/stagekit.js?v=5"></script>
+</body>
+</html>

@@ -133,7 +133,7 @@ Type-specific fields:
 | `source`, `paper` | `authors`, `year`, `url` or `doi`, `publisher` or `venue`, `isbn`, `buy` (a page where the book can be bought) |
 | `story` | `when` (year or span, free text such as `1838` or `um 1840`) |
 | `person` | `born`, and `died` where it applies, as years |
-| `slides` | a stagekit deck in the folder `slides/` (with `index.html`, optionally `slides.pdf`); `deck_lang` if the slides are in one language only; `recordings` later, as `{ title, url, slide }` with YouTube links per part |
+| `slides` | a stagekit deck in the folder `slides/` (one `.html` file, optionally `export/<deck>.pdf`); `deck_lang` if the slides are in one language only; `recordings` later, as `{ title, url, slide }` with YouTube links per part |
 | `quiz` | none; the questions are in the body, see section 7 |
 
 Fields deliberately **not** in an item:
@@ -298,10 +298,17 @@ the item's `de.md` and `en.md`:
 knowledge/content/problem-decomposition/
   de.md, en.md        title and summary only; slides have no text of their own
   slides/
-    index.html        the deck
+    index.html        the deck: the one .html file in the folder, named after
+                      the deck's title in newer decks (cutting-the-lifi-project.html)
     deck.js, theme.css, img/
-    slides.pdf        optional, offered for download
+    export/<deck>.pdf the PDF from stagekit's export, offered for download
 ```
+
+Working material stays out of the site and out of git: the generator's
+original photos in `img/original/` and the export's frames in `export/`
+(only the PDF is kept). Decks are exported from the built site, where the
+stagekit runtime sits next to them:
+`python <stagekit>/tools/export.py dist/decks/<id>/<deck>.html --pdf --png --sheet --steps --fonts`.
 
 The deck loads the stagekit runtime from `../../stagekit/`, as in the folders
 where decks are made; the repository keeps that runtime in `vendor/stagekit/`

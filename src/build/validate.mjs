@@ -6,6 +6,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { iconExists } from './icons.mjs';
 import { splitProject } from './project.mjs';
+import { deckFile } from './deck.mjs';
 
 const ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
@@ -367,12 +368,13 @@ export function validate({ vocabulary, sections, problems }) {
   // Slides: the deck exists and every file it loads is there.
   for (const item of content.filter((d) => d.lead.type === 'slides')) {
     const deck = join(item.dir, 'slides');
-    const where = `content/${item.id}/slides/index.html`;
-    if (!existsSync(join(deck, 'index.html'))) {
-      errors.push(`${where}: missing; a slides item keeps its stagekit deck in slides/`);
+    const found = deckFile(item.dir);
+    if (found.error) {
+      errors.push(`content/${item.id}/slides: ${found.error}`);
       continue;
     }
-    const html = readFileSync(join(deck, 'index.html'), 'utf8');
+    const where = `content/${item.id}/slides/${found.file}`;
+    const html = readFileSync(join(deck, found.file), 'utf8');
     for (const [, ref] of html.matchAll(/(?:src|href)="([^"#?]+)[^"]*"/g)) {
       if (/^(https?:|data:|mailto:)/.test(ref)) {
         errors.push(`${where}: loads ${ref} from elsewhere; everything a deck shows must be in the knowledge base`);

@@ -1,4 +1,6 @@
-/* Zeichnungen fuer Deck 01 „cutting problems" (stagekit-Fassung).
+/* Zeichnungen fuer das allgemeine Deck „cutting problems" (stagekit-Fassung).
+ * Seit 2026-10-22 ohne LiFi-Bezug; die Projektfolien stehen im Deck
+ * „cutting the lifi project".
  * Regeln: Zeichenflaeche 1680 x 700 (mit Punchline 1680 x 620), nur die vier
  * Groessen des Themes (20, 32, 48, 80), Beschriftungen in 32, Werte in 48,
  * Punchlines als <div class="punch"> auf der Folie, nie in der Zeichnung.
@@ -68,54 +70,6 @@ window.drawParty = function (slide, step) {
   return svg;
 };
 
-// --- das problem des semesters, geschnitten ---------------------------------
-window.drawCut = function (slide, step) {
-  const leaves = [
-    { text: "tell colours\napart", note: "challenge 1" },
-    { text: "turn letters\ninto colours", note: "challenge 2" },
-    { text: "find start\nand end", note: "challenge 3" },
-    { text: "move a\nwhole file", note: "challenge 4" },
-  ].map((l) => ({ text: l.text, note: step >= 2 ? l.note : "" }));
-  const svg = tree("transfer a file with light", leaves, { show: step >= 1, boxW: 320, rootSize: 48, notes: true });
-  if ($("fig-cut")) $("fig-cut").innerHTML = svg;
-  return svg;
-};
-
-// --- die karte des moduls ----------------------------------------------------
-/* Oben die grosse Frage des Moduls, darunter die vier Fragen ueber Information. Alle vier stehen
- * gleichrangig: Das Projekt beruehrt jede von ihnen, wenn auch nicht gleich stark. */
-function drawMap() {
-  const c = d.colors();
-  const parts = [];
-  const qy = 70;
-  parts.push(d.label(W / 2, qy, "how do computers solve\ncomplex problems?",
-    { size: 48, color: c.white, anchor: "middle", lineHeight: 1.25 }));
-
-  const cols = [
-    { q: "how do computers\nrepresent information?", ex: "colours into symbols,\nletters into bits" },
-    { q: "how do computers\nstore information?", ex: "a file is bytes;\nwhat holds them?" },
-    { q: "how do computers\ntransfer information?", ex: "signal and noise,\ntiming, protocols" },
-    { q: "how do computers\nprocess information?", ex: "checksums, filters,\nencryption" },
-  ];
-  const boxW = 370, gap = (W - 80 - 4 * boxW) / 3, boxY = 350, boxH = 160;
-  const midY = 280;                      // Sammelhoehe, deutlich unter dem Text
-  const first = 40 + boxW / 2, last = 40 + 3 * (boxW + gap) + boxW / 2;
-  parts.push(d.line(W / 2, qy + 110, W / 2, midY, { color: c.dark, width: 2 }));
-  parts.push(d.line(first, midY, last, midY, { color: c.dark, width: 2 }));
-  cols.forEach((col, i) => {
-    const x = 40 + i * (boxW + gap), cx = x + boxW / 2;
-    parts.push(d.line(cx, midY, cx, boxY, { color: c.dark, width: 2 }));
-  });
-  cols.forEach((col, i) => {
-    const x = 40 + i * (boxW + gap), cx = x + boxW / 2;
-    parts.push(card(x, boxY, boxW, boxH, col.q, { border: c.light, color: c.light, lineHeight: 1.25 }));
-    parts.push(d.label(cx, boxY + boxH + 56, col.ex, { size: 32, color: c.gray, anchor: "middle", lineHeight: 1.25 }));
-  });
-  const svg = d.svg(W, boxY + boxH + 100, ...parts);
-  if ($("fig-map")) $("fig-map").innerHTML = svg;
-  return svg;
-}
-
 /* --- halbieren: der suchbereich schrumpft mit jeder frage --------------------
  * Eine Zeile je Frage; alle Zeilen stehen von Anfang an, nur die Balken
  * kommen dazu. Die gesuchte 73 markiert eine rote Senkrechte. */
@@ -156,7 +110,7 @@ window.drawHalve = function (slide, step) {
 };
 
 /* --- fehlersuche: in der mitte der kette testen ------------------------------ */
-function chain(parts, y, title, items, testAfter, dim) {
+function chain(parts, y, title, items, testAfter, dim, mark = "test here") {
   const c = d.colors();
   const n = items.length, boxW = 250, gap = 60, total = n * boxW + (n - 1) * gap;
   const x0 = (W - total) / 2;
@@ -174,7 +128,7 @@ function chain(parts, y, title, items, testAfter, dim) {
     // der Test sitzt in der Mitte der Kette, sein Pfeil endet ueber den Kaesten
     const tx = x0 + testAfter * (boxW + gap) - gap / 2;
     wires.push(d.arrow(tx, y - 70, tx, y - 6, { color: c.red, width: 3 }));
-    labels.push(d.label(tx, y - 84, "test here", { size: 32, color: c.red, anchor: "middle" }));
+    labels.push(d.label(tx, y - 84, mark, { size: 32, color: c.red, anchor: "middle" }));
   }
   parts.push(...d.layers(wires, boxes, labels));
 }
@@ -183,7 +137,8 @@ window.drawDebug = function (slide, step) {
   chain(parts, 110, "wifi dead at home", ["laptop", "wifi", "router", "provider", "internet"],
         step >= 1 ? 2 : null, step >= 1);
   if (step >= 2) {
-    chain(parts, 400, "nothing arrives in the project", ["sender", "led", "air", "sensor", "receiver"], 2, true);
+    // Kastenbreite 250: laengstes Wort "read file", 9 x 32 x 0,6 = 173 + 40 Rand
+    chain(parts, 400, "wrong total in a program", ["read file", "parse", "add up", "round", "print"], 2, true, "print it here");
   }
   const svg = d.svg(W, 520, ...parts);
   if ($("fig-debug")) $("fig-debug").innerHTML = svg;
@@ -194,12 +149,13 @@ window.drawDebug = function (slide, step) {
 function drawStairs() {
   const c = d.colors();
   const parts = [];
+  // Kastenbreite 260: laengste Zeile "send it to", 10 x 32 x 0,6 = 192 + 40 Rand
   const steps = [
-    { t: "light\non/off", n: "challenge 0" },
-    { t: "multiple\ncolours", n: "challenge 1" },
-    { t: "a letter", n: "challenge 2" },
-    { t: "a word", n: "challenge 3" },
-    { t: "a whole\nfile", n: "challenge 4" },
+    { t: "print a\nmessage" },
+    { t: "send it to\nyourself" },
+    { t: "send it to\nanother\ncomputer" },
+    { t: "two people\nchatting" },
+    { t: "a group\nchat" },
   ];
   const boxW = 260, gap = 60, x0 = 100, base = 560;
   steps.forEach((s, i) => {
@@ -208,10 +164,9 @@ function drawStairs() {
     parts.push(card(x, y, boxW, h, s.t, {
       border: here ? c.blue : c.light, color: here ? c.bg : c.light, fill: here ? c.blue : c.bg,
     }));
-    parts.push(d.label(x + boxW / 2, base + 46, s.n, { size: 32, color: here ? c.blue : c.gray, anchor: "middle" }));
   });
   parts.push(d.label(x0 + boxW / 2, base - 130 - 30, "you are here", { size: 32, color: c.blue, anchor: "middle" }));
-  const svg = d.svg(W, base + 80, ...parts);
+  const svg = d.svg(W, base + 20, ...parts);
   if ($("fig-stairs")) $("fig-stairs").innerHTML = svg;
   return svg;
 }
@@ -225,31 +180,38 @@ function twoBoxes(left, right, step, opts = {}) {
   const won = step >= 1;
   parts.push(d.label(x0 + boxW / 2, y - 40, opts.leftHead || "", { size: 32, color: c.gray, anchor: "middle" }));
   parts.push(d.label(x1 + boxW / 2, y - 40, opts.rightHead || "", { size: 32, color: c.gray, anchor: "middle" }));
-  parts.push(card(x0, y, boxW, boxH, left, {
-    border: won ? c.dark : c.light, color: won ? c.dark : c.light, size: opts.size || 48,
-    mono: opts.mono, lineHeight: 1.3,
-  }));
-  parts.push(card(x1, y, boxW, boxH, right, {
-    border: won ? c.green : c.light, color: won ? c.white : c.light, size: opts.size || 48,
-    mono: opts.mono, lineHeight: 1.3,
-  }));
+  const size = opts.size || 48;
+  // Code steht linksbuendig an einer gemeinsamen Kante, der Block als Ganzes
+  // mittig im Kasten (stagekit-Regel); ein Satz in normaler Schrift bleibt zentriert.
+  const box = (x, text, border, color) => {
+    if (!opts.mono) return card(x, y, boxW, boxH, text, { border, color, size, lineHeight: 1.3 });
+    const longest = Math.max(...text.split("\n").map((l) => l.length));
+    const left = x + (boxW - longest * size * 0.6) / 2;
+    return card(x, y, boxW, boxH, "", { border }) +
+      d.label(left, 0, text, { size, color, mono: true, lineHeight: 1.3, centerY: y + boxH / 2 });
+  };
+  parts.push(box(x0, left, won ? c.dark : c.light, won ? c.dark : c.light));
+  parts.push(box(x1, right, won ? c.green : c.light, won ? c.white : c.light));
   // der Haken steht unter dem Kasten, wie auf der Absprachen-Folie, und nie im Text
   if (won) parts.push(tick(x1 + boxW / 2, y + boxH + 70));
   return d.svg(W, y + boxH + 110, ...parts);
 }
 window.drawExam = function (slide, step) {
-  const svg = twoBoxes("i need to learn maths.", "i can pass the 2023 exam\nin 90 minutes.", step);
+  // rechts: laengste Zeile 18 Zeichen x 48 x 0,6 = 518 + 40 Rand, passt in 700
+  const svg = twoBoxes("i need to learn maths.", "i can solve an old\nexam in 90 minutes.", step);
   if ($("fig-exam")) $("fig-exam").innerHTML = svg;
   return svg;
 };
 window.drawProject = function (slide, step) {
-  const svg = twoBoxes("the receiver works.", "red or blue?\nright 50 times in a row.", step);
+  // rechts drei Zeilen: laengste 19 Zeichen x 48 x 0,6 = 547 + 40; Hoehe 3 x 62 = 187 von 250
+  const svg = twoBoxes("the app works.", "a wrong password\nshows an error,\n10 times out of 10.", step);
   if ($("fig-project")) $("fig-project").innerHTML = svg;
   return svg;
 };
 window.drawMachine = function (slide, step) {
-  const svg = twoBoxes("build me the\nfile transfer.",
-    "read the sensor ten times\nand return the average.\ntest: covered, it stays under 10.\nred led on, it goes over 100.", step,
+  // rechts: laengste Zeile 31 Zeichen x 32 x 0,6 = 595 + 40, passt in 700
+  const svg = twoBoxes("build me a\nchat app.",
+    "write a function that puts\nthe time in front of a message.\ntest: \"hi\" at 9:05\ngives \"09:05 hi\".", step,
     { leftHead: "one big wish", rightHead: "one small piece, with its test", size: 32, mono: true });
   if ($("fig-machine")) $("fig-machine").innerHTML = svg;
   return svg;
@@ -295,9 +257,9 @@ function drawAgree() {
 
 // --- start -------------------------------------------------------------------
 // Auf der Folie zeichnen; ohne Folie (figures.js fuer die Website) nur bereitstellen.
-if ($("fig-map")) {
-  drawMap(); drawStairs(); drawAgree();
+if ($("fig-stairs")) {
+  drawStairs(); drawAgree();
 }
-window.deck01 = { party: window.drawParty, cut: window.drawCut, map: drawMap, halve: window.drawHalve,
+window.deck01 = { party: window.drawParty, halve: window.drawHalve,
                   debug: window.drawDebug, stairs: drawStairs, agree: drawAgree,
                   exam: window.drawExam, project: window.drawProject, machine: window.drawMachine };

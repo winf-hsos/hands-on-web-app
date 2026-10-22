@@ -10,6 +10,7 @@ import { loadKnowledge, LANGS } from '../src/build/load.mjs';
 import { validate } from '../src/build/validate.mjs';
 import { createSite, url } from '../src/build/site.mjs';
 import { t } from '../src/build/i18n.mjs';
+import { isWorkingFile } from '../src/build/deck.mjs';
 import { iconSvg } from '../src/build/icons.mjs';
 import { layout } from '../src/templates/layout.mjs';
 import * as pages from '../src/templates/pages.mjs';
@@ -116,7 +117,12 @@ function render(site) {
   // folders up: /decks/<id>/index.html loads ../../stagekit/stagekit.js.
   cpSync(join(ROOT, 'vendor/stagekit'), join(DIST, 'stagekit'), { recursive: true });
   for (const item of site.items.filter((i) => i.lead.type === 'slides')) {
-    cpSync(join(item.dir, 'slides'), join(DIST, 'decks', item.id), { recursive: true });
+    const from = join(item.dir, 'slides');
+    cpSync(from, join(DIST, 'decks', item.id), {
+      recursive: true,
+      // the export's frames and the original photos are working material
+      filter: (source) => !isWorkingFile(source.slice(from.length + 1)),
+    });
   }
 
   const asset = (name) => {

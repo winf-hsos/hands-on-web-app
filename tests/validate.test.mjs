@@ -125,7 +125,7 @@ test('a slides item needs its deck and every file the deck loads', () => {
     const item = find('content', 'problem-decomposition');
     item.dir = item.dir.replace('problem-decomposition', 'no-such-folder');
   });
-  assert.deepEqual(errors, ['content/problem-decomposition/slides/index.html: missing; a slides item keeps its stagekit deck in slides/']);
+  assert.deepEqual(errors, ['content/problem-decomposition/slides: missing; a slides item keeps its stagekit deck in slides/']);
 });
 
 test('recordings must be YouTube links', () => {

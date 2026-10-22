@@ -6,8 +6,7 @@ import { t, count, formatDate, isoDay } from '../build/i18n.mjs';
 import { url } from '../build/site.mjs';
 import { itemRow, progressBar, more, facts, icons, typeIcon } from './parts.mjs';
 import { iconSvg, iconShapes } from '../build/icons.mjs';
-import { existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { deckFile, deckPdf } from '../build/deck.mjs';
 
 const typeLabel = (site, item, lang) => site.vocabulary.types[item.lead.type][lang];
 
@@ -201,8 +200,9 @@ export function item(site, doc, lang) {
 /** A stagekit deck embedded in the page, with full screen, a window of its own and the PDF. */
 function slidesBlock(site, doc, lang) {
   const lead = doc.lead;
-  const src = `/decks/${doc.id}/index.html`;
-  const hasPdf = existsSync(join(doc.dir, 'slides', 'slides.pdf'));
+  const { file } = deckFile(doc.dir);
+  const src = `/decks/${doc.id}/${file}`;
+  const pdf = deckPdf(doc.dir, file);
   return html`<figure class="deck">
       <div class="deck-frame">
         <iframe src="${src}" title="${site.localize(doc, lang).title}" loading="lazy" allowfullscreen></iframe>
@@ -210,7 +210,7 @@ function slidesBlock(site, doc, lang) {
       <figcaption class="deck-actions">
         <button type="button" class="button button-quiet" data-fullscreen=".deck-frame iframe">${t(lang, 'fullscreen')}</button>
         <a class="text-button" href="${src}" target="_blank" rel="noopener">${t(lang, 'new_window')}</a>
-        ${hasPdf && html`<a class="text-button" href="/decks/${doc.id}/slides.pdf" download>${t(lang, 'pdf')}</a>`}
+        ${pdf && html`<a class="text-button" href="/decks/${doc.id}/${pdf}" download>${t(lang, 'pdf')}</a>`}
         ${lead.deck_lang && lead.deck_lang !== lang && html`<span class="muted">${t(lang, lead.deck_lang === 'en' ? 'slides_in_english' : 'slides_in_german')}</span>`}
       </figcaption>
     </figure>
