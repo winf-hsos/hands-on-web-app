@@ -114,7 +114,7 @@ function renderList() {
       .map(
         (d) => `<li class="${d.status === 'archived' ? 'is-archived' : ''}"><button type="button" data-id="${d.id}" data-section="${d.section}" ${doc?.id === d.id && doc?.section === d.section ? 'aria-current="true"' : ''}>
           ${iconOf(d)}<span class="d-title">${esc(titleOf(d))}</span>
-          <span>${d.errors ? `<span class="d-flag is-error">${d.errors} Fehler</span>` : ''}</span>
+          <span>${d.errors ? `<span class="d-flag is-error" title="${esc(d.problems.join('\n'))}">${d.errors} Fehler</span>` : ''}</span>
           <span class="d-meta"><span>${d.code ?? ''}</span><span>${statusLabel(d.status)}</span>${Object.keys(d.titles).length < 2 ? '<span>nur ' + esc(d.lead?.toUpperCase()) + '</span>' : ''}</span>
         </button></li>`,
       )
@@ -154,6 +154,10 @@ async function open(section, id, { force = false } = {}) {
   lang = doc.lead;
   renderDoc();
   renderList();
+  // Problems the check already finds in this document are shown right away,
+  // not only when saving.
+  const problems = state.list.find((d) => d.section === section && d.id === id)?.problems ?? [];
+  if (problems.length) message('error', 'Die Prüfung meldet für dieses Dokument:', problems);
 }
 
 const leadData = () => work.files[work.lead].data;

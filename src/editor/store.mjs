@@ -147,6 +147,8 @@ export function createStore(root) {
           status: lead?.data.status,
           updated: lead?.data.updated ? day(lead.data.updated) : undefined,
           titles: Object.fromEntries(Object.values(doc.files).map((f) => [f.lang, f.data.title])),
+          // what the check says about this document, in its own words
+          problems: errors.filter((e) => e.includes(where)),
           errors: errors.filter((e) => e.includes(where)).length,
         };
       });

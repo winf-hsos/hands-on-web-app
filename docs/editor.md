@@ -11,7 +11,8 @@ YAML by hand. It works directly on the Markdown files in `knowledge/`, so
 everything it does can be read, reviewed and versioned like any other change.
 
 ```
-npm run editor     # http://localhost:4322, starts the site preview on 4321 if needed
+npm run editor     # http://localhost:4322, starts the site preview on 4321 if needed,
+                   # and restarts itself when the code in src/ changes
 ```
 
 ## Principles
@@ -31,6 +32,10 @@ npm run editor     # http://localhost:4322, starts the site preview on 4321 if n
   websites open in the same browser cannot send changes through it.
 
 ## What it does
+
+A document with problems carries a red mark in the list; hovering over it, or
+opening the document, shows what the check says about it.
+
 
 | Action | Effect |
 |---|---|
