@@ -119,7 +119,7 @@ relations:                         # optional, see section 5
   requires: [number-systems]
   see_also: [prefix-free-code]
 access: public                     # optional, public (default) or code, see open decision 7
-status: draft                      # required, draft or published
+status: draft                      # required, draft, published or archived
 updated: 2026-10-21                # required, date of the last substantive change
 ---
 ```
@@ -400,6 +400,10 @@ purpose to make sure the check still catches it. The errors:
 - no cycle in `requires`;
 - types, topics, modules and relation types exist in `vocabulary.yaml`;
 - quiz questions have at least one correct answer.
+
+Archived content (`status: archived`) is left out of the site but stays in
+the knowledge base, so that its id and code remain reserved and learner
+progress stays valid. Nothing that is not archived may point to it.
 
 Warnings, which do not stop the build: missing translation, translation older
 than its lead, `draft` items referenced by a published path or course.

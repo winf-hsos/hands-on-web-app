@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Editor – Hands-on Computer Science</title>
+  <link rel="stylesheet" href="/site.css">
+  <link rel="stylesheet" href="/editor.css">
+  <script>try{const m=localStorage.getItem('hocs-theme');if(m)document.documentElement.dataset.theme=m}catch{}</script>
+  <script type="importmap">{ "imports": { "js-yaml": "/vendor/js-yaml.mjs" } }</script>
+</head>
+<body class="editor">
+  <header class="ed-bar">
+    <span class="ed-brand">
+      <svg class="mark" width="26" height="14" viewBox="0 0 26 14" aria-hidden="true"><rect x="0.5" y="0.5" width="11" height="13" rx="2.5" fill="currentColor"/><rect x="14.5" y="0.5" width="11" height="13" rx="2.5" fill="none" stroke="currentColor"/></svg>
+      Editor
+    </span>
+    <button class="button" type="button" id="new">Neu anlegen</button>
+    <span class="ed-spacer"></span>
+    <span class="ed-git" id="git"></span>
+    <a class="tool" id="site" target="_blank" rel="noopener">Seite ansehen</a>
+  </header>
+
+  <div class="ed-main">
+    <aside class="ed-list">
+      <input type="search" id="filter" placeholder="Suchen: Titel, Kennung oder Code" aria-label="Suchen">
+      <div class="chips" id="sections"></div>
+      <div class="chips ed-status" id="status-filter"></div>
+      <ul class="ed-docs" id="docs"></ul>
+      <p class="ed-global" id="global"></p>
+    </aside>
+
+    <section class="ed-doc" id="doc">
+      <div class="ed-empty">
+        <h1>Inhalte bearbeiten</h1>
+        <p class="lead">Wähle links einen Inhalt, einen Lernpfad, einen Kurs oder ein Projekt, oder lege mit „Neu anlegen“ etwas an.</p>
+        <p>Jede Änderung wird vor dem Speichern mit denselben Regeln geprüft wie beim Bauen der Seite. Was gegen eine Regel verstößt, wird nicht gespeichert, sondern hier angezeigt.</p>
+      </div>
+    </section>
+  </div>
+
+  <dialog class="ed-dialog" id="picker">
+    <form method="dialog">
+      <h2 id="picker-title">Inhalt wählen</h2>
+      <input type="search" id="picker-filter" placeholder="Suchen" autocomplete="off" aria-label="Suchen">
+      <ul class="ed-docs" id="picker-list"></ul>
+      <p class="ed-actions"><button class="text-button" value="cancel">Abbrechen</button></p>
+    </form>
+  </dialog>
+
+  <dialog class="ed-dialog" id="create">
+    <form method="dialog" id="create-form"></form>
+  </dialog>
+
+  <dialog class="ed-dialog" id="confirm">
+    <form method="dialog">
+      <h2 id="confirm-title"></h2>
+      <div id="confirm-text"></div>
+      <p class="ed-actions">
+        <button class="text-button" value="cancel">Abbrechen</button>
+        <button class="button" value="ok" id="confirm-ok"></button>
+      </p>
+    </form>
+  </dialog>
+
+  <script type="module" src="/editor.js"></script>
+</body>
+</html>

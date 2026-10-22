@@ -99,3 +99,23 @@ test('items linked in a project must exist', () => {
   });
   assert.deepEqual(errors, ['projects/lifi challenge-0: unknown item "nowhere"']);
 });
+
+test('nothing visible may point to archived content', () => {
+  const { errors } = check(({ find }) => (lead(find('content', 'nand-gate')).status = 'archived'));
+  assert.deepEqual(errors.sort(), [
+    'content/petzold-code de.md [[link]]: points to archived "nand-gate"',
+    'content/petzold-code en.md [[link]]: points to archived "nand-gate"',
+    'content/petzold-code relations.see_also: points to archived "nand-gate"',
+    'content/logic-gates de.md [[link]]: points to archived "nand-gate"',
+    'content/logic-gates en.md [[link]]: points to archived "nand-gate"',
+  ].sort());
+});
+
+test('archived content may point to anything', () => {
+  const { errors } = check(({ find }) => {
+    const gates = lead(find('content', 'bill-gates'));
+    gates.status = 'archived';
+    gates.relations = { see_also: ['nand-gate'] };
+  });
+  assert.deepEqual(errors, []);
+});

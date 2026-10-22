@@ -53,7 +53,7 @@ function shapes(vocabulary) {
     }
     return null;
   };
-  const status = oneOf(['draft', 'published'], 'status');
+  const status = oneOf(['draft', 'published', 'archived'], 'status');
   const unit = (v) => {
     if (!v || typeof v !== 'object') return 'expected { title, available_from, items }';
     return (
@@ -190,6 +190,31 @@ function checkFields(data, shape, where, errors) {
     const problem = shape.optional[field](value);
     if (problem) errors.push(`${where}: ${field}: ${problem}`);
   }
+}
+
+/**
+ * Every place where `doc` points to another id: relations, steps, course
+ * items, project links, start page samples and [[links]] in the text.
+ * Used to protect archived and deleted content from dangling references.
+ */
+export function referencesOf(doc) {
+  const lead = doc.lead ?? {};
+  const refs = [];
+  const add = (target, where) => refs.push({ target, where: `${doc.section}/${doc.id} ${where}` });
+  for (const [relation, targets] of Object.entries(lead.relations ?? {})) for (const t of targets) add(t, `relations.${relation}`);
+  for (const s of stepsOf(lead.steps)) add(s.id, 'steps');
+  for (const r of lead.requires ?? []) add(r, 'requires');
+  (lead.units ?? []).forEach((unit, n) => stepsOf(unit.items).forEach((s) => add(s.id, `units[${n + 1}]`)));
+  for (const i of lead.items ?? []) add(i, 'items');
+  for (const phase of lead.phases ?? []) {
+    for (const part of [phase, ...(phase.challenges ?? [])]) for (const i of part.items ?? []) add(i, part.id);
+  }
+  if (lead.featured_path) add(lead.featured_path, 'featured_path');
+  for (const s of lead.samples ?? []) add(s, 'samples');
+  for (const file of Object.values(doc.files)) {
+    for (const m of file.body.matchAll(/\[\[([^\]|]+)(?:\|[^\]]+)?\]\]/g)) add(m[1], `${file.lang}.md [[link]]`);
+  }
+  return refs;
 }
 
 export const stepsOf = (list = []) =>
@@ -335,6 +360,15 @@ export function validate({ vocabulary, sections, problems }) {
         if (!/^\s*[-*] \[[ x]\]/im.test(q)) errors.push(`${file.path}: question ${n + 1} has no options (- [ ] …)`);
         else if (!/^\s*[-*] \[x\]/im.test(q)) errors.push(`${file.path}: question ${n + 1} has no correct answer (- [x] …)`);
       });
+    }
+  }
+
+  // Archived content is kept for its id and code, but nothing visible may point to it.
+  const all = Object.values(sections).flat();
+  const archived = new Set(all.filter((d) => d.lead?.status === 'archived').map((d) => d.id));
+  for (const doc of all.filter((d) => d.lead?.status !== 'archived')) {
+    for (const ref of referencesOf(doc)) {
+      if (archived.has(ref.target)) errors.push(`${ref.where}: points to archived "${ref.target}"`);
     }
   }
 

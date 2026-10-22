@@ -86,6 +86,10 @@ export function build({ quiet = false } = {}) {
 
   let count;
   try {
+    // Archived content stays in the knowledge base but not on the site.
+    for (const section of Object.keys(knowledge.sections)) {
+      knowledge.sections[section] = knowledge.sections[section].filter((d) => d.lead.status !== 'archived');
+    }
     count = render(createSite(knowledge));
   } catch (error) {
     rmSync(DIST, { recursive: true, force: true });

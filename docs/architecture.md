@@ -53,6 +53,7 @@ dist/  de/…, en/…, de/index.json, en/index.json, assets/
 | `src/templates/` | layout, shared parts, one function per kind of page |
 | `src/client/` | browser modules: progress, search, list filters, quiz, map, course, my learning |
 | `src/styles/site.css` | the one stylesheet |
+| `scripts/editor.mjs`, `src/editor/` | the local editor (`docs/editor.md`) |
 | `tests/` | `npm test`: each rule of the knowledge base broken once on purpose |
 
 Dependencies are deliberately few: `js-yaml` for front matter, the unified

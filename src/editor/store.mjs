@@ -83,10 +83,38 @@ function block(object, indent, order = []) {
     .join('\n');
 }
 
-export function serialize(section, data, body, isLead) {
+/**
+ * Writes a file. With `previous` (the file as it is on disk), every
+ * top-level field whose value did not change keeps its exact lines, so a
+ * change of one field is a change of one field in the diff, too.
+ */
+export function serialize(section, data, body, isLead, previous = '') {
   const order = isLead ? ORDER[section] : ORDER.translation;
   const text = body.replace(/^(\r?\n)+/, '');
-  return `---\n${block(data, 0, order)}\n---\n\n${text.endsWith('\n') ? text : `${text}\n`}`;
+  const end = text.endsWith('\n') ? text : `${text}\n`;
+  const old = previous.replace(/\r\n/g, '\n').match(/^---\n([\s\S]*?)\n---\n/);
+  if (!old) return `---\n${block(data, 0, order)}\n---\n\n${end}`;
+
+  // the old front matter cut into top-level fields with their own lines
+  const blocks = [];
+  for (const line of old[1].split('\n')) {
+    const key = line.match(/^([A-Za-z_][\w-]*):/)?.[1];
+    if (key) blocks.push({ key, lines: [line] });
+    else if (blocks.length) blocks.at(-1).lines.push(line);
+  }
+  const oldData = yaml.load(old[1]) ?? {};
+  const fresh = (key) => block({ [key]: data[key] }, 0);
+  const out = blocks
+    .filter((b) => data[b.key] !== undefined) // removed fields drop out
+    .map((b) => ({ key: b.key, text: same(oldData[b.key], data[b.key]) ? b.lines.join('\n') : fresh(b.key) }));
+  // new fields go before the first field that comes after them in the canonical order
+  const rank = (key) => (order.includes(key) ? order.indexOf(key) : order.length);
+  for (const key of Object.keys(data)) {
+    if (data[key] === undefined || out.some((o) => o.key === key)) continue;
+    const at = out.findIndex((o) => rank(o.key) > rank(key));
+    out.splice(at < 0 ? out.length : at, 0, { key, text: fresh(key) });
+  }
+  return `---\n${out.map((o) => o.text).join('\n')}\n---\n\n${end}`;
 }
 
 /** Equal as data, with dates compared by day. */
@@ -131,12 +159,14 @@ export function createStore(root) {
     return doc;
   }
 
-  const plain = (data) => JSON.parse(JSON.stringify(data, (k, v) => v), (k, v) => v);
+  // Dates travel to the browser as days (YYYY-MM-DD), at any depth.
+  const plain = (data) =>
+    JSON.parse(JSON.stringify(data, (k, v) => (typeof v === 'string' && /^\d{4}-\d{2}-\d{2}T00:00:00\.000Z$/.test(v) ? v.slice(0, 10) : v)));
   const toJson = (doc) => ({
     section: doc.section,
     id: doc.id,
     lead: leadOf(doc)?.lang,
-    files: Object.fromEntries(Object.values(doc.files).map((f) => [f.lang, { data: plain(dates(f.data)), body: f.body }])),
+    files: Object.fromEntries(Object.values(doc.files).map((f) => [f.lang, { data: plain(f.data), body: f.body }])),
   });
 
   function read(section, id) {
@@ -146,25 +176,29 @@ export function createStore(root) {
 
   // --- writing -----------------------------------------------------------------
 
-  // Dates arrive from the browser as strings and are kept as days.
-  function dates(data) {
-    const out = { ...data };
-    for (const key of ['updated', 'based_on']) if (out[key] instanceof Date) out[key] = day(out[key]);
-    return out;
-  }
+  // Dates arrive from the browser as days and become dates again, as js-yaml
+  // would read them from the file.
+  const asDate = (v) => (typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v) ? new Date(`${v}T00:00:00Z`) : v);
   function revive(data) {
     const out = { ...data };
-    for (const key of ['updated', 'based_on']) if (typeof out[key] === 'string') out[key] = new Date(`${out[key]}T00:00:00Z`);
-    if (Array.isArray(out.units))
-      out.units = out.units.map((u) => (typeof u.available_from === 'string' ? { ...u, available_from: new Date(`${u.available_from}T00:00:00Z`) } : u));
+    for (const key of ['updated', 'based_on']) out[key] = asDate(out[key]);
+    if (Array.isArray(out.units)) out.units = out.units.map((u) => (u && 'available_from' in u ? { ...u, available_from: asDate(u.available_from) } : u));
+    for (const key of Object.keys(out)) if (out[key] === undefined) delete out[key];
     return out;
   }
 
   /** Checks the knowledge base with `doc` replaced; returns errors that concern it. */
-  function check(knowledge, section, id) {
-    const { errors, warnings } = validate(knowledge);
-    const mine = (line) => line.includes(`${section}/${id}`);
-    return { errors: errors.filter(mine), elsewhere: errors.filter((e) => !mine(e)), warnings: warnings.filter(mine) };
+  /**
+   * Compares the knowledge base before and after a change. Every error the
+   * change introduces blocks it, wherever it shows up (archiving an item
+   * shows up at the items pointing to it); errors that were there before
+   * are reported but do not block.
+   */
+  function check(before, after, section, id) {
+    const old = new Set(validate(before).errors);
+    const { errors, warnings } = validate(after);
+    const mine = (line) => line.includes(`${section}/${id}`) || line.includes(`"${id}"`);
+    return { errors: errors.filter((e) => !old.has(e)), elsewhere: errors.filter((e) => old.has(e)), warnings: warnings.filter(mine) };
   }
 
   /**
@@ -186,7 +220,7 @@ export function createStore(root) {
       if (file === null) delete doc.files[lang];
       else doc.files[lang] = { lang, data: revive(file.data), body: file.body ?? '', path: `${section}/${id}/${lang}.md` };
     }
-    const result = check(knowledge, section, id);
+    const result = check(load(), knowledge, section, id);
     if (result.errors.length) return { ok: false, ...result };
 
     const dir = join(root, section, id);
@@ -200,14 +234,7 @@ export function createStore(root) {
       }
       if (!(lang in files)) continue;
       const before = existsSync(path) ? readFileSync(path, 'utf8') : '';
-      let text = serialize(section, file.data, file.body, !('translation_of' in file.data));
-      // Unchanged front matter keeps its exact wording, so that editing the
-      // text does not reformat the header someone wrote by hand.
-      const old = before.match(/^(---\r?\n[\s\S]*?\r?\n---\r?\n)/);
-      if (old && same(yaml.load(old[1].replace(/^---\r?\n|\r?\n---\r?\n$/g, '')), file.data)) {
-        text = `${old[1].replace(/\r\n/g, '\n')}\n${file.body.replace(/^(\r?\n)+/, '')}`;
-        if (!text.endsWith('\n')) text += '\n';
-      }
+      const text = serialize(section, file.data, file.body, !('translation_of' in file.data), before);
       // Keep the line endings a file already has, so that saving does not
       // turn every line into a change.
       writeFileSync(path, before.includes('\r\n') ? text.replace(/\r?\n/g, '\r\n') : text);
