@@ -7,7 +7,7 @@ summary: >-
   braucht und was jede Person bezahlt, Trinkgeld eingerechnet.
 level: 1
 duration: 20
-topics: [processing-information]
+topics: [programming-with-python]
 modules: [dup]
 relations:
   requires: [python-arithmetic, python-working-with-text]

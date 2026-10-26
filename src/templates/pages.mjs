@@ -266,6 +266,8 @@ function slidesBlock(site, doc, lang) {
 
 // --- learning paths ----------------------------------------------------------
 
+const pathIcon = raw(iconSvg('route'));
+
 export function paths(site, lang) {
   return {
     path: url(lang, 'paths'),
@@ -274,12 +276,17 @@ export function paths(site, lang) {
     back: 'home',
     content: html`
       <h1>${t(lang, 'nav_paths')}</h1>
-      <ul class="rows">
+      <div class="list-bar">
+        <p class="count">${count(lang, site.paths.length, 'paths')}</p>
+        ${viewSwitch(lang)}
+      </div>
+      <ul class="rows switchable">
         ${site.paths.map((p) => {
           const text = site.localize(p, lang);
           const steps = site.pathSteps(p);
           return html`<li class="row row-path">
             <a class="row-link" href="${site.url(p, lang)}">
+              ${pathIcon}
               <span class="row-head">
                 <span class="row-title" style="view-transition-name: t-${p.id}">${text.title}</span>
                 <span class="row-meta"><span>${count(lang, steps.length, 'steps')}</span><span>${site.duration(steps).required} ${t(lang, 'minutes')}</span></span>

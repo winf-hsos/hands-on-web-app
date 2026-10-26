@@ -572,7 +572,19 @@ select {
 
 .row-path .meter {
   width: 100%;
-  margin: -0.4rem 0 0.8rem 1.4rem;
+  margin: -0.4rem 0 0.8rem 2.1rem;
+}
+
+[data-view='cards'] .switchable .row-path .meter {
+  margin: 0 1.1rem 1rem;
+}
+
+[data-view='cards'] .switchable .row-path .meter-track {
+  flex: 1;
+}
+
+[data-view='cards'] .switchable .row-path .meter-label {
+  white-space: nowrap;
 }
 
 /* --- item, path and course pages ----------------------------------------- */

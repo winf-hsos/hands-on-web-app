@@ -8,7 +8,7 @@ summary: >-
   Seite, und lernst, Fehlermeldungen zu lesen.
 level: 1
 duration: 15
-topics: [processing-information]
+topics: [programming-with-python]
 modules: [dup]
 status: draft
 updated: 2026-10-26

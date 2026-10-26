@@ -53,13 +53,15 @@ levels:
 
 # Topics are the questions a learner can start from. The first five follow
 # the families of the LiFi concept map, rephrased for this platform. They
-# have no colours on the site (decision of Nicolas, 2026-10-26).
+# have no colours on the site (decision of Nicolas, 2026-10-26). Further
+# topics name a subject of their own, such as a programming language.
 topics:
   solving-problems:         { de: Probleme lösen,         en: Solving problems }
   representing-information: { de: Information darstellen, en: Representing information }
   storing-information:      { de: Information speichern,  en: Storing information }
   transferring-information: { de: Information übertragen, en: Transferring information }
   processing-information:   { de: Information verarbeiten, en: Processing information }
+  programming-with-python:  { de: Programmieren mit Python, en: Programming with Python }
 
 modules:
   dup: { de: Digitalisierung und Programmierung, en: Digitalisation and Programming }

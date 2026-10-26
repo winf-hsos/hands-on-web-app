@@ -7,7 +7,7 @@ summary: >-
   ordentlich formatierte Visitenkarte aus, egal wie schlampig getippt wurde.
 level: 1
 duration: 15
-topics: [processing-information]
+topics: [programming-with-python]
 modules: [dup]
 relations:
   requires: [python-working-with-text]

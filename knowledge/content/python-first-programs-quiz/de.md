@@ -5,7 +5,7 @@ title: "Quiz: Erste Programme"
 summary: Sechs Fragen zu Werten, Variablen, Text, Rechnen und eigenen Funktionen in Python.
 level: 1
 duration: 8
-topics: [processing-information]
+topics: [programming-with-python]
 modules: [dup]
 relations:
   checks: [python-first-program, python-values-and-variables, python-working-with-text, python-arithmetic, python-functions]

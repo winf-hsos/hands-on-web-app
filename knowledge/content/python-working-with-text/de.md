@@ -8,7 +8,7 @@ summary: >-
   Umwandeln von Text in Zahlen.
 level: 1
 duration: 20
-topics: [processing-information]
+topics: [programming-with-python]
 modules: [dup]
 relations:
   requires: [python-values-and-variables]

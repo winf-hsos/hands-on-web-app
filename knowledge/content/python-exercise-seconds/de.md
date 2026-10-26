@@ -7,7 +7,7 @@ summary: >-
   wie 2 h 5 min 7 s, und ein kleines Hauptprogramm fragt danach.
 level: 1
 duration: 20
-topics: [processing-information, solving-problems]
+topics: [programming-with-python, solving-problems]
 modules: [dup]
 relations:
   requires: [python-functions]

@@ -8,7 +8,7 @@ summary: >-
   Kommazahlen.
 level: 1
 duration: 15
-topics: [processing-information]
+topics: [programming-with-python]
 modules: [dup]
 relations:
   requires: [python-values-and-variables]

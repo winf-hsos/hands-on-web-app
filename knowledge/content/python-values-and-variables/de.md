@@ -7,7 +7,7 @@ summary: >-
   wiederfinden, geben sie ihm einen Namen, und genau das ist eine Variable.
 level: 1
 duration: 20
-topics: [processing-information]
+topics: [programming-with-python]
 modules: [dup]
 relations:
   requires: [python-first-program]

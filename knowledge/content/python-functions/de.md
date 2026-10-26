@@ -8,7 +8,7 @@ summary: >-
   ein Programm aus kleinen Funktionen ist leichter zu verstehen.
 level: 1
 duration: 25
-topics: [processing-information, solving-problems]
+topics: [programming-with-python, solving-problems]
 modules: [dup]
 relations:
   requires: [python-working-with-text, python-arithmetic]
