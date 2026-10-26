@@ -153,3 +153,8 @@ test('a section of a path needs a title in both languages', () => {
   });
   assert.deepEqual(errors, ['paths/python-for-beginners/de.md: sections: title: expected { de: …, en: … }']);
 });
+
+test('course units have no release dates', () => {
+  const { errors } = check(({ find }) => (lead(find('courses', 'dup-2026-27-ws')).units[0].available_from = new Date('2026-11-16')));
+  assert.deepEqual(errors, ['courses/dup-2026-27-ws/de.md: units: unknown field available_from (allowed: title, items)']);
+});

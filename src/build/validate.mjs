@@ -66,14 +66,13 @@ function shapes(vocabulary) {
     if (url(v.url) || !/^https:\/\/(www\.)?(youtube\.com|youtu\.be)\//.test(v.url)) return 'url: expected a YouTube link (https://www.youtube.com/… or https://youtu.be/…)';
     return v.slide === undefined ? null : int(1, 999)(v.slide);
   };
+  // A unit of a course: a heading and its items. Units have no release
+  // dates; everything is always available (decision of Nicolas, 2026-10-26).
   const unit = (v) => {
-    if (!v || typeof v !== 'object') return 'expected { title, available_from, items }';
-    return (
-      (label(v.title) && `title: ${label(v.title)}`) ??
-      (v.available_from !== undefined && date(v.available_from) ? `available_from: ${date(v.available_from)}` : null) ??
-      (list(step, 1)(v.items) && `items: ${list(step, 1)(v.items)}`) ??
-      null
-    );
+    if (!v || typeof v !== 'object' || Array.isArray(v)) return 'expected { title, items }';
+    const extra = Object.keys(v).find((k) => !['title', 'items'].includes(k));
+    if (extra) return `unknown field ${extra} (allowed: title, items)`;
+    return (label(v.title) && `title: ${label(v.title)}`) ?? (list(step, 1)(v.items) && `items: ${list(step, 1)(v.items)}`) ?? null;
   };
   // A part of a learning path: a heading in both languages and its steps.
   const pathSection = (v) => {

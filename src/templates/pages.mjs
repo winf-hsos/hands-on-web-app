@@ -2,7 +2,7 @@
 // layout; the build writes them out. Overview first, details on request:
 // what is not needed to choose or to read sits in a disclosure.
 import { html, raw, json } from '../build/html.mjs';
-import { t, count, formatDate, isoDay } from '../build/i18n.mjs';
+import { t, count, formatDate } from '../build/i18n.mjs';
 import { url } from '../build/site.mjs';
 import { itemRow, progressBar, more, facts, icons, typeIcon, viewSwitch } from './parts.mjs';
 import { iconSvg, iconShapes } from '../build/icons.mjs';
@@ -369,11 +369,9 @@ export function course(site, doc, lang) {
           ${progressBar(required, lang)}
         </header>
         ${doc.lead.units.map((unit) => {
-          const from = unit.available_from;
-          return html`<details class="unit" open ${from && raw(`data-from="${isoDay(from)}"`)}>
+          return html`<details class="unit" open>
             <summary>
               <span class="unit-title">${unit.title[lang]}</span>
-              ${from && html`<span class="unit-date">${t(lang, 'available_from')} ${formatDate(from, lang)}</span>`}
             </summary>
             <ol class="rows trail">
               ${site.steps(unit.items).map((s, i) => itemRow(site, site.item.get(s.id), lang, { optional: s.optional, summary: false, number: i + 1 }))}

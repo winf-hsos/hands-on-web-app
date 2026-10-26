@@ -261,7 +261,7 @@ function renderShared() {
       work.section === 'projects'
         ? 'Phasen und Challenges mit ihren Kennungen. Jede Kennung braucht im Text eine Überschrift mit {#kennung}, in beiden Sprachen.'
         : work.section === 'courses'
-          ? 'Einheiten mit Titel (de/en), Freischaltdatum und Inhalten.'
+          ? 'Einheiten mit Titel (de/en) und Inhalten.'
           : work.section === 'paths'
             ? 'Teile des Pfads mit Titel (de/en) und ihren Schritten.'
             : 'Weitere Kopfdaten';

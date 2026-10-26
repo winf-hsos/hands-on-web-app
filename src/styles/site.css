@@ -1522,14 +1522,6 @@ details.callout[open] > summary::before {
   font-size: 1.3rem;
 }
 
-.unit-date {
-  color: var(--quiet);
-}
-
-.unit.is-later .trail {
-  opacity: 0.5;
-}
-
 /* --- meter ----------------------------------------------------------------- */
 
 .meter {

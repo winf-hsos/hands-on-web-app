@@ -140,8 +140,8 @@ Fields deliberately **not** in an item:
 
 - **Order.** Which item comes after which belongs to a course or path, not to
   the item. The same item can then sit at different places in several courses.
-- **Release dates.** They depend on the course and semester, so they live in
-  the course file.
+- **Release dates.** There are none: all content is always available, also
+  inside a course (decision of Nicolas, 2026-10-26).
 - **"Optional".** An item is only optional with respect to a path or a course,
   so it is marked at the step there (`optional: true`), never at the item.
   An item-level field existed until 2026-10-22 and was removed on Nicolas'
@@ -306,7 +306,6 @@ title: Digitalisierung und Programmierung
 summary: Begleitmaterial zur Vorlesung im Wintersemester 2026/27.
 units:
   - title: { de: "Sitzung 3: Codes", en: "Session 3: Codes" }
-    available_from: 2026-10-28
     items:
       - code-as-agreement
       - prefix-free-code
@@ -314,7 +313,6 @@ units:
         optional: true
       - code-systems-quiz
   - title: { de: "Sitzung 4: Fehler", en: "Session 4: Errors" }
-    available_from: 2026-11-04
     items: [ … ]
 status: draft
 updated: 2026-10-21
@@ -323,10 +321,8 @@ updated: 2026-10-21
 
 Unit titles are short labels and therefore written in both languages inline;
 the rule is that short labels in a structure may be bilingual in place, while
-prose belongs in the language files. Without a server, `available_from` is a
-display rule and not a lock: the item is shown as "available from 28 October"
-in the course, but remains reachable directly, which is fine because all
-content is public.
+prose belongs in the language files. Units have no release dates: everything
+in a course is available from the start (decision of Nicolas, 2026-10-26).
 
 ## 8a. Slides
 

@@ -25,7 +25,7 @@ calmer design. The Astro version is in the git history (commit `cd457ba`).
   shows; templates contain interface labels only;
 - **German and English** side by side, switchable on every page;
 - filter, sort and **live search** including short codes, fast and offline;
-- **courses** reached by code with release dates, and **learning paths**;
+- **courses** reached by code, and **learning paths**;
 - **progress** in local storage, portable as a link, a QR code and a file;
 - a **map** of all items and relations;
 - **no login, no personal data** leaving the browser.
@@ -86,8 +86,8 @@ All motion is switched off for people who ask their system for reduced motion.
   compressed with the browser's own `CompressionStream`, with items written by
   their four-digit codes, and put into a link `…/learning/#p=…`. The part after
   `#` never reaches any server. The QR code shows the same link.
-- **Courses** are opened by access code on "My learning"; units before their
-  release date are folded and greyed out, but every item stays reachable.
+- **Courses** are opened by access code on "My learning" or by a link with
+  the code; all their units are available from the start.
 - **Projects** show their phases as a numbered, folded list; a phase opens to
   its text, its challenges and the content linked to it. A link to
   `#challenge-2` opens exactly that part.

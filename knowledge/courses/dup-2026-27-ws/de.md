@@ -8,7 +8,6 @@ title: Digitalisierung und Programmierung
 summary: Begleitmaterial zur Vorlesung im Wintersemester 2026/27.
 units:
   - title: { de: "Sitzung 7: Zahlen- und Codesysteme", en: "Session 7: Number and code systems" }
-    available_from: 2026-11-16
     items:
       - code-as-agreement
       - prefix-free-code
@@ -17,9 +16,9 @@ units:
       - knock-code
       - code-systems-quiz
 status: draft
-updated: 2026-10-21
+updated: 2026-10-26
 ---
 
-Diese Sammlung begleitet die Vorlesung. Zu jeder Sitzung erscheinen hier die
-passenden Inhalte, jeweils ab dem Tag der Sitzung. Was als freiwillig
+Diese Sammlung begleitet die Vorlesung. Zu jeder Sitzung stehen hier die
+passenden Inhalte, und alle sind von Anfang an verfügbar. Was als freiwillig
 markiert ist, vertieft das Thema, wird aber nicht vorausgesetzt.

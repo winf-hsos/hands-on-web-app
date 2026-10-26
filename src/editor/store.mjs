@@ -185,7 +185,6 @@ export function createStore(root) {
   function revive(data) {
     const out = { ...data };
     for (const key of ['updated', 'based_on']) out[key] = asDate(out[key]);
-    if (Array.isArray(out.units)) out.units = out.units.map((u) => (u && 'available_from' in u ? { ...u, available_from: asDate(u.available_from) } : u));
     for (const key of Object.keys(out)) if (out[key] === undefined) delete out[key];
     return out;
   }
