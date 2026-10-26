@@ -884,6 +884,10 @@ select {
   color: var(--quiet);
 }
 
+.field[hidden] {
+  display: none;
+}
+
 .field select,
 .code-row input,
 .share-actions input {

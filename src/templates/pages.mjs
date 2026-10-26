@@ -62,10 +62,18 @@ export function items(site, lang) {
   const sorted = site.items
     .slice()
     .sort((a, b) => site.localize(a, lang).title.localeCompare(site.localize(b, lang).title, lang));
-  const select = (name, label, options) =>
-    html`<label class="field"><span>${label}</span><select name="${name}">${options.map(
+  // Where each item is linked, for the path and project filters.
+  const pathsOf = new Map(site.items.map((i) => [i.id, []]));
+  for (const path of site.paths) for (const s of site.steps(path.lead.steps)) pathsOf.get(s.id)?.push(path.id);
+  const projectsOf = new Map(site.items.map((i) => [i.id, [...new Set(site.inProjects(i.id, lang).map((r) => r.project.id))]]));
+  const linked = (docs, of) => docs.filter((d) => [...of.values()].some((ids) => ids.includes(d.id)));
+  const choices = (docs) => [['', t(lang, 'all')], ...docs.map((d) => [d.id, site.localize(d, lang).title])];
+  const select = (name, label, options, { hidden = false } = {}) =>
+    html`<label class="field" ${hidden && raw('hidden')}><span>${label}</span><select name="${name}">${options.map(
       ([value, text]) => html`<option value="${value}">${text}</option>`,
     )}</select></label>`;
+  const paths = linked(site.paths, pathsOf);
+  const projects = linked(site.projects, projectsOf);
   return {
     path: url(lang, 'items'),
     title: t(lang, 'nav_items'),
@@ -85,6 +93,9 @@ export function items(site, lang) {
         ${more(
           t(lang, 'more_filters'),
           html`<div class="fields">
+            ${select('course', t(lang, 'course'), [['', t(lang, 'all')]], { hidden: true })}
+            ${paths.length > 0 && select('path', t(lang, 'path'), choices(paths))}
+            ${projects.length > 0 && select('project', t(lang, 'project'), choices(projects))}
             ${select('topic', t(lang, 'topics'), [['', t(lang, 'all')], ...topics.map(([k, v]) => [k, v[lang]])])}
             ${select('level', t(lang, 'level'), [['', t(lang, 'all')], ...Object.entries(vocabulary.levels).map(([k, v]) => [k, v[lang]])])}
             ${select('progress', t(lang, 'progress'), [['', t(lang, 'all')], ['open', t(lang, 'open')], ['done', t(lang, 'done')]])}
@@ -109,6 +120,8 @@ export function items(site, lang) {
               topics: item.lead.topics.join(' '),
               level: item.lead.level,
               duration: item.lead.duration,
+              paths: pathsOf.get(item.id).join(' '),
+              projects: projectsOf.get(item.id).join(' '),
             },
           }),
         )}

@@ -15,6 +15,8 @@ const value = (name) => {
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 let mini;
+let courses = [];
+const fromUrl = new URLSearchParams(location.search);
 loadIndex().then((data) => {
   mini = new MiniSearch({
     fields: ['title', 'summary', 'body', 'code'],
@@ -22,11 +24,23 @@ loadIndex().then((data) => {
     searchOptions: { prefix: true, fuzzy: 0.2, boost: { title: 3, code: 5, summary: 2 } },
   });
   mini.addAll(data.items);
-  if (value('q')) apply();
+  courses = data.courses;
+  fillCourses(fromUrl.get('course'));
+  if (value('q') || value('course')) apply({ animate: false });
 });
 
+// The course filter offers only the courses this learner has added, and
+// stays hidden until there is one.
+function fillCourses(chosen = value('course')) {
+  const select = field('course');
+  const mine = load().courses.map((id) => courses.find((c) => c.id === id)).filter(Boolean);
+  select.replaceChildren(select.options[0], ...mine.map((c) => new Option(c.title, c.id)));
+  select.value = mine.some((c) => c.id === chosen) ? chosen : '';
+  select.closest('.field').hidden = mine.length === 0;
+}
+
 // Filters live in the URL, so that a filtered list can be bookmarked or shared.
-for (const [key, v] of new URLSearchParams(location.search)) {
+for (const [key, v] of fromUrl) {
   const f = field(key);
   if (f) f.value = v;
 }
@@ -45,6 +59,9 @@ function apply({ animate = true } = {}) {
     if (value('type') && d.type !== value('type')) return false;
     if (value('topic') && !d.topics.split(' ').includes(value('topic'))) return false;
     if (value('level') && d.level !== value('level')) return false;
+    if (value('path') && !d.paths.split(' ').includes(value('path'))) return false;
+    if (value('project') && !d.projects.split(' ').includes(value('project'))) return false;
+    if (value('course') && !courses.find((c) => c.id === value('course'))?.all.includes(d.id)) return false;
     if (value('progress') === 'done' && !isDone(progress, d.id)) return false;
     if (value('progress') === 'open' && isDone(progress, d.id)) return false;
     return true;
@@ -86,7 +103,7 @@ function apply({ animate = true } = {}) {
   document.getElementById('empty').hidden = n > 0;
 
   const params = new URLSearchParams();
-  for (const name of ['q', 'type', 'topic', 'level', 'progress', 'sort']) {
+  for (const name of ['q', 'type', 'course', 'path', 'project', 'topic', 'level', 'progress', 'sort']) {
     const v = value(name);
     if (v && !(name === 'sort' && v === 'title')) params.set(name, v);
   }
@@ -115,7 +132,10 @@ document.getElementById('reset').addEventListener('click', () => {
   chosenType = '';
   apply();
 });
-document.addEventListener('progress-change', () => apply({ animate: false }));
+document.addEventListener('progress-change', () => {
+  fillCourses();
+  apply({ animate: false });
+});
 
 // List or cards: a preference of this browser, set on <html> by the inline
 // script in the head before the first paint, so the page does not jump.

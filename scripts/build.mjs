@@ -74,6 +74,7 @@ function clientIndex(site, lang) {
       url: site.url(c, lang),
       title: site.localize(c, lang).title,
       items: c.lead.units.flatMap((u) => site.steps(u.items).filter((s) => !s.optional).map((s) => s.id)),
+      all: c.lead.units.flatMap((u) => site.steps(u.items).map((s) => s.id)),
     })),
   };
 }
