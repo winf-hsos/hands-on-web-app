@@ -807,6 +807,23 @@ select {
   font-size: 0.92rem;
 }
 
+.runner-bar .runner-run {
+  display: inline-grid;
+}
+
+.runner-label {
+  grid-area: 1 / 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.runner-run[data-state='run'] [data-label='stop'],
+.runner-run[data-state='stop'] [data-label='run'] {
+  visibility: hidden;
+}
+
 .runner-status {
   color: var(--quiet);
   font-size: 0.875rem;

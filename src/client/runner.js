@@ -72,8 +72,13 @@ function setup(box) {
     shown.innerHTML = `${highlight(editor.value)}\n`;
     reset.hidden = editor.value === original;
   };
+  // Both labels are always in the button, stacked in one place, and only the
+  // current one is visible: so the button keeps the width of the longer one
+  // and the buttons next to it do not move while a program runs.
+  run.innerHTML = `<span class="runner-label" data-label="run">${PLAY}<span>${L.run}</span></span><span class="runner-label" data-label="stop">${STOP}<span>${L.stop}</span></span>`;
   const showRun = () => {
-    run.innerHTML = `${running ? STOP : PLAY}<span>${running ? L.stop : L.run}</span>`;
+    run.dataset.state = running ? 'stop' : 'run';
+    run.setAttribute('aria-label', running ? L.stop : L.run);
   };
 
   function start() {
