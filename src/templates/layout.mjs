@@ -1,10 +1,10 @@
 // The frame around every page.
 import { html, raw } from '../build/html.mjs';
-import { t, runnerLabels } from '../build/i18n.mjs';
+import { t, runnerLabels, backLabels } from '../build/i18n.mjs';
 import { url } from '../build/site.mjs';
 import { icons, mark } from './parts.mjs';
 
-export function layout({ lang, path, title, description, current, content, scripts = [], asset, pyodide, total = 0 }) {
+export function layout({ lang, path, title, description, current, content, back, scripts = [], asset, pyodide, total = 0 }) {
   const other = lang === 'de' ? 'en' : 'de';
   const otherPath = path.replace(/^\/(de|en)\//, `/${other}/`);
   const nav = [
@@ -25,7 +25,7 @@ export function layout({ lang, path, title, description, current, content, scrip
   <link rel="icon" href="${asset('favicon.svg')}" type="image/svg+xml">
   <link rel="preload" href="${asset('fonts/sans.woff2')}" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="${asset('site.css')}">
-  <script>try{const d=document.documentElement.dataset,m=localStorage.getItem('hocs-theme'),v=localStorage.getItem('hocs-view');if(m)d.theme=m;if(v)d.view=v}catch{}</script>
+  <script>try{const d=document.documentElement.dataset,m=localStorage.getItem('hocs-theme'),u=new URLSearchParams(location.search).get('view'),v=['list','cards'].includes(u)?u:localStorage.getItem('hocs-view');if(m)d.theme=m;if(v)d.view=v}catch{}</script>
   <script type="importmap">${raw(JSON.stringify({ imports: { minisearch: asset('vendor/minisearch.js'), 'qrcode-generator': asset('vendor/qrcode.mjs') } }))}</script>
 </head>
 <body data-lang="${lang}" data-index="${url(lang)}index.json" data-total="${total}"${scripts.includes('runner') && html` data-python-worker="${asset('client/python-worker.js')}" data-pyodide="${pyodide}" data-runner-labels="${JSON.stringify(runnerLabels[lang])}"`}>
@@ -46,7 +46,7 @@ export function layout({ lang, path, title, description, current, content, scrip
       <button class="tool theme" type="button" title="${t(lang, 'theme')}" aria-label="${t(lang, 'theme')}">${icons.theme}</button>
     </div>
   </header>
-  <main id="main">${content}</main>
+  <main id="main">${back && backLink(lang, back)}${content}</main>
   <dialog class="search" aria-label="${t(lang, 'search')}">
     <form method="dialog" class="search-form" role="search">
       ${icons.search}
@@ -62,3 +62,10 @@ export function layout({ lang, path, title, description, current, content, scrip
 </html>
 `;
 }
+
+/**
+ * "Back to …": `back` names where to go without better knowledge (a key of
+ * backLabels); client/site.js replaces it with the page the learner came from.
+ */
+const backLink = (lang, back) =>
+  html`<p class="back"><a class="back-link" href="${url(lang, back === 'home' ? '' : back)}" data-back="${JSON.stringify(backLabels[lang])}"><span aria-hidden="true">←</span> <span class="back-label">${backLabels[lang][back]}</span></a></p>`;

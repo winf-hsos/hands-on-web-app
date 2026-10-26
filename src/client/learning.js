@@ -17,16 +17,29 @@ const el = (tag, props = {}, ...children) => {
 // "licht 26" opens LICHT-26 as well.
 const normal = (s) => s.toUpperCase().replace(/[\s-]/g, '');
 
-$('course-form').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const course = data.courses.find((c) => normal(c.access) === normal($('course-code').value));
+function openCourse(code, { replace = false } = {}) {
+  const course = data.courses.find((c) => normal(c.access) === normal(code));
   $('course-error').hidden = !!course;
   if (!course) return;
   const progress = load();
   if (!progress.courses.includes(course.id)) progress.courses.push(course.id);
   save(progress);
-  location.href = course.url;
+  // a link with the code should not come back here with "back"
+  if (replace) location.replace(course.url);
+  else location.href = course.url;
+}
+
+$('course-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  openCourse($('course-code').value);
 });
+
+// A course can be sent as a link: …/learning/?code=LICHT-26 adds it and opens it.
+const linked = new URLSearchParams(location.search).get('code');
+if (linked) {
+  $('course-code').value = linked;
+  openCourse(linked, { replace: true });
+}
 
 function renderCourses(progress) {
   const list = $('my-courses');

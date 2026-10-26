@@ -333,3 +333,30 @@ export const runnerLabels = {
     },
   },
 };
+
+/**
+ * Labels of the "back to" link (client/site.js): one per kind of page it can
+ * lead to, and one with the title of a single item, path, course or project.
+ */
+export const backLabels = {
+  de: {
+    home: 'Zurück zur Startseite',
+    items: 'Zurück zu den Inhalten',
+    filtered: 'Zurück zu den gefilterten Inhalten',
+    paths: 'Zurück zu den Lernpfaden',
+    projects: 'Zurück zu den Projekten',
+    map: 'Zurück zur Karte',
+    learning: 'Zurück zu Mein Lernen',
+    titled: 'Zurück zu „{title}“',
+  },
+  en: {
+    home: 'Back to the start page',
+    items: 'Back to the content',
+    filtered: 'Back to the filtered content',
+    paths: 'Back to the learning paths',
+    projects: 'Back to the projects',
+    map: 'Back to the map',
+    learning: 'Back to My learning',
+    titled: 'Back to “{title}”',
+  },
+};

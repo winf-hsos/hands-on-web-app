@@ -185,9 +185,22 @@ function mount(figure) {
 
 for (const figure of document.querySelectorAll('[data-map]')) {
   const map = mount(figure);
-  // Topic chips on the map page dim everything outside the chosen topic.
-  document.getElementById('map-topics')?.addEventListener('change', (e) => {
-    const topic = e.target.value;
+  // Topic chips on the map page dim everything outside the chosen topic;
+  // ?topic=… in the address chooses one, and choosing one updates it.
+  const chips = document.getElementById('map-topics');
+  if (!chips) continue;
+  const choose = (topic) => {
     map.nodeEls.forEach((g, i) => g.classList.toggle('is-dim', !!topic && !map.nodes[i].topics.includes(topic)));
-  });
+    const params = new URLSearchParams(location.search);
+    if (topic) params.set('topic', topic);
+    else params.delete('topic');
+    history.replaceState(history.state, '', `${location.pathname}${params.size ? `?${params}` : ''}`);
+  };
+  chips.addEventListener('change', (e) => choose(e.target.value));
+  const wanted = new URLSearchParams(location.search).get('topic');
+  const chip = wanted && chips.querySelector(`input[value="${CSS.escape(wanted)}"]`);
+  if (chip) {
+    chip.checked = true;
+    choose(wanted);
+  }
 }

@@ -105,6 +105,30 @@ All motion is switched off for people who ask their system for reduced motion.
   continuous run. `src/client/highlight.js` highlights Python both at build
   time and while editing.
 
+## Addresses: every view can be linked
+
+What a page shows is in its address, so a view can be bookmarked, sent as a
+link, and found again with "back". Pages update their address while
+someone filters or switches, without adding history entries.
+
+| Address | Shows |
+|---|---|
+| `/de/items/?type=lesson&topic=…&level=1&path=…&project=…&course=…&progress=open&q=…` | the content list filtered; every filter is optional |
+| `…&sort=duration`, `…&group=topic` (or `level`, `none`) | order and grouping (defaults: title, type) |
+| `…?view=cards` (also on `/de/projects/`) | cards instead of rows, for this visit; the stored preference otherwise |
+| `/de/map/?topic=processing-information` | the map with one topic highlighted |
+| `/de/learning/?code=LICHT-26` | adds the course with this access code and opens it; the code is read without case, spaces or hyphens |
+
+**Back to where you came from.** Every page but the start page has a "back
+to …" link. The build fills in a default (an item leads back to the content
+list, a path to the paths, a course to My learning). In the browser,
+`client/site.js` replaces it with the page the learner actually came from,
+read from `document.referrer`, and names it: the filtered list, a path or
+course by its title, the map. If the page before in this tab was exactly that
+one, the link uses the browser history, which also restores the scroll
+position. The origin survives a switch of language, because it is kept per
+tab in session storage.
+
 ## Hosting and address
 
 Any static host will do; GitHub Pages (like the book sites) or the Uberspace

@@ -133,6 +133,7 @@ function apply({ animate = true } = {}) {
     const v = value(name);
     if (v && !(name === 'sort' && v === 'title') && !(name === 'group' && v === 'type')) params.set(name, v);
   }
+  if (document.documentElement.dataset.view === 'cards') params.set('view', 'cards');
   history.replaceState(null, '', params.size ? `?${params}` : location.pathname);
 }
 

@@ -84,6 +84,7 @@ export function items(site, lang) {
     path: url(lang, 'items'),
     title: t(lang, 'nav_items'),
     current: 'items',
+    back: 'home',
     scripts: ['list'],
     content: html`
       <h1>${t(lang, 'nav_items')}</h1>
@@ -167,6 +168,7 @@ export function item(site, doc, lang) {
     path: site.url(doc, lang),
     title: text.title,
     description: text.summary,
+    back: 'items',
     scripts: [isQuiz && 'quiz', body.includes('data-runner') && 'runner'].filter(Boolean),
     content: html`
       <article class="page item" data-item-page="${doc.id}" style="--topic: ${site.topicColor(doc)}">
@@ -269,6 +271,7 @@ export function paths(site, lang) {
     path: url(lang, 'paths'),
     title: t(lang, 'nav_paths'),
     current: 'paths',
+    back: 'home',
     content: html`
       <h1>${t(lang, 'nav_paths')}</h1>
       <ul class="rows">
@@ -305,6 +308,7 @@ export function path(site, doc, lang) {
     title: text.title,
     description: text.summary,
     current: 'paths',
+    back: 'paths',
     content: html`
       <article class="page">
         <header class="page-head">
@@ -347,6 +351,7 @@ export function course(site, doc, lang) {
     title: text.title,
     description: text.summary,
     current: 'learning',
+    back: 'learning',
     scripts: ['course'],
     content: html`
       <article class="page" data-course="${doc.id}">
@@ -383,6 +388,7 @@ export function projects(site, lang) {
     path: url(lang, 'projects'),
     title: t(lang, 'nav_projects'),
     current: 'projects',
+    back: 'home',
     content: html`
       <h1>${t(lang, 'nav_projects')}</h1>
       <div class="list-bar">
@@ -427,6 +433,7 @@ export function project(site, doc, lang) {
     title: text.title,
     description: text.summary,
     current: 'projects',
+    back: 'projects',
     scripts: ['project'],
     content: html`
       <article class="page project" style="--topic: ${site.topicColor(doc)}">
@@ -519,6 +526,7 @@ export function map(site, lang) {
     path: url(lang, 'map'),
     title: t(lang, 'nav_map'),
     current: 'map',
+    back: 'home',
     scripts: ['map'],
     content: html`
       <h1>${t(lang, 'nav_map')}</h1>
@@ -541,6 +549,7 @@ export function learning(site, lang) {
     path: url(lang, 'learning'),
     title: t(lang, 'nav_learning'),
     current: 'learning',
+    back: 'home',
     scripts: ['learning'],
     content: html`
       <h1>${t(lang, 'nav_learning')}</h1>

@@ -151,3 +151,79 @@ document.addEventListener('keydown', (e) => {
     open();
   }
 });
+
+// --- back to where the learner came from -------------------------------------------
+
+// The build puts a sensible default into the link ("back to the content" on
+// an item). If the learner came from another page of this site, the link
+// leads there instead, with its filters, and says where that is. Going back
+// uses the browser's history when it can, so the page comes back exactly as
+// it was left, scroll position included.
+// The page this tab showed last, as it was when it was left (filters set by
+// replaceState included): only if that is the referrer is history.back() safe.
+let lastPage = null;
+try {
+  lastPage = sessionStorage.getItem('hocs-last-page');
+} catch {}
+addEventListener('pagehide', () => {
+  try {
+    sessionStorage.setItem('hocs-last-page', `${location.pathname}${location.search}`);
+  } catch {}
+});
+
+const backLink = document.querySelector('[data-back]');
+if (backLink) placeBack(backLink);
+
+async function placeBack(link) {
+  let from;
+  try {
+    from = new URL(document.referrer);
+  } catch {
+    return;
+  }
+  if (from.origin !== location.origin || from.pathname === location.pathname) return;
+  const [lang, hereSection, hereId] = location.pathname.split('/').filter(Boolean);
+  const page = `${hereSection}/${hereId}`;
+  let [, section, id] = from.pathname.split('/').filter(Boolean);
+  let switched = false;
+  if (section === hereSection && id === hereId) {
+    // Coming from the same page in the other language: the place to go back
+    // to is where that page came from, in this language.
+    let saved = null;
+    try {
+      saved = JSON.parse(sessionStorage.getItem('hocs-back'));
+    } catch {}
+    if (saved?.page !== page) return;
+    from = new URL(saved.from.replace(/^\/(de|en)\//, `/${lang}/`), location.origin);
+    [, section, id] = from.pathname.split('/').filter(Boolean);
+    switched = true;
+  }
+  try {
+    sessionStorage.setItem('hocs-back', JSON.stringify({ page, from: `${from.pathname}${from.search}` }));
+  } catch {}
+
+  const labels = JSON.parse(link.dataset.back);
+  let label;
+  if (!section) label = labels.home;
+  else if (!id) {
+    const filtered = section === 'items' && [...from.searchParams.keys()].some((k) => k !== 'view');
+    label = filtered ? labels.filtered : labels[section];
+  } else {
+    const data = await loadIndex();
+    const docs = { items: data.items, paths: data.paths, courses: data.courses, projects: data.projects }[section] ?? [];
+    const doc = docs.find((d) => d.id === id);
+    if (doc) label = labels.titled.replace('{title}', doc.title);
+  }
+  if (!label) return;
+
+  // A course link (…/learning/?code=…) would only open the course again, and
+  // it replaced itself in the history, so back would go too far.
+  const viaHistory = !switched && section !== 'learning' && lastPage === `${from.pathname}${from.search}` && history.length > 1;
+  link.href = section === 'learning' ? from.pathname : `${from.pathname}${from.search}`;
+  link.querySelector('.back-label').textContent = label;
+  link.addEventListener('click', (e) => {
+    if (!viaHistory || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    e.preventDefault();
+    history.back();
+  });
+}
