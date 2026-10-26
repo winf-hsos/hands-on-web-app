@@ -565,21 +565,20 @@ export function project(site, doc, lang) {
 
 // --- map -----------------------------------------------------------------------
 
+/** Topics with their number of items, and the items with their topics (client/map.js). */
 function mapData(site, lang) {
+  const inTopic = (key) => site.items.filter((i) => i.lead.topics.includes(key));
   return {
-    nodes: site.items.map((i) => ({
+    topics: Object.entries(site.vocabulary.topics)
+      .filter(([key]) => inTopic(key).length > 0)
+      .map(([key, v]) => ({ id: key, title: v[lang], count: inTopic(key).length, url: `${url(lang, 'items')}?topic=${key}` })),
+    items: site.items.map((i) => ({
       id: i.id,
       title: site.localize(i, lang).title,
-      type: i.lead.type,
       icon: iconShapes(site.vocabulary.types[i.lead.type].icon),
       topics: i.lead.topics,
       url: site.url(i, lang),
     })),
-    links: site.items.flatMap((i) =>
-      Object.entries(i.lead.relations ?? {}).flatMap(([rel, targets]) =>
-        targets.map((target) => ({ source: i.id, target, rel, label: site.vocabulary.relations[rel][lang] })),
-      ),
-    ),
   };
 }
 

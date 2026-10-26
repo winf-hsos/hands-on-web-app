@@ -92,8 +92,12 @@ All motion is switched off for people who ask their system for reduced motion.
 - **Projects** show their phases as a numbered, folded list; a phase opens to
   its text, its challenges and the content linked to it. A link to
   `#challenge-2` opens exactly that part.
-- **The map** is drawn as SVG with a small force layout of our own; hovering a
-  node brings out its neighbours.
+- **The map** shows topics as large nodes with their items in a ring around
+  them; an item with several topics sits between them and links them, and
+  topics that share items are drawn close together (a small layout of our
+  own, `src/client/map.js`). Item titles appear on hover or when a topic is
+  chosen. Relations between items are not drawn there; they show on the
+  items' own pages.
 - **Python** runs in the browser with Pyodide (Python compiled to
   WebAssembly, about 12 MB), served from the site under
   `/assets/vendor/pyodide-<version>/` and loaded only when someone first clicks
