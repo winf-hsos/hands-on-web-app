@@ -123,6 +123,8 @@ function render(site) {
     mkdirSync(join(DIST, PYODIDE_BASE), { recursive: true });
     copyFileSync(join(PYODIDE, file), join(DIST, PYODIDE_BASE, file));
   }
+  // shared media of the knowledge base (logos), under /media/
+  cpSync(join(ROOT, 'knowledge/media'), join(DIST, 'media'), { recursive: true });
   // Slide decks as they are, next to the stagekit runtime they expect two
   // folders up: /decks/<id>/index.html loads ../../stagekit/stagekit.js.
   cpSync(join(ROOT, 'vendor/stagekit'), join(DIST, 'stagekit'), { recursive: true, filter: (source) => !source.endsWith('.md') });

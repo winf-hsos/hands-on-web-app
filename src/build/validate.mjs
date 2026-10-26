@@ -46,6 +46,7 @@ function shapes(vocabulary) {
   const types = Object.keys(vocabulary.types ?? {});
   const topics = Object.keys(vocabulary.topics ?? {});
   const modules = Object.keys(vocabulary.modules ?? {});
+  const institutions = Object.keys(vocabulary.institutions ?? {});
   const relationKeys = Object.keys(vocabulary.relations ?? {});
   const relations = (v) => {
     if (!v || typeof v !== 'object' || Array.isArray(v)) return 'expected relation: [ids]';
@@ -168,7 +169,8 @@ function shapes(vocabulary) {
           status,
           updated: date,
         },
-        optional: {},
+        // where the course is taught, and its official module description
+        optional: { institution: oneOf(institutions, 'institution'), handbook: url },
       },
       translation,
     },
@@ -263,7 +265,7 @@ export const pathSteps = (lead) =>
       ? stepsOf(lead.steps)
       : [];
 
-export function validate({ vocabulary, sections, problems }) {
+export function validate({ vocabulary, sections, problems, media = [] }) {
   const errors = [...problems];
   const warnings = [];
   for (const key of ['types', 'relations', 'levels', 'topics', 'modules']) {
@@ -272,6 +274,10 @@ export function validate({ vocabulary, sections, problems }) {
   for (const [type, def] of Object.entries(vocabulary.types ?? {})) {
     if (!def.icon) errors.push(`vocabulary.yaml: type ${type} has no icon`);
     else if (!iconExists(def.icon)) errors.push(`vocabulary.yaml: type ${type}: there is no Lucide icon "${def.icon}" (see lucide.dev/icons)`);
+  }
+  for (const [key, def] of Object.entries(vocabulary.institutions ?? {})) {
+    for (const field of ['de', 'en', 'url', 'logo']) if (!def?.[field]) errors.push(`vocabulary.yaml: institution ${key} has no ${field}`);
+    if (def?.logo && !media.includes(def.logo)) errors.push(`vocabulary.yaml: institution ${key}: logo ${def.logo} is not in knowledge/media/`);
   }
   if (errors.length) return { errors, warnings };
   const shape = shapes(vocabulary);

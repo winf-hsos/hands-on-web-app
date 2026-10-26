@@ -63,5 +63,13 @@ topics:
   processing-information:   { de: Information verarbeiten, en: Processing information }
   programming-with-python:  { de: Programmieren mit Python, en: Programming with Python }
 
+# Institutions that offer courses: name, address and a logo from media/.
+institutions:
+  hs-osnabrueck:
+    de: Hochschule Osnabrück
+    en: Osnabrück University of Applied Sciences
+    url: https://www.hs-osnabrueck.de/
+    logo: hs-osnabrueck.svg
+
 modules:
   dup: { de: Digitalisierung und Programmierung, en: Digitalisation and Programming }

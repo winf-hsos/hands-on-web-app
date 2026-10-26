@@ -352,6 +352,19 @@ export function path(site, doc, lang) {
 
 const courseIcon = raw(iconSvg('graduation-cap'));
 
+/** Logo and name of the institution, with the official module description. */
+function institutionBlock(site, doc, lang) {
+  const where = site.vocabulary.institutions?.[doc.lead.institution];
+  if (!where && !doc.lead.handbook) return '';
+  return html`<div class="institution">
+    ${where && html`<a class="institution-logo" href="${where.url}" rel="noopener"><img src="/media/${where.logo}" alt="${where[lang]}" width="140" height="59"></a>`}
+    <div class="institution-text">
+      ${where && html`<a class="institution-name" href="${where.url}" rel="noopener">${where[lang]}</a>`}
+      ${doc.lead.handbook && html`<a class="institution-handbook" href="${doc.lead.handbook}" rel="noopener">${t(lang, 'module_handbook')} ↗</a>`}
+    </div>
+  </div>`;
+}
+
 /** All courses, open to everyone; the access code only adds one to "My learning". */
 export function courses(site, lang) {
   return {
@@ -374,7 +387,7 @@ export function courses(site, lang) {
               ${courseIcon}
               <span class="row-head">
                 <span class="row-title" lang="${text.lang}">${text.title}</span>
-                <span class="row-meta"><span>${c.lead.semester}</span><span>${count(lang, c.lead.sections.length, 'sections')}</span></span>
+                <span class="row-meta">${c.lead.institution && html`<span>${site.vocabulary.institutions[c.lead.institution][lang]}</span>`}<span>${c.lead.semester}</span><span>${count(lang, c.lead.sections.length, 'sections')}</span></span>
               </span>
               <span class="row-summary" lang="${text.lang}">${text.summary}</span>
             </a>
@@ -426,6 +439,7 @@ export function course(site, doc, lang) {
           <p class="kicker"><span>${t(lang, 'course')}</span><span>${doc.lead.semester}</span></p>
           <h1 lang="${text.lang}">${text.title}</h1>
           <p class="lead" lang="${text.lang}">${text.summary}</p>
+          ${institutionBlock(site, doc, lang)}
           ${progressBar(required, lang)}
         </header>
         ${doc.lead.sections.map((s) => (s.path ? pathSection(site.path.get(s.path)) : section(s.title[lang], () => trail(s.items))))}

@@ -49,5 +49,8 @@ export function loadKnowledge(root) {
     }
     sections[section].sort((a, b) => a.id.localeCompare(b.id));
   }
-  return { vocabulary, sections, problems };
+  // files shared by the whole knowledge base, such as logos of institutions
+  const mediaDir = join(root, 'media');
+  const media = existsSync(mediaDir) ? readdirSync(mediaDir) : [];
+  return { vocabulary, sections, problems, media };
 }

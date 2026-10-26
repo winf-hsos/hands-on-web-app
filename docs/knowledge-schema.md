@@ -303,6 +303,8 @@ kind: course
 code: 3307                   # short code, like any page
 access_code: LICHT-26        # what students type in; see open decision 6
 module: dup
+institution: hs-osnabrueck      # from vocabulary.yaml, with name, address and logo
+handbook: https://www.hs-osnabrueck.de/module/44b0850/   # official module description
 semester: 2026-27 - WS
 title: Digitalisierung und Programmierung
 summary: Begleitmaterial zur Vorlesung im Wintersemester 2026/27.
@@ -328,6 +330,10 @@ titles are short labels and therefore written in both languages inline; the
 rule is that short labels in a structure may be bilingual in place, while
 prose belongs in the language files. Sections have no release dates:
 everything in a course is available from the start.
+
+`institution` and `handbook` are optional. The course page shows the logo and
+name of the institution, both linking to its website, and a link to the
+official module description in the module handbook.
 
 ## 8a. Slides
 
@@ -418,7 +424,11 @@ assessment and bonus rules belong to the course, as in the separation of
 ## 10. Vocabulary
 
 `knowledge/vocabulary.yaml` defines the closed lists with labels in both
-languages: content types, relation types, levels, topics and modules. Every
+languages: content types, relation types, levels, topics, institutions and
+modules. An institution has a name in both languages, a `url` and a `logo`,
+a file in `knowledge/media/`, the folder for files the whole knowledge base
+shares; the build publishes it under `/media/` and fails if the logo is
+missing. A logo in black only shows inverted to white in dark mode. Every
 content type names an `icon` from Lucide (lucide.dev/icons), which the site
 shows wherever an item appears; the build fails if the
 icon does not exist. The

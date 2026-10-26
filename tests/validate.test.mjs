@@ -163,3 +163,10 @@ test('a course section can be a learning path, which must exist', () => {
   const { errors } = check(({ find }) => (lead(find('courses', 'dup-2026-27-ws')).sections[0].path = 'python-for-nobody'));
   assert.deepEqual(errors, ['courses/dup-2026-27-ws sections[1]: unknown path "python-for-nobody"']);
 });
+
+test('a course names a known institution, and its logo must exist', () => {
+  const unknown = check(({ find }) => (lead(find('courses', 'dup-2026-27-ws')).institution = 'uni-nowhere'));
+  assert.match(unknown.errors[0], /^courses\/dup-2026-27-ws\/de\.md: institution: "uni-nowhere" is not a known institution/);
+  const noLogo = check(({ vocabulary }) => (vocabulary.institutions['hs-osnabrueck'].logo = 'missing.svg'));
+  assert.deepEqual(noLogo.errors, ['vocabulary.yaml: institution hs-osnabrueck: logo missing.svg is not in knowledge/media/']);
+});

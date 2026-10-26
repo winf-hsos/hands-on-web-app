@@ -3,6 +3,8 @@ kind: course
 code: 3307
 access_code: LICHT-26
 module: dup
+institution: hs-osnabrueck
+handbook: https://www.hs-osnabrueck.de/module/44b0850/
 semester: 2026-27 - WS
 title: Digitalisierung und Programmierung
 summary: Begleitmaterial zur Vorlesung im Wintersemester 2026/27.
