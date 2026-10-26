@@ -3,7 +3,7 @@
 # change to the code. Proposal of 2026-10-21, see docs/knowledge-schema.md.
 
 # `icon` names an icon from Lucide (https://lucide.dev/icons); the build
-# checks that it exists. Colour comes from the topic, the shape from the type.
+# checks that it exists.
 types:
   lesson:     { de: Lektion,         en: Lesson,     icon: book-open }
   demo:       { de: Demo,            en: Demo,       icon: circle-play }
@@ -52,14 +52,14 @@ levels:
   4: { de: Vertiefung,      en: Expert }
 
 # Topics are the questions a learner can start from. The first five follow
-# the families of the LiFi concept map, rephrased for this platform; the
-# colours are the family colours decided there on 2026-09-07.
+# the families of the LiFi concept map, rephrased for this platform. They
+# have no colours on the site (decision of Nicolas, 2026-10-26).
 topics:
-  solving-problems:         { de: Probleme lösen,         en: Solving problems,         color: "7D868F" }
-  representing-information: { de: Information darstellen, en: Representing information, color: "F5A623" }
-  storing-information:      { de: Information speichern,  en: Storing information,      color: "2EB872" }
-  transferring-information: { de: Information übertragen, en: Transferring information, color: "D6336C" }
-  processing-information:   { de: Information verarbeiten, en: Processing information,  color: "009EE3" }
+  solving-problems:         { de: Probleme lösen,         en: Solving problems }
+  representing-information: { de: Information darstellen, en: Representing information }
+  storing-information:      { de: Information speichern,  en: Storing information }
+  transferring-information: { de: Information übertragen, en: Transferring information }
+  processing-information:   { de: Information verarbeiten, en: Processing information }
 
 modules:
   dup: { de: Digitalisierung und Programmierung, en: Digitalisation and Programming }

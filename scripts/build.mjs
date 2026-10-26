@@ -67,7 +67,6 @@ function clientIndex(site, lang) {
         summary: text.summary,
         meta: `${v.types[i.lead.type][lang]}, ${i.lead.duration} ${t(lang, 'minutes')}`,
         icon: iconSvg(v.types[i.lead.type].icon),
-        color: site.topicColor(i),
         body: plain(text.file.body),
       };
     }),

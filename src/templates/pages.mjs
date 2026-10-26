@@ -77,7 +77,7 @@ export function items(site, lang) {
   // Headings for the groups of the list, in vocabulary order.
   const groups = {
     type: types.map(([key, v]) => ({ key, label: v[lang], icon: iconSvg(v.icon, 'icon') })),
-    topic: topics.map(([key, v]) => ({ key, label: v[lang], color: `#${v.color ?? '009EE3'}` })),
+    topic: topics.map(([key, v]) => ({ key, label: v[lang] })),
     level: Object.entries(vocabulary.levels).map(([key, v]) => ({ key, label: v[lang] })),
   };
   return {
@@ -171,7 +171,7 @@ export function item(site, doc, lang) {
     back: 'items',
     scripts: [isQuiz && 'quiz', body.includes('data-runner') && 'runner'].filter(Boolean),
     content: html`
-      <article class="page item" data-item-page="${doc.id}" style="--topic: ${site.topicColor(doc)}">
+      <article class="page item" data-item-page="${doc.id}">
         <header class="page-head">
           <p class="kicker">${typeIcon(site, doc)}<span>${typeLabel(site, doc, lang)}</span><span>${lead.duration} ${t(lang, 'minutes')}</span></p>
           <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}">${text.title}</h1>
@@ -399,7 +399,7 @@ export function projects(site, lang) {
         ${site.projects.map((p) => {
           const text = site.localize(p, lang);
           const challenges = p.lead.phases.flatMap((phase) => phase.challenges ?? []).length;
-          return html`<li class="row" style="--topic: ${site.topicColor(p)}">
+          return html`<li class="row">
             <a class="row-link" href="${site.url(p, lang)}">
               ${projectIcon}
               <span class="row-head">
@@ -436,7 +436,7 @@ export function project(site, doc, lang) {
     back: 'projects',
     scripts: ['project'],
     content: html`
-      <article class="page project" style="--topic: ${site.topicColor(doc)}">
+      <article class="page project">
         <header class="page-head">
           <p class="kicker">${projectIcon}<span>${t(lang, 'project')}</span><span>${count(lang, lead.phases.length, 'phases')}</span></p>
           <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}">${text.title}</h1>
@@ -503,7 +503,6 @@ function mapData(site, lang) {
       type: i.lead.type,
       icon: iconShapes(site.vocabulary.types[i.lead.type].icon),
       topics: i.lead.topics,
-      color: site.topicColor(i),
       url: site.url(i, lang),
     })),
     links: site.items.flatMap((i) =>
@@ -534,7 +533,7 @@ export function map(site, lang) {
       <fieldset class="chips" id="map-topics">
         <legend class="visually-hidden">${t(lang, 'topics')}</legend>
         <label class="chip"><input type="radio" name="topic" value="" checked><span>${t(lang, 'map_all')}</span></label>
-        ${topics.map(([key, label]) => html`<label class="chip" style="--topic: #${label.color}"><input type="radio" name="topic" value="${key}"><span><span class="dot"></span>${label[lang]}</span></label>`)}
+        ${topics.map(([key, label]) => html`<label class="chip"><input type="radio" name="topic" value="${key}"><span>${label[lang]}</span></label>`)}
       </fieldset>
       ${mapFigure(site, lang, 'map-full')}
       <noscript><ul>${site.items.map((i) => html`<li><a href="${site.url(i, lang)}">${site.localize(i, lang).title}</a></li>`)}</ul></noscript>

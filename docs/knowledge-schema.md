@@ -419,7 +419,7 @@ assessment and bonus rules belong to the course, as in the separation of
 `knowledge/vocabulary.yaml` defines the closed lists with labels in both
 languages: content types, relation types, levels, topics and modules. Every
 content type names an `icon` from Lucide (lucide.dev/icons), which the site
-shows wherever an item appears, coloured by its topic; the build fails if the
+shows wherever an item appears; the build fails if the
 icon does not exist. The
 website builds its filters from it, so a new topic or type is one entry there
 and no change to the code.

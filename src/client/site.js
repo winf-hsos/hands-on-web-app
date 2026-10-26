@@ -104,7 +104,6 @@ function show(results) {
       li.style.setProperty('--i', i);
       const a = document.createElement('a');
       a.href = r.url;
-      a.style.setProperty('--topic', r.color ?? 'var(--accent)');
       a.setAttribute('role', 'option');
       a.setAttribute('aria-selected', String(i === 0));
       const span = (className, text) => Object.assign(document.createElement('span'), { className, textContent: text });

@@ -434,12 +434,12 @@ select {
   position: relative;
 }
 
-/* The type icon: its shape says what kind of item it is, its colour the topic. */
+/* The type icon: its shape says what kind of item it is. */
 .type-icon {
   width: 1.15rem;
   height: 1.15rem;
   flex: none;
-  color: color-mix(in srgb, var(--topic, var(--accent)) 72%, var(--ink));
+  color: var(--accent-ink);
 }
 
 .row-link > .type-icon {
@@ -529,7 +529,7 @@ select {
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  border: 2px solid var(--topic, var(--accent));
+  border: 2px solid var(--accent);
   display: grid;
   place-items: center;
   font-weight: 700;
@@ -596,14 +596,6 @@ select {
 }
 
 .kicker .type-icon {
-  margin-right: -0.5rem;
-}
-
-.chip .dot {
-  width: 0.6rem;
-  height: 0.6rem;
-  border-radius: 50%;
-  background: var(--topic, var(--accent));
   margin-right: -0.5rem;
 }
 
@@ -1102,10 +1094,6 @@ details.callout[open] > summary::before {
   transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
 
-.chip .dot {
-  margin-right: 0;
-}
-
 .chip .type-icon {
   width: 1rem;
   height: 1rem;
@@ -1324,13 +1312,6 @@ details.callout[open] > summary::before {
   height: 1rem;
 }
 
-.group-head .dot {
-  width: 0.6rem;
-  height: 0.6rem;
-  border-radius: 50%;
-  background: var(--topic);
-}
-
 .group-count {
   font-weight: 400;
   letter-spacing: 0;
@@ -1404,7 +1385,7 @@ details.callout[open] > summary::before {
 }
 
 [data-view='cards'] .switchable .row:hover {
-  border-color: color-mix(in srgb, var(--topic, var(--accent)) 60%, var(--rule));
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--rule));
 }
 
 [data-view='cards'] .switchable .row-link {
@@ -1896,7 +1877,7 @@ details.callout[open] > summary::before {
 }
 
 .map-node circle {
-  fill: var(--node);
+  fill: var(--accent);
   stroke: var(--paper);
   stroke-width: 3;
   transition: r 0.2s var(--ease);
@@ -2229,7 +2210,7 @@ details.callout[open] > summary::before {
   width: 2.25rem;
   height: 2.25rem;
   border-radius: 50%;
-  border: 2px solid var(--topic, var(--accent));
+  border: 2px solid var(--accent);
   display: grid;
   place-items: center;
   font-weight: 700;
@@ -2237,7 +2218,7 @@ details.callout[open] > summary::before {
 }
 
 .phase-box[open] .phase-number {
-  background: var(--topic, var(--accent));
+  background: var(--accent);
   color: var(--paper);
 }
 
@@ -2300,7 +2281,7 @@ details.callout[open] > summary::before {
 }
 
 .challenge[open] {
-  border-left-color: var(--topic, var(--accent));
+  border-left-color: var(--accent);
 }
 
 .challenge > summary {

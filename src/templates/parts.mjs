@@ -29,15 +29,15 @@ export const mark = raw(
   '<svg class="mark" width="26" height="14" viewBox="0 0 26 14" aria-hidden="true"><rect x="0.5" y="0.5" width="11" height="13" rx="2.5" fill="currentColor"/><rect x="14.5" y="0.5" width="11" height="13" rx="2.5" fill="none" stroke="currentColor"/></svg>',
 );
 
-/** The icon of an item's type, coloured by its topic through --topic. */
+/** The icon of an item's type. */
 export const typeIcon = (site, item) => raw(iconSvg(site.vocabulary.types[item.lead.type].icon));
 
-/** One item as a row: topic dot, title, type and duration, one quiet line of summary. */
+/** One item as a row: type icon, title, type and duration, one quiet line of summary. */
 export function itemRow(site, item, lang, { optional = false, summary = true, number, data = {} } = {}) {
   const text = site.localize(item, lang);
   const lead = item.lead;
   const attributes = Object.entries(data).map(([key, value]) => html` data-${key}="${value}"`);
-  return html`<li class="row" data-progress-id="${item.id}"${attributes} style="--topic: ${site.topicColor(item)}">
+  return html`<li class="row" data-progress-id="${item.id}"${attributes}>
     ${number !== undefined && html`<span class="row-step" aria-hidden="true"><span>${number}</span>${icons.check}</span>`}
     <a class="row-link" href="${site.url(item, lang)}">
       ${typeIcon(site, item)}

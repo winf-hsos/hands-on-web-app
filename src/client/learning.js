@@ -88,7 +88,6 @@ function renderDone(progress) {
           el('span', { className: 'row-head' }, el('span', { className: 'row-title', textContent: item.title }), el('span', { className: 'row-meta', textContent: day })),
         ),
       );
-      row.style.setProperty('--topic', item.color);
       return row;
     }),
   );

@@ -93,7 +93,6 @@ function mount(figure) {
   });
   const nodeEls = nodes.map((node) => {
     const g = el('g', { class: 'map-node', tabindex: '0', role: 'link', 'aria-label': node.title });
-    g.style.setProperty('--node', node.color);
     const icon = el('svg', { class: 'map-icon', x: -7, y: -7, width: 14, height: 14, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': 2.4, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
     icon.innerHTML = node.icon; // shapes from the icon set, built into the page
     g.append(el('circle', { r: 13 }), icon, Object.assign(el('text', { dy: '0.35em' }), { textContent: node.title }));

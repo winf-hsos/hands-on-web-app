@@ -65,7 +65,7 @@ an import map; there is no bundler.
 
 ## Design principle
 
-**Overview first, details on request.** Lists are rows with a topic dot, the
+**Overview first, details on request.** Lists are rows with a type icon, the
 title, type and duration, and one quiet line of summary. Level, topics, code,
 status, date, further relations, the text about a path or course, and taking
 progress along all sit in disclosures that open when asked for.

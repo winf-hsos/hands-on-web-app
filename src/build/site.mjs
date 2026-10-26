@@ -110,8 +110,6 @@ export function createSite({ vocabulary, sections }) {
     return refs;
   }
 
-  const topicColor = (doc) => `#${vocabulary.topics[doc.lead.topics[0]].color ?? '009EE3'}`;
-
   return {
     vocabulary,
     items: sections.content,
@@ -133,6 +131,5 @@ export function createSite({ vocabulary, sections }) {
     duration,
     steps: stepsOf,
     pathSteps: (doc) => pathSteps(doc.lead),
-    topicColor,
   };
 }

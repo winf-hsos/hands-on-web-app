@@ -145,9 +145,7 @@ function heading(by, group) {
     li.className = 'group-head';
     const h = document.createElement('h2');
     if (group.icon) h.insertAdjacentHTML('beforeend', group.icon);
-    if (group.color) h.append(Object.assign(document.createElement('span'), { className: 'dot' }));
     h.append(group.label, Object.assign(document.createElement('span'), { className: 'group-count' }));
-    if (group.color) li.style.setProperty('--topic', group.color);
     li.append(h);
     heads.set(id, li);
   }
