@@ -742,6 +742,7 @@ select {
   border-radius: 0.75rem;
   background: var(--paper);
   overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .runner > pre.code {
@@ -785,8 +786,10 @@ select {
   color: transparent;
 }
 
-.runner-code:focus-within {
-  box-shadow: inset 0 0 0 2px var(--accent);
+/* While someone types, the whole box is outlined, along its rounded edge. */
+.runner:has(.runner-input:focus) {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
 }
 
 .runner-bar {
