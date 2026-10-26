@@ -93,8 +93,14 @@ export function items(site, lang) {
           { className: 'finder-more' },
         )}
       </form>
-      <p class="count" aria-live="polite"><span id="count">${count(lang, sorted.length, 'results')}</span></p>
-      <ul class="rows" id="rows">
+      <div class="list-bar">
+        <p class="count" aria-live="polite"><span id="count">${count(lang, sorted.length, 'results')}</span></p>
+        <div class="view-switch" role="group" aria-label="${t(lang, 'view')}">
+          <button type="button" data-view="list" aria-pressed="true" title="${t(lang, 'view_list')}" aria-label="${t(lang, 'view_list')}">${icons.list}</button>
+          <button type="button" data-view="cards" aria-pressed="false" title="${t(lang, 'view_cards')}" aria-label="${t(lang, 'view_cards')}">${icons.cards}</button>
+        </div>
+      </div>
+      <ul class="rows switchable" id="rows">
         ${sorted.map((item) =>
           itemRow(site, item, lang, {
             data: {

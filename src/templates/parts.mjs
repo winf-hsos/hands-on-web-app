@@ -13,6 +13,8 @@ export const icons = {
   theme: svg('<circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor"/>'),
   check: svg('<path d="m5 12.5 4.5 4.5L19 7.5"/>', 16),
   close: svg('<path d="M6 6l12 12M18 6 6 18"/>'),
+  list: svg('<path d="M3 5h.01M3 12h.01M3 19h.01M8 5h13M8 12h13M8 19h13"/>', 18),
+  cards: svg('<rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>', 18),
 };
 
 /** Two cells, one set and one not: the smallest picture of a bit. */

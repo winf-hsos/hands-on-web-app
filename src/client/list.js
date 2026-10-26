@@ -59,7 +59,7 @@ function apply({ animate = true } = {}) {
   });
 
   // FLIP: remember where rows were, change the list, then animate from there.
-  const before = new Map(rows.filter((r) => !r.hidden).map((r) => [r, r.getBoundingClientRect().top]));
+  const before = new Map(rows.filter((r) => !r.hidden).map((r) => [r, r.getBoundingClientRect()]));
   for (const row of rows) row.hidden = !visible.includes(row);
   list.append(...visible);
   if (animate && !reduceMotion) {
@@ -73,8 +73,10 @@ function apply({ animate = true } = {}) {
           fill: 'backwards',
         });
       } else {
-        const dy = old - row.getBoundingClientRect().top;
-        if (dy) row.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], { duration: 320, easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)' });
+        const now = row.getBoundingClientRect();
+        const dx = old.left - now.left;
+        const dy = old.top - now.top;
+        if (dx || dy) row.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'none' }], { duration: 320, easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)' });
       }
     });
   }
@@ -114,4 +116,30 @@ document.getElementById('reset').addEventListener('click', () => {
   apply();
 });
 document.addEventListener('progress-change', () => apply({ animate: false }));
+
+// List or cards: a preference of this browser, set on <html> by the inline
+// script in the head before the first paint, so the page does not jump.
+const root = document.documentElement;
+const switches = [...document.querySelectorAll('.view-switch button')];
+function showView(view) {
+  for (const b of switches) b.setAttribute('aria-pressed', String(b.dataset.view === view));
+}
+showView(root.dataset.view === 'cards' ? 'cards' : 'list');
+for (const button of switches) {
+  button.addEventListener('click', () => {
+    const view = button.dataset.view;
+    if ((root.dataset.view ?? 'list') === view) return;
+    root.dataset.view = view;
+    showView(view);
+    try {
+      localStorage.setItem('hocs-view', view);
+    } catch {}
+    if (!reduceMotion) {
+      list.animate([{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], {
+        duration: 260,
+        easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)',
+      });
+    }
+  });
+}
 apply({ animate: false });

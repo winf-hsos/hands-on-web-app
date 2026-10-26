@@ -25,7 +25,7 @@ export function layout({ lang, path, title, description, current, content, scrip
   <link rel="icon" href="${asset('favicon.svg')}" type="image/svg+xml">
   <link rel="preload" href="${asset('fonts/sans.woff2')}" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="${asset('site.css')}">
-  <script>try{const m=localStorage.getItem('hocs-theme');if(m)document.documentElement.dataset.theme=m}catch{}</script>
+  <script>try{const d=document.documentElement.dataset,m=localStorage.getItem('hocs-theme'),v=localStorage.getItem('hocs-view');if(m)d.theme=m;if(v)d.view=v}catch{}</script>
   <script type="importmap">${raw(JSON.stringify({ imports: { minisearch: asset('vendor/minisearch.js'), 'qrcode-generator': asset('vendor/qrcode.mjs') } }))}</script>
 </head>
 <body data-lang="${lang}" data-index="${url(lang)}index.json" data-total="${total}">
