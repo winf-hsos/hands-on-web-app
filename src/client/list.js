@@ -91,10 +91,26 @@ function apply({ animate = true } = {}) {
   history.replaceState(null, '', params.size ? `?${params}` : location.pathname);
 }
 
+// There is no "all" chip: clicking the chosen type again clears the filter.
+// A radio fires no input event when clicked while checked, so track it here.
+let chosenType = value('type');
+form.addEventListener('click', (e) => {
+  const input = e.target;
+  if (!(input instanceof HTMLInputElement) || input.name !== 'type') return;
+  if (input.value === chosenType) {
+    input.checked = false;
+    chosenType = '';
+    apply();
+  } else {
+    chosenType = input.value;
+  }
+});
+
 form.addEventListener('input', () => apply());
 form.addEventListener('submit', (e) => e.preventDefault());
 document.getElementById('reset').addEventListener('click', () => {
   form.reset();
+  chosenType = '';
   apply();
 });
 document.addEventListener('progress-change', () => apply({ animate: false }));

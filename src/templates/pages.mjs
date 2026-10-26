@@ -80,7 +80,6 @@ export function items(site, lang) {
         </div>
         <fieldset class="chips">
           <legend class="visually-hidden">${t(lang, 'nav_items')}</legend>
-          <label class="chip"><input type="radio" name="type" value="" checked><span>${t(lang, 'all')}</span></label>
           ${types.map(([key, label]) => html`<label class="chip"><input type="radio" name="type" value="${key}"><span>${raw(iconSvg(label.icon))}${label[lang]}</span></label>`)}
         </fieldset>
         ${more(
