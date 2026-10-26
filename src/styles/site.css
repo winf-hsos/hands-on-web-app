@@ -147,6 +147,17 @@ h3 {
   margin: 0;
 }
 
+:is(h1, h2, h3, h4) code {
+  white-space: nowrap;
+}
+
+/* on a phone a long piece of code would stick out, so there it may wrap */
+@media (max-width: 40rem) {
+  :is(h1, h2, h3, h4) code {
+    white-space: normal;
+  }
+}
+
 h1 {
   font-size: clamp(2rem, 1.4rem + 2.4vw, 2.75rem);
   font-weight: 750;
@@ -1539,7 +1550,10 @@ details.callout[open] > summary::before {
   margin: 0 0 2.5rem;
 }
 
+/* A question is a sentence, not a title: fill the lines instead of
+   balancing them, and never break inside a piece of code. */
 .quiz-question h2 {
+  text-wrap: pretty;
   font-size: 1.15rem;
   margin: 0 0 0.75rem;
 }
