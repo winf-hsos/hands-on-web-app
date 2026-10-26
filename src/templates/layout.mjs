@@ -10,6 +10,7 @@ export function layout({ lang, path, title, description, current, content, back,
   const nav = [
     ['items', t(lang, 'nav_items')],
     ['paths', t(lang, 'nav_paths')],
+    ['courses', t(lang, 'nav_courses')],
     ['projects', t(lang, 'nav_projects')],
     ['map', t(lang, 'nav_map')],
   ];

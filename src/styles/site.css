@@ -504,7 +504,7 @@ select {
   transform: none;
 }
 
-/* numbered steps of a path or course unit */
+/* numbered steps of a path or course section */
 .trail {
   border-top: 0;
   counter-reset: step;
@@ -1473,11 +1473,11 @@ details.callout[open] > summary::before {
 
 /* --- course ---------------------------------------------------------------- */
 
-.unit {
+.course-section {
   margin-top: 1.5rem;
 }
 
-.unit > summary {
+.course-section > summary {
   list-style: none;
   display: flex;
   align-items: baseline;
@@ -1487,11 +1487,11 @@ details.callout[open] > summary::before {
   padding: 0.5rem 0;
 }
 
-.unit > summary::-webkit-details-marker {
+.course-section > summary::-webkit-details-marker {
   display: none;
 }
 
-.unit > summary::before {
+.course-section > summary::before {
   content: '';
   align-self: center;
   width: 0.55rem;
@@ -1503,21 +1503,43 @@ details.callout[open] > summary::before {
   margin-right: 0.25rem;
 }
 
-.unit[open] > summary::before {
+.course-section[open] > summary::before {
   transform: rotate(45deg);
 }
 
-.unit::details-content {
+.course-section::details-content {
   block-size: 0;
   overflow: hidden;
   transition: block-size 0.35s var(--ease), content-visibility 0.35s allow-discrete;
 }
 
-.unit[open]::details-content {
+.course-section[open]::details-content {
   block-size: auto;
 }
 
-.unit-title {
+.course-section-meta {
+  color: var(--quiet);
+  font-size: 0.9rem;
+}
+
+.course-path-part {
+  margin: 1.25rem 0 0.25rem;
+  font-size: 0.95rem;
+  color: var(--quiet);
+}
+
+.course-path-link {
+  margin: 0.75rem 0 0;
+  font-size: 0.92rem;
+}
+
+.course-path-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.course-section-title {
   font-weight: 700;
   font-size: 1.3rem;
 }

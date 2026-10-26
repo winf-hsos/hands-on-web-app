@@ -2,7 +2,7 @@
 // of a doc in a language (with fallback), relations in both directions,
 // durations and URLs.
 import { renderMarkdown } from './markdown.mjs';
-import { stepsOf, pathSteps } from './validate.mjs';
+import { stepsOf, pathSteps, courseSteps } from './validate.mjs';
 import { splitProject } from './project.mjs';
 
 export const url = (lang, ...parts) => `/${[lang, ...parts].join('/')}/`.replace(/\/+/g, '/');
@@ -131,5 +131,6 @@ export function createSite({ vocabulary, sections }) {
     duration,
     steps: stepsOf,
     pathSteps: (doc) => pathSteps(doc.lead),
+    courseSteps: (doc) => courseSteps(doc.lead, path),
   };
 }

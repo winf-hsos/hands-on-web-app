@@ -292,8 +292,10 @@ sections:
 
 ## 9. Courses
 
-A course is a curated collection for one module in one semester. Students
-reach it with an access code that Nicolas sends them.
+A course is a curated collection for one module in one semester. All
+courses are listed on the site under "Courses"; the access code (or a link
+with it, `/de/learning/?code=…`) adds a course to "My learning", which also
+makes it a filter in the content list.
 
 ```yaml
 ---
@@ -304,25 +306,28 @@ module: dup
 semester: 2026-27 - WS
 title: Digitalisierung und Programmierung
 summary: Begleitmaterial zur Vorlesung im Wintersemester 2026/27.
-units:
-  - title: { de: "Sitzung 3: Codes", en: "Session 3: Codes" }
+sections:
+  - path: python-for-beginners  # a whole learning path as one section
+  - title: { de: "Zahlen- und Codesysteme", en: "Number and code systems" }
     items:
       - code-as-agreement
       - prefix-free-code
       - item: knock-code
         optional: true
       - code-systems-quiz
-  - title: { de: "Sitzung 4: Fehler", en: "Session 4: Errors" }
-    items: [ … ]
 status: draft
 updated: 2026-10-21
 ---
 ```
 
-Unit titles are short labels and therefore written in both languages inline;
-the rule is that short labels in a structure may be bilingual in place, while
-prose belongs in the language files. Units have no release dates: everything
-in a course is available from the start (decision of Nicolas, 2026-10-26).
+A course consists of **sections** (decision of Nicolas, 2026-10-26; until
+then "units" named after sessions). A section is either a title with its
+items, or a learning path given by `path:`, which brings its own title, parts
+and steps and stays the same path that can be followed on its own. Section
+titles are short labels and therefore written in both languages inline; the
+rule is that short labels in a structure may be bilingual in place, while
+prose belongs in the language files. Sections have no release dates:
+everything in a course is available from the start.
 
 ## 8a. Slides
 

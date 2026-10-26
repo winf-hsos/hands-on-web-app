@@ -86,8 +86,9 @@ All motion is switched off for people who ask their system for reduced motion.
   compressed with the browser's own `CompressionStream`, with items written by
   their four-digit codes, and put into a link `…/learning/#p=…`. The part after
   `#` never reaches any server. The QR code shows the same link.
-- **Courses** are opened by access code on "My learning" or by a link with
-  the code; all their units are available from the start.
+- **Courses** are listed under "Courses" for everyone; a course page shows
+  its sections, a learning path among them with its own parts. The access
+  code on "My learning", or a link with it, adds a course there.
 - **Projects** show their phases as a numbered, folded list; a phase opens to
   its text, its challenges and the content linked to it. A link to
   `#challenge-2` opens exactly that part.

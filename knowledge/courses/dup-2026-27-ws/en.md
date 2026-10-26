@@ -5,6 +5,7 @@ translation_of: de
 based_on: 2026-10-26
 ---
 
-This collection accompanies the lecture. For each session it lists the
-matching items, and all of them are available from the start. Items marked as
+This collection accompanies the lecture. It is divided into sections, and all
+items are available from the start. One section is the learning path for
+getting started with Python, which also exists on its own. Items marked as
 optional go deeper into the topic but are not required.

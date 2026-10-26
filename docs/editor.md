@@ -50,7 +50,7 @@ opening the document, shows what the check says about it.
 A slides item needs its deck in `slides/` before it can be saved; copy the
 folder of the deck there first, then create or edit the item.
 
-Courses and projects edit their structure (units, phases and challenges) as
+Courses and projects edit their structure (sections, phases and challenges) as
 YAML in a text field for now; everything else of them uses the forms.
 
 ## Files
@@ -65,5 +65,5 @@ YAML in a text field for now; everything else of them uses the forms.
 
 - A GitHub backend for running the editor online, behind the same interface
   as `store.mjs`, once the repository is public.
-- Forms instead of YAML for course units and project phases.
+- Forms instead of YAML for course sections and project phases.
 - Error messages of the checks in German as well as English.

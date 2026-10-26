@@ -78,8 +78,8 @@ function clientIndex(site, lang) {
       access: c.lead.access_code,
       url: site.url(c, lang),
       title: site.localize(c, lang).title,
-      items: c.lead.units.flatMap((u) => site.steps(u.items).filter((s) => !s.optional).map((s) => s.id)),
-      all: c.lead.units.flatMap((u) => site.steps(u.items).map((s) => s.id)),
+      items: site.courseSteps(c).filter((s) => !s.optional).map((s) => s.id),
+      all: site.courseSteps(c).map((s) => s.id),
     })),
   };
 }
@@ -155,6 +155,7 @@ function render(site) {
     writePage(lang, pages.home(site, lang));
     writePage(lang, pages.items(site, lang));
     writePage(lang, pages.paths(site, lang));
+    writePage(lang, pages.courses(site, lang));
     writePage(lang, pages.map(site, lang));
     writePage(lang, pages.projects(site, lang));
     for (const doc of site.projects) writePage(lang, pages.project(site, doc, lang));

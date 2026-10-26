@@ -350,15 +350,75 @@ export function path(site, doc, lang) {
 
 // --- courses -------------------------------------------------------------------
 
+const courseIcon = raw(iconSvg('graduation-cap'));
+
+/** All courses, open to everyone; the access code only adds one to "My learning". */
+export function courses(site, lang) {
+  return {
+    path: url(lang, 'courses'),
+    title: t(lang, 'nav_courses'),
+    current: 'courses',
+    back: 'home',
+    content: html`
+      <h1>${t(lang, 'nav_courses')}</h1>
+      <div class="list-bar">
+        <p class="count">${count(lang, site.courses.length, 'courses')}</p>
+        ${viewSwitch(lang)}
+      </div>
+      <ul class="rows switchable">
+        ${site.courses.map((c) => {
+          const text = site.localize(c, lang);
+          const steps = site.courseSteps(c);
+          return html`<li class="row row-path">
+            <a class="row-link" href="${site.url(c, lang)}">
+              ${courseIcon}
+              <span class="row-head">
+                <span class="row-title" lang="${text.lang}">${text.title}</span>
+                <span class="row-meta"><span>${c.lead.semester}</span><span>${count(lang, c.lead.sections.length, 'sections')}</span></span>
+              </span>
+              <span class="row-summary" lang="${text.lang}">${text.summary}</span>
+            </a>
+            ${progressBar(steps.filter((s) => !s.optional).map((s) => s.id), lang)}
+          </li>`;
+        })}
+      </ul>
+    `,
+  };
+}
+
 export function course(site, doc, lang) {
   const text = site.localize(doc, lang);
-  const required = doc.lead.units.flatMap((u) => site.steps(u.items).filter((s) => !s.optional).map((s) => s.id));
+  const required = site.courseSteps(doc).filter((s) => !s.optional).map((s) => s.id);
+  // Steps are numbered through each section, also across the parts of a path.
+  let number = 0;
+  const trail = (list) =>
+    html`<ol class="rows trail">${site.steps(list).map((s) => itemRow(site, site.item.get(s.id), lang, { optional: s.optional, summary: false, number: ++number }))}</ol>`;
+  const section = (title, body, meta) => {
+    number = 0;
+    return html`<details class="course-section" open>
+      <summary><span class="course-section-title">${title}</span>${meta && html`<span class="course-section-meta">${meta}</span>`}</summary>
+      ${body()}
+    </details>`;
+  };
+  // A path in a course shows its own parts and links to the path page.
+  const pathSection = (p) => {
+    const ptext = site.localize(p, lang);
+    const steps = site.pathSteps(p);
+    return section(
+      ptext.title,
+      () => html`${p.lead.sections
+          ? p.lead.sections.map((part) => html`<h3 class="course-path-part">${part.title[lang]}</h3>${trail(part.steps)}`)
+          : trail(p.lead.steps)}
+        <p class="course-path-link"><a href="${site.url(p, lang)}">${pathIcon}${t(lang, 'open_path')}</a></p>`,
+      html`${t(lang, 'path')} · ${count(lang, steps.length, 'steps')}`,
+    );
+  };
   return {
     path: site.url(doc, lang),
     title: text.title,
     description: text.summary,
-    current: 'learning',
-    back: 'learning',
+    current: 'courses',
+    back: 'courses',
     scripts: ['course'],
     content: html`
       <article class="page" data-course="${doc.id}">
@@ -368,16 +428,7 @@ export function course(site, doc, lang) {
           <p class="lead" lang="${text.lang}">${text.summary}</p>
           ${progressBar(required, lang)}
         </header>
-        ${doc.lead.units.map((unit) => {
-          return html`<details class="unit" open>
-            <summary>
-              <span class="unit-title">${unit.title[lang]}</span>
-            </summary>
-            <ol class="rows trail">
-              ${site.steps(unit.items).map((s, i) => itemRow(site, site.item.get(s.id), lang, { optional: s.optional, summary: false, number: i + 1 }))}
-            </ol>
-          </details>`;
-        })}
+        ${doc.lead.sections.map((s) => (s.path ? pathSection(site.path.get(s.path)) : section(s.title[lang], () => trail(s.items))))}
         ${more(t(lang, 'about_course'), html`<div class="prose" lang="${text.lang}">${raw(site.body(doc, lang))}</div>`)}
       </article>
     `,

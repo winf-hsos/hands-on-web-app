@@ -66,12 +66,18 @@ function shapes(vocabulary) {
     if (url(v.url) || !/^https:\/\/(www\.)?(youtube\.com|youtu\.be)\//.test(v.url)) return 'url: expected a YouTube link (https://www.youtube.com/… or https://youtu.be/…)';
     return v.slide === undefined ? null : int(1, 999)(v.slide);
   };
-  // A unit of a course: a heading and its items. Units have no release
-  // dates; everything is always available (decision of Nicolas, 2026-10-26).
-  const unit = (v) => {
-    if (!v || typeof v !== 'object' || Array.isArray(v)) return 'expected { title, items }';
+  // A section of a course: a heading in both languages and its items, or a
+  // whole learning path, which brings its own title and steps. Sections have
+  // no release dates; everything is always available (Nicolas, 2026-10-26).
+  const courseSection = (v) => {
+    if (!v || typeof v !== 'object' || Array.isArray(v)) return 'expected { title, items } or { path }';
+    if ('path' in v) {
+      const extra = Object.keys(v).find((k) => k !== 'path');
+      if (extra) return `unknown field ${extra} (a section with a path has nothing else)`;
+      return id(v.path) && `path: ${id(v.path)}`;
+    }
     const extra = Object.keys(v).find((k) => !['title', 'items'].includes(k));
-    if (extra) return `unknown field ${extra} (allowed: title, items)`;
+    if (extra) return `unknown field ${extra} (allowed: title, items, or path alone)`;
     return (label(v.title) && `title: ${label(v.title)}`) ?? (list(step, 1)(v.items) && `items: ${list(step, 1)(v.items)}`) ?? null;
   };
   // A part of a learning path: a heading in both languages and its steps.
@@ -158,7 +164,7 @@ function shapes(vocabulary) {
           semester: text,
           title: text,
           summary: text,
-          units: list(unit, 1),
+          sections: list(courseSection, 1),
           status,
           updated: date,
         },
@@ -224,7 +230,12 @@ export function referencesOf(doc) {
   for (const [relation, targets] of Object.entries(lead.relations ?? {})) for (const t of targets) add(t, `relations.${relation}`);
   for (const s of pathSteps(lead)) add(s.id, 'steps');
   for (const r of lead.requires ?? []) add(r, 'requires');
-  (lead.units ?? []).forEach((unit, n) => stepsOf(unit.items).forEach((s) => add(s.id, `units[${n + 1}]`)));
+  if (lead.kind === 'course') {
+    (lead.sections ?? []).forEach((section, n) => {
+      if (section.path) add(section.path, `sections[${n + 1}]`);
+      else stepsOf(section.items).forEach((s) => add(s.id, `sections[${n + 1}]`));
+    });
+  }
   for (const i of lead.items ?? []) add(i, 'items');
   for (const phase of lead.phases ?? []) {
     for (const part of [phase, ...(phase.challenges ?? [])]) for (const i of part.items ?? []) add(i, part.id);
@@ -239,6 +250,10 @@ export function referencesOf(doc) {
 
 export const stepsOf = (list = []) =>
   list.map((s) => (typeof s === 'string' ? { id: s, optional: false } : { id: s.item, optional: !!s.optional }));
+
+/** All steps of a course, those of its learning paths included. */
+export const courseSteps = (lead, pathById) =>
+  (lead.sections ?? []).flatMap((s) => (s.path ? (pathById.has(s.path) ? pathSteps(pathById.get(s.path).lead) : []) : stepsOf(s.items ?? [])));
 
 /** All steps of a path, whether it lists them flat or in sections. */
 export const pathSteps = (lead) =>
@@ -326,8 +341,11 @@ export function validate({ vocabulary, sections, problems }) {
     }
   }
   for (const course of courses) {
-    course.lead.units.forEach((unit, n) => {
-      for (const s of stepsOf(unit.items)) needItem(`courses/${course.id} units[${n + 1}]`, s.id);
+    course.lead.sections.forEach((section, n) => {
+      const where = `courses/${course.id} sections[${n + 1}]`;
+      if (section.path) {
+        if (!pathIds.has(section.path)) errors.push(`${where}: unknown path "${section.path}"`);
+      } else for (const s of stepsOf(section.items)) needItem(where, s.id);
     });
   }
   for (const project of projects) {
@@ -439,7 +457,7 @@ export function validate({ vocabulary, sections, problems }) {
     ...paths.filter((p) => p.lead.status === 'published').map((p) => [`paths/${p.id}`, pathSteps(p.lead)]),
     ...courses
       .filter((c) => c.lead.status === 'published')
-      .map((c) => [`courses/${c.id}`, c.lead.units.flatMap((u) => stepsOf(u.items))]),
+      .map((c) => [`courses/${c.id}`, courseSteps(c.lead, new Map(paths.map((p) => [p.id, p])))]),
   ];
   for (const [where, list] of published) {
     for (const s of list) if (items.get(s.id)?.lead.status === 'draft') warnings.push(`${where}: contains draft item ${s.id}`);

@@ -261,7 +261,7 @@ function renderShared() {
       work.section === 'projects'
         ? 'Phasen und Challenges mit ihren Kennungen. Jede Kennung braucht im Text eine Überschrift mit {#kennung}, in beiden Sprachen.'
         : work.section === 'courses'
-          ? 'Einheiten mit Titel (de/en) und Inhalten.'
+          ? 'Abschnitte mit Titel (de/en) und Inhalten, oder ein Lernpfad als Abschnitt: - path: kennung'
           : work.section === 'paths'
             ? 'Teile des Pfads mit Titel (de/en) und ihren Schritten.'
             : 'Weitere Kopfdaten';
@@ -692,7 +692,7 @@ function createDialog(section = state.section === 'pages' ? 'content' : state.se
     } else if (f.section === 'paths') {
       data = { kind: 'path', code, ...base, goal: base.summary, audience: f.lang === 'de' ? 'Alle Interessierten' : 'Everyone interested', level: 1, steps: [f.first], status: 'draft', updated: today() };
     } else if (f.section === 'courses') {
-      data = { kind: 'course', code, access_code: f.access, module: f.module, semester: f.semester, ...base, units: [{ title: { de: 'Sitzung 1', en: 'Session 1' }, items: [f.first] }], status: 'draft', updated: today() };
+      data = { kind: 'course', code, access_code: f.access, module: f.module, semester: f.semester, ...base, sections: [{ title: { de: 'Abschnitt 1', en: 'Section 1' }, items: [f.first] }], status: 'draft', updated: today() };
     } else {
       data = { kind: 'project', code, ...base, level: 1, topics: [f.topic], phases: [{ id: 'phase-1' }], status: 'draft', updated: today() };
       body = f.lang === 'de' ? 'Worum es im Projekt geht.\n\n## Erste Phase {#phase-1}\n\nWorum es in dieser Phase geht.\n' : 'What the project is about.\n\n## First phase {#phase-1}\n\nWhat this phase is about.\n';

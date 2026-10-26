@@ -47,13 +47,13 @@ test('relations, path steps, course items and links must point to existing ids',
   const { errors } = check(({ find }) => {
     lead(find('content', 'knock-code')).relations.requires = ['nowhere'];
     lead(find('paths', 'codes-in-one-hour')).steps.push('nowhere-path');
-    lead(find('courses', 'dup-2026-27-ws')).units[0].items.push('nowhere-course');
+    lead(find('courses', 'dup-2026-27-ws')).sections[1].items.push('nowhere-course');
     find('content', 'knock-code').files.de.body += '\n[[nowhere-link]]\n';
   });
   assert.deepEqual(errors.sort(), [
     'content/knock-code relations.requires: unknown item "nowhere"',
     'content/knock-code/de.md: link to unknown id [[nowhere-link]]',
-    'courses/dup-2026-27-ws units[1]: unknown item "nowhere-course"',
+    'courses/dup-2026-27-ws sections[2]: unknown item "nowhere-course"',
     'paths/codes-in-one-hour steps: unknown item "nowhere-path"',
   ]);
 });
@@ -154,7 +154,12 @@ test('a section of a path needs a title in both languages', () => {
   assert.deepEqual(errors, ['paths/python-for-beginners/de.md: sections: title: expected { de: …, en: … }']);
 });
 
-test('course units have no release dates', () => {
-  const { errors } = check(({ find }) => (lead(find('courses', 'dup-2026-27-ws')).units[0].available_from = new Date('2026-11-16')));
-  assert.deepEqual(errors, ['courses/dup-2026-27-ws/de.md: units: unknown field available_from (allowed: title, items)']);
+test('course sections have no release dates', () => {
+  const { errors } = check(({ find }) => (lead(find('courses', 'dup-2026-27-ws')).sections[1].available_from = new Date('2026-11-16')));
+  assert.deepEqual(errors, ['courses/dup-2026-27-ws/de.md: sections: unknown field available_from (allowed: title, items, or path alone)']);
+});
+
+test('a course section can be a learning path, which must exist', () => {
+  const { errors } = check(({ find }) => (lead(find('courses', 'dup-2026-27-ws')).sections[0].path = 'python-for-nobody'));
+  assert.deepEqual(errors, ['courses/dup-2026-27-ws sections[1]: unknown path "python-for-nobody"']);
 });
