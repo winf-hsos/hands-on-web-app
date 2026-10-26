@@ -17,6 +17,13 @@ export const icons = {
   cards: svg('<rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>', 18),
 };
 
+/** List or cards for the `.switchable` list on the page (client/view.js). */
+export const viewSwitch = (lang) =>
+  html`<div class="view-switch" role="group" aria-label="${t(lang, 'view')}">
+    <button type="button" data-view="list" aria-pressed="true" title="${t(lang, 'view_list')}" aria-label="${t(lang, 'view_list')}">${icons.list}</button>
+    <button type="button" data-view="cards" aria-pressed="false" title="${t(lang, 'view_cards')}" aria-label="${t(lang, 'view_cards')}">${icons.cards}</button>
+  </div>`;
+
 /** Two cells, one set and one not: the smallest picture of a bit. */
 export const mark = raw(
   '<svg class="mark" width="26" height="14" viewBox="0 0 26 14" aria-hidden="true"><rect x="0.5" y="0.5" width="11" height="13" rx="2.5" fill="currentColor"/><rect x="14.5" y="0.5" width="11" height="13" rx="2.5" fill="none" stroke="currentColor"/></svg>',

@@ -1,7 +1,9 @@
 // Behaviour shared by every page: theme, progress marks, "mark as done",
-// the search dialog, and the background (backdrop.js).
+// the search dialog, the list or card view (view.js) and the background
+// (backdrop.js).
 import { load, update, isDone, today, loadIndex } from './progress.js';
 import './backdrop.js';
+import './view.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 

@@ -1,6 +1,6 @@
-// Content list: live search, type chips and further filters. When the
-// result changes, rows that stay glide to their new place and new ones
-// fade in, so it is visible what the filter did.
+// Content list: live search, type chips and further filters, grouped by
+// type, topic or level. When the result changes, rows that stay glide to
+// their new place and new ones fade in, so it is visible what the filter did.
 import MiniSearch from 'minisearch';
 import { load, isDone, loadIndex } from './progress.js';
 
@@ -13,6 +13,13 @@ const value = (name) => {
   return (f instanceof RadioNodeList ? f.value : f?.value) ?? '';
 };
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const FILTERS = ['q', 'type', 'course', 'path', 'project', 'topic', 'level', 'progress'];
+const MORE = ['course', 'path', 'project', 'topic', 'level', 'progress'];
+const groups = JSON.parse(document.getElementById('groups').textContent);
+const clear = document.getElementById('clear-filters');
+const summary = form.querySelector('.finder-more > summary');
+const badge = Object.assign(document.createElement('span'), { className: 'filter-badge', hidden: true });
+summary.append(badge);
 
 let mini;
 let courses = [];
@@ -44,7 +51,7 @@ for (const [key, v] of fromUrl) {
   const f = field(key);
   if (f) f.value = v;
 }
-if ([...new URLSearchParams(location.search).keys()].some((k) => k !== 'q' && k !== 'type')) {
+if ([...MORE, 'sort'].some((k) => fromUrl.has(k))) {
   form.querySelector('.finder-more').open = true;
 }
 
@@ -75,12 +82,27 @@ function apply({ animate = true } = {}) {
     return title(a).localeCompare(title(b), lang);
   });
 
+  // Group the sorted rows; each group gets a heading with its size.
+  const by = value('group') || 'type';
+  const sequence = [];
+  if (by === 'none') sequence.push(...visible);
+  else {
+    for (const group of groups[by]) {
+      const members = visible.filter((row) => row.dataset[by] === group.key);
+      if (members.length === 0) continue;
+      const h = heading(by, group);
+      h.querySelector('.group-count').textContent = members.length;
+      sequence.push(h, ...members);
+    }
+  }
+
   // FLIP: remember where rows were, change the list, then animate from there.
-  const before = new Map(rows.filter((r) => !r.hidden).map((r) => [r, r.getBoundingClientRect()]));
+  const before = new Map([...list.children].filter((r) => !r.hidden).map((r) => [r, r.getBoundingClientRect()]));
+  for (const h of list.querySelectorAll('.group-head')) if (!sequence.includes(h)) h.remove();
   for (const row of rows) row.hidden = !visible.includes(row);
-  list.append(...visible);
+  list.append(...sequence);
   if (animate && !reduceMotion) {
-    visible.forEach((row, i) => {
+    sequence.forEach((row, i) => {
       const old = before.get(row);
       if (old === undefined) {
         row.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], {
@@ -101,13 +123,45 @@ function apply({ animate = true } = {}) {
   const n = visible.length;
   document.getElementById('count').textContent = `${n} ${n === 1 ? form.dataset.one : form.dataset.many}`;
   document.getElementById('empty').hidden = n > 0;
+  clear.hidden = !FILTERS.some((name) => value(name));
+  const more = MORE.filter((name) => value(name)).length;
+  badge.hidden = more === 0;
+  badge.textContent = more;
 
   const params = new URLSearchParams();
-  for (const name of ['q', 'type', 'course', 'path', 'project', 'topic', 'level', 'progress', 'sort']) {
+  for (const name of [...FILTERS, 'sort', 'group']) {
     const v = value(name);
-    if (v && !(name === 'sort' && v === 'title')) params.set(name, v);
+    if (v && !(name === 'sort' && v === 'title') && !(name === 'group' && v === 'type')) params.set(name, v);
   }
   history.replaceState(null, '', params.size ? `?${params}` : location.pathname);
+}
+
+const heads = new Map();
+function heading(by, group) {
+  const id = `${by}:${group.key}`;
+  if (!heads.has(id)) {
+    const li = document.createElement('li');
+    li.className = 'group-head';
+    const h = document.createElement('h2');
+    if (group.icon) h.insertAdjacentHTML('beforeend', group.icon);
+    if (group.color) h.append(Object.assign(document.createElement('span'), { className: 'dot' }));
+    h.append(group.label, Object.assign(document.createElement('span'), { className: 'group-count' }));
+    if (group.color) li.style.setProperty('--topic', group.color);
+    li.append(h);
+    heads.set(id, li);
+  }
+  return heads.get(id);
+}
+
+/** Clears every filter, but keeps order, grouping and view. */
+function clearFilters() {
+  for (const name of FILTERS) {
+    const f = field(name);
+    if (f instanceof RadioNodeList) for (const r of f) r.checked = false;
+    else f.value = '';
+  }
+  chosenType = '';
+  apply();
 }
 
 // There is no "all" chip: clicking the chosen type again clears the filter.
@@ -126,40 +180,16 @@ form.addEventListener('click', (e) => {
 });
 
 form.addEventListener('input', () => apply());
+field('group').addEventListener('input', () => apply());
 form.addEventListener('submit', (e) => e.preventDefault());
-document.getElementById('reset').addEventListener('click', () => {
-  form.reset();
-  chosenType = '';
-  apply();
+document.getElementById('reset').addEventListener('click', clearFilters);
+clear.addEventListener('click', clearFilters);
+form.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && FILTERS.some((name) => value(name))) clearFilters();
 });
 document.addEventListener('progress-change', () => {
   fillCourses();
   apply({ animate: false });
 });
 
-// List or cards: a preference of this browser, set on <html> by the inline
-// script in the head before the first paint, so the page does not jump.
-const root = document.documentElement;
-const switches = [...document.querySelectorAll('.view-switch button')];
-function showView(view) {
-  for (const b of switches) b.setAttribute('aria-pressed', String(b.dataset.view === view));
-}
-showView(root.dataset.view === 'cards' ? 'cards' : 'list');
-for (const button of switches) {
-  button.addEventListener('click', () => {
-    const view = button.dataset.view;
-    if ((root.dataset.view ?? 'list') === view) return;
-    root.dataset.view = view;
-    showView(view);
-    try {
-      localStorage.setItem('hocs-view', view);
-    } catch {}
-    if (!reduceMotion) {
-      list.animate([{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], {
-        duration: 260,
-        easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)',
-      });
-    }
-  });
-}
 apply({ animate: false });

@@ -4,7 +4,7 @@
 import { html, raw, json } from '../build/html.mjs';
 import { t, count, formatDate, isoDay } from '../build/i18n.mjs';
 import { url } from '../build/site.mjs';
-import { itemRow, progressBar, more, facts, icons, typeIcon } from './parts.mjs';
+import { itemRow, progressBar, more, facts, icons, typeIcon, viewSwitch } from './parts.mjs';
 import { iconSvg, iconShapes } from '../build/icons.mjs';
 import { deckFile, deckPdf } from '../build/deck.mjs';
 
@@ -74,6 +74,12 @@ export function items(site, lang) {
     )}</select></label>`;
   const paths = linked(site.paths, pathsOf);
   const projects = linked(site.projects, projectsOf);
+  // Headings for the groups of the list, in vocabulary order.
+  const groups = {
+    type: types.map(([key, v]) => ({ key, label: v[lang], icon: iconSvg(v.icon, 'icon') })),
+    topic: topics.map(([key, v]) => ({ key, label: v[lang], color: `#${v.color ?? '009EE3'}` })),
+    level: Object.entries(vocabulary.levels).map(([key, v]) => ({ key, label: v[lang] })),
+  };
   return {
     path: url(lang, 'items'),
     title: t(lang, 'nav_items'),
@@ -105,12 +111,20 @@ export function items(site, lang) {
         )}
       </form>
       <div class="list-bar">
-        <p class="count" aria-live="polite"><span id="count">${count(lang, sorted.length, 'results')}</span></p>
-        <div class="view-switch" role="group" aria-label="${t(lang, 'view')}">
-          <button type="button" data-view="list" aria-pressed="true" title="${t(lang, 'view_list')}" aria-label="${t(lang, 'view_list')}">${icons.list}</button>
-          <button type="button" data-view="cards" aria-pressed="false" title="${t(lang, 'view_cards')}" aria-label="${t(lang, 'view_cards')}">${icons.cards}</button>
+        <p class="count" aria-live="polite">
+          <span id="count">${count(lang, sorted.length, 'results')}</span>
+          <button type="button" class="clear-filters" id="clear-filters" hidden>${icons.close}${t(lang, 'reset_short')}</button>
+        </p>
+        <div class="list-tools">
+          <label class="group-by"><span>${t(lang, 'group')}</span>
+            <select name="group" form="finder">
+              ${['type', 'topic', 'level', 'none'].map((g) => html`<option value="${g}">${t(lang, `group_${g}`)}</option>`)}
+            </select>
+          </label>
+          ${viewSwitch(lang)}
         </div>
       </div>
+      <script type="application/json" id="groups">${raw(JSON.stringify(groups).replace(/</g, '\u003c'))}</script>
       <ul class="rows switchable" id="rows">
         ${sorted.map((item) =>
           itemRow(site, item, lang, {
@@ -118,6 +132,7 @@ export function items(site, lang) {
               id: item.id,
               type: item.lead.type,
               topics: item.lead.topics.join(' '),
+              topic: item.lead.topics[0],
               level: item.lead.level,
               duration: item.lead.duration,
               paths: pathsOf.get(item.id).join(' '),
@@ -359,7 +374,11 @@ export function projects(site, lang) {
     current: 'projects',
     content: html`
       <h1>${t(lang, 'nav_projects')}</h1>
-      <ul class="rows">
+      <div class="list-bar">
+        <p class="count">${count(lang, site.projects.length, 'projects')}</p>
+        ${viewSwitch(lang)}
+      </div>
+      <ul class="rows switchable">
         ${site.projects.map((p) => {
           const text = site.localize(p, lang);
           const challenges = p.lead.phases.flatMap((phase) => phase.challenges ?? []).length;
