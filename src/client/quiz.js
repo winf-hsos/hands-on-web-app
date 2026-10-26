@@ -1,7 +1,7 @@
 // Quizzes. A single-choice question is answered with one click: it shows at
 // once whether that was right, and the explanation. A multiple-choice
-// question is checked with "Check and continue" in the navigation (or with
-// "Check" when the quiz has only one question). A quiz counts as done once
+// question has a Check button, ready as soon as an option is chosen, so that
+// the feedback appears right there. A quiz counts as done once
 // every question was answered correctly at least once. With more than one
 // question, the quiz shows one question at a time, with Back and Next, a bar
 // with one segment per question, and a short result at the end.
@@ -16,7 +16,7 @@ const stepper = questions.length > 1;
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const fill = (text, n, m) => text.replace('{n}', n).replace('{m}', m);
 
-/** Per question: { multiple, selected(), checked(), evaluate() }. */
+/** Per question: { evaluate(), reset() }. */
 const control = new Map();
 const changed = (question) => question.dispatchEvent(new CustomEvent('quiz-changed', { bubbles: true }));
 
@@ -28,11 +28,11 @@ for (const question of questions) {
 
   const actions = document.createElement('div');
   actions.className = 'quiz-actions';
-  // Before the answer, the button only exists where nothing else checks:
-  // a multiple-choice question in a quiz of one question. After it, it
-  // offers to try again.
+  // Before the answer, only a multiple-choice question needs the button;
+  // after it, every question offers to try again.
   const check = Object.assign(document.createElement('button'), { type: 'button', textContent: labels.check });
-  check.hidden = !multiple || stepper;
+  check.hidden = !multiple;
+  check.disabled = true;
   const verdict = Object.assign(document.createElement('p'), { className: 'quiz-verdict' });
   verdict.setAttribute('aria-live', 'polite');
   actions.append(check, verdict);
@@ -46,6 +46,7 @@ for (const question of questions) {
     explanation?.removeAttribute('hidden');
     check.textContent = labels.again;
     check.hidden = false;
+    check.disabled = false;
     changed(question);
     update(page.dataset.itemPage, (p) => {
       p.quiz ??= {};
@@ -60,7 +61,8 @@ for (const question of questions) {
     options.forEach((o) => o.setAttribute('aria-checked', 'false'));
     explanation?.setAttribute('hidden', '');
     check.textContent = labels.check;
-    check.hidden = !multiple || stepper;
+    check.hidden = !multiple;
+    check.disabled = true;
     verdict.textContent = '';
     changed(question);
   }
@@ -73,7 +75,7 @@ for (const question of questions) {
       if (checked()) return;
       if (!multiple) options.forEach((o) => o !== option && o.setAttribute('aria-checked', 'false'));
       option.setAttribute('aria-checked', String(option.getAttribute('aria-checked') !== 'true'));
-      if (multiple) changed(question);
+      if (multiple) check.disabled = !selected();
       else evaluate();
     };
     option.addEventListener('click', toggle);
@@ -86,7 +88,7 @@ for (const question of questions) {
   }
 
   check.addEventListener('click', () => (checked() ? reset() : evaluate()));
-  control.set(question, { multiple, selected, checked, evaluate, reset });
+  control.set(question, { evaluate, reset });
 }
 
 // --- one question at a time ----------------------------------------------------
@@ -137,8 +139,7 @@ if (stepper) {
     position.textContent = current < n ? fill(L.position, current + 1, n) : '\u00a0';
     back.disabled = current === 0;
     next.hidden = current === n;
-    const last = current === n - 1;
-    next.textContent = pending() ? (last ? L.check_finish : `${L.check_next} →`) : last ? L.finish : `${L.next} →`;
+    next.textContent = current === n - 1 ? L.finish : `${L.next} →`;
   }
 
   function show(index, { focus = true } = {}) {
@@ -167,15 +168,7 @@ if (stepper) {
 
   for (const q of questions) q.querySelector('h2').tabIndex = -1;
   back.addEventListener('click', () => show(current - 1));
-  // a multiple-choice question with options chosen but not yet checked
-  const pending = () => {
-    const c = control.get(questions[current]);
-    return !!c && c.multiple && c.selected() && !c.checked();
-  };
-  next.addEventListener('click', () => {
-    if (pending()) control.get(questions[current]).evaluate();
-    show(current + 1);
-  });
+  next.addEventListener('click', () => show(current + 1));
   restart.addEventListener('click', () => {
     for (const q of questions) control.get(q).reset();
     show(0);

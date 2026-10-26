@@ -1637,6 +1637,12 @@ details.callout[open] > summary::before {
   color: var(--accent-ink);
   font-weight: 650;
   cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.quiz-actions button:disabled {
+  opacity: 0.4;
+  cursor: default;
 }
 
 .quiz-verdict {
