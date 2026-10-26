@@ -112,16 +112,16 @@ if (stepper) {
     step.addEventListener('click', () => show(i));
     return step;
   });
-  const bar = el('div', { className: 'quiz-bar' }, position, el('div', { className: 'quiz-steps' }, ...steps));
+  // Back and Next sit in the header with the position and the bar, so they
+  // stay in one place however long a question and its answers are.
   const back = el('button', { type: 'button', className: 'button button-quiet quiz-back', textContent: `← ${L.back}` });
   const next = el('button', { type: 'button', className: 'button quiz-next' });
-  const nav = el('div', { className: 'quiz-nav' }, back, next);
+  const bar = el('div', { className: 'quiz-bar' }, back, position, next, el('div', { className: 'quiz-steps' }, ...steps));
   const score = el('p', { className: 'quiz-score' });
   const restart = el('button', { type: 'button', className: 'button quiz-restart', textContent: L.restart });
   const result = el('section', { className: 'quiz-result', hidden: true }, el('h2', { textContent: L.result, tabIndex: -1 }), score, restart);
   questions[0].before(bar);
-  questions[n - 1].after(nav);
-  nav.before(result);
+  questions[n - 1].after(result);
   prose.classList.add('quiz-stepper');
 
   let current = 0;

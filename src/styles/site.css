@@ -1667,13 +1667,40 @@ details.callout[open] > summary::before {
    question on top, Back and Next below, a short result at the end. */
 .quiz-bar {
   display: grid;
-  gap: 0.5rem;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
   margin: 0.5rem 0 1.75rem;
 }
 
+.quiz-bar .button {
+  justify-content: center;
+  min-width: 8.5rem;
+  min-height: 2.25rem;
+  padding: 0 1rem;
+  font-size: 0.92rem;
+}
+
+@media (max-width: 40rem) {
+  .quiz-bar {
+    gap: 0.5rem;
+  }
+
+  .quiz-bar .button {
+    min-width: 6.5rem;
+    padding: 0 0.7rem;
+  }
+}
+
 .quiz-position {
+  white-space: nowrap;
+  text-align: center;
   font-size: 0.875rem;
   color: var(--quiet);
+}
+
+.quiz-steps {
+  grid-column: 1 / -1;
 }
 
 .quiz-steps {
@@ -1722,21 +1749,10 @@ details.callout[open] > summary::before {
   outline: 0;
 }
 
-.quiz-nav {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 2rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--rule);
-}
-
-.quiz-nav .quiz-next {
-  margin-left: auto;
-}
-
-.quiz-nav .quiz-next[hidden] {
-  display: none;
+/* on the result, Next keeps its place in the grid but is not shown */
+.quiz-bar .quiz-next[hidden] {
+  display: inline-flex;
+  visibility: hidden;
 }
 
 .quiz-back:disabled {
