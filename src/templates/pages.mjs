@@ -148,6 +148,12 @@ export function items(site, lang) {
 
 // --- one item ----------------------------------------------------------------
 
+/** Labels for client/quiz.js, as data attributes on the quiz text. */
+const quizLabels = (lang) =>
+  html`data-check="${t(lang, 'check_answer')}" data-correct="${t(lang, 'correct')}" data-wrong="${t(lang, 'wrong')}" data-again="${t(lang, 'try_again')}" data-labels="${JSON.stringify(
+    Object.fromEntries(['next', 'back', 'finish', 'position', 'result', 'score', 'open', 'restart'].map((k) => [k, t(lang, `quiz_${k}`)])),
+  )}"`;
+
 export function item(site, doc, lang) {
   const text = site.localize(doc, lang);
   const lead = doc.lead;
@@ -173,7 +179,7 @@ export function item(site, doc, lang) {
         ${text.missing && html`<p class="notice">${t(lang, 'missing_translation')}</p>`}
         ${text.stale && html`<p class="notice">${t(lang, 'stale_translation')}</p>`}
         ${lead.type === 'slides' && slidesBlock(site, doc, lang)}
-        <div class="prose" lang="${text.lang}" ${isQuiz && raw(`data-check="${t(lang, 'check_answer')}" data-correct="${t(lang, 'correct')}" data-wrong="${t(lang, 'wrong')}" data-again="${t(lang, 'try_again')}"`)}>
+        <div class="prose" lang="${text.lang}" ${isQuiz && quizLabels(lang)}>
           ${raw(body)}
         </div>
         ${(lead.url || lead.buy) &&

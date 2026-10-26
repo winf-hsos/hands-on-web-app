@@ -1650,6 +1650,98 @@ details.callout[open] > summary::before {
   margin: 0;
 }
 
+/* One question at a time (client/quiz.js): a bar with one segment per
+   question on top, Back and Next below, a short result at the end. */
+.quiz-bar {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.5rem 0 1.75rem;
+}
+
+.quiz-position {
+  font-size: 0.875rem;
+  color: var(--quiet);
+}
+
+.quiz-steps {
+  display: flex;
+  gap: 6px;
+}
+
+.quiz-step {
+  flex: 1;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--rule);
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s var(--ease);
+}
+
+.quiz-step.was-correct {
+  background: color-mix(in srgb, var(--done) 35%, var(--rule));
+}
+
+.quiz-step.is-correct {
+  background: var(--done);
+}
+
+.quiz-step.is-wrong {
+  background: var(--error);
+}
+
+.quiz-step[aria-current='step'] {
+  transform: scaleY(1.6);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.quiz-step[aria-current='step']:not(.is-correct, .is-wrong) {
+  background: var(--accent);
+}
+
+.quiz-stepper .quiz-question {
+  margin-bottom: 0;
+}
+
+.quiz-stepper .quiz-question h2:focus,
+.quiz-result h2:focus {
+  outline: 0;
+}
+
+.quiz-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+}
+
+.quiz-nav .quiz-next {
+  margin-left: auto;
+}
+
+.quiz-nav .quiz-next[hidden] {
+  display: none;
+}
+
+.quiz-back:disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.quiz-result h2 {
+  font-size: 1.15rem;
+  margin: 0 0 0.5rem;
+}
+
+.prose .quiz-score {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 1.25rem;
+}
+
 /* --- my learning ------------------------------------------------------------ */
 
 .code-form {

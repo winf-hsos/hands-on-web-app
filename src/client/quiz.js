@@ -1,11 +1,17 @@
 // Quizzes: options are toggles, "Check" reveals the verdict and the
 // explanation. A quiz counts as done once every question was answered
-// correctly at least once.
-import { update, today } from './progress.js';
+// correctly at least once. With more than one question, the quiz shows one
+// question at a time, with Back and Next, a bar with one segment per
+// question, and a short result at the end.
+import { load, update, today } from './progress.js';
 
 const page = document.querySelector('[data-item-page]');
-const labels = document.querySelector('.prose').dataset;
+const prose = document.querySelector('.prose');
+const labels = prose.dataset;
+const L = JSON.parse(labels.labels);
 const questions = [...document.querySelectorAll('.quiz-question')];
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fill = (text, n, m) => text.replace('{n}', n).replace('{m}', m);
 
 for (const question of questions) {
   const options = [...question.querySelectorAll('.quiz-option')];
@@ -44,6 +50,7 @@ for (const question of questions) {
       explanation?.setAttribute('hidden', '');
       check.textContent = labels.check;
       verdict.textContent = '';
+      question.dispatchEvent(new CustomEvent('quiz-checked', { bubbles: true }));
       return;
     }
     const ok = options.every((o) => (o.dataset.correct === 'true') === (o.getAttribute('aria-checked') === 'true'));
@@ -51,6 +58,7 @@ for (const question of questions) {
     verdict.textContent = ok ? labels.correct : labels.wrong;
     explanation?.removeAttribute('hidden');
     check.textContent = labels.again;
+    question.dispatchEvent(new CustomEvent('quiz-checked', { bubbles: true }));
     update(page.dataset.itemPage, (p) => {
       p.quiz ??= {};
       const key = question.dataset.question;
@@ -58,4 +66,90 @@ for (const question of questions) {
       if (questions.every((q) => p.quiz[q.dataset.question] === 1)) p.done ??= today();
     });
   });
+}
+
+// --- one question at a time ----------------------------------------------------
+
+function el(tag, props = {}, ...children) {
+  const node = Object.assign(document.createElement(tag), props);
+  node.append(...children);
+  return node;
+}
+
+if (questions.length > 1) {
+  const n = questions.length;
+  const stored = load().items[page.dataset.itemPage]?.quiz ?? {};
+  const position = el('span', { className: 'quiz-position' });
+  position.setAttribute('aria-live', 'polite');
+  const steps = questions.map((q, i) => {
+    const step = el('button', { type: 'button', className: 'quiz-step', title: fill(L.position, i + 1, n) });
+    step.setAttribute('aria-label', fill(L.position, i + 1, n));
+    // answered correctly on an earlier visit: shown faintly until answered now
+    if (stored[q.dataset.question] === 1) step.classList.add('was-correct');
+    step.addEventListener('click', () => show(i));
+    return step;
+  });
+  const bar = el('div', { className: 'quiz-bar' }, position, el('div', { className: 'quiz-steps' }, ...steps));
+  const back = el('button', { type: 'button', className: 'button button-quiet quiz-back', textContent: `← ${L.back}` });
+  const next = el('button', { type: 'button', className: 'button quiz-next' });
+  const nav = el('div', { className: 'quiz-nav' }, back, next);
+  const score = el('p', { className: 'quiz-score' });
+  const restart = el('button', { type: 'button', className: 'button quiz-restart', textContent: L.restart });
+  const result = el('section', { className: 'quiz-result', hidden: true }, el('h2', { textContent: L.result, tabIndex: -1 }), score, restart);
+  questions[0].before(bar);
+  questions[n - 1].after(nav);
+  nav.before(result);
+  prose.classList.add('quiz-stepper');
+
+  let current = 0;
+  const state = (q) => (q.classList.contains('is-correct') ? 'correct' : q.classList.contains('is-wrong') ? 'wrong' : null);
+
+  function paint() {
+    steps.forEach((step, i) => {
+      const s = state(questions[i]);
+      step.classList.toggle('is-correct', s === 'correct');
+      step.classList.toggle('is-wrong', s === 'wrong');
+      if (i === current) step.setAttribute('aria-current', 'step');
+      else step.removeAttribute('aria-current');
+    });
+    // the result has its own heading, so the line above the bar stays empty there
+    position.textContent = current < n ? fill(L.position, current + 1, n) : '\u00a0';
+    back.disabled = current === 0;
+    next.hidden = current === n;
+    next.textContent = current === n - 1 ? L.finish : `${L.next} →`;
+  }
+
+  function show(index, { focus = true } = {}) {
+    const from = current;
+    current = index;
+    questions.forEach((q, i) => (q.hidden = i !== index));
+    result.hidden = index !== n;
+    if (index === n) {
+      const right = questions.filter((q) => state(q) === 'correct').length;
+      const open = questions.filter((q) => !state(q)).length;
+      score.textContent = fill(L.score, right, n) + (open ? ` · ${fill(L.open, open, n)}` : '');
+    }
+    paint();
+    const shown = index === n ? result : questions[index];
+    if (!reduceMotion && from !== index) {
+      const dx = index > from ? 24 : -24;
+      shown.animate([{ opacity: 0, transform: `translateX(${dx}px)` }, { opacity: 1, transform: 'none' }], {
+        duration: 260,
+        easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)',
+      });
+    }
+    if (!focus) return;
+    if (bar.getBoundingClientRect().top < 0) bar.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+    (shown.querySelector('h2') ?? shown).focus({ preventScroll: true });
+  }
+
+  for (const q of questions) q.querySelector('h2').tabIndex = -1;
+  back.addEventListener('click', () => show(current - 1));
+  next.addEventListener('click', () => show(current + 1));
+  restart.addEventListener('click', () => {
+    for (const q of questions) if (q.classList.contains('is-checked')) q.querySelector('.quiz-actions button').click();
+    show(0);
+  });
+  prose.addEventListener('quiz-checked', paint);
+  show(0, { focus: false });
 }
