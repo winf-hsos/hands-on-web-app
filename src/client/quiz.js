@@ -1,8 +1,10 @@
-// Quizzes: options are toggles, "Check" reveals the verdict and the
-// explanation. A quiz counts as done once every question was answered
-// correctly at least once. With more than one question, the quiz shows one
-// question at a time, with Back and Next, a bar with one segment per
-// question, and a short result at the end.
+// Quizzes. A single-choice question is answered with one click: it shows at
+// once whether that was right, and the explanation. A multiple-choice
+// question is checked with "Check and continue" in the navigation (or with
+// "Check" when the quiz has only one question). A quiz counts as done once
+// every question was answered correctly at least once. With more than one
+// question, the quiz shows one question at a time, with Back and Next, a bar
+// with one segment per question, and a short result at the end.
 import { load, update, today } from './progress.js';
 
 const page = document.querySelector('[data-item-page]');
@@ -10,20 +12,69 @@ const prose = document.querySelector('.prose');
 const labels = prose.dataset;
 const L = JSON.parse(labels.labels);
 const questions = [...document.querySelectorAll('.quiz-question')];
+const stepper = questions.length > 1;
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const fill = (text, n, m) => text.replace('{n}', n).replace('{m}', m);
+
+/** Per question: { multiple, selected(), checked(), evaluate() }. */
+const control = new Map();
+const changed = (question) => question.dispatchEvent(new CustomEvent('quiz-changed', { bubbles: true }));
 
 for (const question of questions) {
   const options = [...question.querySelectorAll('.quiz-option')];
   const multiple = question.querySelector('.quiz-options')?.dataset.multiple === 'true';
+  const checked = () => question.classList.contains('is-checked');
+  const selected = () => options.some((o) => o.getAttribute('aria-checked') === 'true');
+
+  const actions = document.createElement('div');
+  actions.className = 'quiz-actions';
+  // Before the answer, the button only exists where nothing else checks:
+  // a multiple-choice question in a quiz of one question. After it, it
+  // offers to try again.
+  const check = Object.assign(document.createElement('button'), { type: 'button', textContent: labels.check });
+  check.hidden = !multiple || stepper;
+  const verdict = Object.assign(document.createElement('p'), { className: 'quiz-verdict' });
+  verdict.setAttribute('aria-live', 'polite');
+  actions.append(check, verdict);
+  question.querySelector('.quiz-options').after(actions);
+  const explanation = question.querySelector('.quiz-explanation');
+
+  function evaluate() {
+    const ok = options.every((o) => (o.dataset.correct === 'true') === (o.getAttribute('aria-checked') === 'true'));
+    question.classList.add('is-checked', ok ? 'is-correct' : 'is-wrong');
+    verdict.textContent = ok ? labels.correct : labels.wrong;
+    explanation?.removeAttribute('hidden');
+    check.textContent = labels.again;
+    check.hidden = false;
+    changed(question);
+    update(page.dataset.itemPage, (p) => {
+      p.quiz ??= {};
+      const key = question.dataset.question;
+      p.quiz[key] = p.quiz[key] || (ok ? 1 : 0);
+      if (questions.every((q) => p.quiz[q.dataset.question] === 1)) p.done ??= today();
+    });
+  }
+
+  function reset() {
+    question.classList.remove('is-checked', 'is-correct', 'is-wrong');
+    options.forEach((o) => o.setAttribute('aria-checked', 'false'));
+    explanation?.setAttribute('hidden', '');
+    check.textContent = labels.check;
+    check.hidden = !multiple || stepper;
+    verdict.textContent = '';
+    changed(question);
+  }
+
   for (const option of options) {
     option.tabIndex = 0;
     option.setAttribute('role', multiple ? 'checkbox' : 'radio');
     option.setAttribute('aria-checked', 'false');
     const toggle = () => {
-      if (question.classList.contains('is-checked')) return;
+      if (checked()) return;
       if (!multiple) options.forEach((o) => o !== option && o.setAttribute('aria-checked', 'false'));
       option.setAttribute('aria-checked', String(option.getAttribute('aria-checked') !== 'true'));
+      if (multiple) changed(question);
+      else evaluate();
     };
     option.addEventListener('click', toggle);
     option.addEventListener('keydown', (e) => {
@@ -34,38 +85,8 @@ for (const question of questions) {
     });
   }
 
-  const actions = document.createElement('div');
-  actions.className = 'quiz-actions';
-  const check = Object.assign(document.createElement('button'), { type: 'button', textContent: labels.check });
-  const verdict = Object.assign(document.createElement('p'), { className: 'quiz-verdict' });
-  verdict.setAttribute('aria-live', 'polite');
-  actions.append(check, verdict);
-  question.querySelector('.quiz-options').after(actions);
-  const explanation = question.querySelector('.quiz-explanation');
-
-  check.addEventListener('click', () => {
-    if (question.classList.contains('is-checked')) {
-      question.classList.remove('is-checked', 'is-correct', 'is-wrong');
-      options.forEach((o) => o.setAttribute('aria-checked', 'false'));
-      explanation?.setAttribute('hidden', '');
-      check.textContent = labels.check;
-      verdict.textContent = '';
-      question.dispatchEvent(new CustomEvent('quiz-checked', { bubbles: true }));
-      return;
-    }
-    const ok = options.every((o) => (o.dataset.correct === 'true') === (o.getAttribute('aria-checked') === 'true'));
-    question.classList.add('is-checked', ok ? 'is-correct' : 'is-wrong');
-    verdict.textContent = ok ? labels.correct : labels.wrong;
-    explanation?.removeAttribute('hidden');
-    check.textContent = labels.again;
-    question.dispatchEvent(new CustomEvent('quiz-checked', { bubbles: true }));
-    update(page.dataset.itemPage, (p) => {
-      p.quiz ??= {};
-      const key = question.dataset.question;
-      p.quiz[key] = p.quiz[key] || (ok ? 1 : 0);
-      if (questions.every((q) => p.quiz[q.dataset.question] === 1)) p.done ??= today();
-    });
-  });
+  check.addEventListener('click', () => (checked() ? reset() : evaluate()));
+  control.set(question, { multiple, selected, checked, evaluate, reset });
 }
 
 // --- one question at a time ----------------------------------------------------
@@ -76,7 +97,7 @@ function el(tag, props = {}, ...children) {
   return node;
 }
 
-if (questions.length > 1) {
+if (stepper) {
   const n = questions.length;
   const stored = load().items[page.dataset.itemPage]?.quiz ?? {};
   const position = el('span', { className: 'quiz-position' });
@@ -116,7 +137,8 @@ if (questions.length > 1) {
     position.textContent = current < n ? fill(L.position, current + 1, n) : '\u00a0';
     back.disabled = current === 0;
     next.hidden = current === n;
-    next.textContent = current === n - 1 ? L.finish : `${L.next} →`;
+    const last = current === n - 1;
+    next.textContent = pending() ? (last ? L.check_finish : `${L.check_next} →`) : last ? L.finish : `${L.next} →`;
   }
 
   function show(index, { focus = true } = {}) {
@@ -145,11 +167,19 @@ if (questions.length > 1) {
 
   for (const q of questions) q.querySelector('h2').tabIndex = -1;
   back.addEventListener('click', () => show(current - 1));
-  next.addEventListener('click', () => show(current + 1));
+  // a multiple-choice question with options chosen but not yet checked
+  const pending = () => {
+    const c = control.get(questions[current]);
+    return !!c && c.multiple && c.selected() && !c.checked();
+  };
+  next.addEventListener('click', () => {
+    if (pending()) control.get(questions[current]).evaluate();
+    show(current + 1);
+  });
   restart.addEventListener('click', () => {
-    for (const q of questions) if (q.classList.contains('is-checked')) q.querySelector('.quiz-actions button').click();
+    for (const q of questions) control.get(q).reset();
     show(0);
   });
-  prose.addEventListener('quiz-checked', paint);
+  prose.addEventListener('quiz-changed', paint);
   show(0, { focus: false });
 }
