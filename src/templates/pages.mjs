@@ -64,7 +64,7 @@ export function items(site, lang) {
     .sort((a, b) => site.localize(a, lang).title.localeCompare(site.localize(b, lang).title, lang));
   // Where each item is linked, for the path and project filters.
   const pathsOf = new Map(site.items.map((i) => [i.id, []]));
-  for (const path of site.paths) for (const s of site.steps(path.lead.steps)) pathsOf.get(s.id)?.push(path.id);
+  for (const path of site.paths) for (const s of site.pathSteps(path)) pathsOf.get(s.id)?.push(path.id);
   const projectsOf = new Map(site.items.map((i) => [i.id, [...new Set(site.inProjects(i.id, lang).map((r) => r.project.id))]]));
   const linked = (docs, of) => docs.filter((d) => [...of.values()].some((ids) => ids.includes(d.id)));
   const choices = (docs) => [['', t(lang, 'all')], ...docs.map((d) => [d.id, site.localize(d, lang).title])];
@@ -152,15 +152,16 @@ export function item(site, doc, lang) {
   const text = site.localize(doc, lang);
   const lead = doc.lead;
   const { before, after, other } = site.relations(doc, lang);
-  const inPaths = site.paths.filter((p) => site.steps(p.lead.steps).some((s) => s.id === doc.id));
+  const inPaths = site.paths.filter((p) => site.pathSteps(p).some((s) => s.id === doc.id));
   const link = (target) => html`<a href="${site.url(target, lang)}">${site.localize(target, lang).title}</a>`;
   const isQuiz = lead.type === 'quiz';
   const v = site.vocabulary;
+  const body = site.body(doc, lang);
   return {
     path: site.url(doc, lang),
     title: text.title,
     description: text.summary,
-    scripts: isQuiz ? ['quiz'] : [],
+    scripts: [isQuiz && 'quiz', body.includes('data-runner') && 'runner'].filter(Boolean),
     content: html`
       <article class="page item" data-item-page="${doc.id}" style="--topic: ${site.topicColor(doc)}">
         <header class="page-head">
@@ -173,7 +174,7 @@ export function item(site, doc, lang) {
         ${text.stale && html`<p class="notice">${t(lang, 'stale_translation')}</p>`}
         ${lead.type === 'slides' && slidesBlock(site, doc, lang)}
         <div class="prose" lang="${text.lang}" ${isQuiz && raw(`data-check="${t(lang, 'check_answer')}" data-correct="${t(lang, 'correct')}" data-wrong="${t(lang, 'wrong')}" data-again="${t(lang, 'try_again')}"`)}>
-          ${raw(site.body(doc, lang))}
+          ${raw(body)}
         </div>
         ${(lead.url || lead.buy) &&
         html`<p class="links">
@@ -267,7 +268,7 @@ export function paths(site, lang) {
       <ul class="rows">
         ${site.paths.map((p) => {
           const text = site.localize(p, lang);
-          const steps = site.steps(p.lead.steps);
+          const steps = site.pathSteps(p);
           return html`<li class="row row-path">
             <a class="row-link" href="${site.url(p, lang)}">
               <span class="row-head">
@@ -286,8 +287,12 @@ export function paths(site, lang) {
 
 export function path(site, doc, lang) {
   const text = site.localize(doc, lang);
-  const steps = site.steps(doc.lead.steps);
+  const steps = site.pathSteps(doc);
   const time = site.duration(steps);
+  // Steps are numbered through the whole path, also across its sections.
+  let number = 0;
+  const trail = (list) =>
+    html`<ol class="rows trail">${site.steps(list).map((s) => itemRow(site, site.item.get(s.id), lang, { optional: s.optional, summary: false, number: ++number }))}</ol>`;
   const requirement = (id) => site.item.get(id) ?? site.path.get(id);
   return {
     path: site.url(doc, lang),
@@ -303,9 +308,9 @@ export function path(site, doc, lang) {
           ${progressBar(steps.filter((s) => !s.optional).map((s) => s.id), lang)}
         </header>
         ${text.missing && html`<p class="notice">${t(lang, 'missing_translation')}</p>`}
-        <ol class="rows trail">
-          ${steps.map((s, i) => itemRow(site, site.item.get(s.id), lang, { optional: s.optional, summary: false, number: i + 1 }))}
-        </ol>
+        ${doc.lead.sections
+          ? doc.lead.sections.map((section) => html`<section class="path-section"><h2>${section.title[lang]}</h2>${trail(section.steps)}</section>`)
+          : trail(doc.lead.steps)}
         ${more(
           t(lang, 'about_path'),
           html`<div class="prose" lang="${text.lang}">${raw(site.body(doc, lang))}</div>

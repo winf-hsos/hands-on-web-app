@@ -75,6 +75,13 @@ function shapes(vocabulary) {
       null
     );
   };
+  // A part of a learning path: a heading in both languages and its steps.
+  const pathSection = (v) => {
+    if (!v || typeof v !== 'object' || Array.isArray(v)) return 'expected { title, steps }';
+    const extra = Object.keys(v).find((k) => !['title', 'steps'].includes(k));
+    if (extra) return `unknown field ${extra} (allowed: title, steps)`;
+    return (label(v.title) && `title: ${label(v.title)}`) ?? (list(step, 1)(v.steps) && `steps: ${list(step, 1)(v.steps)}`) ?? null;
+  };
   const part = (allowed) => (v) => {
     if (!v || typeof v !== 'object' || Array.isArray(v)) return `expected { ${allowed.join(', ')} }`;
     const extra = Object.keys(v).find((k) => !allowed.includes(k));
@@ -133,11 +140,11 @@ function shapes(vocabulary) {
           goal: text,
           audience: text,
           level: int(1, 4),
-          steps: list(step, 1),
           status,
           updated: date,
         },
-        optional: { requires: list(id) },
+        // either a flat list of steps or parts with headings, see pathSteps
+        optional: { requires: list(id), steps: list(step, 1), sections: list(pathSection, 1) },
       },
       translation: { required: { ...translation.required, goal: text, audience: text }, optional: {} },
     },
@@ -216,7 +223,7 @@ export function referencesOf(doc) {
   const refs = [];
   const add = (target, where) => refs.push({ target, where: `${doc.section}/${doc.id} ${where}` });
   for (const [relation, targets] of Object.entries(lead.relations ?? {})) for (const t of targets) add(t, `relations.${relation}`);
-  for (const s of stepsOf(lead.steps)) add(s.id, 'steps');
+  for (const s of pathSteps(lead)) add(s.id, 'steps');
   for (const r of lead.requires ?? []) add(r, 'requires');
   (lead.units ?? []).forEach((unit, n) => stepsOf(unit.items).forEach((s) => add(s.id, `units[${n + 1}]`)));
   for (const i of lead.items ?? []) add(i, 'items');
@@ -233,6 +240,14 @@ export function referencesOf(doc) {
 
 export const stepsOf = (list = []) =>
   list.map((s) => (typeof s === 'string' ? { id: s, optional: false } : { id: s.item, optional: !!s.optional }));
+
+/** All steps of a path, whether it lists them flat or in sections. */
+export const pathSteps = (lead) =>
+  Array.isArray(lead.sections)
+    ? lead.sections.flatMap((s) => (Array.isArray(s?.steps) ? stepsOf(s.steps) : []))
+    : Array.isArray(lead.steps)
+      ? stepsOf(lead.steps)
+      : [];
 
 export function validate({ vocabulary, sections, problems }) {
   const errors = [...problems];
@@ -304,7 +319,9 @@ export function validate({ vocabulary, sections, problems }) {
     }
   }
   for (const path of paths) {
-    for (const s of stepsOf(path.lead.steps)) needItem(`paths/${path.id} steps`, s.id);
+    if ((path.lead.steps === undefined) === (path.lead.sections === undefined))
+      errors.push(`paths/${path.id}: needs either steps or sections, not ${path.lead.steps ? 'both' : 'neither'}`);
+    for (const s of pathSteps(path.lead)) needItem(`paths/${path.id} steps`, s.id);
     for (const r of path.lead.requires ?? []) {
       if (!items.has(r) && !pathIds.has(r)) errors.push(`paths/${path.id} requires: unknown item or path "${r}"`);
     }
@@ -420,7 +437,7 @@ export function validate({ vocabulary, sections, problems }) {
     }
   }
   const published = [
-    ...paths.filter((p) => p.lead.status === 'published').map((p) => [`paths/${p.id}`, stepsOf(p.lead.steps)]),
+    ...paths.filter((p) => p.lead.status === 'published').map((p) => [`paths/${p.id}`, pathSteps(p.lead)]),
     ...courses
       .filter((c) => c.lead.status === 'published')
       .map((c) => [`courses/${c.id}`, c.lead.units.flatMap((u) => stepsOf(u.items))]),

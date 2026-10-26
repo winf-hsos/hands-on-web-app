@@ -135,3 +135,21 @@ test('recordings must be YouTube links', () => {
   assert.equal(errors.length, 1);
   assert.match(errors[0], /recordings: url: expected a YouTube link/);
 });
+
+test('a path has either steps or sections, and steps in sections are checked like any other', () => {
+  const { errors } = check(({ find }) => {
+    lead(find('paths', 'python-for-beginners')).sections[0].steps.push('nowhere-section');
+    lead(find('paths', 'codes-in-one-hour')).sections = [{ title: { de: 'A', en: 'A' }, steps: ['knock-code'] }];
+  });
+  assert.deepEqual(errors.sort(), [
+    'paths/codes-in-one-hour: needs either steps or sections, not both',
+    'paths/python-for-beginners steps: unknown item "nowhere-section"',
+  ]);
+});
+
+test('a section of a path needs a title in both languages', () => {
+  const { errors } = check(({ find }) => {
+    lead(find('paths', 'python-for-beginners')).sections.push({ title: { de: 'Teil 2' }, steps: ['python-functions'] });
+  });
+  assert.deepEqual(errors, ['paths/python-for-beginners/de.md: sections: title: expected { de: …, en: … }']);
+});

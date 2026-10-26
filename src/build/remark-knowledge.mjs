@@ -1,19 +1,25 @@
 // Remark plugin for the conventions of docs/knowledge-schema.md, sections 6–7:
-// [[id]] and [[id|text]] links, GitHub-style callouts, and quiz questions.
+// [[id]] and [[id|text]] links, GitHub-style callouts (HINT and SOLUTION
+// fold away), Python code that runs in the browser, and quiz questions.
 // Options: lang, quiz (boolean), resolve(id) -> { url, title } | null.
 import { visit, SKIP } from 'unist-util-visit';
+import { tokenize } from '../client/highlight.js';
 
-const CALLOUT = /^\[!(NOTE|TIP|WARNING|IMPORTANT|CAUTION)\]\s*/;
+const CALLOUT = /^\[!(NOTE|TIP|WARNING|IMPORTANT|CAUTION|HINT|SOLUTION)\]\s*/;
+const FOLDED = new Set(['HINT', 'SOLUTION']);
 const WIKI = /\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g;
 const CALLOUT_TITLES = {
-  de: { NOTE: 'Hinweis', TIP: 'Tipp', WARNING: 'Achtung', IMPORTANT: 'Wichtig', CAUTION: 'Vorsicht' },
-  en: { NOTE: 'Note', TIP: 'Tip', WARNING: 'Warning', IMPORTANT: 'Important', CAUTION: 'Caution' },
+  de: { NOTE: 'Hinweis', TIP: 'Tipp', WARNING: 'Achtung', IMPORTANT: 'Wichtig', CAUTION: 'Vorsicht', HINT: 'Tipp anzeigen', SOLUTION: 'Lösung anzeigen' },
+  en: { NOTE: 'Note', TIP: 'Tip', WARNING: 'Warning', IMPORTANT: 'Important', CAUTION: 'Caution', HINT: 'Show a hint', SOLUTION: 'Show the solution' },
 };
+// With several hints in one text they are numbered, since each builds on the one before.
+const NUMBERED_HINT = { de: (n) => `Tipp ${n} anzeigen`, en: (n) => `Show hint ${n}` };
 
 export function remarkKnowledge({ lang, quiz: isQuiz = false, resolve }) {
   return (tree) => {
     wikiLinks(tree, resolve);
     callouts(tree, lang);
+    python(tree);
     if (isQuiz) quiz(tree);
   };
 }
@@ -45,6 +51,7 @@ function wikiLinks(tree, resolve) {
 }
 
 function callouts(tree, lang) {
+  const hints = [];
   visit(tree, 'blockquote', (node) => {
     const first = node.children[0];
     const text = first?.type === 'paragraph' ? first.children[0] : undefined;
@@ -54,12 +61,40 @@ function callouts(tree, lang) {
     text.value = text.value.slice(match[0].length);
     if (!text.value) first.children.shift();
     if (!first.children.length) node.children.shift();
-    node.data = { hName: 'aside', hProperties: { className: ['callout', `callout-${kind.toLowerCase()}`] } };
+    const folded = FOLDED.has(kind);
+    node.data = { hName: folded ? 'details' : 'aside', hProperties: { className: ['callout', `callout-${kind.toLowerCase()}`] } };
+    const title = { type: 'text', value: CALLOUT_TITLES[lang][kind] };
+    if (kind === 'HINT') hints.push(title);
     node.children.unshift({
       type: 'paragraph',
-      data: { hProperties: { className: ['callout-title'] } },
-      children: [{ type: 'text', value: CALLOUT_TITLES[lang][kind] }],
+      data: { hName: folded ? 'summary' : 'p', hProperties: { className: ['callout-title'] } },
+      children: [title],
     });
+  });
+  if (hints.length > 1) hints.forEach((title, i) => (title.value = NUMBERED_HINT[lang](i + 1)));
+}
+
+// ```python blocks are highlighted and become runnable (client/runner.js);
+// ```python static only shows the code, for fragments that cannot run.
+function python(tree) {
+  visit(tree, 'code', (node) => {
+    if (node.lang !== 'python') return;
+    const runnable = !/\bstatic\b/.test(node.meta ?? '');
+    const code = {
+      type: 'element',
+      tagName: 'code',
+      properties: { className: ['language-python'] },
+      children: tokenize(node.value).map(({ type, text }) =>
+        type ? { type: 'element', tagName: 'span', properties: { className: [`tok-${type}`] }, children: [{ type: 'text', value: text }] } : { type: 'text', value: text },
+      ),
+    };
+    const pre = { type: 'element', tagName: 'pre', properties: { className: ['code'] }, children: [code] };
+    // An unknown node type, so that remark-rehype builds exactly these
+    // elements instead of wrapping them in its own <pre>.
+    node.type = 'pythonCode';
+    node.data = runnable
+      ? { hName: 'div', hProperties: { className: ['runner'], dataRunner: '' }, hChildren: [pre] }
+      : { hName: 'pre', hProperties: { className: ['code'] }, hChildren: [code] };
   });
 }
 

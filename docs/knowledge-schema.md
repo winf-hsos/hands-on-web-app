@@ -186,7 +186,15 @@ The body is plain Markdown with a few conventions:
   (`codebook.de.svg`, `codebook.en.svg`).
 - **Callouts** use the blockquote form known from GitHub:
   `> [!TIP]`, `> [!NOTE]`, `> [!WARNING]`. They render as boxes and remain
-  readable as plain text.
+  readable as plain text. `> [!HINT]` and `> [!SOLUTION]` render folded, so
+  that a learner opens them only when needed; several hints in one text are
+  numbered.
+- **Python code** in a ` ```python ` block becomes a small editor on the page
+  that runs the code in the browser (Pyodide, Python as WebAssembly, loaded on
+  the first click). `input()` is answered in a field below the output. A
+  fragment that cannot run on its own is marked ` ```python static `, and
+  ` ```text ` shows a sample run as it is. Names in code are English in both
+  languages; what a program prints follows the language of the text.
 - **No embedded HTML and no embedded pages from elsewhere.** That keeps the
   rule from the concept that nothing on the site comes from anywhere but the
   knowledge base.
@@ -219,6 +227,25 @@ This form is deliberately independent of the existing question pools, as the
 concept requires. If the platform later takes over the practice quizzes of the
 existing websites, a converter can translate between the two.
 
+## 7a. Exercises
+
+An exercise (type `exercise`) is a task in which the learner writes a program
+themselves. Its body follows a fixed order of sections: `## Aufgabe` (task),
+`## So soll es aussehen` (a sample run as a ` ```text ` block), `## Dein
+Programm` (a runnable skeleton), then hints and a model solution as folded
+callouts, and optionally `## Für Schnelle` (an extension). An exercise points
+to the lessons it needs with `requires`.
+
+```markdown
+> [!HINT]
+> `seconds // 3600` liefert die vollen Stunden.
+
+> [!SOLUTION]
+> ```python
+> print(format_duration(7507))
+> ```
+```
+
 ## 8. Learning paths
 
 A path is a folder in `paths/` with the same lead/translation pattern. The
@@ -250,6 +277,18 @@ updated: 2026-10-21
 
 Duration is not written down but computed from the steps, so it cannot be
 wrong. A step is either an id or an object with `item` and `optional`.
+
+A longer path can be divided into parts. Instead of `steps` it then has
+`sections`, each with a title in both languages and its own steps; a path has
+one or the other, never both. Steps are numbered through the whole path.
+
+```yaml
+sections:
+  - title: { de: "Teil 1: Erste Programme", en: "Part 1: First programs" }
+    steps:
+      - python-first-program
+      - python-values-and-variables
+```
 
 ## 9. Courses
 

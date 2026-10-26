@@ -14,7 +14,7 @@ const ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
 const ORDER = {
   content: ['type', 'code', 'title', 'summary', 'authors', 'year', 'publisher', 'isbn', 'buy', 'url', 'doi', 'venue', 'license', 'when', 'born', 'died', 'level', 'duration', 'topics', 'modules', 'relations', 'access', 'status', 'updated'],
-  paths: ['kind', 'code', 'title', 'summary', 'goal', 'audience', 'level', 'requires', 'steps', 'status', 'updated'],
+  paths: ['kind', 'code', 'title', 'summary', 'goal', 'audience', 'level', 'requires', 'steps', 'sections', 'status', 'updated'],
   courses: ['kind', 'code', 'access_code', 'module', 'semester', 'title', 'summary', 'units', 'status', 'updated'],
   projects: ['kind', 'code', 'title', 'summary', 'level', 'topics', 'modules', 'items', 'phases', 'status', 'updated'],
   pages: ['kind', 'title', 'summary', 'featured_path', 'samples', 'updated'],

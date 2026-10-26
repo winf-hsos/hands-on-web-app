@@ -46,6 +46,11 @@
   --measure: 44rem;
   --wide: 64rem;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --tok-keyword: #0b6fa4;
+  --tok-string: #2b7a3d;
+  --tok-number: #b3541e;
+  --tok-builtin: #7c3aed;
+  --tok-function: #0e7490;
   color-scheme: light;
 }
 
@@ -58,6 +63,11 @@
     --rule: #2a3a4a;
     --accent-ink: #5cc6f2;
     --done: #3fcf86;
+    --tok-keyword: #5cc6f2;
+    --tok-string: #8fd8a8;
+    --tok-number: #f5a66b;
+    --tok-builtin: #c4a1ff;
+    --tok-function: #6fd6e8;
     color-scheme: dark;
   }
 }
@@ -69,6 +79,11 @@
   --rule: #2a3a4a;
   --accent-ink: #5cc6f2;
   --done: #3fcf86;
+  --tok-keyword: #5cc6f2;
+  --tok-string: #8fd8a8;
+  --tok-number: #f5a66b;
+  --tok-builtin: #c4a1ff;
+  --tok-function: #6fd6e8;
   color-scheme: dark;
 }
 
@@ -653,6 +668,174 @@ select {
   color: var(--quiet);
 }
 
+/* --- code ---------------------------------------------------------------------- */
+
+.prose pre.code,
+.runner-output {
+  margin: 0;
+  padding: 0.9rem 1rem;
+  font: 400 0.92rem/1.55 var(--mono);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  tab-size: 4;
+}
+
+.prose pre.code {
+  margin: 1.25rem 0;
+  background: var(--paper-2);
+  border-radius: 0.75rem;
+}
+
+.prose pre.code code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+.tok-keyword {
+  color: var(--tok-keyword);
+  font-weight: 650;
+}
+
+.tok-string {
+  color: var(--tok-string);
+}
+
+.tok-number {
+  color: var(--tok-number);
+}
+
+.tok-builtin {
+  color: var(--tok-builtin);
+}
+
+.tok-function {
+  color: var(--tok-function);
+}
+
+.tok-comment {
+  color: var(--quiet);
+  font-style: italic;
+}
+
+/* A runnable block (client/runner.js): the highlighted code lies under a
+   transparent textarea with exactly the same font and padding, so typing
+   happens in the textarea and the colours show through. */
+.runner {
+  margin: 1.5rem 0;
+  border: 1px solid var(--rule);
+  border-radius: 0.75rem;
+  background: var(--paper);
+  overflow: hidden;
+}
+
+.runner > pre.code {
+  margin: 0;
+  border-radius: 0;
+}
+
+.runner-code {
+  position: relative;
+  background: var(--paper-2);
+}
+
+.prose .runner-code pre.code {
+  margin: 0;
+  border-radius: 0;
+  background: none;
+}
+
+.runner-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0.9rem 1rem;
+  border: 0;
+  outline: 0;
+  resize: none;
+  overflow: hidden;
+  background: transparent;
+  color: transparent;
+  caret-color: var(--ink);
+  font: 400 0.92rem/1.55 var(--mono);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  tab-size: 4;
+}
+
+.runner-input::selection {
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+  color: transparent;
+}
+
+.runner-code:focus-within {
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+.runner-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border-top: 1px solid var(--rule);
+}
+
+.runner-bar .button {
+  min-height: 2.25rem;
+  padding: 0 1rem;
+  font-size: 0.92rem;
+}
+
+.runner-status {
+  color: var(--quiet);
+  font-size: 0.875rem;
+}
+
+.runner-output {
+  border-top: 1px solid var(--rule);
+  min-height: 2.5rem;
+  animation: fade 0.25s var(--ease);
+}
+
+.out-in {
+  color: var(--accent-ink);
+  font-weight: 650;
+}
+
+.out-err {
+  color: var(--error);
+}
+
+.out-note {
+  color: var(--quiet);
+  font-style: italic;
+}
+
+.runner-answer {
+  min-width: min(16rem, 100%);
+  padding: 0.1rem 0.4rem;
+  border: 0;
+  border-bottom: 2px solid var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  color: var(--accent-ink);
+  font: 650 0.92rem/1.55 var(--mono);
+  outline: 0;
+}
+
+.runner-hint {
+  margin: 0 !important;
+  padding: 0.6rem 1rem 0.8rem;
+  border-top: 1px dashed var(--rule);
+  font-size: 0.92rem;
+  color: var(--ink);
+  box-shadow: inset 3px 0 0 var(--warn);
+}
+
+/* --- callouts ------------------------------------------------------------------- */
+
 .callout {
   margin: 1.5rem 0;
   padding: 0.9rem 1.1rem;
@@ -672,6 +855,45 @@ select {
 
 .callout-tip .callout-title {
   color: var(--done);
+}
+
+/* Hints and solutions stay folded until someone asks for them. */
+details.callout > summary {
+  list-style: none;
+  cursor: pointer;
+  margin-bottom: 0 !important;
+}
+
+details.callout > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.callout > summary::before {
+  content: '▸';
+  display: inline-block;
+  width: 1.1em;
+  transition: transform 0.2s var(--ease);
+}
+
+details.callout[open] > summary {
+  margin-bottom: 0.5rem !important;
+}
+
+details.callout[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.callout-hint .callout-title {
+  color: var(--done);
+}
+
+.callout-solution .callout-title {
+  color: var(--accent-ink);
+}
+
+.path-section h2 {
+  margin: 2.25rem 0 0.5rem;
+  font-size: 1.2rem;
 }
 
 .callout-warning .callout-title,

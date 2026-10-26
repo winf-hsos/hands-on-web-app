@@ -12,6 +12,7 @@ types:
   story:      { de: Geschichte,      en: Story,      icon: history }
   tool:       { de: Werkzeug,        en: Tool,       icon: wrench }
   quiz:       { de: Quiz,            en: Quiz,       icon: circle-question-mark }
+  exercise:   { de: Übung,           en: Exercise,   icon: square-terminal }
   source:     { de: Literaturquelle, en: Source,     icon: book-marked }
   paper:      { de: Paper,           en: Paper,      icon: file-text }
   person:     { de: Person,          en: Person,     icon: user-round }

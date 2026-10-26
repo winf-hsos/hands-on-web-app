@@ -58,7 +58,8 @@ dist/  de/…, en/…, de/index.json, en/index.json, assets/
 
 Dependencies are deliberately few: `js-yaml` for front matter, the unified
 family for Markdown, MiniSearch for search, `qrcode-generator` for the QR
-code, the Lucide icons for the content types, and the Atkinson Hyperlegible fonts, which are served from the site
+code, the Lucide icons for the content types, Pyodide for running Python in
+the browser, and the Atkinson Hyperlegible fonts, which are served from the site
 itself rather than from Google. The browser loads ES modules directly through
 an import map; there is no bundler.
 
@@ -92,6 +93,17 @@ All motion is switched off for people who ask their system for reduced motion.
   `#challenge-2` opens exactly that part.
 - **The map** is drawn as SVG with a small force layout of our own; hovering a
   node brings out its neighbours.
+- **Python** runs in the browser with Pyodide (Python compiled to
+  WebAssembly, about 12 MB), served from the site under
+  `/assets/vendor/pyodide-<version>/` and loaded only when someone first clicks
+  Run. It runs in a worker (`src/client/python-worker.js`), so an endless loop
+  cannot freeze the page and Stop simply ends the worker. `input()` cannot
+  wait inside a worker without special server headers, which static hosts
+  rarely allow; instead a program runs with the answers given so far, stops
+  when it needs one more, and runs again from the start once the learner has
+  typed it. Programs at this level are deterministic, so the learner sees one
+  continuous run. `src/client/highlight.js` highlights Python both at build
+  time and while editing.
 
 ## Hosting and address
 

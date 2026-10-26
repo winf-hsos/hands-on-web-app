@@ -19,6 +19,8 @@ const TYPES = {
   '.json': 'application/json; charset=utf-8',
   '.svg': 'image/svg+xml',
   '.woff2': 'font/woff2',
+  '.wasm': 'application/wasm',
+  '.zip': 'application/zip',
 };
 
 let state = { ok: true, errors: [] };

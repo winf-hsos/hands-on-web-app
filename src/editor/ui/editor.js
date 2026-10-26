@@ -236,7 +236,8 @@ function renderShared() {
   }
   if (work.section === 'paths') {
     html.push(field('Niveau', select('level', levels, d.level)));
-    html.push(linkList('steps', 'Schritte, in dieser Reihenfolge', { steps: true }));
+    // A path in sections keeps its structure in the YAML field below.
+    if (!d.sections) html.push(linkList('steps', 'Schritte, in dieser Reihenfolge', { steps: true }));
     html.push(linkList('requires', 'Voraussetzungen'));
   }
   if (work.section === 'courses') {
@@ -261,7 +262,9 @@ function renderShared() {
         ? 'Phasen und Challenges mit ihren Kennungen. Jede Kennung braucht im Text eine Überschrift mit {#kennung}, in beiden Sprachen.'
         : work.section === 'courses'
           ? 'Einheiten mit Titel (de/en), Freischaltdatum und Inhalten.'
-          : 'Weitere Kopfdaten';
+          : work.section === 'paths'
+            ? 'Teile des Pfads mit Titel (de/en) und ihren Schritten.'
+            : 'Weitere Kopfdaten';
     html.push(field('Struktur (YAML)', `<textarea class="ed-yaml" id="yaml" spellcheck="false">${esc(Object.keys(extra).length ? yaml.dump(extra, { lineWidth: -1 }) : '')}</textarea><small id="yaml-error" class="form-error"></small>`, { wide: true, hint }));
   }
   const box = $('#shared');

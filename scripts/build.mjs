@@ -36,6 +36,12 @@ const ASSETS = {
 };
 for (const file of readdirSync(join(ROOT, 'src/client'))) ASSETS[`client/${file}`] = join(ROOT, 'src/client', file);
 
+// Python in the browser (client/runner.js). Pyodide is copied as a whole into
+// a folder named after its version, so its files need no hashes of their own.
+const PYODIDE = modules('pyodide');
+const PYODIDE_FILES = ['pyodide.mjs', 'pyodide.asm.mjs', 'pyodide.asm.wasm', 'python_stdlib.zip', 'pyodide-lock.json'];
+const PYODIDE_BASE = `/assets/vendor/pyodide-${JSON.parse(readFileSync(join(PYODIDE, 'package.json'), 'utf8')).version}/`;
+
 // Plain text of a Markdown body, good enough for full-text search.
 const plain = (md) =>
   md
@@ -114,6 +120,10 @@ function render(site) {
     copyFileSync(source, target);
     hashes[name] = createHash('sha1').update(readFileSync(source)).digest('hex').slice(0, 8);
   }
+  for (const file of PYODIDE_FILES) {
+    mkdirSync(join(DIST, PYODIDE_BASE), { recursive: true });
+    copyFileSync(join(PYODIDE, file), join(DIST, PYODIDE_BASE, file));
+  }
   // Slide decks as they are, next to the stagekit runtime they expect two
   // folders up: /decks/<id>/index.html loads ../../stagekit/stagekit.js.
   cpSync(join(ROOT, 'vendor/stagekit'), join(DIST, 'stagekit'), { recursive: true, filter: (source) => !source.endsWith('.md') });
@@ -138,7 +148,7 @@ function render(site) {
   };
   let count = 0;
   const writePage = (lang, page) => {
-    write(page.path, String(layout({ lang, asset, total: site.items.length, ...page })));
+    write(page.path, String(layout({ lang, asset, pyodide: PYODIDE_BASE, total: site.items.length, ...page })));
     count += 1;
   };
 

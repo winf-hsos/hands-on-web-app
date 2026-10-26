@@ -273,3 +273,47 @@ export const formatDate = (date, lang) =>
   date.toLocaleDateString(lang === 'de' ? 'de-DE' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 
 export const isoDay = (date) => date.toISOString().slice(0, 10);
+
+/** Labels of the Python runner (client/runner.js), and a plain hint per error. */
+export const runnerLabels = {
+  de: {
+    run: 'Ausführen',
+    stop: 'Stopp',
+    reset: 'Zurücksetzen',
+    editor: 'Python-Code, bearbeitbar. Strg+Enter führt ihn aus, Esc und dann Tab verlässt das Feld.',
+    loading: 'Python wird geladen …',
+    running: 'läuft …',
+    stopped: 'Angehalten.',
+    failed: 'Python konnte nicht starten.',
+    no_output: 'Das Programm hat nichts ausgegeben.',
+    answer: 'Deine Eingabe, dann Enter',
+    errors: {
+      SyntaxError: 'Python versteht diese Zeile nicht. Prüfe Klammern, Anführungszeichen und Doppelpunkte.',
+      IndentationError: 'Die Einrückung stimmt nicht. Alle Zeilen eines Blocks brauchen gleich viele Leerzeichen am Anfang.',
+      NameError: 'Python kennt diesen Namen nicht. Ist er falsch geschrieben, oder bekommt die Variable erst weiter unten einen Wert?',
+      TypeError: 'Ein Wert hat den falschen Typ für diese Operation, zum Beispiel Text plus Zahl.',
+      ValueError: 'Ein Wert passt nicht, etwa wenn int() einen Text bekommt, der keine ganze Zahl ist.',
+      ZeroDivisionError: 'Durch null lässt sich nicht teilen.',
+    },
+  },
+  en: {
+    run: 'Run',
+    stop: 'Stop',
+    reset: 'Reset',
+    editor: 'Python code, editable. Ctrl+Enter runs it, Esc and then Tab leaves the field.',
+    loading: 'Loading Python …',
+    running: 'running …',
+    stopped: 'Stopped.',
+    failed: 'Python could not start.',
+    no_output: 'The program printed nothing.',
+    answer: 'Your input, then Enter',
+    errors: {
+      SyntaxError: 'Python does not understand this line. Check brackets, quotes and colons.',
+      IndentationError: 'The indentation is off. All lines of a block need the same number of spaces at the start.',
+      NameError: 'Python does not know this name. Is it misspelt, or does the variable only get a value further down?',
+      TypeError: 'A value has the wrong type for this operation, for example text plus a number.',
+      ValueError: 'A value does not fit, for example when int() gets text that is not a whole number.',
+      ZeroDivisionError: 'You cannot divide by zero.',
+    },
+  },
+};
