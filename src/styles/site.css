@@ -1544,6 +1544,33 @@ details.callout[open] > summary::before {
   font-size: 1.3rem;
 }
 
+/* --- topics of an item ---------------------------------------------------------- */
+
+.topic-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.9rem 0 0;
+}
+
+.topic-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.75rem;
+  padding: 0 0.7rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent-ink);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.topic-tag:hover {
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
 /* --- institution of a course ------------------------------------------------ */
 
 .institution {

@@ -155,6 +155,12 @@ const quizLabels = (lang) =>
     Object.fromEntries(['next', 'back', 'finish', 'position', 'result', 'score', 'open', 'restart'].map((k) => [k, t(lang, `quiz_${k}`)])),
   )}"`;
 
+/** The topics of an item or project, each a link to the content of that topic. */
+const topicTags = (site, topics, lang) =>
+  html`<p class="topic-tags"><span class="visually-hidden">${t(lang, 'topics')}:</span>${topics.map(
+    (key) => html`<a class="topic-tag" href="${url(lang, 'items')}?topic=${key}">${site.vocabulary.topics[key][lang]}</a>`,
+  )}</p>`;
+
 export function item(site, doc, lang) {
   const text = site.localize(doc, lang);
   const lead = doc.lead;
@@ -176,6 +182,7 @@ export function item(site, doc, lang) {
           <p class="kicker">${typeIcon(site, doc)}<span>${typeLabel(site, doc, lang)}</span><span>${lead.duration} ${t(lang, 'minutes')}</span></p>
           <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}">${text.title}</h1>
           <p class="lead" lang="${text.lang}">${text.summary}</p>
+          ${topicTags(site, lead.topics, lang)}
           ${before.length > 0 && html`<p class="before">${t(lang, 'before')} ${before.map((b, i) => html`${i > 0 && ', '}${link(b)}`)}</p>`}
         </header>
         ${text.missing && html`<p class="notice">${t(lang, 'missing_translation')}</p>`}
@@ -210,7 +217,6 @@ export function item(site, doc, lang) {
           t(lang, 'details'),
           facts([
             [t(lang, 'level'), v.levels[lead.level][lang]],
-            [t(lang, 'topics'), lead.topics.map((k) => v.topics[k][lang]).join(', ')],
             lead.modules?.length && [t(lang, 'modules'), lead.modules.map((k) => v.modules[k][lang]).join(', ')],
             lead.authors && [t(lang, 'authors'), lead.authors.join(', ')],
             lead.year && [t(lang, 'year'), lead.year],
@@ -511,6 +517,7 @@ export function project(site, doc, lang) {
           <p class="kicker">${projectIcon}<span>${t(lang, 'project')}</span><span>${count(lang, lead.phases.length, 'phases')}</span></p>
           <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}">${text.title}</h1>
           <p class="lead" lang="${text.lang}">${text.summary}</p>
+          ${topicTags(site, lead.topics, lang)}
         </header>
         ${text.missing && html`<p class="notice">${t(lang, 'missing_translation')}</p>`}
         ${parts.intro && html`<div class="prose" lang="${text.lang}">${md(parts.intro)}</div>`}
@@ -551,7 +558,6 @@ export function project(site, doc, lang) {
           t(lang, 'details'),
           facts([
             [t(lang, 'level'), v.levels[lead.level][lang]],
-            [t(lang, 'topics'), lead.topics.map((k) => v.topics[k][lang]).join(', ')],
             lead.modules?.length && [t(lang, 'modules'), lead.modules.map((k) => v.modules[k][lang]).join(', ')],
             [t(lang, 'code'), html`<code>${lead.code}</code>`],
             [t(lang, 'updated'), formatDate(lead.updated, lang)],
