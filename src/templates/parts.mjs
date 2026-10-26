@@ -33,7 +33,7 @@ export const mark = raw(
 export const typeIcon = (site, item) => raw(iconSvg(site.vocabulary.types[item.lead.type].icon));
 
 /** One item as a row: type icon, title, type and duration, one quiet line of summary. */
-export function itemRow(site, item, lang, { optional = false, summary = true, number, data = {} } = {}) {
+export function itemRow(site, item, lang, { optional = false, summary = true, topics = false, number, data = {} } = {}) {
   const text = site.localize(item, lang);
   const lead = item.lead;
   const attributes = Object.entries(data).map(([key, value]) => html` data-${key}="${value}"`);
@@ -50,6 +50,7 @@ export function itemRow(site, item, lang, { optional = false, summary = true, nu
         </span>
       </span>
       ${summary && html`<span class="row-summary" lang="${text.lang}">${text.summary}</span>`}
+      ${topics && html`<span class="row-topics">${lead.topics.map((key) => html`<span class="topic-tag">${site.vocabulary.topics[key][lang]}</span>`)}</span>`}
     </a>
     ${number === undefined && html`<span class="row-done" title="${t(lang, 'done')}">${icons.check}</span>`}
   </li>`;

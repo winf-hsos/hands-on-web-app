@@ -129,6 +129,7 @@ export function items(site, lang) {
       <ul class="rows switchable" id="rows">
         ${sorted.map((item) =>
           itemRow(site, item, lang, {
+            topics: true,
             data: {
               id: item.id,
               type: item.lead.type,

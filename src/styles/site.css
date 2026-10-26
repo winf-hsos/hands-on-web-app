@@ -1450,10 +1450,34 @@ details.callout[open] > summary::before {
   -webkit-box-orient: vertical;
 }
 
-[data-view='cards'] .switchable .row-meta {
+/* topics only in the card view; the list stays one quiet line */
+.row-topics {
+  display: none;
+}
+
+[data-view='cards'] .switchable .row-topics {
   order: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
   margin-top: auto;
   padding-top: 0.25rem;
+}
+
+[data-view='cards'] .switchable .row-topics .topic-tag {
+  min-height: 1.5rem;
+  padding: 0 0.55rem;
+  font-size: 0.78rem;
+}
+
+[data-view='cards'] .switchable .row-meta {
+  order: 3;
+  margin-top: auto;
+  padding-top: 0.25rem;
+}
+
+[data-view='cards'] .switchable .row-link:has(.row-topics) .row-meta {
+  margin-top: 0;
 }
 
 [data-view='cards'] .switchable .row-done {
