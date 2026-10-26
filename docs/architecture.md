@@ -117,6 +117,7 @@ someone filters or switches, without adding history entries.
 | `…&sort=duration`, `…&group=topic` (or `level`, `none`) | order and grouping (defaults: title, type) |
 | `…?view=cards` (also on `/de/projects/`) | cards instead of rows, for this visit; the stored preference otherwise |
 | `/de/map/?topic=processing-information` | the map with one topic highlighted |
+| `/de/items/<quiz>/?question=3` (or `=result`) | a quiz at its third question, or at its result |
 | `/de/learning/?code=LICHT-26` | adds the course with this access code and opens it; the code is read without case, spaces or hyphens |
 
 **Back to where you came from.** Every page but the start page has a "back

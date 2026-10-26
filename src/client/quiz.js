@@ -153,6 +153,7 @@ if (stepper) {
       score.textContent = fill(L.score, right, n) + (open ? ` · ${fill(L.open, open, n)}` : '');
     }
     paint();
+    remember(index);
     const shown = index === n ? result : questions[index];
     if (!reduceMotion && from !== index) {
       const dx = index > from ? 24 : -24;
@@ -174,5 +175,16 @@ if (stepper) {
     show(0);
   });
   prose.addEventListener('quiz-changed', paint);
-  show(0, { focus: false });
+
+  // The active question lives in the address (?question=3, or =result), so
+  // that a reload, "back" or a shared link opens the quiz at the same place.
+  function remember(index) {
+    const params = new URLSearchParams(location.search);
+    if (index === 0) params.delete('question');
+    else params.set('question', index === n ? 'result' : String(index + 1));
+    history.replaceState(history.state, '', `${location.pathname}${params.size ? `?${params}` : ''}${location.hash}`);
+  }
+  const asked = new URLSearchParams(location.search).get('question');
+  const start = asked === 'result' ? n : Math.min(Math.max(Number.parseInt(asked, 10) || 1, 1), n) - 1;
+  show(start, { focus: false });
 }
