@@ -198,7 +198,9 @@ The body is plain Markdown with a few conventions:
   languages; what a program prints follows the language of the text.
 - **R code** in a ` ```r ` block works the same way with webR; ` ```r static `
   only shows it. Each block runs on its own, with dplyr loaded and the data
-  set `survey` (`media/datasets/milk_survey.csv`) ready. A runnable block
+  sets `survey` (`media/datasets/milk_survey.csv`) and `rewe`
+  (`media/datasets/rewe_products.csv`) ready; a block that uses `ggplot()`
+  shows the plot below the code. A runnable block
   has one command that prints something, so that each output stands next to
   the code it came from; a second example gets its own block with a sentence
   between them. Only short calculations such as `3 + 4` may share a block.
@@ -211,6 +213,10 @@ The body is plain Markdown with a few conventions:
   `scripts/survey-download.py` without the postcode and without open answers;
   the item `milk-chocolate-survey` describes it. He agreed to both on
   2026-10-27; anything beyond them needs his consent again.
+  `rewe_products.csv` holds products from the REWE online shop, taken by
+  `scripts/rewe-excerpt.py` from Nicolas' repository
+  github.com/winf-hsos/data-analytics-code with fewer columns and snake_case
+  names; the item `rewe-products` describes it.
 - **The dplyr demonstrator** is placed with an empty ` ```verb-demo ` block.
 - **No embedded HTML and no embedded pages from elsewhere.** That keeps the
   rule from the concept that nothing on the site comes from anywhere but the

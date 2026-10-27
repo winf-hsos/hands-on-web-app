@@ -900,6 +900,17 @@ select {
 }
 
 /* R prints tables in columns, which break apart when lines wrap */
+/* a plot from R, drawn large and scaled to the width of the box */
+.runner-plot {
+  display: block;
+  width: 100%;
+  max-width: 40rem;
+  height: auto;
+  margin: 0.25rem 0;
+  border-radius: 0.5rem;
+  background: #fff;
+}
+
 .runner[data-lang='r'] .runner-output {
   white-space: pre;
   overflow-wrap: normal;

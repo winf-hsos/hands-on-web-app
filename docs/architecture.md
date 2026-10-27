@@ -112,13 +112,15 @@ All motion is switched off for people who ask their system for reduced motion.
 - **R** runs in the browser with webR (R compiled to WebAssembly), served
   from `/assets/vendor/webr-<version>/` and started on the first click
   (`src/client/r-engine.js`). It installs dplyr from a small package
-  repository of our own under `/assets/vendor/webr-repo/` (dplyr, tibble and
-  their dependencies, about 7 MB), which `npm run fetch-r-packages` fetches
-  once from the webR repository; nothing is loaded from elsewhere while
-  someone learns. Every run gets a fresh environment, so the code boxes do
-  not depend on each other, and the data sets from `knowledge/media/datasets/`
-  are ready in it: `survey` is the excerpt of the milk survey. Stop ends webR,
-  the next Run starts it again.
+  repository of our own under `/assets/vendor/webr-repo/` (dplyr, tibble,
+  ggplot2 and their dependencies, about 20 MB), which `npm run
+  fetch-r-packages` fetches once from the webR repository; nothing is loaded
+  from elsewhere while someone learns. Every run gets a fresh environment, so
+  the code boxes do not depend on each other. Data sets and ggplot2 come only
+  when a block needs them: a block that names `survey` or `rewe` gets that
+  table from `knowledge/media/datasets/` (the list is `DATASETS` in
+  `r-engine.js`), and a block that draws loads ggplot2, whose plots come back
+  as images. Stop ends webR, the next Run starts it again.
 - **The dplyr demonstrator** (` ```verb-demo `, `src/client/verb-demo.js`)
   computes the verbs itself in JavaScript on six rows of the survey and
   animates the change; it needs no R.

@@ -134,6 +134,17 @@ function setup(box) {
       hint.hidden = true;
     };
     const reply = (message) => {
+      if (message.type === 'image') {
+        // a plot from R, drawn at full size and scaled to the box by CSS
+        clear();
+        const { image } = message;
+        const canvas = el('canvas', { className: 'runner-plot', width: image.width, height: image.height });
+        canvas.getContext('2d').drawImage(image, 0, 0);
+        canvas.setAttribute('role', 'img');
+        canvas.setAttribute('aria-label', L.plot);
+        output.append(canvas);
+        return;
+      }
       if (message.type === 'output') {
         clear();
         const text = document.createTextNode(message.text);
@@ -173,7 +184,7 @@ function setup(box) {
       output.append(el('span', { className: 'out-note' }, `${output.textContent ? '\n' : ''}${L.stopped}`));
     } else if (result === 'failed') {
       output.append(el('span', { className: 'out-err' }, `${lang === 'r' ? L.failed_r : L.failed}\n${message ?? ''}`));
-    } else if (!output.textContent) {
+    } else if (!output.textContent && !output.querySelector('canvas')) {
       output.append(el('span', { className: 'out-note' }, L.no_output));
     }
   }
