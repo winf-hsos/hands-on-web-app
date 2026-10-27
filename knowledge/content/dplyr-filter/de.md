@@ -12,7 +12,7 @@ topics: [transforming-data, programming-with-r]
 modules: [ea]
 areas: [ds]
 relations:
-  requires: [r-in-ten-minutes]
+  requires: [r-comparisons, r-pipe]
   see_also: [dplyr-select]
 status: draft
 updated: 2026-10-27

@@ -16,7 +16,7 @@ phases:
   - id: record
     items: [tidy-data]
   - id: simulate
-    items: [r-in-ten-minutes]
+    items: [r-vectors, r-functions]
   - id: analyse
     items: [analytic-questions]
 status: draft

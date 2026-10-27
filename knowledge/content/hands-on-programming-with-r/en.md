@@ -18,7 +18,7 @@ loops and make code faster.
 
 ## Why it fits here
 
-If after [[r-in-ten-minutes]] you want to understand what happens beneath
+If after the path [[getting-started-with-r]] you want to understand what happens beneath
 the surface of R, this is the place. For analysing data with dplyr and
 ggplot2, the author himself recommends [[r-for-data-science]] next. Learning
 through games and simulations also suits projects such as the Monty Hall

@@ -20,8 +20,9 @@ whether R, Python, SQL or Excel.
 In the second part you put the ideas into practice in R with the package
 dplyr. Every code box is a small editor in which R runs right in your browser,
 so there is nothing to install. All examples use a small excerpt from a
-survey on milk and milk alternatives, which you get to know in
-[[r-in-ten-minutes]].
+survey on milk and milk alternatives. If you do not know R yet, start with
+the path [[getting-started-with-r]]; that is also where you get to know the
+data set.
 
 Further parts on `arrange()`, `mutate()`, `summarize()` and `group_by()` and
 on joining tables will follow.

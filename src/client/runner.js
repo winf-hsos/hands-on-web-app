@@ -20,15 +20,13 @@ const LANGS = {
     pipe: '|> ',
     opens: /(\{|\(|\|>|,)\s*$/,
     errorKind: (text) =>
-      /object '.*' not found/.test(text)
-        ? 'r_object'
-        : /could not find function/.test(text)
-          ? 'r_function'
-          : /unexpected|parse/.test(text)
-            ? 'r_syntax'
-            : /must be|Can't|can't/.test(text)
-              ? 'r_dplyr'
-              : null,
+      [
+        [/object '.*' not found/, 'r_object'],
+        [/could not find function/, 'r_function'],
+        [/non-numeric argument/, 'r_type'],
+        [/unexpected|parse/, 'r_syntax'],
+        [/must be|Can't|can't/, 'r_dplyr'],
+      ].find(([pattern]) => pattern.test(text))?.[1] ?? null,
   },
 };
 

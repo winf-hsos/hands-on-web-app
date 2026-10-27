@@ -20,7 +20,7 @@ tools come from the tidyverse, to which dplyr also belongs.
 The lessons on dplyr think the same way: [[tidy-data|tidy data]] goes back
 to Hadley Wickham, and the book explains the verbs from
 [[data-transformation-basics]] in detail and with many more examples. If you
-want more R after [[r-in-ten-minutes]], this is the next step.
+want more R after the path [[getting-started-with-r]], this is the next step.
 
 ## Editions
 

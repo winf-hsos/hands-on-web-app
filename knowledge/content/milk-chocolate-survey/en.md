@@ -19,7 +19,7 @@ market research, and a few experiments on top. He agreed to its use on this
 platform.
 
 Each row is a respondent, each column an answer or a value derived from one.
-The small data set `survey` from [[r-in-ten-minutes]] is an excerpt of it.
+The small data set `survey` from the lesson [[r-data-frames]] is an excerpt of it.
 
 ## What is in it
 

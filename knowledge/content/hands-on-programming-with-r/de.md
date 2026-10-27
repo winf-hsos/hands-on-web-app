@@ -17,7 +17,7 @@ topics: [programming-with-r]
 modules: [ea]
 areas: [ds]
 relations:
-  see_also: [r-in-ten-minutes, r-for-data-science]
+  see_also: [r-vectors, r-for-data-science]
 status: draft
 updated: 2026-10-27
 ---
@@ -33,8 +33,8 @@ Schleifen baut und Code schneller macht.
 
 ## Warum es hierher passt
 
-Wer nach [[r-in-ten-minutes]] verstehen will, was unter der Oberfläche von R
-passiert, ist hier richtig. Für das Auswerten von Daten mit dplyr und ggplot2
+Wer nach dem Lernpfad [[getting-started-with-r]] verstehen will, was unter
+der Oberfläche von R passiert, ist hier richtig. Für das Auswerten von Daten mit dplyr und ggplot2
 empfiehlt der Autor danach selbst [[r-for-data-science]]. Die Art, mit Spielen
 und Simulationen zu lernen, passt auch gut zu Projekten wie dem Ziegenproblem.
 

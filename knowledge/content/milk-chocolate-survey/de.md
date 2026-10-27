@@ -15,7 +15,7 @@ topics: [getting-data, exploring-data, data-pitfalls]
 modules: [ea, wmg, pmg]
 areas: [ds]
 relations:
-  see_also: [r-in-ten-minutes]
+  see_also: [r-data-frames]
 status: draft
 updated: 2026-10-27
 ---
@@ -31,7 +31,7 @@ vorkommt, und dazu einige Experimente. Er hat der Nutzung auf dieser
 Plattform zugestimmt.
 
 Jede Zeile ist eine befragte Person, jede Spalte eine Antwort oder ein daraus
-abgeleiteter Wert. Der kleine Datensatz `survey` aus [[r-in-ten-minutes]] ist
+abgeleiteter Wert. Der kleine Datensatz `survey` aus der Lektion [[r-data-frames]] ist
 ein Auszug daraus.
 
 ## Was drinsteht

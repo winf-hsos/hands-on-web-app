@@ -30,4 +30,4 @@ disappears, what moves and what is added each time.
   returns one row per diet.
 
 How to write these verbs yourself is shown in the lessons starting with
-[[r-in-ten-minutes]].
+[[dplyr-select]].

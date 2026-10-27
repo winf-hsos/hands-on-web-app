@@ -17,7 +17,7 @@ topics: [programming-with-r, getting-data, transforming-data, visualising-data]
 modules: [ea]
 areas: [ds]
 relations:
-  see_also: [r-in-ten-minutes, tidy-data, data-transformation-basics]
+  see_also: [r-pipe, tidy-data, data-transformation-basics]
 status: draft
 updated: 2026-10-27
 ---
@@ -36,7 +36,7 @@ dafür kommen aus dem tidyverse, zu dem auch dplyr gehört.
 Die Lektionen zu dplyr denken in derselben Weise: [[tidy-data|Tidy Data]]
 geht auf Hadley Wickham zurück, und die Verben aus
 [[data-transformation-basics]] erklärt das Buch ausführlich und mit vielen
-weiteren Beispielen. Wer nach [[r-in-ten-minutes]] mehr R lernen will, findet
+weiteren Beispielen. Wer nach dem Lernpfad [[getting-started-with-r]] mehr R lernen will, findet
 hier den nächsten Schritt.
 
 ## Ausgaben

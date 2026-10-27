@@ -39,4 +39,4 @@ was jeweils verschwindet, was sich bewegt und was neu dazukommt.
   gibt eine Zeile je Ernährungsweise zurück.
 
 Wie man diese Verben selbst schreibt, zeigen die Lektionen ab
-[[r-in-ten-minutes]].
+[[dplyr-select]].
