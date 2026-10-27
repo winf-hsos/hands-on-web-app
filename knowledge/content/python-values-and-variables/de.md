@@ -19,7 +19,7 @@ updated: 2026-10-26
 
 Fast jedes Programm arbeitet mit **Werten**: einer Temperatur, einem Preis,
 einem Namen. Python unterscheidet dabei verschiedene Arten von Werten, und von
-der Art hängt ab, was man mit einem Wert tun kann. Damit ein Programm einen
+der Art hängt ab, was man mit einem Wert anfangen kann. Damit ein Programm einen
 Wert später wiederverwenden kann, legt es ihn unter einem Namen ab, und so
 einen Namen nennt man **Variable**.
 
@@ -133,4 +133,4 @@ nächsten Lektion.
   den alten.
 - Namen sind klein geschrieben, verbinden Wörter mit `_` und sagen, was in der
   Variablen steckt.
-- Was ein Operator wie `+` tut, hängt vom Typ der Werte ab.
+- Was ein Operator wie `+` bewirkt, hängt vom Typ der Werte ab.

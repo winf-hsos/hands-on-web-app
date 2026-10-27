@@ -175,6 +175,11 @@ item can be read first.
 
 The body is plain Markdown with a few conventions:
 
+- **Language** (decisions of Nicolas): the German texts address the reader
+  as *du*. Thoughts that belong together stand in one connected sentence,
+  not in a chain of short sentences for effect. German texts avoid the weak
+  verb *tun* ("Fast alles, was du in R tust, tust du mit …") and name what
+  happens instead: *bewirken*, *verwenden*, *arbeiten*, *sich kümmern*.
 - **Headings start at `##`.** The title comes from the front matter.
 - **Links to other items** are written as `[[code-as-agreement]]` or with
   their own text as `[[code-as-agreement|the lesson on codes]]`. The build

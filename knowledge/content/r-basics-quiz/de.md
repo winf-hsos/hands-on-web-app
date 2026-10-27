@@ -75,7 +75,7 @@ litres <- litres + 1
 > `na.rm = TRUE` rechnet `mean()` mit den beiden bekannten Werten und ergibt
 > 3.
 
-## Was tut `survey |> nrow()`? (mehrere richtig)
+## Was bewirkt `survey |> nrow()`? (mehrere richtig)
 
 - [x] dasselbe wie `nrow(survey)`
 - [x] es zählt die Zeilen von `survey`

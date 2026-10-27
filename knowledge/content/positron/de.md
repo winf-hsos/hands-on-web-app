@@ -101,7 +101,7 @@ solltest du nicht zusätzlich installieren.
 ## Was du von hier mitnimmst
 
 Alles, was du in den Kästen dieser Plattform gelernt hast, funktioniert in
-Positron genauso. Nur zwei Dinge musst du selbst tun: Pakete installieren und
+Positron genauso. Nur um zwei Dinge musst du dich selbst kümmern: Pakete installieren und
 laden, wie in [[r-packages]] beschrieben, und deine Daten einlesen, etwa mit
 `read_csv()`, wie es die Seite zum [[milk-chocolate-survey|Datensatz der Umfrage]]
 zeigt.

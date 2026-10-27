@@ -65,7 +65,7 @@ ergibt 40.
 ## Kommentare
 
 Alles hinter einem `#` ignoriert R. So schreibst du Notizen in deinen Code,
-die erklären, was er tut:
+die ihn erklären:
 
 ```r
 # Preis für einen Liter Milch mit 7 Prozent Mehrwertsteuer

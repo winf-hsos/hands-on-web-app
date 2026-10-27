@@ -49,7 +49,7 @@ führt:
 
 Die Beispiele stammen aus der [[milk-chocolate-survey|Umfrage zu Milch und Schokolade]].
 
-| Typ | Was man tut | Beispiel |
+| Typ | Vorgehen | Beispiel |
 |---|---|---|
 | deskriptiv | zählen und zusammenfassen, ohne zu deuten | Wie viele der Befragten trinken täglich Milch? |
 | explorativ | Muster suchen, die neue Fragen aufwerfen | Kaufen Jüngere häufiger Hafermilch als Ältere? |
@@ -66,8 +66,8 @@ selten.
 
 ## Explorativ ist ein Anfang, kein Ergebnis
 
-Fast alles, was man beim ersten Blick in einen Datensatz tut, ist explorativ:
-Verteilungen ansehen, Gruppen vergleichen, nach Zusammenhängen suchen. Das
+Der erste Blick in einen Datensatz ist fast immer explorativ: Verteilungen
+ansehen, Gruppen vergleichen, nach Zusammenhängen suchen. Das
 ist der Kern der explorativen Datenanalyse und genau richtig, solange man das
 Ergebnis auch so nennt. Ein Muster, das beim Erkunden auffällt, ist eine gute
 Frage für die nächste Untersuchung, aber noch keine Antwort.

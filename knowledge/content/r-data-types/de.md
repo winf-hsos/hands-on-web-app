@@ -19,7 +19,7 @@ updated: 2026-10-27
 ## Worum es geht
 
 R unterscheidet, welche Art von Wert in einem Vektor steht, denn davon hängt
-ab, was man damit tun kann. Mit Zahlen kann man rechnen, mit Texten nicht.
+ab, wofür man ihn verwenden kann. Mit Zahlen kann man rechnen, mit Texten nicht.
 Für den Anfang genügen drei Typen.
 
 | Typ | Beispiel | Wofür |

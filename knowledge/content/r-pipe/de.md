@@ -40,7 +40,7 @@ survey |> filter(diet == "vegan")
 ```
 
 Das liest sich: Nimm `survey` und dann behalte die Zeilen, in denen `diet`
-gleich `"vegan"` ist. Was `filter()` genau tut, zeigt die Lektion
+gleich `"vegan"` ist. Wie `filter()` genau arbeitet, zeigt die Lektion
 [[dplyr-filter]].
 
 ## Ketten
@@ -73,4 +73,4 @@ niemand mehr gern liest.
 - `|>` liest man „und dann“; es reicht das Ergebnis links an die Funktion
   rechts weiter.
 - Nach jedem `|>` eine neue Zeile, so steht jeder Schritt für sich.
-- `%>%` aus älteren Beispielen tut für den Anfang dasselbe.
+- `%>%` aus älteren Beispielen verhält sich für den Anfang genauso.

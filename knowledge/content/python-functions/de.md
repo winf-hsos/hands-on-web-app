@@ -44,7 +44,7 @@ vier Leerzeichen; im Editor hier rückt die Tab-Taste genau so weit ein, und
 nach einem Doppelpunkt rückt Enter von selbst ein.
 
 Wichtig ist der Unterschied zwischen **Definieren** und **Aufrufen**: Der
-`def`-Block allein tut noch nichts sichtbar, er bringt Python nur bei, was
+`def`-Block allein bewirkt noch nichts Sichtbares, er bringt Python nur bei, was
 `greet` bedeutet. Erst `greet()` führt den Inhalt aus, und zwar jedes Mal von
 Neuem.
 

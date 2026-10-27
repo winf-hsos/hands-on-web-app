@@ -28,7 +28,7 @@ Der erste Teil des Buchs geht von den Daten aus und fragt, welche Darstellung
 zu ihnen passt: für Mengen, Verteilungen, Anteile, Zusammenhänge, Zeitreihen,
 Orte und Unsicherheit. Der zweite Teil sammelt Grundsätze für gute
 Abbildungen, etwa dass die Fläche eines Balkens zu seinem Wert passen muss,
-wie man mit Farbe umgeht, was man tut, wenn sich Punkte überdecken, und warum
+wie man mit Farbe umgeht, wie man sich überdeckende Punkte sichtbar macht und warum
 dreidimensionale Diagramme fast nie helfen. Der dritte Teil handelt von
 Dateiformaten, Software und davon, mit Abbildungen eine Geschichte zu
 erzählen.

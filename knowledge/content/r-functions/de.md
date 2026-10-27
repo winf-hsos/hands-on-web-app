@@ -18,7 +18,7 @@ updated: 2026-10-27
 
 ## Worum es geht
 
-Fast alles, was du in R tust, tust du mit einer **Funktion**. Eine Funktion
+Fast jeder Arbeitsschritt in R ist der Aufruf einer **Funktion**. Eine Funktion
 hat einen Namen, dahinter stehen runde Klammern, und in den Klammern
 bekommt sie ihre Werte, die *Argumente*. Zurück gibt sie ein Ergebnis.
 
