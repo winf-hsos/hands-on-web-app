@@ -166,6 +166,11 @@ Schritt ist der Unterschied klein, bei fünf Schritten macht die Pipe aus
 einem unlesbaren Knäuel von Klammern eine Liste, die man von oben nach unten
 liest.
 
+> [!TIP]
+> Die Pipe tippst du schneller mit **Strg+Umschalt+M** (am Mac
+> **Cmd+Umschalt+M**). Das Kürzel funktioniert in jedem R-Kasten dieser
+> Plattform genauso wie in RStudio.
+
 > [!NOTE]
 > In älteren Beispielen steht statt `|>` oft `%>%`. Das ist die Pipe aus dem
 > Paket magrittr, die es gab, bevor R eine eigene bekam. Für alles, was du

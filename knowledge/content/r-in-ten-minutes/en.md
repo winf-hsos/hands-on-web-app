@@ -155,6 +155,11 @@ and then keep the rows in which `diet` equals `"vegan"`. With one step the
 difference is small; with five steps the pipe turns an unreadable tangle of
 brackets into a list that you read from top to bottom.
 
+> [!TIP]
+> You can type the pipe faster with **Ctrl+Shift+M** (**Cmd+Shift+M** on a
+> Mac). The shortcut works in every R box on this platform just as it does in
+> RStudio.
+
 > [!NOTE]
 > Older examples often use `%>%` instead of `|>`. That is the pipe from the
 > package magrittr, which existed before R got its own. For everything you

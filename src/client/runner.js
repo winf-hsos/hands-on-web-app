@@ -10,11 +10,13 @@ const PLAY = '<svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill=
 const STOP = '<svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1.5"/></svg>';
 
 // What differs between the languages: indentation, when Enter indents one
-// level more, and how an error message names the kind of error.
+// level more, how an error message names the kind of error, and for R the
+// pipe that Ctrl+Shift+M inserts, as in RStudio.
 const LANGS = {
   python: { indent: '    ', opens: /:\s*$/, errorKind: (text) => text.match(/^(\w+Error)\b/m)?.[1] },
   r: {
     indent: '  ',
+    pipe: '|> ',
     opens: /(\{|\(|\|>|,)\s*$/,
     errorKind: (text) =>
       /object '.*' not found/.test(text)
@@ -199,6 +201,11 @@ function setup(box) {
     if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
       e.preventDefault();
       run.click();
+    } else if (spec.pipe && e.code === 'KeyM' && e.shiftKey && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      // a space before the pipe unless there is one already
+      const before = editor.value.slice(0, editor.selectionStart);
+      insert(/(^|\s)$/.test(before) ? spec.pipe : ` ${spec.pipe}`);
     } else if (e.key === 'Tab' && !e.shiftKey && !wasEscaped) {
       e.preventDefault();
       insert(spec.indent);
