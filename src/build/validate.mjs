@@ -278,6 +278,15 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
   for (const key of ['types', 'relations', 'levels', 'topics', 'modules', 'areas']) {
     if (!vocabulary[key]) errors.push(`vocabulary.yaml: ${key} is missing`);
   }
+  // `{ de: Fragen, Designs und Messung }` reads as de: Fragen plus an empty
+  // field "Designs und Messung": a label with a comma needs quotes
+  for (const [list, entries] of Object.entries(vocabulary)) {
+    for (const [key, def] of Object.entries(entries ?? {})) {
+      for (const [field, value] of Object.entries(def ?? {})) {
+        if (value === null) errors.push(`vocabulary.yaml: ${list} ${key}: "${field}" has no value; put a label with a comma in quotes`);
+      }
+    }
+  }
   for (const [type, def] of Object.entries(vocabulary.types ?? {})) {
     if (!def.icon) errors.push(`vocabulary.yaml: type ${type} has no icon`);
     else if (!iconExists(def.icon)) errors.push(`vocabulary.yaml: type ${type}: there is no Lucide icon "${def.icon}" (see lucide.dev/icons)`);

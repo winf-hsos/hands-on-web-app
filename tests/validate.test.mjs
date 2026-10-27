@@ -23,6 +23,13 @@ test('the knowledge base as it is has no errors', () => {
   assert.deepEqual(check().errors, []);
 });
 
+test('a label with an unquoted comma in the vocabulary is an error', () => {
+  const { errors } = check(({ vocabulary }) => {
+    vocabulary.topics['questions-and-measurement'] = { de: 'Fragen', 'Designs und Messung': null, en: 'Questions' };
+  });
+  assert.deepEqual(errors, ['vocabulary.yaml: topics questions-and-measurement: "Designs und Messung" has no value; put a label with a comma in quotes']);
+});
+
 test('a missing required field is named', () => {
   const { errors } = check(({ find }) => delete lead(find('content', 'knock-code')).level);
   assert.deepEqual(errors, ['content/knock-code/de.md: level is missing']);

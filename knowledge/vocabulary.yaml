@@ -65,7 +65,7 @@ topics:
   programming-with-python:  { de: Programmieren mit Python, en: Programming with Python }
   # Data science, after the topic map of the Data Analytics material
   # (02 - Lehrinhalte\Data Analytics\Themenlandkarte.md, fields A to M and X)
-  questions-and-measurement: { de: Fragen, Designs und Messung, en: Questions, designs and measurement }
+  questions-and-measurement: { de: "Fragen, Designs und Messung", en: "Questions, designs and measurement" }
   reproducible-work:         { de: Arbeitsumgebung und Reproduzierbarkeit, en: Working environment and reproducibility }
   programming-with-r:        { de: Programmieren mit R, en: Programming with R }
   getting-data:              { de: Daten beschaffen und aufräumen, en: Getting and tidying data }
