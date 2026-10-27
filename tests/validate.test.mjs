@@ -170,3 +170,10 @@ test('a course names a known institution, and its logo must exist', () => {
   const noLogo = check(({ vocabulary }) => (vocabulary.institutions['hs-osnabrueck'].logo = 'missing.svg'));
   assert.deepEqual(noLogo.errors, ['vocabulary.yaml: institution hs-osnabrueck: logo missing.svg is not in knowledge/media/']);
 });
+
+test('areas: an item names known areas, and every area has one start page', () => {
+  const unknown = check(({ find }) => (lead(find('content', 'knock-code')).areas = ['xs']));
+  assert.match(unknown.errors[0], /^content\/knock-code\/de\.md: areas: "xs" is not a known area/);
+  const homeless = check(({ find }) => delete lead(find('pages', 'home-ds')).area);
+  assert.deepEqual(homeless.errors, ['pages: area ds needs exactly one start page (a page with area: ds), found 0']);
+});

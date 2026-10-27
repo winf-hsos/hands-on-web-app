@@ -3,7 +3,6 @@
 // what is not needed to choose or to read sits in a disclosure.
 import { html, raw, json } from '../build/html.mjs';
 import { t, count, formatDate } from '../build/i18n.mjs';
-import { url } from '../build/site.mjs';
 import { itemRow, progressBar, more, facts, icons, typeIcon, viewSwitch } from './parts.mjs';
 import { iconSvg, iconShapes } from '../build/icons.mjs';
 import { deckFile, deckPdf } from '../build/deck.mjs';
@@ -13,12 +12,12 @@ const typeLabel = (site, item, lang) => site.vocabulary.types[item.lead.type][la
 // --- start page -------------------------------------------------------------
 
 export function home(site, lang) {
-  const doc = site.page.get('home');
+  const doc = site.home;
   const text = site.localize(doc, lang);
   const featured = doc.lead.featured_path ? site.path.get(doc.lead.featured_path) : undefined;
   const samples = (doc.lead.samples ?? []).map((id) => site.item.get(id));
   return {
-    path: url(lang),
+    path: site.link(lang),
     title: text.title,
     description: text.summary,
     scripts: ['map'],
@@ -32,15 +31,15 @@ export function home(site, lang) {
             html`<li><a class="way way-main" href="${site.url(featured, lang)}">
               <span class="way-title">${t(lang, 'start_here')}</span>
               <span class="way-text">${site.localize(featured, lang).title}</span></a></li>`}
-            <li><a class="way" href="${url(lang, 'items')}">
+            <li><a class="way" href="${site.link(lang, 'items')}">
               <span class="way-title">${t(lang, 'browse')}</span>
               <span class="way-text">${t(lang, 'browse_text')}</span></a></li>
-            <li><a class="way" href="${url(lang, 'learning')}#course">
+            <li><a class="way" href="${site.link(lang, 'learning')}#course">
               <span class="way-title">${t(lang, 'course_code')}</span>
               <span class="way-text">${t(lang, 'course_code_text')}</span></a></li>
           </ul>
         </div>
-        ${mapFigure(site, lang, 'hero-map')}
+        ${site.items.length > 0 ? mapFigure(site, lang, 'hero-map') : html`<p class="hero-empty">${t(lang, 'area_empty')}</p>`}
       </section>
       ${samples.length > 0 &&
       html`<section class="section">
@@ -81,7 +80,7 @@ export function items(site, lang) {
     level: Object.entries(vocabulary.levels).map(([key, v]) => ({ key, label: v[lang] })),
   };
   return {
-    path: url(lang, 'items'),
+    path: site.link(lang, 'items'),
     title: t(lang, 'nav_items'),
     current: 'items',
     back: 'home',
@@ -159,7 +158,7 @@ const quizLabels = (lang) =>
 /** The topics of an item or project, each a link to the content of that topic. */
 const topicTags = (site, topics, lang) =>
   html`<p class="topic-tags"><span class="visually-hidden">${t(lang, 'topics')}:</span>${topics.map(
-    (key) => html`<a class="topic-tag" href="${url(lang, 'items')}?topic=${key}">${site.vocabulary.topics[key][lang]}</a>`,
+    (key) => html`<a class="topic-tag" href="${site.link(lang, 'items')}?topic=${key}">${site.vocabulary.topics[key][lang]}</a>`,
   )}</p>`;
 
 export function item(site, doc, lang) {
@@ -277,7 +276,7 @@ const pathIcon = raw(iconSvg('route'));
 
 export function paths(site, lang) {
   return {
-    path: url(lang, 'paths'),
+    path: site.link(lang, 'paths'),
     title: t(lang, 'nav_paths'),
     current: 'paths',
     back: 'home',
@@ -375,7 +374,7 @@ function institutionBlock(site, doc, lang) {
 /** All courses, open to everyone; the access code only adds one to "My learning". */
 export function courses(site, lang) {
   return {
-    path: url(lang, 'courses'),
+    path: site.link(lang, 'courses'),
     title: t(lang, 'nav_courses'),
     current: 'courses',
     back: 'home',
@@ -462,7 +461,7 @@ const projectIcon = raw(iconSvg('hammer'));
 
 export function projects(site, lang) {
   return {
-    path: url(lang, 'projects'),
+    path: site.link(lang, 'projects'),
     title: t(lang, 'nav_projects'),
     current: 'projects',
     back: 'home',
@@ -578,7 +577,7 @@ function mapData(site, lang) {
   return {
     topics: Object.entries(site.vocabulary.topics)
       .filter(([key]) => inTopic(key).length > 0)
-      .map(([key, v]) => ({ id: key, title: v[lang], count: inTopic(key).length, url: `${url(lang, 'items')}?topic=${key}` })),
+      .map(([key, v]) => ({ id: key, title: v[lang], count: inTopic(key).length, url: `${site.link(lang, 'items')}?topic=${key}` })),
     items: site.items.map((i) => ({
       id: i.id,
       title: site.localize(i, lang).title,
@@ -598,7 +597,7 @@ const mapFigure = (site, lang, className) =>
 export function map(site, lang) {
   const topics = Object.entries(site.vocabulary.topics).filter(([key]) => site.items.some((i) => i.lead.topics.includes(key)));
   return {
-    path: url(lang, 'map'),
+    path: site.link(lang, 'map'),
     title: t(lang, 'nav_map'),
     current: 'map',
     back: 'home',
@@ -611,7 +610,7 @@ export function map(site, lang) {
         <label class="chip"><input type="radio" name="topic" value="" checked><span>${t(lang, 'map_all')}</span></label>
         ${topics.map(([key, label]) => html`<label class="chip"><input type="radio" name="topic" value="${key}"><span>${label[lang]}</span></label>`)}
       </fieldset>
-      ${mapFigure(site, lang, 'map-full')}
+      ${site.items.length > 0 ? mapFigure(site, lang, 'map-full') : html`<p class="empty">${t(lang, 'area_empty')}</p>`}
       <noscript><ul>${site.items.map((i) => html`<li><a href="${site.url(i, lang)}">${site.localize(i, lang).title}</a></li>`)}</ul></noscript>
     `,
   };
@@ -621,7 +620,7 @@ export function map(site, lang) {
 
 export function learning(site, lang) {
   return {
-    path: url(lang, 'learning'),
+    path: site.link(lang, 'learning'),
     title: t(lang, 'nav_learning'),
     current: 'learning',
     back: 'home',

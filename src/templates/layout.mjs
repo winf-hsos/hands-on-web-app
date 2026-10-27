@@ -1,12 +1,14 @@
 // The frame around every page.
 import { html, raw } from '../build/html.mjs';
 import { t, runnerLabels, backLabels } from '../build/i18n.mjs';
-import { url } from '../build/site.mjs';
 import { icons, mark } from './parts.mjs';
 
-export function layout({ lang, path, title, description, current, content, back, scripts = [], asset, pyodide, total = 0 }) {
+export function layout({ site, lang, path, title, description, current, content, back, scripts = [], asset, pyodide, total = 0 }) {
   const other = lang === 'de' ? 'en' : 'de';
-  const otherPath = path.replace(/^\/(de|en)\//, `/${other}/`);
+  const otherPath = path.replace(/^\/([a-z]+)\/(de|en)\//, `/$1/${other}/`);
+  const { areas } = site.vocabulary;
+  const name = areas[site.area][lang];
+  const link = site.link;
   const nav = [
     ['items', t(lang, 'nav_items')],
     ['paths', t(lang, 'nav_paths')],
@@ -14,9 +16,9 @@ export function layout({ lang, path, title, description, current, content, back,
     ['projects', t(lang, 'nav_projects')],
     ['map', t(lang, 'nav_map')],
   ];
-  const full = title === 'Hands-on Computer Science' ? title : `${title} – Hands-on Computer Science`;
+  const full = title === name ? title : `${title} – ${name}`;
   return html`<!doctype html>
-<html lang="${lang}">
+<html lang="${lang}" data-area="${site.area}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,25 +31,28 @@ export function layout({ lang, path, title, description, current, content, back,
   <script>try{const d=document.documentElement.dataset,m=localStorage.getItem('hocs-theme'),u=new URLSearchParams(location.search).get('view'),v=['list','cards'].includes(u)?u:localStorage.getItem('hocs-view');if(m)d.theme=m;if(v)d.view=v}catch{}</script>
   <script type="importmap">${raw(JSON.stringify({ imports: { minisearch: asset('vendor/minisearch.js'), 'qrcode-generator': asset('vendor/qrcode.mjs') } }))}</script>
 </head>
-<body data-lang="${lang}" data-index="${url(lang)}index.json" data-total="${total}"${scripts.includes('runner') && html` data-python-worker="${asset('client/python-worker.js')}" data-pyodide="${pyodide}" data-runner-labels="${JSON.stringify(runnerLabels[lang])}"`}>
+<body data-lang="${lang}" data-index="${link(lang)}index.json" data-total="${total}"${scripts.includes('runner') && html` data-python-worker="${asset('client/python-worker.js')}" data-pyodide="${pyodide}" data-runner-labels="${JSON.stringify(runnerLabels[lang])}"`}>
   <a class="skip" href="#main">${t(lang, 'skip')}</a>
   <header class="bar">
-    <a class="wordmark" href="${url(lang)}">${mark}<span>Hands-on Computer Science</span></a>
+    <a class="wordmark" href="${link(lang)}">${mark}<span>${name}</span></a>
     <nav class="nav" aria-label="${t(lang, 'nav_items')}">
-      ${nav.map(([key, label]) => html`<a href="${url(lang, key)}" ${current === key && raw('aria-current="page"')}>${label}</a>`)}
+      ${nav.map(([key, label]) => html`<a href="${link(lang, key)}" ${current === key && raw('aria-current="page"')}>${label}</a>`)}
     </nav>
     <div class="tools">
       <button class="tool search-open" type="button" aria-haspopup="dialog">
         ${icons.search}<span class="tool-label">${t(lang, 'search')}</span><kbd>/</kbd>
       </button>
-      <a class="tool learning-link" href="${url(lang, 'learning')}" ${current === 'learning' && raw('aria-current="page"')}>
+      <a class="tool learning-link" href="${link(lang, 'learning')}" ${current === 'learning' && raw('aria-current="page"')}>
         <span class="ring" aria-hidden="true"></span><span class="tool-label">${t(lang, 'nav_learning')}</span>
       </a>
+      ${Object.keys(areas)
+        .filter((a) => a !== site.area)
+        .map((a) => html`<a class="tool area-switch" href="/${a}/${lang}/" data-area="${a}" title="${areas[a][lang]}"><span class="area-dot" aria-hidden="true"></span><span class="tool-label">${areas[a].short}</span></a>`)}
       <a class="tool lang" href="${otherPath}" hreflang="${other}" lang="${other}" title="${t(lang, 'other_language')}">${other.toUpperCase()}</a>
       <button class="tool theme" type="button" title="${t(lang, 'theme')}" aria-label="${t(lang, 'theme')}">${icons.theme}</button>
     </div>
   </header>
-  <main id="main">${back && backLink(lang, back)}${content}</main>
+  <main id="main">${back && backLink(link, lang, back)}${content}</main>
   <dialog class="search" aria-label="${t(lang, 'search')}">
     <form method="dialog" class="search-form" role="search">
       ${icons.search}
@@ -68,5 +73,40 @@ export function layout({ lang, path, title, description, current, content, back,
  * "Back to …": `back` names where to go without better knowledge (a key of
  * backLabels); client/site.js replaces it with the page the learner came from.
  */
-const backLink = (lang, back) =>
-  html`<p class="back"><a class="back-link" href="${url(lang, back === 'home' ? '' : back)}" data-back="${JSON.stringify(backLabels[lang])}"><span aria-hidden="true">←</span> <span class="back-label">${backLabels[lang][back]}</span></a></p>`;
+const backLink = (link, lang, back) =>
+  html`<p class="back"><a class="back-link" href="${link(lang, back === 'home' ? '' : back)}" data-back="${JSON.stringify(backLabels[lang])}"><span aria-hidden="true">←</span> <span class="back-label">${backLabels[lang][back]}</span></a></p>`;
+
+/**
+ * The entrance at /de/ and /en/: one card per area, each in its own accent
+ * colour, with the summary of its start page.
+ */
+export function chooser({ lang, areas, asset }) {
+  const other = lang === 'de' ? 'en' : 'de';
+  return html`<!doctype html>
+<html lang="${lang}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hands-on · ${t(lang, 'choose_area')}</title>
+  <link rel="icon" href="${asset('favicon.svg')}" type="image/svg+xml">
+  <link rel="stylesheet" href="${asset('site.css')}">
+  <script>try{const m=localStorage.getItem('hocs-theme');if(m)document.documentElement.dataset.theme=m}catch{}</script>
+</head>
+<body>
+  <main id="main" class="chooser">
+    <p class="chooser-lang"><a class="tool lang" href="/${other}/" hreflang="${other}" lang="${other}">${other.toUpperCase()}</a></p>
+    <h1 class="chooser-title">${mark}<span>${t(lang, 'choose_area')}</span></h1>
+    <ul class="chooser-areas">
+      ${areas.map(
+        (a) => html`<li><a class="area-card" href="/${a.key}/${lang}/" data-area="${a.key}">
+          <span class="area-name">${a.name}</span>
+          <span class="area-summary">${a.summary}</span>
+          <span class="area-go" aria-hidden="true">→</span>
+        </a></li>`,
+      )}
+    </ul>
+  </main>
+</body>
+</html>
+`;
+}

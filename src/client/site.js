@@ -181,11 +181,12 @@ async function placeBack(link) {
     return;
   }
   if (from.origin !== location.origin || from.pathname === location.pathname) return;
-  const [lang, hereSection, hereId] = location.pathname.split('/').filter(Boolean);
+  // paths look like /<area>/<lang>/<section>/<id>/
+  const [hereArea, lang, hereSection, hereId] = location.pathname.split('/').filter(Boolean);
   const page = `${hereSection}/${hereId}`;
-  let [, section, id] = from.pathname.split('/').filter(Boolean);
+  let [fromArea, , section, id] = from.pathname.split('/').filter(Boolean);
   let switched = false;
-  if (section === hereSection && id === hereId) {
+  if (fromArea === hereArea && section === hereSection && id === hereId) {
     // Coming from the same page in the other language: the place to go back
     // to is where that page came from, in this language.
     let saved = null;
@@ -193,8 +194,8 @@ async function placeBack(link) {
       saved = JSON.parse(sessionStorage.getItem('hocs-back'));
     } catch {}
     if (saved?.page !== page) return;
-    from = new URL(saved.from.replace(/^\/(de|en)\//, `/${lang}/`), location.origin);
-    [, section, id] = from.pathname.split('/').filter(Boolean);
+    from = new URL(saved.from.replace(/^\/([a-z]+)\/(de|en)\//, `/$1/${lang}/`), location.origin);
+    [fromArea, , section, id] = from.pathname.split('/').filter(Boolean);
     switched = true;
   }
   try {
@@ -203,6 +204,8 @@ async function placeBack(link) {
 
   const labels = JSON.parse(link.dataset.back);
   let label;
+  // a page of the other area is named by the area, not by its own title
+  if (fromArea !== hereArea) return;
   if (!section) label = labels.home;
   else if (!id) {
     const filtered = section === 'items' && [...from.searchParams.keys()].some((k) => k !== 'view');

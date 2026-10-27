@@ -1,5 +1,6 @@
 ---
 kind: page
+area: cs
 title: Hands-on Computer Science
 summary: >-
   Lektionen, Experimente und Geschichten zur Informatik zum Selbststudium und

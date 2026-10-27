@@ -47,6 +47,8 @@ function shapes(vocabulary) {
   const topics = Object.keys(vocabulary.topics ?? {});
   const modules = Object.keys(vocabulary.modules ?? {});
   const institutions = Object.keys(vocabulary.institutions ?? {});
+  const areas = Object.keys(vocabulary.areas ?? {});
+  const inAreas = list(oneOf(areas, 'area'), 1);
   const relationKeys = Object.keys(vocabulary.relations ?? {});
   const relations = (v) => {
     if (!v || typeof v !== 'object' || Array.isArray(v)) return 'expected relation: [ids]';
@@ -132,6 +134,7 @@ function shapes(vocabulary) {
           died: int(1000, 2100),
           deck_lang: oneOf(['de', 'en'], 'language'),
           recordings: list(recording, 1),
+          areas: inAreas,
         },
       },
       translation,
@@ -150,7 +153,7 @@ function shapes(vocabulary) {
           updated: date,
         },
         // either a flat list of steps or parts with headings, see pathSteps
-        optional: { requires: list(id), steps: list(step, 1), sections: list(pathSection, 1) },
+        optional: { requires: list(id), steps: list(step, 1), sections: list(pathSection, 1), areas: inAreas },
       },
       translation: { required: { ...translation.required, goal: text, audience: text }, optional: {} },
     },
@@ -170,7 +173,7 @@ function shapes(vocabulary) {
           updated: date,
         },
         // where the course is taught, and its official module description
-        optional: { institution: oneOf(institutions, 'institution'), handbook: url },
+        optional: { institution: oneOf(institutions, 'institution'), handbook: url, areas: inAreas },
       },
       translation,
     },
@@ -187,14 +190,15 @@ function shapes(vocabulary) {
           status,
           updated: date,
         },
-        optional: { modules: list(oneOf(modules, 'module')), items: list(id) },
+        optional: { modules: list(oneOf(modules, 'module')), items: list(id), areas: inAreas },
       },
       translation,
     },
     pages: {
       lead: {
         required: { kind: oneOf(['page'], 'kind'), title: text, summary: text, updated: date },
-        optional: { featured_path: id, samples: list(id) },
+        // a page with `area` is the start page of that area
+        optional: { featured_path: id, samples: list(id), area: oneOf(areas, 'area') },
       },
       translation,
     },
@@ -268,7 +272,7 @@ export const pathSteps = (lead) =>
 export function validate({ vocabulary, sections, problems, media = [] }) {
   const errors = [...problems];
   const warnings = [];
-  for (const key of ['types', 'relations', 'levels', 'topics', 'modules']) {
+  for (const key of ['types', 'relations', 'levels', 'topics', 'modules', 'areas']) {
     if (!vocabulary[key]) errors.push(`vocabulary.yaml: ${key} is missing`);
   }
   for (const [type, def] of Object.entries(vocabulary.types ?? {})) {
@@ -310,6 +314,10 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
 
   // Across files
   const { content, paths, courses, projects, pages } = sections;
+  for (const area of Object.keys(vocabulary.areas)) {
+    const homes = pages.filter((p) => p.lead.area === area);
+    if (homes.length !== 1) errors.push(`pages: area ${area} needs exactly one start page (a page with area: ${area}), found ${homes.length}`);
+  }
   const items = new Map(content.map((d) => [d.id, d]));
   const pathIds = new Set(paths.map((d) => d.id));
   const allIds = new Set([...items.keys(), ...pathIds, ...courses.map((d) => d.id), ...projects.map((d) => d.id)]);

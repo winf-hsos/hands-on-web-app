@@ -110,6 +110,20 @@ All motion is switched off for people who ask their system for reduced motion.
   continuous run. `src/client/highlight.js` highlights Python both at build
   time and while editing.
 
+## Areas
+
+One app and one knowledge base serve several **areas** (decision of Nicolas,
+2026-10-27): Hands-on Computer Science under `/cs/` and Hands-on Data Science
+under `/ds/`. Each area is a part of the site of its own, with its start page,
+lists, map, search index and "My learning", and its own accent colour (blue
+for computer science, pink for data science), set on `<html data-area>` in
+`site.css`. The build makes one site model per area (`createSite(knowledge,
+area)`): lookups cover the whole knowledge base, lists only the area, and a
+link to a doc that belongs to another area leads into that area. `/de/` and
+`/en/` are the entrance with one card per area; the header of every page has
+a switch to the other area. Progress is kept per browser, not per area, since
+items have one id everywhere.
+
 ## Addresses: every view can be linked
 
 What a page shows is in its address, so a view can be bookmarked, sent as a
@@ -118,12 +132,12 @@ someone filters or switches, without adding history entries.
 
 | Address | Shows |
 |---|---|
-| `/de/items/?type=lesson&topic=…&level=1&path=…&project=…&course=…&progress=open&q=…` | the content list filtered; every filter is optional |
+| `/cs/de/items/?type=lesson&topic=…&level=1&path=…&project=…&course=…&progress=open&q=…` | the content list filtered; every filter is optional |
 | `…&sort=duration`, `…&group=topic` (or `level`, `none`) | order and grouping (defaults: title, type) |
 | `…?view=cards` (also on `/de/projects/`) | cards instead of rows, for this visit; the stored preference otherwise |
-| `/de/map/?topic=processing-information` | the map with one topic highlighted |
-| `/de/items/<quiz>/?question=3` (or `=result`) | a quiz at its third question, or at its result |
-| `/de/learning/?code=LICHT-26` | adds the course with this access code and opens it; the code is read without case, spaces or hyphens |
+| `/cs/de/map/?topic=processing-information` | the map with one topic highlighted |
+| `/cs/de/items/<quiz>/?question=3` (or `=result`) | a quiz at its third question, or at its result |
+| `/cs/de/learning/?code=LICHT-26` | adds the course with this access code and opens it; the code is read without case, spaces or hyphens |
 
 **Back to where you came from.** Every page but the start page has a "back
 to …" link. The build fills in a default (an item leads back to the content

@@ -20,7 +20,7 @@ Decisions that are still open are collected at the end under
 ```
 knowledge/
   README.md              how the knowledge base is organised (short)
-  vocabulary.yaml        content types, relation types, levels, topics, modules
+  vocabulary.yaml        content types, relation types, levels, topics, areas, modules
   content/
     code-as-agreement/   one folder per content item, named by its id
       de.md              lead file: shared metadata + German text
@@ -492,6 +492,17 @@ progress stays valid. Nothing that is not archived may point to it.
 
 Warnings, which do not stop the build: missing translation, translation older
 than its lead, `draft` items referenced by a published path or course.
+
+## 13. Areas
+
+`vocabulary.yaml` lists the areas of the platform (`cs`, `ds`). Content
+items, paths, courses and projects may name theirs with `areas: [ds]` or
+`areas: [cs, ds]`; without the field they belong to `cs`, which is what all
+content written before 2026-10-27 assumes. An item in two areas has a page in
+both. Every area needs exactly one start page: a page in `pages/` with
+`area: <key>` (`pages/home` for cs, `pages/home-ds` for ds), which the build
+checks. Topics and modules have no area; the lists show only the topics that
+items of the area use.
 
 ## Decisions
 

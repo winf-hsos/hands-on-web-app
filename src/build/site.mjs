@@ -1,15 +1,20 @@
-// The validated knowledge base as the templates need it: lookups, the text
-// of a doc in a language (with fallback), relations in both directions,
-// durations and URLs.
+// The validated knowledge base as the templates need it, for one area of the
+// site: lookups, the text of a doc in a language (with fallback), relations
+// in both directions, durations and URLs. Lookups cover the whole knowledge
+// base, lists only the area; a link to a doc of another area leads there.
 import { renderMarkdown } from './markdown.mjs';
 import { stepsOf, pathSteps, courseSteps } from './validate.mjs';
 import { splitProject } from './project.mjs';
 
-export const url = (lang, ...parts) => `/${[lang, ...parts].join('/')}/`.replace(/\/+/g, '/');
-
 const SECTION_PATH = { content: 'items', paths: 'paths', courses: 'courses', projects: 'projects' };
 
-export function createSite({ vocabulary, sections }) {
+/** The areas a doc belongs to; without `areas` it is Computer Science. */
+export const areasOf = (doc) => doc.lead.areas ?? ['cs'];
+
+export function createSite({ vocabulary, sections }, area) {
+  /** Address of a page of this area: link('de', 'items') is /cs/de/items/. */
+  const link = (lang, ...parts) => `/${[area, lang, ...parts].join('/')}/`.replace(/\/+/g, '/');
+  const inArea = (doc) => areasOf(doc).includes(area);
   const item = new Map(sections.content.map((d) => [d.id, d]));
   const path = new Map(sections.paths.map((d) => [d.id, d]));
   const course = new Map(sections.courses.map((d) => [d.id, d]));
@@ -17,7 +22,7 @@ export function createSite({ vocabulary, sections }) {
   const project = new Map(sections.projects.map((d) => [d.id, d]));
   const byId = new Map([...item, ...path, ...course, ...project]);
 
-  const docUrl = (doc, lang) => url(lang, SECTION_PATH[doc.section], doc.id);
+  const docUrl = (doc, lang) => `/${inArea(doc) ? area : areasOf(doc)[0]}/${lang}/${SECTION_PATH[doc.section]}/${doc.id}/`;
 
   function localize(doc, lang) {
     const own = doc.files[lang];
@@ -112,10 +117,13 @@ export function createSite({ vocabulary, sections }) {
 
   return {
     vocabulary,
-    items: sections.content,
-    paths: sections.paths,
-    courses: sections.courses,
-    projects: sections.projects,
+    area,
+    link,
+    home: sections.pages.find((p) => p.lead.area === area),
+    items: sections.content.filter(inArea),
+    paths: sections.paths.filter(inArea),
+    courses: sections.courses.filter(inArea),
+    projects: sections.projects.filter(inArea),
     project,
     item,
     path,

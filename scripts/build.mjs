@@ -8,11 +8,11 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { loadKnowledge, LANGS } from '../src/build/load.mjs';
 import { validate } from '../src/build/validate.mjs';
-import { createSite, url } from '../src/build/site.mjs';
+import { createSite } from '../src/build/site.mjs';
 import { t } from '../src/build/i18n.mjs';
 import { isUnpublished } from '../src/build/deck.mjs';
 import { iconSvg } from '../src/build/icons.mjs';
-import { layout } from '../src/templates/layout.mjs';
+import { layout, chooser } from '../src/templates/layout.mjs';
 import * as pages from '../src/templates/pages.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -97,7 +97,7 @@ export function build({ quiet = false } = {}) {
     for (const section of Object.keys(knowledge.sections)) {
       knowledge.sections[section] = knowledge.sections[section].filter((d) => d.lead.status !== 'archived');
     }
-    count = render(createSite(knowledge));
+    count = render(knowledge);
   } catch (error) {
     rmSync(DIST, { recursive: true, force: true });
     throw error;
@@ -109,7 +109,8 @@ export function build({ quiet = false } = {}) {
 }
 
 /** Writes the whole site into DIST and returns the number of pages. */
-function render(site) {
+function render(knowledge) {
+  const areas = Object.keys(knowledge.vocabulary.areas);
   rmSync(DIST, { recursive: true, force: true });
 
   const hashes = {};
@@ -128,7 +129,7 @@ function render(site) {
   // Slide decks as they are, next to the stagekit runtime they expect two
   // folders up: /decks/<id>/index.html loads ../../stagekit/stagekit.js.
   cpSync(join(ROOT, 'vendor/stagekit'), join(DIST, 'stagekit'), { recursive: true, filter: (source) => !source.endsWith('.md') });
-  for (const item of site.items.filter((i) => i.lead.type === 'slides')) {
+  for (const item of knowledge.sections.content.filter((i) => i.lead.type === 'slides')) {
     const from = join(item.dir, 'slides');
     cpSync(from, join(DIST, 'decks', item.id), {
       recursive: true,
@@ -148,29 +149,42 @@ function render(site) {
     writeFileSync(file, text);
   };
   let count = 0;
-  const writePage = (lang, page) => {
-    write(page.path, String(layout({ lang, asset, pyodide: PYODIDE_BASE, total: site.items.length, ...page })));
-    count += 1;
-  };
-
-  for (const lang of LANGS) {
-    writePage(lang, pages.home(site, lang));
-    writePage(lang, pages.items(site, lang));
-    writePage(lang, pages.paths(site, lang));
-    writePage(lang, pages.courses(site, lang));
-    writePage(lang, pages.map(site, lang));
-    writePage(lang, pages.projects(site, lang));
-    for (const doc of site.projects) writePage(lang, pages.project(site, doc, lang));
-    writePage(lang, pages.learning(site, lang));
-    for (const doc of site.items) writePage(lang, pages.item(site, doc, lang));
-    for (const doc of site.paths) writePage(lang, pages.path(site, doc, lang));
-    for (const doc of site.courses) writePage(lang, pages.course(site, doc, lang));
-    write(`${url(lang)}index.json`, JSON.stringify(clientIndex(site, lang)));
+  // every area is a part of the site of its own, built from the same knowledge
+  for (const area of areas) {
+    const site = createSite(knowledge, area);
+    const writePage = (lang, page) => {
+      write(page.path, String(layout({ site, lang, asset, pyodide: PYODIDE_BASE, total: site.items.length, ...page })));
+      count += 1;
+    };
+    for (const lang of LANGS) {
+      writePage(lang, pages.home(site, lang));
+      writePage(lang, pages.items(site, lang));
+      writePage(lang, pages.paths(site, lang));
+      writePage(lang, pages.courses(site, lang));
+      writePage(lang, pages.map(site, lang));
+      writePage(lang, pages.projects(site, lang));
+      for (const doc of site.projects) writePage(lang, pages.project(site, doc, lang));
+      writePage(lang, pages.learning(site, lang));
+      for (const doc of site.items) writePage(lang, pages.item(site, doc, lang));
+      for (const doc of site.paths) writePage(lang, pages.path(site, doc, lang));
+      for (const doc of site.courses) writePage(lang, pages.course(site, doc, lang));
+      write(`${site.link(lang)}index.json`, JSON.stringify(clientIndex(site, lang)));
+    }
   }
-  write('404.html', String(layout({ lang: 'de', asset, ...pages.notFound() })));
+
+  // the entrance: one page per language that leads into the areas
+  for (const lang of LANGS) {
+    const cards = areas.map((key) => {
+      const site = createSite(knowledge, key);
+      return { key, name: knowledge.vocabulary.areas[key][lang], summary: site.localize(site.home, lang).summary };
+    });
+    write(`/${lang}/`, String(chooser({ lang, areas: cards, asset })));
+    count += 1;
+  }
+  write('404.html', String(layout({ site: createSite(knowledge, areas[0]), lang: 'de', asset, ...pages.notFound() })));
   write(
     'index.html',
-    `<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Hands-on Computer Science</title>
+    `<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Hands-on</title>
 <meta http-equiv="refresh" content="1; url=/de/">
 <script>const l=(navigator.languages||[navigator.language]).find(x=>/^(de|en)/i.test(x));location.replace(l&&/^en/i.test(l)?'/en/':'/de/')</script>
 </head><body><p><a href="/de/">Deutsch</a> · <a href="/en/">English</a></p></body></html>\n`,

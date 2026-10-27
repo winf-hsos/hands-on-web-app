@@ -62,6 +62,30 @@ topics:
   transferring-information: { de: Information übertragen, en: Transferring information }
   processing-information:   { de: Information verarbeiten, en: Processing information }
   programming-with-python:  { de: Programmieren mit Python, en: Programming with Python }
+  # Data science, after the topic map of the Data Analytics material
+  # (02 - Lehrinhalte\Data Analytics\Themenlandkarte.md, fields A to M and X)
+  questions-and-measurement: { de: Fragen, Designs und Messung, en: Questions, designs and measurement }
+  reproducible-work:         { de: Arbeitsumgebung und Reproduzierbarkeit, en: Working environment and reproducibility }
+  programming-with-r:        { de: Programmieren mit R, en: Programming with R }
+  getting-data:              { de: Daten beschaffen und aufräumen, en: Getting and tidying data }
+  transforming-data:         { de: Daten transformieren und verknüpfen, en: Transforming and joining data }
+  exploring-data:            { de: Explorieren und beschreiben, en: Exploring and describing }
+  visualising-data:          { de: Visualisieren, en: Visualising }
+  communicating-results:     { de: Kommunizieren und schreiben, en: Communicating and writing }
+  text-with-rules:           { de: Text regelbasiert auswerten, en: Text with rules }
+  nlp-and-ml:                { de: NLP und maschinelles Lernen, en: NLP and machine learning }
+  llms-in-analysis:          { de: Sprachmodelle in der Analyse, en: Language models in analysis }
+  ai-agents-as-tools:        { de: KI-Agenten als Werkzeug, en: AI agents as tools }
+  big-data-pipelines:        { de: Große Daten und Pipelines, en: Big data and pipelines }
+  data-pitfalls:             { de: Datenkritik und Fallstricke, en: Data criticism and pitfalls }
+
+# Areas of the platform: one app, one knowledge base, a part of the site for
+# each area with its own address (/cs/…, /ds/…), start page and accent colour.
+# Content, paths, courses and projects name their areas with `areas:`
+# (default: cs), so the same item can appear in both.
+areas:
+  cs: { de: Hands-on Computer Science, en: Hands-on Computer Science, short: Computer Science }
+  ds: { de: Hands-on Data Science, en: Hands-on Data Science, short: Data Science }
 
 # Institutions that offer courses: name, address and a logo from media/.
 institutions:
@@ -73,3 +97,7 @@ institutions:
 
 modules:
   dup: { de: Digitalisierung und Programmierung, en: Digitalisation and Programming }
+  wmg: { de: Werkzeuge der Markt- und Gesellschaftsforschung, en: Tools of Market and Social Research }
+  pmg: { de: Praxis der Markt- und Gesellschaftsforschung, en: Practice of Market and Social Research }
+  ea: { de: Empirisches Arbeiten, en: Empirical Research }
+  bda: { de: Big Data Analytics, en: Big Data Analytics }
