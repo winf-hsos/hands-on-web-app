@@ -149,11 +149,21 @@ function render(knowledge) {
     writeFileSync(file, text);
   };
   let count = 0;
+  // name and summary of each area, for the entrance and the area menu
+  const entrances = Object.fromEntries(
+    LANGS.map((lang) => [
+      lang,
+      areas.map((key) => {
+        const site = createSite(knowledge, key);
+        return { key, name: knowledge.vocabulary.areas[key][lang], summary: site.localize(site.home, lang).summary };
+      }),
+    ]),
+  );
   // every area is a part of the site of its own, built from the same knowledge
   for (const area of areas) {
     const site = createSite(knowledge, area);
     const writePage = (lang, page) => {
-      write(page.path, String(layout({ site, lang, asset, pyodide: PYODIDE_BASE, total: site.items.length, ...page })));
+      write(page.path, String(layout({ site, lang, asset, pyodide: PYODIDE_BASE, total: site.items.length, entrances: entrances[lang], ...page })));
       count += 1;
     };
     for (const lang of LANGS) {
@@ -174,14 +184,10 @@ function render(knowledge) {
 
   // the entrance: one page per language that leads into the areas
   for (const lang of LANGS) {
-    const cards = areas.map((key) => {
-      const site = createSite(knowledge, key);
-      return { key, name: knowledge.vocabulary.areas[key][lang], summary: site.localize(site.home, lang).summary };
-    });
-    write(`/${lang}/`, String(chooser({ lang, areas: cards, asset })));
+    write(`/${lang}/`, String(chooser({ lang, areas: entrances[lang], asset })));
     count += 1;
   }
-  write('404.html', String(layout({ site: createSite(knowledge, areas[0]), lang: 'de', asset, ...pages.notFound() })));
+  write('404.html', String(layout({ site: createSite(knowledge, areas[0]), lang: 'de', asset, entrances: entrances.de, ...pages.notFound() })));
   write(
     'index.html',
     `<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Hands-on</title>

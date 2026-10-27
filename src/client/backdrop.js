@@ -144,7 +144,7 @@ function bitScene() {
 
 function chartScene() {
   let charts = [];
-  const KINDS = ['bars', 'line', 'scatter', 'table', 'donut'];
+  const KINDS = ['transform', 'bars', 'line', 'scatter', 'donut'];
 
   // Where a chart may sit: in the margins beside the content, sized to fit
   // them; on a narrow screen anywhere, where the mask keeps it faint.
@@ -172,7 +172,9 @@ function chartScene() {
   };
 
   // the kind shown least at the moment, so that the charts vary
-  const nextKind = () => KINDS.map((k) => [k, charts.filter((c) => c.kind === k).length + Math.random()]).sort((a, b) => a[1] - b[1])[0][0];
+  // (data frames that transform count half, so that they come up most often)
+  const nextKind = () =>
+    KINDS.map((k) => [k, charts.filter((c) => c.kind === k).length * (k === 'transform' ? 0.5 : 1) + Math.random()]).sort((a, b) => a[1] - b[1])[0][0];
 
   function newChart(now, kind = nextKind()) {
     const at = place();
@@ -192,6 +194,10 @@ function chartScene() {
         return [x, clamp01(0.15 + slope * x + (Math.random() - 0.5) * 0.35)];
       });
       chart.slope = slope;
+    } else if (kind === 'transform') {
+      Object.assign(chart, newFrame(now));
+      // the first verb after a second and a half, the result stays a while
+      chart.life = 1500 + chart.steps.length * STEP + 2500;
     } else if (kind === 'donut') {
       chart.from = [0.25, 0.25, 0.25, 0.25];
       chart.to = shares();
@@ -308,38 +314,148 @@ function chartScene() {
     }
   }
 
-  // A data frame: header, rows of values as short strokes, and a highlight
-  // that walks down the rows as if a loop went through them.
-  function table(c, now, a) {
-    const columns = 4;
-    const rowsShown = 6;
-    const rh = c.h / (rowsShown + 1);
-    const cw = c.w / columns;
-    const current = Math.floor((now - c.start) / 650) % rowsShown;
+  // --- a data frame that transforms ---
+  // A small table runs through a pipeline of dplyr verbs, one every few
+  // seconds, with the verb written faintly above it: filter() folds rows
+  // away, select() drops a column, arrange() sorts the rows, mutate() grows a
+  // new column, and group_by() with summarize() tints the rows by group and
+  // slides them together into one row per group.
+  const STEP = 3200;
+
+  function newFrame(now) {
+    const cols = Array.from({ length: 3 + random(2) }, (_, id) => ({ id, w: 1, tw: 1 }));
+    const rows = Array.from({ length: 5 + random(2) }, (_, i) => ({
+      y: i,
+      ty: i,
+      h: 1,
+      th: 1,
+      tint: 0,
+      ttint: 0,
+      group: random(2),
+      cells: Object.fromEntries(cols.map((col) => [col.id, 0.25 + Math.random() * 0.7])),
+    }));
+    const middle = ['filter', 'select', 'arrange', 'mutate'].sort(() => Math.random() - 0.5).slice(0, 2);
+    const end = Math.random() < 0.5 ? ['summarize'] : ['group_by', 'summarize_groups'];
+    return { cols, rows, nextCol: cols.length, steps: [...middle, ...end], step: -1, stepStart: now + 1500 - STEP, label: 'df', applied: true, moved: now };
+  }
+
+  const LABEL = {
+    filter: 'filter()',
+    select: 'select()',
+    arrange: 'arrange(desc())',
+    mutate: 'mutate()',
+    group_by: 'group_by()',
+    summarize: 'summarize()',
+    summarize_groups: 'summarize()',
+  };
+
+  const visible = (c) => c.rows.filter((r) => r.th > 0);
+  const restack = (list) => list.forEach((r, i) => (r.ty = i));
+
+  function apply(c, verb) {
+    const first = c.cols.find((col) => col.tw > 0).id;
+    if (verb === 'filter') {
+      const kept = visible(c).sort((a, b) => a.ty - b.ty);
+      const cut = [...kept.map((r) => r.cells[first])].sort((a, b) => a - b)[Math.floor(kept.length / 2) - 1];
+      kept.filter((r) => r.cells[first] <= cut).forEach((r) => (r.th = 0));
+      restack(visible(c).sort((a, b) => a.ty - b.ty));
+    } else if (verb === 'select') {
+      const shown = c.cols.filter((col) => col.tw > 0);
+      if (shown.length > 2) shown[1 + random(shown.length - 1)].tw = 0;
+    } else if (verb === 'arrange') {
+      restack(visible(c).sort((a, b) => b.cells[first] - a.cells[first]));
+    } else if (verb === 'mutate') {
+      const id = c.nextCol++;
+      c.cols.push({ id, w: 0, tw: 1 });
+      c.rows.forEach((r) => (r.cells[id] = 0.25 + Math.random() * 0.7));
+    } else if (verb === 'group_by') {
+      visible(c).forEach((r) => (r.ttint = 1));
+      restack(visible(c).sort((a, b) => a.group - b.group || a.ty - b.ty));
+    } else {
+      // summarize: every row slides into the row of its group (or the one
+      // row there is), where a new row with the means appears
+      const groups = verb === 'summarize_groups' ? [...new Set(visible(c).map((r) => r.group))].sort() : [null];
+      const summary = groups.map((g, i) => {
+        const members = visible(c).filter((r) => g === null || r.group === g);
+        members.forEach((r) => {
+          r.ty = i;
+          r.th = 0;
+        });
+        const cells = Object.fromEntries(c.cols.map((col) => [col.id, members.reduce((sum, r) => sum + r.cells[col.id], 0) / members.length]));
+        return { y: i, ty: i, h: 0, th: 1, tint: 0, ttint: g === null ? 0 : 1, group: g ?? 0, cells, summary: true };
+      });
+      c.rows.push(...summary);
+    }
+  }
+
+  function transform(c, now, a) {
+    // the pipeline: a new verb every STEP, applied half a second after its label
+    if (now - c.stepStart > STEP && c.step < c.steps.length - 1) {
+      c.step += 1;
+      c.stepStart = now;
+      c.label = LABEL[c.steps[c.step]];
+      c.applied = false;
+    }
+    if (!c.applied && now - c.stepStart > 500) {
+      apply(c, c.steps[c.step]);
+      c.applied = true;
+    }
+    // everything glides towards where the last verb put it
+    const k = 1 - Math.exp(-(now - c.moved) / 260);
+    c.moved = now;
+    for (const r of c.rows) {
+      r.y += (r.ty - r.y) * k;
+      r.h += (r.th - r.h) * k;
+      r.tint += (r.ttint - r.tint) * k;
+    }
+    for (const col of c.cols) col.w += (col.tw - col.w) * k;
+    c.rows = c.rows.filter((r) => r.th > 0 || r.h > 0.02);
+    c.cols = c.cols.filter((col) => col.tw > 0 || col.w > 0.02);
+
+    const rh = c.h / 7;
+    const cw = c.w / 5;
+    const xs = [];
+    let x = c.x;
+    for (const col of c.cols) {
+      xs.push(x);
+      x += col.w * cw;
+    }
+    const right = x;
+    const bottom = c.y + rh * (1 + Math.max(0, ...c.rows.map((r) => r.y + r.h)));
+
+    ctx.font = '11px "Atkinson Mono", ui-monospace, monospace';
+    fill(colors.lineAlpha * 1.4 * a, colors.grid);
+    ctx.fillText(c.label, c.x, c.y - 6);
+
     fill(colors.fillAlpha * 0.9 * a, colors.grid);
-    ctx.fillRect(c.x, c.y, c.w, rh);
-    fill(colors.fillAlpha * 1.3 * a);
-    ctx.fillRect(c.x, c.y + rh * (current + 1), c.w, rh);
-    stroke(colors.lineAlpha * 0.6 * a, colors.grid);
-    ctx.strokeRect(c.x + 0.5, c.y + 0.5, c.w, c.h);
-    for (let i = 1; i < columns; i++) {
-      ctx.beginPath();
-      ctx.moveTo(c.x + i * cw + 0.5, c.y);
-      ctx.lineTo(c.x + i * cw + 0.5, c.y + c.h);
-      ctx.stroke();
-    }
-    c.cells ??= Array.from({ length: rowsShown * columns }, () => 0.3 + Math.random() * 0.55);
-    stroke(colors.lineAlpha * 0.9 * a, colors.grid);
-    for (let r = 0; r < rowsShown; r++) {
-      for (let k = 0; k < columns; k++) {
-        const y = c.y + rh * (r + 1.5);
-        const x = c.x + k * cw + 6;
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(x + (cw - 12) * c.cells[r * columns + k], y);
-        ctx.stroke();
+    ctx.fillRect(c.x, c.y, right - c.x, rh);
+    for (const r of c.rows) {
+      if (r.h < 0.01) continue;
+      const top = c.y + rh * (1 + r.y);
+      const height = rh * r.h;
+      // rows of the first group strongly tinted, of the second lightly; new summary rows stand out
+      const tint = r.summary ? 1.6 : r.tint * (r.group ? 0.55 : 1.1);
+      if (tint > 0.01) {
+        fill(colors.fillAlpha * tint * a * Math.min(1, r.h));
+        ctx.fillRect(c.x, top, right - c.x, height);
       }
+      c.cols.forEach((col, i) => {
+        if (col.w < 0.05) return;
+        stroke(colors.lineAlpha * 0.9 * a * Math.min(r.h, col.w), colors.grid);
+        ctx.beginPath();
+        ctx.moveTo(xs[i] + 5, top + height / 2);
+        ctx.lineTo(xs[i] + 5 + (col.w * cw - 10) * r.cells[col.id], top + height / 2);
+        ctx.stroke();
+      });
     }
+    stroke(colors.lineAlpha * 0.6 * a, colors.grid);
+    ctx.strokeRect(c.x + 0.5, c.y + 0.5, right - c.x, bottom - c.y);
+    xs.slice(1).forEach((xi) => {
+      ctx.beginPath();
+      ctx.moveTo(xi + 0.5, c.y);
+      ctx.lineTo(xi + 0.5, bottom);
+      ctx.stroke();
+    });
   }
 
   // A ring of four shares that slowly shift.
@@ -367,7 +483,7 @@ function chartScene() {
     ctx.lineWidth = 1.25;
   }
 
-  const DRAW = { bars, line, scatter, table, donut };
+  const DRAW = { bars, line, scatter, transform, donut };
   // a few at a time: about one for every 170 pixels of height, at most five
   const target = () => Math.max(2, Math.min(5, Math.round(height / 170)));
 

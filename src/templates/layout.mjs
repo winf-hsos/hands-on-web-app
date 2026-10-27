@@ -3,7 +3,7 @@ import { html, raw } from '../build/html.mjs';
 import { t, runnerLabels, backLabels } from '../build/i18n.mjs';
 import { icons, mark } from './parts.mjs';
 
-export function layout({ site, lang, path, title, description, current, content, back, scripts = [], asset, pyodide, total = 0 }) {
+export function layout({ site, lang, path, title, description, current, content, back, scripts = [], asset, pyodide, total = 0, entrances = [] }) {
   const other = lang === 'de' ? 'en' : 'de';
   const otherPath = path.replace(/^\/([a-z]+)\/(de|en)\//, `/$1/${other}/`);
   const { areas } = site.vocabulary;
@@ -34,7 +34,20 @@ export function layout({ site, lang, path, title, description, current, content,
 <body data-lang="${lang}" data-index="${link(lang)}index.json" data-total="${total}"${scripts.includes('runner') && html` data-python-worker="${asset('client/python-worker.js')}" data-pyodide="${pyodide}" data-runner-labels="${JSON.stringify(runnerLabels[lang])}"`}>
   <a class="skip" href="#main">${t(lang, 'skip')}</a>
   <header class="bar">
-    <a class="wordmark" href="${link(lang)}">${mark}<span>${name}</span></a>
+    <details class="area-menu">
+      <summary class="wordmark" title="${t(lang, 'switch_area')}">${mark}<span>${name}</span>${icons.chevron}</summary>
+      <div class="area-menu-panel">
+        ${entrances
+          .filter((e) => e.key !== site.area)
+          .map(
+            (e) => html`<a class="area-option" href="/${e.key}/${lang}/" data-area="${e.key}">
+              <span class="area-option-name"><span class="area-dot" aria-hidden="true"></span>${e.name}</span>
+              <span class="area-option-text">${e.summary}</span>
+            </a>`,
+          )}
+        <a class="area-home" href="${link(lang)}">${t(lang, 'area_home')}: ${name}</a>
+      </div>
+    </details>
     <nav class="nav" aria-label="${t(lang, 'nav_items')}">
       ${nav.map(([key, label]) => html`<a href="${link(lang, key)}" ${current === key && raw('aria-current="page"')}>${label}</a>`)}
     </nav>
@@ -45,9 +58,6 @@ export function layout({ site, lang, path, title, description, current, content,
       <a class="tool learning-link" href="${link(lang, 'learning')}" ${current === 'learning' && raw('aria-current="page"')}>
         <span class="ring" aria-hidden="true"></span><span class="tool-label">${t(lang, 'nav_learning')}</span>
       </a>
-      ${Object.keys(areas)
-        .filter((a) => a !== site.area)
-        .map((a) => html`<a class="tool area-switch" href="/${a}/${lang}/" data-area="${a}" title="${areas[a][lang]}"><span class="area-dot" aria-hidden="true"></span><span class="tool-label">${areas[a].short}</span></a>`)}
       <a class="tool lang" href="${otherPath}" hreflang="${other}" lang="${other}" title="${t(lang, 'other_language')}">${other.toUpperCase()}</a>
       <button class="tool theme" type="button" title="${t(lang, 'theme')}" aria-label="${t(lang, 'theme')}">${icons.theme}</button>
     </div>

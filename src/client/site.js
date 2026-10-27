@@ -229,3 +229,18 @@ async function placeBack(link) {
     history.back();
   });
 }
+
+// --- the area menu behind the title -----------------------------------------------------
+
+const areaMenu = document.querySelector('.area-menu');
+if (areaMenu) {
+  document.addEventListener('click', (e) => {
+    if (areaMenu.open && !areaMenu.contains(e.target)) areaMenu.open = false;
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && areaMenu.open) {
+      areaMenu.open = false;
+      areaMenu.querySelector('summary').focus();
+    }
+  });
+}

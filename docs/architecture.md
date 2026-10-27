@@ -120,8 +120,15 @@ for computer science, pink for data science), set on `<html data-area>` in
 `site.css`. The build makes one site model per area (`createSite(knowledge,
 area)`): lookups cover the whole knowledge base, lists only the area, and a
 link to a doc that belongs to another area leads into that area. `/de/` and
-`/en/` are the entrance with one card per area; the header of every page has
-a switch to the other area. Progress is kept per browser, not per area, since
+`/en/` are the entrance with one card per area; on every page the title at
+the top left opens a menu with the other area (and the start page of the
+current one).
+
+The background differs by area (`src/client/backdrop.js`): bits and bytes
+for computer science; for data science small, pale charts in the margins and
+data frames that run through dplyr verbs (`filter()`, `select()`,
+`arrange()`, `mutate()`, `group_by()` and `summarize()`), each verb written
+above the frame while it acts. Progress is kept per browser, not per area, since
 items have one id everywhere.
 
 ## Addresses: every view can be linked
