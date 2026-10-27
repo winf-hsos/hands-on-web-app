@@ -164,7 +164,7 @@ brackets into a list that you read from top to bottom.
 > [!TIP]
 > You can type the pipe faster with **Ctrl+Shift+M** (**Cmd+Shift+M** on a
 > Mac). The shortcut works in every R box on this platform just as it does in
-> RStudio.
+> Positron.
 
 > [!NOTE]
 > Older examples often use `%>%` instead of `|>`. That is the pipe from the
@@ -174,7 +174,7 @@ brackets into a list that you read from top to bottom.
 ## Packages
 
 dplyr is a **package**, an extension of R. On this platform it is already
-loaded. When you work in RStudio on your own computer, you install it once
+loaded. When you work in Positron on your own computer, you install it once
 and then load it at the start of every script:
 
 ```r static

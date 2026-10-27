@@ -77,10 +77,17 @@ function callouts(tree, lang) {
 
 // ```python and ```r blocks are highlighted and become runnable
 // (client/runner.js); ```python static (or ```r static) only shows the code,
-// for fragments that cannot run.
+// for fragments that cannot run. Any other block, such as ```text for a
+// sample run, is shown as it is, in the same frame.
 function runnable(tree) {
   visit(tree, 'code', (node) => {
-    if (node.lang !== 'python' && node.lang !== 'r') return;
+    if (node.lang === 'verb-demo') return;
+    if (node.lang !== 'python' && node.lang !== 'r') {
+      node.type = 'plainCode';
+      const code = { type: 'element', tagName: 'code', properties: { className: node.lang ? [`language-${node.lang}`] : [] }, children: [{ type: 'text', value: node.value }] };
+      node.data = { hName: 'pre', hProperties: { className: ['code'] }, hChildren: [code] };
+      return;
+    }
     const lang = node.lang;
     const runs = !/\bstatic\b/.test(node.meta ?? '');
     const code = {

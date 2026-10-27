@@ -11,7 +11,7 @@ test('a python block becomes a runnable box, a static one only shows the code', 
   const html = render('```python\nprint(1)\n```\n\n```python static\nx = ...\n```\n\n```text\nAusgabe\n```\n');
   assert.equal((html.match(/class="runner" data-runner/g) ?? []).length, 1);
   assert.match(html, /<pre class="code"><code class="language-python">x = \.\.\.<\/code><\/pre>/);
-  assert.match(html, /<pre><code class="language-text">Ausgabe/);
+  assert.match(html, /<pre class="code"><code class="language-text">Ausgabe/);
 });
 
 test('hints and solutions fold away, and several hints are numbered', () => {

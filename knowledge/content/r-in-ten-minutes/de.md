@@ -175,7 +175,7 @@ liest.
 > [!TIP]
 > Die Pipe tippst du schneller mit **Strg+Umschalt+M** (am Mac
 > **Cmd+Umschalt+M**). Das Kürzel funktioniert in jedem R-Kasten dieser
-> Plattform genauso wie in RStudio.
+> Plattform genauso wie in Positron.
 
 > [!NOTE]
 > In älteren Beispielen steht statt `|>` oft `%>%`. Das ist die Pipe aus dem
@@ -185,7 +185,7 @@ liest.
 ## Pakete
 
 dplyr ist ein **Paket**, eine Erweiterung von R. Auf dieser Plattform ist es
-schon geladen. Arbeitest du in RStudio auf deinem eigenen Rechner,
+schon geladen. Arbeitest du in Positron auf deinem eigenen Rechner,
 installierst du es einmal und lädst es dann am Anfang jedes Skripts:
 
 ```r static

@@ -404,6 +404,12 @@ export const backLabels = {
 };
 
 /** Labels of the dplyr demonstrator (client/verb-demo.js). */
+/** Labels for client/copy.js. */
+export const copyLabels = {
+  de: { copy: 'Code kopieren', copied: 'Kopiert' },
+  en: { copy: 'Copy code', copied: 'Copied' },
+};
+
 export const demoLabels = {
   de: { original: 'Original', hint: 'Jedes Verb beginnt bei der Originaltabelle.' },
   en: { original: 'Original', hint: 'Every verb starts from the original table.' },

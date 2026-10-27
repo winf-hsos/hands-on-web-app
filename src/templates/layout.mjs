@@ -1,6 +1,6 @@
 // The frame around every page.
 import { html, raw } from '../build/html.mjs';
-import { t, runnerLabels, backLabels, demoLabels } from '../build/i18n.mjs';
+import { t, runnerLabels, backLabels, demoLabels, copyLabels } from '../build/i18n.mjs';
 import { icons, mark } from './parts.mjs';
 
 export function layout({ site, lang, path, title, description, current, content, back, scripts = [], asset, pyodide, webr, total = 0, entrances = [] }) {
@@ -31,7 +31,7 @@ export function layout({ site, lang, path, title, description, current, content,
   <script>try{const d=document.documentElement.dataset,m=localStorage.getItem('hocs-theme'),u=new URLSearchParams(location.search).get('view'),v=['list','cards'].includes(u)?u:localStorage.getItem('hocs-view');if(m)d.theme=m;if(v)d.view=v}catch{}</script>
   <script type="importmap">${raw(JSON.stringify({ imports: { minisearch: asset('vendor/minisearch.js'), 'qrcode-generator': asset('vendor/qrcode.mjs') } }))}</script>
 </head>
-<body data-lang="${lang}" data-index="${link(lang)}index.json" data-total="${total}"${scripts.includes('runner') && html` data-python-worker="${asset('client/python-worker.js')}" data-pyodide="${pyodide}" data-webr="${webr?.base}" data-webr-repo="${webr?.repo}" data-datasets="/media/datasets/" data-runner-labels="${JSON.stringify(runnerLabels[lang])}"`}${scripts.includes('verb-demo') && html` data-datasets="/media/datasets/" data-verb-demo-labels="${JSON.stringify(demoLabels[lang])}"`}>
+<body data-lang="${lang}" data-index="${link(lang)}index.json" data-total="${total}"${scripts.includes('runner') && html` data-python-worker="${asset('client/python-worker.js')}" data-pyodide="${pyodide}" data-webr="${webr?.base}" data-webr-repo="${webr?.repo}" data-datasets="/media/datasets/" data-runner-labels="${JSON.stringify(runnerLabels[lang])}"`}${scripts.includes('verb-demo') && html` data-datasets="/media/datasets/" data-verb-demo-labels="${JSON.stringify(demoLabels[lang])}"`}${String(content).includes('<pre') && html` data-copy-labels="${JSON.stringify(copyLabels[lang])}"`}>
   <a class="skip" href="#main">${t(lang, 'skip')}</a>
   <header class="bar">
     <details class="area-menu">

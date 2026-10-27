@@ -2,6 +2,7 @@
 // with a Run button and an output area. Python runs in a worker
 // (python-worker.js), R with webR (r-engine.js); either starts on the first
 // click, so a page with code costs nothing until someone wants to run it.
+import { addCopyButton } from './copy.js';
 import { highlight } from './highlight.js';
 
 const { pythonWorker, pyodide, runnerLabels } = document.body.dataset;
@@ -11,7 +12,7 @@ const STOP = '<svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill=
 
 // What differs between the languages: indentation, when Enter indents one
 // level more, how an error message names the kind of error, and for R the
-// pipe that Ctrl+Shift+M inserts, as in RStudio.
+// pipe that Ctrl+Shift+M inserts, as in Positron.
 const LANGS = {
   python: { indent: '    ', opens: /:\s*$/, errorKind: (text) => text.match(/^(\w+Error)\b/m)?.[1] },
   r: {
@@ -102,6 +103,7 @@ function setup(box) {
   output.setAttribute('aria-live', 'polite');
   const hint = el('p', { className: 'runner-hint', hidden: true });
   box.replaceChildren(code, el('div', { className: 'runner-bar' }, run, reset, status), output, hint);
+  addCopyButton(code, () => editor.value);
 
   let answers = [];
   let running = false;

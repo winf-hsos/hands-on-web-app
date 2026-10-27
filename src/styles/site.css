@@ -707,6 +707,65 @@ select {
   font-size: inherit;
 }
 
+/* Copy button (client/copy.js): in the corner of every code block, shown on
+   hover or keyboard focus, always on touch screens. */
+.code-block {
+  position: relative;
+  margin: 1.25rem 0;
+}
+
+.prose .code-block > pre {
+  margin: 0;
+}
+
+.copy-code {
+  position: absolute;
+  top: 0.45rem;
+  right: 0.45rem;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.5rem;
+  background: var(--paper);
+  color: var(--quiet);
+  font: 500 0.8rem/1 var(--sans);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s;
+}
+
+:is(.code-block, .runner-code):hover .copy-code,
+.copy-code:focus-visible,
+.copy-code[data-copied] {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .copy-code {
+    opacity: 1;
+  }
+}
+
+.copy-code:hover {
+  color: var(--accent-ink);
+}
+
+.copy-code[data-copied] {
+  color: var(--done);
+}
+
+.copy-code-done {
+  display: none;
+}
+
+.prose .copy-code[data-copied] .copy-code-done {
+  display: inline;
+  padding-right: 0.15rem;
+}
+
 .tok-keyword {
   color: var(--tok-keyword);
   font-weight: 650;

@@ -122,6 +122,9 @@ All motion is switched off for people who ask their system for reduced motion.
 - **The dplyr demonstrator** (` ```verb-demo `, `src/client/verb-demo.js`)
   computes the verbs itself in JavaScript on six rows of the survey and
   animates the change; it needs no R.
+- **Every code block has a copy button** (`src/client/copy.js`) in its upper
+  right corner. A runnable block copies what is in its editor at that moment,
+  changes included; any other block copies its text.
 
 ## Areas
 
