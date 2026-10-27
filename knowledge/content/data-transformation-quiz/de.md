@@ -2,7 +2,7 @@
 type: quiz
 code: 6400
 title: "Quiz: Daten transformieren"
-summary: Sechs Fragen zu den Grundoperationen, ordentlichen Daten, select(), filter() und fehlenden Werten.
+summary: Sechs Fragen zu den Grundoperationen, Tidy Data, select(), filter() und fehlenden Werten.
 level: 1
 duration: 8
 topics: [transforming-data]
@@ -32,13 +32,13 @@ updated: 2026-10-27
 > `summarize()` fasst alle Zeilen zu einer zusammen, etwa zu einem Mittelwert
 > und einer Anzahl. Mit `group_by()` davor entsteht eine Zeile je Gruppe.
 
-## Eine Tabelle hat die Spalten `id`, `price_2024` und `price_2025`. Was ist daran nicht ordentlich?
+## Eine Tabelle hat die Spalten `id`, `price_2024` und `price_2025`. Was daran ist nicht tidy?
 
 - [ ] In einer Zelle stehen mehrere Werte.
 - [x] Das Jahr ist eine Variable, steckt aber in den Spaltennamen.
 - [ ] Die Tabelle hat zu wenige Zeilen.
 
-> Ordentlich wären die Spalten `id`, `year` und `price`, mit zwei Zeilen je
+> Tidy wären die Spalten `id`, `year` und `price`, mit zwei Zeilen je
 > `id`. Dann lässt sich nach dem Jahr filtern und gruppieren wie nach jeder
 > anderen Variable.
 
