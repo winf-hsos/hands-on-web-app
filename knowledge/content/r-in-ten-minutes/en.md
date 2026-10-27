@@ -118,7 +118,8 @@ The 30 rows come from an online survey on milk and milk alternatives by
 Prof. Dr. Ulrich Enneking (Osnabrück University of Applied Sciences), in which
 about 2,800 people took part. For these lessons it is a few selected people
 and ten questions; the columns have English names, as is customary in
-programming.
+programming. You can download the whole survey as a
+[[milk-chocolate-survey|data set]].
 
 | Column | Meaning |
 |---|---|

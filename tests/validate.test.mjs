@@ -128,6 +128,17 @@ test('a slides item needs its deck and every file the deck loads', () => {
   assert.deepEqual(errors, ['content/problem-decomposition/slides: missing; a slides item keeps its stagekit deck in slides/']);
 });
 
+test('a dataset names a CSV that exists, and nothing else has a file', () => {
+  const { errors } = check(({ find }) => {
+    lead(find('content', 'milk-chocolate-survey')).file = 'no_such_file.csv';
+    lead(find('content', 'knock-code')).file = 'mds12_schoko_milch.csv';
+  });
+  assert.deepEqual(errors, [
+    'content/knock-code: file: only a dataset has a file',
+    'content/milk-chocolate-survey: file: media/datasets/no_such_file.csv does not exist',
+  ]);
+});
+
 test('recordings must be YouTube links', () => {
   const { errors } = check(({ find }) => {
     lead(find('content', 'problem-decomposition')).recordings = [{ title: 'Part 1', url: 'https://example.com/video' }];

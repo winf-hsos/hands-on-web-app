@@ -128,7 +128,8 @@ Die 30 Zeilen stammen aus einer Online-Befragung zu Milch und
 Milchalternativen von Prof. Dr. Ulrich Enneking (Hochschule Osnabrück),
 an der rund 2.800 Menschen teilgenommen haben. Für diese Lektionen sind es
 wenige ausgewählte Personen und zehn Fragen; die Spalten sind englisch
-benannt, wie es beim Programmieren üblich ist.
+benannt, wie es beim Programmieren üblich ist. Die ganze Befragung kannst du
+als [[milk-chocolate-survey|Datensatz]] herunterladen.
 
 | Spalte | Bedeutung |
 |---|---|

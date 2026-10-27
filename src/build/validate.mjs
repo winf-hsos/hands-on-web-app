@@ -7,6 +7,7 @@ import { join } from 'node:path';
 import { iconExists } from './icons.mjs';
 import { splitProject } from './project.mjs';
 import { deckFile } from './deck.mjs';
+import { datasetInfo } from './dataset.mjs';
 
 const ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
@@ -134,6 +135,7 @@ function shapes(vocabulary) {
           died: int(1000, 2100),
           deck_lang: oneOf(['de', 'en'], 'language'),
           recordings: list(recording, 1),
+          file: text,
           areas: inAreas,
         },
       },
@@ -436,6 +438,21 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
       const file = ref.startsWith('../../stagekit/') ? join(item.dir, '../../../vendor/stagekit', ref.slice(15)) : join(deck, ref);
       if (!existsSync(file)) errors.push(`${where}: ${ref} does not exist`);
     }
+  }
+
+  // Datasets: `file` names a CSV in media/datasets/, and only datasets have one.
+  for (const item of content) {
+    const where = `content/${item.id}`;
+    if (item.lead.type !== 'dataset') {
+      if (item.lead.file !== undefined) errors.push(`${where}: file: only a dataset has a file`);
+      continue;
+    }
+    if (typeof item.lead.file !== 'string') {
+      errors.push(`${where}: file is missing (the name of its CSV in media/datasets/)`);
+      continue;
+    }
+    const info = datasetInfo(item.dir, item.lead.file);
+    if (info.error) errors.push(`${where}: file: ${info.error}`);
   }
 
   // Quizzes: every question needs options and at least one correct one.

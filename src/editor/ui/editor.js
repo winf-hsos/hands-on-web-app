@@ -26,6 +26,7 @@ const TYPE_FIELDS = {
   story: ['when'],
   person: ['born', 'died'],
   slides: ['deck_lang'],
+  dataset: ['file', 'authors', 'year', 'license'],
 };
 const FIELD_LABEL = {
   authors: 'Von (durch Komma getrennt)',
@@ -41,6 +42,7 @@ const FIELD_LABEL = {
   born: 'Geboren (Jahr)',
   died: 'Gestorben (Jahr)',
   deck_lang: 'Sprache der Folien (de oder en)',
+  file: 'Datei in media/datasets/ (z. B. daten.csv)',
 };
 const NUMBER_FIELDS = new Set(['year', 'born', 'died', 'duration', 'level']);
 // Fields the forms handle; everything else of a lead file appears as YAML.

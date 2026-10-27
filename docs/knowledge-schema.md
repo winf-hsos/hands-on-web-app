@@ -134,6 +134,7 @@ Type-specific fields:
 | `story` | `when` (year or span, free text such as `1838` or `um 1840`) |
 | `person` | `born`, and `died` where it applies, as years |
 | `slides` | a stagekit deck in the folder `slides/` (one `.html` file, optionally `export/<deck>.pdf`); `deck_lang` if the slides are in one language only; `recordings` later, as `{ title, url, slide }` with YouTube links per part |
+| `dataset` | `file`, the name of a CSV in `media/datasets/`; `authors`, `year`, `license` where known. The page offers the file for download with its rows, columns and size, measured when building, and the lines that load it in R and in Python; the body describes the data. Only a dataset has a `file` |
 | `quiz` | none; the questions are in the body, see section 7 |
 
 Fields deliberately **not** in an item:
@@ -201,12 +202,15 @@ The body is plain Markdown with a few conventions:
   has one command that prints something, so that each output stands next to
   the code it came from; a second example gets its own block with a sentence
   between them. Only short calculations such as `3 + 4` may share a block.
-- **Data sets** for examples lie in `media/datasets/` as CSV with English
-  column names. `milk_survey.csv` is a 30-row excerpt of the survey on milk
-  and milk alternatives by U. Enneking, made by `scripts/survey-excerpt.py`
-  from the full data, which do not go into the repository. He agreed to the
-  use of this excerpt on the platform (2026-10-27); a larger or different
-  excerpt needs his consent again.
+- **Data sets** lie in `media/datasets/` as CSV. `milk_survey.csv` is a
+  30-row excerpt of the survey on milk and milk alternatives by U. Enneking,
+  with English column names, made by `scripts/survey-excerpt.py` from the
+  full data, which do not go into the repository. `mds12_schoko_milch.csv` is
+  the part of the survey he agreed to publish for download (all respondents,
+  the main study and the studies on chocolate and milk), made by
+  `scripts/survey-download.py` without the postcode and without open answers;
+  the item `milk-chocolate-survey` describes it. He agreed to both on
+  2026-10-27; anything beyond them needs his consent again.
 - **The dplyr demonstrator** is placed with an empty ` ```verb-demo ` block.
 - **No embedded HTML and no embedded pages from elsewhere.** That keeps the
   rule from the concept that nothing on the site comes from anywhere but the
@@ -533,7 +537,8 @@ Approved by Nicolas on 2026-10-21 as proposed:
 4. **Type list** to start with: `lesson`, `demo`, `experiment`, `term`,
    `story`, `tool`, `quiz`, `source`, `paper`; `person` added on 2026-10-22,
    when Nicolas asked for an entry on Bill Gates; `slides` added on 2026-10-22
-   for stagekit decks, which come without text of their own.
+   for stagekit decks, which come without text of their own; `dataset` added
+   on 2026-10-27 for data sets to download.
 5. **Levels** 1–4 with the labels above.
 6. **Access codes for courses** are readable word codes such as `LICHT-26`;
    case, spaces and hyphens are ignored when typing them in.

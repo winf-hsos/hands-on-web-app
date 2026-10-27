@@ -6,6 +6,8 @@ import { t, count, formatDate } from '../build/i18n.mjs';
 import { itemRow, progressBar, more, facts, icons, typeIcon, viewSwitch } from './parts.mjs';
 import { iconSvg, iconShapes } from '../build/icons.mjs';
 import { deckFile, deckPdf } from '../build/deck.mjs';
+import { datasetInfo, loadingCode } from '../build/dataset.mjs';
+import { highlight } from '../client/highlight.js';
 
 const typeLabel = (site, item, lang) => site.vocabulary.types[item.lead.type][lang];
 
@@ -188,6 +190,7 @@ export function item(site, doc, lang) {
         ${text.missing && html`<p class="notice">${t(lang, 'missing_translation')}</p>`}
         ${text.stale && html`<p class="notice">${t(lang, 'stale_translation')}</p>`}
         ${lead.type === 'slides' && slidesBlock(site, doc, lang)}
+        ${lead.type === 'dataset' && datasetBlock(doc, lang)}
         <div class="prose" lang="${text.lang}" ${isQuiz && quizLabels(lang)}>
           ${raw(body)}
         </div>
@@ -243,6 +246,26 @@ export function item(site, doc, lang) {
       </article>
     `,
   };
+}
+
+/** A data set: its file to download, how big it is, and the lines that load it. */
+function datasetBlock(doc, lang) {
+  const { file } = doc.lead;
+  const { bytes, rows, columns } = datasetInfo(doc.dir, file);
+  const number = (n, digits = 0) => n.toLocaleString(lang === 'de' ? 'de-DE' : 'en-GB', { maximumFractionDigits: digits });
+  const size = bytes < 1e6 ? `${number(bytes / 1e3)} kB` : `${number(bytes / 1e6, 1)} MB`;
+  const code = loadingCode(file);
+  return html`<section class="dataset prose">
+      <div class="dataset-file">
+        <a class="button" href="/media/datasets/${file}" download="${file}">${icons.download}<span>${t(lang, 'dataset_download')}</span></a>
+        <p class="dataset-facts"><code>${file}</code><span>${number(rows)} ${t(lang, 'dataset_rows')}</span><span>${number(columns)} ${t(lang, 'dataset_columns')}</span><span>${size}</span></p>
+      </div>
+      <p>${t(lang, 'dataset_load')}</p>
+      ${['r', 'python'].map(
+        (l) => html`<p class="dataset-lang">${l === 'r' ? 'R' : 'Python'}</p>
+          <pre class="code"><code class="language-${l}">${raw(highlight(code[l], l))}</code></pre>`,
+      )}
+    </section>`;
 }
 
 /** A stagekit deck embedded in the page, with full screen, a window of its own and the PDF. */
