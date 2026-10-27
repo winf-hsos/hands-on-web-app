@@ -201,8 +201,9 @@ The body is plain Markdown with a few conventions:
 - **Data sets** for examples lie in `media/datasets/` as CSV with English
   column names. `milk_survey.csv` is a 30-row excerpt of the survey on milk
   and milk alternatives by U. Enneking, made by `scripts/survey-excerpt.py`
-  from the full data, which do not go into the repository. Before the site is
-  published, the excerpt needs his consent.
+  from the full data, which do not go into the repository. He agreed to the
+  use of this excerpt on the platform (2026-10-27); a larger or different
+  excerpt needs his consent again.
 - **The dplyr demonstrator** is placed with an empty ` ```verb-demo ` block.
 - **No embedded HTML and no embedded pages from elsewhere.** That keeps the
   rule from the concept that nothing on the site comes from anywhere but the
