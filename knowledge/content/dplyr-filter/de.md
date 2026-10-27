@@ -37,6 +37,11 @@ Eine Bedingung ist meist ein Vergleich. R kennt diese Vergleichszeichen:
 
 ```r
 survey |> filter(age >= 70)
+```
+
+Bei Text vergleichst du auf dieselbe Weise:
+
+```r
 survey |> filter(diet == "vegetarian")
 ```
 
@@ -53,11 +58,15 @@ dass es sie nicht gibt.
 ## Mehrere Bedingungen
 
 Trennst du Bedingungen mit Kommas, müssen alle zugleich zutreffen. Dasselbe
-erreichst du mit `&` (und). Soll mindestens eine zutreffen, verbindest du sie
-mit `|` (oder):
+erreichst du mit `&` (und):
 
 ```r
 survey |> filter(gender == "female", age < 40)
+```
+
+Soll mindestens eine zutreffen, verbindest du sie mit `|` (oder):
+
+```r
 survey |> filter(household_size >= 4 | town_size == "village")
 ```
 
@@ -95,6 +104,11 @@ mit `is.na()`:
 
 ```r
 survey |> filter(is.na(milk_freq)) |> select(id, age, milk_freq)
+```
+
+Mit `!` davor bekommst du umgekehrt alle Zeilen, in denen ein Wert steht:
+
+```r
 survey |> filter(!is.na(milk_freq)) |> nrow()
 ```
 

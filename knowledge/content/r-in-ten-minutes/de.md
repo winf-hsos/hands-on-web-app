@@ -157,11 +157,17 @@ Funktion rechts weiter. Am besten liest man es als „und dann“:
 
 ```r
 survey |> nrow()
+```
+
+Das heißt dasselbe wie `nrow(survey)`: Nimm `survey` und dann zähle die
+Zeilen. Ein Verb von dplyr hängst du genauso an:
+
+```r
 survey |> filter(diet == "vegan")
 ```
 
-Die erste Zeile heißt dasselbe wie `nrow(survey)`, die zweite: Nimm `survey`
-und dann behalte die Zeilen, in denen `diet` gleich `"vegan"` ist. Bei einem
+Das liest sich: Nimm `survey` und dann behalte die Zeilen, in denen `diet`
+gleich `"vegan"` ist. Bei einem
 Schritt ist der Unterschied klein, bei fünf Schritten macht die Pipe aus
 einem unlesbaren Knäuel von Klammern eine Liste, die man von oben nach unten
 liest.

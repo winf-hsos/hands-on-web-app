@@ -27,15 +27,26 @@ its own:
 
 ## Your code
 
+Each question has its own box.
+
 ```r
 # 1. How many answered the price question?
 survey |>
   filter() |>
   nrow()
+```
 
+```r
 # 2. The plausible answers, with five columns
+survey |>
+  filter() |>
+  select()
+```
 
+```r
 # 3. Not omnivore and alpro
+survey |>
+  filter()
 ```
 
 > [!HINT]
@@ -49,18 +60,25 @@ survey |>
 > serious prices per litre from the one outlier; eight rows remain.
 
 > [!SOLUTION]
+> Question 1:
+>
 > ```r
-> # 1.
 > survey |>
 >   filter(!is.na(price_too_expensive)) |>
 >   nrow()
+> ```
 >
-> # 2.
+> Question 2:
+>
+> ```r
 > survey |>
 >   filter(!is.na(price_too_expensive), price_too_expensive <= 10) |>
 >   select(id, age, diet, milk_brand, price_too_expensive)
+> ```
 >
-> # 3.
+> Question 3:
+>
+> ```r
 > survey |>
 >   filter(milk_brand == "alpro", diet != "omnivore") |>
 >   select(id, age, diet, milk_brand, price_too_expensive)

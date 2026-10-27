@@ -27,6 +27,11 @@ A condition is usually a comparison. R knows these comparison operators:
 
 ```r
 survey |> filter(age >= 70)
+```
+
+You compare text in the same way:
+
+```r
 survey |> filter(diet == "vegetarian")
 ```
 
@@ -43,11 +48,15 @@ such thing.
 ## Several conditions
 
 If you separate conditions with commas, all of them must hold at once. You
-get the same with `&` (and). If at least one should hold, you join them with
-`|` (or):
+get the same with `&` (and):
 
 ```r
 survey |> filter(gender == "female", age < 40)
+```
+
+If at least one should hold, you join them with `|` (or):
+
+```r
 survey |> filter(household_size >= 4 | town_size == "village")
 ```
 
@@ -85,6 +94,11 @@ you ask for missing values with `is.na()`:
 
 ```r
 survey |> filter(is.na(milk_freq)) |> select(id, age, milk_freq)
+```
+
+With a `!` in front you get, the other way round, all rows that have a value:
+
+```r
 survey |> filter(!is.na(milk_freq)) |> nrow()
 ```
 

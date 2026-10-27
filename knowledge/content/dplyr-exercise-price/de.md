@@ -37,15 +37,26 @@ Pipe:
 
 ## Dein Code
 
+Für jede Frage gibt es eine eigene Box.
+
 ```r
 # 1. Wie viele haben die Preisfrage beantwortet?
 survey |>
   filter() |>
   nrow()
+```
 
+```r
 # 2. Die plausiblen Antworten, mit fünf Spalten
+survey |>
+  filter() |>
+  select()
+```
 
+```r
 # 3. Nicht omnivor und alpro
+survey |>
+  filter()
 ```
 
 > [!HINT]
@@ -61,18 +72,25 @@ survey |>
 > acht Zeilen.
 
 > [!SOLUTION]
+> Frage 1:
+>
 > ```r
-> # 1.
 > survey |>
 >   filter(!is.na(price_too_expensive)) |>
 >   nrow()
+> ```
 >
-> # 2.
+> Frage 2:
+>
+> ```r
 > survey |>
 >   filter(!is.na(price_too_expensive), price_too_expensive <= 10) |>
 >   select(id, age, diet, milk_brand, price_too_expensive)
+> ```
 >
-> # 3.
+> Frage 3:
+>
+> ```r
 > survey |>
 >   filter(milk_brand == "alpro", diet != "omnivore") |>
 >   select(id, age, diet, milk_brand, price_too_expensive)

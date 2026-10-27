@@ -147,11 +147,17 @@ to the function on its right. It is best read as "and then":
 
 ```r
 survey |> nrow()
+```
+
+This means the same as `nrow(survey)`: take `survey` and then count the rows.
+You attach a dplyr verb in the same way:
+
+```r
 survey |> filter(diet == "vegan")
 ```
 
-The first line means the same as `nrow(survey)`, the second: take `survey`
-and then keep the rows in which `diet` equals `"vegan"`. With one step the
+This reads: take `survey` and then keep the rows in which `diet` equals
+`"vegan"`. With one step the
 difference is small; with five steps the pipe turns an unreadable tangle of
 brackets into a list that you read from top to bottom.
 

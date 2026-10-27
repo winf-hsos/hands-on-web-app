@@ -33,10 +33,15 @@ survey |> select(diet, age, id)
 ## Ranges and exclusions
 
 A colon selects all columns from one to another, as they stand next to each
-other in the table. A minus sign excludes a column, and all others remain:
+other in the table:
 
 ```r
 survey |> select(id:state)
+```
+
+A minus sign excludes a column, and all others remain:
+
+```r
 survey |> select(-state, -town_size, -household_size)
 ```
 
@@ -58,6 +63,12 @@ recognise such patterns:
 
 ```r
 survey |> select(id, starts_with("milk"))
+```
+
+A helper can also stand on its own, and then only the columns that match the
+pattern remain:
+
+```r
 survey |> select(ends_with("size"))
 ```
 

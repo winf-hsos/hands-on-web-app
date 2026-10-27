@@ -43,11 +43,15 @@ survey |> select(diet, age, id)
 ## Bereiche und Ausschlüsse
 
 Ein Doppelpunkt wählt alle Spalten von einer bis zu einer anderen, so wie
-sie in der Tabelle nebeneinander stehen. Ein Minuszeichen schließt eine
-Spalte aus, und alle übrigen bleiben:
+sie in der Tabelle nebeneinander stehen:
 
 ```r
 survey |> select(id:state)
+```
+
+Ein Minuszeichen schließt eine Spalte aus, und alle übrigen bleiben:
+
+```r
 survey |> select(-state, -town_size, -household_size)
 ```
 
@@ -69,6 +73,12 @@ solche Muster erkennen:
 
 ```r
 survey |> select(id, starts_with("milk"))
+```
+
+Ein Helfer kann auch allein stehen, dann bleiben nur die Spalten, die zum
+Muster passen:
+
+```r
 survey |> select(ends_with("size"))
 ```
 

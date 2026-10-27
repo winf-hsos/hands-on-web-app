@@ -197,7 +197,10 @@ The body is plain Markdown with a few conventions:
   languages; what a program prints follows the language of the text.
 - **R code** in a ` ```r ` block works the same way with webR; ` ```r static `
   only shows it. Each block runs on its own, with dplyr loaded and the data
-  set `survey` (`media/datasets/milk_survey.csv`) ready.
+  set `survey` (`media/datasets/milk_survey.csv`) ready. A runnable block
+  has one command that prints something, so that each output stands next to
+  the code it came from; a second example gets its own block with a sentence
+  between them. Only short calculations such as `3 + 4` may share a block.
 - **Data sets** for examples lie in `media/datasets/` as CSV with English
   column names. `milk_survey.csv` is a 30-row excerpt of the survey on milk
   and milk alternatives by U. Enneking, made by `scripts/survey-excerpt.py`
