@@ -2,7 +2,7 @@
 // renders every page in both languages and copies the browser assets.
 // Exits with a list of errors if the knowledge base breaks a rule.
 // Usage: node scripts/build.mjs
-import { mkdirSync, rmSync, writeFileSync, readFileSync, readdirSync, copyFileSync, renameSync, cpSync } from 'node:fs';
+import { mkdirSync, rmSync, writeFileSync, readFileSync, readdirSync, copyFileSync, renameSync, cpSync, linkSync, existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -41,6 +41,33 @@ for (const file of readdirSync(join(ROOT, 'src/client'))) ASSETS[`client/${file}
 const PYODIDE = modules('pyodide');
 const PYODIDE_FILES = ['pyodide.mjs', 'pyodide.asm.mjs', 'pyodide.asm.wasm', 'python_stdlib.zip', 'pyodide-lock.json'];
 const PYODIDE_BASE = `/assets/vendor/pyodide-${JSON.parse(readFileSync(join(PYODIDE, 'package.json'), 'utf8')).version}/`;
+
+// R in the browser (client/r-engine.js): webR as published, without its demo
+// console, tests and source maps, and the R packages fetched once by
+// `npm run fetch-r-packages` into vendor/webr-repo/.
+const WEBR = join(modules('webr'), 'dist');
+const WEBR_BASE = `/assets/vendor/webr-${JSON.parse(readFileSync(join(modules('webr'), 'package.json'), 'utf8')).version}/`;
+const WEBR_SKIP = /^(repl|tests|webR)$|\.(map|cjs|d\.ts)$/;
+const WEBR_REPO = join(ROOT, 'vendor/webr-repo');
+const WEBR_REPO_BASE = '/assets/vendor/webr-repo/';
+
+/** Hard links instead of copies where the file system allows: webR is large, and the preview rebuilds often. */
+function linkTree(from, to, skip = () => false) {
+  mkdirSync(to, { recursive: true });
+  for (const entry of readdirSync(from, { withFileTypes: true })) {
+    if (skip(entry.name)) continue;
+    const source = join(from, entry.name);
+    const target = join(to, entry.name);
+    if (entry.isDirectory()) linkTree(source, target);
+    else {
+      try {
+        linkSync(source, target);
+      } catch {
+        copyFileSync(source, target);
+      }
+    }
+  }
+}
 
 // Plain text of a Markdown body, good enough for full-text search.
 const plain = (md) =>
@@ -102,8 +129,22 @@ export function build({ quiet = false } = {}) {
     rmSync(DIST, { recursive: true, force: true });
     throw error;
   }
-  rmSync(OUT, { recursive: true, force: true });
-  renameSync(DIST, OUT);
+  // Windows refuses the swap while another build (the preview's, say) or a
+  // reader holds a file in dist/; a few short retries get past that, and the
+  // half-built folder never stays behind.
+  for (let attempt = 1; ; attempt++) {
+    try {
+      rmSync(OUT, { recursive: true, force: true });
+      renameSync(DIST, OUT);
+      break;
+    } catch (error) {
+      if (attempt === 5) {
+        rmSync(DIST, { recursive: true, force: true });
+        throw error;
+      }
+      Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 100 * attempt);
+    }
+  }
   if (!quiet) console.log(`Built ${count} pages in ${Date.now() - started} ms.`);
   return { ok: true, errors, warnings, count };
 }
@@ -124,7 +165,10 @@ function render(knowledge) {
     mkdirSync(join(DIST, PYODIDE_BASE), { recursive: true });
     copyFileSync(join(PYODIDE, file), join(DIST, PYODIDE_BASE, file));
   }
-  // shared media of the knowledge base (logos), under /media/
+  linkTree(WEBR, join(DIST, WEBR_BASE), (name) => WEBR_SKIP.test(name));
+  if (existsSync(WEBR_REPO)) linkTree(WEBR_REPO, join(DIST, WEBR_REPO_BASE));
+  else console.warn('R packages missing: run `npm run fetch-r-packages` so that R blocks can load dplyr.');
+  // shared media of the knowledge base (logos, data sets), under /media/
   cpSync(join(ROOT, 'knowledge/media'), join(DIST, 'media'), { recursive: true });
   // Slide decks as they are, next to the stagekit runtime they expect two
   // folders up: /decks/<id>/index.html loads ../../stagekit/stagekit.js.
@@ -163,7 +207,7 @@ function render(knowledge) {
   for (const area of areas) {
     const site = createSite(knowledge, area);
     const writePage = (lang, page) => {
-      write(page.path, String(layout({ site, lang, asset, pyodide: PYODIDE_BASE, total: site.items.length, entrances: entrances[lang], ...page })));
+      write(page.path, String(layout({ site, lang, asset, pyodide: PYODIDE_BASE, webr: { base: WEBR_BASE, repo: WEBR_REPO_BASE }, total: site.items.length, entrances: entrances[lang], ...page })));
       count += 1;
     };
     for (const lang of LANGS) {

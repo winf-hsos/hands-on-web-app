@@ -107,8 +107,21 @@ All motion is switched off for people who ask their system for reduced motion.
   rarely allow; instead a program runs with the answers given so far, stops
   when it needs one more, and runs again from the start once the learner has
   typed it. Programs at this level are deterministic, so the learner sees one
-  continuous run. `src/client/highlight.js` highlights Python both at build
-  time and while editing.
+  continuous run. `src/client/highlight.js` highlights Python and R both at
+  build time and while editing.
+- **R** runs in the browser with webR (R compiled to WebAssembly), served
+  from `/assets/vendor/webr-<version>/` and started on the first click
+  (`src/client/r-engine.js`). It installs dplyr from a small package
+  repository of our own under `/assets/vendor/webr-repo/` (dplyr, tibble and
+  their dependencies, about 7 MB), which `npm run fetch-r-packages` fetches
+  once from the webR repository; nothing is loaded from elsewhere while
+  someone learns. Every run gets a fresh environment, so the code boxes do
+  not depend on each other, and the data sets from `knowledge/media/datasets/`
+  are ready in it: `survey` is the excerpt of the milk survey. Stop ends webR,
+  the next Run starts it again.
+- **The dplyr demonstrator** (` ```verb-demo `, `src/client/verb-demo.js`)
+  computes the verbs itself in JavaScript on six rows of the survey and
+  animates the change; it needs no R.
 
 ## Areas
 

@@ -1,6 +1,6 @@
 // Remark plugin for the conventions of docs/knowledge-schema.md, sections 6–7:
 // [[id]] and [[id|text]] links, GitHub-style callouts (HINT and SOLUTION
-// fold away), Python code that runs in the browser, and quiz questions.
+// fold away), Python and R code that runs in the browser, and quiz questions.
 // Options: lang, quiz (boolean), resolve(id) -> { url, title } | null.
 import { visit, SKIP } from 'unist-util-visit';
 import { tokenize } from '../client/highlight.js';
@@ -19,7 +19,8 @@ export function remarkKnowledge({ lang, quiz: isQuiz = false, resolve }) {
   return (tree) => {
     wikiLinks(tree, resolve);
     callouts(tree, lang);
-    python(tree);
+    runnable(tree);
+    demos(tree);
     if (isQuiz) quiz(tree);
   };
 }
@@ -74,27 +75,38 @@ function callouts(tree, lang) {
   if (hints.length > 1) hints.forEach((title, i) => (title.value = NUMBERED_HINT[lang](i + 1)));
 }
 
-// ```python blocks are highlighted and become runnable (client/runner.js);
-// ```python static only shows the code, for fragments that cannot run.
-function python(tree) {
+// ```python and ```r blocks are highlighted and become runnable
+// (client/runner.js); ```python static (or ```r static) only shows the code,
+// for fragments that cannot run.
+function runnable(tree) {
   visit(tree, 'code', (node) => {
-    if (node.lang !== 'python') return;
-    const runnable = !/\bstatic\b/.test(node.meta ?? '');
+    if (node.lang !== 'python' && node.lang !== 'r') return;
+    const lang = node.lang;
+    const runs = !/\bstatic\b/.test(node.meta ?? '');
     const code = {
       type: 'element',
       tagName: 'code',
-      properties: { className: ['language-python'] },
-      children: tokenize(node.value).map(({ type, text }) =>
+      properties: { className: [`language-${lang}`] },
+      children: tokenize(node.value, lang).map(({ type, text }) =>
         type ? { type: 'element', tagName: 'span', properties: { className: [`tok-${type}`] }, children: [{ type: 'text', value: text }] } : { type: 'text', value: text },
       ),
     };
     const pre = { type: 'element', tagName: 'pre', properties: { className: ['code'] }, children: [code] };
     // An unknown node type, so that remark-rehype builds exactly these
     // elements instead of wrapping them in its own <pre>.
-    node.type = 'pythonCode';
-    node.data = runnable
-      ? { hName: 'div', hProperties: { className: ['runner'], dataRunner: '' }, hChildren: [pre] }
+    node.type = 'runnableCode';
+    node.data = runs
+      ? { hName: 'div', hProperties: { className: ['runner'], dataRunner: '', dataLang: lang }, hChildren: [pre] }
       : { hName: 'pre', hProperties: { className: ['code'] }, hChildren: [code] };
+  });
+}
+
+// ```verb-demo becomes the place of the dplyr demonstrator (client/verb-demo.js).
+function demos(tree) {
+  visit(tree, 'code', (node) => {
+    if (node.lang !== 'verb-demo') return;
+    node.type = 'verbDemo';
+    node.data = { hName: 'div', hProperties: { className: ['verb-demo'], dataVerbDemo: '' }, hChildren: [] };
   });
 }
 

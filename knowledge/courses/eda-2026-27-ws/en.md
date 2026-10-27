@@ -9,5 +9,7 @@ based_on: 2026-10-27
 ---
 
 This collection accompanies the part on exploratory data analysis in the
-master's module Empirical Research. Its content is being written right now;
-it will appear here in sections, all of it available from the start.
+master's module Empirical Research. The first section introduces data
+transformation with R and dplyr; further sections on describing, visualising
+and checking data are being written right now and will also be available
+from the start.

@@ -1,4 +1,4 @@
-// Python blocks, folded hints and the highlighter.
+// Runnable code blocks, folded hints and the highlighter.
 // Usage: npm test
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -29,4 +29,18 @@ test('the highlighter knows keywords, builtins, strings, numbers, comments and d
     .filter((t) => t.type)
     .map((t) => `${t.type}:${t.text}`);
   assert.deepEqual(kinds, ['keyword:def', 'function:area', 'comment:# size', 'keyword:return', 'builtin:print', 'string:"x"', 'number:4.5']);
+});
+
+test('an r block runs too and says which language it is, and a verb-demo block becomes its place', () => {
+  const html = render('```r\nsurvey |> nrow()\n```\n\n```r static\nlibrary(dplyr)\n```\n\n```verb-demo\n```\n');
+  assert.equal((html.match(/class="runner" data-runner="" data-lang="r"/g) ?? []).length, 1);
+  assert.match(html, /<pre class="code"><code class="language-r">/);
+  assert.match(html, /<div class="verb-demo" data-verb-demo=""><\/div>/);
+});
+
+test('the R highlighter knows the pipe, the arrow, dplyr verbs, NA and names with dots', () => {
+  const kinds = tokenize('x <- survey |> filter(is.na(age), diet %in% c("vegan")) # NA\nNA', 'r')
+    .filter((t) => t.type)
+    .map((t) => `${t.type}:${t.text}`);
+  assert.deepEqual(kinds, ['op:<-', 'op:|>', 'builtin:filter', 'builtin:is.na', 'op:%in%', 'builtin:c', 'string:"vegan"', 'comment:# NA', 'keyword:NA']);
 });

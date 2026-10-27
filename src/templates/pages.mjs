@@ -175,7 +175,7 @@ export function item(site, doc, lang) {
     title: text.title,
     description: text.summary,
     back: 'items',
-    scripts: [isQuiz && 'quiz', body.includes('data-runner') && 'runner'].filter(Boolean),
+    scripts: [isQuiz && 'quiz', body.includes('data-runner') && 'runner', body.includes('data-verb-demo') && 'verb-demo'].filter(Boolean),
     content: html`
       <article class="page item" data-item-page="${doc.id}">
         <header class="page-head">

@@ -12,11 +12,14 @@ subtitle: Ein Teil des Mastermoduls Empirisches Arbeiten
 summary: >-
   Daten kennenlernen, bevor man Schlüsse zieht: Verteilungen, Zusammenhänge
   und Auffälligkeiten finden und zeigen, mit R und guten Grafiken.
-sections: []
+sections:
+  - path: data-transformation-with-r
 status: draft
 updated: 2026-10-27
 ---
 
 Diese Sammlung begleitet den Teil zur explorativen Datenanalyse im
-Mastermodul Empirisches Arbeiten. Die Inhalte entstehen gerade; sie werden
-hier in Abschnitten stehen und sind dann alle von Anfang an verfügbar.
+Mastermodul Empirisches Arbeiten. Der erste Abschnitt führt in die
+Datentransformation mit R und dplyr ein; weitere Abschnitte zum Beschreiben,
+Visualisieren und Prüfen von Daten entstehen gerade und sind dann ebenfalls
+von Anfang an verfügbar.

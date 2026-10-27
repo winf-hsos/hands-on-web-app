@@ -20,6 +20,8 @@ const TYPES = {
   '.svg': 'image/svg+xml',
   '.woff2': 'font/woff2',
   '.wasm': 'application/wasm',
+  '.csv': 'text/csv; charset=utf-8',
+  '.tgz': 'application/gzip',
   '.zip': 'application/zip',
 };
 

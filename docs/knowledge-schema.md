@@ -195,6 +195,15 @@ The body is plain Markdown with a few conventions:
   fragment that cannot run on its own is marked ` ```python static `, and
   ` ```text ` shows a sample run as it is. Names in code are English in both
   languages; what a program prints follows the language of the text.
+- **R code** in a ` ```r ` block works the same way with webR; ` ```r static `
+  only shows it. Each block runs on its own, with dplyr loaded and the data
+  set `survey` (`media/datasets/milk_survey.csv`) ready.
+- **Data sets** for examples lie in `media/datasets/` as CSV with English
+  column names. `milk_survey.csv` is a 30-row excerpt of the survey on milk
+  and milk alternatives by U. Enneking, made by `scripts/survey-excerpt.py`
+  from the full data, which do not go into the repository. Before the site is
+  published, the excerpt needs his consent.
+- **The dplyr demonstrator** is placed with an empty ` ```verb-demo ` block.
 - **No embedded HTML and no embedded pages from elsewhere.** That keeps the
   rule from the concept that nothing on the site comes from anywhere but the
   knowledge base.

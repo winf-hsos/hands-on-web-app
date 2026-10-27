@@ -6,6 +6,7 @@
     "dev": "node scripts/dev.mjs",
     "build": "node scripts/build.mjs",
     "new-code": "node scripts/new-code.mjs",
+    "fetch-r-packages": "node scripts/fetch-r-packages.mjs",
     "test": "node --test \"tests/*.test.mjs\"",
     "editor": "node --watch-path=src --watch-path=scripts/editor.mjs scripts/editor.mjs"
   },
@@ -22,6 +23,7 @@
     "remark-parse": "11.0.0",
     "remark-rehype": "11.1.2",
     "unified": "11.0.5",
-    "unist-util-visit": "5.0.0"
+    "unist-util-visit": "5.0.0",
+    "webr": "0.6.0"
   }
 }

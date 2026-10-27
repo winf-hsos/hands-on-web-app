@@ -724,6 +724,11 @@ select {
   color: var(--tok-builtin);
 }
 
+.tok-op {
+  color: var(--tok-keyword);
+  font-weight: 650;
+}
+
 .tok-function {
   color: var(--tok-function);
 }
@@ -833,6 +838,14 @@ select {
   border-top: 1px solid var(--rule);
   min-height: 2.5rem;
   animation: fade 0.25s var(--ease);
+}
+
+/* R prints tables in columns, which break apart when lines wrap */
+.runner[data-lang='r'] .runner-output {
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow-x: auto;
+  font-size: 0.85rem;
 }
 
 .out-in {
@@ -2801,4 +2814,85 @@ details.callout[open] > summary::before {
 
 [data-view='cards'] .switchable .row-subtitle {
   order: 0;
+}
+
+/* --- the dplyr demonstrator ------------------------------------------------------------ */
+
+.verb-demo {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.75rem;
+}
+
+.verb-demo-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.chip-button {
+  min-height: 2rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: none;
+  color: var(--ink);
+  font: 600 0.85rem/1 var(--mono);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.chip-button:hover {
+  border-color: var(--accent);
+}
+
+.chip-button[aria-pressed='true'] {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent-ink);
+}
+
+.prose .verb-demo-code {
+  margin: 0.9rem 0 0.75rem;
+}
+
+.verb-demo-frame {
+  overflow: auto hidden;
+}
+
+.prose .verb-demo-table {
+  display: table;
+  margin: 0;
+  overflow: visible;
+  border-collapse: collapse;
+  font: 400 0.88rem/1.4 var(--mono);
+}
+
+.prose .verb-demo-table th,
+.prose .verb-demo-table td {
+  padding: 0.3rem 0.9rem 0.3rem 0.4rem;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.prose .verb-demo-table th {
+  font-weight: 700;
+  color: var(--accent-ink);
+}
+
+.verb-demo-table td.na {
+  color: var(--quiet);
+  font-style: italic;
+}
+
+.prose .verb-demo-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin: 0.75rem 0 0;
+  font-size: 0.88rem;
+  color: var(--quiet);
 }

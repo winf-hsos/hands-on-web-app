@@ -1,0 +1,31 @@
+id,age,gender,state,town_size,household_size,diet,organic_share,milk_freq,milk_brand,price_too_expensive
+1,56,male,Nordrhein-Westfalen,city,3,omnivore,2,daily,,
+2,55,male,Nordrhein-Westfalen,large town,1,omnivore,2,,,
+3,47,male,Nordrhein-Westfalen,city,3,omnivore,1,daily,alpro,1.51
+4,32,female,Niedersachsen,village,2,omnivore,1,weekly,,
+5,74,female,Rheinland-Pfalz,,2,flexitarian,2,daily,alpro,1.99
+6,48,male,Bayern,large town,1,vegetarian,2,daily,,
+7,36,female,Niedersachsen,large town,4,omnivore,5,daily,,
+8,26,female,Bremen,city,2,flexitarian,3,daily,alpro,2.19
+9,59,female,Nordrhein-Westfalen,large town,2,omnivore,2,monthly,,
+10,73,female,Mecklenburg-Vorpommern,village,2,omnivore,2,daily,,
+11,26,female,Brandenburg,small town,4,omnivore,1,daily,alpro,160
+12,60,female,Nordrhein-Westfalen,city,2,vegan,5,daily,,
+13,43,female,Brandenburg,town,1,omnivore,3,daily,Weihenstephan,2
+14,70,male,Sachsen,city,2,omnivore,4,,Weihenstephan,1.09
+15,35,male,Schleswig-Holstein,large town,1,omnivore,2,weekly,,
+16,62,male,Sachsen-Anhalt,small town,2,omnivore,3,,,
+17,61,female,Rheinland-Pfalz,city,1,flexitarian,4,daily,Weihenstephan,2.5
+18,40,female,Baden-Württemberg,very small town,2,omnivore,1,daily,,
+19,36,female,Schleswig-Holstein,village,4,omnivore,2,daily,,
+20,24,female,Thüringen,town,2,pescetarian,1,daily,,
+21,62,male,Nordrhein-Westfalen,village,2,omnivore,2,daily,,
+22,53,female,Nordrhein-Westfalen,city,2,flexitarian,2,monthly,Weihenstephan,2
+23,71,male,Mecklenburg-Vorpommern,large town,2,omnivore,1,,,
+24,65,male,Brandenburg,large town,1,flexitarian,3,,,
+25,31,female,Baden-Württemberg,city,1,flexitarian,5,weekly,alpro,2.79
+26,63,male,Hessen,city,2,flexitarian,2,daily,,
+27,62,female,Saarland,city,3,omnivore,2,daily,,
+28,43,male,Mecklenburg-Vorpommern,village,2,flexitarian,3,daily,,
+29,58,male,Bayern,town,1,vegetarian,1,daily,,
+30,72,female,Nordrhein-Westfalen,town,2,flexitarian,2,daily,,

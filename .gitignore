@@ -6,3 +6,6 @@ dist/
 knowledge/content/*/slides/img/original/
 knowledge/content/*/slides/export/*
 !knowledge/content/*/slides/export/*.pdf
+
+# R packages for webR, fetched by npm run fetch-r-packages
+vendor/webr-repo/

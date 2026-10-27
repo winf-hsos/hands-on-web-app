@@ -1,14 +1,33 @@
-// Runnable Python blocks: every `.runner` on the page becomes a small editor
-// with a Run button and an output area. Python itself runs in a worker
-// (python-worker.js) that is started on the first click, so a page with code
-// costs nothing until someone wants to run it.
+// Runnable code blocks: every `.runner` on the page becomes a small editor
+// with a Run button and an output area. Python runs in a worker
+// (python-worker.js), R with webR (r-engine.js); either starts on the first
+// click, so a page with code costs nothing until someone wants to run it.
 import { highlight } from './highlight.js';
 
 const { pythonWorker, pyodide, runnerLabels } = document.body.dataset;
 const L = JSON.parse(runnerLabels);
 const PLAY = '<svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg>';
 const STOP = '<svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1.5"/></svg>';
-const INDENT = '    ';
+
+// What differs between the languages: indentation, when Enter indents one
+// level more, and how an error message names the kind of error.
+const LANGS = {
+  python: { indent: '    ', opens: /:\s*$/, errorKind: (text) => text.match(/^(\w+Error)\b/m)?.[1] },
+  r: {
+    indent: '  ',
+    opens: /(\{|\(|\|>|,)\s*$/,
+    errorKind: (text) =>
+      /object '.*' not found/.test(text)
+        ? 'r_object'
+        : /could not find function/.test(text)
+          ? 'r_function'
+          : /unexpected|parse/.test(text)
+            ? 'r_syntax'
+            : /must be|Can't|can't/.test(text)
+              ? 'r_dplyr'
+              : null,
+  },
+};
 
 // --- the worker, shared by all blocks of the page -------------------------------
 
@@ -38,6 +57,22 @@ function stopAll() {
   ready = false;
   for (const [id, onMessage] of waiting) onMessage({ id, type: 'done', status: 'stopped' });
   waiting.clear();
+  rEngine?.stop();
+  for (const onMessage of rWaiting) onMessage({ type: 'done', status: 'stopped' });
+  rWaiting.clear();
+}
+
+// R is loaded only on pages that have R blocks, and only on the first click.
+let rEngine = null;
+const rWaiting = new Set();
+async function sendR(code, onMessage) {
+  rEngine ??= await import('./r-engine.js');
+  rWaiting.add(onMessage);
+  await rEngine.run(code, (message) => {
+    if (!rWaiting.has(onMessage)) return; // stopped meanwhile
+    if (message.type === 'done') rWaiting.delete(onMessage);
+    onMessage(message);
+  });
 }
 
 // --- one block -------------------------------------------------------------------
@@ -49,12 +84,14 @@ function el(tag, props = {}, ...children) {
 }
 
 function setup(box) {
+  const lang = box.dataset.lang === 'r' ? 'r' : 'python';
+  const spec = LANGS[lang];
   const original = box.querySelector('code').textContent;
-  const shown = el('code', { className: 'language-python' });
+  const shown = el('code', { className: `language-${lang}` });
   const editor = el('textarea', { className: 'runner-input', spellcheck: false, value: original });
   editor.setAttribute('autocapitalize', 'off');
   editor.setAttribute('autocomplete', 'off');
-  editor.setAttribute('aria-label', L.editor);
+  editor.setAttribute('aria-label', lang === 'r' ? L.editor_r : L.editor);
   const code = el('div', { className: 'runner-code' }, el('pre', { className: 'code' }, shown), editor);
   const run = el('button', { type: 'button', className: 'button runner-run' });
   const reset = el('button', { type: 'button', className: 'button button-quiet runner-reset', textContent: L.reset, hidden: true });
@@ -69,7 +106,7 @@ function setup(box) {
   let escaped = false;
 
   const paint = () => {
-    shown.innerHTML = `${highlight(editor.value)}\n`;
+    shown.innerHTML = `${highlight(editor.value, lang)}\n`;
     reset.hidden = editor.value === original;
   };
   // Both labels are always in the button, stacked in one place, and only the
@@ -84,7 +121,8 @@ function setup(box) {
   function start() {
     running = true;
     showRun();
-    status.textContent = ready ? L.running : L.loading;
+    const warm = lang === 'r' ? rEngine?.isReady() : ready;
+    status.textContent = warm ? L.running : lang === 'r' ? L.loading_r : L.loading;
     let fresh = true;
     const clear = () => {
       if (!fresh) return;
@@ -93,7 +131,7 @@ function setup(box) {
       output.hidden = false;
       hint.hidden = true;
     };
-    send(editor.value, answers, (message) => {
+    const reply = (message) => {
       if (message.type === 'output') {
         clear();
         const text = document.createTextNode(message.text);
@@ -105,7 +143,9 @@ function setup(box) {
       showRun();
       status.textContent = '';
       finish(message);
-    });
+    };
+    if (lang === 'r') sendR(editor.value, reply);
+    else send(editor.value, answers, reply);
   }
 
   function finish({ status: result, message }) {
@@ -122,8 +162,7 @@ function setup(box) {
       output.append(answer);
       answer.focus({ preventScroll: true });
     } else if (result === 'error') {
-      const last = output.textContent.trim().split('\n').pop() ?? '';
-      const name = last.match(/^(\w+Error)\b/)?.[1];
+      const name = spec.errorKind(output.textContent.trim().split('\n').slice(-3).join('\n'));
       if (L.errors[name]) {
         hint.textContent = L.errors[name];
         hint.hidden = false;
@@ -131,7 +170,7 @@ function setup(box) {
     } else if (result === 'stopped') {
       output.append(el('span', { className: 'out-note' }, `${output.textContent ? '\n' : ''}${L.stopped}`));
     } else if (result === 'failed') {
-      output.append(el('span', { className: 'out-err' }, `${L.failed}\n${message ?? ''}`));
+      output.append(el('span', { className: 'out-err' }, `${lang === 'r' ? L.failed_r : L.failed}\n${message ?? ''}`));
     } else if (!output.textContent) {
       output.append(el('span', { className: 'out-note' }, L.no_output));
     }
@@ -162,12 +201,13 @@ function setup(box) {
       run.click();
     } else if (e.key === 'Tab' && !e.shiftKey && !wasEscaped) {
       e.preventDefault();
-      insert(INDENT);
+      insert(spec.indent);
     } else if (e.key === 'Enter' && !e.shiftKey) {
-      // keep the indentation of the line, one level more after a colon
+      // keep the indentation of the line, one level more where a block opens
+      // (a colon in Python; a brace, bracket, pipe or comma in R)
       const before = editor.value.slice(0, editor.selectionStart);
       const line = before.slice(before.lastIndexOf('\n') + 1);
-      const indent = line.match(/^ */)[0] + (/:\s*$/.test(line) ? INDENT : '');
+      const indent = line.match(/^ */)[0] + (spec.opens.test(line) ? spec.indent : '');
       e.preventDefault();
       insert(`\n${indent}`);
     }

@@ -316,17 +316,20 @@ export const formatDate = (date, lang) =>
 
 export const isoDay = (date) => date.toISOString().slice(0, 10);
 
-/** Labels of the Python runner (client/runner.js), and a plain hint per error. */
+/** Labels of the code runner (client/runner.js), and a plain hint per kind of error. */
 export const runnerLabels = {
   de: {
     run: 'Ausführen',
     stop: 'Stopp',
     reset: 'Zurücksetzen',
     editor: 'Python-Code, bearbeitbar. Strg+Enter führt ihn aus, Esc und dann Tab verlässt das Feld.',
+    editor_r: 'R-Code, bearbeitbar. Strg+Enter führt ihn aus, Esc und dann Tab verlässt das Feld.',
     loading: 'Python wird geladen …',
+    loading_r: 'R und dplyr werden geladen, beim ersten Mal dauert das etwas …',
     running: 'läuft …',
     stopped: 'Angehalten.',
     failed: 'Python konnte nicht starten.',
+    failed_r: 'R konnte nicht starten.',
     no_output: 'Das Programm hat nichts ausgegeben.',
     answer: 'Deine Eingabe, dann Enter',
     errors: {
@@ -336,6 +339,10 @@ export const runnerLabels = {
       TypeError: 'Ein Wert hat den falschen Typ für diese Operation, zum Beispiel Text plus Zahl.',
       ValueError: 'Ein Wert passt nicht, etwa wenn int() einen Text bekommt, der keine ganze Zahl ist.',
       ZeroDivisionError: 'Durch null lässt sich nicht teilen.',
+      r_object: 'R kennt diesen Namen nicht. Ist er falsch geschrieben, fehlen Anführungszeichen um einen Text, oder heißt die Spalte anders?',
+      r_function: 'Diese Funktion gibt es so nicht. Ist sie falsch geschrieben, oder gehört sie zu einem Paket, das nicht geladen ist?',
+      r_syntax: 'R versteht diese Zeile nicht. Prüfe Klammern, Kommas und Anführungszeichen.',
+      r_dplyr: 'dplyr erklärt in der Meldung, was nicht passt; die Zeilen mit ✖ und ℹ sagen, wo es hakt.',
     },
   },
   en: {
@@ -343,10 +350,13 @@ export const runnerLabels = {
     stop: 'Stop',
     reset: 'Reset',
     editor: 'Python code, editable. Ctrl+Enter runs it, Esc and then Tab leaves the field.',
+    editor_r: 'R code, editable. Ctrl+Enter runs it, Esc and then Tab leaves the field.',
     loading: 'Loading Python …',
+    loading_r: 'Loading R and dplyr, the first time takes a moment …',
     running: 'running …',
     stopped: 'Stopped.',
     failed: 'Python could not start.',
+    failed_r: 'R could not start.',
     no_output: 'The program printed nothing.',
     answer: 'Your input, then Enter',
     errors: {
@@ -356,6 +366,10 @@ export const runnerLabels = {
       TypeError: 'A value has the wrong type for this operation, for example text plus a number.',
       ValueError: 'A value does not fit, for example when int() gets text that is not a whole number.',
       ZeroDivisionError: 'You cannot divide by zero.',
+      r_object: 'R does not know this name. Is it misspelt, are quotes missing around a text, or is the column called something else?',
+      r_function: 'This function does not exist like this. Is it misspelt, or does it belong to a package that is not loaded?',
+      r_syntax: 'R does not understand this line. Check brackets, commas and quotes.',
+      r_dplyr: 'dplyr explains in the message what does not fit; the lines with ✖ and ℹ say where the problem is.',
     },
   },
 };
@@ -387,4 +401,10 @@ export const backLabels = {
     learning: 'Back to My learning',
     titled: 'Back to “{title}”',
   },
+};
+
+/** Labels of the dplyr demonstrator (client/verb-demo.js). */
+export const demoLabels = {
+  de: { reset: 'Zurück zur Ausgangstabelle', hint: 'Jedes Verb beginnt bei der Ausgangstabelle.' },
+  en: { reset: 'Back to the original table', hint: 'Every verb starts from the original table.' },
 };

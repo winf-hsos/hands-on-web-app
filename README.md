@@ -33,6 +33,7 @@ npm run editor     # editor at http://localhost:4322 (see docs/editor.md)
 npm run build      # static site in dist/, stops with a list if the knowledge base has errors
 npm test           # each rule of the knowledge base broken once on purpose
 npm run new-code   # an unused four-digit short code for a new item
+npm run fetch-r-packages  # once: dplyr and its dependencies for R in the browser
 ```
 
 ## Status
