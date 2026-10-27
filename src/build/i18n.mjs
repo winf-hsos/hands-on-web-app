@@ -405,6 +405,6 @@ export const backLabels = {
 
 /** Labels of the dplyr demonstrator (client/verb-demo.js). */
 export const demoLabels = {
-  de: { reset: 'Zurück zur Ausgangstabelle', hint: 'Jedes Verb beginnt bei der Ausgangstabelle.' },
-  en: { reset: 'Back to the original table', hint: 'Every verb starts from the original table.' },
+  de: { original: 'Original', hint: 'Jedes Verb beginnt bei der Originaltabelle.' },
+  en: { original: 'Original', hint: 'Every verb starts from the original table.' },
 };

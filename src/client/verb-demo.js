@@ -2,7 +2,8 @@
 // button per verb. A click shows the line of R and turns the table into the
 // result, with rows and columns that go fading out, the ones that stay
 // gliding to their new place, and new ones fading in. Each verb starts from
-// the original table, so the buttons can be tried in any order.
+// the original table, so the buttons can be tried in any order; the first
+// button brings the original table back.
 //
 // Written with ```verb-demo in Markdown (remark-knowledge.mjs); the labels
 // come from the page (data-verb-demo-labels on <body>).
@@ -82,13 +83,14 @@ async function setup(box) {
 
   const code = el('pre', { className: 'code verb-demo-code' }, el('code', { textContent: 'survey' }));
   const table = el('table', { className: 'verb-demo-table' });
-  const buttons = VERBS.map((verb) => el('button', { type: 'button', className: 'chip-button', textContent: verb.name }));
-  const reset = el('button', { type: 'button', className: 'text-button', textContent: L.reset ?? 'Reset' });
+  const chip = (text) => el('button', { type: 'button', className: 'chip-button', textContent: text });
+  const reset = chip(L.original ?? 'Original');
+  const buttons = VERBS.map((verb) => chip(verb.name));
   box.replaceChildren(
-    el('div', { className: 'verb-demo-buttons' }, ...buttons),
+    el('div', { className: 'verb-demo-buttons' }, reset, ...buttons),
     code,
     el('div', { className: 'verb-demo-frame' }, table),
-    el('p', { className: 'verb-demo-foot' }, el('span', { textContent: L.hint ?? '' }), reset),
+    el('p', { className: 'verb-demo-foot', textContent: L.hint ?? '' }),
   );
 
   let current = original;
@@ -105,7 +107,7 @@ async function setup(box) {
   async function show(next, line, active) {
     if (busy) return;
     busy = true;
-    buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === active)));
+    [reset, ...buttons].forEach((b) => b.setAttribute('aria-pressed', String(b === active)));
     code.firstChild.textContent = line;
     if (reduceMotion) {
       render(next);
@@ -144,7 +146,8 @@ async function setup(box) {
   }
 
   VERBS.forEach((verb, i) => buttons[i].addEventListener('click', () => show(verb.apply(original), verb.code, buttons[i])));
-  reset.addEventListener('click', () => show(original, 'survey', null));
+  reset.addEventListener('click', () => show(original, 'survey', reset));
+  reset.setAttribute('aria-pressed', 'true');
   render(original);
 }
 

@@ -2888,10 +2888,6 @@ details.callout[open] > summary::before {
 }
 
 .prose .verb-demo-foot {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.5rem 1rem;
   margin: 0.75rem 0 0;
   font-size: 0.88rem;
   color: var(--quiet);
