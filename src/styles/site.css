@@ -227,7 +227,7 @@ select {
   font-size: 1.2rem;
   line-height: 1.5;
   color: var(--quiet);
-  max-width: 38rem;
+  max-width: var(--measure);
   margin: 0.75rem 0 0;
   text-wrap: pretty;
 }

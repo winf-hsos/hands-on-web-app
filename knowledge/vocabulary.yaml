@@ -6,7 +6,7 @@
 # checks that it exists.
 types:
   lesson:     { de: Lektion,         en: Lesson,     icon: book-open }
-  demo:       { de: Demo,            en: Demo,       icon: circle-play }
+  demo:       { de: Demo,            en: Demo,       icon: mouse-pointer-click }
   experiment: { de: Experiment,      en: Experiment, icon: flask-conical }
   term:       { de: Begriff,         en: Term,       icon: tag }
   story:      { de: Geschichte,      en: Story,      icon: history }
@@ -69,7 +69,7 @@ topics:
   reproducible-work:         { de: Arbeitsumgebung und Reproduzierbarkeit, en: Working environment and reproducibility }
   programming-with-r:        { de: Programmieren mit R, en: Programming with R }
   getting-data:              { de: Daten beschaffen und aufräumen, en: Getting and tidying data }
-  transforming-data:         { de: Daten transformieren und verknüpfen, en: Transforming and joining data }
+  transforming-data:         { de: Daten transformieren, en: Transforming data }
   exploring-data:            { de: Explorieren und beschreiben, en: Exploring and describing }
   visualising-data:          { de: Visualisieren, en: Visualising }
   communicating-results:     { de: Kommunizieren und schreiben, en: Communicating and writing }
