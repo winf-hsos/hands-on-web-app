@@ -155,9 +155,10 @@ function heading(by, group) {
 /** Clears every filter, but keeps order, grouping and view. */
 function clearFilters() {
   for (const name of FILTERS) {
+    // a filter without choices is not on the page, e.g. projects in an area without any
     const f = field(name);
     if (f instanceof RadioNodeList) for (const r of f) r.checked = false;
-    else f.value = '';
+    else if (f) f.value = '';
   }
   chosenType = '';
   apply();
