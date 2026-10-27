@@ -168,14 +168,15 @@ function shapes(vocabulary) {
           semester: text,
           title: text,
           summary: text,
-          sections: list(courseSection, 1),
+          // may be empty while the content of a new course is being written
+          sections: list(courseSection),
           status,
           updated: date,
         },
-        // where the course is taught, and its official module description
-        optional: { institution: oneOf(institutions, 'institution'), handbook: url, areas: inAreas },
+        // a subtitle, where the course is taught, and its official module description
+        optional: { subtitle: text, institution: oneOf(institutions, 'institution'), handbook: url, areas: inAreas },
       },
-      translation,
+      translation: { required: translation.required, optional: { subtitle: text } },
     },
     projects: {
       lead: {

@@ -2783,3 +2783,22 @@ details.callout[open] > summary::before {
 .area-card:hover .area-go {
   transform: translateX(4px);
 }
+
+/* --- subtitle of a course ---------------------------------------------------------- */
+
+.page-head .subtitle {
+  margin: 0.4rem 0 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--accent-ink);
+}
+
+.row-subtitle {
+  color: var(--accent-ink);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+[data-view='cards'] .switchable .row-subtitle {
+  order: 0;
+}

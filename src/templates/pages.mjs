@@ -393,11 +393,12 @@ export function courses(site, lang) {
               ${courseIcon}
               <span class="row-head">
                 <span class="row-title" lang="${text.lang}">${text.title}</span>
-                <span class="row-meta">${c.lead.institution && html`<span>${site.vocabulary.institutions[c.lead.institution][lang]}</span>`}<span>${c.lead.semester}</span><span>${count(lang, c.lead.sections.length, 'sections')}</span></span>
+                <span class="row-meta">${c.lead.institution && html`<span>${site.vocabulary.institutions[c.lead.institution][lang]}</span>`}<span>${c.lead.semester}</span>${c.lead.sections.length > 0 && html`<span>${count(lang, c.lead.sections.length, 'sections')}</span>`}</span>
               </span>
+              ${text.data.subtitle && html`<span class="row-subtitle" lang="${text.lang}">${text.data.subtitle}</span>`}
               <span class="row-summary" lang="${text.lang}">${text.summary}</span>
             </a>
-            ${progressBar(steps.filter((s) => !s.optional).map((s) => s.id), lang)}
+            ${steps.length > 0 && progressBar(steps.filter((s) => !s.optional).map((s) => s.id), lang)}
           </li>`;
         })}
       </ul>
@@ -444,10 +445,12 @@ export function course(site, doc, lang) {
         <header class="page-head">
           <p class="kicker"><span>${t(lang, 'course')}</span><span>${doc.lead.semester}</span></p>
           <h1 lang="${text.lang}">${text.title}</h1>
+          ${text.data.subtitle && html`<p class="subtitle" lang="${text.lang}">${text.data.subtitle}</p>`}
           <p class="lead" lang="${text.lang}">${text.summary}</p>
           ${institutionBlock(site, doc, lang)}
-          ${progressBar(required, lang)}
+          ${required.length > 0 && progressBar(required, lang)}
         </header>
+        ${doc.lead.sections.length === 0 && html`<p class="empty">${t(lang, 'course_empty')}</p>`}
         ${doc.lead.sections.map((s) => (s.path ? pathSection(site.path.get(s.path)) : section(s.title[lang], () => trail(s.items))))}
         ${more(t(lang, 'about_course'), html`<div class="prose" lang="${text.lang}">${raw(site.body(doc, lang))}</div>`)}
       </article>

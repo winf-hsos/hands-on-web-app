@@ -331,7 +331,10 @@ rule is that short labels in a structure may be bilingual in place, while
 prose belongs in the language files. Sections have no release dates:
 everything in a course is available from the start.
 
-`institution` and `handbook` are optional. The course page shows the logo and
+A course may have a `subtitle`, a short line under its title (in the lead and
+in each translation), for example where it belongs in a larger module. Its
+`sections` may be an empty list while the content is being written; the page
+then says so. `institution` and `handbook` are optional. The course page shows the logo and
 name of the institution, both linking to its website, and a link to the
 official module description in the module handbook.
 

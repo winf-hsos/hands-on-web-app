@@ -177,3 +177,12 @@ test('areas: an item names known areas, and every area has one start page', () =
   const homeless = check(({ find }) => delete lead(find('pages', 'home-ds')).area);
   assert.deepEqual(homeless.errors, ['pages: area ds needs exactly one start page (a page with area: ds), found 0']);
 });
+
+test('a course may have a subtitle and, while it is being written, no sections', () => {
+  const { errors } = check(({ find }) => {
+    const eda = find('courses', 'eda-2026-27-ws');
+    eda.files.en.data.subtitle = 'Part of a module';
+    lead(eda).sections = [];
+  });
+  assert.deepEqual(errors, []);
+});
