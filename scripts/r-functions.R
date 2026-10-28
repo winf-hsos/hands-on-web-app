@@ -61,5 +61,8 @@ groups <- vapply(names(wanted), function(group) {
 }, character(1))
 
 out <- file.path("src", "build", "r-functions.json")
-writeLines(c("{", paste(groups, collapse = ",\n"), "}"), out, useBytes = TRUE)
+# binary, so that Windows does not turn the line breaks into CRLF
+con <- file(out, "wb")
+writeLines(c("{", paste(groups, collapse = ",\n"), "}"), con, useBytes = TRUE)
+close(con)
 cat(sum(lengths(wanted)), "functions ->", out, "\n")
