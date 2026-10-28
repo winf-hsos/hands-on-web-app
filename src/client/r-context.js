@@ -4,7 +4,7 @@
 // The text before the cursor is read once from the start, as R would: names,
 // strings, comments, brackets and the calls they belong to, assignments with
 // <- and new columns made by mutate(). From that it follows whether the
-// cursor sits after `table$`, inside a call of a pipe that starts with a
+// cursor sits after `table$` or `package::`, inside a call of a pipe that starts with a
 // table (then its columns come first), or anywhere else.
 
 const NAME_START = /[A-Za-z.]/;
@@ -133,25 +133,32 @@ export function currentWord(text, cursor) {
 /**
  * Suggestions at `cursor`, or null when there is nothing to suggest.
  * `tables` maps a data set to its columns as [name, type]; `functions` are
- * [name, signature, package] of the packages that count here; `offered` are the tables
- * whose names are suggested (all of them unless given). `force` asks even
- * without two typed letters (Ctrl+Space).
+ * [name, signature, package] of the packages that count here, `known` all
+ * functions there are, for `package::`; `offered` are the tables whose names
+ * are suggested (all of them unless given). `force` asks even without two
+ * typed letters (Ctrl+Space).
  */
-export function suggest(text, cursor, { tables, functions, offered = Object.keys(tables), force = false }) {
+export function suggest(text, cursor, { tables, functions, known = functions, offered = Object.keys(tables), force = false }) {
   const { start, word } = currentWord(text, cursor);
   if (/^[0-9]/.test(word)) return null;
   const names = Object.keys(tables);
   const before = scan(text.slice(0, cursor), names);
   if (before.inText) return null;
   const dollar = text[start - 1] === '$';
-  if (!force && !dollar && word.length < 2) return null;
+  const namespace = text.slice(start - 2, start) === '::';
+  if (!force && !dollar && !namespace && word.length < 2) return null;
 
   const columnsOf = (table, extra = []) => [
     ...(tables[table] ?? []).map(([name, type]) => ({ name, kind: 'column', detail: `<${type}>` })),
     ...extra.map((name) => ({ name, kind: 'column', detail: '' })),
   ];
+  const asFunction = ([name, signature, pkg]) => ({ name, kind: 'function', detail: signature, pkg });
   let items = [];
-  if (dollar) {
+  if (namespace) {
+    // package::function: every function of that package, used on the page or not
+    const pkg = currentWord(text, start - 2).word;
+    items = known.filter((f) => f[2] === pkg).map(asFunction);
+  } else if (dollar) {
     // table$column: the name before $ says which table
     const owner = currentWord(text, start - 1).word;
     const known = before.tableOf.get(owner);
@@ -162,7 +169,7 @@ export function suggest(text, cursor, { tables, functions, offered = Object.keys
     const everywhere = scan(text, names);
     items.push(...[...everywhere.assigned].map((name) => ({ name, kind: 'variable', detail: '' })));
     items.push(...offered.map((name) => ({ name, kind: 'table', detail: '' })));
-    items.push(...functions.map(([name, signature, pkg]) => ({ name, kind: 'function', detail: signature, pkg })));
+    items.push(...functions.map(asFunction));
   }
 
   const prefix = word.toLowerCase();

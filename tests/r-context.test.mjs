@@ -91,3 +91,17 @@ test('a plot built layer by layer with + still knows its table in aes()', () => 
   const code = 'rewe |>\n  ggplot() +\n  aes(y = pr';
   assert.deepEqual(suggest(code, code.length, { tables, functions }).items.map((i) => i.name), ['price', 'product_name']);
 });
+
+test('after package:: come all functions of that package, also those the page does not use', () => {
+  const known = [...functions, ['sd', 'sd(x, na.rm = FALSE)', 'stats'], ['select', 'select(.data, ...)', 'dplyr']];
+  const names = (code, options = {}) => suggest(code, code.length, { tables, functions, known, ...options })?.items.map((i) => i.name);
+  assert.deepEqual(names('dplyr::'), ['filter', 'mutate', 'select']);
+  assert.deepEqual(names('survey |> dplyr::s'), ['select']);
+  assert.deepEqual(names('stats::'), ['sd']);
+  assert.equal(names('nothing::'), undefined);
+});
+
+test('a call written with its package still knows the table of the pipe', () => {
+  const code = 'survey |> dplyr::filter(di';
+  assert.deepEqual(suggest(code, code.length, { tables, functions }).items.map((i) => i.name), ['diet']);
+});

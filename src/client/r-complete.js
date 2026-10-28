@@ -1,12 +1,12 @@
 // Suggestions while typing in an R editor: columns of the table a pipe works
 // on, names assigned in the block, the data sets and the functions of the
-// packages the page uses (r-context.js decides what fits). The list opens
-// after two letters, after `table$` or with Ctrl+Space; arrows choose, Enter
-// or Tab takes, Esc closes. Nothing is ever inserted without being chosen.
+// packages the page uses, or every function of a package after `package::`
+// (r-context.js decides what fits). The list opens after two letters, after
+// `table$` or `package::`, or with Ctrl+Space; arrows choose, Enter or Tab
+// takes, Esc closes. Nothing is ever inserted without being chosen.
 import { suggest } from './r-context.js';
 
 const { rCompletions } = document.body.dataset;
-const MAX = 8;
 let data = null;
 
 const load = () => (data ??= fetch(rCompletions).then((r) => r.json()));
@@ -59,6 +59,7 @@ export function attachCompletion(editor, labels) {
     active = index;
     [...list.children].forEach((li, i) => li.setAttribute('aria-selected', String(i === index)));
     editor.setAttribute('aria-activedescendant', `${id}-${index}`);
+    list.children[index]?.scrollIntoView({ block: 'nearest' });
   };
 
   async function open(force = false) {
@@ -67,9 +68,10 @@ export function attachCompletion(editor, labels) {
     const groups = packagesIn(pageCode, functions);
     // a table is offered by name only where the page uses it
     const offered = Object.keys(tables).filter((name) => new RegExp(`\\b${name}\\b`).test(pageCode));
-    const found = suggest(editor.value, editor.selectionStart, { tables, functions: groups.flatMap((g) => functions[g]), offered, force });
+    const known = Object.values(functions).flat();
+    const found = suggest(editor.value, editor.selectionStart, { tables, functions: groups.flatMap((g) => functions[g]), known, offered, force });
     if (!found || document.activeElement !== editor) return close();
-    current = { ...found, items: found.items.slice(0, MAX) };
+    current = found;
     list.replaceChildren(
       ...current.items.map((item, i) => {
         const li = Object.assign(document.createElement('li'), { id: `${id}-${i}`, className: `r-complete-item kind-${item.kind}` });
@@ -116,7 +118,7 @@ export function attachCompletion(editor, labels) {
   editor.addEventListener('focus', load, { once: true });
   editor.addEventListener('input', (e) => {
     if (taking) return;
-    const typed = e.inputType === 'insertText' && /[A-Za-z0-9._$]/.test(e.data ?? '');
+    const typed = e.inputType === 'insertText' && /[A-Za-z0-9._$:]/.test(e.data ?? '');
     if (typed || (current && e.inputType?.startsWith('delete'))) open();
     else close();
   });
@@ -138,7 +140,7 @@ export function attachCompletion(editor, labels) {
         Escape: close,
       };
       if (!keys[e.key] || e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) {
-        if (!['Shift', 'Control', 'Alt', 'Meta'].includes(e.key) && !/^[A-Za-z0-9._$]$/.test(e.key) && e.key !== 'Backspace') close();
+        if (!['Shift', 'Control', 'Alt', 'Meta'].includes(e.key) && !/^[A-Za-z0-9._$:]$/.test(e.key) && e.key !== 'Backspace') close();
         return;
       }
       e.preventDefault();
