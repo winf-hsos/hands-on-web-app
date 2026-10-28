@@ -209,6 +209,11 @@ The body is plain Markdown with a few conventions:
   has one command that prints something, so that each output stands next to
   the code it came from; a second example gets its own block with a sentence
   between them. Only short calculations such as `3 + 4` may share a block.
+  A plot is built as Nicolas teaches it: the data piped into `ggplot()`, and
+  every layer, `aes()` included, added on its own line with `+`
+  (`rewe |>`, `ggplot() +`, `aes(x = …) +`, `geom_…()`), never
+  `ggplot(rewe, aes(…))`. A starter block for a plot task already holds
+  this frame with an empty `aes()`.
 - **Data sets** lie in `media/datasets/` as CSV. `milk_survey.csv` is a
   30-row excerpt of the survey on milk and milk alternatives by U. Enneking,
   with English column names, made by `scripts/survey-excerpt.py` from the

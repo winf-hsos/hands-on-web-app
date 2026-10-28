@@ -86,3 +86,8 @@ test('a function carries its signature and the package it comes from', () => {
   const [item] = suggest(code, code.length, { tables, functions }).items;
   assert.deepEqual(item, { name: 'filter', kind: 'function', detail: 'filter(.data, ...)', pkg: 'dplyr' });
 });
+
+test('a plot built layer by layer with + still knows its table in aes()', () => {
+  const code = 'rewe |>\n  ggplot() +\n  aes(y = pr';
+  assert.deepEqual(suggest(code, code.length, { tables, functions }).items.map((i) => i.name), ['price', 'product_name']);
+});

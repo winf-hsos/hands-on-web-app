@@ -180,12 +180,16 @@ rewe
 Kategorie gibt.
 
 ```r
-ggplot(rewe)
+rewe |>
+  ggplot() +
+  aes()
 ```
 
 > [!SOLUTION]
 > ```r
-> ggplot(rewe, aes(y = product_category)) +
+> rewe |>
+>   ggplot() +
+>   aes(y = product_category) +
 >   geom_bar()
 > ```
 >
@@ -195,12 +199,16 @@ ggplot(rewe)
 über alle Produkte verteilt.
 
 ```r
-ggplot(rewe)
+rewe |>
+  ggplot() +
+  aes()
 ```
 
 > [!SOLUTION]
 > ```r
-> ggplot(rewe, aes(x = energy_in_kcal)) +
+> rewe |>
+>   ggplot() +
+>   aes(x = energy_in_kcal) +
 >   geom_histogram(binwidth = 50)
 > ```
 >
@@ -211,12 +219,16 @@ ggplot(rewe)
 **Aufgabe 11.** Vergleiche mit Boxplots den Fettgehalt der Kategorien.
 
 ```r
-ggplot(rewe)
+rewe |>
+  ggplot() +
+  aes()
 ```
 
 > [!SOLUTION]
 > ```r
-> ggplot(rewe, aes(x = fat_in_gram, y = product_category)) +
+> rewe |>
+>   ggplot() +
+>   aes(x = fat_in_gram, y = product_category) +
 >   geom_boxplot()
 > ```
 
@@ -224,12 +236,16 @@ ggplot(rewe)
 jeder Kategorie bio ist.
 
 ```r
-ggplot(rewe)
+rewe |>
+  ggplot() +
+  aes()
 ```
 
 > [!SOLUTION]
 > ```r
-> ggplot(rewe, aes(y = product_category, fill = bio)) +
+> rewe |>
+>   ggplot() +
+>   aes(y = product_category, fill = bio) +
 >   geom_bar(position = "fill")
 > ```
 >

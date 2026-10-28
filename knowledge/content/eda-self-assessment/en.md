@@ -169,12 +169,16 @@ rewe
 **Task 9.** Show in a bar chart how many products there are in each category.
 
 ```r
-ggplot(rewe)
+rewe |>
+  ggplot() +
+  aes()
 ```
 
 > [!SOLUTION]
 > ```r
-> ggplot(rewe, aes(y = product_category)) +
+> rewe |>
+>   ggplot() +
+>   aes(y = product_category) +
 >   geom_bar()
 > ```
 >
@@ -184,12 +188,16 @@ ggplot(rewe)
 distributed across all products.
 
 ```r
-ggplot(rewe)
+rewe |>
+  ggplot() +
+  aes()
 ```
 
 > [!SOLUTION]
 > ```r
-> ggplot(rewe, aes(x = energy_in_kcal)) +
+> rewe |>
+>   ggplot() +
+>   aes(x = energy_in_kcal) +
 >   geom_histogram(binwidth = 50)
 > ```
 >
@@ -200,12 +208,16 @@ ggplot(rewe)
 **Task 11.** Compare the fat content of the categories with box plots.
 
 ```r
-ggplot(rewe)
+rewe |>
+  ggplot() +
+  aes()
 ```
 
 > [!SOLUTION]
 > ```r
-> ggplot(rewe, aes(x = fat_in_gram, y = product_category)) +
+> rewe |>
+>   ggplot() +
+>   aes(x = fat_in_gram, y = product_category) +
 >   geom_boxplot()
 > ```
 
@@ -213,12 +225,16 @@ ggplot(rewe)
 category is organic.
 
 ```r
-ggplot(rewe)
+rewe |>
+  ggplot() +
+  aes()
 ```
 
 > [!SOLUTION]
 > ```r
-> ggplot(rewe, aes(y = product_category, fill = bio)) +
+> rewe |>
+>   ggplot() +
+>   aes(y = product_category, fill = bio) +
 >   geom_bar(position = "fill")
 > ```
 >
