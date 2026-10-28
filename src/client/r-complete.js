@@ -1,7 +1,7 @@
 // Suggestions while typing in an R editor: columns of the table a pipe works
-// on, names assigned in the block, the data sets and the functions of the
-// packages the page uses, or every function of a package after `package::`
-// (r-context.js decides what fits). The list opens after two letters, after
+// on, names assigned in the block, the data sets, constants such as pi and
+// TRUE, and the functions of the packages the page uses, or everything of a
+// package after `package::` (r-context.js decides what fits). The list opens after two letters, after
 // `table$` or `package::`, or with Ctrl+Space; arrows choose, Enter or Tab
 // takes, Esc closes. Nothing is ever inserted without being chosen.
 import { suggest } from './r-context.js';
@@ -63,13 +63,13 @@ export function attachCompletion(editor, labels) {
   };
 
   async function open(force = false) {
-    const { functions, tables } = await load();
+    const { functions, constants, tables } = await load();
     const pageCode = [...document.querySelectorAll('.runner[data-lang="r"] textarea')].map((t) => t.value).join('\n');
     const groups = packagesIn(pageCode, functions);
     // a table is offered by name only where the page uses it
     const offered = Object.keys(tables).filter((name) => new RegExp(`\\b${name}\\b`).test(pageCode));
     const known = Object.values(functions).flat();
-    const found = suggest(editor.value, editor.selectionStart, { tables, functions: groups.flatMap((g) => functions[g]), known, offered, force });
+    const found = suggest(editor.value, editor.selectionStart, { tables, functions: groups.flatMap((g) => functions[g]), known, constants, offered, force });
     if (!found || document.activeElement !== editor) return close();
     current = found;
     list.replaceChildren(

@@ -1,6 +1,7 @@
 # Writes src/build/r-functions.json: the functions the R editors suggest,
 # grouped by the library() call that makes them available, each with its
-# signature as R reports it and the package it is found in. The lists are
+# signature as R reports it and the package it is found in, and the
+# constants they suggest, each with its type and the start of its value. The lists are
 # chosen by hand for beginners, not every export: what the lessons use and
 # what comes next. Run it again after changing a list.
 # Usage: Rscript scripts/r-functions.R   (needs dplyr and ggplot2 installed)
@@ -31,6 +32,11 @@ wanted <- list(
   )
 )
 
+# constants of base R, and the words of the language that stand for a value;
+# T and F are left out on purpose, since they can be overwritten
+constants <- c("pi", "LETTERS", "letters", "month.name", "month.abb")
+keywords <- c("TRUE", "FALSE", "NA", "NULL", "Inf", "NaN")
+
 suppressPackageStartupMessages({
   library(dplyr)
   library(ggplot2)
@@ -58,16 +64,43 @@ package_of <- function(name) sub("^package:", "", find(name)[1])
 
 quote_json <- function(text) paste0('"', gsub('"', '\\\\"', gsub("\\\\", "\\\\\\\\", text)), '"')
 
+# "<dbl> 3.141593", "<chr> "A" "B" "C" …", and only "<lgl>" for a keyword
+TYPES <- c(logical = "lgl", integer = "int", double = "dbl", character = "chr", NULL = "NULL")
+described <- function(name, keyword) {
+  value <- eval(parse(text = name))
+  type <- TYPES[[typeof(value)]]
+  if (keyword) return(if (is.null(value)) type else paste0("<", type, ">"))
+  shown <- if (is.character(value)) paste0('"', value, '"') else format(value)
+  paste0("<", type, "> ", paste(head(shown, 3), collapse = " "), if (length(value) > 3) " …" else "")
+}
+
+constant_entries <- c(
+  vapply(constants, function(name) {
+    paste0("[", quote_json(name), ", ", quote_json(described(name, FALSE)), ", ", quote_json(package_of(name)), "]")
+  }, character(1)),
+  # a keyword belongs to the language, not to a package
+  vapply(keywords, function(name) paste0("[", quote_json(name), ", ", quote_json(described(name, TRUE)), ", null]"), character(1))
+)
+
 groups <- vapply(names(wanted), function(group) {
   entries <- vapply(sort(wanted[[group]]), function(name) {
     paste0("[", quote_json(name), ", ", quote_json(signature(name)), ", ", quote_json(package_of(name)), "]")
   }, character(1))
-  paste0("  ", quote_json(group), ": [\n    ", paste(entries, collapse = ",\n    "), "\n  ]")
+  paste0("    ", quote_json(group), ": [\n      ", paste(entries, collapse = ",\n      "), "\n    ]")
 }, character(1))
 
 out <- file.path("src", "build", "r-functions.json")
 # binary, so that Windows does not turn the line breaks into CRLF
 con <- file(out, "wb")
-writeLines(c("{", paste(groups, collapse = ",\n"), "}"), con, useBytes = TRUE)
+writeLines(c(
+  "{",
+  '  "functions": {',
+  paste(groups, collapse = ",\n"),
+  "  },",
+  '  "constants": [',
+  paste0("    ", constant_entries, collapse = ",\n"),
+  "  ]",
+  "}"
+), con, useBytes = TRUE)
 close(con)
-cat(sum(lengths(wanted)), "functions ->", out, "\n")
+cat(sum(lengths(wanted)), "functions and", length(constant_entries), "constants ->", out, "\n")

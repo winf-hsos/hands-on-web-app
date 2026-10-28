@@ -133,7 +133,11 @@ All motion is switched off for people who ask their system for reduced motion.
   the columns and types of every data set in `src/client/r-datasets.js`, and
   the functions of `src/build/r-functions.json`, a hand-picked list for
   base R, dplyr and ggplot2 whose signatures `scripts/r-functions.R` takes
-  from R. dplyr and ggplot2 are suggested only on pages whose code uses them.
+  from R. The same file holds constants (`pi`, `LETTERS`, `month.name`, …)
+  with their type and first values, and the words of the language that stand
+  for a value (`TRUE`, `NA`, `NULL`, `Inf`, …), which have no package; they
+  are offered everywhere, after columns, names and tables and before
+  functions. dplyr and ggplot2 are suggested only on pages whose code uses them.
   Each function shows its package in braces, as RStudio and Positron do,
   found the way R's search path finds it: `sd()` is `{stats}`, and
   `starts_with()` is `{dplyr}`, which exports it. After `package::` the list

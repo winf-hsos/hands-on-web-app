@@ -105,3 +105,11 @@ test('a call written with its package still knows the table of the pipe', () => 
   const code = 'survey |> dplyr::filter(di';
   assert.deepEqual(suggest(code, code.length, { tables, functions }).items.map((i) => i.name), ['diet']);
 });
+
+test('constants come before functions, keywords without a package', () => {
+  const constants = [['pi', '<dbl> 3.141593', 'base'], ['TRUE', '<lgl>', null]];
+  const items = (code) => suggest(code, code.length, { tables, functions, constants })?.items.map((i) => `${i.kind}:${i.name}:${i.pkg}`);
+  assert.deepEqual(items('x <- TR'), ['constant:TRUE:null']);
+  assert.deepEqual(items('area <- pi'), undefined); // typed in full, nothing left to suggest
+  assert.deepEqual(suggest('base::', 6, { tables, functions, constants }).items.map((i) => i.name), ['pi', 'ages', 'mean']);
+});

@@ -13,7 +13,7 @@ const NAME_CHAR = /[A-Za-z0-9._]/;
 const CONTINUES = /(\|>|%[^%\s]*%|[-+*/,&|!=([{]|<-)\s*$/;
 // calls whose `name = value` arguments make new columns
 const NEW_COLUMNS = new Set(['mutate', 'summarise', 'summarize', 'transmute', 'rename']);
-const KIND_ORDER = { column: 0, variable: 1, table: 2, function: 3 };
+const KIND_ORDER = { column: 0, variable: 1, table: 2, constant: 3, function: 4 };
 
 /**
  * Reads R code from the start. `tables` are the names of known data sets.
@@ -134,11 +134,12 @@ export function currentWord(text, cursor) {
  * Suggestions at `cursor`, or null when there is nothing to suggest.
  * `tables` maps a data set to its columns as [name, type]; `functions` are
  * [name, signature, package] of the packages that count here, `known` all
- * functions there are, for `package::`; `offered` are the tables whose names
- * are suggested (all of them unless given). `force` asks even without two
+ * functions there are, for `package::`; `constants` are [name, type and
+ * value, package or null]; `offered` are the tables whose names are suggested
+ * (all of them unless given). `force` asks even without two
  * typed letters (Ctrl+Space).
  */
-export function suggest(text, cursor, { tables, functions, known = functions, offered = Object.keys(tables), force = false }) {
+export function suggest(text, cursor, { tables, functions, known = functions, constants = [], offered = Object.keys(tables), force = false }) {
   const { start, word } = currentWord(text, cursor);
   if (/^[0-9]/.test(word)) return null;
   const names = Object.keys(tables);
@@ -153,11 +154,12 @@ export function suggest(text, cursor, { tables, functions, known = functions, of
     ...extra.map((name) => ({ name, kind: 'column', detail: '' })),
   ];
   const asFunction = ([name, signature, pkg]) => ({ name, kind: 'function', detail: signature, pkg });
+  const asConstant = ([name, value, pkg]) => ({ name, kind: 'constant', detail: value, pkg });
   let items = [];
   if (namespace) {
     // package::function: every function of that package, used on the page or not
     const pkg = currentWord(text, start - 2).word;
-    items = known.filter((f) => f[2] === pkg).map(asFunction);
+    items = [...known.filter((f) => f[2] === pkg).map(asFunction), ...constants.filter((k) => k[2] === pkg).map(asConstant)];
   } else if (dollar) {
     // table$column: the name before $ says which table
     const owner = currentWord(text, start - 1).word;
@@ -169,7 +171,7 @@ export function suggest(text, cursor, { tables, functions, known = functions, of
     const everywhere = scan(text, names);
     items.push(...[...everywhere.assigned].map((name) => ({ name, kind: 'variable', detail: '' })));
     items.push(...offered.map((name) => ({ name, kind: 'table', detail: '' })));
-    items.push(...functions.map(asFunction));
+    items.push(...constants.map(asConstant), ...functions.map(asFunction));
   }
 
   const prefix = word.toLowerCase();

@@ -1,5 +1,5 @@
 // The data behind the suggestions in R editors (client/r-complete.js): the
-// functions of r-functions.json, made by scripts/r-functions.R, and the
+// functions and constants of r-functions.json, made by scripts/r-functions.R, and the
 // columns of every data set an R block can use, with their type as R would
 // read it. Written once per build as /assets/r-completions.json.
 import { readFileSync } from 'node:fs';
@@ -46,12 +46,12 @@ function columnType(values) {
   return 'chr';
 }
 
-/** { functions: { base: [[name, signature, package], …], … }, tables: { survey: [[column, type], …], … } } */
+/** { functions: { base: [[name, signature, package], …], … }, constants: [[name, type and value, package or null], …], tables: { survey: [[column, type], …], … } } */
 export function rCompletions(knowledgeRoot) {
   const tables = {};
   for (const [name, file] of Object.entries(DATASETS)) {
     const [header, ...rows] = parseCsv(readFileSync(join(knowledgeRoot, 'media', 'datasets', file), 'utf8'));
     tables[name] = header.map((column, i) => [column, columnType(rows.map((r) => r[i] ?? ''))]);
   }
-  return { functions: JSON.parse(readFileSync(FUNCTIONS, 'utf8')), tables };
+  return { ...JSON.parse(readFileSync(FUNCTIONS, 'utf8')), tables };
 }
