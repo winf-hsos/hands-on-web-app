@@ -4,13 +4,15 @@
 // dplyr from the packages the site serves (vendor/webr-repo, never Posit's
 // server). Data sets and ggplot2 come only when a block needs them: a block
 // that names `rewe` loads the REWE products first, one that draws loads
-// ggplot2, and its plots come back as images.
+// ggplot2, and its plots come back as images. A block that names the file
+// itself, as in read.csv("lets_make_a_deal.csv"), finds it in its working
+// directory.
 //
 // Every block runs in an environment of its own (.hocs_run), so a block
 // cannot break the next one by overwriting `survey`; what a block assigns is
 // gone afterwards.
 
-import { DATASETS } from './r-datasets.js';
+import { DATASETS, PLAIN } from './r-datasets.js';
 
 const { webr: base, webrRepo, datasets } = document.body.dataset;
 
@@ -58,13 +60,19 @@ async function start() {
   return webR;
 }
 
-/** Loads what `code` uses and has not been loaded yet: data sets by name, ggplot2 for plots. */
+/** Loads what `code` uses and has not been loaded yet: data sets by name or file, ggplot2 for plots. */
 async function prepare(r, code) {
   for (const [name, file] of Object.entries(DATASETS)) {
-    if (loaded.has(name) || !new RegExp(`\\b${name}\\b`).test(code)) continue;
-    const csv = await fetch(`${datasets}${file}`).then((response) => response.arrayBuffer());
-    await r.FS.writeFile(`/home/web_user/${file}`, new Uint8Array(csv));
-    await r.evalRVoid(`${name} <- tibble::as_tibble(read.csv("${file}", na.strings = "", stringsAsFactors = FALSE))`);
+    const byName = new RegExp(`\\b${name}\\b`).test(code);
+    if (!byName && !code.includes(file)) continue;
+    if (!loaded.has(file)) {
+      const csv = await fetch(`${datasets}${file}`).then((response) => response.arrayBuffer());
+      await r.FS.writeFile(`/home/web_user/${file}`, new Uint8Array(csv));
+      loaded.add(file);
+    }
+    if (!byName || loaded.has(name)) continue;
+    const table = `read.csv("${file}", na.strings = "", stringsAsFactors = FALSE)`;
+    await r.evalRVoid(`${name} <- ${PLAIN.has(name) ? table : `tibble::as_tibble(${table})`}`);
     loaded.add(name);
   }
   if (!loaded.has('ggplot2') && DRAWS.test(code)) {

@@ -417,14 +417,58 @@ export const backLabels = {
   },
 };
 
-/** Labels of the dplyr demonstrator (client/verb-demo.js). */
 /** Labels for client/copy.js. */
 export const copyLabels = {
   de: { copy: 'Code kopieren', copied: 'Kopiert' },
   en: { copy: 'Copy code', copied: 'Copied' },
 };
 
+/** Labels of the dplyr demonstrator (client/verb-demo.js). */
 export const demoLabels = {
   de: { original: 'Original', hint: 'Jedes Verb beginnt bei der Originaltabelle.' },
   en: { original: 'Original', hint: 'Every verb starts from the original table.' },
+};
+
+/** Labels of the game with three doors (client/monty-hall.js). */
+export const montyHallLabels = {
+  de: {
+    choose: 'Wähle eine Tür.',
+    opened: 'Der Moderator öffnet Tür {d}: eine Ziege. Bleibst du oder wechselst du?',
+    stay: 'Bei Tür {d} bleiben',
+    switch: 'Zu Tür {d} wechseln',
+    won: 'Gewonnen! Das Auto stand hinter Tür {d}.',
+    lost: 'Leider eine Ziege. Das Auto stand hinter Tür {d}.',
+    next: 'Nächste Runde',
+    door: 'Tür {d}',
+    doorCar: 'Tür {d}: Auto',
+    doorGoat: 'Tür {d}: Ziege',
+    round: '1 Runde gespielt.',
+    rounds: '{n} Runden gespielt.',
+    tally: '{decision}: {won} von {games} gewonnen.',
+    stayed: 'Geblieben',
+    switched: 'Gewechselt',
+    record: 'Eure Runden als R-Code',
+    none: 'Noch keine Runde gespielt',
+    reset: 'Von vorn',
+  },
+  en: {
+    choose: 'Pick a door.',
+    opened: 'The host opens door {d}: a goat. Do you stay or switch?',
+    stay: 'Stay with door {d}',
+    switch: 'Switch to door {d}',
+    won: 'You win! The car was behind door {d}.',
+    lost: 'A goat, sorry. The car was behind door {d}.',
+    next: 'Next round',
+    door: 'Door {d}',
+    doorCar: 'Door {d}: car',
+    doorGoat: 'Door {d}: goat',
+    round: '1 round played.',
+    rounds: '{n} rounds played.',
+    tally: '{decision}: {won} of {games} won.',
+    stayed: 'Stayed',
+    switched: 'Switched',
+    record: 'Your rounds as R code',
+    none: 'No round played yet',
+    reset: 'Start over',
+  },
 };

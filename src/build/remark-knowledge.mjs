@@ -81,7 +81,7 @@ function callouts(tree, lang) {
 // sample run, is shown as it is, in the same frame.
 function runnable(tree) {
   visit(tree, 'code', (node) => {
-    if (node.lang === 'verb-demo') return;
+    if (DEMOS[node.lang]) return;
     if (node.lang !== 'python' && node.lang !== 'r') {
       node.type = 'plainCode';
       const code = { type: 'element', tagName: 'code', properties: { className: node.lang ? [`language-${node.lang}`] : [] }, children: [{ type: 'text', value: node.value }] };
@@ -108,12 +108,19 @@ function runnable(tree) {
   });
 }
 
-// ```verb-demo becomes the place of the dplyr demonstrator (client/verb-demo.js).
+// ```verb-demo becomes the place of the dplyr demonstrator (client/verb-demo.js),
+// ```monty-hall the game with three doors (client/monty-hall.js).
+const DEMOS = {
+  'verb-demo': { className: 'verb-demo', dataVerbDemo: '' },
+  'monty-hall': { className: 'monty-hall', dataMontyHall: '' },
+};
+
 function demos(tree) {
   visit(tree, 'code', (node) => {
-    if (node.lang !== 'verb-demo') return;
-    node.type = 'verbDemo';
-    node.data = { hName: 'div', hProperties: { className: ['verb-demo'], dataVerbDemo: '' }, hChildren: [] };
+    const demo = DEMOS[node.lang];
+    if (!demo) return;
+    node.type = 'demo';
+    node.data = { hName: 'div', hProperties: { ...demo, className: [demo.className] }, hChildren: [] };
   });
 }
 

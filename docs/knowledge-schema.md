@@ -203,9 +203,13 @@ The body is plain Markdown with a few conventions:
   languages; what a program prints follows the language of the text.
 - **R code** in a ` ```r ` block works the same way with webR; ` ```r static `
   only shows it. Each block runs on its own, with dplyr loaded and the data
-  sets `survey` (`media/datasets/milk_survey.csv`) and `rewe`
-  (`media/datasets/rewe_products.csv`) ready; a block that uses `ggplot()`
-  shows the plot below the code. A runnable block
+  sets `survey` (`media/datasets/milk_survey.csv`), `rewe`
+  (`media/datasets/rewe_products.csv`) and `monty_hall`
+  (`media/datasets/lets_make_a_deal.csv`, a plain `data.frame`, since the
+  Monty Hall project teaches base R) ready; a block that names a file, as in
+  `read.csv("lets_make_a_deal.csv")`, finds it in its working directory. A
+  block that uses `ggplot()` shows the plot below the code. This holds in
+  project phases and challenges as well as in items. A runnable block
   has one command that prints something, so that each output stands next to
   the code it came from; a second example gets its own block with a sentence
   between them. Only short calculations such as `3 + 4` may share a block.
@@ -226,8 +230,13 @@ The body is plain Markdown with a few conventions:
   `rewe_products.csv` holds products from the REWE online shop, taken by
   `scripts/rewe-excerpt.py` from Nicolas' repository
   github.com/winf-hsos/data-analytics-code with fewer columns and snake_case
-  names; the item `rewe-products` describes it.
-- **The dplyr demonstrator** is placed with an empty ` ```verb-demo ` block.
+  names; the item `rewe-products` describes it. `lets_make_a_deal.csv` holds
+  100 games of the Monty Hall problem from the same repository
+  (`data/monty_hall_problem`, there separated by semicolons); the item
+  `lets-make-a-deal` describes it.
+- **The dplyr demonstrator** is placed with an empty ` ```verb-demo ` block,
+  **the game with three doors** with an empty ` ```monty-hall ` block. The
+  game records every round and shows the rounds as R vectors to copy.
 - **No embedded HTML and no embedded pages from elsewhere.** That keeps the
   rule from the concept that nothing on the site comes from anywhere but the
   knowledge base.

@@ -22,7 +22,7 @@ updated: 2026-10-27
 ## Worum es geht
 
 Die Daten stammen aus dem Onlineshop von REWE und wurden für die Lehre
-gesammelt; sie liegen im Repository zu den Data-Analytics-Kursen, das oben
+gesammelt; sie liegen im Repository zu den Data-Analytics-Kursen, das unten
 verlinkt ist. Jede Zeile ist ein Produkt mit Name, Marke, Kategorie in drei
 Stufen, Herkunftsland, Preis und, wo angegeben, den Nährwerten.
 

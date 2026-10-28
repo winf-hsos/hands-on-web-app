@@ -3060,3 +3060,123 @@ details.callout[open] > summary::before {
   font-size: 0.88rem;
   color: var(--quiet);
 }
+
+/* The game with three doors (client/monty-hall.js): three large doors, the
+   choice between staying and switching, the score, and the rounds as R code. */
+.monty-hall {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.75rem;
+}
+
+.prose .mh-status {
+  min-height: 1.5em;
+  margin: 0 0 1rem;
+  font-weight: 650;
+}
+
+.mh-doors {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 7rem));
+  gap: 0.75rem;
+}
+
+.mh-door {
+  display: grid;
+  place-items: center;
+  gap: 0.25rem;
+  aspect-ratio: 3 / 4;
+  border: 2px solid var(--rule);
+  border-radius: 0.5rem 0.5rem 0.2rem 0.2rem;
+  background: color-mix(in srgb, var(--accent) 10%, var(--paper));
+  color: var(--ink);
+  font: 700 1.6rem/1 var(--mono);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.3s, transform 0.2s;
+}
+
+.mh-door:hover:not(:disabled) {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.mh-door[data-chosen='true'] {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.mh-door[data-open='true'] {
+  background: var(--paper);
+  cursor: default;
+}
+
+.mh-door:disabled {
+  cursor: default;
+}
+
+.mh-behind {
+  font-size: 2rem;
+}
+
+.mh-door[data-open='true'] .mh-behind {
+  animation: mh-reveal 0.35s ease-out;
+}
+
+@keyframes mh-reveal {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+.mh-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+/* .button sets its own display, which would show hidden buttons */
+.mh-actions [hidden] {
+  display: none;
+}
+
+.prose .mh-score {
+  margin: 1rem 0 0;
+  color: var(--quiet);
+}
+
+.mh-record {
+  margin-top: 1rem;
+}
+
+.prose .mh-record-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 0 0 0.4rem;
+  font-weight: 650;
+}
+
+.mh-reset {
+  border: none;
+  background: none;
+  color: var(--accent-ink);
+  font: inherit;
+  font-weight: 400;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.prose .mh-record pre {
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mh-door,
+  .mh-door[data-open='true'] .mh-behind {
+    transition: none;
+    animation: none;
+  }
+}

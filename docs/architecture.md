@@ -124,6 +124,12 @@ All motion is switched off for people who ask their system for reduced motion.
 - **The dplyr demonstrator** (` ```verb-demo `, `src/client/verb-demo.js`)
   computes the verbs itself in JavaScript on six rows of the survey and
   animates the change; it needs no R.
+- **The game with three doors** (` ```monty-hall `, `src/client/monty-hall.js`)
+  plays the Monty Hall problem on the page and writes every round down as R
+  vectors with the columns of `lets_make_a_deal.csv`, to be copied into an R
+  box. The rounds are kept in local storage, so a reload or a switch of
+  language keeps them. A project page loads the runner and the demonstrators
+  when its phases contain them, just as an item page does.
 - **R editors suggest names while typing** (`src/client/r-complete.js`): the
   columns of the table a pipe works on, names assigned in the block, the data
   sets the page uses and functions, after two letters, after `table$` or with

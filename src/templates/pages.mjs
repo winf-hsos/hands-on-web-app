@@ -163,6 +163,10 @@ const topicTags = (site, topics, lang) =>
     (key) => html`<a class="topic-tag" href="${site.link(lang, 'items')}?topic=${key}">${site.vocabulary.topics[key][lang]}</a>`,
   )}</p>`;
 
+/** The browser modules a rendered text needs: code boxes and demonstrators. */
+const scriptsFor = (body) =>
+  [body.includes('data-runner') && 'runner', body.includes('data-verb-demo') && 'verb-demo', body.includes('data-monty-hall') && 'monty-hall'].filter(Boolean);
+
 export function item(site, doc, lang) {
   const text = site.localize(doc, lang);
   const lead = doc.lead;
@@ -177,7 +181,7 @@ export function item(site, doc, lang) {
     title: text.title,
     description: text.summary,
     back: 'items',
-    scripts: [isQuiz && 'quiz', body.includes('data-runner') && 'runner', body.includes('data-verb-demo') && 'verb-demo'].filter(Boolean),
+    scripts: [isQuiz && 'quiz', ...scriptsFor(body)].filter(Boolean),
     content: html`
       <article class="page item" data-item-page="${doc.id}">
         <header class="page-head">
@@ -530,14 +534,7 @@ export function project(site, doc, lang) {
       <ul class="rows">${ids.map((id) => itemRow(site, site.item.get(id), lang, { summary: false }))}</ul></div>`;
   const v = site.vocabulary;
   const lead = doc.lead;
-  return {
-    path: site.url(doc, lang),
-    title: text.title,
-    description: text.summary,
-    current: 'projects',
-    back: 'projects',
-    scripts: ['project'],
-    content: html`
+  const content = html`
       <article class="page project">
         <header class="page-head">
           <p class="kicker">${projectIcon}<span>${t(lang, 'project')}</span><span>${count(lang, lead.phases.length, 'phases')}</span></p>
@@ -591,7 +588,16 @@ export function project(site, doc, lang) {
           ]),
         )}
       </article>
-    `,
+  `;
+  return {
+    path: site.url(doc, lang),
+    title: text.title,
+    description: text.summary,
+    current: 'projects',
+    back: 'projects',
+    // phases may hold code boxes and demonstrators like any item
+    scripts: ['project', ...scriptsFor(String(content))],
+    content,
   };
 }
 

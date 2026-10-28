@@ -12,7 +12,7 @@ based_on: 2026-10-27
 
 The data come from the online shop of REWE, a German supermarket chain, and
 were collected for teaching; they are in the repository for the data
-analytics courses linked above. Each row is a product with name, brand,
+analytics courses linked below. Each row is a product with name, brand,
 category in three levels, country of origin, price and, where given, its
 nutrition values.
 

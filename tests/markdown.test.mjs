@@ -44,3 +44,7 @@ test('the R highlighter knows the pipe, the arrow, dplyr verbs, NA and names wit
     .map((t) => `${t.type}:${t.text}`);
   assert.deepEqual(kinds, ['op:<-', 'op:|>', 'builtin:filter', 'builtin:is.na', 'op:%in%', 'builtin:c', 'string:"vegan"', 'comment:# NA', 'keyword:NA']);
 });
+
+test('a monty-hall block becomes the place of the game with three doors', () => {
+  assert.match(render('```monty-hall\n```\n'), /<div class="monty-hall" data-monty-hall=""><\/div>/);
+});
