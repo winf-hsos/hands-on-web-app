@@ -3,6 +3,7 @@
 // (python-worker.js), R with webR (r-engine.js); either starts on the first
 // click, so a page with code costs nothing until someone wants to run it.
 import { addCopyButton } from './copy.js';
+import { attachCompletion } from './r-complete.js';
 import { highlight } from './highlight.js';
 
 const { pythonWorker, pyodide, runnerLabels } = document.body.dataset;
@@ -102,6 +103,7 @@ function setup(box) {
   const hint = el('p', { className: 'runner-hint', hidden: true });
   box.replaceChildren(code, el('div', { className: 'runner-bar' }, run, reset, status), output, hint);
   addCopyButton(code, () => editor.value);
+  if (lang === 'r') attachCompletion(editor, L.complete);
 
   let answers = [];
   let running = false;

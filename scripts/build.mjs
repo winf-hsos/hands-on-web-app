@@ -11,6 +11,7 @@ import { validate } from '../src/build/validate.mjs';
 import { createSite } from '../src/build/site.mjs';
 import { t } from '../src/build/i18n.mjs';
 import { isUnpublished } from '../src/build/deck.mjs';
+import { rCompletions } from '../src/build/r-completions.mjs';
 import { iconSvg } from '../src/build/icons.mjs';
 import { layout, chooser } from '../src/templates/layout.mjs';
 import * as pages from '../src/templates/pages.mjs';
@@ -161,6 +162,10 @@ function render(knowledge) {
     copyFileSync(source, target);
     hashes[name] = createHash('sha1').update(readFileSync(source)).digest('hex').slice(0, 8);
   }
+  // what R editors suggest: functions and the columns of the data sets
+  const completions = JSON.stringify(rCompletions(join(ROOT, 'knowledge')));
+  writeFileSync(join(DIST, 'assets', 'r-completions.json'), completions);
+  hashes['r-completions.json'] = createHash('sha1').update(completions).digest('hex').slice(0, 8);
   for (const file of PYODIDE_FILES) {
     mkdirSync(join(DIST, PYODIDE_BASE), { recursive: true });
     copyFileSync(join(PYODIDE, file), join(DIST, PYODIDE_BASE, file));

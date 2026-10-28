@@ -34,6 +34,7 @@ npm run build      # static site in dist/, stops with a list if the knowledge ba
 npm test           # each rule of the knowledge base broken once on purpose
 npm run new-code   # an unused four-digit short code for a new item
 npm run fetch-r-packages  # once: dplyr, ggplot2 and their dependencies for R in the browser
+Rscript scripts/r-functions.R  # after changing which functions R editors suggest
 ```
 
 ## Status

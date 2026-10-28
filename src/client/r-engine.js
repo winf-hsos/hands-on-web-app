@@ -10,10 +10,10 @@
 // cannot break the next one by overwriting `survey`; what a block assigns is
 // gone afterwards.
 
+import { DATASETS } from './r-datasets.js';
+
 const { webr: base, webrRepo, datasets } = document.body.dataset;
 
-// the tables a block can use by name, and the file each one is read from
-const DATASETS = { survey: 'milk_survey.csv', rewe: 'rewe_products.csv' };
 const DRAWS = /\b(ggplot|geom_\w+|qplot)\s*\(/;
 // size of a plot in pixels, as wide as it appears in the box (webR draws it
 // at twice the resolution, so it stays sharp)

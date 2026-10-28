@@ -1,0 +1,152 @@
+// Suggestions while typing in an R editor: columns of the table a pipe works
+// on, names assigned in the block, the data sets and the functions of the
+// packages the page uses (r-context.js decides what fits). The list opens
+// after two letters, after `table$` or with Ctrl+Space; arrows choose, Enter
+// or Tab takes, Esc closes. Nothing is ever inserted without being chosen.
+import { suggest } from './r-context.js';
+
+const { rCompletions } = document.body.dataset;
+const MAX = 8;
+let data = null;
+
+const load = () => (data ??= fetch(rCompletions).then((r) => r.json()));
+
+// base R always; dplyr and ggplot2 where the page or the block uses them
+function packagesIn(text, functions) {
+  return Object.keys(functions).filter(
+    (group) => group === 'base' || functions[group].some(([name]) => new RegExp(`\\b${name.replace('.', '\\.')}\\(`).test(text)),
+  );
+}
+
+/** Where the cursor is on the page, from a hidden copy of the text laid out like the editor. */
+function caret(editor, mirror) {
+  const style = getComputedStyle(editor);
+  for (const p of ['font', 'letterSpacing', 'lineHeight', 'padding', 'border', 'boxSizing', 'whiteSpace', 'overflowWrap', 'tabSize', 'width']) mirror.style[p] = style[p];
+  const marker = document.createElement('span');
+  marker.textContent = '​';
+  mirror.replaceChildren(editor.value.slice(0, editor.selectionStart), marker);
+  const box = mirror.getBoundingClientRect();
+  return { left: box.left + marker.offsetLeft + scrollX, top: box.top + marker.offsetTop + marker.offsetHeight + scrollY };
+}
+
+let count = 0;
+
+export function attachCompletion(editor, labels) {
+  const id = `r-complete-${++count}`;
+  const list = Object.assign(document.createElement('ul'), { id, className: 'r-complete', hidden: true });
+  list.setAttribute('role', 'listbox');
+  list.setAttribute('aria-label', labels.list);
+  document.body.append(list);
+  const mirror = Object.assign(document.createElement('div'), { className: 'r-complete-mirror' });
+  mirror.setAttribute('aria-hidden', 'true');
+  editor.parentElement.append(mirror);
+  editor.setAttribute('aria-autocomplete', 'list');
+  editor.setAttribute('aria-controls', id);
+  editor.setAttribute('aria-expanded', 'false');
+
+  let current = null; // { start, end, items }
+  let active = 0;
+  let taking = false; // inserting a choice, which must not open the list again
+
+  const close = () => {
+    current = null;
+    list.hidden = true;
+    editor.setAttribute('aria-expanded', 'false');
+    editor.removeAttribute('aria-activedescendant');
+  };
+
+  const highlight = (index) => {
+    active = index;
+    [...list.children].forEach((li, i) => li.setAttribute('aria-selected', String(i === index)));
+    editor.setAttribute('aria-activedescendant', `${id}-${index}`);
+  };
+
+  async function open(force = false) {
+    const { functions, tables } = await load();
+    const pageCode = [...document.querySelectorAll('.runner[data-lang="r"] textarea')].map((t) => t.value).join('\n');
+    const groups = packagesIn(pageCode, functions);
+    // a table is offered by name only where the page uses it
+    const offered = Object.keys(tables).filter((name) => new RegExp(`\\b${name}\\b`).test(pageCode));
+    const found = suggest(editor.value, editor.selectionStart, { tables, functions: groups.flatMap((g) => functions[g]), offered, force });
+    if (!found || document.activeElement !== editor) return close();
+    current = { ...found, items: found.items.slice(0, MAX) };
+    list.replaceChildren(
+      ...current.items.map((item, i) => {
+        const li = Object.assign(document.createElement('li'), { id: `${id}-${i}`, className: `r-complete-item kind-${item.kind}` });
+        li.setAttribute('role', 'option');
+        const name = Object.assign(document.createElement('span'), { className: 'r-complete-name', textContent: item.name });
+        const detail = Object.assign(document.createElement('span'), { className: 'r-complete-detail', textContent: item.detail || labels[item.kind] });
+        li.append(name, detail);
+        li.addEventListener('pointerdown', (e) => {
+          e.preventDefault(); // keep the focus in the editor
+          take(i);
+        });
+        return li;
+      }),
+    );
+    const at = caret(editor, mirror);
+    list.style.left = `${Math.max(scrollX + 8, Math.min(at.left, scrollX + innerWidth - 320))}px`;
+    list.style.top = `${at.top + 4}px`;
+    list.hidden = false;
+    editor.setAttribute('aria-expanded', 'true');
+    highlight(0);
+  }
+
+  function take(index) {
+    const item = current?.items[index];
+    if (!item) return close();
+    const { start, end } = current;
+    close();
+    taking = true;
+    editor.focus();
+    editor.setSelectionRange(start, end);
+    const text = item.kind === 'function' ? `${item.name}()` : item.name;
+    // execCommand keeps the browser's undo history; setRangeText is the fallback
+    if (!document.execCommand?.('insertText', false, text)) {
+      editor.setRangeText(text, start, end, 'end');
+      editor.dispatchEvent(new Event('input'));
+    }
+    // a function gets its brackets, and the cursor goes between them
+    if (item.kind === 'function') editor.setSelectionRange(start + text.length - 1, start + text.length - 1);
+    taking = false;
+  }
+
+  editor.addEventListener('focus', load, { once: true });
+  editor.addEventListener('input', (e) => {
+    if (taking) return;
+    const typed = e.inputType === 'insertText' && /[A-Za-z0-9._$]/.test(e.data ?? '');
+    if (typed || (current && e.inputType?.startsWith('delete'))) open();
+    else close();
+  });
+  // runs before the editor's own keys (indent, run, leave the field)
+  editor.addEventListener(
+    'keydown',
+    (e) => {
+      if (e.key === ' ' && e.ctrlKey) {
+        e.preventDefault();
+        open(true);
+        return;
+      }
+      if (!current) return;
+      const keys = {
+        ArrowDown: () => highlight((active + 1) % current.items.length),
+        ArrowUp: () => highlight((active - 1 + current.items.length) % current.items.length),
+        Enter: () => take(active),
+        Tab: () => take(active),
+        Escape: close,
+      };
+      if (!keys[e.key] || e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) {
+        if (!['Shift', 'Control', 'Alt', 'Meta'].includes(e.key) && !/^[A-Za-z0-9._$]$/.test(e.key) && e.key !== 'Backspace') close();
+        return;
+      }
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      keys[e.key]();
+    },
+    { capture: true },
+  );
+  editor.addEventListener('blur', close);
+  editor.addEventListener('click', close);
+  addEventListener('scroll', () => current && close(), { passive: true });
+  addEventListener('resize', () => current && close());
+}

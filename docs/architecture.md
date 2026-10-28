@@ -124,6 +124,16 @@ All motion is switched off for people who ask their system for reduced motion.
 - **The dplyr demonstrator** (` ```verb-demo `, `src/client/verb-demo.js`)
   computes the verbs itself in JavaScript on six rows of the survey and
   animates the change; it needs no R.
+- **R editors suggest names while typing** (`src/client/r-complete.js`): the
+  columns of the table a pipe works on, names assigned in the block, the data
+  sets the page uses and functions, after two letters, after `table$` or with
+  Ctrl+Space. `src/client/r-context.js` decides what fits at the cursor
+  without running R, so the suggestions are there before the first Run. The
+  build writes `/assets/r-completions.json` (`src/build/r-completions.mjs`):
+  the columns and types of every data set in `src/client/r-datasets.js`, and
+  the functions of `src/build/r-functions.json`, a hand-picked list for
+  base R, dplyr and ggplot2 whose signatures `scripts/r-functions.R` takes
+  from R. dplyr and ggplot2 are suggested only on pages whose code uses them.
 - **Every code block has a copy button** (`src/client/copy.js`) in its upper
   right corner. A runnable block copies what is in its editor at that moment,
   changes included; any other block copies its text.
