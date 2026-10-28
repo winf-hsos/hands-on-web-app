@@ -1,5 +1,6 @@
 # Writes src/build/r-functions.json: the functions the R editors suggest,
-# grouped by package, each with its signature as R reports it. The lists are
+# grouped by the library() call that makes them available, each with its
+# signature as R reports it and the package it is found in. The lists are
 # chosen by hand for beginners, not every export: what the lessons use and
 # what comes next. Run it again after changing a list.
 # Usage: Rscript scripts/r-functions.R   (needs dplyr and ggplot2 installed)
@@ -51,11 +52,15 @@ signature <- function(name) {
   paste0(name, "(", paste(parts, collapse = ", "), ")")
 }
 
+# the package as RStudio and Positron show it: where the search path finds
+# the name, so sd() is {stats} and starts_with() is {dplyr}, which exports it
+package_of <- function(name) sub("^package:", "", find(name)[1])
+
 quote_json <- function(text) paste0('"', gsub('"', '\\\\"', gsub("\\\\", "\\\\\\\\", text)), '"')
 
 groups <- vapply(names(wanted), function(group) {
   entries <- vapply(sort(wanted[[group]]), function(name) {
-    paste0("[", quote_json(name), ", ", quote_json(signature(name)), "]")
+    paste0("[", quote_json(name), ", ", quote_json(signature(name)), ", ", quote_json(package_of(name)), "]")
   }, character(1))
   paste0("  ", quote_json(group), ": [\n    ", paste(entries, collapse = ",\n    "), "\n  ]")
 }, character(1))

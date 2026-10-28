@@ -77,6 +77,8 @@ export function attachCompletion(editor, labels) {
         const name = Object.assign(document.createElement('span'), { className: 'r-complete-name', textContent: item.name });
         const detail = Object.assign(document.createElement('span'), { className: 'r-complete-detail', textContent: item.detail || labels[item.kind] });
         li.append(name, detail);
+        // the package in braces, as RStudio and Positron show it
+        if (item.pkg) li.append(Object.assign(document.createElement('span'), { className: 'r-complete-package', textContent: `{${item.pkg}}` }));
         li.addEventListener('pointerdown', (e) => {
           e.preventDefault(); // keep the focus in the editor
           take(i);

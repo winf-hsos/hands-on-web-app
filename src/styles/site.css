@@ -901,7 +901,8 @@ select {
 
 /* R prints tables in columns, which break apart when lines wrap */
 /* Suggestions while typing R (client/r-complete.js): a small list at the
-   cursor, the name on the left, its type or signature on the right. */
+   cursor, the name on the left, its type or signature on the right, and for a
+   function the package it comes from. */
 .r-complete {
   position: absolute;
   z-index: 50;
@@ -939,10 +940,18 @@ select {
 }
 
 .r-complete-detail {
+  flex: 1;
   overflow: hidden;
   color: var(--quiet);
+  text-align: right;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.r-complete-package {
+  flex-shrink: 0;
+  color: var(--accent);
+  white-space: nowrap;
 }
 
 /* a hidden copy of the editor text, to find where the cursor is */

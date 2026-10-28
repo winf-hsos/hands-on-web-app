@@ -46,7 +46,7 @@ function columnType(values) {
   return 'chr';
 }
 
-/** { functions: { base: [[name, signature], …], … }, tables: { survey: [[column, type], …], … } } */
+/** { functions: { base: [[name, signature, package], …], … }, tables: { survey: [[column, type], …], … } } */
 export function rCompletions(knowledgeRoot) {
   const tables = {};
   for (const [name, file] of Object.entries(DATASETS)) {

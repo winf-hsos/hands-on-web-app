@@ -134,6 +134,9 @@ All motion is switched off for people who ask their system for reduced motion.
   the functions of `src/build/r-functions.json`, a hand-picked list for
   base R, dplyr and ggplot2 whose signatures `scripts/r-functions.R` takes
   from R. dplyr and ggplot2 are suggested only on pages whose code uses them.
+  Each function shows its package in braces, as RStudio and Positron do,
+  found the way R's search path finds it: `sd()` is `{stats}`, and
+  `starts_with()` is `{dplyr}`, which exports it.
 - **Every code block has a copy button** (`src/client/copy.js`) in its upper
   right corner. A runnable block copies what is in its editor at that moment,
   changes included; any other block copies its text.

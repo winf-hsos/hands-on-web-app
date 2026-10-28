@@ -8,7 +8,7 @@ const tables = {
   survey: [['id', 'int'], ['age', 'int'], ['diet', 'chr'], ['milk_brand', 'chr'], ['milk_freq', 'chr']],
   rewe: [['price', 'dbl'], ['product_name', 'chr']],
 };
-const functions = [['filter', 'filter(.data, ...)'], ['mean', 'mean(x, ...)'], ['mutate', 'mutate(.data, ...)'], ['ages', 'never']];
+const functions = [['filter', 'filter(.data, ...)', 'dplyr'], ['mean', 'mean(x, ...)', 'base'], ['mutate', 'mutate(.data, ...)', 'dplyr'], ['ages', 'never', 'base']];
 
 /** Suggestions with the cursor at §, as "kind:name". */
 function at(code, options = {}) {
@@ -79,4 +79,10 @@ test('columns are found for ggplot() and aes() too', () => {
 test('only the offered tables are suggested by name, but every table keeps its columns', () => {
   assert.deepEqual(at('su§', { offered: [] }), null);
   assert.deepEqual(at('survey$ag§', { offered: [] }), ['column:age']);
+});
+
+test('a function carries its signature and the package it comes from', () => {
+  const code = 'survey |> fil';
+  const [item] = suggest(code, code.length, { tables, functions }).items;
+  assert.deepEqual(item, { name: 'filter', kind: 'function', detail: 'filter(.data, ...)', pkg: 'dplyr' });
 });

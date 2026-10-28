@@ -133,7 +133,7 @@ export function currentWord(text, cursor) {
 /**
  * Suggestions at `cursor`, or null when there is nothing to suggest.
  * `tables` maps a data set to its columns as [name, type]; `functions` are
- * [name, signature] of the packages that count here; `offered` are the tables
+ * [name, signature, package] of the packages that count here; `offered` are the tables
  * whose names are suggested (all of them unless given). `force` asks even
  * without two typed letters (Ctrl+Space).
  */
@@ -162,7 +162,7 @@ export function suggest(text, cursor, { tables, functions, offered = Object.keys
     const everywhere = scan(text, names);
     items.push(...[...everywhere.assigned].map((name) => ({ name, kind: 'variable', detail: '' })));
     items.push(...offered.map((name) => ({ name, kind: 'table', detail: '' })));
-    items.push(...functions.map(([name, signature]) => ({ name, kind: 'function', detail: signature })));
+    items.push(...functions.map(([name, signature, pkg]) => ({ name, kind: 'function', detail: signature, pkg })));
   }
 
   const prefix = word.toLowerCase();
