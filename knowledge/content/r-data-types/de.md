@@ -58,6 +58,19 @@ Die Anführungszeichen in der Ausgabe zeigen es: Aus den Zahlen sind Texte
 geworden, mit denen sich nicht mehr rechnen lässt. Genau das passiert oft
 beim Einlesen von Daten, wenn in einer Zahlenspalte ein einziges Wort steht.
 
+Mit Zahlen und Wahrheitswerten geht R genauso vor:
+
+```r
+values <- c(5.4, TRUE, FALSE)
+values
+```
+
+Aus `TRUE` ist 1 geworden und aus `FALSE` 0. R sucht immer den kleinsten
+gemeinsamen Nenner, also den Typ, in den sich alle Werte umwandeln lassen.
+Einen Wahrheitswert kann man als 0 oder 1 lesen, aber was sollte 5.4 als
+Wahrheitswert sein? Deshalb gilt eine feste Reihenfolge: Aus Wahrheitswerten
+werden Zahlen und aus Zahlen Texte, nie umgekehrt.
+
 ## Umwandeln
 
 Mit `as.numeric()` machst du aus Texten wieder Zahlen. Was sich nicht als

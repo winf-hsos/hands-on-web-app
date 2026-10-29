@@ -49,6 +49,19 @@ The quotation marks in the output show it: the numbers have become text,
 which you can no longer calculate with. This happens often when reading
 data, when a single word sits in a column of numbers.
 
+R does the same with numbers and logical values:
+
+```r
+values <- c(5.4, TRUE, FALSE)
+values
+```
+
+`TRUE` has become 1 and `FALSE` 0. R always looks for the lowest common
+denominator, the type into which all values can be converted. A logical
+value can be read as 0 or 1, but what would 5.4 be as a logical value? That
+is why the order is fixed: logical values become numbers and numbers become
+text, never the other way round.
+
 ## Converting
 
 With `as.numeric()` you turn text back into numbers. Whatever cannot be read
