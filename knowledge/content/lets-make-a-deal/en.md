@@ -13,13 +13,14 @@ based_on: 2026-10-28
 Each row is a game played by the rules of the game show "Let's Make a
 Deal": a car stands behind one of three doors, the contestant picks a door,
 the host opens another one that does not hide the car, and the contestant
-stays with the first pick or switches to the last closed door. The data are
+stays with the first pick or switches to the last closed door. The games were
+generated for the exercise and are not a record of the show. The data are
 in the repository for the data analytics courses linked below and belong to
 the project [[monty-hall]].
 
 | Column | Content |
 |---|---|
-| `contestant` | first name of the contestant; some play more than once |
+| `contestant` | a made-up first name; some play more than once |
 | `prize_door` | the door with the car behind it, `1` to `3` |
 | `contestant_choice` | the door the contestant picks first |
 | `monty_opens` | the door the host opens |

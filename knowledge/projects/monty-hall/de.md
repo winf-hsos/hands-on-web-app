@@ -53,7 +53,7 @@ oder zur anderen geschlossenen Tür wechselst.
 Die meisten Menschen sind sicher, dass das keine Rolle spielt, weil ja zwei
 Türen übrig sind. Ob das stimmt, findet ihr in diesem Projekt nicht durch
 Nachdenken heraus, sondern mit Daten: Ihr spielt selbst, haltet jede Runde
-fest, wertet 100 Spiele aus der Sendung aus und lasst R das Spiel so oft
+fest, wertet einen Datensatz mit 100 Spielen aus und lasst R das Spiel so oft
 wiederholen, bis die Antwort nicht mehr vom Zufall abhängt.
 
 Unterwegs lernt ihr, was jede Datenanalyse braucht: wie man ein Experiment so
@@ -137,12 +137,13 @@ length(prize_door)
 > allerdings zu wenig, um daraus etwas zu schließen; deshalb kommen als
 > Nächstes mehr Daten.
 
-## Die Daten aus der Sendung {#data-frame}
+## 100 Spiele als Tabelle {#data-frame}
 
 Der Datensatz [[lets-make-a-deal]] enthält 100 Spiele mit genau den Angaben,
 die ihr eben als Vektoren hattet, dazu den Vornamen der Person. In R liegen
 sie als **Data Frame** vor: eine Tabelle, deren Spalten Vektoren gleicher
-Länge sind und deren Zeilen je ein Spiel beschreiben.
+Länge sind und deren Zeilen je ein Spiel beschreiben. Die Spiele sind für
+diese Übung erzeugt und stammen nicht aus einer Aufzeichnung der Sendung.
 
 So lädt man die Datei; in den Kästen dieser Phase ist die Tabelle als
 `monty_hall` schon geladen.
@@ -211,7 +212,7 @@ monty_hall$prize_door
    Challenge 2.
 2. Legt eine neue Tabelle an, die nur die gewonnenen Spiele enthält. Wie
    viele davon wurden mit Wechseln gewonnen, wie viele mit Bleiben?
-3. Wie oft gewinnt in der Sendung, wer bleibt, und wie oft, wer wechselt?
+3. Wie oft gewinnt in diesen 100 Spielen, wer bleibt, und wie oft, wer wechselt?
 4. Macht aus `decision` einen Faktor und seht euch seine Stufen an. Wozu ist
    das gut?
 
@@ -348,7 +349,7 @@ replicate(5, sample(1:3, 1))
 
 Eine Gewinnquote ist eine Zahl; wer später andere Fragen stellen will, etwa
 ob die Tür des Autos eine Rolle spielt, braucht die einzelnen Runden. Die
-Simulation soll deshalb dieselbe Art Tabelle liefern wie die Sendung: eine
+Simulation soll deshalb dieselbe Art Tabelle liefern wie der Datensatz: eine
 Zeile je Runde, eine Spalte je Angabe.
 
 ### Challenge 8: Die Simulation als Tabelle {#challenge-8}
@@ -390,7 +391,7 @@ head(prize_door)
 
 Zählt in `simulation`, wie oft mit Bleiben und mit Wechseln gewonnen und
 verloren wurde, und berechnet die beiden Gewinnquoten. Vergleicht sie mit
-euren eigenen Runden und mit der Sendung. Arbeitet dafür im Kasten von
+euren eigenen Runden und mit den 100 Spielen. Arbeitet dafür im Kasten von
 Challenge 8 weiter, denn jeder Kasten beginnt ohne die Werte der anderen.
 
 > [!SOLUTION]
@@ -407,14 +408,14 @@ Challenge 8 weiter, denn jeder Kasten beginnt ohne die Werte der anderen.
 >
 > `table()` mit zwei Vektoren zählt jede Kombination. Die Quoten liefern
 > `mean(simulation$won[simulation$decision == "stay"])` und dasselbe mit
-> `"switch"`: etwa 0,33 und 0,67. Die Sendung liegt mit 0,41 und 0,73 nahe
+> `"switch"`: etwa 0,33 und 0,67. Die 100 Spiele liegen mit 0,41 und 0,73 nahe
 > daran, eure zehn Runden vermutlich weiter weg; je weniger Runden, desto
 > mehr Zufall steckt im Ergebnis.
 
 ## Auflösung {#resolve}
 
 Drei Quellen sagen dasselbe: eure eigenen Runden (mit viel Zufall), die
-Sendung und die Simulation. Wer wechselt, gewinnt doppelt so oft.
+100 Spiele und die Simulation. Wer wechselt, gewinnt doppelt so oft.
 
 Der Grund steckt in der ersten Wahl. Sie trifft in einem von drei Fällen das
 Auto, und genau dann gewinnt, wer bleibt. In den anderen zwei von drei Fällen
@@ -426,7 +427,7 @@ wären die beiden übrigen Türen tatsächlich gleich gut.
 
 ### Challenge 10: Eine Grafik für die Antwort {#challenge-10}
 
-Zeigt die Gewinnquote je Entscheidung in der Sendung als Balkendiagramm. Mit
+Zeigt die Gewinnquote je Entscheidung in den 100 Spielen als Balkendiagramm. Mit
 dplyr bekommt `monty_hall` die Spalte `won` und wird je Entscheidung
 zusammengefasst; ggplot2 zeichnet daraus die Balken, Schicht für Schicht.
 
@@ -453,7 +454,7 @@ monty_hall |>
 ### Challenge 11: Welche Art von Frage war das? {#challenge-11}
 
 Ordnet eure Fragen den sechs Typen aus [[analytic-questions]] zu. „Wie oft
-gewannen in der Sendung die, die wechselten?“ ist deskriptiv: Sie beschreibt
+gewannen in den 100 Spielen die, die wechselten?“ ist deskriptiv: Sie beschreibt
 nur die 100 Spiele. Welche Frage beantwortet die Simulation, und welche die
 Erklärung oben, warum Wechseln besser ist?
 

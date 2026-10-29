@@ -15,8 +15,8 @@ whether you stay with your door or switch to the other closed one.
 
 Most people are sure that it makes no difference, since two doors are left.
 Whether that is true you will not find out by thinking in this project, but
-with data: you play yourselves, record every round, analyse 100 games from
-the show and let R repeat the game until the answer no longer depends on
+with data: you play yourselves, record every round, analyse a data set of
+100 games and let R repeat the game until the answer no longer depends on
 chance.
 
 Along the way you learn what every data analysis needs: how to write down an
@@ -98,12 +98,13 @@ length(prize_door)
 > only the positions where the player stayed. Ten rounds, however, are too few
 > to conclude anything; that is why more data come next.
 
-## The data from the show {#data-frame}
+## 100 games as a table {#data-frame}
 
 The data set [[lets-make-a-deal]] holds 100 games with exactly the facts you
 just had as vectors, plus the contestant's first name. In R they come as a
 **data frame**: a table whose columns are vectors of equal length and whose
-rows describe one game each.
+rows describe one game each. The games were generated for this exercise
+and are not a record of the show.
 
 This is how the file is loaded; in the boxes of this phase the table is
 already loaded as `monty_hall`.
@@ -170,7 +171,7 @@ monty_hall$prize_door
 1. Add a column `won` to the table, by the same rule as in challenge 2.
 2. Create a new table with only the games that were won. How many of them
    were won by switching, how many by staying?
-3. How often does staying win in the show, and how often switching?
+3. How often does staying win in these 100 games, and how often switching?
 4. Turn `decision` into a factor and look at its levels. What is that good
    for?
 
@@ -306,7 +307,7 @@ replicate(5, sample(1:3, 1))
 
 A win rate is a single number; whoever wants to ask other questions later,
 such as whether the door of the car matters, needs the single rounds. The
-simulation should therefore give the same kind of table as the show: one row
+simulation should therefore give the same kind of table as the data set: one row
 per round, one column per fact.
 
 ### Challenge 8: The simulation as a table {#challenge-8}
@@ -346,7 +347,7 @@ head(prize_door)
 ### Challenge 9: Who wins how often? {#challenge-9}
 
 Count in `simulation` how often staying and switching won and lost, and
-compute both win rates. Compare them with your own rounds and with the show.
+compute both win rates. Compare them with your own rounds and with the 100 games.
 Keep working in the box of challenge 8 for this, since every box starts
 without the values of the others.
 
@@ -364,14 +365,14 @@ without the values of the others.
 >
 > `table()` with two vectors counts every combination. The rates come from
 > `mean(simulation$won[simulation$decision == "stay"])` and the same with
-> `"switch"`: about 0.33 and 0.67. The show, with 0.41 and 0.73, is close to
+> `"switch"`: about 0.33 and 0.67. The 100 games, with 0.41 and 0.73, are close to
 > that, your ten rounds probably further off; the fewer rounds, the more
 > chance is in the result.
 
 ## The answer {#resolve}
 
-Three sources say the same: your own rounds (with a lot of chance), the show
-and the simulation. Whoever switches wins twice as often.
+Three sources say the same: your own rounds (with a lot of chance), the 100
+games and the simulation. Whoever switches wins twice as often.
 
 The reason lies in the first choice. It hits the car in one case out of
 three, and exactly then staying wins. In the other two cases out of three
@@ -383,7 +384,7 @@ would indeed be equally good.
 
 ### Challenge 10: A plot for the answer {#challenge-10}
 
-Show the win rate per decision in the show as a bar chart. With dplyr,
+Show the win rate per decision in the 100 games as a bar chart. With dplyr,
 `monty_hall` gets the column `won` and is summarised per decision; ggplot2
 draws the bars from it, layer by layer.
 
@@ -410,7 +411,7 @@ monty_hall |>
 ### Challenge 11: What kind of question was that? {#challenge-11}
 
 Assign your questions to the six types from [[analytic-questions]]. "How
-often did those who switched win in the show?" is descriptive: it only
+often did those who switched win in the 100 games?" is descriptive: it only
 describes the 100 games. Which question does the simulation answer, and
 which the explanation above of why switching is better?
 

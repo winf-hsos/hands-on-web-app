@@ -22,13 +22,14 @@ updated: 2026-10-28
 Jede Zeile ist ein Spiel nach den Regeln der Spielshow „Let's Make a Deal“:
 Hinter einer von drei Türen steht ein Auto, die Person wählt eine Tür, der
 Moderator öffnet eine andere, hinter der kein Auto steht, und die Person
-bleibt bei ihrer Wahl oder wechselt zur letzten geschlossenen Tür. Die Daten
+bleibt bei ihrer Wahl oder wechselt zur letzten geschlossenen Tür. Die Spiele
+sind für die Übung erzeugt, nicht in der Sendung aufgezeichnet. Die Daten
 liegen im Repository zu den Data-Analytics-Kursen, das unten verlinkt ist,
 und gehören zum Projekt [[monty-hall]].
 
 | Spalte | Inhalt |
 |---|---|
-| `contestant` | Vorname der Person; manche spielen mehrmals |
+| `contestant` | ein ausgedachter Vorname; manche spielen mehrmals |
 | `prize_door` | die Tür, hinter der das Auto steht, `1` bis `3` |
 | `contestant_choice` | die Tür, die die Person zuerst wählt |
 | `monty_opens` | die Tür, die der Moderator öffnet |
