@@ -593,7 +593,7 @@ async function commit() {
 async function publish() {
   const { ahead, changes } = state.git;
   const unsaved = changes.length
-    ? `<p>${changes.length} ${changes.length === 1 ? 'Änderung ist' : 'Änderungen sind'} noch nicht gesichert und ${changes.length === 1 ? 'geht' : 'gehen'} nicht mit; sichere sie vorher, wenn sie dazugehören.</p>`
+    ? `<p>${changes.length} ${changes.length === 1 ? 'Änderung ist' : 'Änderungen sind'} noch nicht gesichert und ${changes.length === 1 ? 'geht nicht mit; sichere sie vorher, wenn sie dazugehört' : 'gehen nicht mit; sichere sie vorher, wenn sie dazugehören'}.</p>`
     : '';
   const ok = await confirmDialog(
     'Veröffentlichen',
@@ -603,7 +603,8 @@ async function publish() {
   if (!ok) return;
   const result = await api('POST', '/api/publish');
   await refresh();
-  if (result.ok) message('ok', 'Veröffentlicht. GitHub baut die Seite jetzt neu.');
+  // beside the Git state, so that it shows also when no document is open
+  if (result.ok) $('#git').insertAdjacentHTML('beforeend', '<span>Veröffentlicht, GitHub baut die Seite jetzt neu</span>');
   else message('error', 'Nicht veröffentlicht:', result.errors ?? [result.output]);
 }
 

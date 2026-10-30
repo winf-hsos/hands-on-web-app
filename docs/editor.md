@@ -46,6 +46,7 @@ opening the document, shows what the check says about it.
 | Archive | status `archived`: gone from the site, file, id and code kept, learner progress kept; refused while something visible still points to it |
 | Delete | removes the folder for good; id and code become free and learner progress for it is lost; refused while anything still points to it |
 | Commit | commits the changes in `knowledge/` to the local git repository with a message; nothing is pushed |
+| Publish | pushes the commits not yet pushed; shown only when the repository has a remote and something to push. GitHub then builds and publishes the site (`.github/workflows/pages.yml`) |
 
 A slides item needs its deck in `slides/` before it can be saved; copy the
 folder of the deck there first, then create or edit the item.
