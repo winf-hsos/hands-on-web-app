@@ -5,6 +5,7 @@
 // on hover or when a topic is chosen, so that the overview stays calm. On
 // load the items fly out of their topics once; after that the map is still.
 import { load, isDone } from './progress.js';
+import { codeParts, plainText } from './code-terms.js';
 
 const NS = 'http://www.w3.org/2000/svg';
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -163,6 +164,15 @@ function mount(figure) {
     return node;
   };
   const go = (url) => (location.href = url);
+  // a label whose names of functions and packages are set in the code font
+  const label = (attrs, text) => {
+    const node = el('text', attrs);
+    for (const p of codeParts(text)) {
+      if (!p.code) node.append(p.text);
+      else node.append(Object.assign(el('tspan', { class: 'code' }), { textContent: p.text }));
+    }
+    return node;
+  };
 
   // one link per item and topic it belongs to
   const links = items.flatMap((i) => i.topics.map((t) => ({ item: i.id, topic: t })));
@@ -173,21 +183,21 @@ function mount(figure) {
   });
 
   const topicEls = topics.map((t) => {
-    const g = el('g', { class: 'map-node map-topic', tabindex: '0', role: 'link', 'aria-label': `${t.title} (${t.count})` });
+    const g = el('g', { class: 'map-node map-topic', tabindex: '0', role: 'link', 'aria-label': `${plainText(t.title)} (${t.count})` });
     g.append(
       el('circle', { r: TOPIC_R }),
       Object.assign(el('text', { class: 'map-count', 'text-anchor': 'middle', dy: '0.35em' }), { textContent: t.count }),
-      Object.assign(el('text', { class: 'map-topic-name', 'text-anchor': 'middle' }), { textContent: t.title }),
+      label({ class: 'map-topic-name', 'text-anchor': 'middle' }, t.title),
     );
     g.addEventListener('click', () => go(t.url));
     g.addEventListener('keydown', (e) => e.key === 'Enter' && go(t.url));
     return g;
   });
   const itemEls = items.map((item) => {
-    const g = el('g', { class: 'map-node map-item', tabindex: '0', role: 'link', 'aria-label': item.title });
+    const g = el('g', { class: 'map-node map-item', tabindex: '0', role: 'link', 'aria-label': plainText(item.title) });
     const icon = el('svg', { class: 'map-icon', x: -6, y: -6, width: 12, height: 12, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': 2.4, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
     icon.innerHTML = item.icon; // shapes from the icon set, built into the page
-    g.append(el('circle', { r: ITEM_R }), icon, Object.assign(el('text', { dy: '0.35em' }), { textContent: item.title }));
+    g.append(el('circle', { r: ITEM_R }), icon, label({ dy: '0.35em' }, item.title));
     g.addEventListener('click', () => go(item.url));
     g.addEventListener('keydown', (e) => e.key === 'Enter' && go(item.url));
     return g;

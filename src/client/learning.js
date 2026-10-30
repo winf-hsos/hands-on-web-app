@@ -2,6 +2,7 @@
 // progress along to another browser (link, QR code, file).
 import qrcode from 'qrcode-generator';
 import { load, save, merge, encode, decode, isDone, loadIndex } from './progress.js';
+import { codeParts } from './code-terms.js';
 
 const $ = (id) => document.getElementById(id);
 const data = await loadIndex();
@@ -10,6 +11,8 @@ const el = (tag, props = {}, ...children) => {
   node.append(...children);
   return node;
 };
+// a title as text and <code>, since names of functions and packages are code
+const rich = (text) => codeParts(text).map((p) => (p.code ? el('code', { textContent: p.text }) : p.text));
 
 // --- courses ------------------------------------------------------------------
 
@@ -59,7 +62,7 @@ function renderCourses(progress) {
       return el(
         'li',
         { className: 'row row-course' },
-        el('a', { className: 'row-link', href: course.url }, el('span', { className: 'row-title', textContent: course.title })),
+        el('a', { className: 'row-link', href: course.url }, el('span', { className: 'row-title' }, ...rich(course.title))),
         meter,
         remove,
       );
@@ -85,7 +88,7 @@ function renderDone(progress) {
         el(
           'a',
           { className: 'row-link', href: item.url, innerHTML: item.icon },
-          el('span', { className: 'row-head' }, el('span', { className: 'row-title', textContent: item.title }), el('span', { className: 'row-meta', textContent: day })),
+          el('span', { className: 'row-head' }, el('span', { className: 'row-title' }, ...rich(item.title)), el('span', { className: 'row-meta', textContent: day })),
         ),
       );
       return row;

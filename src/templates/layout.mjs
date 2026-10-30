@@ -2,6 +2,7 @@
 import { html, raw } from '../build/html.mjs';
 import { t, runnerLabels, backLabels, demoLabels, copyLabels, montyHallLabels } from '../build/i18n.mjs';
 import { icons, mark } from './parts.mjs';
+import { plainText } from '../client/code-terms.js';
 
 export function layout({ site, lang, path, title, description, current, content, back, scripts = [], asset, pyodide, webr, total = 0, entrances = [] }) {
   const other = lang === 'de' ? 'en' : 'de';
@@ -16,14 +17,15 @@ export function layout({ site, lang, path, title, description, current, content,
     ['projects', t(lang, 'nav_projects')],
     ['map', t(lang, 'nav_map')],
   ];
-  const full = title === name ? title : `${title} – ${name}`;
+  // the tab title and the description take no markup, so backticks go
+  const full = plainText(title === name ? title : `${title} – ${name}`);
   return html`<!doctype html>
 <html lang="${lang}" data-area="${site.area}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${full}</title>
-  ${description && html`<meta name="description" content="${description}">`}
+  ${description && html`<meta name="description" content="${plainText(description)}">`}
   <link rel="alternate" hreflang="${other}" href="${otherPath}">
   <link rel="icon" href="${asset('favicon.svg')}" type="image/svg+xml">
   <link rel="preload" href="${asset('fonts/sans.woff2')}" as="font" type="font/woff2" crossorigin>

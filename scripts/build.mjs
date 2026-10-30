@@ -15,6 +15,7 @@ import { rCompletions } from '../src/build/r-completions.mjs';
 import { iconSvg } from '../src/build/icons.mjs';
 import { layout, chooser } from '../src/templates/layout.mjs';
 import * as pages from '../src/templates/pages.mjs';
+import { codeInHtml } from '../src/build/code-terms.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 // Pages are written to a fresh folder that replaces dist/ only at the end,
@@ -195,7 +196,8 @@ function render(knowledge) {
   const write = (path, text) => {
     const file = join(DIST, path, path.endsWith('.html') || path.endsWith('.json') ? '' : 'index.html');
     mkdirSync(dirname(file), { recursive: true });
-    writeFileSync(file, text);
+    // names of functions and packages are code on every page (build/code-terms.mjs)
+    writeFileSync(file, file.endsWith('.html') ? codeInHtml(text) : text);
   };
   let count = 0;
   // name and summary of each area, for the entrance and the area menu

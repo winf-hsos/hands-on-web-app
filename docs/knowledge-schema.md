@@ -180,6 +180,16 @@ The body is plain Markdown with a few conventions:
   not in a chain of short sentences for effect. German texts avoid the weak
   verb *tun* ("Fast alles, was du in R tust, tust du mit …") and name what
   happens instead: *bewirken*, *verwenden*, *arbeiten*, *sich kümmern*.
+- **Names of functions and packages are code** (Nicolas, 2026-10-30),
+  everywhere on the site: in titles, summaries, goals and the body. The build
+  does this by itself on every page (`src/build/code-terms.mjs`): a call
+  without arguments such as `select()`, `dplyr::filter()` or `df.query()`
+  and every package named in `PACKAGES` in `src/client/code-terms.js` is set
+  in the code font, also in "dplyr-Verben". A new package the content talks
+  about goes into that list. Anything else that is code, such as a call with
+  arguments or an operator, is written in backticks; in the front matter,
+  backticks work the same way (``title: Die Pipe `|>` ``), and the tab title
+  and the description drop them.
 - **Headings start at `##`.** The title comes from the front matter.
 - **Links to other items** are written as `[[code-as-agreement]]` or with
   their own text as `[[code-as-agreement|the lesson on codes]]`. The build

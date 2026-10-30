@@ -2189,6 +2189,10 @@ details.callout[open] > summary::before {
   pointer-events: none;
 }
 
+.map-node text tspan.code {
+  font-family: var(--mono);
+}
+
 /* a topic: a filled circle with its number of items, its name above the ring */
 .map-topic circle {
   fill: var(--accent);
