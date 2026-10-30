@@ -79,6 +79,16 @@ topics:
   ai-agents-as-tools:        { de: KI-Agenten als Werkzeug, en: AI agents as tools }
   big-data-pipelines:        { de: Große Daten und Pipelines, en: Big data and pipelines }
   data-pitfalls:             { de: Datenkritik und Fallstricke, en: Data criticism and pitfalls }
+  # Artificial intelligence, after the layers of the AI material, from the
+  # agent down to learning from data and back up to its consequences
+  # (02 - Lehrinhalte\Artificial Intelligence\Konzept.md)
+  ai-agents:                 { de: KI-Agenten, en: AI agents }
+  language-models:           { de: Sprachmodelle, en: Language models }
+  representing-meaning:      { de: Bedeutung darstellen, en: Representing meaning }
+  training-models:           { de: Modelle trainieren, en: Training models }
+  learning-from-data:        { de: Aus Daten lernen, en: Learning from data }
+  applying-ai:               { de: KI anwenden, en: Applying AI }
+  consequences-of-ai:        { de: Folgen der KI, en: Consequences of AI }
 
 # Areas of the platform: one app, one knowledge base, a part of the site for
 # each area with its own address (/cs/…, /ds/…), start page and accent colour.
@@ -87,6 +97,7 @@ topics:
 areas:
   cs: { de: Hands-on Computer Science, en: Hands-on Computer Science, short: Computer Science }
   ds: { de: Hands-on Data Science, en: Hands-on Data Science, short: Data Science }
+  ai: { de: Hands-on Artificial Intelligence, en: Hands-on Artificial Intelligence, short: Artificial Intelligence }
 
 # Institutions that offer courses: name, address and a logo from media/.
 institutions:
@@ -102,3 +113,5 @@ modules:
   pmg: { de: Praxis der Markt- und Gesellschaftsforschung, en: Practice of Market and Social Research, handbook: "https://www.hs-osnabrueck.de/module/44b0725/" }
   ea: { de: Empirisches Arbeiten, en: Empirical Research, handbook: "https://www.hs-osnabrueck.de/module/44m0123/" }
   bda: { de: Big Data Analytics, en: Big Data Analytics }
+  aai: { de: Applications of Artificial Intelligence, en: Applications of Artificial Intelligence, handbook: "https://www.hs-osnabrueck.de/module/44m0509/" }
+  psai: { de: Problem Solving with AI, en: Problem Solving with AI }

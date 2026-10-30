@@ -556,13 +556,15 @@ than its lead, `draft` items referenced by a published path or course.
 
 ## 13. Areas
 
-`vocabulary.yaml` lists the areas of the platform (`cs`, `ds`). Content
-items, paths, courses and projects may name theirs with `areas: [ds]` or
-`areas: [cs, ds]`; without the field they belong to `cs`, which is what all
+`vocabulary.yaml` lists the areas of the platform: Computer Science (`cs`,
+Hochschulblau), Data Science (`ds`, a darker shade of it) and Artificial
+Intelligence (`ai`, pink, since 2026-10-30; until then pink belonged to
+Data Science). Content items, paths, courses and projects may name theirs
+with `areas: [ds]` or `areas: [cs, ds]`; without the field they belong to `cs`, which is what all
 content written before 2026-10-27 assumes. An item in two areas has a page in
 both. Every area needs exactly one start page: a page in `pages/` with
-`area: <key>` (`pages/home` for cs, `pages/home-ds` for ds), which the build
-checks. Topics and modules have no area; the lists show only the topics that
+`area: <key>` (`pages/home` for cs, `pages/home-ds` for ds,
+`pages/home-ai` for ai), which the build checks. Topics and modules have no area; the lists show only the topics that
 items of the area use.
 
 ## Decisions

@@ -2811,28 +2811,42 @@ details.callout[open] > summary::before {
 :root {
   --cs: #009ee3;
   --cs-ink: #0072a8;
-  --ds: #db2777;
-  --ds-ink: #be185d;
+  /* data science: a darker Hochschulblau (Nicolas, 2026-10-30) */
+  --ds: #0b6aa2;
+  --ds-ink: #08527e;
+  /* artificial intelligence: pink, the colour data science had before */
+  --ai: #db2777;
+  --ai-ink: #be185d;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
     --cs-ink: #5cc6f2;
-    --ds-ink: #f472b6;
+    --ds: #3d8fc4;
+    --ds-ink: #8ab9e0;
+    --ai-ink: #f472b6;
   }
 }
 :root[data-theme='dark'] {
   --cs-ink: #5cc6f2;
-  --ds-ink: #f472b6;
+  --ds: #3d8fc4;
+  --ds-ink: #8ab9e0;
+  --ai-ink: #f472b6;
 }
 
 /* The page of an area takes its colour; so does each card on the entrance.
-   Data science also gets a plain red for errors, apart from its pink. */
+   Artificial intelligence also gets a plain red for errors, apart from its pink. */
+:root[data-area='ai'],
+[data-area='ai']:not(:root) {
+  --accent: var(--ai);
+  --accent-ink: var(--ai-ink);
+  --error: #dc2626;
+}
+
 :root[data-area='ds'],
 [data-area='ds']:not(:root) {
   --accent: var(--ds);
   --accent-ink: var(--ds-ink);
-  --error: #dc2626;
 }
 
 :root[data-area='cs'],
@@ -2937,7 +2951,7 @@ details.callout[open] > summary::before {
 
 /* the entrance */
 .chooser {
-  max-width: 56rem;
+  max-width: 64rem;
   padding-top: 4rem;
 }
 
@@ -2963,7 +2977,7 @@ details.callout[open] > summary::before {
   margin: 2rem 0 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
   gap: 1.25rem;
 }
 

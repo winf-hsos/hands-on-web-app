@@ -6,6 +6,9 @@
 // 1 and back, and a byte travels along a row like a packet on a wire.
 // Data science: the grid is chart paper. Small, pale charts and data frames
 // appear at the sides, move a little while they live, and fade away again.
+// Artificial intelligence: small neural networks appear at the sides; now and
+// then an input lights up and the signal runs through them layer by layer,
+// the stronger connections brighter than the weak ones.
 
 const SPACING = 26;
 const FPS = 24;
@@ -517,9 +520,166 @@ function chartScene() {
   };
 }
 
+// --- artificial intelligence: small neural networks ------------------------------------
+
+function netScene() {
+  let nets = [];
+  const LAYER_GAP = 600; // ms from one layer to the next while a signal runs
+
+  // Where a network may sit: in the margins beside the content, like the
+  // charts of data science; on a narrow screen anywhere. Networks do not overlap.
+  function place() {
+    const main = document.querySelector('main')?.getBoundingClientRect();
+    const margin = main ? Math.max(0, main.left + 8) : 0;
+    const w = Math.min(150, margin - 32);
+    const roomy = w >= 90;
+    const nw = roomy ? w : 130;
+    const nh = Math.round(nw * 0.8);
+    for (let attempt = 0; attempt < 30; attempt++) {
+      const left = Math.random() < 0.5;
+      const x = roomy ? (left ? 16 + Math.random() * (margin - nw - 32) : width - margin + 16 + Math.random() * (margin - nw - 32)) : 12 + Math.random() * (width - nw - 24);
+      const y = 80 + Math.random() * Math.max(1, height - nh - 110);
+      const free = nets.every((n) => Math.abs(n.x - x) > Math.max(n.w, nw) + 24 || Math.abs(n.y - y) > Math.max(n.h, nh) + 32);
+      if (free) return { x, y, w: nw, h: nh };
+    }
+    return null;
+  }
+
+  // three or four layers of two to five neurons, every neuron joined to every
+  // neuron of the next layer with a weight between 0 and 1
+  function newNet(now) {
+    const at = place();
+    if (!at) return null;
+    const depth = 3 + random(2);
+    const sizes = Array.from({ length: depth }, (_, i) => (i === 0 || i === depth - 1 ? 2 + random(2) : 3 + random(3)));
+    const layers = sizes.map((n, i) =>
+      Array.from({ length: n }, (_, j) => [at.x + (at.w * i) / (depth - 1), at.y + (at.h * (j + 1)) / (n + 1)]),
+    );
+    const weights = sizes.slice(1).map((n, i) => Array.from({ length: sizes[i] }, () => Array.from({ length: n }, () => Math.random())));
+    return { ...at, layers, weights, start: now, life: 16000 + random(8000), signal: now + 1500 + random(2000), activation: null };
+  }
+
+  // A signal: random inputs, each layer the weighted sum of the one before,
+  // squeezed to 0..1, so some neurons light up brightly and others hardly.
+  function fire(n, now) {
+    const act = [n.layers[0].map(() => 0.3 + Math.random() * 0.7)];
+    n.weights.forEach((w, i) => {
+      const prev = act[i];
+      act.push(w[0].map((_, j) => {
+        const sum = prev.reduce((a, v, k) => a + v * w[k][j], 0) / prev.length;
+        return 1 / (1 + Math.exp(-8 * (sum - 0.3)));
+      }));
+    });
+    n.activation = act;
+    n.fired = now;
+    n.signal = now + n.layers.length * LAYER_GAP + 3500 + random(3000);
+  }
+
+  function presence(n, now) {
+    const t = now - n.start;
+    if (t < 0) return 0;
+    if (t < 1200) return ease(t / 1200);
+    if (t < n.life) return 1;
+    return Math.max(0, 1 - (t - n.life) / 1500);
+  }
+
+  // how far the signal has come: layer i lights up at i * LAYER_GAP and
+  // fades again two and a half seconds after the last layer
+  function lit(n, i, now) {
+    if (!n.activation) return 0;
+    const t = now - n.fired - i * LAYER_GAP;
+    const end = (n.layers.length - 1 - i) * LAYER_GAP + 2500;
+    if (t < 0) return 0;
+    if (t < 400) return ease(t / 400);
+    if (t < end) return 1;
+    return Math.max(0, 1 - (t - end) / 900);
+  }
+
+  function drawNet(n, now, a) {
+    ctx.lineWidth = 1;
+    n.weights.forEach((w, i) => {
+      // a connection carries the signal from the moment its layer is lit
+      const travel = n.activation ? clamp01((now - n.fired - i * LAYER_GAP) / LAYER_GAP) : 0;
+      const on = lit(n, i, now) * (travel > 0 ? 1 : 0);
+      n.layers[i].forEach(([x1, y1], k) => {
+        n.layers[i + 1].forEach(([x2, y2], j) => {
+          ctx.globalAlpha = (colors.lineAlpha * 0.35 + colors.lineAlpha * 1.2 * w[k][j] * on * n.activation?.[i][k]) * a;
+          ctx.strokeStyle = on > 0 ? colors.bit : colors.grid;
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x1 + (x2 - x1) * (on > 0 ? travel : 1), y1 + (y2 - y1) * (on > 0 ? travel : 1));
+          ctx.stroke();
+          if (on > 0 && travel < 1) {
+            ctx.globalAlpha = (colors.lineAlpha * 0.35) * a;
+            ctx.strokeStyle = colors.grid;
+            ctx.beginPath();
+            ctx.moveTo(x1 + (x2 - x1) * travel, y1 + (y2 - y1) * travel);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+          }
+        });
+      });
+    });
+    n.layers.forEach((layer, i) => {
+      const glow = lit(n, i, now);
+      layer.forEach(([x, y], j) => {
+        const v = glow * (n.activation?.[i][j] ?? 0);
+        ctx.globalAlpha = colors.lineAlpha * a;
+        ctx.fillStyle = colors.grid;
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fill();
+        if (v > 0) {
+          ctx.globalAlpha = colors.bitAlpha * v * a;
+          ctx.fillStyle = colors.bit;
+          ctx.beginPath();
+          ctx.arc(x, y, 3 + 2 * v, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+    });
+  }
+
+  const target = () => Math.max(2, Math.min(4, Math.round(height / 200)));
+
+  return {
+    start() {},
+    still(now) {
+      // a still picture: a few networks, one of them showing a signal
+      nets = [];
+      for (let i = 0; i < target(); i++) {
+        const n = newNet(now - 20000);
+        if (n) nets.push({ ...n, life: Infinity });
+      }
+      if (nets[0]) {
+        fire(nets[0], now - 20000);
+        nets[0].fired = now - nets[0].layers.length * LAYER_GAP;
+      }
+    },
+    step(now) {
+      nets = nets.filter((n) => presence(n, now) > 0 || now - n.start < 1200);
+      for (const n of nets) if (now >= n.signal && now - n.start < n.life) fire(n, now);
+      if (nets.length < target()) {
+        const n = newNet(now + random(2500));
+        if (n) nets.push(n);
+      }
+    },
+    draw(now) {
+      for (const n of nets) {
+        const a = presence(n, now);
+        if (a > 0) drawNet(n, now, a);
+      }
+    },
+    resized() {
+      nets = nets.filter((n) => n.x + n.w < width && n.y + n.h < height);
+    },
+  };
+}
+
 // --- running the scene ----------------------------------------------------------------
 
-const scene = document.documentElement.dataset.area === 'ds' ? chartScene() : bitScene();
+const SCENES = { cs: bitScene, ds: chartScene, ai: netScene };
+const scene = (SCENES[document.documentElement.dataset.area] ?? bitScene)();
 
 function draw(now) {
   ctx.clearRect(0, 0, width, height);
