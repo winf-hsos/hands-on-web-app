@@ -18,9 +18,10 @@ const PORT = Number(process.argv[2] ?? 4322);
 const SITE_PORT = 4321;
 const store = createStore(join(ROOT, 'knowledge'));
 
+// Links go to the view with drafts (build/drafts.mjs), in the document's area.
 const SECTION_PATH = { content: 'items', paths: 'paths', courses: 'courses', projects: 'projects', pages: '' };
-const siteUrl = (section, id, lang) =>
-  `http://localhost:${SITE_PORT}/${lang}/${section === 'pages' ? '' : `${SECTION_PATH[section]}/${id}/`}`;
+const siteUrl = (section, id, area, lang) =>
+  `http://localhost:${SITE_PORT}/drafts/${area}/${lang}/${section === 'pages' ? '' : `${SECTION_PATH[section]}/${id}/`}`;
 
 // Files the browser may load: the editor itself, the site's stylesheet for
 // the preview, fonts, and a few browser modules from node_modules.
@@ -54,7 +55,7 @@ function preview({ markdown = '', lang = 'de', quiz = false }) {
     quiz,
     resolve: (id) => {
       const d = byId.get(id);
-      return d ? { url: siteUrl(d.section, d.id, lang), title: d.titles[lang] ?? d.titles[d.lead] ?? id } : null;
+      return d ? { url: siteUrl(d.section, d.id, d.area, lang), title: d.titles[lang] ?? d.titles[d.lead] ?? id } : null;
     },
   });
 }
@@ -86,7 +87,11 @@ async function api(req, res, path) {
   if (req.method === 'GET' && resource === 'code') return json(res, 200, { code: store.newCode() });
   if (req.method === 'POST' && resource === 'preview') return json(res, 200, { html: preview(await body(req)) });
   if (resource === 'doc' && section && id) {
-    if (req.method === 'GET') return json(res, 200, { ...store.read(section, id), url: Object.fromEntries(['de', 'en'].map((l) => [l, siteUrl(section, id, l)])) });
+    if (req.method === 'GET') {
+      const doc = store.read(section, id);
+      const area = store.areaOf(doc.files[doc.lead]?.data);
+      return json(res, 200, { ...doc, url: Object.fromEntries(['de', 'en'].map((l) => [l, siteUrl(section, id, area, l)])) });
+    }
     if (req.method === 'PUT' || req.method === 'POST') {
       const result = store.save(section, id, (await body(req)).files ?? {}, { create: req.method === 'POST' });
       return json(res, result.ok ? 200 : 422, result);

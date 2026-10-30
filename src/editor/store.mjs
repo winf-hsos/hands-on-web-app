@@ -129,6 +129,8 @@ const same = (a, b) => {
 export function createStore(root) {
   const load = () => loadKnowledge(root);
   const leadOf = (doc) => Object.values(doc.files).find((f) => !('translation_of' in f.data));
+  /** The area a document is shown in first: a start page names it, everything else lists it in `areas`. */
+  const areaOf = (data = {}) => data.area ?? data.areas?.[0] ?? 'cs';
 
   function list() {
     const knowledge = load();
@@ -145,6 +147,7 @@ export function createStore(root) {
           kind: lead?.data.type ?? lead?.data.kind,
           code: lead?.data.code,
           status: lead?.data.status,
+          area: areaOf(lead?.data),
           updated: lead?.data.updated ? day(lead.data.updated) : undefined,
           titles: Object.fromEntries(Object.values(doc.files).map((f) => [f.lang, f.data.title])),
           // what the check says about this document, in its own words
@@ -270,5 +273,5 @@ export function createStore(root) {
     return code;
   }
 
-  return { list, read, save, remove, newCode, sections: SECTIONS, existsDir: (s) => existsSync(join(root, s)) && readdirSync(join(root, s)) };
+  return { list, read, save, remove, newCode, areaOf, sections: SECTIONS, existsDir: (s) => existsSync(join(root, s)) && readdirSync(join(root, s)) };
 }
