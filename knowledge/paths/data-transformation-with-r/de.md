@@ -16,6 +16,7 @@ requires: [getting-started-with-r]
 sections:
   - title: { de: "Teil 1: Die Idee", en: "Part 1: The idea" }
     steps:
+      - data-transformation-slides
       - data-transformation-basics
       - dplyr-verbs-demo
       - tidy-data
@@ -26,13 +27,16 @@ sections:
       - dplyr-exercise-price
       - data-transformation-quiz
 status: draft
-updated: 2026-10-27
+updated: 2026-10-30
 ---
 
 Dieser Pfad beginnt ohne Code. Im ersten Teil geht es darum, was es heißt,
 Daten zu transformieren, welche wenigen Grundoperationen dafür genügen und
 welche Form eine Tabelle haben sollte, damit sie sich leicht auswerten
-lässt. Das gilt für jedes Werkzeug, ob R, Python, SQL oder Excel.
+lässt. Das gilt für jedes Werkzeug, ob R, Python, SQL oder Excel. Zum
+Einstieg zeigen [[data-transformation-slides|die Folien]] in einem Durchgang
+alle sechs Verben und die Pipe; die Lektionen danach gehen Schritt für Schritt
+in die Einzelheiten.
 
 Im zweiten Teil setzt du die Ideen in R mit dem Paket dplyr um. Jeder
 Codekasten ist ein kleiner Editor, in dem R direkt in deinem Browser läuft;

@@ -9,13 +9,15 @@ goal: >-
   cannot be right.
 audience: Everyone who wants to analyse data, without programming experience
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-10-30
 ---
 
 This path starts without code. The first part is about what it means to
 transform data, which few basic operations are enough for it, and which shape
 a table should have so that it is easy to analyse. That holds for every tool,
-whether R, Python, SQL or Excel.
+whether R, Python, SQL or Excel. To begin with,
+[[data-transformation-slides|the slides]] show all six verbs and the pipe in
+one go, while the lessons after them go into the details step by step.
 
 In the second part you put the ideas into practice in R with the package
 dplyr. Every code box is a small editor in which R runs right in your browser,
