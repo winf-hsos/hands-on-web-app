@@ -31,6 +31,10 @@
     .summary { display: grid; grid-template-columns: auto auto; column-gap: 80px; row-gap: 6px; }
     .summary .verb { font-family: var(--mono); color: var(--white); text-transform: none; }
     .summary .what { color: var(--gray-light); }
+    /* the table of tools: the full width, rows with room between them */
+    table.tt.wide { width: 100%; }
+    table.tt.wide td { padding-top: 20px; padding-bottom: 20px; color: var(--white); }
+    table.tt.wide th { padding-bottom: 20px; }
   </style>
 </head>
 <body>
@@ -48,10 +52,10 @@
 
   <!-- opening photo, before the first part -->
   <section class="slide">
-    <img class="photo short" src="img/opening-mise-en-place.jpg" alt="">
-    <div class="photo-text narrow">no cook serves the groceries the way they come from the market, and every recipe is a handful of techniques in a certain order.</div>
+    <img class="photo short" src="img/opening-brick-box.jpg" alt="">
+    <div class="photo-text narrow">nobody builds straight from the jumbled box: sorting, picking out, grouping and putting together turn loose bricks into something that makes sense.</div>
     <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
-    <aside class="notes">Look at the board: on the left what comes from the market, on the right what a cook sets out before cooking. Cooking consists of a few techniques, such as cutting, sorting out, ordering and putting together, and every recipe combines them differently. Data works the same way. Hardly any question can be read off the raw data, but a handful of basic operations turns any table into the one that holds the answer.</aside>
+    <aside class="notes">A box of building bricks, all mixed up. Nobody builds straight out of this box: first you pick out the bricks you need, sort them, group them by colour or size, and only then do you put something together. Data works the same way. Hardly any question can be read off the raw data, but a handful of basic operations, such as picking, sorting, grouping and summarizing, turns any table into the one that holds the answer.</aside>
   </section>
 
   <!-- ===== part 1: why transform ===== -->
@@ -70,27 +74,26 @@
     <h2>a table in, a table out</h2>
     <div class="figure" id="fig-inout"></div>
     <div class="punch">every transformation takes a table and returns a table, which is why they can be chained.</div>
-    <aside class="notes">First key: a table goes into a transformation. Second key: what comes out is again a table, usually a smaller one. This is the one property everything else in this input rests on. Because the output is a table again, it can be the input of the next transformation, and so on.</aside>
+    <aside class="notes">First key: a table goes into a transformation. Note that the table itself stays where it is; the transformation works on a copy, and the original is never changed. Second key: what comes out is again a table, usually a smaller one. Third key: because it is a table, it can go into the next transformation, which again returns a table. Fourth key: and so on, as often as the question needs. This is the one property everything else in this input rests on.</aside>
   </section>
 
-  <section class="slide" data-on-show="drawOps" data-on-step="drawOps">
+  <section class="slide">
     <h2>six basic operations</h2>
     <div class="figure" id="fig-ops"></div>
-    <span data-step="1"></span><span data-step="2"></span>
-    <aside class="notes">Six basic operations cover almost everything, and each answers a question. Selecting columns: which columns do I need? Filtering rows: who is this about? Next key: sorting, what comes first, and computing new columns, what can be derived from what is there. Next key: summarizing, what is typical and how many are there, and grouping, how do subgroups differ. Grouping is the odd one out: on its own it changes nothing, it only makes the next operation work per group.</aside>
+    <aside class="notes">Six basic operations cover almost everything, and each answers a question. Key by key, each one acts on a copy of a small table. Selecting columns, which columns do I need: two columns go. Filtering rows, who is this about: two rows go. Sorting, what comes first: the rows take the order of their numbers. Computing new columns, what can be derived from what is there: a new column is filled. Summarizing, what is typical and how many are there: many rows become one. Grouping, how do subgroups differ: every row is marked with its group, and nothing else changes. Grouping is the odd one out, because on its own it changes nothing; it makes the next operation work per group. Last key: in dplyr each operation is one verb, and these are their names.</aside>
   </section>
 
   <section class="slide">
     <h2>the same ideas everywhere</h2>
     <div class="content">
-      <table class="tt keep-case">
-        <tr><th class="left">operation</th><th>dplyr</th><th>SQL</th><th>pandas</th><th class="left">excel</th></tr>
-        <tr><td class="left">select columns</td><td>select()</td><td>SELECT</td><td>df[columns]</td><td class="left">hide columns</td></tr>
-        <tr><td class="left">filter rows</td><td>filter()</td><td>WHERE</td><td>df.query()</td><td class="left">filter</td></tr>
-        <tr><td class="left">sort</td><td>arrange()</td><td>ORDER BY</td><td>sort_values()</td><td class="left">sort</td></tr>
-        <tr><td class="left">new columns</td><td>mutate()</td><td>SELECT … AS</td><td>df.assign()</td><td class="left">formula column</td></tr>
-        <tr><td class="left">summarize</td><td>summarize()</td><td>COUNT, AVG</td><td>df.agg()</td><td class="left">pivot table</td></tr>
-        <tr><td class="left">group</td><td>group_by()</td><td>GROUP BY</td><td>df.groupby()</td><td class="left">pivot table</td></tr>
+      <table class="tt wide keep-case">
+        <tr><th class="left">operation</th><th class="right">dplyr</th><th class="right">SQL</th><th class="right">pandas</th><th class="right">excel</th></tr>
+        <tr><td class="left">select columns</td><td class="right">select()</td><td class="right">SELECT</td><td class="right">df[columns]</td><td class="right">hide columns</td></tr>
+        <tr><td class="left">filter rows</td><td class="right">filter()</td><td class="right">WHERE</td><td class="right">df.query()</td><td class="right">filter</td></tr>
+        <tr><td class="left">sort</td><td class="right">arrange()</td><td class="right">ORDER BY</td><td class="right">sort_values()</td><td class="right">sort</td></tr>
+        <tr><td class="left">new columns</td><td class="right">mutate()</td><td class="right">SELECT … AS</td><td class="right">df.assign()</td><td class="right">formula column</td></tr>
+        <tr><td class="left">summarize</td><td class="right">summarize()</td><td class="right">COUNT, AVG</td><td class="right">df.agg()</td><td class="right">pivot table</td></tr>
+        <tr><td class="left">group</td><td class="right">group_by()</td><td class="right">GROUP BY</td><td class="right">df.groupby()</td><td class="right">pivot table</td></tr>
       </table>
     </div>
     <aside class="notes">The six operations are not an invention of R. SQL has them, pandas in Python has them, and in Excel you do them by hand with filters, sorting and pivot tables. Whoever has understood the operations once finds their way around SQL and pandas quickly, because only the names change.</aside>
@@ -98,20 +101,14 @@
 
   <!-- ===== part 2: the verbs ===== -->
   <section class="slide part" data-part="the verbs">
-    <aside class="notes">Now the same operations in R, with the package dplyr. We take one verb at a time and watch on six rows what it does.</aside>
+    <aside class="notes">Now the same operations in R, with the package dplyr, which comes with the tidyverse. We take one verb at a time and watch on six rows what it does.</aside>
   </section>
 
   <section class="slide">
     <h2>dplyr names its functions after what they do</h2>
-    <div class="content">
-      <div class="code">library(<span class="hl">dplyr</span>)</div>
-      <div class="lines" style="margin-top: 40px">
-        <div data-step="1">the first argument is always a table</div>
-        <div data-step="2">columns go by their name, without quotes and without $</div>
-        <div data-step="3">the result is a new table, the original stays as it was</div>
-      </div>
-    </div>
-    <aside class="notes">dplyr calls its functions verbs, because each is named after what it does: select, filter, arrange, mutate, summarize. Three rules hold for all of them. The first argument is always a table. Columns go by their bare name, without quotes and without the dollar sign. And the result is a new table: the original is not changed. That last rule often surprises people. If you want to keep the result, you have to assign it to a name.</aside>
+    <div class="code verb-code">library(<span class="hl">tidyverse</span>)</div>
+    <div class="figure below" id="fig-rules"></div>
+    <aside class="notes">We load dplyr with the tidyverse, which brings the other packages we use along with it. dplyr calls its functions verbs, because each is named after what it does: select, filter, arrange, mutate, summarize. Three rules hold for all of them, shown here on filter(). First key: the first argument is always a table, here the survey. Second key: columns go by their bare name, without quotes and without the dollar sign. Third key: what comes out is a new table, and the survey stays as it was. That last rule often surprises people: if you want to keep the result, you have to assign it to a name.</aside>
   </section>
 
   <section class="slide">
@@ -123,26 +120,37 @@
 
   <section class="slide">
     <h2>select(): keep columns</h2>
-    <div class="code verb-code"><span class="hl">select</span>(survey, id, diet)</div>
+    <div class="code verb-code">survey |&gt;
+  <span class="hl">select</span>(id, diet)</div>
     <div class="figure below" id="fig-select"></div>
-    <aside class="notes">select() keeps the columns you name. First key: we name id and diet. Second key: the other two columns disappear and diet moves up to id. All six rows are still there; select() never touches the rows.</aside>
+    <div class="footnote"><span class="mono">survey |&gt; select(id, diet)</span> is short for <span class="mono">select(survey, id, diet)</span>; more on the pipe <span class="mono">|&gt;</span> in part 3</div>
+    <aside class="notes">From now on we write every verb with the pipe: survey, and then select. For now it is enough to know that the pipe puts the table into the first slot of the verb; part 3 shows why this helps. select() keeps the columns you name. First key: we name id and diet. Second key: the other two columns disappear and diet moves up to id. All six rows are still there; select() never touches the rows.</aside>
   </section>
 
   <section class="slide">
-    <h2>three ways to say which columns</h2>
+    <h2>some ways to say which columns</h2>
     <div class="content">
       <div class="pairs">
-        <div class="code small"><span class="hl">select</span>(survey, id, diet)</div><div class="gr">by name</div>
-        <div class="code small"><span class="hl">select</span>(survey, -organic_share)</div><div class="gr">all but this one</div>
-        <div class="code small"><span class="hl">select</span>(survey, id, starts_with("organic"))</div><div class="gr">by a pattern in the name</div>
+        <div class="code small">survey |&gt;
+  select(<span class="hl">id, diet</span>)</div><div class="gr">by name</div>
+        <div class="code small">survey |&gt;
+  select(<span class="hl">id:diet</span>)</div><div class="gr">a range, from id to diet</div>
+        <div class="code small">survey |&gt;
+  select(<span class="hl">-organic_share</span>)</div><div class="gr">all but this one</div>
+        <div class="code small">survey |&gt;
+  select(<span class="hl">starts_with("organic")</span>)</div><div class="gr">by a pattern in the name</div>
+        <div class="code small">survey |&gt;
+  select(<span class="hl">where(is.numeric)</span>)</div><div class="gr">by the type of the column</div>
       </div>
+      <div class="sidenote" style="margin-top: 40px">more helpers, such as <span class="mono">ends_with()</span> and <span class="mono">contains()</span>, in the help: <span class="mono">?select</span></div>
     </div>
-    <aside class="notes">There are several ways to say which columns you want. By name, as before. With a minus sign: all columns except this one. Or by a pattern in the name: starts_with() takes every column whose name begins with organic. With eleven columns this saves little; with two hundred it saves a lot.</aside>
+    <aside class="notes">There are many ways to say which columns you want; here are five that come up often. By name, as before. A range with a colon: every column from id to diet, in the order of the table. With a minus sign: all columns except this one. By a pattern in the name: starts_with() takes every column whose name begins with organic. And by type: where(is.numeric) takes every column that holds numbers. The help page of select() lists more helpers. With eleven columns this saves little; with two hundred it saves a lot.</aside>
   </section>
 
   <section class="slide">
     <h2>filter(): keep rows</h2>
-    <div class="code verb-code"><span class="hl">filter</span>(survey, age &gt;= 50)</div>
+    <div class="code verb-code">survey |&gt;
+  <span class="hl">filter</span>(age &gt;= 50)</div>
     <div class="figure below" id="fig-filter"></div>
     <aside class="notes">filter() keeps the rows for which a condition is true. First key: R checks the condition row by row, is the age at least 50? Yes, yes, no, no, yes, no. Second key: the rows with a no disappear, and three rows remain. The columns stay as they were; filter() never touches the columns.</aside>
   </section>
@@ -151,10 +159,17 @@
     <h2>conditions</h2>
     <div class="content">
       <div class="answer">
-        <div class="code small">filter(survey, diet <span class="hl">==</span> "vegan")
-filter(survey, age &gt;= 50 <span class="hl">&amp;</span> diet <span class="hl">!=</span> "omnivore")
-filter(survey, diet <span class="hl">%in%</span> c("vegan", "vegetarian"))
-filter(survey, !<span class="hl">is.na</span>(organic_share))</div>
+        <div class="code small">survey |&gt;
+  filter(diet <span class="hl">==</span> "vegan")
+
+survey |&gt;
+  filter(age &gt;= 50 <span class="hl">&amp;</span> diet <span class="hl">!=</span> "omnivore")
+
+survey |&gt;
+  filter(diet <span class="hl">%in%</span> c("vegan", "vegetarian"))
+
+survey |&gt;
+  filter(!<span class="hl">is.na</span>(organic_share))</div>
         <div class="legend">
           <span class="k">==</span><span class="v">equal</span>
           <span class="k">!=</span><span class="v">not equal</span>
@@ -166,12 +181,13 @@ filter(survey, !<span class="hl">is.na</span>(organic_share))</div>
       </div>
       <div class="remark r" style="margin-top: 40px"><span class="mono">=</span> assigns, <span class="mono">==</span> compares</div>
     </div>
-    <aside class="notes">A condition is a comparison. Two equals signs ask whether two things are equal; one equals sign would assign, and R complains. The ampersand combines two conditions that must both hold, the vertical bar two of which one is enough. %in% asks whether a value is one of several, and is.na() asks whether a value is missing; the exclamation mark turns it round, so the last line keeps every row that has an organic share.</aside>
+    <aside class="notes">A condition is a comparison. Two equals signs ask whether two things are equal; one equals sign would assign, and R complains. The ampersand combines two conditions that must both hold, the vertical bar two of which one is enough. %in% asks whether a value is one of several, and is.na() asks whether a value is missing; the exclamation mark turns it round, so the last pipeline keeps every row that has an organic share.</aside>
   </section>
 
   <section class="slide">
     <h2>arrange(): sort rows</h2>
-    <div class="code verb-code"><span class="hl">arrange</span>(survey, desc(age))</div>
+    <div class="code verb-code">survey |&gt;
+  <span class="hl">arrange</span>(desc(age))</div>
     <div class="figure below" id="fig-arrange"></div>
     <aside class="notes">arrange() sorts the rows. desc() means descending, from the oldest to the youngest. On the key, the rows slide to their new places: 74, 56, 55, 48, 47, 32. Nothing is added or removed, only the order changes.</aside>
   </section>
@@ -179,16 +195,22 @@ filter(survey, !<span class="hl">is.na</span>(organic_share))</div>
   <section class="slide">
     <h2>ascending, descending, several columns</h2>
     <div class="content">
-      <div class="code">arrange(survey, age)
-arrange(survey, <span class="hl">desc</span>(age))
-arrange(survey, <span class="hl">diet</span>, desc(age))</div>
+      <div class="code">survey |&gt;
+  arrange(age)
+
+survey |&gt;
+  arrange(<span class="hl">desc</span>(age))
+
+survey |&gt;
+  arrange(<span class="hl">diet</span>, desc(age))</div>
     </div>
     <aside class="notes">Without desc() arrange() sorts in ascending order. With several columns the second one only decides where the first one is tied: here the rows are sorted by diet, and within each diet from the oldest to the youngest.</aside>
   </section>
 
   <section class="slide">
     <h2>mutate(): compute new columns</h2>
-    <div class="code verb-code"><span class="hl">mutate</span>(survey, decade = age %/% 10 * 10)</div>
+    <div class="code verb-code">survey |&gt;
+  <span class="hl">mutate</span>(decade = age %/% 10 * 10)</div>
     <div class="figure below" id="fig-mutate"></div>
     <aside class="notes">mutate() adds a column computed from the others. %/% is integer division, so age %/% 10 * 10 turns 56 into 50: the decade. First key: the new column appears. Second key: it is filled row by row, each value from the age in the same row. The number of rows stays the same.</aside>
   </section>
@@ -196,18 +218,19 @@ arrange(survey, <span class="hl">diet</span>, desc(age))</div>
   <section class="slide">
     <h2>one row in, one row out</h2>
     <div class="content">
-      <div class="code"><span class="hl">mutate</span>(
-  survey,
-  decade = age %/% 10 * 10,
-  organic_fan = organic_share &gt;= 4
-)</div>
+      <div class="code">survey |&gt;
+  <span class="hl">mutate</span>(
+    decade = age %/% 10 * 10,
+    organic_fan = organic_share &gt;= 4
+  )</div>
     </div>
     <aside class="notes">mutate() computes in every row on its own, one row in and one row out. It can create several columns at once, and a column may use one computed earlier in the same call. The second column here is a logical value: TRUE for everyone who buys mostly organic food.</aside>
   </section>
 
   <section class="slide">
     <h2>summarize(): many rows become one</h2>
-    <div class="code verb-code"><span class="hl">summarize</span>(survey, n = n(), mean_age = mean(age))</div>
+    <div class="code verb-code">survey |&gt;
+  <span class="hl">summarize</span>(n = n(), mean_age = mean(age))</div>
     <div class="figure below" id="fig-summarize"></div>
     <aside class="notes">summarize() turns many rows into one. First key: n() counts the rows, one to six. Second key: mean() takes the six ages and turns them into one number, 52. What remains is a table with a single row and only the columns we computed.</aside>
   </section>
@@ -216,12 +239,12 @@ arrange(survey, <span class="hl">diet</span>, desc(age))</div>
     <h2>summary functions</h2>
     <div class="content">
       <div class="answer">
-        <div class="code small">summarize(
-  survey,
-  n = <span class="hl">n</span>(),
-  mean_organic = <span class="hl">mean</span>(organic_share, na.rm = TRUE),
-  oldest = <span class="hl">max</span>(age)
-)</div>
+        <div class="code small">survey |&gt;
+  summarize(
+    n = <span class="hl">n</span>(),
+    mean_organic = <span class="hl">mean</span>(organic_share, na.rm = TRUE),
+    oldest = <span class="hl">max</span>(age)
+  )</div>
         <div class="legend">
           <span class="k">n()</span><span class="v">number of rows</span>
           <span class="k">mean()</span><span class="v">average</span>
@@ -238,29 +261,21 @@ arrange(survey, <span class="hl">diet</span>, desc(age))</div>
 
   <section class="slide">
     <h2>group_by(): split into groups</h2>
-    <div class="code verb-code"><span class="hl">group_by</span>(survey, diet)</div>
+    <div class="code verb-code">survey |&gt;
+  <span class="hl">group_by</span>(diet)</div>
     <div class="figure below" id="fig-group"></div>
     <aside class="notes">group_by() splits the table into groups. First key: every row gets the colour of its diet, and R notes above the table that it is grouped by diet into three groups. Look closely: the data have not changed, not a single value. Second key: we pull the groups apart so you can see them. R keeps the rows where they are; the grouping only matters to the next verb.</aside>
   </section>
 
   <section class="slide">
     <h2>group_by() and summarize(): one row per group</h2>
+    <div class="code verb-code small">survey |&gt;
+  <span class="hl">group_by</span>(diet) |&gt;
+  <span class="hl">summarize</span>(n = n(), mean_age = mean(age))</div>
     <div class="figure below" id="fig-summarize-groups"></div>
-    <aside class="notes">Now summarize() works per group. On the key, every group collapses into one row with its count and its mean age: one flexitarian aged 74, four omnivores with a mean of 47.5, one vegetarian aged 48. The groups come out in alphabetical order.</aside>
+    <aside class="notes">Two verbs in a row: group by diet, and then summarize. group_by() alone changes nothing you can see; it tells the next verb to work per group. On the key, every group collapses into one row with its count and its mean age: one flexitarian aged 74, four omnivores with a mean of 47.5, one vegetarian aged 48. The groups come out in alphabetical order.</aside>
   </section>
 
-  <section class="slide has-punch">
-    <h2>two verbs at once</h2>
-    <div class="content">
-      <div class="code"><span class="hl">summarize</span>(
-  <span class="hl">group_by</span>(survey, diet),
-  n = n(),
-  mean_age = mean(age)
-)</div>
-    </div>
-    <div class="punch">group_by() alone changes nothing you can see; it tells the next verb to work per group.</div>
-    <aside class="notes">This is how you write the previous slide in R: one verb inside the other. group_by() makes the grouped table, and summarize() works on it. With two verbs this is still readable; with four it no longer is, and that is exactly what the pipe is for.</aside>
-  </section>
 
   <section class="slide poll" data-poll="verb-for-rows">
     <div class="poll-q">you only want the respondents from <span class="keep-case">Bavaria</span>. which verb?</div>
@@ -270,13 +285,13 @@ arrange(survey, <span class="hl">diet</span>, desc(age))</div>
 
   <section class="slide poll" data-poll="verbs-for-groups">
     <div class="poll-q">you need the average age per diet. what do you use?</div>
-    <ol class="poll-opts"><li>summarize()</li><li>group_by()</li><li data-correct>group_by() + summarize()</li><li>mutate()</li></ol>
+    <ol class="poll-opts"><li>summarize()</li><li>group_by()</li><li data-correct>group_by() |&gt; summarize()</li><li>mutate()</li></ol>
     <aside class="notes">Per diet means groups, and an average means summarize(). summarize() alone gives one average for everybody, group_by() alone changes nothing visible; it takes both.</aside>
   </section>
 
   <!-- ===== part 3: the pipe ===== -->
   <section class="slide part" data-part="the pipe">
-    <aside class="notes">Real questions need several verbs in a row. The pipe makes such a sequence readable.</aside>
+    <aside class="notes">We have used the pipe since the first verb. Now we look at what R code looks like without it, and at what the pipe does.</aside>
   </section>
 
   <section class="slide">
@@ -296,7 +311,7 @@ arrange(survey, <span class="hl">diet</span>, desc(age))</div>
 )</div>
       </div>
     </div>
-    <aside class="notes">Four verbs: keep everyone aged 40 or older, group by diet, count, sort by the count. Nested, R runs them from the inside out. Key by key: first filter, then group_by, then summarize, and arrange last, although it stands first. And the arguments stand far from their function: desc(n) at the very bottom belongs to arrange() at the very top.</aside>
+    <aside class="notes">Four verbs: keep everyone aged 40 or older, group by diet, count, sort by the count. Without the pipe, every verb takes the table as its first argument, so the verbs end up inside each other. Nested, R runs them from the inside out. Key by key: first filter, then group_by, then summarize, and arrange last, although it stands first. And the arguments stand far from their function: desc(n) at the very bottom belongs to arrange() at the very top.</aside>
   </section>
 
   <section class="slide has-punch">
@@ -409,16 +424,16 @@ result &lt;- arrange(counts, desc(n))</div>
   </section>
 
   <section class="slide">
-    <img class="photo short" src="img/closing-plated-dish.jpg" alt="">
+    <img class="photo short" src="img/closing-brick-chart.jpg" alt="">
     <div class="photo-text narrow"><div>to practise: the learning path "data transformation with <span class="keep-case">R</span> and dplyr" on hands-on data science.</div></div>
     <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
-    <aside class="notes">The same board, now with the dish on the plate and the bowls empty: a handful of techniques in the right order. To practise, the learning path on Hands-on Data Science shows the same verbs with R boxes that run in the browser.</aside>
+    <aside class="notes">The same bricks, now sorted by colour and built into a small bar chart: a handful of operations in the right order turned the jumble into something that answers a question. To practise, the learning path on Hands-on Data Science shows the same verbs with R boxes that run in the browser.</aside>
   </section>
 
 </div>
 <script src="../../stagekit/draw.js?v=0.2.0-ab940a"></script>
 <script src="../../stagekit/anim.js?v=0.2.0-ab940a"></script>
-<script src="deck.js?v=2"></script>
+<script src="deck.js?v=3"></script>
 <script src="../../stagekit/stagekit.js?v=0.2.0-ab940a"></script>
 </body>
 </html>

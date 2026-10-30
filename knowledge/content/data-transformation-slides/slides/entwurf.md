@@ -2,6 +2,10 @@
 
 **Status:** freigegeben am 2026-10-30 mit den drei Empfehlungen und gebaut;
 das Deck ist jetzt die Quelle, dieser Entwurf bleibt als Herleitung liegen.
+Am selben Tag nach Nicolas' Durchsicht überarbeitet: LEGO-Kiste statt Küche,
+die Pipe ab dem ersten Verb (Empfehlung 1 damit aufgehoben), Laden über das
+tidyverse, animierte Grundoperationen. Was hier steht, ist daher in Teilen
+überholt.
 
 **Verortung:** Folien-Inhalt auf Hands-on Data Science
 (`knowledge/content/data-transformation-slides/`), neben dem Lernpfad

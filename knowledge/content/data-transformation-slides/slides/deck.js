@@ -83,86 +83,138 @@ function surveyTable(o = {}) {
 })();
 
 /* --- slide: a table in, a table out -------------------------------------------------
- * Figure 1680 x 660 (has-punch). Mini tables of cells 60 x 36 with 6 between;
- * the input has 4 columns and 6 rows (258 x 246), the output 2 columns and 3
- * rows (126 x 120). The box is 340 wide: "transformation" is 14 x 19.2 = 269
- * plus 2 x 20 padding = 309 (Arial is narrower; the rule of thumb holds). */
-function miniTable(x, y, cols, rows, fills) {
+ * Figure 1680 x 660 (has-punch), everything centred on y 300. Mini tables of
+ * cells 48 x 30 with 6 between (54 per column, 36 per row): the survey has 4
+ * columns and 6 rows (210 x 210), the first result 3 x 4 (156 x 138), the
+ * second 2 x 2 (102 x 66). Boxes are 260 wide: "transformation" at Arial 32 is
+ * about 205. A copy of each table flies into the box, the table itself stays,
+ * and the result goes on into the next transformation.
+ * x: survey 0..210, box 310..570, result 670..826, box 926..1186,
+ * result 1286..1388, an arrow to "…" at 1500. */
+function miniTable(x, y, cols, rows) {
   let s = "";
-  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
-    const fill = fills ? fills(r, c) : (r === 0 ? C.light : C.gray);
-    s += `<rect x="${x + c * 66}" y="${y + r * 42}" width="60" height="36" rx="4" fill="${fill}"/>`;
-  }
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++)
+    s += `<rect x="${x + c * 54}" y="${y + r * 36}" width="48" height="30" rx="4" fill="${r === 0 ? C.light : C.gray}"/>`;
   return s;
 }
 (function () {
+  const arrow = (name, x1, x2) => d.g(name, d.arrow(x1, 300, x2, 300, { color: C.gray, width: 3 }));
+  const box = (name, x) => d.g(name, d.box(x, 240, 260, 120, "transformation", { size: 32, width: 3 }));
   el("fig-inout").innerHTML = d.svg(1680, 660,
-    d.arrow(420, 330, 655, 330, { color: C.gray, width: 3 }),
-    d.arrow(1025, 330, 1260, 330, { color: C.gray, width: 3 }),
-    d.g("box", d.box(670, 255, 340, 150, "transformation", { size: 32, width: 3 })),
-    d.g("in", miniTable(120, 207, 4, 6)),
-    d.g("out", miniTable(1300, 270, 2, 3)));
+    d.g("t0", miniTable(0, 195, 4, 6)), arrow("a1", 228, 298), box("box1", 310), arrow("a2", 582, 652),
+    d.g("t1", miniTable(670, 231, 3, 4)), arrow("a3", 844, 914), box("box2", 926), arrow("a4", 1198, 1268),
+    d.g("t2", miniTable(1286, 267, 2, 2)), arrow("a5", 1406, 1476),
+    d.g("dots", d.label(1500, 0, "…", { size: 80, color: C.gray, centerY: 290 })),
+    d.g("c0", miniTable(0, 195, 4, 6)), d.g("c1", miniTable(670, 231, 3, 4)));
   const a = d.anim("fig-inout");
-  a.step(a.par(a.color("box", "yellow", { dur: 500 }),
-               a.seq(a.par(a.moveTo("in", 840, 330, { dur: 1200 }), a.scale("in", 0.3, { dur: 1200 })),
-                     a.hide("in", { dur: 300 }))));
-  a.step(a.par(a.show("out", { dur: 800 }), a.color("box", "white", { dur: 800 })));
+  // a copy of the table flies into the box and shrinks there; the table itself stays
+  const feed = (copy, boxName, cx) => a.seq(a.show(copy, { dur: 1 }),
+    a.par(a.color(boxName, "yellow", { dur: 400 }), a.moveTo(copy, cx, 300, { dur: 1100 }), a.scale(copy, 0.3, { dur: 1100 })),
+    a.hide(copy, { dur: 250 }));
+  a.step(feed("c0", "box1", 440));
+  a.step(a.par(a.show("t1", { dur: 700 }), a.color("box1", "white", { dur: 700 })));
+  a.step(a.par(a.show("a3", { dur: 400 }), a.show("box2", { dur: 400 }), a.show("a4", { dur: 400 })),
+    feed("c1", "box2", 1056),
+    a.par(a.show("t2", { dur: 600 }), a.color("box2", "white", { dur: 600 })));
+  a.step(a.par(a.show("a5", { dur: 500 }), a.show("dots", { dur: 500 })));
 })();
 
 /* --- slide: six basic operations ----------------------------------------------------
- * Grid 3 x 2: cells 520 wide with 60 between (3 x 520 + 2 x 60 = 1680), 402
- * high. A pictogram is a mini table before (4 columns, 5 rows of 36 x 24 cells
- * with 4 between: 156 x 136), an arrow and the table after (up to 5 columns,
- * 196 wide, ending at x0 + 512). Below it the name in white and the question
- * in gray, both at 32; the longest question, "what is typical, how many?",
- * is 26 characters, about 420 at Arial 32 < 520. Columns appear one per step:
- * columns and rows, order and new columns, summaries and groups. */
+ * Grid 3 x 2 in reading order: cells 520 wide with 60 between (3 x 520 + 2 x
+ * 60 = 1680), 402 high. Every name and its question stand from the start (32,
+ * white and gray; the longest question, "what is typical, how many?", is about
+ * 420 at Arial 32 < 520). One step per operation: the table appears (5 rows of
+ * 36 x 24 cells with 4 between, 40 per column and 28 per row, 136 high), a copy
+ * of it moves 276 to the right and changes there the way the operation changes
+ * a table. The last step adds the dplyr verb under every name.
+ * Every cell is a group with the classes r<row> and c<column>, so a step can
+ * move or recolour a row or a column of the copy. */
 const OPS = [
-  // [column, row, name, question, before, after]
-  [0, 0, "select columns", "which columns do I need?",
-    { cols: 4, rows: 5, fill: (r, c) => (c === 0 || c === 2 ? "on" : "off") },
-    { cols: 2, rows: 5 }],
-  [0, 1, "filter rows", "who is this about?",
-    { cols: 4, rows: 5, fill: (r) => (r === 1 || r === 3 ? "off" : "on") },
-    { cols: 4, rows: 3 }],
-  [1, 0, "sort", "what comes first?",
-    { cols: 4, rows: 5, text: [3, 1, 4, 5, 2] },
-    { cols: 4, rows: 5, text: [1, 2, 3, 4, 5] }],
-  [1, 1, "compute new columns", "what can be derived?",
-    { cols: 4, rows: 5 },
-    { cols: 5, rows: 5, fill: (r, c) => (c === 4 ? "new" : "on") }],
-  [2, 0, "summarize", "what is typical, how many?",
-    { cols: 2, rows: 5 },
-    { cols: 2, rows: 1, fill: () => "new" }],
-  [2, 1, "group", "how do subgroups differ?",
-    { cols: 4, rows: 5, fill: (r, c) => (c === 0 ? ["groups-g1", "groups-g2", "groups-g1", "groups-g3", "groups-g2"][r] : "on") },
-    { cols: 2, rows: 3, fill: (r, c) => (c === 0 ? ["groups-g1", "groups-g2", "groups-g3"][r] : "on") }],
+  { name: "select columns", q: "which columns do I need?", verb: "select()", cols: 4,
+    fill: (r, c) => (c === 0 || c === 2 ? "on" : "off") },
+  { name: "filter rows", q: "who is this about?", verb: "filter()", cols: 4,
+    fill: (r) => (r === 1 || r === 3 ? "off" : "on") },
+  { name: "sort", q: "what comes first?", verb: "arrange()", cols: 4, text: [3, 1, 4, 5, 2] },
+  { name: "compute new columns", q: "what can be derived?", verb: "mutate()", cols: 4, extra: 1 },
+  { name: "summarize", q: "what is typical, how many?", verb: "summarize()", cols: 4 },
+  { name: "group", q: "how do subgroups differ?", verb: "group_by()", cols: 4 },
 ];
-function pictoTable(x, y, t) {
+const OP_GROUPS = ["groups-g1", "groups-g2", "groups-g1", "groups-g3", "groups-g2"];
+function pictoTable(name, x, y, t, extra = 0) {
   let s = "";
-  const top = y + (136 - (t.rows * 28 - 4)) / 2;      // centred on the height of five rows
-  for (let r = 0; r < t.rows; r++) for (let c = 0; c < t.cols; c++) {
-    const kind = t.fill ? t.fill(r, c) : "on";
+  for (let r = 0; r < 5; r++) for (let c = 0; c < t.cols + extra; c++) {
     const keyCol = t.text && c === 0;
-    const fill = keyCol ? C.dark : kind === "on" ? C.light : kind === "off" ? C.dark : kind === "new" ? C.yellow : d.color(kind);
-    s += `<rect x="${x + c * 40}" y="${top + r * 28}" width="36" height="24" rx="3" fill="${fill}"/>`;
-    if (keyCol) s += d.label(x + 18, 0, String(t.text[r]), { size: 20, mono: true, anchor: "middle", centerY: top + r * 28 + 12 });
+    const kind = c >= t.cols ? "new" : t.fill ? t.fill(r, c) : "on";
+    const fill = keyCol || kind === "off" ? C.dark : kind === "new" ? C.yellow : C.light;
+    s += `<g class="r${r} c${c}"><rect x="${x + c * 40}" y="${y + r * 28}" width="36" height="24" rx="3" fill="${fill}"/>` +
+      (keyCol ? d.label(x + 18, 0, String(t.text[r]), { size: 20, mono: true, anchor: "middle", centerY: y + r * 28 + 12 }) : "") + "</g>";
   }
-  return s;
+  return d.g(name, s);
 }
-function drawOps(slide, step) {
+(function () {
   const parts = [];
-  OPS.forEach(([col, row, name, question, before, after]) => {
-    if (col > step) return;
-    const x0 = col * 580, y0 = row * 402;
-    parts.push(pictoTable(x0 + 40, y0 + 40, before),
-      d.arrow(x0 + 216, y0 + 108, x0 + 296, y0 + 108, { color: C.gray, width: 3 }),
-      pictoTable(x0 + 316, y0 + 40, after),
-      d.label(x0 + 40, 0, name, { size: 32, centerY: y0 + 240 }),
-      d.label(x0 + 40, 0, question, { size: 32, color: C.gray, centerY: y0 + 290 }));
+  OPS.forEach((t, k) => {
+    const x0 = (k % 3) * 580, y0 = Math.floor(k / 3) * 402;
+    parts.push(pictoTable("o" + k + "b", x0 + 40, y0 + 40, t),
+      d.g("o" + k + "a", d.arrow(x0 + 216, y0 + 108, x0 + 296, y0 + 108, { color: C.gray, width: 3 })),
+      pictoTable("o" + k + "c", x0 + 40, y0 + 40, t, t.extra || 0),
+      d.label(x0 + 40, 0, t.name, { size: 32, centerY: y0 + 240 }),
+      d.label(x0 + 40, 0, t.q, { size: 32, color: C.gray, centerY: y0 + 290, keepCase: true }),   // "I" stays upper case
+      d.g("o" + k + "v", d.label(x0 + 40, 0, t.verb, { size: 32, mono: true, color: C.blue, centerY: y0 + 345 })));
   });
   el("fig-ops").innerHTML = d.svg(1680, 804, ...parts);
-}
+
+  const a = d.anim("fig-ops");
+  const cells = (k, cls) => `[data-a="o${k}c"] .${cls}`;
+  const rows = [0, 1, 2, 3, 4];
+  const change = [
+    // select: two columns go, the third closes up
+    () => a.seq(a.par(a.hide(cells(0, "c1"), { dur: 400 }), a.hide(cells(0, "c3"), { dur: 400 })),
+                a.move(cells(0, "c2"), -40, 0, { dur: 500 })),
+    // filter: two rows go, the rest close up
+    () => a.seq(a.par(a.hide(cells(1, "r1"), { dur: 400 }), a.hide(cells(1, "r3"), { dur: 400 })),
+                a.par(a.move(cells(1, "r2"), 0, -28, { dur: 500 }), a.move(cells(1, "r4"), 0, -56, { dur: 500 }))),
+    // sort: every row slides to the place of its number
+    () => a.par(...OPS[2].text.map((v, r) => a.move(cells(2, "r" + r), 0, (v - 1 - r) * 28, { dur: 900 }))),
+    // mutate: the new column fills row by row
+    () => a.seq(...rows.map((r) => a.show(cells(3, "r" + r + ".c4"), { dur: 150 }))),
+    // summarize: all rows fall into the first, which keeps only the two computed columns
+    () => a.seq(a.par(...rows.slice(1).map((r) => a.par(a.move(cells(4, "r" + r), 0, -r * 28, { dur: 700 }), a.hide(cells(4, "r" + r), { dur: 700 })))),
+                a.par(a.hide(cells(4, "r0.c2"), { dur: 300 }), a.hide(cells(4, "r0.c3"), { dur: 300 }),
+                      a.color(cells(4, "r0") + " rect", "yellow", { part: "fill", dur: 300 }))),
+    // group: every row takes the colour of its group, nothing else changes
+    () => a.par(...rows.map((r) => a.color(cells(5, "r" + r) + " rect", OP_GROUPS[r], { part: "fill", dur: 700 }))),
+  ];
+  OPS.forEach((t, k) => a.step(
+    a.par(a.show("o" + k + "b", { dur: 300 }), a.show("o" + k + "c", { dur: 300 })),
+    a.par(a.show("o" + k + "a", { dur: 600 }), a.move("o" + k + "c", 276, 0, { dur: 600 })),
+    change[k]()));
+  a.step(a.par(...OPS.map((t, k) => a.show("o" + k + "v", { dur: 600 }))));
+})();
+
+/* --- slide: the rules of the verbs, on filter() ---------------------------------------
+ * Figure "below" (1680 x 672). The call in the code font at 80, 48 units per
+ * character, starting at x 0: "filter" 0..5, "(" 6, "survey" 7..12, "," 13,
+ * "age" 15..17, ">= 50)" 19..24, so survey is centred at 480 and age at 792,
+ * and the call ends at 1200. Each step points at one part with a note at 32:
+ * above survey, below age, and right of the call the new table (4 x 3 cells
+ * of 48 x 30, 1360..1570) with two lines beneath. */
+(function () {
+  const code = (name, i, text, color = C.white) =>
+    d.g(name, d.label(i * 48, 0, text, { size: 80, mono: true, color, centerY: 260 }));
+  const note = (text, x, cy) => d.label(x, 0, text, { size: 32, anchor: "middle", centerY: cy, color: C.light });
+  el("fig-rules").innerHTML = d.svg(1680, 672,
+    code("k-verb", 0, "filter", C.blue), code("k-p", 6, "("), code("k-survey", 7, "survey"), code("k-c", 13, ","),
+    code("k-age", 15, "age"), code("k-rest", 19, ">= 50)"),
+    d.g("n1", note("the first argument is a table", 480, 60), d.arrow(480, 95, 480, 200, { color: C.gray, width: 3 })),
+    d.g("n2", note("columns by their bare name, without quotes and without $", 792, 480), d.arrow(792, 440, 792, 320, { color: C.gray, width: 3 })),
+    d.g("n3", d.arrow(1230, 260, 1340, 260, { color: C.gray, width: 3 }), miniTable(1360, 209, 4, 3),
+      d.label(1465, 0, "a new table comes out,\nsurvey stays as it was", { size: 32, anchor: "middle", centerY: 400, lineHeight: 1.4, color: C.light })));
+  const a = d.anim("fig-rules");
+  a.step(a.par(a.color("k-survey", "yellow", { part: "text", dur: 400 }), a.show("n1", { dur: 600 })));
+  a.step(a.par(a.color("k-survey", "white", { part: "text", dur: 400 }), a.color("k-age", "yellow", { part: "text", dur: 400 }), a.show("n2", { dur: 600 })));
+  a.step(a.par(a.color("k-age", "white", { part: "text", dur: 400 }), a.show("n3", { dur: 800 })));
+})();
 
 /* --- slide: six rows of the survey ---------------------------------------------- */
 el("fig-rows").innerHTML = d.svg(1680, 672, surveyTable());
