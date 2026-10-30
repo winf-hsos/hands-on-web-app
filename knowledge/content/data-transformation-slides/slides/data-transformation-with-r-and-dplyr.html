@@ -35,6 +35,17 @@
     table.tt.wide { width: 100%; }
     table.tt.wide td { padding-top: 20px; padding-bottom: 20px; color: var(--white); }
     table.tt.wide th { padding-bottom: 20px; }
+    /* code on the left, its legend pushed to the right with a small caption beneath */
+    .answer.spread { grid-template-columns: auto 1fr; width: 1680px; }
+    .answer.spread .legend-box { justify-self: end; }
+    .legend-caption { font-size: var(--tiny); color: var(--gray); margin-top: 20px; }
+    /* a warning in the lead colour with its icon */
+    .remark.warn { color: var(--blue); display: flex; align-items: center; gap: 16px; }
+    .remark.warn .icon { width: 1em; height: 1em; }
+    /* seven ways to choose columns: two columns, the explanation under each block */
+    .ways { display: grid; grid-template-columns: 1fr 1fr; column-gap: 80px; row-gap: 28px; }
+    .ways .gr { font-size: var(--small); color: var(--gray-light); margin-top: 4px; }
+    .ways .code { width: fit-content; }   /* the copy button sits right of the code, not of the cell */
   </style>
 </head>
 <body>
@@ -74,7 +85,7 @@
     <h2>a table in, a table out</h2>
     <div class="figure" id="fig-inout"></div>
     <div class="punch">every transformation takes a table and returns a table, which is why they can be chained.</div>
-    <aside class="notes">First key: a table goes into a transformation. Note that the table itself stays where it is; the transformation works on a copy, and the original is never changed. Second key: what comes out is again a table, usually a smaller one. Third key: because it is a table, it can go into the next transformation, which again returns a table. Fourth key: and so on, as often as the question needs. This is the one property everything else in this input rests on.</aside>
+    <aside class="notes">First key: a table goes into a transformation. Note that the table itself stays where it is; the transformation works on a copy, and the original is never changed. Second key: what comes out is again a table, usually a smaller one. Third key: because it is a table, it can go into the next transformation, which again returns a table. Fourth key: and so on, as often as the question needs, and in data analysis the chain often ends in a chart. This is the one property everything else in this input rests on.</aside>
   </section>
 
   <section class="slide">
@@ -87,13 +98,13 @@
     <h2>the same ideas everywhere</h2>
     <div class="content">
       <table class="tt wide keep-case">
-        <tr><th class="left">operation</th><th class="right">dplyr</th><th class="right">SQL</th><th class="right">pandas</th><th class="right">excel</th></tr>
-        <tr><td class="left">select columns</td><td class="right">select()</td><td class="right">SELECT</td><td class="right">df[columns]</td><td class="right">hide columns</td></tr>
-        <tr><td class="left">filter rows</td><td class="right">filter()</td><td class="right">WHERE</td><td class="right">df.query()</td><td class="right">filter</td></tr>
-        <tr><td class="left">sort</td><td class="right">arrange()</td><td class="right">ORDER BY</td><td class="right">sort_values()</td><td class="right">sort</td></tr>
-        <tr><td class="left">new columns</td><td class="right">mutate()</td><td class="right">SELECT … AS</td><td class="right">df.assign()</td><td class="right">formula column</td></tr>
-        <tr><td class="left">summarize</td><td class="right">summarize()</td><td class="right">COUNT, AVG</td><td class="right">df.agg()</td><td class="right">pivot table</td></tr>
-        <tr><td class="left">group</td><td class="right">group_by()</td><td class="right">GROUP BY</td><td class="right">df.groupby()</td><td class="right">pivot table</td></tr>
+        <tr><th class="left">operation</th><th class="left">dplyr</th><th class="left">SQL</th><th class="left">pandas</th><th class="left">excel</th></tr>
+        <tr><td class="left">select columns</td><td class="left">select()</td><td class="left">SELECT</td><td class="left">df[columns]</td><td class="left">hide columns</td></tr>
+        <tr><td class="left">filter rows</td><td class="left">filter()</td><td class="left">WHERE</td><td class="left">df.query()</td><td class="left">filter</td></tr>
+        <tr><td class="left">sort</td><td class="left">arrange()</td><td class="left">ORDER BY</td><td class="left">sort_values()</td><td class="left">sort</td></tr>
+        <tr><td class="left">new columns</td><td class="left">mutate()</td><td class="left">SELECT … AS</td><td class="left">df.assign()</td><td class="left">formula column</td></tr>
+        <tr><td class="left">summarize</td><td class="left">summarize()</td><td class="left">COUNT, AVG</td><td class="left">df.agg()</td><td class="left">pivot table</td></tr>
+        <tr><td class="left">group</td><td class="left">group_by()</td><td class="left">GROUP BY</td><td class="left">df.groupby()</td><td class="left">pivot table</td></tr>
       </table>
     </div>
     <aside class="notes">The six operations are not an invention of R. SQL has them, pandas in Python has them, and in Excel you do them by hand with filters, sorting and pivot tables. Whoever has understood the operations once finds their way around SQL and pandas quickly, because only the names change.</aside>
@@ -108,7 +119,7 @@
     <h2>dplyr names its functions after what they do</h2>
     <div class="code verb-code">library(<span class="hl">tidyverse</span>)</div>
     <div class="figure below" id="fig-rules"></div>
-    <aside class="notes">We load dplyr with the tidyverse, which brings the other packages we use along with it. dplyr calls its functions verbs, because each is named after what it does: select, filter, arrange, mutate, summarize. Three rules hold for all of them, shown here on filter(). First key: the first argument is always a table, here the survey. Second key: columns go by their bare name, without quotes and without the dollar sign. Third key: what comes out is a new table, and the survey stays as it was. That last rule often surprises people: if you want to keep the result, you have to assign it to a name.</aside>
+    <aside class="notes">We load dplyr with the tidyverse, which brings the other packages we use along with it. dplyr calls its functions verbs, because each is named after what it does: select, filter, arrange, mutate, summarize. Three rules hold for all of them, shown here on filter(). First key: the first argument is always a table, here the survey. Second key: columns go by their bare name, without quotes and without the dollar sign. Third key: what comes out is a new table, and the survey stays as it was. That last rule often surprises people: if you want to keep the result, you have to assign it to a name. Fourth key: the same call, written the way we will always write it. The table moves in front of the verb, and the pipe passes it into the first slot. Read it as: take the survey, and then filter. Part 3 shows why this is better.</aside>
   </section>
 
   <section class="slide">
@@ -128,23 +139,27 @@
   </section>
 
   <section class="slide">
-    <h2>some ways to say which columns</h2>
+    <h2>different ways to say which columns</h2>
     <div class="content">
-      <div class="pairs">
-        <div class="code small">survey |&gt;
-  select(<span class="hl">id, diet</span>)</div><div class="gr">by name</div>
-        <div class="code small">survey |&gt;
-  select(<span class="hl">id:diet</span>)</div><div class="gr">a range, from id to diet</div>
-        <div class="code small">survey |&gt;
-  select(<span class="hl">-organic_share</span>)</div><div class="gr">all but this one</div>
-        <div class="code small">survey |&gt;
-  select(<span class="hl">starts_with("organic")</span>)</div><div class="gr">by a pattern in the name</div>
-        <div class="code small">survey |&gt;
-  select(<span class="hl">where(is.numeric)</span>)</div><div class="gr">by the type of the column</div>
+      <div class="ways">
+        <div><div class="code small">survey |&gt;
+  select(<span class="hl">id, diet</span>)</div><div class="gr">by name</div></div>
+        <div><div class="code small">survey |&gt;
+  select(<span class="hl">2:5</span>)</div><div class="gr">by position, the 2nd to the 5th column</div></div>
+        <div><div class="code small">survey |&gt;
+  select(<span class="hl">id:diet</span>)</div><div class="gr">a range, from id to diet</div></div>
+        <div><div class="code small">survey |&gt;
+  select(<span class="hl">-organic_share</span>)</div><div class="gr">all but this one</div></div>
+        <div><div class="code small">survey |&gt;
+  select(<span class="hl">starts_with("organic")</span>)</div><div class="gr">by a pattern in the name</div></div>
+        <div><div class="code small">survey |&gt;
+  select(<span class="hl">where(is.numeric)</span>)</div><div class="gr">by the type of the column</div></div>
+        <div><div class="code small">survey |&gt;
+  select(<span class="hl">id, starts_with("organic")</span>)</div><div class="gr">combined: by name and by pattern</div></div>
       </div>
       <div class="sidenote" style="margin-top: 40px">more helpers, such as <span class="mono">ends_with()</span> and <span class="mono">contains()</span>, in the help: <span class="mono">?select</span></div>
     </div>
-    <aside class="notes">There are many ways to say which columns you want; here are five that come up often. By name, as before. A range with a colon: every column from id to diet, in the order of the table. With a minus sign: all columns except this one. By a pattern in the name: starts_with() takes every column whose name begins with organic. And by type: where(is.numeric) takes every column that holds numbers. The help page of select() lists more helpers. With eleven columns this saves little; with two hundred it saves a lot.</aside>
+    <aside class="notes">There are many ways to say which columns you want, and here are the ones that come up most. By name, as before. By position: 2:5 takes the second to the fifth column. A range of names with a colon: every column from id to diet, in the order of the table. With a minus sign: all columns except this one. By a pattern in the name: starts_with() takes every column whose name begins with organic. By type: where(is.numeric) takes every column that holds numbers. And the ways combine: id by name plus every organic column by pattern. The help page of select() lists more helpers. With eleven columns this saves little; with two hundred it saves a lot.</aside>
   </section>
 
   <section class="slide">
@@ -158,7 +173,7 @@
   <section class="slide">
     <h2>conditions</h2>
     <div class="content">
-      <div class="answer">
+      <div class="answer spread">
         <div class="code small">survey |&gt;
   filter(diet <span class="hl">==</span> "vegan")
 
@@ -170,41 +185,46 @@ survey |&gt;
 
 survey |&gt;
   filter(!<span class="hl">is.na</span>(organic_share))</div>
-        <div class="legend">
-          <span class="k">==</span><span class="v">equal</span>
-          <span class="k">!=</span><span class="v">not equal</span>
-          <span class="k">&amp;</span><span class="v">and</span>
-          <span class="k">|</span><span class="v">or</span>
-          <span class="k">%in%</span><span class="v">one of</span>
-          <span class="k">is.na()</span><span class="v">missing</span>
+        <div class="legend-box">
+          <div class="legend">
+            <span class="k">==</span><span class="v">equal</span>
+            <span class="k">!=</span><span class="v">not equal</span>
+            <span class="k">&amp;</span><span class="v">and</span>
+            <span class="k">|</span><span class="v">or</span>
+            <span class="k">%in%</span><span class="v">one of</span>
+            <span class="k">is.na()</span><span class="v">missing</span>
+          </div>
+          <div class="legend-caption">comparisons and logical operators</div>
         </div>
       </div>
-      <div class="remark r" style="margin-top: 40px"><span class="mono">=</span> assigns, <span class="mono">==</span> compares</div>
+      <div class="remark warn" style="margin-top: 40px"><!-- Bootstrap Icons "exclamation-triangle" 1.11.3 (MIT, (c) The Bootstrap Authors) --><svg class="icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.130 1.130 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z"/><path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/></svg><span><span class="mono">=</span> assigns, <span class="mono">==</span> compares</span></div>
     </div>
     <aside class="notes">A condition is a comparison. Two equals signs ask whether two things are equal; one equals sign would assign, and R complains. The ampersand combines two conditions that must both hold, the vertical bar two of which one is enough. %in% asks whether a value is one of several, and is.na() asks whether a value is missing; the exclamation mark turns it round, so the last pipeline keeps every row that has an organic share.</aside>
   </section>
 
-  <section class="slide">
+  <section class="slide" data-on-show="arrangeCode" data-on-step="arrangeCode">
     <h2>arrange(): sort rows</h2>
-    <div class="code verb-code">survey |&gt;
-  <span class="hl">arrange</span>(desc(age))</div>
+    <div class="code verb-code" style="min-width: 20ch">survey |&gt;
+  <span class="hl">arrange</span>(<span id="arrange-arg">age</span>)</div>
     <div class="figure below" id="fig-arrange"></div>
-    <aside class="notes">arrange() sorts the rows. desc() means descending, from the oldest to the youngest. On the key, the rows slide to their new places: 74, 56, 55, 48, 47, 32. Nothing is added or removed, only the order changes.</aside>
+    <aside class="notes">arrange() sorts the rows by the column you name. First key: by age, and without anything else the order is ascending, from the youngest to the oldest: 32, 47, 48, 55, 56, 74. Second key: desc() around the column turns the order round, from the oldest to the youngest. Nothing is added or removed, only the order changes.</aside>
   </section>
 
   <section class="slide">
     <h2>ascending, descending, several columns</h2>
     <div class="content">
-      <div class="code">survey |&gt;
-  arrange(age)
-
-survey |&gt;
-  arrange(<span class="hl">desc</span>(age))
-
-survey |&gt;
-  arrange(<span class="hl">diet</span>, desc(age))</div>
+      <div class="pairs">
+        <div class="code">survey |&gt;
+  arrange(age)</div><div class="gr">ascending, from the youngest</div>
+        <div class="code">survey |&gt;
+  arrange(<span class="hl">desc</span>(age))</div><div class="gr">descending, from the oldest</div>
+        <div class="code">survey |&gt;
+  arrange(<span class="hl">-</span>age)</div><div class="gr">also descending, a shortcut for numbers</div>
+        <div class="code">survey |&gt;
+  arrange(<span class="hl">diet</span>, desc(age))</div><div class="gr">by diet, within it from the oldest</div>
+      </div>
     </div>
-    <aside class="notes">Without desc() arrange() sorts in ascending order. With several columns the second one only decides where the first one is tied: here the rows are sorted by diet, and within each diet from the oldest to the youngest.</aside>
+    <aside class="notes">Without desc() arrange() sorts in ascending order, and desc() turns it round. For numbers a minus sign does the same as desc() and is quicker to type; for text it does not work, there you need desc(). With several columns the second one only decides where the first one is tied: here the rows are sorted by diet, and within each diet from the oldest to the youngest.</aside>
   </section>
 
   <section class="slide">
@@ -230,33 +250,36 @@ survey |&gt;
   <section class="slide">
     <h2>summarize(): many rows become one</h2>
     <div class="code verb-code">survey |&gt;
-  <span class="hl">summarize</span>(n = n(), mean_age = mean(age))</div>
+  <span class="hl">summarize</span>(n = n(), mean_organic = mean(organic_share))</div>
     <div class="figure below" id="fig-summarize"></div>
-    <aside class="notes">summarize() turns many rows into one. First key: n() counts the rows, one to six. Second key: mean() takes the six ages and turns them into one number, 52. What remains is a table with a single row and only the columns we computed.</aside>
+    <aside class="notes">summarize() turns many rows into one. First key: n() counts the rows, one to six. Second key: mean() takes the six organic shares, 2, 2, 1, 1, 2 and 2, and turns them into one number, 1.67. What remains is a table with a single row and only the columns we computed.</aside>
   </section>
 
   <section class="slide">
-    <h2>summary functions</h2>
+    <h2>frequently used summary functions</h2>
     <div class="content">
-      <div class="answer">
+      <div class="answer spread">
         <div class="code small">survey |&gt;
   summarize(
     n = <span class="hl">n</span>(),
     mean_organic = <span class="hl">mean</span>(organic_share, na.rm = TRUE),
     oldest = <span class="hl">max</span>(age)
   )</div>
-        <div class="legend">
-          <span class="k">n()</span><span class="v">number of rows</span>
-          <span class="k">mean()</span><span class="v">average</span>
-          <span class="k">median()</span><span class="v">middle value</span>
-          <span class="k">min()</span><span class="v">smallest</span>
-          <span class="k">max()</span><span class="v">largest</span>
-          <span class="k">sd()</span><span class="v">spread</span>
+        <div class="legend-box">
+          <div class="legend">
+            <span class="k">n()</span><span class="v">number of rows</span>
+            <span class="k">mean()</span><span class="v">average</span>
+            <span class="k">median()</span><span class="v">middle value</span>
+            <span class="k">min()</span><span class="v">smallest</span>
+            <span class="k">max()</span><span class="v">largest</span>
+            <span class="k">sd()</span><span class="v">spread</span>
+          </div>
+          <div class="legend-caption">a selection, there are many more</div>
         </div>
       </div>
       <div class="remark" style="margin-top: 40px">one missing value makes the mean <span class="keep-case">NA</span>, unless <span class="mono keep-case">na.rm = TRUE</span></div>
     </div>
-    <aside class="notes">Inside summarize() you use functions that turn many values into one: n(), mean(), median(), min(), max(), sd(). One warning: a single missing value makes the mean missing as well, because R does not know what the missing value would have been. na.rm = TRUE tells it to leave missing values out.</aside>
+    <aside class="notes">Inside summarize() you use functions that turn many values into one. These six come up most often: n(), mean(), median(), min(), max(), sd(); there are many more, such as quantile() or n_distinct(), and any function that turns many values into one will do. One warning: a single missing value makes the mean missing as well, because R does not know what the missing value would have been. na.rm = TRUE tells it to leave missing values out.</aside>
   </section>
 
   <section class="slide">
@@ -269,7 +292,7 @@ survey |&gt;
 
   <section class="slide">
     <h2>group_by() and summarize(): one row per group</h2>
-    <div class="code verb-code small">survey |&gt;
+    <div class="code verb-code">survey |&gt;
   <span class="hl">group_by</span>(diet) |&gt;
   <span class="hl">summarize</span>(n = n(), mean_age = mean(age))</div>
     <div class="figure below" id="fig-summarize-groups"></div>
@@ -329,13 +352,13 @@ result &lt;- arrange(counts, desc(n))</div>
   <section class="slide">
     <h2>the pipe passes the table on</h2>
     <div class="figure" id="fig-pipe"></div>
-    <aside class="notes">The pipe, a vertical bar followed by a greater-than sign, takes what stands on its left and puts it into the first slot of the function on its right. x |> f(y) is the same as f(x, y). This is why the first-argument rule of dplyr matters: every verb takes a table first, so a table can be piped into every verb. Read the pipe as "and then". In older code you will see %>%, which does the same; ctrl+shift+m types the pipe in RStudio and Positron.</aside>
+    <aside class="notes">The pipe, a vertical bar followed by a greater-than sign, takes what stands on its left and puts it into the first slot of the function on its right. On the key, x travels into that slot: x |> f(y) is the same as f(x, y). This is why the first-argument rule of dplyr matters: every verb takes a table first, so a table can be piped into every verb. Next key: read the pipe as "and then". In older code you will see %>%, which does the same. Last key: ctrl+shift+m types the pipe in RStudio and Positron, cmd+shift+m on a Mac.</aside>
   </section>
 
   <section class="slide">
     <h2>a pipeline</h2>
     <div class="figure" id="fig-pipeline"></div>
-    <aside class="notes">The same four steps as a pipeline. Each key sends the table through the next station. filter: the 32-year-old drops out, five rows remain. group_by: the rows take the colours of their groups, nothing else changes. summarize: one row per group with its count, three omnivores, one flexitarian, one vegetarian. arrange: sorted by the count, the omnivores come first.</aside>
+    <aside class="notes">The same four steps as a pipeline, station by station, and under each station the table it returns. First key: filter() drops the 32-year-old, five rows remain. Second key: group_by() gives the rows the colours of their groups and changes nothing else. Third key: summarize() makes one row per group with its count, three omnivores, one flexitarian and one vegetarian, each in the colour of its group. Fourth key: arrange() sorts by the count, so the omnivores come first. Each table goes on to the next station as a copy, so every intermediate result stays in view.</aside>
   </section>
 
   <section class="slide">
@@ -433,7 +456,7 @@ result &lt;- arrange(counts, desc(n))</div>
 </div>
 <script src="../../stagekit/draw.js?v=0.2.0-ab940a"></script>
 <script src="../../stagekit/anim.js?v=0.2.0-ab940a"></script>
-<script src="deck.js?v=3"></script>
+<script src="deck.js?v=4"></script>
 <script src="../../stagekit/stagekit.js?v=0.2.0-ab940a"></script>
 </body>
 </html>

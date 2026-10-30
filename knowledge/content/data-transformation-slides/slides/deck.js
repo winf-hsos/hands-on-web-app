@@ -90,7 +90,8 @@ function surveyTable(o = {}) {
  * about 205. A copy of each table flies into the box, the table itself stays,
  * and the result goes on into the next transformation.
  * x: survey 0..210, box 310..570, result 670..826, box 926..1186,
- * result 1286..1388, an arrow to "…" at 1500. */
+ * result 1286..1388, an arrow to a small chart at 1500..1680, because a chart
+ * is where most transformations in data analysis end. */
 function miniTable(x, y, cols, rows) {
   let s = "";
   for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++)
@@ -104,7 +105,10 @@ function miniTable(x, y, cols, rows) {
     d.g("t0", miniTable(0, 195, 4, 6)), arrow("a1", 228, 298), box("box1", 310), arrow("a2", 582, 652),
     d.g("t1", miniTable(670, 231, 3, 4)), arrow("a3", 844, 914), box("box2", 926), arrow("a4", 1198, 1268),
     d.g("t2", miniTable(1286, 267, 2, 2)), arrow("a5", 1406, 1476),
-    d.g("dots", d.label(1500, 0, "…", { size: 80, color: C.gray, centerY: 290 })),
+    // the goal of the chain: a chart, axes 1500..1680 x 210..390, three bars
+    d.g("axes", d.line(1500, 210, 1500, 390, { color: C.gray, width: 3 }), d.line(1500, 390, 1680, 390, { color: C.gray, width: 3 })),
+    ...[[1520, 140, "groups-g1"], [1574, 90, "groups-g2"], [1628, 60, "groups-g3"]].map(([x, h, c], k) =>
+      d.g("bar" + k, `<rect x="${x}" y="${388 - h}" width="36" height="${h}" rx="3" fill="${d.color(c)}"/>`)),
     d.g("c0", miniTable(0, 195, 4, 6)), d.g("c1", miniTable(670, 231, 3, 4)));
   const a = d.anim("fig-inout");
   // a copy of the table flies into the box and shrinks there; the table itself stays
@@ -116,7 +120,8 @@ function miniTable(x, y, cols, rows) {
   a.step(a.par(a.show("a3", { dur: 400 }), a.show("box2", { dur: 400 }), a.show("a4", { dur: 400 })),
     feed("c1", "box2", 1056),
     a.par(a.show("t2", { dur: 600 }), a.color("box2", "white", { dur: 600 })));
-  a.step(a.par(a.show("a5", { dur: 500 }), a.show("dots", { dur: 500 })));
+  a.step(a.par(a.show("a5", { dur: 500 }), a.show("axes", { dur: 500 })),
+    ...[0, 1, 2].map((k) => a.show("bar" + k, { dur: 300 })));
 })();
 
 /* --- slide: six basic operations ----------------------------------------------------
@@ -198,7 +203,9 @@ function pictoTable(name, x, y, t, extra = 0) {
  * "age" 15..17, ">= 50)" 19..24, so survey is centred at 480 and age at 792,
  * and the call ends at 1200. Each step points at one part with a note at 32:
  * above survey, below age, and right of the call the new table (4 x 3 cells
- * of 48 x 30, 1360..1570) with two lines beneath. */
+ * of 48 x 30, 1360..1570) with two lines beneath. The last step turns the
+ * call into the pipe form: survey moves to the front of line 1 (y 200) next to
+ * a new |>, and "  filter(age >= 50)" closes up on line 2 (y 320). */
 (function () {
   const code = (name, i, text, color = C.white) =>
     d.g(name, d.label(i * 48, 0, text, { size: 80, mono: true, color, centerY: 260 }));
@@ -209,11 +216,21 @@ function pictoTable(name, x, y, t, extra = 0) {
     d.g("n1", note("the first argument is a table", 480, 60), d.arrow(480, 95, 480, 200, { color: C.gray, width: 3 })),
     d.g("n2", note("columns by their bare name, without quotes and without $", 792, 480), d.arrow(792, 440, 792, 320, { color: C.gray, width: 3 })),
     d.g("n3", d.arrow(1230, 260, 1340, 260, { color: C.gray, width: 3 }), miniTable(1360, 209, 4, 3),
-      d.label(1465, 0, "a new table comes out,\nsurvey stays as it was", { size: 32, anchor: "middle", centerY: 400, lineHeight: 1.4, color: C.light })));
+      d.label(1465, 0, "a new table comes out,\nsurvey stays as it was", { size: 32, anchor: "middle", centerY: 400, lineHeight: 1.4, color: C.light })),
+    // the same call with the pipe: "survey |>" on y 200, "  filter(age >= 50)" on y 320
+    d.g("k-pipe", d.label(7 * 48, 0, "|>", { size: 80, mono: true, color: C.blue, centerY: 200 })),
+    d.g("n4", d.label(0, 0, "we always write it like this; more on the pipe |> later", { size: 32, centerY: 480, color: C.light })));
   const a = d.anim("fig-rules");
   a.step(a.par(a.color("k-survey", "yellow", { part: "text", dur: 400 }), a.show("n1", { dur: 600 })));
   a.step(a.par(a.color("k-survey", "white", { part: "text", dur: 400 }), a.color("k-age", "yellow", { part: "text", dur: 400 }), a.show("n2", { dur: 600 })));
   a.step(a.par(a.color("k-age", "white", { part: "text", dur: 400 }), a.show("n3", { dur: 800 })));
+  // survey moves in front of the verb, the pipe joins them, the verb goes one line down
+  a.step(a.par(a.hide("n1", { dur: 400 }), a.hide("n2", { dur: 400 }), a.hide("n3", { dur: 400 }), a.hide("k-c", { dur: 400 })),
+    a.par(a.move("k-survey", -7 * 48, -60, { dur: 1000 }),
+      ...["k-verb", "k-p"].map((t) => a.move(t, 2 * 48, 60, { dur: 1000 })),
+      ...["k-age", "k-rest"].map((t) => a.move(t, -6 * 48, 60, { dur: 1000 }))),
+    a.show("k-pipe", { dur: 500 }),
+    a.show("n4", { dur: 500 }));
 })();
 
 /* --- slide: six rows of the survey ---------------------------------------------- */
@@ -250,17 +267,26 @@ el("fig-rows").innerHTML = d.svg(1680, 672, surveyTable());
          a.move("r5", 0, -2 * RH, { dur: 700 }));
 })();
 
-/* --- arrange(desc(age)): the rows slide to their new places --------------------------
- * New order 74, 56, 55, 48, 47, 32: row 5 to place 0, 1 to 1, 2 to 2, 6 to 3,
- * 3 to 4, 4 to 5. */
+/* --- arrange(age), then arrange(desc(age)): the rows slide to their places ----------
+ * Ascending 32, 47, 48, 55, 56, 74: row 4 to place 0, 3 to 1, 6 to 2, 2 to 3,
+ * 1 to 4, 5 to 5. Descending is the same order turned round. The code above
+ * gets desc() with the second step (arrangeCode). */
 (function () {
   el("fig-arrange").innerHTML = d.svg(1680, 672, surveyTable());
   const a = d.anim("fig-arrange");
-  const to = { 1: 1, 2: 2, 3: 4, 4: 5, 5: 0, 6: 3 };
+  const asc = { 1: 4, 2: 3, 3: 1, 4: 0, 5: 5, 6: 2 };
+  const sortTo = (from, to) => a.par(...ROWS.map((r) => a.move("r" + r.id, 0, (to(r) - from(r)) * RH, { dur: 1400 })));
+  const k0 = (r) => ROWS.indexOf(r);
   a.step(a.color(".col-age", "yellow", { part: "text", dur: 300 }),
-         a.par(...ROWS.map((r, k) => a.move("r" + r.id, 0, (to[r.id] - k) * RH, { dur: 1400 }))),
+         sortTo(k0, (r) => asc[r.id]),
+         a.color(".col-age", "white", { part: "text", dur: 300 }));
+  a.step(a.color(".col-age", "yellow", { part: "text", dur: 300 }),
+         sortTo((r) => asc[r.id], (r) => 5 - asc[r.id]),
          a.color(".col-age", "white", { part: "text", dur: 300 }));
 })();
+function arrangeCode(slide, step) {
+  slide.querySelector("#arrange-arg").innerHTML = step >= 2 ? '<span class="hl">desc</span>(age)' : "age";
+}
 
 /* --- mutate(): a new column decade, filled row by row --------------------------------
  * decade stands right of organic_share, x 920..1120; "decade" is 6 x 19.2 = 115. */
@@ -277,25 +303,26 @@ el("fig-rows").innerHTML = d.svg(1680, 672, surveyTable());
           a.color("d" + r.id, "white", { part: "text", dur: 120 })))));
 })();
 
-/* --- summarize(): count the rows, then the ages fly into one cell --------------------
- * The result table stands right of the survey: n at 1100..1220, mean_age at
- * 1220..1440 ("mean_age" is 8 x 19.2 = 154 < 220 - 24). */
+/* --- summarize(): count the rows, then the organic shares fly into one cell ----------
+ * The result table stands right of the survey: n at 1100..1220, mean_organic
+ * at 1220..1500 ("mean_organic" is 12 x 19.2 = 230 < 280 - 24). The mean of
+ * 2, 2, 1, 1, 2, 2 is 10 / 6, printed by R as 1.67. */
 (function () {
   const n = { key: "n", x: 1100, w: 120, num: true };
-  const mean = { key: "mean_age", x: 1220, w: 220, num: true };
-  const age = COLS[1];
+  const mean = { key: "mean_organic", x: 1220, w: 280, num: true };
+  const share = COLS[3];
   el("fig-summarize").innerHTML = d.svg(1680, 672, surveyTable(),
     head(n, "rh-n"), head(mean, "rh-mean"),
     d.g("sum-n", cell(n, 0, mid(rowY(0)))),
-    d.g("sum-mean", cell(mean, 52, mid(rowY(0)))),
-    ...ROWS.map((r, k) => d.g("f" + r.id, cell(age, r.age, mid(rowY(k)), { color: C.yellow }))));
+    d.g("sum-mean", cell(mean, "1.67", mid(rowY(0)))),
+    ...ROWS.map((r, k) => d.g("f" + r.id, cell(share, r.organic_share, mid(rowY(k)), { color: C.yellow }))));
   const a = d.anim("fig-summarize");
   a.step(a.par(a.show("rh-n", { dur: 300 }), a.show("sum-n", { dur: 300 })),
     ...ROWS.map((r, k) => a.seq(
       a.par(a.color("r" + r.id, "yellow", { part: "text", dur: 150 }), a.count("sum-n", k + 1, { from: k, dur: 150 })),
       a.color("r" + r.id, "white", { part: "text", dur: 150 }))));
   a.step(a.par(a.show("rh-mean", { dur: 300 }), ...ROWS.map((r) => a.show("f" + r.id, { dur: 300 }))),
-    a.par(...ROWS.map((r) => a.moveTo("f" + r.id, 1330, mid(rowY(0)), { dur: 1000 }))),
+    a.par(...ROWS.map((r) => a.moveTo("f" + r.id, 1440, mid(rowY(0)), { dur: 1000 }))),
     a.par(...ROWS.map((r) => a.hide("f" + r.id, { dur: 200 })), a.show("sum-mean", { dur: 300 })),
     a.par(...COLS.map((c) => a.hide("h-" + c.key, { dur: 500 })), ...ROWS.map((r) => a.hide("r" + r.id, { dur: 500 }))),
     // the result takes the place of the survey (its n column then starts at x 60)
@@ -304,9 +331,13 @@ el("fig-rows").innerHTML = d.svg(1680, 672, surveyTable());
 
 /* --- group_by(): every row takes its group's colour, then the groups part --------- */
 const BLOCKS = { 5: 24, 6: 48 };     // gaps between the groups: omnivore 1-4, flexitarian 5, vegetarian 6
+// Both group slides carry three lines of code at 48 above the figure (down to
+// y 375 on the canvas), so their drawing sits 70 lower: the label "# Groups"
+// then starts below the code, and the last row still ends at 666 < 672.
+const lower = (...parts) => `<g transform="translate(0,70)">${parts.join("")}</g>`;
 const groupsLabel = (name) => d.g(name, d.label(60, 0, "# Groups:   diet [3]", { size: 32, mono: true, keepCase: true, color: C.gray, centerY: 50 }));
 (function () {
-  el("fig-group").innerHTML = d.svg(1680, 672, surveyTable(), groupsLabel("groups"));
+  el("fig-group").innerHTML = d.svg(1680, 672, lower(surveyTable(), groupsLabel("groups")));
   const a = d.anim("fig-group");
   a.step(a.par(a.show("groups", { dur: 600 }),
     ...ROWS.map((r) => a.color("bg" + r.id, GROUP[r.diet], { part: "fill", dur: 600 }))));
@@ -329,11 +360,11 @@ const groupsLabel = (name) => d.g(name, d.label(60, 0, "# Groups:   diet [3]", {
     { name: "q-omni", diet: "omnivore", n: 4, mean_age: 47.5, from: rowY(0) },
     { name: "q-veg", diet: "vegetarian", n: 1, mean_age: 48, from: rowY(5) + BLOCKS[6] },
   ];
-  el("fig-summarize-groups").innerHTML = d.svg(1680, 672,
+  el("fig-summarize-groups").innerHTML = d.svg(1680, 672, lower(
     surveyTable({ dy: BLOCKS, tint: true }), groupsLabel("groups"),
     ...rc.map((c) => head(c, "rh-" + c.key)),
     ...result.map((q, k) => d.g(q.name, rowBg("qbg" + k, 60, 640, rowY(k), d.color(GROUP[q.diet])),
-      ...rc.map((c) => cell(c, q[c.key], mid(rowY(k)))))));
+      ...rc.map((c) => cell(c, q[c.key], mid(rowY(k))))))));
   const a = d.anim("fig-summarize-groups");
   result.forEach((q, k) => a.set(q.name, { y: q.from - rowY(k) }));
   a.step(
@@ -348,61 +379,106 @@ const groupsLabel = (name) => d.g(name, d.label(60, 0, "# Groups:   diet [3]", {
 })();
 
 /* --- the pipe: x |> f(y) is f(x, y) --------------------------------------------------
- * Code font at 80: 48 units per character. Both lines start so that their f
- * stands at x 660: the upper x at 420 (centre 444), the lower one at
- * 660 + 2 x 48 = 756 (centre 780). */
-el("fig-pipe").innerHTML = d.svg(1680, 804,
-  d.label(0, 0, "you write", { size: 32, color: C.gray, centerY: 160 }),
-  d.label(0, 0, "R runs", { size: 32, color: C.gray, centerY: 400, keepCase: true }),
-  d.label(420, 0, "x", { size: 80, mono: true, color: C.yellow, centerY: 160 }),
-  d.label(468, 0, " |> f(y)",{ size: 80, mono: true, centerY: 160 }),
-  d.label(660, 0, "f(", { size: 80, mono: true, centerY: 400 }),
-  d.label(756, 0, "x", { size: 80, mono: true, color: C.yellow, centerY: 400 }),
-  d.label(804, 0, ", y)", { size: 80, mono: true, centerY: 400 }),
-  d.arrow(456, 220, 768, 336, { color: C.yellow, width: 3, head: 18 }),
-  d.label(0, 0, "read |> as \"and then\"", { size: 48, centerY: 600 }),
-  d.label(0, 0, "%>% from older code means the same; ctrl+shift+m types the pipe", { size: 32, color: C.gray, centerY: 700 }));
+ * Code font at 80: 48 units per character. Upper line "x |> f(y)" from x 420:
+ * x at 420 (centre 444), |> at 516, f(y) at 660. Lower line "f(x, y)" with its
+ * f also at 660, so the slot of x is at 756 (centre 780). Step 1: x flies along
+ * a curve into the slot while f( and , y) appear; step 2: how to read it;
+ * step 3: the keys that type it, drawn as keycaps.
+ * Keycaps: code font at 32 (19.2 per character) plus 36, 56 high, a gray
+ * edge 6 below the dark cap; ctrl 0..113, shift 160..292, m 340..395. */
+function keycap(x, cy, label) {
+  const w = Math.round(label.length * 19.2 + 36), y = cy - 28;
+  return `<rect x="${x}" y="${y + 6}" width="${w}" height="56" rx="8" fill="${C.gray}"/>` +
+    `<rect x="${x}" y="${y}" width="${w}" height="56" rx="8" fill="${C.dark}" stroke="${C.gray}" stroke-width="2"/>` +
+    d.label(x + w / 2, 0, label, { size: 32, mono: true, anchor: "middle", centerY: cy });
+}
+(function () {
+  const code = (x, text, cy, color = C.white) => d.label(x, 0, text, { size: 80, mono: true, color, centerY: cy });
+  const plus = (x) => d.label(x, 0, "+", { size: 32, color: C.gray, anchor: "middle", centerY: 720 });
+  el("fig-pipe").innerHTML = d.svg(1680, 804,
+    d.label(0, 0, "you write", { size: 32, color: C.gray, centerY: 150 }),
+    code(420, "x", 150, C.yellow), d.g("pipe-a", code(516, "|>", 150)), code(660, "f(y)", 150),
+    d.g("runs", d.label(0, 0, "R runs", { size: 32, color: C.gray, centerY: 390, keepCase: true })),
+    d.g("f-open", code(660, "f(", 390)), d.g("f-rest", code(804, ", y)", 390)),
+    d.g("route", `<path d="M444 150 C 444 300, 780 240, 780 390" fill="none" stroke="none"/>`),
+    d.g("x-fly", code(420, "x", 150, C.yellow)),
+    d.g("read", d.label(0, 0, "read |> as \"and then\"", { size: 48, centerY: 560 }),
+      d.label(0, 0, "%>% in older code does the same", { size: 32, color: C.gray, centerY: 625 })),
+    d.g("keys", keycap(0, 720, "ctrl"), plus(136), keycap(160, 720, "shift"), plus(316), keycap(340, 720, "m"),
+      d.label(440, 0, "types |> in RStudio and Positron, cmd instead of ctrl on a Mac", { size: 32, color: C.light, centerY: 720, keepCase: true })));
+  const a = d.anim("fig-pipe");
+  a.step(a.par(a.color("pipe-a", "yellow", { part: "text", dur: 300 }), a.show("x-fly", { dur: 1 })),
+    a.par(a.along("x-fly", "route", { dur: 1400 }), a.show("runs", { dur: 600 }),
+      a.show("f-open", { dur: 600 }), a.show("f-rest", { dur: 600 })),
+    a.color("pipe-a", "white", { part: "text", dur: 300 }));
+  a.step(a.show("read", { dur: 600 }));
+  a.step(a.show("keys", { dur: 600 }));
+})();
 
 /* --- a pipeline: the table passes four stations ----------------------------------------
- * Left the code at 32 in the code font, lines 80 apart; the longest,
- * "  summarize(n = n()) |>", is 23 x 19.2 = 442. Right a row of four stations,
- * 230 wide with 40 between (4 x 230 + 3 x 40 = 1040, x 640..1680); "summarize"
- * is 9 x 19.2 = 173 + 40 < 230. The table below the stations has the columns
- * age and diet (760..1200), after summarize() diet and n (760..1180). */
+ * Five stations in a row, centred at x 160 + 340 k: the survey and the four
+ * verbs. Boxes 240 x 80 with the verb in the code font at 32 ("summarize" is
+ * 173 + 40 < 240), the full call above each box at 20 ("summarize(n = n())" is
+ * 216 < 320), arrows in the 100 between the boxes. Under each station the
+ * table it returns, 320 wide: age (90) and diet (230), after summarize() diet
+ * (230) and n (90), header at 260 and rows of 52 from 288 ("flexitarian" is
+ * 211 + 12 < 230). Each step lights the station, a copy of the table before it
+ * moves 340 to the right and changes there; summarize() keeps the colours of
+ * the groups. Everything sits 60 lower, so the last row ends at 660 < 804. */
 (function () {
-  const lines = ["survey |>", "  filter(age >= 40) |>", "  group_by(diet) |>", "  summarize(n = n()) |>", "  arrange(desc(n))"];
-  const st = ["filter", "group_by", "summarize", "arrange"];
-  const T = 200;                                  // top of the table header
-  const ry = (k) => T + RH * (k + 1);
-  const pc = [{ key: "age", x: 760, w: 140, num: true }, { key: "diet", x: 900, w: 300 }];
-  const qc = [{ key: "diet", x: 760, w: 300 }, { key: "n", x: 1060, w: 120, num: true }];
-  const hd = (c, name) => d.g(name, cell(c, c.key, mid(T), { color: C.gray }), d.line(c.x, T + RH, c.x + c.w, T + RH, { color: C.dark }));
-  const parts = [d.line(642, 80, 1678, 80, { color: C.dark })];   // the line through the stations, inset by 2
-  // SVG collapses leading spaces, so the indentation is set in no-break spaces
-  lines.forEach((l, k) => parts.push(d.g("cl" + k, d.label(0, 0, l.replace(/^ +/, (s) => " ".repeat(s.length)), { size: 32, mono: true, centerY: 80 + k * 80 }))));
-  st.forEach((s, k) => parts.push(d.g("st" + (k + 1), d.box(642 + k * 270, 40, 226, 80, s, { size: 32, mono: true }))));
-  pc.forEach((c) => parts.push(hd(c, "ph-" + c.key)));
-  qc.forEach((c) => parts.push(hd(c, "qh-" + c.key)));
-  ROWS.forEach((r, k) => parts.push(d.g("p" + r.id, rowBg("pbg" + r.id, 760, 440, ry(k)),
-    ...pc.map((c) => cell(c, r[c.key], mid(ry(k)))))));
-  const res = [["flexitarian", 1], ["omnivore", 3], ["vegetarian", 1]];
-  res.forEach(([diet, n], k) => parts.push(d.g("q" + k, cell(qc[0], diet, mid(ry(k))), cell(qc[1], n, mid(ry(k))))));
-  parts.push(d.g("pgroups", d.label(760, 0, "# Groups:   diet [3]", { size: 32, mono: true, keepCase: true, color: C.gray, centerY: 170 })));
-  el("fig-pipeline").innerHTML = d.svg(1680, 804, ...parts);
+  const X = (k) => 160 + 340 * k;
+  const RT = 52, top = (p) => 288 + RT * p, rm = (p) => top(p) + RT / 2;
+  const verbs = ["survey", "filter", "group_by", "summarize", "arrange"];
+  const calls = ["", "filter(age >= 40)", "group_by(diet)", "summarize(n = n())", "arrange(desc(n))"];
+  const pc = [{ key: "age", x0: -160, w: 90, num: true }, { key: "diet", x0: -70, w: 230 }];
+  const qc = [{ key: "diet", x0: -160, w: 230 }, { key: "n", x0: 70, w: 90, num: true }];
+  const txt = (x, v, cy, color = C.white, end = false) =>
+    d.label(x, 0, String(v), { size: 32, mono: true, centerY: cy, color, anchor: end ? "end" : "start" });
+  const cellAt = (cx, c, v, cy, color) => c.num ? txt(cx + c.x0 + c.w - 12, v, cy, color, true) : txt(cx + c.x0 + 12, v, cy, color);
+  // a table: a named header and one named group per row (background first, so it can take a group colour)
+  function table(name, k, cols, rows) {
+    const cx = X(k);
+    return d.g(name,
+      d.g(name + "-h", ...cols.map((c) => cellAt(cx, c, c.key, 260, C.gray)), d.line(cx - 160, 284, cx + 160, 284, { color: C.dark })),
+      ...rows.map((r) => d.g(name + "-r" + r.id,
+        `<rect x="${cx - 160}" y="${top(r.pos) + 3}" width="320" height="${RT - 6}" rx="6" fill="${r.tint ? d.color(GROUP[r.diet]) : C.bg}" fill-opacity="0.35"/>`,
+        ...cols.map((c) => cellAt(cx, c, r[c.key], rm(r.pos))))));
+  }
+  const all = ROWS.map((r, p) => ({ ...r, pos: p }));
+  const older = ROWS.filter((r) => r.age >= 40).map((r, p) => ({ ...r, pos: p }));
+  const counts = [{ id: "f", diet: "flexitarian", n: 1 }, { id: "o", diet: "omnivore", n: 3 }, { id: "v", diet: "vegetarian", n: 1 }]
+    .map((r, p) => ({ ...r, pos: p, tint: true }));
+  const parts = [];
+  verbs.forEach((v, k) => {
+    parts.push(d.g("st" + k, d.box(X(k) - 120, 100, 240, 80, v, { size: 32, mono: true })));
+    if (calls[k]) parts.push(d.g("call" + k, d.label(X(k), 0, calls[k], { size: 20, mono: true, anchor: "middle", color: C.gray, centerY: 70 })));
+    if (k < 4) parts.push(d.arrow(X(k) + 124, 140, X(k + 1) - 126, 140, { color: C.gray, width: 3 }));
+  });
+  parts.push(table("t0", 0, pc, all), table("c1", 0, pc, all), table("c2", 1, pc, older),
+    table("c3", 2, pc, older.map((r) => ({ ...r, tint: true }))), table("s3", 3, qc, counts), table("c4", 3, qc, counts),
+    d.g("glab", d.label(X(2) - 160, 0, "# Groups:   diet [3]", { size: 20, mono: true, keepCase: true, color: C.gray, centerY: 222 })));
+  el("fig-pipeline").innerHTML = d.svg(1680, 804, `<g transform="translate(0,60)">`, ...parts, `</g>`);
 
   const a = d.anim("fig-pipeline");
-  // the station k and its code line light up, the previous ones go back to white
+  // station k and its call light up, the previous one goes back
   const light = (k) => a.par(
     a.color("st" + k, "yellow", { dur: 300 }), a.color("st" + k, "yellow", { part: "text", dur: 300 }),
-    a.color("cl" + k, "yellow", { part: "text", dur: 300 }),
+    a.color("call" + k, "yellow", { part: "text", dur: 300 }),
     ...(k > 1 ? [a.color("st" + (k - 1), "white", { dur: 300 }), a.color("st" + (k - 1), "white", { part: "text", dur: 300 }),
-                 a.color("cl" + (k - 1), "white", { part: "text", dur: 300 })] : []));
-  a.step(light(1), a.hide("p4", { dur: 500 }),
-    a.par(a.move("p5", 0, -RH, { dur: 600 }), a.move("p6", 0, -RH, { dur: 600 })));
-  a.step(light(2), a.par(a.show("pgroups", { dur: 600 }),
-    ...ROWS.filter((r) => r.id !== 4).map((r) => a.color("pbg" + r.id, GROUP[r.diet], { part: "fill", dur: 600 }))));
-  a.step(light(3), a.par(a.hide("pgroups", { dur: 700 }),
-    ...pc.map((c) => a.hide("ph-" + c.key, { dur: 700 })), ...ROWS.map((r) => a.hide("p" + r.id, { dur: 700 }))),
-    a.par(...qc.map((c) => a.show("qh-" + c.key, { dur: 700 })), ...[0, 1, 2].map((k) => a.show("q" + k, { dur: 700 }))));
-  a.step(light(4), a.par(a.move("q1", 0, -RH, { dur: 900 }), a.move("q0", 0, RH, { dur: 900 })));
+                 a.color("call" + (k - 1), "gray", { part: "text", dur: 300 })] : []));
+  const carry = (name) => a.seq(a.show(name, { dur: 1 }), a.move(name, 340, 0, { dur: 700 }));
+  // filter: the 32-year-old goes, the two rows below close up
+  a.step(light(1), carry("c1"), a.hide("c1-r4", { dur: 400 }),
+    a.par(a.move("c1-r5", 0, -RT, { dur: 500 }), a.move("c1-r6", 0, -RT, { dur: 500 })));
+  // group_by: the rows take the colours of their groups, nothing else changes
+  a.step(light(2), carry("c2"),
+    a.par(a.show("glab", { dur: 600 }), ...older.map((r) => a.color(`[data-a="c2-r${r.id}"] rect`, GROUP[r.diet], { part: "fill", dur: 600 }))));
+  // summarize: each group falls into its row of the result, in the colour of the group
+  const into = { omnivore: 1, flexitarian: 0, vegetarian: 2 };
+  a.step(light(3), carry("c3"),
+    a.par(a.hide("c3-h", { dur: 700 }), a.show("s3", { dur: 700 }),
+      ...older.map((r) => a.par(a.move("c3-r" + r.id, 0, (into[r.diet] - r.pos) * RT, { dur: 900 }), a.hide("c3-r" + r.id, { dur: 900 })))));
+  // arrange: the omnivores move to the top
+  a.step(light(4), carry("c4"),
+    a.par(a.move("c4-ro", 0, -RT, { dur: 800 }), a.move("c4-rf", 0, RT, { dur: 800 })));
 })();
