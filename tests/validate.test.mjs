@@ -189,6 +189,16 @@ test('a course names a known institution, and its logo must exist', () => {
   assert.deepEqual(noLogo.errors, ['vocabulary.yaml: institution hs-osnabrueck: logo missing.svg is not in knowledge/media/']);
 });
 
+test('a course belongs to one module or several, and a module description is a full URL', () => {
+  assert.deepEqual(check(({ find }) => (lead(find('courses', 'eda-2026-27-ws')).module = ['ea', 'wmg'])).errors, []);
+  const unknown = check(({ find }) => (lead(find('courses', 'eda-2026-27-ws')).module = ['ea', 'xyz']));
+  assert.match(unknown.errors[0], /^courses\/eda-2026-27-ws\/de\.md: module: "xyz" is not a known module/);
+  const empty = check(({ find }) => (lead(find('courses', 'eda-2026-27-ws')).module = []));
+  assert.match(empty.errors[0], /module: expected at least 1 entry/);
+  const badUrl = check(({ vocabulary }) => (vocabulary.modules.ea.handbook = '44m0123'));
+  assert.deepEqual(badUrl.errors, ['vocabulary.yaml: module ea: handbook is not a full URL']);
+});
+
 test('areas: an item names known areas, and every area has one start page', () => {
   const unknown = check(({ find }) => (lead(find('content', 'knock-code')).areas = ['xs']));
   assert.match(unknown.errors[0], /^content\/knock-code\/de\.md: areas: "xs" is not a known area/);

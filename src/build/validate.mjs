@@ -25,6 +25,8 @@ const list = (check, min = 0) => (v) => {
   if (v.length < min) return `expected at least ${min} entr${min === 1 ? 'y' : 'ies'}`;
   return v.map(check).find(Boolean) ?? null;
 };
+// one entry or a list of them, as in `module: ea` or `module: [ea, wmg]`
+const oneOrMore = (check) => (v) => (Array.isArray(v) ? list(check, 1)(v) : check(v));
 const url = (v) => {
   try {
     new URL(v);
@@ -166,7 +168,8 @@ function shapes(vocabulary) {
           code: int(1000, 9999),
           access_code: (v) =>
             typeof v === 'string' && /^[A-Z0-9-]{4,16}$/.test(v) ? null : 'expected upper case letters, digits and hyphens',
-          module: oneOf(modules, 'module'),
+          // the module or modules the course belongs to; their descriptions come from vocabulary.yaml
+          module: oneOrMore(oneOf(modules, 'module')),
           semester: text,
           title: text,
           summary: text,
@@ -175,8 +178,8 @@ function shapes(vocabulary) {
           status,
           updated: date,
         },
-        // a subtitle, where the course is taught, and its official module description
-        optional: { subtitle: text, institution: oneOf(institutions, 'institution'), handbook: url, areas: inAreas },
+        // a subtitle and where the course is taught
+        optional: { subtitle: text, institution: oneOf(institutions, 'institution'), areas: inAreas },
       },
       translation: { required: translation.required, optional: { subtitle: text } },
     },
@@ -290,6 +293,9 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
   for (const [type, def] of Object.entries(vocabulary.types ?? {})) {
     if (!def.icon) errors.push(`vocabulary.yaml: type ${type} has no icon`);
     else if (!iconExists(def.icon)) errors.push(`vocabulary.yaml: type ${type}: there is no Lucide icon "${def.icon}" (see lucide.dev/icons)`);
+  }
+  for (const [key, def] of Object.entries(vocabulary.modules ?? {})) {
+    if (def?.handbook !== undefined && url(def.handbook)) errors.push(`vocabulary.yaml: module ${key}: handbook is not a full URL`);
   }
   for (const [key, def] of Object.entries(vocabulary.institutions ?? {})) {
     for (const field of ['de', 'en', 'url', 'logo']) if (!def?.[field]) errors.push(`vocabulary.yaml: institution ${key} has no ${field}`);

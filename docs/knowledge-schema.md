@@ -346,7 +346,7 @@ sections:
 
 ## 9. Courses
 
-A course is a curated collection for one module in one semester. All
+A course is a curated collection for one module, or a few, in one semester. All
 courses are listed on the site under "Courses"; the access code (or a link
 with it, `/de/learning/?code=…`) adds a course to "My learning", which also
 makes it a filter in the content list.
@@ -356,9 +356,8 @@ makes it a filter in the content list.
 kind: course
 code: 3307                   # short code, like any page
 access_code: LICHT-26        # what students type in; see open decision 6
-module: dup
+module: dup                  # or a list, module: [ea, wmg]
 institution: hs-osnabrueck      # from vocabulary.yaml, with name, address and logo
-handbook: https://www.hs-osnabrueck.de/module/44b0850/   # official module description
 semester: 2026-27 - WS
 title: Digitalisierung und Programmierung
 summary: Begleitmaterial zur Vorlesung im Wintersemester 2026/27.
@@ -388,9 +387,14 @@ everything in a course is available from the start.
 A course may have a `subtitle`, a short line under its title (in the lead and
 in each translation), for example where it belongs in a larger module. Its
 `sections` may be an empty list while the content is being written; the page
-then says so. `institution` and `handbook` are optional. The course page shows the logo and
-name of the institution, both linking to its website, and a link to the
-official module description in the module handbook.
+then says so. `institution` is optional. The course page shows one card per
+module (Nicolas, 2026-10-30): the name of the module, the logo and name of the
+institution, both linking to its website, and a link to the official module
+description. With two or three modules the cards stand side by side and are
+smaller. The address of a module description belongs to the module, not to
+a course, and stands in `vocabulary.yaml`:
+`ea: { de: Empirisches Arbeiten, en: Empirical Research, handbook: "https://…/44m0123/" }`;
+a module without it gets a card without the link.
 
 ## 8a. Slides
 

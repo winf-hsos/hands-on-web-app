@@ -1760,15 +1760,37 @@ details.callout[open] > summary::before {
 
 /* --- institution of a course ------------------------------------------------ */
 
+/* one card per module; two or three side by side, smaller, wrapping on a phone */
+.institutions {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.institutions.is-several {
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+}
+
 .institution {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 0.75rem 1.25rem;
-  margin-top: 1.25rem;
   padding: 0.9rem 1.1rem;
   border: 1px solid var(--rule);
   border-radius: 0.75rem;
+}
+
+.is-several .institution {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.75rem 0.9rem;
+  font-size: 0.9rem;
+}
+
+.is-several .institution-logo img {
+  width: 96px;
 }
 
 .institution-logo img {
@@ -1792,9 +1814,13 @@ details.callout[open] > summary::before {
   gap: 0.15rem;
 }
 
-.institution-name {
+.institution-module {
   color: var(--ink);
   font-weight: 650;
+}
+
+.institution-name {
+  color: var(--quiet);
   text-decoration: none;
 }
 

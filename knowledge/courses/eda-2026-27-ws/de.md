@@ -4,7 +4,6 @@ code: 1419
 access_code: EDA-26
 module: ea
 institution: hs-osnabrueck
-handbook: https://www.hs-osnabrueck.de/module/44m0123/
 areas: [ds]
 semester: 2026-27 - WS
 title: Explorative Datenanalyse

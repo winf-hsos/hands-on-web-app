@@ -385,17 +385,22 @@ export function path(site, doc, lang) {
 
 const courseIcon = raw(iconSvg('graduation-cap'));
 
-/** Logo and name of the institution, with the official module description. */
+/** One card per module of the course: logo and name of the institution, the
+ *  module's name and its official description. Two or three modules stand
+ *  side by side in smaller cards. */
 function institutionBlock(site, doc, lang) {
   const where = site.vocabulary.institutions?.[doc.lead.institution];
-  if (!where && !doc.lead.handbook) return '';
-  return html`<div class="institution">
+  const modules = [].concat(doc.lead.module ?? []).map((key) => site.vocabulary.modules[key]);
+  if (!where && !modules.length) return '';
+  const card = (module) => html`<div class="institution">
     ${where && html`<a class="institution-logo" href="${where.url}" rel="noopener"><img src="/media/${where.logo}" alt="${where[lang]}" width="140" height="59"></a>`}
     <div class="institution-text">
+      ${module && html`<span class="institution-module">${module[lang]}</span>`}
       ${where && html`<a class="institution-name" href="${where.url}" rel="noopener">${where[lang]}</a>`}
-      ${doc.lead.handbook && html`<a class="institution-handbook" href="${doc.lead.handbook}" rel="noopener">${t(lang, 'module_handbook')} ↗</a>`}
+      ${module?.handbook && html`<a class="institution-handbook" href="${module.handbook}" rel="noopener">${t(lang, 'module_handbook')} ↗</a>`}
     </div>
   </div>`;
+  return html`<div class="institutions${modules.length > 1 && ' is-several'}">${(modules.length ? modules : [null]).map(card)}</div>`;
 }
 
 /** All courses, open to everyone; the access code only adds one to "My learning". */

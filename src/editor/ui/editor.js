@@ -244,7 +244,7 @@ function renderShared() {
   }
   if (work.section === 'courses') {
     html.push(field('Kurs-Code für Studierende', input('access_code', d.access_code), { hint: 'Großbuchstaben, Ziffern, Bindestrich' }));
-    html.push(field('Modul', select('module', Object.entries(v.modules).map(([k, l]) => [k, l.de]), d.module)));
+    html.push(field('Modul', multi('module', Object.entries(v.modules).map(([k, l]) => [k, l.de]), [].concat(d.module ?? [])), { wide: true }));
     html.push(field('Semester', input('semester', d.semester), { hint: 'z. B. 2026-27 - WS' }));
   }
   if (work.section === 'projects') {
