@@ -98,7 +98,7 @@ institutions:
 
 modules:
   dup: { de: Digitalisierung und Programmierung, en: Digitalisation and Programming, handbook: "https://www.hs-osnabrueck.de/module/44b0850/" }
-  wmg: { de: Werkzeuge der Markt- und Gesellschaftsforschung, en: Tools of Market and Social Research }
-  pmg: { de: Praxis der Markt- und Gesellschaftsforschung, en: Practice of Market and Social Research }
+  wmg: { de: Werkzeuge der Markt- und Gesellschaftsforschung, en: Tools of Market and Social Research, handbook: "https://www.hs-osnabrueck.de/module/44b0730/" }
+  pmg: { de: Praxis der Markt- und Gesellschaftsforschung, en: Practice of Market and Social Research, handbook: "https://www.hs-osnabrueck.de/module/44b0725/" }
   ea: { de: Empirisches Arbeiten, en: Empirical Research, handbook: "https://www.hs-osnabrueck.de/module/44m0123/" }
   bda: { de: Big Data Analytics, en: Big Data Analytics }
