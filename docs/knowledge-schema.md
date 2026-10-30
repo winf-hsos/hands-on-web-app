@@ -202,7 +202,9 @@ The body is plain Markdown with a few conventions:
   (`codebook.de.svg`, `codebook.en.svg`).
 - **Callouts** use the blockquote form known from GitHub:
   `> [!TIP]`, `> [!NOTE]`, `> [!WARNING]`. They render as boxes and remain
-  readable as plain text. `> [!HINT]` and `> [!SOLUTION]` render folded, so
+  readable as plain text. `> [!WARNING]` and `> [!CAUTION]` are not red,
+  which marks errors, but carry a warning sign and a title in capitals
+  ("ACHTUNG", "VORSICHT"). `> [!HINT]` and `> [!SOLUTION]` render folded, so
   that a learner opens them only when needed; several hints in one text are
   numbered.
 - **Python code** in a ` ```python ` block becomes a small editor on the page

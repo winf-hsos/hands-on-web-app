@@ -8,9 +8,10 @@ import { tokenize } from '../client/highlight.js';
 const CALLOUT = /^\[!(NOTE|TIP|WARNING|IMPORTANT|CAUTION|HINT|SOLUTION)\]\s*/;
 const FOLDED = new Set(['HINT', 'SOLUTION']);
 const WIKI = /\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g;
+// Warnings stand in capitals with a warning sign (site.css), not in red (Nicolas, 2026-10-30).
 const CALLOUT_TITLES = {
-  de: { NOTE: 'Hinweis', TIP: 'Tipp', WARNING: 'Achtung', IMPORTANT: 'Wichtig', CAUTION: 'Vorsicht', HINT: 'Tipp anzeigen', SOLUTION: 'Lösung anzeigen' },
-  en: { NOTE: 'Note', TIP: 'Tip', WARNING: 'Warning', IMPORTANT: 'Important', CAUTION: 'Caution', HINT: 'Show a hint', SOLUTION: 'Show the solution' },
+  de: { NOTE: 'Hinweis', TIP: 'Tipp', WARNING: 'ACHTUNG', IMPORTANT: 'Wichtig', CAUTION: 'VORSICHT', HINT: 'Tipp anzeigen', SOLUTION: 'Lösung anzeigen' },
+  en: { NOTE: 'Note', TIP: 'Tip', WARNING: 'WARNING', IMPORTANT: 'Important', CAUTION: 'CAUTION', HINT: 'Show a hint', SOLUTION: 'Show the solution' },
 };
 // With several hints in one text they are numbered, since each builds on the one before.
 const NUMBERED_HINT = { de: (n) => `Tipp ${n} anzeigen`, en: (n) => `Show hint ${n}` };
