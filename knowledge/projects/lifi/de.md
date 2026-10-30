@@ -16,8 +16,10 @@ phases:
     challenges:
       - id: challenge-0
   - id: alphabet
+    items: [place-value-systems, why-two-states, why-ten]
     challenges:
       - id: challenge-1
+        items: [lifi-colour-alphabet-quiz]
   - id: word
     items: [knock-code, morse-code, morse-and-the-type-case]
     challenges:
@@ -28,11 +30,12 @@ phases:
       - id: challenge-3
         items: [morse-code]
   - id: packet
+    items: [byte, hexadecimal, binary-prefixes]
     challenges:
       - id: challenge-4
         items: [logic-gates]
 status: draft
-updated: 2026-10-22
+updated: 2026-10-30
 ---
 
 Jede Person im Team bekommt ein kleines Gerät mit einer RGB-LED und einem
@@ -72,7 +75,7 @@ geführt.
 Python im Suchpfad, auf dem Mac heißen die Befehle `python3` und `pip3`. Zeigt
 der Brick Viewer das Gerät nicht an, prüft Kabel, Anschluss und Stromversorgung.
 Und wundert euch nicht, dass der Sensor nie genau die Zahlen meldet, die ihr der
-LED geschickt habt: Genau damit beginnt Phase 2.
+LED geschickt habt: Genau damit beginnt die nächste Phase.
 
 ## Wie viele Farben kann der Sensor unterscheiden? {#alphabet}
 
@@ -80,6 +83,15 @@ Jetzt geht es um die Strecke selbst. Ein Sensor misst nie zweimal genau
 dasselbe, Umgebungslicht stört, und der Abstand verändert alles. Die Frage
 dieser Phase ist, wie viele Zustände euer Aufbau zuverlässig auseinanderhalten
 kann, denn das ist euer Alphabet für alles Weitere.
+
+Ein solches Alphabet ist ein Stellenwertsystem, und die Zahl eurer Farben ist
+seine Basis: Wer vier Farben sicher unterscheidet, arbeitet zur Basis 4, und
+eine Folge von Farben ist eine Zahl ([[place-value-systems]]). Daraus folgt
+zweierlei für alles Weitere: Die Reihenfolge gehört zur Nachricht, denn
+Rot-Gelb-Grün und Grün-Gelb-Rot sind verschiedene Codewörter, und die Rechnung
+geht in beide Richtungen. Mit *k* Farben und *n* Stellen unterscheidet ihr
+*k*ⁿ Codewörter, und wer weiß, wie viele Zeichen er braucht, kann ausrechnen,
+wie viele Stellen das kostet.
 
 ### Challenge 1: Das Alphabet {#challenge-1}
 
@@ -93,7 +105,9 @@ mit eurer eigenen Optik zwischen den Geräten; es zählt der bessere Wert, und
 beide gehören in eure Notizen.
 
 **Bei der Abnahme** werden am Testtisch 20 zufällige Symbole übertragen. Als
-Live-Änderung nehmt ihr ein weiteres Symbol in euer Alphabet auf.
+Live-Änderung erweitert ihr euer Alphabet, etwa auf bis zu zwölf Symbole, und
+lasst den Test erneut laufen; dafür müsst ihr die Stellen in eurem Code finden,
+die von der Größe des Alphabets abhängen.
 
 **Typische Stolpersteine:** feste Schwellenwerte statt einer Kalibrierung vor
 jedem Durchgang, der ungefilterte Kanal C wird übersehen, obwohl er der
@@ -152,7 +166,7 @@ Protokollbeschreibung auf.
 einem anderen Team, und jedes Team baut einen Empfänger für das Protokoll des
 anderen. Nach dem Tausch sind keine Rückfragen erlaubt; was unklar ist, wird
 aufgeschrieben. Die Phase endet mit einer Normungssitzung, in der die ganze
-Gruppe sich auf einen gemeinsamen Rahmen für Phase 5 einigt.
+Gruppe sich auf einen gemeinsamen Rahmen für das Finale einigt.
 
 **Gemessen wird,** ob der Empfänger ohne Hilfe richtig liest und wie viele Teams
 mit eurer Beschreibung zurechtkamen. Bei der Abnahme entscheidet jemand anderes,
@@ -177,8 +191,8 @@ selbst.
 
 ### Challenge 4: Das Paket {#challenge-4}
 
-**Ziel:** Eine unbekannte Datei von höchstens 2 KB, etwa ein Text oder ein
-kleines Bild, wird Byte für Byte übertragen. Ob sie wirklich unverändert
+**Ziel:** Eine unbekannte Datei von höchstens 2 KiB (2048 Byte), etwa ein Text
+oder ein kleines Bild, wird Byte für Byte übertragen. Ob sie wirklich unverändert
 angekommen ist, zeigt ein Vergleich der Prüfsummen (SHA-256).
 
 **Aufgabe:** Der Rahmen der Gruppe legt Präambel, Dateityp, Länge, Nutzdaten,
@@ -187,7 +201,7 @@ Symbolrate, Kalibrierung, wie ihr mit auseinanderlaufenden Uhren umgeht und eure
 Optik. Erstmals dürft ihr auch den Rückweg nutzen: Dreht ihr eines der Geräte
 um, kann der Empfänger dem Sender antworten, etwa um ein kaputtes Stück neu
 anzufordern. Das ist erlaubt, aber nicht verlangt. Eure Strecke schafft grob 10
-bis 50 Bit pro Sekunde, rechnet also nach, wie lange 2 KB dauern.
+bis 50 Bit pro Sekunde, rechnet also nach, wie lange 16.384 Bit dauern.
 
 **Gemessen wird** die Dauer, aber nur, wenn die Prüfsumme stimmt; eine
 Übertragung, die bei 90 Prozent abbricht, zählt nicht. Dass der Empfänger die
@@ -232,19 +246,12 @@ erkannt wird.
 
 Für den Zugriff auf LED und Sensor gibt es das Kursmodul `lifi_hardware`. Damit
 reichen Befehle wie `led.set_color(r, g, b)` und `sensor.read()`, ohne dass ihr
-euch um die Details der Hardware kümmern müsst. Den Kursordner richtet ihr mit
-dem Befehl `/onboarding` in OpenCode ein; er installiert alles und testet euer
-Gerät. Eure eigenen Programme gehören in den Ordner `my-code`, den spätere
-Aktualisierungen des Kursmaterials nie anfassen.
+euch um die Details der Hardware kümmern müsst. Wie ihr das Kursmodul und die
+Vorlagen auf euren Rechner bekommt, steht in eurem Kurs.
 
 Für jede Challenge gibt es eine Vorlage mit fest vorgegebenen Funktionen und
 einem Testskript. Mit genau diesem Skript testet ihr selbst, und mit ihm wird
 auch abgenommen; ändert es deshalb nicht.
-
-> [!NOTE]
-> Das Kursmodul schickt eure Messwerte automatisch an den Kursserver. Dort
-> seht ihr sie im Team-Cockpit als Zeitverlauf von LED-Farbe und Sensorkanälen,
-> was bei der Fehlersuche sehr hilft.
 
 ## So wird abgenommen
 
@@ -259,7 +266,7 @@ einer Vorgabe. Damit zeigt ihr, dass ihr versteht, was ihr mit dem KI-Assistente
 gebaut habt. Eine schriftliche Dokumentation ist nicht verlangt, aber
 Messprotokolle und eine kurze Liste der Stellen, an denen eine Messung einen
 Vorschlag der KI widerlegt hat, helfen euch selbst am meisten. Einzige Ausnahme
-ist die Protokollbeschreibung in Phase 4, ohne die der Interop-Test nicht
+ist die Protokollbeschreibung aus Challenge 3, ohne die der Interop-Test nicht
 funktioniert.
 
 Wie die Challenges in eurem Semester bewertet werden und wann die Abnahmen

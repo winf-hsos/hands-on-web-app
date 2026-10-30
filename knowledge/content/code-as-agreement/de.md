@@ -9,6 +9,8 @@ level: 1
 duration: 20
 topics: [representing-information]
 modules: [dup]
+relations:
+  requires: [byte]
 status: draft
 updated: 2026-10-21
 ---

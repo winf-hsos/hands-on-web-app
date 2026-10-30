@@ -38,12 +38,16 @@ for (const question of questions) {
   actions.append(check, verdict);
   question.querySelector('.quiz-options').after(actions);
   const explanation = question.querySelector('.quiz-explanation');
+  const reasons = (show) =>
+    options.forEach((o) => o.querySelector('.quiz-reason')?.toggleAttribute('hidden', !show(o)));
 
   function evaluate() {
     const ok = options.every((o) => (o.dataset.correct === 'true') === (o.getAttribute('aria-checked') === 'true'));
     question.classList.add('is-checked', ok ? 'is-correct' : 'is-wrong');
     verdict.textContent = ok ? labels.correct : labels.wrong;
     explanation?.removeAttribute('hidden');
+    // the reasons of what was chosen and of what would have been right
+    reasons((o) => o.getAttribute('aria-checked') === 'true' || o.dataset.correct === 'true');
     check.textContent = labels.again;
     check.hidden = false;
     check.disabled = false;
@@ -60,6 +64,7 @@ for (const question of questions) {
     question.classList.remove('is-checked', 'is-correct', 'is-wrong');
     options.forEach((o) => o.setAttribute('aria-checked', 'false'));
     explanation?.setAttribute('hidden', '');
+    reasons(() => false);
     check.textContent = labels.check;
     check.hidden = !multiple;
     check.disabled = true;

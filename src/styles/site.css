@@ -2062,6 +2062,23 @@ details.callout[open] > summary::before {
   margin: 0;
 }
 
+/* The reason for one option, inside it, shown after answering. The mark
+   then stays beside the first line instead of the middle of the block. */
+.quiz-option:has(.quiz-reason)::before {
+  top: calc(0.65rem + 0.8em);
+}
+
+.prose .quiz-reason {
+  margin-top: 0.4rem;
+  font-size: 0.92rem;
+  color: var(--quiet);
+  animation: reveal 0.35s var(--ease);
+}
+
+.quiz-reason p {
+  margin: 0;
+}
+
 /* One question at a time (client/quiz.js): a bar with one segment per
    question on top, Back and Next below, a short result at the end. */
 .quiz-bar {
@@ -3318,4 +3335,158 @@ details.callout[open] > summary::before {
     transition: none;
     animation: none;
   }
+}
+
+/* The byte switchboard (client/byte-switchboard.js): eight switches with
+   their place values, the sum, and the byte in four readings. A switch that
+   is on takes the accent colour, like a chosen quiz option. */
+.byte-switchboard {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.75rem;
+}
+
+.bs-bits {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.bs-col {
+  display: grid;
+  justify-items: center;
+  gap: 0.15rem;
+  font-family: var(--mono);
+}
+
+.bs-power {
+  font-size: 0.75rem;
+  color: var(--quiet);
+}
+
+.bs-weight {
+  font-size: 0.9rem;
+  color: var(--quiet);
+  transition: color 0.2s;
+}
+
+.bs-col.is-on .bs-weight {
+  color: var(--accent-ink);
+  font-weight: 700;
+}
+
+.bs-bit {
+  width: 100%;
+  aspect-ratio: 1;
+  margin-top: 0.25rem;
+  border: 2px solid var(--rule);
+  border-radius: 0.5rem;
+  background: var(--paper-2);
+  color: var(--quiet);
+  font: 700 clamp(1.1rem, 4vw, 1.7rem) / 1 var(--mono);
+  cursor: pointer;
+  touch-action: none;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
+}
+
+.bs-bit:hover {
+  border-color: var(--accent);
+}
+
+.bs-bit[aria-pressed='true'] {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+  transform: translateY(2px);
+}
+
+.bs-bit.is-flipped {
+  animation: bs-flip 0.4s var(--ease);
+}
+
+@keyframes bs-flip {
+  from {
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--warn) 55%, transparent);
+  }
+}
+
+.prose .bs-sum {
+  min-height: 1.5em;
+  margin: 1rem 0;
+  font: 650 1.1rem var(--mono);
+  color: var(--accent-ink);
+  text-align: center;
+}
+
+.bs-outputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 0.75rem 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+}
+
+.bs-out {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.bs-label,
+.bs-note {
+  font-size: 0.8rem;
+  color: var(--quiet);
+}
+
+.bs-value {
+  font: 700 1.6rem/1.2 var(--mono);
+}
+
+.prose .bs-message {
+  min-height: 1.5em;
+  margin: 0.75rem 0 0;
+  color: var(--quiet);
+}
+
+.bs-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.bs-keys {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: var(--quiet);
+}
+
+@media (hover: none) {
+  .bs-keys {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bs-bit,
+  .bs-bit.is-flipped {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* Figures from the decks are drawn for a light page (stagekit figures.py
+   --theme light); on a dark page they keep a light ground of their own. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .prose img[src$='.svg'] {
+    background: #fff;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+  }
+}
+:root[data-theme='dark'] .prose img[src$='.svg'] {
+  background: #fff;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
 }

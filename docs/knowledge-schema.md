@@ -199,7 +199,8 @@ The body is plain Markdown with a few conventions:
 - **Images** are relative paths into the item's `media/` folder,
   `![Alt text](media/codebook.svg)`. Text inside images should be avoided or
   kept language-neutral; otherwise there is one image per language
-  (`codebook.de.svg`, `codebook.en.svg`).
+  (`codebook.de.svg`, `codebook.en.svg`). The build copies the folder next
+  to the item's page, in every area and language and on the drafts site.
 - **Callouts** use the blockquote form known from GitHub:
   `> [!TIP]`, `> [!NOTE]`, `> [!WARNING]`. They render as boxes and remain
   readable as plain text. `> [!WARNING]` and `> [!CAUTION]` are not red,
@@ -249,6 +250,11 @@ The body is plain Markdown with a few conventions:
 - **The dplyr demonstrator** is placed with an empty ` ```verb-demo ` block,
   **the game with three doors** with an empty ` ```monty-hall ` block. The
   game records every round and shows the rounds as R vectors to copy.
+  **The byte switchboard** is placed with an empty ` ```byte-switchboard `
+  block: eight switches with their place values, and the byte as binary,
+  decimal, hexadecimal and text, with counting up and down that shows the
+  carry and the overflow. It is the first of the LiFi demonstrators to come
+  over, rebuilt in the design of the platform rather than embedded.
 - **No embedded HTML and no embedded pages from elsewhere.** That keeps the
   rule from the concept that nothing on the site comes from anywhere but the
   knowledge base.
@@ -264,7 +270,9 @@ in a form that reads like a printed worksheet:
 Das Alphabet hat 26 Buchstaben.
 
 - [ ] Zwei
+  > Mit zwei Positionen gibt es nur 4 × 4 = 16 Codewörter.
 - [x] Drei
+  > Drei Positionen ergeben 4 × 4 × 4 = 64 Codewörter.
 - [ ] Vier
 - [ ] Sechsundzwanzig
 
@@ -273,13 +281,19 @@ Das Alphabet hat 26 Buchstaben.
 
 Each `##` heading is a question, `[x]` marks the correct answer (several are
 allowed for multiple-select), and the blockquote after the list is the
-explanation shown after answering. Question ids for progress are derived from
-the position (`q1`, `q2`, …); if questions are reordered later, an explicit id
-can be added as `## Frage {#q-positions}`.
+explanation shown after answering. A blockquote indented under an option is
+the reason for that option; after answering, the page shows the reasons of the
+options chosen and of the correct ones, so that a wrong choice is explained
+where it was made. Question ids for progress are derived from the position
+(`q1`, `q2`, …); if questions are reordered later, an explicit id can be added
+as `## Frage {#q-positions}`.
 
 This form is deliberately independent of the existing question pools, as the
-concept requires. If the platform later takes over the practice quizzes of the
-existing websites, a converter can translate between the two.
+concept requires. `scripts/convert-questions.mjs <pool-folder> <de|en> [id …]`
+turns questions of a pool in the format of the skill multiple-choice-pruefung
+into this form, with the pool's ids as explicit ids and its reasons as option
+reasons, as a starting point that is then rewritten for the platform. It
+refuses questions that are not public, since those belong to an exam.
 
 ## 7a. Exercises
 
@@ -429,6 +443,12 @@ The deck loads the stagekit runtime from `../../stagekit/`, as in the folders
 where decks are made; the repository keeps that runtime in `vendor/stagekit/`
 and the build publishes it next to the decks. The build fails if the deck or
 any file it loads is missing, or if it loads anything from another site.
+
+The drawings of a deck can serve its lessons as well. `scripts/why-ten-figures.mjs`,
+run after the build, renders the figures of the deck `why-ten` with stagekit's
+`tools/figures.py` in the light palette, once per language, and copies each
+into the `media/` folder of the lesson that uses it as `<name>.<lang>.svg`; a
+change to a drawing in `deck.js` thus reaches the lesson by running it again.
 
 ## 9a. Projects
 

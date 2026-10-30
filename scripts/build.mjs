@@ -245,7 +245,12 @@ function renderSite(knowledge, base, { write, asset }) {
       writePage(lang, pages.projects(site, lang));
       for (const doc of site.projects) writePage(lang, pages.project(site, doc, lang));
       writePage(lang, pages.learning(site, lang));
-      for (const doc of site.items) writePage(lang, pages.item(site, doc, lang));
+      for (const doc of site.items) {
+        writePage(lang, pages.item(site, doc, lang));
+        // the item's own images, next to its page, where `media/…` points
+        const media = join(doc.dir, 'media');
+        if (existsSync(media)) cpSync(media, join(DIST, site.url(doc, lang), 'media'), { recursive: true });
+      }
       for (const doc of site.paths) writePage(lang, pages.path(site, doc, lang));
       for (const doc of site.courses) writePage(lang, pages.course(site, doc, lang));
       write(`${site.link(lang)}index.json`, JSON.stringify(clientIndex(site, lang)));

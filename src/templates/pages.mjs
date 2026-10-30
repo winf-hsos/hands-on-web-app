@@ -167,7 +167,12 @@ const topicTags = (site, topics, lang) =>
 
 /** The browser modules a rendered text needs: code boxes and demonstrators. */
 const scriptsFor = (body) =>
-  [body.includes('data-runner') && 'runner', body.includes('data-verb-demo') && 'verb-demo', body.includes('data-monty-hall') && 'monty-hall'].filter(Boolean);
+  [
+    body.includes('data-runner') && 'runner',
+    body.includes('data-verb-demo') && 'verb-demo',
+    body.includes('data-monty-hall') && 'monty-hall',
+    body.includes('data-byte-switchboard') && 'byte-switchboard',
+  ].filter(Boolean);
 
 export function item(site, doc, lang) {
   const text = site.localize(doc, lang);

@@ -15,7 +15,7 @@ level: 1
 duration: 5
 topics: [representing-information, processing-information]
 relations:
-  see_also: [morse-code, code-as-agreement, morse-and-the-type-case, logic-gates, nand-gate]
+  see_also: [morse-code, code-as-agreement, morse-and-the-type-case, logic-gates, nand-gate, place-value-systems, binary-numbers, hexadecimal]
 status: draft
 updated: 2026-10-22
 ---

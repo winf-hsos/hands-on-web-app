@@ -5,7 +5,7 @@ summary: >-
   sensor, and in five challenges you get it to transmit a whole file without
   errors.
 translation_of: de
-based_on: 2026-10-22
+based_on: 2026-10-30
 ---
 
 Each person in the team gets a small device with an RGB LED and a colour
@@ -43,7 +43,7 @@ someone watches. Nothing is measured and there is no ranking.
 the search path on Windows, and on a Mac the commands are `python3` and `pip3`.
 If the Brick Viewer does not show the device, check cable, port and power. And
 do not be surprised that the sensor never reports exactly the numbers you sent
-to the LED: that is exactly where phase 2 begins.
+to the LED: that is exactly where the next phase begins.
 
 ## How many colours can the sensor tell apart? {#alphabet}
 
@@ -51,6 +51,15 @@ Now it is about the link itself. A sensor never measures exactly the same
 thing twice, ambient light interferes, and distance changes everything. The
 question of this phase is how many states your setup can reliably tell apart,
 because that is your alphabet for everything that follows.
+
+Such an alphabet is a place value system, and the number of your colours is
+its base: if you can reliably tell four colours apart, you work in base 4, and
+a sequence of colours is a number ([[place-value-systems]]). Two things follow
+for everything after this: the order is part of the message, because
+red-yellow-green and green-yellow-red are different code words, and the
+arithmetic runs both ways. With *k* colours and *n* positions you can tell
+*k*ⁿ code words apart, so if you know how many characters you need, you can
+work out how many positions that costs.
 
 ### Challenge 1: The alphabet {#challenge-1}
 
@@ -63,7 +72,9 @@ once with the bare device and once with your own optics between the devices;
 the better value counts, and both belong in your notes.
 
 **At the acceptance test** 20 random symbols are sent at the test table. As the
-live change you add one more symbol to your alphabet.
+live change you extend your alphabet, for example to up to twelve symbols, and
+run the test again; for that you have to find the places in your code that
+depend on the size of the alphabet.
 
 **Typical pitfalls:** fixed thresholds instead of calibrating before every run,
 overlooking the unfiltered channel C although it is the most sensitive, too few
@@ -119,7 +130,7 @@ waiting, reading or done. You write your rules down as a protocol description.
 another team, and each team builds a receiver for the other's protocol. After
 the swap no questions are allowed; whatever is unclear gets written down. The
 phase ends with a standards meeting in which the whole group agrees on a shared
-frame for phase 5.
+frame for the final.
 
 **What is measured** is whether the receiver reads correctly without help and
 how many teams managed with your description. At the acceptance test someone
@@ -143,8 +154,8 @@ defines what a packet looks like; everything else is up to you.
 
 ### Challenge 4: The packet {#challenge-4}
 
-**Goal:** An unknown file of at most 2 KB, such as a text or a small picture,
-is transmitted byte by byte. Whether it really arrived unchanged is shown by
+**Goal:** An unknown file of at most 2 KiB (2048 bytes), such as a text or a
+small picture, is transmitted byte by byte. Whether it really arrived unchanged is shown by
 comparing checksums (SHA-256).
 
 **Task:** The group's frame fixes preamble, file type, length, payload,
@@ -153,7 +164,7 @@ calibration, how you deal with clocks drifting apart, and your optics are up to
 you. For the first time you may use the way back as well: turn one of the
 devices around and the receiver can answer the sender, for example to ask for
 a broken piece again. That is allowed but not required. Your link manages
-roughly 10 to 50 bits per second, so work out how long 2 KB will take.
+roughly 10 to 50 bits per second, so work out how long 16,384 bits will take.
 
 **What is measured** is the duration, but only if the checksum matches; a
 transmission that breaks off at 90 percent does not count. That the receiver
@@ -197,19 +208,12 @@ is recognised.
 
 For access to LED and sensor there is the course module `lifi_hardware`. With
 it, commands like `led.set_color(r, g, b)` and `sensor.read()` are enough,
-without you having to deal with the details of the hardware. You set up the
-course folder with the command `/onboarding` in OpenCode; it installs
-everything and tests your device. Your own programs belong in the folder
-`my-code`, which later updates of the course material never touch.
+without you having to deal with the details of the hardware. How you get the
+course module and the templates onto your computer is stated in your course.
 
 For each challenge there is a template with fixed functions and a test script.
 You test yourselves with exactly this script, and it is also used for the
 acceptance test, so do not change it.
-
-> [!NOTE]
-> The course module sends your measurements to the course server
-> automatically. There you see them in the team cockpit as a timeline of LED
-> colour and sensor channels, which helps a lot when hunting for errors.
 
 ## How acceptance works
 
@@ -224,7 +228,7 @@ according to a given task. This shows that you understand what you built with
 the AI assistant. Written documentation is not required, but measurement logs
 and a short list of the places where a measurement disproved a suggestion from
 the AI help you most yourselves. The only exception is the protocol
-description in phase 4, without which the interop test cannot work.
+description from challenge 3, without which the interop test cannot work.
 
 How the challenges are assessed in your semester and when the acceptance tests
 take place is stated in your course.

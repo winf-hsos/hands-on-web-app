@@ -111,10 +111,12 @@ function runnable(tree) {
 }
 
 // ```verb-demo becomes the place of the dplyr demonstrator (client/verb-demo.js),
-// ```monty-hall the game with three doors (client/monty-hall.js).
+// ```monty-hall the game with three doors (client/monty-hall.js),
+// ```byte-switchboard eight switches for one byte (client/byte-switchboard.js).
 const DEMOS = {
   'verb-demo': { className: 'verb-demo', dataVerbDemo: '' },
   'monty-hall': { className: 'monty-hall', dataMontyHall: '' },
+  'byte-switchboard': { className: 'byte-switchboard', dataByteSwitchboard: '' },
 };
 
 function demos(tree) {
@@ -127,7 +129,9 @@ function demos(tree) {
 }
 
 // Each `##` section becomes one question: the task list holds the options
-// ([x] marks correct ones), a blockquote after it the explanation.
+// ([x] marks correct ones), a blockquote after it the explanation. A
+// blockquote inside an option is the reason for that option, shown once the
+// question is answered.
 function quiz(tree) {
   const out = [];
   let current = null;
@@ -156,6 +160,9 @@ function quiz(tree) {
       for (const item of node.children) {
         item.data = { hProperties: { className: ['quiz-option'], dataCorrect: item.checked ? 'true' : 'false' } };
         item.checked = null;
+        for (const part of item.children) {
+          if (part.type === 'blockquote') part.data = { hName: 'div', hProperties: { className: ['quiz-reason'], hidden: true } };
+        }
       }
     } else if (node.type === 'blockquote') {
       node.data = { hName: 'div', hProperties: { className: ['quiz-explanation'], hidden: true } };

@@ -48,3 +48,16 @@ test('the R highlighter knows the pipe, the arrow, dplyr verbs, NA and names wit
 test('a monty-hall block becomes the place of the game with three doors', () => {
   assert.match(render('```monty-hall\n```\n'), /<div class="monty-hall" data-monty-hall=""><\/div>/);
 });
+
+test('a byte-switchboard block becomes the place of the eight switches', () => {
+  assert.match(render('```byte-switchboard\n```\n'), /<div class="byte-switchboard" data-byte-switchboard=""><\/div>/);
+});
+
+test('a quote inside an option is its reason, hidden until answered; one after the list explains the question', () => {
+  const md = '## Welche Basis? {#ns-001}\n\n- [x] Zwei\n  > Zwei Zustände.\n- [ ] Zehn\n\n> Allgemein.\n';
+  const html = renderMarkdown(md, { lang: 'de', quiz: true, resolve: () => null });
+  assert.match(html, /data-question="ns-001"/);
+  assert.equal((html.match(/class="quiz-reason" hidden/g) ?? []).length, 1);
+  assert.match(html, /<li class="quiz-option" data-correct="true">[\s\S]*<div class="quiz-reason" hidden>[\s\S]*Zwei Zustände\.[\s\S]*<\/li>/);
+  assert.match(html, /<div class="quiz-explanation" hidden>[\s\S]*Allgemein\./);
+});

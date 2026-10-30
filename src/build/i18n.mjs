@@ -478,3 +478,41 @@ export const montyHallLabels = {
     reset: 'Start over',
   },
 };
+
+/** Labels of the byte switchboard (client/byte-switchboard.js). */
+export const byteSwitchboardLabels = {
+  de: {
+    bit: 'Bit {n}, Stellenwert {w}',
+    binary: 'Binär',
+    binaryNote: 'zwei Päckchen zu vier Bit',
+    decimal: 'Dezimal',
+    decimalNote: '0 bis 255',
+    hex: 'Hexadezimal',
+    hexNote: 'eine Ziffer je Päckchen',
+    text: 'Als Text (ASCII)',
+    textNote: 'Zeichen Nummer {v} in der ASCII-Tabelle',
+    noText: 'an dieser Nummer steht kein druckbares Zeichen',
+    overflow: '255 + 1 passt nicht in acht Bit: Der Übertrag fällt vorn heraus, und das Byte steht wieder auf 0.',
+    underflow: '0 − 1 gibt es in einem Byte nicht: Es springt auf 255, alle Schalter an.',
+    random: 'Zufall',
+    reset: 'Alle aus',
+    keys: 'Tasten, wenn ein Schalter ausgewählt ist: 1 bis 8 schalten, ↑ und ↓ zählen.',
+  },
+  en: {
+    bit: 'Bit {n}, place value {w}',
+    binary: 'Binary',
+    binaryNote: 'two packets of four bits',
+    decimal: 'Decimal',
+    decimalNote: '0 to 255',
+    hex: 'Hexadecimal',
+    hexNote: 'one digit per packet',
+    text: 'As text (ASCII)',
+    textNote: 'character number {v} in the ASCII table',
+    noText: 'no printable character at this number',
+    overflow: '255 + 1 does not fit into eight bits: the carry falls off the front, and the byte is back at 0.',
+    underflow: 'There is no 0 − 1 in a byte: it jumps to 255, all switches on.',
+    random: 'Random',
+    reset: 'All off',
+    keys: 'Keys, once a switch is selected: 1 to 8 flip, ↑ and ↓ count.',
+  },
+};
