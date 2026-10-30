@@ -1,0 +1,59 @@
+# Design values of the stagekit decks on Hands-on Data Science (area ds).
+# Taken from the Data Analytics style (02 - Lehrinhalte\Data Analytics\style.toml)
+# with one change: the lead colour is the pink of the platform in its version
+# for a dark background (#F472B6) instead of the university blue. stagekit calls
+# the lead colour "blue", so that key holds the pink; code highlights (.hl),
+# links and part colours follow it.
+#
+# Red is set to a purer #EF4444 so that "wrong" stays apart from the pink on a
+# projector (decided by Nicolas with the draft of the dplyr deck, 2026-10-30).
+# Yellow ("current") and green (check) keep their meaning.
+#
+# Generate a deck's theme.css with
+#   python C:\code\stagekit\tools\theme.py knowledge/styles/hands-on-data-science.toml <deck folder>/theme.css
+
+[colors]
+background = "000000"
+white = "FFFFFF"
+gray_light = "B6BEC6"
+gray = "7D868F"
+gray_dark = "4A5259"
+blue = "F472B6"         # HODS pink: lead colour, links, highlights in code
+green = "4ADE80"
+yellow = "FFD23F"
+red = "EF4444"
+
+[colors.light]
+background = "FFFFFF"
+white = "1F2933"
+gray_light = "4A5259"
+gray = "7D868F"
+gray_dark = "C5CCD3"
+blue = "9D174D"
+green = "15803D"
+yellow = "DB2777"
+red = "B91C1C"
+
+# Group colours (group_by), as in the dplyr demonstrator on the site: they only
+# say "which group", never a verdict. theme.py writes --groups-g1 to --groups-g3.
+[colors.groups]
+g1 = "33B5E9"
+g2 = "C084FC"
+g3 = "2DD4BF"
+
+[fonts]
+text = "Arial"
+code = "Roboto Mono"
+
+[sizes]
+large = 40
+normal = 24
+small = 16
+tiny = 10
+
+[stagekit]
+language = "en"
+margin = 120
+
+# Pink ramp for part colours (data-part-colors in a deck), light to dark:
+#   F9A8D4  F472B6  EC4899  DB2777  BE185D
