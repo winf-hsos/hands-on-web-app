@@ -91,7 +91,9 @@ function surveyTable(o = {}) {
  * and the result goes on into the next transformation.
  * x: survey 0..210, box 310..570, result 670..826, box 926..1186,
  * result 1286..1388, an arrow to a small chart at 1500..1680, because a chart
- * is where most transformations in data analysis end. */
+ * is where most transformations in data analysis end. The arrow out of a box
+ * appears with the table that comes out of it. The bars are plain and carry
+ * the letters A, B, C under the axis, at 20 centred on the bar. */
 function miniTable(x, y, cols, rows) {
   let s = "";
   for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++)
@@ -107,8 +109,9 @@ function miniTable(x, y, cols, rows) {
     d.g("t2", miniTable(1286, 267, 2, 2)), arrow("a5", 1406, 1476),
     // the goal of the chain: a chart, axes 1500..1680 x 210..390, three bars
     d.g("axes", d.line(1500, 210, 1500, 390, { color: C.gray, width: 3 }), d.line(1500, 390, 1680, 390, { color: C.gray, width: 3 })),
-    ...[[1520, 140, "groups-g1"], [1574, 90, "groups-g2"], [1628, 60, "groups-g3"]].map(([x, h, c], k) =>
-      d.g("bar" + k, `<rect x="${x}" y="${388 - h}" width="36" height="${h}" rx="3" fill="${d.color(c)}"/>`)),
+    ...[[1520, 140, "A"], [1574, 90, "B"], [1628, 60, "C"]].map(([x, h, name], k) =>
+      d.g("bar" + k, `<rect x="${x}" y="${388 - h}" width="36" height="${h}" rx="3" fill="${C.light}"/>`,
+        d.label(x + 18, 0, name, { size: 20, anchor: "middle", keepCase: true, color: C.gray, centerY: 414 }))),
     d.g("c0", miniTable(0, 195, 4, 6)), d.g("c1", miniTable(670, 231, 3, 4)));
   const a = d.anim("fig-inout");
   // a copy of the table flies into the box and shrinks there; the table itself stays
@@ -116,10 +119,10 @@ function miniTable(x, y, cols, rows) {
     a.par(a.color(boxName, "yellow", { dur: 400 }), a.moveTo(copy, cx, 300, { dur: 1100 }), a.scale(copy, 0.3, { dur: 1100 })),
     a.hide(copy, { dur: 250 }));
   a.step(feed("c0", "box1", 440));
-  a.step(a.par(a.show("t1", { dur: 700 }), a.color("box1", "white", { dur: 700 })));
-  a.step(a.par(a.show("a3", { dur: 400 }), a.show("box2", { dur: 400 }), a.show("a4", { dur: 400 })),
+  a.step(a.par(a.show("a2", { dur: 700 }), a.show("t1", { dur: 700 }), a.color("box1", "white", { dur: 700 })));
+  a.step(a.par(a.show("a3", { dur: 400 }), a.show("box2", { dur: 400 })),
     feed("c1", "box2", 1056),
-    a.par(a.show("t2", { dur: 600 }), a.color("box2", "white", { dur: 600 })));
+    a.par(a.show("a4", { dur: 600 }), a.show("t2", { dur: 600 }), a.color("box2", "white", { dur: 600 })));
   a.step(a.par(a.show("a5", { dur: 500 }), a.show("axes", { dur: 500 })),
     ...[0, 1, 2].map((k) => a.show("bar" + k, { dur: 300 })));
 })();
@@ -270,17 +273,21 @@ el("fig-rows").innerHTML = d.svg(1680, 672, surveyTable());
 /* --- arrange(age), then arrange(desc(age)): the rows slide to their places ----------
  * Ascending 32, 47, 48, 55, 56, 74: row 4 to place 0, 3 to 1, 6 to 2, 2 to 3,
  * 1 to 4, 5 to 5. Descending is the same order turned round. The code above
- * gets desc() with the second step (arrangeCode). */
+ * gets desc() with the second step (arrangeCode). As in a spreadsheet, a small
+ * arrow at the header of age shows the direction: it appears pointing up and
+ * turns round with desc(). It stands at x 212, between the column's left edge
+ * (180) and the header "age" (238..296). */
 (function () {
-  el("fig-arrange").innerHTML = d.svg(1680, 672, surveyTable());
+  const sortArrow = d.g("sortdir", `<path d="M212 146 V120 M203 130 L212 120 L221 130" fill="none" stroke="${C.yellow}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`);
+  el("fig-arrange").innerHTML = d.svg(1680, 672, surveyTable(), sortArrow);
   const a = d.anim("fig-arrange");
   const asc = { 1: 4, 2: 3, 3: 1, 4: 0, 5: 5, 6: 2 };
   const sortTo = (from, to) => a.par(...ROWS.map((r) => a.move("r" + r.id, 0, (to(r) - from(r)) * RH, { dur: 1400 })));
   const k0 = (r) => ROWS.indexOf(r);
-  a.step(a.color(".col-age", "yellow", { part: "text", dur: 300 }),
+  a.step(a.par(a.color(".col-age", "yellow", { part: "text", dur: 300 }), a.show("sortdir", { dur: 300 })),
          sortTo(k0, (r) => asc[r.id]),
          a.color(".col-age", "white", { part: "text", dur: 300 }));
-  a.step(a.color(".col-age", "yellow", { part: "text", dur: 300 }),
+  a.step(a.par(a.color(".col-age", "yellow", { part: "text", dur: 300 }), a.rotate("sortdir", 180, { dur: 500 })),
          sortTo((r) => asc[r.id], (r) => 5 - asc[r.id]),
          a.color(".col-age", "white", { part: "text", dur: 300 }));
 })();
@@ -421,13 +428,13 @@ function keycap(x, cy, label) {
  * 173 + 40 < 240), the full call above each box at 20 ("summarize(n = n())" is
  * 216 < 320), arrows in the 100 between the boxes. Under each station the
  * table it returns, 320 wide: age (90) and diet (230), after summarize() diet
- * (230) and n (90), header at 260 and rows of 52 from 288 ("flexitarian" is
+ * (230) and n (90), header at 300 and rows of 52 from 328 ("flexitarian" is
  * 211 + 12 < 230). Each step lights the station, a copy of the table before it
  * moves 340 to the right and changes there; summarize() keeps the colours of
- * the groups. Everything sits 60 lower, so the last row ends at 660 < 804. */
+ * the groups. Everything sits 60 lower, so the last row ends at 700 < 804. */
 (function () {
   const X = (k) => 160 + 340 * k;
-  const RT = 52, top = (p) => 288 + RT * p, rm = (p) => top(p) + RT / 2;
+  const RT = 52, top = (p) => 328 + RT * p, rm = (p) => top(p) + RT / 2;
   const verbs = ["survey", "filter", "group_by", "summarize", "arrange"];
   const calls = ["", "filter(age >= 40)", "group_by(diet)", "summarize(n = n())", "arrange(desc(n))"];
   const pc = [{ key: "age", x0: -160, w: 90, num: true }, { key: "diet", x0: -70, w: 230 }];
@@ -439,7 +446,7 @@ function keycap(x, cy, label) {
   function table(name, k, cols, rows) {
     const cx = X(k);
     return d.g(name,
-      d.g(name + "-h", ...cols.map((c) => cellAt(cx, c, c.key, 260, C.gray)), d.line(cx - 160, 284, cx + 160, 284, { color: C.dark })),
+      d.g(name + "-h", ...cols.map((c) => cellAt(cx, c, c.key, 300, C.gray)), d.line(cx - 160, 324, cx + 160, 324, { color: C.dark })),
       ...rows.map((r) => d.g(name + "-r" + r.id,
         `<rect x="${cx - 160}" y="${top(r.pos) + 3}" width="320" height="${RT - 6}" rx="6" fill="${r.tint ? d.color(GROUP[r.diet]) : C.bg}" fill-opacity="0.35"/>`,
         ...cols.map((c) => cellAt(cx, c, r[c.key], rm(r.pos))))));
@@ -456,7 +463,7 @@ function keycap(x, cy, label) {
   });
   parts.push(table("t0", 0, pc, all), table("c1", 0, pc, all), table("c2", 1, pc, older),
     table("c3", 2, pc, older.map((r) => ({ ...r, tint: true }))), table("s3", 3, qc, counts), table("c4", 3, qc, counts),
-    d.g("glab", d.label(X(2) - 160, 0, "# Groups:   diet [3]", { size: 20, mono: true, keepCase: true, color: C.gray, centerY: 222 })));
+    d.g("glab", d.label(X(2) - 160, 0, "# Groups:   diet [3]", { size: 20, mono: true, keepCase: true, color: C.gray, centerY: 262 })));
   el("fig-pipeline").innerHTML = d.svg(1680, 804, `<g transform="translate(0,60)">`, ...parts, `</g>`);
 
   const a = d.anim("fig-pipeline");

@@ -10,9 +10,6 @@
     /* part 2: the verb's code above, the table at the same place on every slide */
     .slide .code.verb-code { position: absolute; left: var(--margin); top: 180px; }
     .figure.below { top: 300px; bottom: calc(var(--margin) * 0.9); }
-    /* photos for text on the left: 64 % high, so the photo starts at x 691 */
-    .slide img.photo.short { top: 18%; height: 64%; }
-    .slide .photo-text.narrow { width: 28%; font-size: var(--normal); }
     /* code next to its explanation; 140 between leaves room for the copy button */
     .pairs { display: grid; grid-template-columns: auto auto; column-gap: 140px; row-gap: 36px; align-items: center; }
     .pairs .gr { font-size: var(--small); }
@@ -43,9 +40,17 @@
     .remark.warn { color: var(--blue); display: flex; align-items: center; gap: 16px; }
     .remark.warn .icon { width: 1em; height: 1em; }
     /* seven ways to choose columns: two columns, the explanation under each block */
-    .ways { display: grid; grid-template-columns: 1fr 1fr; column-gap: 80px; row-gap: 28px; }
+    .ways { display: grid; grid-template-columns: auto auto; column-gap: 200px; row-gap: 28px; }
     .ways .gr { font-size: var(--small); color: var(--gray-light); margin-top: 4px; }
     .ways .code { width: fit-content; }   /* the copy button sits right of the code, not of the cell */
+    /* words in a table of commands stay in the text font */
+    table.tt th.prose, table.tt td.prose { font-family: var(--font); }
+    /* a legend in a thin frame, kept away from the right edge */
+    .legend-box { margin-right: 60px; }
+    .legend-box .legend { border: 1px solid var(--gray-dark); border-radius: 8px; padding: 24px 32px; }
+    /* a plan in words, an arrow, the verb it becomes */
+    .plan { display: grid; grid-template-columns: auto 140px auto; column-gap: 48px; row-gap: 18px; align-items: center; font-size: var(--normal); }
+    .plan .arrow { width: 140px; height: 24px; color: var(--gray); display: block; }
   </style>
 </head>
 <body>
@@ -63,8 +68,7 @@
 
   <!-- opening photo, before the first part -->
   <section class="slide">
-    <img class="photo short" src="img/opening-brick-box.jpg" alt="">
-    <div class="photo-text narrow">nobody builds straight from the jumbled box: sorting, picking out, grouping and putting together turn loose bricks into something that makes sense.</div>
+    <img class="photo" src="img/opening-brick-box.jpg" alt="">
     <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
     <aside class="notes">A box of building bricks, all mixed up. Nobody builds straight out of this box: first you pick out the bricks you need, sort them, group them by colour or size, and only then do you put something together. Data works the same way. Hardly any question can be read off the raw data, but a handful of basic operations, such as picking, sorting, grouping and summarizing, turns any table into the one that holds the answer.</aside>
   </section>
@@ -98,13 +102,13 @@
     <h2>the same ideas everywhere</h2>
     <div class="content">
       <table class="tt wide keep-case">
-        <tr><th class="left">operation</th><th class="left">dplyr</th><th class="left">SQL</th><th class="left">pandas</th><th class="left">excel</th></tr>
-        <tr><td class="left">select columns</td><td class="left">select()</td><td class="left">SELECT</td><td class="left">df[columns]</td><td class="left">hide columns</td></tr>
-        <tr><td class="left">filter rows</td><td class="left">filter()</td><td class="left">WHERE</td><td class="left">df.query()</td><td class="left">filter</td></tr>
-        <tr><td class="left">sort</td><td class="left">arrange()</td><td class="left">ORDER BY</td><td class="left">sort_values()</td><td class="left">sort</td></tr>
-        <tr><td class="left">new columns</td><td class="left">mutate()</td><td class="left">SELECT … AS</td><td class="left">df.assign()</td><td class="left">formula column</td></tr>
-        <tr><td class="left">summarize</td><td class="left">summarize()</td><td class="left">COUNT, AVG</td><td class="left">df.agg()</td><td class="left">pivot table</td></tr>
-        <tr><td class="left">group</td><td class="left">group_by()</td><td class="left">GROUP BY</td><td class="left">df.groupby()</td><td class="left">pivot table</td></tr>
+        <tr><th class="left prose">operation</th><th class="left prose">dplyr</th><th class="left prose">SQL</th><th class="left prose">pandas</th><th class="left prose">excel</th></tr>
+        <tr><td class="left prose">select columns</td><td class="left">select()</td><td class="left">SELECT</td><td class="left">df[columns]</td><td class="left prose">hide columns</td></tr>
+        <tr><td class="left prose">filter rows</td><td class="left">filter()</td><td class="left">WHERE</td><td class="left">df.query()</td><td class="left prose">filter</td></tr>
+        <tr><td class="left prose">sort</td><td class="left">arrange()</td><td class="left">ORDER BY</td><td class="left">sort_values()</td><td class="left prose">sort</td></tr>
+        <tr><td class="left prose">new columns</td><td class="left">mutate()</td><td class="left">SELECT … AS</td><td class="left">df.assign()</td><td class="left prose">formula column</td></tr>
+        <tr><td class="left prose">summarize</td><td class="left">summarize()</td><td class="left">COUNT, AVG</td><td class="left">df.agg()</td><td class="left prose">pivot table</td></tr>
+        <tr><td class="left prose">group</td><td class="left">group_by()</td><td class="left">GROUP BY</td><td class="left">df.groupby()</td><td class="left prose">pivot table</td></tr>
       </table>
     </div>
     <aside class="notes">The six operations are not an invention of R. SQL has them, pandas in Python has them, and in Excel you do them by hand with filters, sorting and pivot tables. Whoever has understood the operations once finds their way around SQL and pandas quickly, because only the names change.</aside>
@@ -134,8 +138,7 @@
     <div class="code verb-code">survey |&gt;
   <span class="hl">select</span>(id, diet)</div>
     <div class="figure below" id="fig-select"></div>
-    <div class="footnote"><span class="mono">survey |&gt; select(id, diet)</span> is short for <span class="mono">select(survey, id, diet)</span>; more on the pipe <span class="mono">|&gt;</span> in part 3</div>
-    <aside class="notes">From now on we write every verb with the pipe: survey, and then select. For now it is enough to know that the pipe puts the table into the first slot of the verb; part 3 shows why this helps. select() keeps the columns you name. First key: we name id and diet. Second key: the other two columns disappear and diet moves up to id. All six rows are still there; select() never touches the rows.</aside>
+    <aside class="notes">As announced, we write every verb with the pipe: survey, and then select. select() keeps the columns you name. First key: we name id and diet. Second key: the other two columns disappear and diet moves up to id. All six rows are still there; select() never touches the rows.</aside>
   </section>
 
   <section class="slide">
@@ -382,27 +385,19 @@ result &lt;- arrange(counts, desc(n))</div>
     <aside class="notes">This is how you write it: one step per line, the pipe at the end of each line. And this is how you read it, key by key: take the survey, and then keep everyone aged 40 or older, and then group by diet, and then count, and then sort by the count. The code reads in the order in which it runs.</aside>
   </section>
 
-  <section class="slide">
+  <section class="slide has-punch">
     <h2>plan in words, then translate</h2>
     <div class="content">
-      <div class="beside" style="column-gap: 120px">
-        <div class="lines">
-          <div>take the survey</div>
-          <div>keep the rows with an organic share</div>
-          <div>split by diet</div>
-          <div>average and count per group</div>
-          <div>sort by the average</div>
-        </div>
-        <div class="lines mono">
-          <div data-step="1">survey</div>
-          <div data-step="2">filter()</div>
-          <div data-step="3">group_by()</div>
-          <div data-step="4">summarize()</div>
-          <div data-step="5">arrange()</div>
-        </div>
+      <div class="plan">
+        <div>take the survey</div><div data-step="1"><svg class="arrow" viewBox="0 0 140 24" aria-hidden="true"><path d="M2 12 H134 M124 4 L136 12 L124 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="mono" data-step="1">survey</div>
+        <div>keep the rows with an organic share</div><div data-step="2"><svg class="arrow" viewBox="0 0 140 24" aria-hidden="true"><path d="M2 12 H134 M124 4 L136 12 L124 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="mono" data-step="2">filter()</div>
+        <div>split by diet</div><div data-step="3"><svg class="arrow" viewBox="0 0 140 24" aria-hidden="true"><path d="M2 12 H134 M124 4 L136 12 L124 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="mono" data-step="3">group_by()</div>
+        <div>average and count per group</div><div data-step="4"><svg class="arrow" viewBox="0 0 140 24" aria-hidden="true"><path d="M2 12 H134 M124 4 L136 12 L124 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="mono" data-step="4">summarize()</div>
+        <div>sort by the average</div><div data-step="5"><svg class="arrow" viewBox="0 0 140 24" aria-hidden="true"><path d="M2 12 H134 M124 4 L136 12 L124 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="mono" data-step="5">arrange()</div>
       </div>
     </div>
-    <aside class="notes">Back to our question: do vegetarians buy more organic food than others? Before writing code, plan the steps in words. Take the survey. Keep the rows that have an organic share. Split by diet. Compute an average and a count per group. Sort by the average. Then translate line by line; each line becomes one verb.</aside>
+    <div class="punch" data-step="6">the real task is breaking the question into steps, because translating each step into a verb is the easy part.</div>
+    <aside class="notes">Back to our question: do vegetarians buy more organic food than others? Before writing code, plan the steps in words. Take the survey. Keep the rows that have an organic share. Split by diet. Compute an average and a count per group. Sort by the average. Then translate line by line, key by key; each line becomes one verb. Last key: this is the actual work. Knowing the verbs is quickly learned; the thinking lies in splitting a question into steps in the right order, and that is what you practise in every exercise.</aside>
   </section>
 
   <section class="slide">
@@ -447,8 +442,7 @@ result &lt;- arrange(counts, desc(n))</div>
   </section>
 
   <section class="slide">
-    <img class="photo short" src="img/closing-brick-chart.jpg" alt="">
-    <div class="photo-text narrow"><div>to practise: the learning path "data transformation with <span class="keep-case">R</span> and dplyr" on hands-on data science.</div></div>
+    <img class="photo" src="img/closing-brick-chart.jpg" alt="">
     <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
     <aside class="notes">The same bricks, now sorted by colour and built into a small bar chart: a handful of operations in the right order turned the jumble into something that answers a question. To practise, the learning path on Hands-on Data Science shows the same verbs with R boxes that run in the browser.</aside>
   </section>
@@ -456,7 +450,7 @@ result &lt;- arrange(counts, desc(n))</div>
 </div>
 <script src="../../stagekit/draw.js?v=0.2.0-ab940a"></script>
 <script src="../../stagekit/anim.js?v=0.2.0-ab940a"></script>
-<script src="deck.js?v=4"></script>
+<script src="deck.js?v=5"></script>
 <script src="../../stagekit/stagekit.js?v=0.2.0-ab940a"></script>
 </body>
 </html>

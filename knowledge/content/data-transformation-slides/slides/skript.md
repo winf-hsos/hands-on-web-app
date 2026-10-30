@@ -97,7 +97,7 @@ missing. The exclamation mark turns a condition round, so
 **`arrange()` sorts rows (frames 35 to 37).** `survey |> arrange(age)` sorts
 ascending, from the youngest to the oldest: 32, 47, 48, 55, 56, 74. Wrapping
 the column in `desc()` turns the order round, and the same rows run from the
-oldest to the youngest. Nothing is added or removed; only the order changes.
+oldest to the youngest. As in a spreadsheet, a small arrow at the column shows the direction and turns round with `desc()`. Nothing is added or removed; only the order changes.
 
 **Ascending, descending, several columns (frame 38).** Without `desc()` the
 order is ascending. For numbers a minus sign is a shortcut: `arrange(-age)`
@@ -193,13 +193,14 @@ survey, and then keep everyone aged 40 or older, and then group by diet, and
 then count, and then sort by the count. The code reads in the order in which
 it runs.
 
-**Plan in words, then translate (frames 80 to 85).** Back to the question
+**Plan in words, then translate (frames 80 to 86).** Back to the question
 whether vegetarians buy more organic food. Before writing code, the steps are
 planned in words: take the survey, keep the rows with an organic share, split
 by diet, average and count per group, sort by the average. Each line then
-becomes one verb.
+becomes one verb. This is the real task: the verbs are learned quickly, while
+the thinking lies in breaking a question into steps in the right order.
 
-**The answer (frames 86 and 87).**
+**The answer (frames 87 and 88).**
 
 ```r
 survey |>
@@ -220,12 +221,12 @@ respondents, and there the question can be answered. Copy the code into an R
 box on the site or into Positron, run it, and then change one line, for
 example `median()` instead of `mean()`.
 
-**Six verbs and a pipe (frame 88).** `select()` chooses columns, `filter()`
+**Six verbs and a pipe (frame 89).** `select()` chooses columns, `filter()`
 rows, `arrange()` the order, `mutate()` adds columns, `summarize()` makes one
 row, `group_by()` makes the next verb work per group, and `|>` chains them
 with "and then".
 
-**The chart of bricks (frame 89).** The same bricks, now sorted by colour and
+**The chart of bricks (frame 90).** The same bricks, now sorted by colour and
 built into a small bar chart: a handful of operations in the right order
 turned the jumble into something that answers a question. The learning path
 "Data transformation with R and dplyr" on Hands-on Data Science practises the
