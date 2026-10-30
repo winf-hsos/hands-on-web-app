@@ -504,6 +504,51 @@ select {
   transform: none;
 }
 
+/* a done check takes its mark back on click (site.js) */
+.row.is-done :is(.row-step, .row-done) {
+  cursor: pointer;
+}
+
+.row.is-done :is(.row-step, .row-done):hover {
+  filter: brightness(1.12);
+}
+
+.row.is-done :is(.row-step, .row-done):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 50%;
+}
+
+.undo-pop {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  padding: 0.3rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.6rem;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.18);
+}
+
+.undo-pop button {
+  font: inherit;
+  font-size: 0.92rem;
+  padding: 0.45rem 0.75rem;
+  border: 0;
+  border-radius: 0.4rem;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.undo-pop button:hover,
+.undo-pop button:focus-visible {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  outline: none;
+}
+
 /* numbered steps of a path or course section */
 .trail {
   border-top: 0;

@@ -36,9 +36,69 @@ if (page) {
   );
 }
 
+// The green check of a done row in a path, course or list is a button: it
+// offers to take the mark back, in a small popover beside it.
+const { markedDone, markUndone } = document.body.dataset;
+let undo;
+
+function offerUndo(check) {
+  const id = check.closest('[data-progress-id]').dataset.progressId;
+  if (!undo) {
+    undo = document.createElement('div');
+    undo.className = 'undo-pop';
+    undo.popover = 'auto';
+    undo.innerHTML = '<button type="button"></button>';
+    undo.firstChild.textContent = markUndone;
+    document.body.append(undo);
+    addEventListener('scroll', () => undo.matches(':popover-open') && undo.hidePopover(), { passive: true });
+    undo.addEventListener('toggle', (e) => e.newState === 'closed' && undo.check?.setAttribute('aria-expanded', 'false'));
+  }
+  undo.firstChild.onclick = () => {
+    undo.hidePopover();
+    update(id, (p) => {
+      p.done = undefined;
+    });
+    check.closest('[data-progress-id]').querySelector('.row-link')?.focus();
+  };
+  undo.check = check;
+  const box = check.getBoundingClientRect();
+  undo.style.left = `${Math.max(8, Math.min(box.left - 8, innerWidth - 260))}px`;
+  undo.style.top = `${box.bottom + 6}px`;
+  undo.showPopover();
+  check.setAttribute('aria-expanded', 'true');
+  undo.firstChild.focus();
+}
+
+document.addEventListener('click', (e) => {
+  const check = e.target.closest('.row.is-done :is(.row-step, .row-done)');
+  if (check) offerUndo(check);
+});
+document.addEventListener('keydown', (e) => {
+  const check = e.target.closest?.('.row.is-done :is(.row-step, .row-done)');
+  if (check && (e.key === 'Enter' || e.key === ' ')) {
+    e.preventDefault();
+    offerUndo(check);
+  }
+});
+
 function render(progress) {
   for (const el of document.querySelectorAll('[data-progress-id]')) {
-    el.classList.toggle('is-done', isDone(progress, el.dataset.progressId));
+    const done = isDone(progress, el.dataset.progressId);
+    el.classList.toggle('is-done', done);
+    const check = el.querySelector(':scope > :is(.row-step, .row-done)');
+    if (!check) continue;
+    if (done) {
+      Object.assign(check, { tabIndex: 0, title: `${markedDone} – ${markUndone}` });
+      check.setAttribute('role', 'button');
+      check.setAttribute('aria-label', `${markedDone}: ${markUndone}`);
+      check.setAttribute('aria-haspopup', 'true');
+      check.setAttribute('aria-expanded', 'false');
+      check.removeAttribute('aria-hidden');
+    } else {
+      for (const name of ['tabindex', 'role', 'aria-label', 'aria-haspopup', 'aria-expanded']) check.removeAttribute(name);
+      check.title = check.classList.contains('row-done') ? markedDone : '';
+      if (check.classList.contains('row-step')) check.setAttribute('aria-hidden', 'true');
+    }
   }
   for (const el of document.querySelectorAll('[data-progress-ids]')) {
     const ids = el.dataset.progressIds.split(' ').filter(Boolean);
