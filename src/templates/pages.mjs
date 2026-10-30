@@ -18,6 +18,8 @@ export function home(site, lang) {
   const text = site.localize(doc, lang);
   const featured = doc.lead.featured_path ? site.path.get(doc.lead.featured_path) : undefined;
   const samples = (doc.lead.samples ?? []).map((id) => site.item.get(id));
+  // "Hands-on" on the first line, the name of the area whole on the second
+  const [first, ...rest] = text.title.split(' ');
   return {
     path: site.link(lang),
     title: text.title,
@@ -26,7 +28,7 @@ export function home(site, lang) {
     content: html`
       <section class="hero">
         <div class="hero-text">
-          <h1 class="hero-title">${text.title}</h1>
+          <h1 class="hero-title"><span>${first}</span> <span>${rest.join(' ')}</span></h1>
           <p class="lead">${text.summary}</p>
           <ul class="ways">
             ${featured &&

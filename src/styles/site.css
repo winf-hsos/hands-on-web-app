@@ -356,10 +356,22 @@ select {
   min-height: 26rem;
 }
 
+.hero-text {
+  container-type: inline-size;
+}
+
+/* Two lines, the area name never broken: the size follows the column so that
+   the longest name, "Artificial Intelligence" (about 9.6em), fits, and is the
+   same on every start page. */
 .hero-title {
-  font-size: clamp(2.4rem, 1.4rem + 4vw, 3.6rem);
+  font-size: min(clamp(2.4rem, 1.4rem + 4vw, 3.6rem), 10.4cqi);
   line-height: 1.02;
   letter-spacing: -0.035em;
+}
+
+.hero-title span {
+  display: block;
+  white-space: nowrap;
 }
 
 .ways {
