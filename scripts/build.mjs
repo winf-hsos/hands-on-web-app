@@ -16,6 +16,7 @@ import { iconSvg } from '../src/build/icons.mjs';
 import { layout, chooser } from '../src/templates/layout.mjs';
 import * as pages from '../src/templates/pages.mjs';
 import { codeInHtml } from '../src/build/code-terms.mjs';
+import { withoutDrafts, DRAFTS_BASE } from '../src/build/drafts.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 // Pages are written to a fresh folder that replaces dist/ only at the end,
@@ -199,20 +200,38 @@ function render(knowledge) {
     // names of functions and packages are code on every page (build/code-terms.mjs)
     writeFileSync(file, file.endsWith('.html') ? codeInHtml(text) : text);
   };
+  // the published site, and the whole one with drafts under /drafts/
+  const publishedKnowledge = withoutDrafts(knowledge);
+  const published = renderSite(publishedKnowledge, '', { write, asset });
+  const full = renderSite(knowledge, DRAFTS_BASE, { write, asset });
+  write('404.html', String(layout({ site: createSite(publishedKnowledge, areas[0]), lang: 'de', asset, entrances: published.entrances.de, ...pages.notFound() })));
+  write(
+    'index.html',
+    `<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Hands-on</title>
+<meta http-equiv="refresh" content="1; url=/de/">
+<script>const l=(navigator.languages||[navigator.language]).find(x=>/^(de|en)/i.test(x)),d=new URLSearchParams(location.search).has('drafts')?'${DRAFTS_BASE}':'';location.replace(d+(l&&/^en/i.test(l)?'/en/':'/de/'))</script>
+</head><body><p><a href="/de/">Deutsch</a> · <a href="/en/">English</a></p></body></html>\n`,
+  );
+  return published.count + full.count;
+}
+
+/** Writes all areas and the entrance under `base`; returns the number of pages and the entrances. */
+function renderSite(knowledge, base, { write, asset }) {
+  const areas = Object.keys(knowledge.vocabulary.areas);
   let count = 0;
   // name and summary of each area, for the entrance and the area menu
   const entrances = Object.fromEntries(
     LANGS.map((lang) => [
       lang,
       areas.map((key) => {
-        const site = createSite(knowledge, key);
+        const site = createSite(knowledge, key, base);
         return { key, name: knowledge.vocabulary.areas[key][lang], summary: site.localize(site.home, lang).summary };
       }),
     ]),
   );
   // every area is a part of the site of its own, built from the same knowledge
   for (const area of areas) {
-    const site = createSite(knowledge, area);
+    const site = createSite(knowledge, area, base);
     const writePage = (lang, page) => {
       write(page.path, String(layout({ site, lang, asset, pyodide: PYODIDE_BASE, webr: { base: WEBR_BASE, repo: WEBR_REPO_BASE }, total: site.items.length, entrances: entrances[lang], ...page })));
       count += 1;
@@ -235,19 +254,10 @@ function render(knowledge) {
 
   // the entrance: one page per language that leads into the areas
   for (const lang of LANGS) {
-    write(`/${lang}/`, String(chooser({ lang, areas: entrances[lang], asset })));
+    write(`${base}/${lang}/`, String(chooser({ lang, areas: entrances[lang], asset, base })));
     count += 1;
   }
-  write('404.html', String(layout({ site: createSite(knowledge, areas[0]), lang: 'de', asset, entrances: entrances.de, ...pages.notFound() })));
-  write(
-    'index.html',
-    `<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Hands-on</title>
-<meta http-equiv="refresh" content="1; url=/de/">
-<script>const l=(navigator.languages||[navigator.language]).find(x=>/^(de|en)/i.test(x));location.replace(l&&/^en/i.test(l)?'/en/':'/de/')</script>
-</head><body><p><a href="/de/">Deutsch</a> · <a href="/en/">English</a></p></body></html>\n`,
-  );
-
-  return count;
+  return { count, entrances };
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {

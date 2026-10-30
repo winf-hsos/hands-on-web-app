@@ -3,10 +3,18 @@ import { html, raw } from '../build/html.mjs';
 import { t, runnerLabels, backLabels, demoLabels, copyLabels, montyHallLabels } from '../build/i18n.mjs';
 import { icons, mark } from './parts.mjs';
 import { plainText } from '../client/code-terms.js';
+import { DRAFTS_BASE } from '../build/drafts.mjs';
+
+// `?drafts` on a page of the published site leads to the same page on the
+// site with drafts (build/drafts.mjs); that site is not for search engines.
+const draftsSwitch = (drafts) =>
+  drafts
+    ? raw('<meta name="robots" content="noindex">')
+    : raw(`<script>if(new URLSearchParams(location.search).has('drafts'))location.replace('${DRAFTS_BASE}'+location.pathname+location.search+location.hash)</script>`);
 
 export function layout({ site, lang, path, title, description, current, content, back, scripts = [], asset, pyodide, webr, total = 0, entrances = [] }) {
   const other = lang === 'de' ? 'en' : 'de';
-  const otherPath = path.replace(/^\/([a-z]+)\/(de|en)\//, `/$1/${other}/`);
+  const otherPath = path.replace(/\/(de|en)\//, `/${other}/`);
   const { areas } = site.vocabulary;
   const name = areas[site.area][lang];
   const link = site.link;
@@ -24,6 +32,7 @@ export function layout({ site, lang, path, title, description, current, content,
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  ${draftsSwitch(site.drafts)}
   <title>${full}</title>
   ${description && html`<meta name="description" content="${plainText(description)}">`}
   <link rel="alternate" hreflang="${other}" href="${otherPath}">
@@ -35,6 +44,7 @@ export function layout({ site, lang, path, title, description, current, content,
 </head>
 <body data-lang="${lang}" data-index="${link(lang)}index.json" data-total="${total}" data-marked-done="${t(lang, 'marked_done')}" data-mark-undone="${t(lang, 'mark_undone')}"${scripts.includes('runner') && html` data-python-worker="${asset('client/python-worker.js')}" data-pyodide="${pyodide}" data-webr="${webr?.base}" data-webr-repo="${webr?.repo}" data-r-completions="${asset('r-completions.json')}" data-datasets="/media/datasets/" data-runner-labels="${JSON.stringify(runnerLabels[lang])}"`}${scripts.includes('verb-demo') && html` data-datasets="/media/datasets/" data-verb-demo-labels="${JSON.stringify(demoLabels[lang])}"`}${scripts.includes('monty-hall') && html` data-monty-hall-labels="${JSON.stringify(montyHallLabels[lang])}"`}${(String(content).includes('<pre') || scripts.includes('monty-hall')) && html` data-copy-labels="${JSON.stringify(copyLabels[lang])}"`}>
   <a class="skip" href="#main">${t(lang, 'skip')}</a>
+  ${site.drafts && html`<p class="drafts-banner">${t(lang, 'drafts_view')} <a href="/${site.area}/${lang}/">${t(lang, 'drafts_leave')}</a></p>`}
   <header class="bar">
     <details class="area-menu">
       <summary class="wordmark" title="${t(lang, 'switch_area')}">${mark}<span>${name}</span>${icons.chevron}</summary>
@@ -42,7 +52,7 @@ export function layout({ site, lang, path, title, description, current, content,
         ${entrances
           .filter((e) => e.key !== site.area)
           .map(
-            (e) => html`<a class="area-option" href="/${e.key}/${lang}/" data-area="${e.key}">
+            (e) => html`<a class="area-option" href="${site.base}/${e.key}/${lang}/" data-area="${e.key}">
               <span class="area-option-name"><span class="area-dot" aria-hidden="true"></span>${e.name}</span>
               <span class="area-option-text">${e.summary}</span>
             </a>`,
@@ -92,13 +102,14 @@ const backLink = (link, lang, back) =>
  * The entrance at /de/ and /en/: one card per area, each in its own accent
  * colour, with the summary of its start page.
  */
-export function chooser({ lang, areas, asset }) {
+export function chooser({ lang, areas, asset, base = '' }) {
   const other = lang === 'de' ? 'en' : 'de';
   return html`<!doctype html>
 <html lang="${lang}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  ${draftsSwitch(base !== '')}
   <title>Hands-on · ${t(lang, 'choose_area')}</title>
   <link rel="icon" href="${asset('favicon.svg')}" type="image/svg+xml">
   <link rel="stylesheet" href="${asset('site.css')}">
@@ -106,11 +117,11 @@ export function chooser({ lang, areas, asset }) {
 </head>
 <body>
   <main id="main" class="chooser">
-    <p class="chooser-lang"><a class="tool lang" href="/${other}/" hreflang="${other}" lang="${other}">${other.toUpperCase()}</a></p>
+    <p class="chooser-lang"><a class="tool lang" href="${base}/${other}/" hreflang="${other}" lang="${other}">${other.toUpperCase()}</a></p>
     <h1 class="chooser-title">${mark}<span>${t(lang, 'choose_area')}</span></h1>
     <ul class="chooser-areas">
       ${areas.map(
-        (a) => html`<li><a class="area-card" href="/${a.key}/${lang}/" data-area="${a.key}">
+        (a) => html`<li><a class="area-card" href="${base}/${a.key}/${lang}/" data-area="${a.key}">
           <span class="area-name">${a.name}</span>
           <span class="area-summary">${a.summary}</span>
           <span class="area-go" aria-hidden="true">→</span>

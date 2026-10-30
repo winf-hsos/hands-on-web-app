@@ -551,6 +551,18 @@ Archived content (`status: archived`) is left out of the site but stays in
 the knowledge base, so that its id and code remain reserved and learner
 progress stays valid. Nothing that is not archived may point to it.
 
+Drafts (`status: draft`) are not on the published site (Nicolas, 2026-10-30).
+The build writes the site twice (`src/build/drafts.mjs`): once without drafts
+and without whatever points to them (steps, course sections, relations,
+requirements, project items, the featured path and samples of a start page;
+a `[[link]]` to a draft keeps its text), and once in full under `/drafts/`,
+marked "draft" in every list, with a strip on top and `noindex`. `?drafts` on
+any address of the published site leads to the same page under `/drafts/`.
+The pages with drafts are not secret, only not linked: whoever knows the
+parameter sees them. To publish something, set `status: published`; a path
+or course that is published shows only its published steps, and the build
+warns about the drafts in it.
+
 Warnings, which do not stop the build: missing translation, translation older
 than its lead, `draft` items referenced by a published path or course.
 

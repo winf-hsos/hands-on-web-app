@@ -1,7 +1,7 @@
 // Remark plugin for the conventions of docs/knowledge-schema.md, sections 6–7:
 // [[id]] and [[id|text]] links, GitHub-style callouts (HINT and SOLUTION
 // fold away), Python and R code that runs in the browser, and quiz questions.
-// Options: lang, quiz (boolean), resolve(id) -> { url, title } | null.
+// Options: lang, quiz (boolean), resolve(id) -> { url, title } | null; a url of null keeps only the text.
 import { visit, SKIP } from 'unist-util-visit';
 import { tokenize } from '../client/highlight.js';
 
@@ -37,7 +37,8 @@ function wikiLinks(tree, resolve) {
       const target = resolve(id);
       if (!target) continue;
       if (match.index > last) parts.push({ type: 'text', value: node.value.slice(last, match.index) });
-      parts.push({
+      if (!target.url) parts.push({ type: 'text', value: text ?? target.title });
+      else parts.push({
         type: 'link',
         url: target.url,
         data: { hProperties: { className: ['wiki-link'] } },

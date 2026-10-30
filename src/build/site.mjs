@@ -11,9 +11,11 @@ const SECTION_PATH = { content: 'items', paths: 'paths', courses: 'courses', pro
 /** The areas a doc belongs to; without `areas` it is Computer Science. */
 export const areasOf = (doc) => doc.lead.areas ?? ['cs'];
 
-export function createSite({ vocabulary, sections }, area) {
+// `base` is '' for the published site and '/drafts' for the one with drafts
+// (build/drafts.mjs); `hidden` holds the drafts the published site leaves out.
+export function createSite({ vocabulary, sections, hidden = new Map() }, area, base = '') {
   /** Address of a page of this area: link('de', 'items') is /cs/de/items/. */
-  const link = (lang, ...parts) => `/${[area, lang, ...parts].join('/')}/`.replace(/\/+/g, '/');
+  const link = (lang, ...parts) => `${base}/${[area, lang, ...parts].join('/')}/`.replace(/\/+/g, '/');
   const inArea = (doc) => areasOf(doc).includes(area);
   const item = new Map(sections.content.map((d) => [d.id, d]));
   const path = new Map(sections.paths.map((d) => [d.id, d]));
@@ -22,7 +24,7 @@ export function createSite({ vocabulary, sections }, area) {
   const project = new Map(sections.projects.map((d) => [d.id, d]));
   const byId = new Map([...item, ...path, ...course, ...project]);
 
-  const docUrl = (doc, lang) => `/${inArea(doc) ? area : areasOf(doc)[0]}/${lang}/${SECTION_PATH[doc.section]}/${doc.id}/`;
+  const docUrl = (doc, lang) => `${base}/${inArea(doc) ? area : areasOf(doc)[0]}/${lang}/${SECTION_PATH[doc.section]}/${doc.id}/`;
 
   function localize(doc, lang) {
     const own = doc.files[lang];
@@ -45,7 +47,9 @@ export function createSite({ vocabulary, sections }, area) {
       quiz,
       resolve: (id) => {
         const target = byId.get(id);
-        return target ? { url: docUrl(target, lang), title: localize(target, lang).title } : null;
+        if (target) return { url: docUrl(target, lang), title: localize(target, lang).title };
+        // a draft on the published site: its text without the link
+        return hidden.has(id) ? { url: null, title: localize(hidden.get(id), lang).title } : null;
       },
     });
 
@@ -118,6 +122,8 @@ export function createSite({ vocabulary, sections }, area) {
   return {
     vocabulary,
     area,
+    base,
+    drafts: base !== '',
     link,
     home: sections.pages.find((p) => p.lead.area === area),
     items: sections.content.filter(inArea),

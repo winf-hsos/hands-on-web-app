@@ -3,7 +3,7 @@
 // what is not needed to choose or to read sits in a disclosure.
 import { html, raw, json } from '../build/html.mjs';
 import { t, count, formatDate } from '../build/i18n.mjs';
-import { itemRow, progressBar, more, facts, icons, typeIcon, viewSwitch } from './parts.mjs';
+import { itemRow, progressBar, more, facts, icons, typeIcon, viewSwitch, draftTag } from './parts.mjs';
 import { iconSvg, iconShapes } from '../build/icons.mjs';
 import { deckFile, deckPdf } from '../build/deck.mjs';
 import { datasetInfo, loadingCode } from '../build/dataset.mjs';
@@ -322,7 +322,7 @@ export function paths(site, lang) {
               ${pathIcon}
               <span class="row-head">
                 <span class="row-title" style="view-transition-name: t-${p.id}">${text.title}</span>
-                <span class="row-meta"><span>${count(lang, steps.length, 'steps')}</span><span>${site.duration(steps).required} ${t(lang, 'minutes')}</span></span>
+                <span class="row-meta"><span>${count(lang, steps.length, 'steps')}</span><span>${site.duration(steps).required} ${t(lang, 'minutes')}</span>${draftTag(site, p, lang)}</span>
               </span>
               <span class="row-summary">${text.summary}</span>
             </a>
@@ -425,7 +425,7 @@ export function courses(site, lang) {
               ${courseIcon}
               <span class="row-head">
                 <span class="row-title" lang="${text.lang}">${text.title}</span>
-                <span class="row-meta">${c.lead.institution && html`<span>${site.vocabulary.institutions[c.lead.institution][lang]}</span>`}<span>${c.lead.semester}</span>${c.lead.sections.length > 0 && html`<span>${count(lang, c.lead.sections.length, 'sections')}</span>`}</span>
+                <span class="row-meta">${c.lead.institution && html`<span>${site.vocabulary.institutions[c.lead.institution][lang]}</span>`}<span>${c.lead.semester}</span>${c.lead.sections.length > 0 && html`<span>${count(lang, c.lead.sections.length, 'sections')}</span>`}${draftTag(site, c, lang)}</span>
               </span>
               ${text.data.subtitle && html`<span class="row-subtitle" lang="${text.lang}">${text.data.subtitle}</span>`}
               <span class="row-summary" lang="${text.lang}">${text.summary}</span>
@@ -518,6 +518,7 @@ export function projects(site, lang) {
                 <span class="row-meta">
                   <span>${count(lang, p.lead.phases.length, 'phases')}</span>
                   ${challenges > 0 && html`<span>${count(lang, challenges, 'challenges')}</span>`}
+                  ${draftTag(site, p, lang)}
                 </span>
               </span>
               <span class="row-summary">${text.summary}</span>

@@ -34,6 +34,9 @@ export const mark = raw(
 /** The icon of an item's type. */
 export const typeIcon = (site, item) => raw(iconSvg(site.vocabulary.types[item.lead.type].icon));
 
+/** "Draft" beside a title, only on the site with drafts. */
+export const draftTag = (site, doc, lang) => site.drafts && doc.lead.status === 'draft' && html`<span class="draft-tag">${t(lang, 'draft')}</span>`;
+
 /** One item as a row: type icon, title, type and duration, one quiet line of summary. */
 export function itemRow(site, item, lang, { optional = false, summary = true, topics = false, number, data = {} } = {}) {
   const text = site.localize(item, lang);
@@ -49,6 +52,7 @@ export function itemRow(site, item, lang, { optional = false, summary = true, to
           <span>${site.vocabulary.types[lead.type][lang]}</span>
           <span>${lead.duration} ${t(lang, 'minutes')}</span>
           ${optional && html`<span class="row-optional">${t(lang, 'optional')}</span>`}
+          ${draftTag(site, item, lang)}
         </span>
       </span>
       ${summary && html`<span class="row-summary" lang="${text.lang}">${text.summary}</span>`}

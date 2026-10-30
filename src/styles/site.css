@@ -481,6 +481,30 @@ select {
   font-style: italic;
 }
 
+/* on the site with drafts (build/drafts.mjs): a strip on top, a tag at each draft */
+.draft-tag {
+  padding: 0 0.45rem;
+  border: 1px solid var(--warn);
+  border-radius: 999px;
+  color: var(--ink);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.drafts-banner {
+  margin: 0;
+  padding: 0.45rem 1rem;
+  background: color-mix(in srgb, var(--warn) 22%, var(--paper));
+  color: var(--ink);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.drafts-banner a {
+  color: inherit;
+  font-weight: 600;
+}
+
 .row-summary {
   color: var(--quiet);
   font-size: 0.95rem;

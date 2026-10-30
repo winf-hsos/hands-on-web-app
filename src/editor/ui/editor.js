@@ -80,7 +80,7 @@ async function api(method, path, body) {
 async function refresh() {
   const next = await api('GET', '/api/state');
   Object.assign(state, { list: next.docs, vocabulary: next.vocabulary, icons: next.icons, git: next.git, errors: next.errors, site: next.site });
-  $('#site').href = `${next.site}/cs/de/`;
+  $('#site').href = `${next.site}/drafts/cs/de/`;
   renderList();
   renderGit();
 }
