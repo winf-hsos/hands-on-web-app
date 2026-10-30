@@ -38,12 +38,22 @@ const STATIC = {
 };
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.woff2': 'font/woff2' };
 
-const git = (...args) => spawnSync('git', args, { cwd: ROOT, encoding: 'utf8' });
+// Never wait for a password on a terminal that nobody sees; the credential
+// manager of Git for Windows asks in a window of its own.
+const git = (...args) => spawnSync('git', args, { cwd: ROOT, encoding: 'utf8', timeout: 120_000, env: { ...process.env, GIT_TERMINAL_PROMPT: '0' } });
 
+/**
+ * Changes in knowledge/ not yet committed, and commits not yet pushed. A push
+ * publishes: GitHub builds the site from it (.github/workflows/pages.yml).
+ * `ahead` counts against the remote as last fetched or pushed.
+ */
 function gitState() {
   const status = git('status', '--porcelain', '--', 'knowledge');
   if (status.status !== 0) return { available: false };
-  return { available: true, changes: status.stdout.split('\n').filter(Boolean).map((l) => l.slice(3)) };
+  const remote = git('remote').stdout.split('\n').find(Boolean) ?? null;
+  const upstream = git('rev-parse', '--abbrev-ref', '@{u}').status === 0;
+  const ahead = remote ? Number(git('rev-list', '--count', upstream ? '@{u}..HEAD' : 'HEAD').stdout.trim()) || 0 : 0;
+  return { available: true, changes: status.stdout.split('\n').filter(Boolean).map((l) => l.slice(3)), remote, upstream, ahead };
 }
 
 /** Markdown preview with the site's own renderer; links resolve to the site preview. */
@@ -109,6 +119,13 @@ async function api(req, res, path) {
     git('add', '--', 'knowledge');
     const commit = git('commit', '-m', String(message || 'Update knowledge base').slice(0, 500), '--', 'knowledge');
     return json(res, commit.status === 0 ? 200 : 422, { ok: commit.status === 0, output: commit.stdout + commit.stderr });
+  }
+  if (req.method === 'POST' && resource === 'publish') {
+    const state = gitState();
+    if (!state.remote) return json(res, 422, { ok: false, errors: ['There is no GitHub repository to publish to yet (git remote).'] });
+    const branch = git('branch', '--show-current').stdout.trim();
+    const push = state.upstream ? git('push') : git('push', '-u', state.remote, branch);
+    return json(res, push.status === 0 ? 200 : 422, { ok: push.status === 0, output: (push.stdout + push.stderr).trim() || push.error?.message });
   }
   return json(res, 404, { ok: false, errors: ['unknown request'] });
 }

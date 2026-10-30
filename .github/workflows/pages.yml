@@ -1,0 +1,51 @@
+# Builds the site on every push to main and publishes dist/ on GitHub Pages
+# (Nicolas, 2026-10-30: the editor stays on his computer, a push publishes).
+# In the repository settings, Pages must have "GitHub Actions" as its source.
+name: Publish site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# one publication at a time; a newer push replaces one still waiting
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      # R packages for webR are not in git (scripts/fetch-r-packages.mjs)
+      - uses: actions/cache@v4
+        with:
+          path: vendor/webr-repo
+          key: webr-repo-${{ hashFiles('scripts/fetch-r-packages.mjs', 'package-lock.json') }}
+      - run: test -d vendor/webr-repo || npm run fetch-r-packages
+      - run: npm test
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

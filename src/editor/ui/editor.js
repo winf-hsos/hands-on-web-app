@@ -136,11 +136,15 @@ $('#filter').addEventListener('input', (e) => ((state.filter = e.target.value), 
 function renderGit() {
   const box = $('#git');
   if (!state.git?.available) return (box.innerHTML = '');
-  const n = state.git.changes.length;
-  box.innerHTML = n
-    ? `<span>${n} ungesicherte ${n === 1 ? 'Änderung' : 'Änderungen'} in Git</span><button type="button" class="text-button" id="commit">Sichern</button>`
-    : '<span>Alles in Git gesichert</span>';
+  const { changes, remote, ahead } = state.git;
+  const n = changes.length;
+  box.innerHTML =
+    (n
+      ? `<span>${n} ungesicherte ${n === 1 ? 'Änderung' : 'Änderungen'} in Git</span><button type="button" class="text-button" id="commit">Sichern</button>`
+      : '<span>Alles in Git gesichert</span>') +
+    (remote && ahead ? `<button type="button" class="text-button" id="publish">Veröffentlichen (${ahead})</button>` : '');
   $('#commit')?.addEventListener('click', commit);
+  $('#publish')?.addEventListener('click', publish);
 }
 
 // --- open and render a document ----------------------------------------------
@@ -582,6 +586,25 @@ async function commit() {
   const result = await api('POST', '/api/commit', { message: $('#commit-message')?.value });
   await refresh();
   if (!result.ok) message('error', 'Nicht gesichert:', result.errors ?? [result.output]);
+}
+
+// A push to GitHub publishes: the site is built there and is up to date a
+// minute or two later (.github/workflows/pages.yml).
+async function publish() {
+  const { ahead, changes } = state.git;
+  const unsaved = changes.length
+    ? `<p>${changes.length} ${changes.length === 1 ? 'Änderung ist' : 'Änderungen sind'} noch nicht gesichert und ${changes.length === 1 ? 'geht' : 'gehen'} nicht mit; sichere sie vorher, wenn sie dazugehören.</p>`
+    : '';
+  const ok = await confirmDialog(
+    'Veröffentlichen',
+    `<p>${ahead} gesicherte ${ahead === 1 ? 'Änderung geht' : 'Änderungen gehen'} zu GitHub, und die Seite ist nach ein bis zwei Minuten aktuell. Auf der Seite erscheint nur, was den Status „Veröffentlicht“ hat; Entwürfe sind dort nur mit <code>?drafts</code> zu sehen.</p>${unsaved}`,
+    'Veröffentlichen',
+  );
+  if (!ok) return;
+  const result = await api('POST', '/api/publish');
+  await refresh();
+  if (result.ok) message('ok', 'Veröffentlicht. GitHub baut die Seite jetzt neu.');
+  else message('error', 'Nicht veröffentlicht:', result.errors ?? [result.output]);
 }
 
 // --- dialogs --------------------------------------------------------------------
