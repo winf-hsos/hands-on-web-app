@@ -43,8 +43,9 @@ Rscript scripts/r-functions.R  # after changing which functions R editors sugges
 Content is written locally with the editor. A push to `main` publishes:
 `.github/workflows/pages.yml` runs the tests, fetches the R packages, builds
 the site and deploys `dist/` to GitHub Pages (in the repository settings,
-Pages needs "GitHub Actions" as its source). The editor's "Veröffentlichen"
-pushes. The site uses absolute paths (`/cs/de/…`), so it needs its own
+Pages needs "GitHub Actions" as its source, and the repository variable
+`PUBLISH_SITE` must be `true`; without it a push is built and tested but not
+deployed). The editor's "Veröffentlichen" pushes. The site uses absolute paths (`/cs/de/…`), so it needs its own
 domain or a `<user>.github.io` repository, not a project path like
 `<user>.github.io/hands-on-web-app/`.
 
@@ -53,4 +54,4 @@ address shows everything (`docs/knowledge-schema.md`, section 12).
 
 ## Status
 
-Scaffold with pilot content; no GitHub repository yet, nothing is published.
+Scaffold with pilot content, on GitHub as `winf-hsos/hands-on-web-app`; the site is not deployed until it has its own domain.

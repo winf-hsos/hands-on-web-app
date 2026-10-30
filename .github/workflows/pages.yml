@@ -1,6 +1,9 @@
 # Builds the site on every push to main and publishes dist/ on GitHub Pages
 # (Nicolas, 2026-10-30: the editor stays on his computer, a push publishes).
 # In the repository settings, Pages must have "GitHub Actions" as its source.
+# Until the site has its own domain, every push is built and tested but not
+# deployed: the deploy job runs only once the repository variable
+# PUBLISH_SITE is "true" (Settings > Secrets and variables > Actions).
 name: Publish site
 
 on:
@@ -42,6 +45,7 @@ jobs:
 
   deploy:
     needs: build
+    if: vars.PUBLISH_SITE == 'true'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
