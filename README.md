@@ -54,4 +54,4 @@ address shows everything (`docs/knowledge-schema.md`, section 12).
 
 ## Status
 
-Scaffold with pilot content, on GitHub as `winf-hsos/hands-on-web-app`; the site is not deployed until it has its own domain.
+Pilot content, on GitHub as `winf-hsos/hands-on-web-app` and live at https://hands-on-computer-science.de; most content is still a draft.
