@@ -12,7 +12,7 @@ duration: 5
 topics: [getting-data, programming-with-r]
 modules: [ea]
 areas: [ds]
-status: draft
+status: published
 updated: 2026-10-28
 ---
 

@@ -8,6 +8,7 @@ import { iconSvg, iconShapes } from '../build/icons.mjs';
 import { deckFile, deckPdf } from '../build/deck.mjs';
 import { datasetInfo, loadingCode } from '../build/dataset.mjs';
 import { highlight } from '../client/highlight.js';
+import { areasOf } from '../build/site.mjs';
 
 const typeLabel = (site, item, lang) => site.vocabulary.types[item.lead.type][lang];
 
@@ -58,6 +59,22 @@ export function home(site, lang) {
 // --- content list ------------------------------------------------------------
 
 export function items(site, lang) {
+  return {
+    path: site.link(lang, 'items'),
+    title: t(lang, 'nav_items'),
+    current: 'items',
+    back: 'home',
+    scripts: ['list'],
+    content: html`<h1>${t(lang, 'nav_items')}</h1>${finder(site, lang)}`,
+  };
+}
+
+/**
+ * Search, filters and the list of all items of a site (client/list.js). On
+ * the entrance (`areas`) every row carries the colour of its area, half and
+ * half for an item in two.
+ */
+export function finder(site, lang, { areas = false } = {}) {
   const { vocabulary } = site;
   const used = (key) => new Set(site.items.flatMap((i) => [i.lead[key]].flat()));
   const types = Object.entries(vocabulary.types).filter(([key]) => used('type').has(key));
@@ -83,14 +100,7 @@ export function items(site, lang) {
     topic: topics.map(([key, v]) => ({ key, label: v[lang] })),
     level: Object.entries(vocabulary.levels).map(([key, v]) => ({ key, label: v[lang] })),
   };
-  return {
-    path: site.link(lang, 'items'),
-    title: t(lang, 'nav_items'),
-    current: 'items',
-    back: 'home',
-    scripts: ['list'],
-    content: html`
-      <h1>${t(lang, 'nav_items')}</h1>
+  return html`
       <form class="finder" id="finder" data-one="${t(lang, 'results_one')}" data-many="${t(lang, 'results_many')}">
         <div class="finder-search">
           ${icons.search}
@@ -133,6 +143,7 @@ export function items(site, lang) {
         ${sorted.map((item) =>
           itemRow(site, item, lang, {
             topics: true,
+            areas: areas && areasOf(item),
             data: {
               id: item.id,
               type: item.lead.type,
@@ -147,8 +158,7 @@ export function items(site, lang) {
         )}
       </ul>
       <p class="empty" id="empty" hidden>${t(lang, 'no_results')} <button type="button" class="text-button" id="reset">${t(lang, 'reset')}</button></p>
-    `,
-  };
+    `;
 }
 
 // --- one item ----------------------------------------------------------------

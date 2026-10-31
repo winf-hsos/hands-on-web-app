@@ -164,7 +164,10 @@ for computer science, pink for data science), set on `<html data-area>` in
 `site.css`. The build makes one site model per area (`createSite(knowledge,
 area)`): lookups cover the whole knowledge base, lists only the area, and a
 link to a doc that belongs to another area leads into that area. `/de/` and
-`/en/` are the entrance with one card per area; on every page the title at
+`/en/` are the entrance with one card per area and below them the content
+of all areas, with the same search and filters as an area's content page;
+each row carries the colour of its area, half and half for an item in two
+(`createSite(knowledge, null)` spans all areas). On every page the title at
 the top left opens a menu with the other area (and the start page of the
 current one).
 

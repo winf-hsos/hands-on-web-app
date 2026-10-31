@@ -257,9 +257,12 @@ function renderSite(knowledge, base, { write, asset }) {
     }
   }
 
-  // the entrance: one page per language that leads into the areas
+  // the entrance: one page per language that leads into the areas, with the
+  // content of all of them below, and the index its search needs
+  const all = createSite(knowledge, null, base);
   for (const lang of LANGS) {
-    write(`${base}/${lang}/`, String(chooser({ lang, areas: entrances[lang], asset, base })));
+    write(`${base}/${lang}/`, String(chooser({ lang, areas: entrances[lang], asset, base, finder: pages.finder(all, lang, { areas: true }) })));
+    write(`${base}/${lang}/index.json`, JSON.stringify(clientIndex(all, lang)));
     count += 1;
   }
   return { count, entrances };

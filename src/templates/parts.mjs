@@ -38,11 +38,13 @@ export const typeIcon = (site, item) => raw(iconSvg(site.vocabulary.types[item.l
 export const draftTag = (site, doc, lang) => site.drafts && doc.lead.status === 'draft' && html`<span class="draft-tag">${t(lang, 'draft')}</span>`;
 
 /** One item as a row: type icon, title, type and duration, one quiet line of summary. */
-export function itemRow(site, item, lang, { optional = false, summary = true, topics = false, number, data = {} } = {}) {
+export function itemRow(site, item, lang, { optional = false, summary = true, topics = false, areas, number, data = {} } = {}) {
   const text = site.localize(item, lang);
   const lead = item.lead;
   const attributes = Object.entries(data).map(([key, value]) => html` data-${key}="${value}"`);
-  return html`<li class="row" data-progress-id="${item.id}"${attributes}>
+  // the colour of its area as a mark, half and half for two (the entrance)
+  const mark = areas && html` style="--mark-a: var(--${areas[0]}); --mark-b: var(--${areas[1] ?? areas[0]})"`;
+  return html`<li class="row${areas ? ' has-area' : ''}" data-progress-id="${item.id}"${mark}${attributes}>
     ${number !== undefined && html`<span class="row-step" aria-hidden="true"><span>${number}</span>${icons.check}</span>`}
     <a class="row-link" href="${site.url(item, lang)}">
       ${typeIcon(site, item)}

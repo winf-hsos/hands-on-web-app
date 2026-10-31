@@ -12,6 +12,17 @@ const draftsSwitch = (drafts) =>
     ? raw('<meta name="robots" content="noindex">')
     : raw(`<script>if(new URLSearchParams(location.search).has('drafts'))location.replace('${DRAFTS_BASE}'+location.pathname+location.search+location.hash)</script>`);
 
+/** The search dialog behind the search button and `/` (client/site.js). */
+const searchDialog = (lang) => html`<dialog class="search" aria-label="${t(lang, 'search')}">
+    <form method="dialog" class="search-form" role="search">
+      ${icons.search}
+      <input type="search" name="q" placeholder="${t(lang, 'search_placeholder')}" autocomplete="off" spellcheck="false" aria-label="${t(lang, 'search')}">
+      <button class="tool" value="close" aria-label="${t(lang, 'search_close')}">${icons.close}</button>
+    </form>
+    <ol class="search-results" role="listbox"></ol>
+    <p class="search-hint">${t(lang, 'search_hint')}</p>
+  </dialog>`;
+
 export function layout({ site, lang, path, title, description, current, content, back, scripts = [], asset, pyodide, webr, total = 0, entrances = [] }) {
   const other = lang === 'de' ? 'en' : 'de';
   const otherPath = path.replace(/\/(de|en)\//, `/${other}/`);
@@ -75,15 +86,7 @@ export function layout({ site, lang, path, title, description, current, content,
     </div>
   </header>
   <main id="main">${back && backLink(link, lang, back)}${content}</main>
-  <dialog class="search" aria-label="${t(lang, 'search')}">
-    <form method="dialog" class="search-form" role="search">
-      ${icons.search}
-      <input type="search" name="q" placeholder="${t(lang, 'search_placeholder')}" autocomplete="off" spellcheck="false" aria-label="${t(lang, 'search')}">
-      <button class="tool" value="close" aria-label="${t(lang, 'search_close')}">${icons.close}</button>
-    </form>
-    <ol class="search-results" role="listbox"></ol>
-    <p class="search-hint">${t(lang, 'search_hint')}</p>
-  </dialog>
+  ${searchDialog(lang)}
   <script type="module" src="${asset('client/site.js')}"></script>
   ${scripts.map((name) => html`<script type="module" src="${asset(`client/${name}.js`)}"></script>`)}
 </body>
@@ -100,9 +103,10 @@ const backLink = (link, lang, back) =>
 
 /**
  * The entrance at /de/ and /en/: one card per area, each in its own accent
- * colour, with the summary of its start page.
+ * colour, with the summary of its start page; below them the content of all
+ * areas, searchable and filtered as on the pages of an area (`finder`).
  */
-export function chooser({ lang, areas, asset, base = '' }) {
+export function chooser({ lang, areas, asset, base = '', finder }) {
   const other = lang === 'de' ? 'en' : 'de';
   return html`<!doctype html>
 <html lang="${lang}">
@@ -113,11 +117,19 @@ export function chooser({ lang, areas, asset, base = '' }) {
   <title>Hands-on · ${t(lang, 'choose_area')}</title>
   <link rel="icon" href="${asset('favicon.svg')}" type="image/svg+xml">
   <link rel="stylesheet" href="${asset('site.css')}">
-  <script>try{const m=localStorage.getItem('hocs-theme');if(m)document.documentElement.dataset.theme=m}catch{}</script>
+  <script>try{const d=document.documentElement.dataset,m=localStorage.getItem('hocs-theme'),u=new URLSearchParams(location.search).get('view'),v=['list','cards'].includes(u)?u:localStorage.getItem('hocs-view');if(m)d.theme=m;if(v)d.view=v}catch{}</script>
+  <script type="importmap">${raw(JSON.stringify({ imports: { minisearch: asset('vendor/minisearch.js'), 'qrcode-generator': asset('vendor/qrcode.mjs') } }))}</script>
 </head>
-<body>
+<body data-lang="${lang}" data-index="${base}/${lang}/index.json" data-marked-done="${t(lang, 'marked_done')}" data-mark-undone="${t(lang, 'mark_undone')}">
+  ${base !== '' && html`<p class="drafts-banner">${t(lang, 'drafts_view')} <a href="/${lang}/">${t(lang, 'drafts_leave')}</a></p>`}
   <main id="main" class="chooser">
-    <p class="chooser-lang"><a class="tool lang" href="${base}/${other}/" hreflang="${other}" lang="${other}">${other.toUpperCase()}</a></p>
+    <p class="chooser-tools">
+      <button class="tool search-open" type="button" aria-haspopup="dialog">
+        ${icons.search}<span class="tool-label">${t(lang, 'search')}</span><kbd>/</kbd>
+      </button>
+      <a class="tool lang" href="${base}/${other}/" hreflang="${other}" lang="${other}">${other.toUpperCase()}</a>
+      <button class="tool theme" type="button" title="${t(lang, 'theme')}" aria-label="${t(lang, 'theme')}">${icons.theme}</button>
+    </p>
     <h1 class="chooser-title">${mark}<span>${t(lang, 'choose_area')}</span></h1>
     <ul class="chooser-areas">
       ${areas.map(
@@ -128,7 +140,14 @@ export function chooser({ lang, areas, asset, base = '' }) {
         </a></li>`,
       )}
     </ul>
+    ${finder && html`<section class="chooser-items">
+      <h2>${t(lang, 'all_items')}</h2>
+      ${finder}
+    </section>`}
   </main>
+  ${searchDialog(lang)}
+  <script type="module" src="${asset('client/site.js')}"></script>
+  ${finder && html`<script type="module" src="${asset('client/list.js')}"></script>`}
 </body>
 </html>
 `;

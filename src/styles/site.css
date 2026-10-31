@@ -3058,9 +3058,11 @@ details.callout[open] > summary::before {
   padding-top: 4rem;
 }
 
-.chooser-lang {
+.chooser-tools {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: 0.25rem;
   margin: -2.5rem 0 2rem;
 }
 
@@ -3124,6 +3126,46 @@ details.callout[open] > summary::before {
 
 .area-card:hover .area-go {
   transform: translateX(4px);
+}
+
+/* Below the cards the content of all areas. Each row carries the colour of
+   its area as a bar, half and half for an item in two; the type icons stay
+   quiet, so that the colour means only the area. */
+.chooser-items {
+  margin-top: 3.5rem;
+}
+
+.row.has-area::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.7rem;
+  bottom: 0.7rem;
+  width: 4px;
+  border-radius: 2px;
+  background: linear-gradient(var(--mark-a) 50%, var(--mark-b) 50%);
+}
+
+.row.has-area .row-link {
+  padding-left: 2.6rem;
+}
+
+.row.has-area .row-link > .type-icon {
+  left: 0.75rem;
+  color: var(--quiet);
+}
+
+[data-view='cards'] .switchable .row.has-area::before {
+  inset: 0 0 auto;
+  width: auto;
+  height: 6px;
+  border-radius: 0;
+  background: linear-gradient(to right, var(--mark-a) 50%, var(--mark-b) 50%);
+}
+
+[data-view='cards'] .switchable .row.has-area .row-link {
+  padding-top: 1.4rem;
+  padding-left: 1.1rem;
 }
 
 /* --- subtitle of a course ---------------------------------------------------------- */

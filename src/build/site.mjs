@@ -13,10 +13,11 @@ export const areasOf = (doc) => doc.lead.areas ?? ['cs'];
 
 // `base` is '' for the published site and '/drafts' for the one with drafts
 // (build/drafts.mjs); `hidden` holds the drafts the published site leaves out.
+// Without an area the site spans all of them, as the entrance needs it.
 export function createSite({ vocabulary, sections, hidden = new Map() }, area, base = '') {
   /** Address of a page of this area: link('de', 'items') is /cs/de/items/. */
-  const link = (lang, ...parts) => `${base}/${[area, lang, ...parts].join('/')}/`.replace(/\/+/g, '/');
-  const inArea = (doc) => areasOf(doc).includes(area);
+  const link = (lang, ...parts) => `${base}/${[area, lang, ...parts].filter(Boolean).join('/')}/`.replace(/\/+/g, '/');
+  const inArea = (doc) => !area || areasOf(doc).includes(area);
   const item = new Map(sections.content.map((d) => [d.id, d]));
   const path = new Map(sections.paths.map((d) => [d.id, d]));
   const course = new Map(sections.courses.map((d) => [d.id, d]));
@@ -24,7 +25,7 @@ export function createSite({ vocabulary, sections, hidden = new Map() }, area, b
   const project = new Map(sections.projects.map((d) => [d.id, d]));
   const byId = new Map([...item, ...path, ...course, ...project]);
 
-  const docUrl = (doc, lang) => `${base}/${inArea(doc) ? area : areasOf(doc)[0]}/${lang}/${SECTION_PATH[doc.section]}/${doc.id}/`;
+  const docUrl = (doc, lang) => `${base}/${area && inArea(doc) ? area : areasOf(doc)[0]}/${lang}/${SECTION_PATH[doc.section]}/${doc.id}/`;
 
   function localize(doc, lang) {
     const own = doc.files[lang];
