@@ -13,12 +13,14 @@ relations:
   example_of: [byte]
   see_also: [binary-numbers, hexadecimal]
 status: published
-updated: 2026-10-30
+updated: 2026-10-31
 ---
 
 Each switch below is one bit of a byte, with its place value above it. Click a
 switch, or press it and drag across its neighbours, and watch how the number
 is built from the switches that are on. The byte starts at 65, the capital A.
+You can also go the other way: click the decimal, hex or text value, type a
+new one, and the switches follow.
 
 ```byte-switchboard
 ```
@@ -30,6 +32,8 @@ is built from the switches that are on. The byte starts at 65, the capital A.
 - Count up with +1 from 0 to 16 and watch which switches flip at each step.
   Where does a carry run through several places at once?
 - What happens when you count one step past 255?
+- Type 0F into the hex field and then F0. Which switches are on each time,
+  and why?
 - Set the switches to 01000001 and then to 01100001. What changes in the text,
   and by how much does the number change?
 

@@ -253,7 +253,10 @@ The body is plain Markdown with a few conventions:
   **The byte switchboard** is placed with an empty ` ```byte-switchboard `
   block: eight switches with their place values, and the byte as binary,
   decimal, hexadecimal and text, with counting up and down that shows the
-  carry and the overflow. It is the first of the LiFi demonstrators to come
+  carry and the overflow. Decimal, hex and text can be typed in: a click
+  opens the value for editing, every valid keystroke sets the byte, a value
+  that cannot be one (300, G, ä) is marked and explained, Enter keeps it and
+  Escape goes back. It is the first of the LiFi demonstrators to come
   over, rebuilt in the design of the platform rather than embedded.
 - **Every demonstrator has a full-screen mode and shows its shortcuts**, so
   that it can be shown on a projector in class (Nicolas, 2026-10-31). The

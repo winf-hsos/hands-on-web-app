@@ -5,13 +5,15 @@ summary: >-
   Summe von Stellenwerten entsteht, binär, dezimal, hexadezimal und als
   Zeichen.
 translation_of: en
-based_on: 2026-10-30
+based_on: 2026-10-31
 ---
 
 Jeder Schalter unten ist ein Bit eines Bytes, darüber steht sein Stellenwert.
 Klick auf einen Schalter, oder drück ihn und zieh über seine Nachbarn, und sieh
 zu, wie sich die Zahl aus den eingeschalteten Schaltern zusammensetzt. Das Byte
 beginnt bei 65, dem großen A.
+Es geht auch andersherum: Klick auf den Wert unter Dezimal, Hexadezimal oder
+Text, tipp einen neuen ein, und die Schalter folgen.
 
 ```byte-switchboard
 ```
@@ -23,6 +25,8 @@ beginnt bei 65, dem großen A.
 - Zähl mit +1 von 0 bis 16 und achte darauf, welche Schalter bei jedem Schritt
   umspringen. Wo läuft ein Übertrag über mehrere Stellen auf einmal?
 - Was passiert, wenn du von 255 aus noch einen Schritt weiterzählst?
+- Tipp unter Hexadezimal erst 0F und dann F0 ein. Welche Schalter sind jeweils
+  an, und warum?
 - Stell die Schalter auf 01000001 und dann auf 01100001. Was ändert sich am
   Text, und um wie viel ändert sich die Zahl?
 

@@ -3617,12 +3617,41 @@ details.callout[open] > summary::before {
   min-width: 9ch;
 }
 
-.bs-value[data-out='dec'] {
-  min-width: 3ch;
+/* Decimal, hex and text are fields that look like the other readings; a
+   line under them shows on hover that they can be typed in, and the field
+   being edited gets a light ground. */
+.bs-field {
+  box-sizing: content-box;
+  width: 3ch;
+  margin: 0 -0.2rem;
+  padding: 0 0.2rem;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  box-shadow: inset 0 -2px 0 transparent;
+  cursor: text;
+  transition: box-shadow 0.15s, background-color 0.15s;
 }
 
-.bs-value[data-out='hex'] {
-  min-width: 2ch;
+.bs-field[data-out='hex'],
+.bs-field[data-out='text'] {
+  width: 2ch;
+}
+
+.bs-field:hover {
+  box-shadow: inset 0 -2px 0 var(--rule);
+}
+
+.bs-field:focus {
+  outline: none;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  box-shadow: inset 0 -2px 0 var(--accent);
+}
+
+.bs-field[aria-invalid='true'] {
+  background: color-mix(in srgb, var(--warn) 18%, transparent);
+  box-shadow: inset 0 -2px 0 var(--warn);
 }
 
 /* on a phone two readings per row */

@@ -530,6 +530,11 @@ export const byteSwitchboardLabels = {
     keyRandom: 'Zufall',
     randomKey: 'Z',
     keyAll: 'alle aus, oder alle an, wenn alle aus sind',
+    editHint: 'Klicken und einen Wert eintippen',
+    notDecimal: 'Im Dezimalsystem gibt es nur die Ziffern 0 bis 9.',
+    notHex: 'Im Hexadezimalsystem gibt es nur die Ziffern 0 bis 9 und A bis F.',
+    tooBig: '{v} passt nicht in ein Byte, denn mit acht Bit kommst du nur bis 255.',
+    notAscii: '„{c}“ ist Zeichen Nummer {n} in Unicode und gehört nicht zu ASCII, das nur die druckbaren Zeichen von 32 bis 126 kennt.',
   },
   en: {
     bit: 'Bit {n}, place value {w}',
@@ -552,5 +557,10 @@ export const byteSwitchboardLabels = {
     keyRandom: 'random',
     randomKey: 'R',
     keyAll: 'all off, or all on when all are off',
+    editHint: 'Click and type a value',
+    notDecimal: 'The decimal system only has the digits 0 to 9.',
+    notHex: 'The hexadecimal system only has the digits 0 to 9 and A to F.',
+    tooBig: '{v} does not fit into a byte, since eight bits only go up to 255.',
+    notAscii: '“{c}” is character number {n} in Unicode and not part of ASCII, whose printable characters run from 32 to 126.',
   },
 };

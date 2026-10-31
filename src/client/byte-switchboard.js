@@ -2,7 +2,9 @@
 // place value, and the byte appears at once as the sum of the switches that
 // are on, in binary, decimal and hexadecimal, and as the ASCII character with
 // that number. Counting past 255 or below 0 wraps around, with a sentence on
-// why. Taken over from the LiFi concept demos (byte-switchboard) and drawn in
+// why. Decimal, hex and text can also be typed in: a click on one of them
+// edits it, and the switches and the other readings follow every keystroke
+// that gives a valid value. Taken over from the LiFi concept demos (byte-switchboard) and drawn in
 // the platform's own design.
 //
 // Written with ```byte-switchboard in Markdown (remark-knowledge.mjs); the
@@ -12,9 +14,30 @@ import { keys } from './demo-frame.js';
 const L = JSON.parse(document.body.dataset.byteSwitchboardLabels ?? '{}');
 const WEIGHTS = [128, 64, 32, 16, 8, 4, 2, 1]; // the leftmost switch first
 const fill = (text, values) => text.replace(/\{(\w+)\}/g, (_, k) => values[k]);
+const printable = (n) => n >= 32 && n <= 126;
+
+// What a typed reading means: the byte it sets, or a sentence on why it
+// cannot be one. The text field keeps only the character typed last.
+const READ = {
+  dec: (s) => (/^\d+$/.test(s) ? (Number(s) <= 255 ? Number(s) : fill(L.tooBig, { v: s })) : L.notDecimal),
+  hex: (s) => (/^[0-9a-f]+$/i.test(s) ? parseInt(s, 16) : L.notHex),
+  text: (s) => {
+    const c = [...s].at(-1);
+    const n = c.codePointAt(0);
+    return printable(n) ? n : fill(L.notAscii, { c, n });
+  },
+};
+// the readings as they are shown when nobody is typing in them
+const SHOW = {
+  dec: (v) => String(v),
+  hex: (v) => v.toString(16).toUpperCase().padStart(2, '0'),
+  text: (v) => (printable(v) ? String.fromCharCode(v) : '–'),
+};
 
 function setup(box) {
   let value = 0b01000001; // 65, the capital A
+  const field = (name, label, attrs) =>
+    `<input class="bs-value bs-field" data-out="${name}" aria-label="${label}" title="${L.editHint}" autocomplete="off" spellcheck="false" ${attrs}>`;
 
   box.innerHTML = `
     <div class="bs-bits">${WEIGHTS.map(
@@ -27,9 +50,9 @@ function setup(box) {
     <p class="bs-sum"></p>
     <div class="bs-outputs">
       <div class="bs-out"><span class="bs-label">${L.binary}</span><span class="bs-value" data-out="bin"></span><span class="bs-note">${L.binaryNote}</span></div>
-      <div class="bs-out"><span class="bs-label">${L.decimal}</span><span class="bs-value" data-out="dec"></span><span class="bs-note">${L.decimalNote}</span></div>
-      <div class="bs-out"><span class="bs-label">${L.hex}</span><span class="bs-value" data-out="hex"></span><span class="bs-note">${L.hexNote}</span></div>
-      <div class="bs-out"><span class="bs-label">${L.text}</span><span class="bs-value" data-out="text"></span><span class="bs-note" data-out="text-note"></span></div>
+      <div class="bs-out"><span class="bs-label">${L.decimal}</span>${field('dec', L.decimal, 'inputmode="numeric" maxlength="3"')}<span class="bs-note">${L.decimalNote}</span></div>
+      <div class="bs-out"><span class="bs-label">${L.hex}</span>${field('hex', L.hex, 'maxlength="2" autocapitalize="characters"')}<span class="bs-note">${L.hexNote}</span></div>
+      <div class="bs-out"><span class="bs-label">${L.text}</span>${field('text', L.text, '')}<span class="bs-note" data-out="text-note"></span></div>
     </div>
     <p class="bs-message" aria-live="polite"></p>
     <div class="bs-controls">
@@ -43,6 +66,11 @@ function setup(box) {
   const out = (name) => box.querySelector(`[data-out="${name}"]`);
   const message = box.querySelector('.bs-message');
   const all = box.querySelector('[data-act="all"]');
+  const fields = [...box.querySelectorAll('.bs-field')];
+  const show = (f) => {
+    f.value = SHOW[f.dataset.out](value);
+    f.removeAttribute('aria-invalid');
+  };
 
   function set(next, note = '') {
     const changed = value ^ (next & 0xff);
@@ -73,11 +101,9 @@ function setup(box) {
     const parts = WEIGHTS.filter((w) => value & w);
     box.querySelector('.bs-sum').textContent = parts.length > 1 ? `= ${parts.join(' + ')} = ${value}` : `= ${value}`;
     out('bin').textContent = `${binary.slice(0, 4)} ${binary.slice(4)}`;
-    out('dec').textContent = String(value);
-    out('hex').textContent = value.toString(16).toUpperCase().padStart(2, '0');
-    const printable = value >= 32 && value <= 126;
-    out('text').textContent = printable ? String.fromCharCode(value) : '–';
-    out('text-note').textContent = printable ? fill(L.textNote, { v: value }) : L.noText;
+    // the field someone is typing in keeps what they typed
+    for (const f of fields) if (f !== document.activeElement) show(f);
+    out('text-note').textContent = printable(value) ? fill(L.textNote, { v: value }) : L.noText;
     // with every switch off the button turns them all on, otherwise all off
     all.textContent = value === 0 ? L.allOn : L.reset;
   }
@@ -111,6 +137,46 @@ function setup(box) {
     });
   }
   addEventListener('pointerup', () => (dragging = false));
+
+  // Typing a reading: Enter keeps it, Escape goes back to the byte from
+  // before, and the arrow keys count as on the page.
+  for (const f of fields) {
+    let before = value;
+    f.addEventListener('focus', () => {
+      before = value;
+      if (f.value === '–') f.value = '';
+      f.select();
+    });
+    f.addEventListener('input', () => {
+      const typed = f.dataset.out === 'text' ? f.value : f.value.trim();
+      if (!typed) return;
+      const read = READ[f.dataset.out](typed);
+      if (typeof read === 'string') {
+        f.setAttribute('aria-invalid', 'true');
+        message.textContent = read;
+        return;
+      }
+      f.removeAttribute('aria-invalid');
+      set(read);
+      if (f.dataset.out === 'text') f.value = SHOW.text(read);
+      if (f.dataset.out === 'hex') f.value = typed.toUpperCase();
+    });
+    f.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === 'Escape') {
+        if (e.key === 'Escape') set(before);
+        show(f);
+        // back to the frame, so that its shortcuts work again
+        (box.closest('[data-demo]') ?? f).focus({ preventScroll: true });
+        if (document.activeElement === f) f.blur();
+      } else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        e.key === 'ArrowUp' ? up() : down();
+        show(f);
+        f.select();
+      } else return;
+      e.preventDefault();
+    });
+    f.addEventListener('blur', () => show(f));
+  }
 
   const act = { up, down, random: () => set(Math.floor(Math.random() * 256)), all: () => set(value === 0 ? 255 : 0) };
   for (const button of box.querySelectorAll('[data-act]')) button.addEventListener('click', act[button.dataset.act]);
