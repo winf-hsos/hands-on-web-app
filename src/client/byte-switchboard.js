@@ -7,6 +7,7 @@
 //
 // Written with ```byte-switchboard in Markdown (remark-knowledge.mjs); the
 // labels come from the page (data-byte-switchboard-labels on <body>).
+import { keys } from './demo-frame.js';
 
 const L = JSON.parse(document.body.dataset.byteSwitchboardLabels ?? '{}');
 const WEIGHTS = [128, 64, 32, 16, 8, 4, 2, 1]; // the leftmost switch first
@@ -35,13 +36,13 @@ function setup(box) {
       <button type="button" class="button button-quiet" data-act="down" aria-label="−1">−1</button>
       <button type="button" class="button button-quiet" data-act="up" aria-label="+1">+1</button>
       <button type="button" class="button button-quiet" data-act="random">${L.random}</button>
-      <button type="button" class="button button-quiet" data-act="reset">${L.reset}</button>
-      <span class="bs-keys">${L.keys}</span>
+      <button type="button" class="button button-quiet" data-act="all"></button>
     </div>`;
 
   const bits = [...box.querySelectorAll('.bs-bit')];
   const out = (name) => box.querySelector(`[data-out="${name}"]`);
   const message = box.querySelector('.bs-message');
+  const all = box.querySelector('[data-act="all"]');
 
   function set(next, note = '') {
     const changed = value ^ (next & 0xff);
@@ -77,6 +78,8 @@ function setup(box) {
     const printable = value >= 32 && value <= 126;
     out('text').textContent = printable ? String.fromCharCode(value) : '–';
     out('text-note').textContent = printable ? fill(L.textNote, { v: value }) : L.noText;
+    // with every switch off the button turns them all on, otherwise all off
+    all.textContent = value === 0 ? L.allOn : L.reset;
   }
 
   const up = () => set(value + 1, value === 255 ? L.overflow : '');
@@ -109,17 +112,28 @@ function setup(box) {
   }
   addEventListener('pointerup', () => (dragging = false));
 
-  const act = { up, down, random: () => set(Math.floor(Math.random() * 256)), reset: () => set(0) };
+  const act = { up, down, random: () => set(Math.floor(Math.random() * 256)), all: () => set(value === 0 ? 255 : 0) };
   for (const button of box.querySelectorAll('[data-act]')) button.addEventListener('click', act[button.dataset.act]);
 
-  // keys only while the switchboard has the focus, so the page still scrolls
-  box.addEventListener('keydown', (e) => {
-    if (e.key >= '1' && e.key <= '8') flip(8 - Number(e.key));
-    else if (e.key === 'ArrowUp' || e.key === 'ArrowRight') up();
-    else if (e.key === 'ArrowDown' || e.key === 'ArrowLeft') down();
-    else return;
-    e.preventDefault();
-  });
+  // keys only while the focus is in the demonstrator, so the page still scrolls
+  keys(
+    box,
+    [
+      ['1 – 8', L.keyFlip],
+      ['↑ / ↓', L.keyCount],
+      [L.randomKey, L.keyRandom],
+      ['0', L.keyAll],
+    ],
+    (key) => {
+      if (key >= '1' && key <= '8') flip(8 - Number(key));
+      else if (key === 'ArrowUp' || key === 'ArrowRight') up();
+      else if (key === 'ArrowDown' || key === 'ArrowLeft') down();
+      else if (key.toUpperCase() === L.randomKey) act.random();
+      else if (key === '0') act.all();
+      else return false;
+      return true;
+    },
+  );
 
   render();
 }

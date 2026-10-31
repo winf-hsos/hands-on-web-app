@@ -255,15 +255,23 @@ The body is plain Markdown with a few conventions:
   decimal, hexadecimal and text, with counting up and down that shows the
   carry and the overflow. It is the first of the LiFi demonstrators to come
   over, rebuilt in the design of the platform rather than embedded.
-- **Every demonstrator has a full-screen mode**, so that it can be shown on a
-  projector in class (Nicolas, 2026-10-31). The build puts each demonstrator
-  block into a frame (`<div class="demo" data-demo>`), and `client/fullscreen.js`
-  adds the button above it. In full screen the demonstrator keeps the width it
+- **Every demonstrator has a full-screen mode and shows its shortcuts**, so
+  that it can be shown on a projector in class (Nicolas, 2026-10-31). The
+  build puts each demonstrator block into a frame (`<div class="demo"
+  data-demo>`), and `client/demo-frame.js` adds two buttons above it,
+  „Tastenkürzel“ and „Vollbild“. The keys are the usual ones: `?` opens and
+  closes the list of shortcuts, `F` switches full screen, `Esc` closes. A
+  demonstrator adds its own keys with `keys(box, list, handle)` from
+  `demo-frame.js`: `list` holds the rows of the overview (`['1 – 8', label]`),
+  `handle(key)` returns true for the keys it used. Keys work while the focus
+  is in the frame, which a click anywhere in it gives, so the page still
+  scrolls with the arrow keys elsewhere. Every demonstrator should have keys
+  for its main actions. In full screen the demonstrator keeps the width it
   had on the page and is scaled up with CSS `zoom` (at most three times), so
   its layout stays the same, only larger. Where a browser has no full screen
   for elements or refuses it, the same view opens as a layer over the page;
-  Escape leaves both. A new demonstrator needs nothing for this beyond its
-  entry in `DEMOS`.
+  Escape leaves both. A new demonstrator gets frame, buttons and full screen
+  from its entry in `DEMOS` alone; only its own keys need `keys()`.
 - **No embedded HTML and no embedded pages from elsewhere.** That keeps the
   rule from the concept that nothing on the site comes from anywhere but the
   knowledge base.

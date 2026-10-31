@@ -7,6 +7,7 @@
 //
 // Written with ```verb-demo in Markdown (remark-knowledge.mjs); the labels
 // come from the page (data-verb-demo-labels on <body>).
+import { keys } from './demo-frame.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const L = JSON.parse(document.body.dataset.verbDemoLabels ?? '{}');
@@ -148,6 +149,19 @@ async function setup(box) {
   VERBS.forEach((verb, i) => buttons[i].addEventListener('click', () => show(verb.apply(original), verb.code, buttons[i])));
   reset.addEventListener('click', () => show(original, 'survey', reset));
   reset.setAttribute('aria-pressed', 'true');
+  keys(
+    box,
+    [
+      ['0', L.keyOriginal],
+      [`1 – ${VERBS.length}`, L.keyVerbs],
+    ],
+    (key) => {
+      const button = /^\d$/.test(key) && [reset, ...buttons][Number(key)];
+      if (!button) return false;
+      button.click();
+      return true;
+    },
+  );
   render(original);
 }
 

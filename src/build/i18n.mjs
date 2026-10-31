@@ -429,16 +429,32 @@ export const copyLabels = {
   en: { copy: 'Copy code', copied: 'Copied' },
 };
 
-/** The full-screen button above every demonstrator (client/fullscreen.js). */
-export const demoFullscreenLabels = {
-  de: { enter: 'Vollbild', leave: 'Vollbild beenden' },
-  en: { enter: 'Full screen', leave: 'Exit full screen' },
+/** The frame of every demonstrator: shortcuts and full screen (client/demo-frame.js). */
+export const demoFrameLabels = {
+  de: {
+    enter: 'Vollbild',
+    leave: 'Vollbild beenden',
+    keys: 'Tastenkürzel',
+    fullscreenKey: 'Vollbild an und aus',
+    helpKey: 'diese Übersicht zeigen und schließen',
+    escKey: 'Übersicht schließen, Vollbild beenden',
+    focusNote: 'Die Tasten wirken, sobald du in den Demonstrator geklickt hast.',
+  },
+  en: {
+    enter: 'Full screen',
+    leave: 'Exit full screen',
+    keys: 'Shortcuts',
+    fullscreenKey: 'full screen on and off',
+    helpKey: 'show and close this overview',
+    escKey: 'close the overview, leave full screen',
+    focusNote: 'The keys work once you have clicked into the demonstrator.',
+  },
 };
 
 /** Labels of the dplyr demonstrator (client/verb-demo.js). */
 export const demoLabels = {
-  de: { original: 'Original', hint: 'Jedes Verb beginnt bei der Originaltabelle.' },
-  en: { original: 'Original', hint: 'Every verb starts from the original table.' },
+  de: { original: 'Original', hint: 'Jedes Verb beginnt bei der Originaltabelle.', keyOriginal: 'Originaltabelle', keyVerbs: 'die Verben der Reihe nach' },
+  en: { original: 'Original', hint: 'Every verb starts from the original table.', keyOriginal: 'original table', keyVerbs: 'the verbs in order' },
 };
 
 /** Labels of the game with three doors (client/monty-hall.js). */
@@ -462,6 +478,9 @@ export const montyHallLabels = {
     record: 'Eure Runden als R-Code',
     none: 'Noch keine Runde gespielt',
     reset: 'Von vorn',
+    keyDoors: 'Tür wählen; nach dem Öffnen heißt dieselbe Tür bleiben, die andere wechseln',
+    keyNext: 'nächste Runde',
+    nextKey: 'N',
   },
   en: {
     choose: 'Pick a door.',
@@ -482,6 +501,9 @@ export const montyHallLabels = {
     record: 'Your rounds as R code',
     none: 'No round played yet',
     reset: 'Start over',
+    keyDoors: 'pick a door; once one is open, the same door stays and the other one switches',
+    keyNext: 'next round',
+    nextKey: 'N',
   },
 };
 
@@ -502,7 +524,12 @@ export const byteSwitchboardLabels = {
     underflow: '0 − 1 gibt es in einem Byte nicht: Es springt auf 255, alle Schalter an.',
     random: 'Zufall',
     reset: 'Alle aus',
-    keys: 'Tasten, wenn ein Schalter ausgewählt ist: 1 bis 8 schalten, ↑ und ↓ zählen.',
+    allOn: 'Alle an',
+    keyFlip: 'Schalter 1 bis 8 umschalten, von links',
+    keyCount: 'um eins hoch- oder herunterzählen',
+    keyRandom: 'Zufall',
+    randomKey: 'Z',
+    keyAll: 'alle aus, oder alle an, wenn alle aus sind',
   },
   en: {
     bit: 'Bit {n}, place value {w}',
@@ -519,6 +546,11 @@ export const byteSwitchboardLabels = {
     underflow: 'There is no 0 − 1 in a byte: it jumps to 255, all switches on.',
     random: 'Random',
     reset: 'All off',
-    keys: 'Keys, once a switch is selected: 1 to 8 flip, ↑ and ↓ count.',
+    allOn: 'All on',
+    keyFlip: 'flip switch 1 to 8, from the left',
+    keyCount: 'count up or down by one',
+    keyRandom: 'random',
+    randomKey: 'R',
+    keyAll: 'all off, or all on when all are off',
   },
 };

@@ -113,8 +113,8 @@ function runnable(tree) {
 // ```verb-demo becomes the place of the dplyr demonstrator (client/verb-demo.js),
 // ```monty-hall the game with three doors (client/monty-hall.js),
 // ```byte-switchboard eight switches for one byte (client/byte-switchboard.js).
-// Each sits in a frame with a full-screen button (client/fullscreen.js), so
-// that it can be shown on a projector in class.
+// Each sits in a frame with buttons for its shortcuts and for full screen
+// (client/demo-frame.js), so that it can be shown on a projector in class.
 const DEMOS = {
   'verb-demo': { className: 'verb-demo', dataVerbDemo: '' },
   'monty-hall': { className: 'monty-hall', dataMontyHall: '' },

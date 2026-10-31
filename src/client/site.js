@@ -1,11 +1,11 @@
 // Behaviour shared by every page: theme, progress marks, "mark as done",
 // the search dialog, the list or card view (view.js), copy buttons on code
-// (copy.js), full screen for demonstrators (fullscreen.js) and the
+// (copy.js), shortcuts and full screen for demonstrators (demo-frame.js) and the
 // background (backdrop.js).
 import { load, update, isDone, today, loadIndex } from './progress.js';
 import './backdrop.js';
 import './copy.js';
-import './fullscreen.js';
+import './demo-frame.js';
 import './view.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;

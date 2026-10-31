@@ -7,6 +7,7 @@
 // Written with ```monty-hall in Markdown (remark-knowledge.mjs); the labels
 // come from the page (data-monty-hall-labels on <body>).
 import { addCopyButton } from './copy.js';
+import { keys } from './demo-frame.js';
 
 const L = JSON.parse(document.body.dataset.montyHallLabels ?? '{}');
 const KEY = 'hocs-monty-hall';
@@ -144,6 +145,22 @@ function setup(box) {
     showRecord();
     start();
   });
+
+  // the doors by number, so that a round can be played from the keyboard
+  keys(
+    box,
+    [
+      ['1 – 3', L.keyDoors],
+      [L.nextKey, L.keyNext],
+    ],
+    (key) => {
+      const door = /^\d$/.test(key) && doors[Number(key) - 1];
+      if (door) door.click();
+      else if (key.toUpperCase() === L.nextKey && !act('next').hidden) start();
+      else return false;
+      return true;
+    },
+  );
 
   showRecord();
   start();
