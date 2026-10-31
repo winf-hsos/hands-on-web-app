@@ -249,7 +249,9 @@ The body is plain Markdown with a few conventions:
   `lets-make-a-deal` describes it.
 - **The dplyr demonstrator** is placed with an empty ` ```verb-demo ` block,
   **the game with three doors** with an empty ` ```monty-hall ` block. The
-  game records every round and shows the rounds as R vectors to copy.
+  game records every round in a bar per decision (how often staying and
+  switching won), shows the rounds as R vectors to copy on request, and the
+  doors swing open in place.
   **The byte switchboard** is placed with an empty ` ```byte-switchboard `
   block: eight switches with their place values, and the byte as binary,
   decimal, hexadecimal and text, with counting up and down that shows the
@@ -258,6 +260,13 @@ The body is plain Markdown with a few conventions:
   that cannot be one (300, G, ä) is marked and explained, Enter keeps it and
   Escape goes back. It is the first of the LiFi demonstrators to come
   over, rebuilt in the design of the platform rather than embedded.
+- **Nothing in a demonstrator moves while it is used** (Nicolas,
+  2026-10-31): every part that changes (a status line, buttons that come and
+  go, a result) has a place of a fixed size from the start, with room for
+  its longest form at every width, and buttons that are not needed are only
+  hidden (`visibility`), never removed from the layout. Only what the
+  learner opens on request, such as a code block, may make the demonstrator
+  taller, and then below everything else.
 - **A demo page is short** (Nicolas, 2026-10-31): above the demonstrator a
   paragraph on its goal (**Ziel:** / **Goal:**) and one on how to use it
   (**Bedienung:** / **How to use:**), then the demonstrator, and nothing

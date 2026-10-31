@@ -22,8 +22,9 @@ oder wenn man wechselt.
 
 **Bedienung:** Wähl eine Tür. Der Moderator öffnet daraufhin eine andere mit
 einer Ziege, und du bleibst bei deiner Tür oder wechselst zur letzten
-geschlossenen. Unter dem Spiel steht jede Runde als R-Code zum Kopieren; die
-Runden bleiben in diesem Browser gespeichert, bis du „Von vorn“ wählst.
+geschlossenen. Daneben zählt eine Statistik mit, wie oft Bleiben und Wechseln
+gewinnen, und auf Wunsch zeigt das Spiel alle Runden als R-Code zum Kopieren.
+Die Runden bleiben in diesem Browser gespeichert, bis du „Von vorn“ wählst.
 
 ```monty-hall
 ```

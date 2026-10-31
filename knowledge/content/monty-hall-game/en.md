@@ -12,9 +12,10 @@ to find out whether you win more often when you stay with your door or when
 you switch.
 
 **How to use:** Pick a door. The host then opens another one with a goat
-behind it, and you stay with your door or switch to the last closed one. Below
-the game every round appears as R code to copy; the rounds stay stored in this
-browser until you choose "Start over".
+behind it, and you stay with your door or switch to the last closed one. Next to
+the doors a statistic counts how often staying and switching win, and on
+request the game shows all rounds as R code to copy. The rounds stay stored in
+this browser until you choose "Start over".
 
 ```monty-hall
 ```
