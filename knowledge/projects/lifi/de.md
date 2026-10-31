@@ -16,7 +16,7 @@ phases:
     challenges:
       - id: challenge-0
   - id: alphabet
-    items: [place-value-systems, why-two-states, why-ten]
+    items: [sent-is-not-measured, measuring-and-experimenting, place-value-systems, why-two-states, why-ten]
     challenges:
       - id: challenge-1
         items: [lifi-colour-alphabet-quiz]

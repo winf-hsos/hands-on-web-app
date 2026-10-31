@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>measuring and experimenting</title>
+  <link rel="stylesheet" href="theme.css?v=1">
+  <link rel="stylesheet" href="../../stagekit/stagekit.css?v=0.4.0-62b883">
+  <style>
+    /* deck-specific layout only, colours and sizes come from the theme */
+    .figure.wide { left: 110px; right: 110px; }
+    .photo-text.narrow { width: 520px; }
+    .content.tight .statement { line-height: 1.12; }
+  </style>
+</head>
+<body>
+<div class="deck"
+     data-title="measuring and experimenting"
+     data-subtitle="hands-on computer science · prof. dr. nicolas meseth"
+     data-parts='["measuring settles it", "know what you measure", "one reading is a guess", "build evidence"]'>
+
+  <section class="slide title">
+    <aside class="notes">Eine einzelne Ablesung ist noch kein Beleg. Wissen entsteht erst aus einer kontrollierten Messreihe: Erwartung vorher festhalten, genau eine Größe verändern, wiederholen und alle Ergebnisse dokumentieren.</aside>
+  </section>
+
+  <section class="slide agenda">
+    <aside class="notes">Wir gehen in vier Schritten vor: warum Messen entscheidet, was ein Sensor tatsächlich misst, warum eine einzelne Ablesung nicht genügt und wie aus vielen Ablesungen belastbare Evidenz wird. Das Beispiel ist durchgehend ein Farbsensor, der das Licht einer LED misst; jeder andere Sensor verhält sich im Grundsatz genauso.</aside>
+  </section>
+
+  <!-- ================= part 1 ================= -->
+
+  <section class="slide part" data-part="measuring settles it">
+    <aside class="notes">Wir beginnen nicht mit dem Sensor, sondern mit der grundsätzlichen Frage, was eine Behauptung entscheiden kann.</aside>
+  </section>
+
+  <section class="slide">
+    <img class="photo" src="img/galileo.jpg" alt="Two falling balls beside the Leaning Tower of Pisa">
+    <div class="photo-text narrow">which one<br>lands first?</div>
+    <div class="footnote">image: ai-generated (gpt-image-2)</div>
+    <aside class="notes">Abstimmen lassen: die schwere Kugel, die leichte Kugel oder beide gleichzeitig. Zweitausend Jahre lang klang Aristoteles plausibel, denn Schweres sollte schneller fallen. Der Legende nach ließ Galileo zwei unterschiedlich schwere Kugeln vom Schiefen Turm fallen, und beide kamen zugleich an. Eine Messung entschied, was Nachdenken und Autorität nicht entscheiden konnten. Wer mit einem KI-Assistenten an einem Aufbau arbeitet, hat den Gelehrten neben sich sitzen, und der eigene Aufbau ist der Turm.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawAuthorities" data-on-step="drawAuthorities">
+    <h2>three ways to answer the same question</h2>
+    <div class="figure wide" id="fig-authorities"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <div class="punch" data-step="2">an explanation only claims something, while a measurement can decide it.</div>
+    <aside class="notes">Eine gute Begründung ist nützlich, aber sie zeigt nur, warum etwas gelten könnte. Auch eine konkrete KI-Prognose bleibt eine Behauptung. Erst eine Messreihe am eigenen Aufbau zeigt, ob und wie stark der behauptete Effekt wirklich auftritt.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>turn a claim into a test</h2>
+    <div class="figure wide" id="fig-experiment-loop"></div>
+    <div class="punch" data-step="3">write the expectation before you measure.</div>
+    <aside class="notes">Jeder Tastendruck führt einen Schritt weiter: Aus der Frage folgt eine Erwartung, dann wird gemessen, dann entschieden. Die Erwartung macht die Behauptung prüfbar. Sie muss vorher feststehen, weil man sonst hinterher fast jedes Ergebnis passend erklären kann. Das Experiment ist kein Ritual, sondern ein Vergleich zwischen einer vorher festgelegten Erwartung und beobachteten Daten.</aside>
+  </section>
+
+  <!-- ================= part 2 ================= -->
+
+  <section class="slide part" data-part="know what you measure">
+    <aside class="notes">Eine Messreihe ist nur so gut wie das Verständnis dessen, was gemessen wird. Darum zoomen wir jetzt in die Eingabe eines Empfängers.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>this concept lives at the input</h2>
+    <div class="figure" id="fig-ipo-map"></div>
+    <aside class="notes">Im IPO-Modell ist der Empfänger ein Kasten mit Eingabe, Verarbeitung und Ausgabe. Hier zoomen wir in die Eingabe: Was kommt dort tatsächlich an? Nicht „Rot“, sondern eine Messung.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawSensor" data-on-step="drawSensor">
+    <h2>the sensor returns four numbers</h2>
+    <div class="figure" id="fig-sensor"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <div class="punch" data-step="2">your eyes see a colour, but the program only sees four numbers.</div>
+    <aside class="notes">Der Sensor liefert Rot, Grün und Blau sowie Clear. Clear misst ohne Farbfilter das gesamte einfallende Licht und reagiert deshalb besonders empfindlich auf Hell und Dunkel. Diese vier Zahlen sind die Eingabe des Programms.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>sent is not measured</h2>
+    <div class="figure" id="fig-sent-measured"></div>
+    <div class="punch" data-step="1">the numbers differ from what was sent, and that is normal, not a defect.</div>
+    <aside class="notes">Erst fragen, welche vier Zahlen ankommen, wenn die LED reines Rot sendet. Dann läuft das Licht hinüber, und am Sensor zählen die vier Werte hoch. Die Farbfilter sind nicht perfekt getrennt, Licht verliert sich auf dem Weg, und das Raumlicht gelangt ebenfalls in den Sensor. Darum entsprechen die Messwerte nicht den LED-Werten. Eine feste Rückrechnungsformel wäre am nächsten Tisch oder am nächsten Tag bereits falsch.</aside>
+  </section>
+
+  <section class="slide" data-on-show="drawDark" data-on-step="drawDark">
+    <h2>measure the dark first</h2>
+    <div class="figure" id="fig-dark"></div>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span>
+    <aside class="notes">Der Sensor liest auch bei ausgeschalteter eigener LED nicht Null. Diese Kontrollmessung ist der Bezugspunkt für alle folgenden Werte. Sie zeigt zugleich, ob sich die Umgebung verändert hat, etwa durch Sonne oder die LED eines Nachbarteams.</aside>
+  </section>
+
+  <!-- ================= part 3 ================= -->
+
+  <section class="slide part" data-part="one reading is a guess">
+    <aside class="notes">Selbst bei unveränderten Bedingungen liefert der Sensor nicht immer dieselbe Zahl. Eine Ablesung ist deshalb noch keine Messreihe.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>which value is true?</h2>
+    <div class="figure" id="fig-five-readings"></div>
+    <aside class="notes">Beim ersten Wert nach einer Prognose für den zweiten fragen, dann kommen die übrigen nacheinander; nach dem fünften abstimmen lassen, welcher „stimmt“. Jede reale Messung streut. Das ist kein Defekt, sondern der Normalfall, und ein einzelner Wert ist eine Ziehung aus einer Verteilung. Fünf vollkommen identische Werte wären bei einem echten Aufbau eher verdächtig.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>how many readings per decision?</h2>
+    <div class="figure wide" id="fig-decisions"></div>
+    <div class="punch" data-step="3">averaging lowers the error rate, but you pay for it with speed.</div>
+    <aside class="notes">Ein Sender schickt abwechselnd „aus“ und „an“, und der Empfänger entscheidet an einer Schwelle, welches der beiden Symbole angekommen ist. Zuerst entscheidet jede einzelne Ablesung: Drei Punkte landen auf der falschen Seite und sind rot. Dann entscheiden dieselben Ablesungen noch zweimal, gemittelt über fünf und über zehn, und kein Punkt rutscht mehr über die Schwelle. Rechts steht der Preis dafür: dieselbe Zahl Entscheidungen, aber 150 oder 300 statt 30 Ablesungen, und aus 20 Symbolen je Sekunde werden 4 oder 2. Wie oft gemittelt werden muss, steht in keiner Tabelle; bei wenig Rauschen kostet Mitteln nur Tempo, bei viel Rauschen reicht auch das Mittel aus fünf nicht. Die Zahlen sind simuliert, die Struktur ist echt.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawSpread" data-on-step="drawSpread">
+    <h2>a series reveals what one reading hides</h2>
+    <div class="figure" id="fig-spread"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <div class="punch" data-step="2">report the centre and the spread.</div>
+    <aside class="notes">Ein Mittelwert beschreibt die Lage, aber nicht die Zuverlässigkeit. Zwei Reihen können denselben Mittelwert und völlig verschiedene Streuungen haben. Deshalb gehören die Einzelwerte oder mindestens ein Streuungsmaß ins Protokoll.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>the knob: integration time</h2>
+    <div class="figure wide" id="fig-integration"></div>
+    <aside class="notes">Die Integrationszeit ist das Ablesefenster des Sensors. Die gelbe Linie läuft durch dieselbe Sekunde, und jede Ablesung erscheint, wenn ihr Fenster schließt: Oben kommen vier lange, unten zwölf kurze. Ein langes Fenster sammelt mehr Licht und mittelt Schwankungen, kostet aber Zeit. Ein kurzes Fenster liefert schneller neue Werte, die stärker streuen, und einige verlassen das Band, das noch richtig gelesen wird. Die Verstärkung ist der zweite Drehknopf: Sie skaliert Signal und Störung und kann den Sensor sättigen.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content tight">
+      <div class="statement">a longer window gives calmer readings,<br>a shorter one gives them faster.</div>
+      <div class="sidenote">where the best trade-off lies for your setup, only a measurement can tell.</div>
+    </div>
+    <aside class="notes">Das ist der zentrale Zielkonflikt jeder Übertragung mit einem Sensor: Mehr Ruhe kostet Symbolrate. Wo der beste Kompromiss liegt, hängt von Abstand, Raumlicht, Optik und Aufbau ab. Hier geht es um die Methode, diese Grenze zu finden, nicht um eine Zahl, die man nachschlagen könnte.</aside>
+  </section>
+
+  <!-- ================= part 4 ================= -->
+
+  <section class="slide part" data-part="build evidence">
+    <aside class="notes">Jetzt setzen wir die Beobachtungen zu einer sauberen Messreihe zusammen.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawTeams" data-on-step="drawTeams">
+    <h2>two teams improve their result</h2>
+    <div class="figure wide" id="fig-teams"></div>
+    <span data-step="1"></span>
+    <div class="punch" data-step="1">change one variable at a time.</div>
+    <aside class="notes">Fragen: Wer hat gelernt, wodurch die Verbesserung entstand? Beide Teams haben ein besseres Ergebnis, aber nur Team B hat eine Ursache geprüft. Wer zwei Größen gleichzeitig verändert, kann ihren Beitrag anschließend nicht trennen.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawSeries" data-on-step="drawSeries">
+    <h2>what makes a measurement series</h2>
+    <div class="figure wide" id="fig-series"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <div class="punch" data-step="2">a repeatable result is worth more than an impressive one.</div>
+    <aside class="notes">Diese Folie ist zugleich die Checkliste des Messprotokolls. Bedingungen machen die Reihe wiederholbar, die Erwartung macht sie ehrlich, eine veränderte Größe macht sie deutbar, Wiederholungen machen sie belastbar, und alle Werte verhindern, dass nur die angenehmen Ergebnisse übrig bleiben.</aside>
+  </section>
+
+  <section class="slide" data-on-show="drawLuck" data-on-step="drawLuck">
+    <h2>luck or skill?</h2>
+    <div class="figure" id="fig-luck"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <aside class="notes">Bei zwei Farben trifft Raten jede zweite Entscheidung. In einem Raum mit vielen Teams gelingen fünf Treffer in Folge irgendwo schnell. Fünfzig Treffer in Folge sind durch Zufall praktisch ausgeschlossen, und darum braucht ein belastbarer Nachweis lange Serien.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>calibrate, then classify</h2>
+    <div class="figure wide" id="fig-calibration"></div>
+    <aside class="notes">Kalibrieren heißt, bekannte Farben unter den eigenen Bedingungen wiederholt zu messen. Klassifizieren heißt, eine neue Messung mit diesen Referenzen zu vergleichen: Die neue Ablesung kommt hinzu, beide Abstände werden gezogen, und der kürzere gewinnt. Wir versuchen nicht, die LED-Werte zurückzurechnen, sondern treffen eine datenbasierte Entscheidung. Das ist die Antwort auf die Frage, wie man aus Zahlen, die nicht stimmen, trotzdem die gesendete Farbe erkennt.</aside>
+  </section>
+
+  <section class="slide" data-on-show="drawAssistant" data-on-step="drawAssistant">
+    <h2>when the assistant and the data disagree</h2>
+    <div class="figure wide" id="fig-assistant"></div>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span>
+    <aside class="notes">Der Assistent kennt Sensoren dieser Art, aber nicht den eigenen Aufbau. Widerspricht eine saubere Messreihe seinem Vorschlag, gewinnt die Messreihe. Vorher verdient auch sie eine kurze Qualitätsprüfung. Dann wird der Widerspruch dokumentiert, mit Vorschlag, Messung und Ergebnis, und so wird aus dem Irrtum etwas Gelerntes.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content tight">
+      <div class="statement">if you did not measure it,<br>you do not know it.</div>
+      <div class="sidenote">one reading is not a measurement series.</div>
+    </div>
+    <aside class="notes">Jede Behauptung über einen Aufbau ist eine Einladung zu einem Experiment. Nicht die schönste Erklärung gewinnt, sondern die sauberste Messreihe.</aside>
+  </section>
+
+</div>
+<script src="../../stagekit/draw.js?v=0.4.0-62b883"></script>
+<script src="../../stagekit/anim.js?v=0.4.0-62b883"></script>
+<script src="deck.js?v=1"></script>
+<script src="../../stagekit/stagekit.js?v=0.4.0-62b883"></script>
+</body>
+</html>
