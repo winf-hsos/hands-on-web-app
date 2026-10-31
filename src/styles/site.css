@@ -3496,16 +3496,21 @@ details.callout[open] > summary::before {
   text-align: center;
 }
 
+/* Each reading takes the width it needs and the gaps are equal, so the short
+   decimal and hex values do not stand in a column as wide as the binary one;
+   the text takes the rest, its note may wrap there. The values reserve room
+   for their longest form, so counting does not move the columns. */
 .bs-outputs {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
-  gap: 0.75rem 1.25rem;
+  grid-template-columns: max-content max-content max-content minmax(8rem, 1fr);
+  gap: 0.75rem 2.5rem;
   padding-top: 1rem;
   border-top: 1px solid var(--rule);
 }
 
 .bs-out {
   display: grid;
+  align-content: start;
   gap: 0.1rem;
 }
 
@@ -3517,6 +3522,26 @@ details.callout[open] > summary::before {
 
 .bs-value {
   font: 700 1.6rem/1.2 var(--mono);
+}
+
+.bs-value[data-out='bin'] {
+  min-width: 9ch;
+}
+
+.bs-value[data-out='dec'] {
+  min-width: 3ch;
+}
+
+.bs-value[data-out='hex'] {
+  min-width: 2ch;
+}
+
+/* on a phone two readings per row */
+@media (max-width: 40rem) {
+  .bs-outputs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem 1.25rem;
+  }
 }
 
 .prose .bs-message {
