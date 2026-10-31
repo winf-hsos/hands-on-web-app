@@ -12,7 +12,7 @@ modules: [ea]
 areas: [ds]
 relations:
   see_also: [lets-make-a-deal]
-status: draft
+status: published
 updated: 2026-10-31
 ---
 
