@@ -12,7 +12,7 @@ modules: [dup]
 relations:
   example_of: [byte]
   see_also: [binary-numbers, hexadecimal]
-status: draft
+status: published
 updated: 2026-10-30
 ---
 
