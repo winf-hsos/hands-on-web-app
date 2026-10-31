@@ -5,7 +5,7 @@ summary: >-
   experiment as data, rebuild it in R and play it so often that the data give
   an answer hardly anyone expects.
 translation_of: de
-based_on: 2026-10-28
+based_on: 2026-10-31
 ---
 
 On a game show there are three doors. Behind one waits a car, behind each of
@@ -31,12 +31,9 @@ the German version of "Let's Make a Deal":
 [the video on YouTube](https://www.youtube.com/watch?v=hXlsPGlAqbM&t=109s).
 The host there is Jörg Draeger; the principle is the same.
 
-Here you can play yourselves. Every round is recorded below as R code, which
-you need in the next phase. The rounds stay stored in this browser until you
-choose "Start over".
-
-```monty-hall
-```
+You can play yourselves in [[monty-hall-game|the game with three doors]].
+It records every round as R code, which you need in the next phase, and keeps
+the rounds in this browser until you choose "Start over".
 
 ### Challenge 1: Guess first, then play {#challenge-1}
 
@@ -58,7 +55,7 @@ fact, where the first position always belongs to the first round, the second
 to the second, and so on.
 
 Below are ten example rounds. Replace them with your own: copy the R code
-under the game from phase 1 and paste it in place of the four lines.
+under [[monty-hall-game|the game with three doors]] and paste it in place of the four lines.
 
 ### Challenge 2: Your rounds in R {#challenge-2}
 
@@ -425,8 +422,8 @@ which the explanation above of why switching is better?
 
 ## What you need
 
-This browser is enough for everything: the game and R run on the page. If you
-prefer working on your own computer, take [[positron]] and download the
-[[lets-make-a-deal|data set]]. For further reading, chapters 5 to 7 of
-[[hands-on-programming-with-r]] fit well, on objects, the notation with
-square brackets and modifying values.
+A browser is enough for everything, since the game and R run on the pages of
+the platform. If you prefer working on your own computer, take [[positron]]
+and download the [[lets-make-a-deal|data set]]. For further reading, chapters
+5 to 7 of [[hands-on-programming-with-r]] fit well, on objects, the notation
+with square brackets and modifying values.

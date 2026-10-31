@@ -13,6 +13,7 @@ areas: [ds]
 items: [lets-make-a-deal, hands-on-programming-with-r]
 phases:
   - id: play
+    items: [monty-hall-game]
     challenges:
       - id: challenge-1
   - id: vectors
@@ -41,7 +42,7 @@ phases:
       - id: challenge-10
       - id: challenge-11
 status: draft
-updated: 2026-10-28
+updated: 2026-10-31
 ---
 
 In einer Spielshow stehen drei Türen. Hinter einer wartet ein Auto, hinter
@@ -68,12 +69,9 @@ Ganze“ von 1994, der deutschen Fassung von „Let's Make a Deal“:
 [das Video auf YouTube](https://www.youtube.com/watch?v=hXlsPGlAqbM&t=109s).
 Dort heißt der Moderator Jörg Draeger, das Prinzip ist dasselbe.
 
-Hier könnt ihr selbst spielen. Jede Runde wird unten als R-Code
-mitgeschrieben, den ihr in der nächsten Phase braucht. Die Runden bleiben in
-diesem Browser gespeichert, bis ihr „Von vorn“ wählt.
-
-```monty-hall
-```
+Selbst spielen könnt ihr im [[monty-hall-game|Drei-Türen-Spiel]]. Es
+schreibt jede Runde als R-Code mit, den ihr in der nächsten Phase braucht, und
+behält die Runden in diesem Browser, bis ihr „Von vorn“ wählt.
 
 ### Challenge 1: Erst raten, dann spielen {#challenge-1}
 
@@ -96,7 +94,7 @@ vier Vektoren aufschreiben, einer je Angabe, in denen die erste Stelle immer
 zur ersten Runde gehört, die zweite zur zweiten und so weiter.
 
 Unten stehen zehn Beispielrunden. Ersetzt sie durch eure eigenen: Kopiert den
-R-Code unter dem Spiel aus Phase 1 und fügt ihn statt der vier Zeilen ein.
+R-Code unter dem [[monty-hall-game|Drei-Türen-Spiel]] und fügt ihn statt der vier Zeilen ein.
 
 ### Challenge 2: Eure Runden in R {#challenge-2}
 
@@ -468,8 +466,8 @@ Erklärung oben, warum Wechseln besser ist?
 
 ## Was ihr braucht
 
-Für alles reicht dieser Browser: Das Spiel und R laufen auf der Seite. Wer
-lieber am eigenen Rechner arbeitet, nimmt [[positron]] und lädt den
-[[lets-make-a-deal|Datensatz]] herunter. Zum Nachlesen passen aus
+Für alles reicht ein Browser, denn das Spiel und R laufen auf den Seiten der
+Plattform. Wer lieber am eigenen Rechner arbeitet, nimmt [[positron]] und lädt
+den [[lets-make-a-deal|Datensatz]] herunter. Zum Nachlesen passen aus
 [[hands-on-programming-with-r]] die Kapitel 5 bis 7 über Objekte, die
 Schreibweise mit eckigen Klammern und das Ändern von Werten.
