@@ -8,34 +8,14 @@ translation_of: en
 based_on: 2026-10-31
 ---
 
-Jeder Schalter unten ist ein Bit eines Bytes, darüber steht sein Stellenwert.
-Klick auf einen Schalter, oder drück ihn und zieh über seine Nachbarn, und sieh
-zu, wie sich die Zahl aus den eingeschalteten Schaltern zusammensetzt. Das Byte
-beginnt bei 65, dem großen A.
-Es geht auch andersherum: Klick auf den Wert unter Dezimal, Hexadezimal oder
-Text, tipp einen neuen ein, und die Schalter folgen.
+**Ziel:** Du siehst, wie aus acht Bits eine Zahl wird. Sie ist die Summe der
+Stellenwerte der eingeschalteten Schalter, und dasselbe Byte erscheint binär,
+dezimal, hexadezimal und als Zeichen.
+
+**Bedienung:** Klick auf einen Schalter, um ihn umzulegen, oder zieh über
+mehrere. Mit +1 und −1 zählst du, und unter Dezimal, Hexadezimal und Text
+kannst du einen Wert eintippen, dem die Schalter folgen. Das Byte beginnt bei
+65, dem großen A.
 
 ```byte-switchboard
 ```
-
-## Fragen zum Ausprobieren
-
-- Welcher Schalter ändert die Zahl am meisten, welcher am wenigsten?
-- Wie stellst du 255 ein, und wie die 1?
-- Zähl mit +1 von 0 bis 16 und achte darauf, welche Schalter bei jedem Schritt
-  umspringen. Wo läuft ein Übertrag über mehrere Stellen auf einmal?
-- Was passiert, wenn du von 255 aus noch einen Schritt weiterzählst?
-- Tipp unter Hexadezimal erst 0F und dann F0 ein. Welche Schalter sind jeweils
-  an, und warum?
-- Stell die Schalter auf 01000001 und dann auf 01100001. Was ändert sich am
-  Text, und um wie viel ändert sich die Zahl?
-
-## Was du sehen solltest
-
-Die Zahl ist immer die Summe der Stellenwerte der eingeschalteten Schalter,
-also die [[place-value-systems|Stellenwert-Bauanleitung]] zur Basis 2. Der
-linke Schalter ist 128 wert und damit mehr als alle anderen zusammen (127). Die
-Hexadezimalziffern ändern sich je Päckchen aus vier Schaltern, und das Zeichen
-ist das Byte, gelesen durch die ASCII-Tabelle, die [[code-as-agreement]]
-erklärt. Nach 255 läuft das Byte über: Die neunte Stelle, die es bräuchte, gibt
-es nicht, also beginnt es wieder bei 0.

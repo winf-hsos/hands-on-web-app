@@ -258,6 +258,12 @@ The body is plain Markdown with a few conventions:
   that cannot be one (300, G, ä) is marked and explained, Enter keeps it and
   Escape goes back. It is the first of the LiFi demonstrators to come
   over, rebuilt in the design of the platform rather than embedded.
+- **A demo page is short** (Nicolas, 2026-10-31): above the demonstrator a
+  paragraph on its goal (**Ziel:** / **Goal:**) and one on how to use it
+  (**Bedienung:** / **How to use:**), then the demonstrator, and nothing
+  after it, no questions to try and no explanation; that belongs in the
+  lessons the demo is related to. The build warns about text after the
+  demonstrator block.
 - **Every demonstrator has a full-screen mode and shows its shortcuts**, so
   that it can be shown on a projector in class (Nicolas, 2026-10-31). The
   build puts each demonstrator block into a frame (`<div class="demo"

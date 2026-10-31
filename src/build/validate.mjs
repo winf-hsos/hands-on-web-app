@@ -500,6 +500,14 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
         warnings.push(`${file.path}: translation is older than its lead file`);
     }
   }
+  // A demo page says above the demonstrator what it is for and how to use it,
+  // and ends with it (Nicolas, 2026-10-31).
+  for (const item of content.filter((d) => d.lead.type === 'demo')) {
+    for (const file of Object.values(item.files)) {
+      const after = file.body.split(/^```[\w-]+\r?\n```[ \t]*$/m)[1];
+      if (after?.trim()) warnings.push(`${file.path}: text after the demonstrator; a demo page ends with it`);
+    }
+  }
   const published = [
     ...paths.filter((p) => p.lead.status === 'published').map((p) => [`paths/${p.id}`, pathSteps(p.lead)]),
     ...courses
