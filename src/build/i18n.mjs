@@ -429,6 +429,12 @@ export const copyLabels = {
   en: { copy: 'Copy code', copied: 'Copied' },
 };
 
+/** The full-screen button above every demonstrator (client/fullscreen.js). */
+export const demoFullscreenLabels = {
+  de: { enter: 'Vollbild', leave: 'Vollbild beenden' },
+  en: { enter: 'Full screen', leave: 'Exit full screen' },
+};
+
 /** Labels of the dplyr demonstrator (client/verb-demo.js). */
 export const demoLabels = {
   de: { original: 'Original', hint: 'Jedes Verb beginnt bei der Originaltabelle.' },

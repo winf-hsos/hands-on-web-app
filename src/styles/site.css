@@ -3140,6 +3140,83 @@ details.callout[open] > summary::before {
   order: 0;
 }
 
+/* --- the frame of every demonstrator (client/fullscreen.js) ---------------------------- */
+
+/* Above each demonstrator a quiet full-screen button. In full screen the
+   demonstrator keeps the width it had on the page (--demo-width) and is
+   scaled up with zoom, so the layout stays the same, only larger. */
+.demo {
+  margin: 1.5rem 0;
+}
+
+.demo > :last-child {
+  margin: 0;
+}
+
+.demo-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.35rem;
+}
+
+.demo-fullscreen {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 0.4rem;
+  background: none;
+  color: var(--quiet);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.demo-fullscreen:hover,
+.demo-fullscreen:focus-visible {
+  border-color: var(--rule);
+  color: var(--accent-ink);
+}
+
+.demo:fullscreen,
+.demo.is-fullscreen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 1rem;
+  overflow: auto;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* without the Fullscreen API: a layer over the page */
+.demo.is-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
+
+.has-fullscreen-demo {
+  overflow: hidden;
+}
+
+.demo:fullscreen > .demo-bar,
+.demo.is-fullscreen > .demo-bar {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  margin: 0;
+}
+
+.demo:fullscreen > :last-child,
+.demo.is-fullscreen > :last-child {
+  flex: none;
+  width: var(--demo-width);
+}
+
 /* --- the dplyr demonstrator ------------------------------------------------------------ */
 
 .verb-demo {

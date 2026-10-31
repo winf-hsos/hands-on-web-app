@@ -53,6 +53,12 @@ test('a byte-switchboard block becomes the place of the eight switches', () => {
   assert.match(render('```byte-switchboard\n```\n'), /<div class="byte-switchboard" data-byte-switchboard=""><\/div>/);
 });
 
+test('every demonstrator sits in a frame that gets the full-screen button', () => {
+  for (const name of ['verb-demo', 'monty-hall', 'byte-switchboard']) {
+    assert.match(render('```' + name + '\n```\n'), new RegExp(`<div class="demo" data-demo=""><div class="${name}" data-${name}=""></div></div>`));
+  }
+});
+
 test('a quote inside an option is its reason, hidden until answered; one after the list explains the question', () => {
   const md = '## Welche Basis? {#ns-001}\n\n- [x] Zwei\n  > Zwei Zustände.\n- [ ] Zehn\n\n> Allgemein.\n';
   const html = renderMarkdown(md, { lang: 'de', quiz: true, resolve: () => null });
