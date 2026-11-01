@@ -162,11 +162,30 @@ function render(knowledge) {
   rmSync(DIST, { recursive: true, force: true });
 
   const hashes = {};
+  const hash = (data) => createHash('sha1').update(data).digest('hex').slice(0, 8);
+  // A browser module's imports of its neighbours carry the version of what
+  // they import, as the script tags do, so that a cached old module is never
+  // mixed with a new one (the site's files are cached for ten minutes). The
+  // version of a module therefore depends on those of its imports, which are
+  // done first.
+  const versioned = (name, seen = []) => {
+    if (hashes[name]) return hashes[name];
+    if (seen.includes(name)) throw new Error(`modules import each other: ${[...seen, name].join(' → ')}`);
+    const text = readFileSync(ASSETS[name], 'utf8').replace(
+      /(\bfrom\s*|\bimport\s*\(?\s*)'\.\/([\w-]+\.js)'/g,
+      (_, keyword, file) => `${keyword}'./${file}?v=${versioned(`client/${file}`, [...seen, name])}'`,
+    );
+    writeFileSync(join(DIST, 'assets', name), text);
+    return (hashes[name] = hash(text));
+  };
   for (const [name, source] of Object.entries(ASSETS)) {
     const target = join(DIST, 'assets', name);
     mkdirSync(dirname(target), { recursive: true });
-    copyFileSync(source, target);
-    hashes[name] = createHash('sha1').update(readFileSync(source)).digest('hex').slice(0, 8);
+    if (name.startsWith('client/') && name.endsWith('.js')) versioned(name);
+    else {
+      copyFileSync(source, target);
+      hashes[name] = hash(readFileSync(source));
+    }
   }
   // what R editors suggest: functions and the columns of the data sets
   const completions = JSON.stringify(rCompletions(join(ROOT, 'knowledge')));

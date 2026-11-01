@@ -61,7 +61,12 @@ family for Markdown, MiniSearch for search, `qrcode-generator` for the QR
 code, the Lucide icons for the content types, Pyodide for running Python in
 the browser, and the Atkinson Hyperlegible fonts, which are served from the site
 itself rather than from Google. The browser loads ES modules directly through
-an import map; there is no bundler.
+an import map; there is no bundler. Every asset carries a version, a hash of
+its content (`?v=…`), and so does every import of one browser module by
+another: the build writes `from './focus.js?v=…'` into the copy under
+`assets/`. The site's files are cached for ten minutes, and without the
+version in the import a new module could run with an old one it imports
+(Nicolas saw that happen on 2026-11-02).
 
 ## Design principle
 
