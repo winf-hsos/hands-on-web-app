@@ -133,7 +133,7 @@ Type-specific fields:
 | `source`, `paper` | `authors`, `year`, `url` or `doi`, `publisher` or `venue`, `isbn`, `buy` (a page where the book can be bought) |
 | `story` | `when` (year or span, free text such as `1838` or `um 1840`) |
 | `person` | `born`, and `died` where it applies, as years |
-| `slides` | a stagekit deck in the folder `slides/` (one `.html` file, optionally `export/<deck>.pdf`); `deck_lang` if the slides are in one language only; `recordings` later, as `{ title, url, slide }` with YouTube links per part |
+| `slides` | a stagekit deck in the folder `slides/` (one `.html` file, optionally `export/<deck>.pdf`); `deck_lang` if the slides are in one language only; `recordings` later, as `{ title, url, slide }` with YouTube links per part. The subtitle of the title slide is the author's name only, `data-subtitle="prof. dr. nicolas meseth"`, without the area, module or anything else (Nicolas, 2026-11-01) |
 | `dataset` | `file`, the name of a CSV in `media/datasets/`; `authors`, `year`, `license` where known. The page offers the file for download with its rows, columns and size, measured when building, and the lines that load it in R and in Python; the body describes the data. Only a dataset has a `file` |
 | `quiz` | none; the questions are in the body, see section 7 |
 
