@@ -1,0 +1,120 @@
+/* The editor banner on the site pages the editor serves (overlay.js). It uses
+   the tokens of site.css, so it follows the area colour and the theme. */
+
+/* the editor banner says more; overlay.js removes this one, this keeps it from flashing */
+.drafts-banner {
+  display: none;
+}
+
+.ed-banner {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.9rem;
+  min-height: 3rem;
+  padding: 0.4rem 1.25rem;
+  background: var(--paper-2);
+  border-bottom: 2px solid var(--accent);
+  color: var(--ink);
+  font-size: 0.9rem;
+}
+
+.ed-banner-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.ed-banner-brand .mark {
+  color: var(--accent);
+}
+
+.ed-banner-doc {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ed-banner-note {
+  color: var(--quiet);
+}
+
+.ed-banner-badge {
+  padding: 0.1rem 0.55rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.ed-banner-badge.is-draft {
+  border-color: var(--warn);
+}
+
+.ed-banner-badge.is-pending {
+  border-color: var(--accent);
+}
+
+.ed-banner-badge.is-live {
+  border-color: var(--done);
+  color: var(--done);
+}
+
+.ed-banner-badge.is-error {
+  border-color: var(--error);
+  color: var(--error);
+}
+
+.ed-banner-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0 0.9rem;
+  border: 2px solid var(--accent);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--accent-ink);
+  font: inherit;
+  font-weight: 650;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ed-banner-button.is-primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.ed-banner-button:hover {
+  background: var(--accent-ink);
+  border-color: var(--accent-ink);
+  color: var(--paper);
+}
+
+.ed-banner-button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.ed-banner-message {
+  color: var(--quiet);
+}
+
+.ed-banner-message.is-error {
+  color: var(--error);
+}
+
+.ed-banner-spacer {
+  flex: 1;
+}
+
+.ed-banner-link {
+  color: var(--quiet);
+}

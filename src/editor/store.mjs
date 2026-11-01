@@ -247,6 +247,18 @@ export function createStore(root) {
     return { ok: true, ...result, doc: toJson(doc) };
   }
 
+  /**
+   * Releases a draft (`published`) or takes it back (`draft`): only the
+   * status line of the lead file changes, and the same checks as for any
+   * save apply. The site shows it after the next push.
+   */
+  function setStatus(section, id, status) {
+    if (!['draft', 'published'].includes(status)) return { ok: false, errors: [`"${status}" is not a status that can be set here`] };
+    const current = read(section, id);
+    const lead = current.files[current.lead];
+    return save(section, id, { [current.lead]: { ...lead, data: { ...lead.data, status } } });
+  }
+
   /** Deletes a document for good, unless something still points to it. */
   function remove(section, id) {
     const knowledge = load();
@@ -273,5 +285,5 @@ export function createStore(root) {
     return code;
   }
 
-  return { list, read, save, remove, newCode, areaOf, sections: SECTIONS, existsDir: (s) => existsSync(join(root, s)) && readdirSync(join(root, s)) };
+  return { list, read, save, setStatus, remove, newCode, areaOf, sections: SECTIONS, existsDir: (s) => existsSync(join(root, s)) && readdirSync(join(root, s)) };
 }

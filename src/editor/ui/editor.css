@@ -3,7 +3,7 @@
 
 @font-face {
   font-family: 'Atkinson Next';
-  src: url('/fonts/sans.woff2') format('woff2-variations');
+  src: url('fonts/sans.woff2') format('woff2-variations');
   font-weight: 200 800;
   font-display: swap;
 }

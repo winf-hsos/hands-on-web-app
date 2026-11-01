@@ -11,7 +11,8 @@ YAML by hand. It works directly on the Markdown files in `knowledge/`, so
 everything it does can be read, reviewed and versioned like any other change.
 
 ```
-npm run editor     # http://localhost:4322, starts the site preview on 4321 if needed,
+npm run editor     # http://localhost:4322: the site with drafts and the editor banner;
+                   # the forms under /edit/. Starts the site preview on 4321 if needed
                    # and restarts itself when the code in src/ changes
 ```
 
@@ -30,6 +31,27 @@ npm run editor     # http://localhost:4322, starts the site preview on 4321 if n
 - **Local only.** The server listens on 127.0.0.1, answers only requests for
   `localhost`, and accepts changes only with a custom header, so that other
   websites open in the same browser cannot send changes through it.
+
+## The site as the start page
+
+Since 2026-11-01 the editor opens on the site itself, as it looks on the web,
+with all drafts (Nicolas). Every address outside `/edit/` and `/api/` is
+passed on to the site preview, and every page gets a banner at the top
+(`src/editor/ui/overlay.js`) that says it is the editor:
+
+- On the page of a content item, learning path, course or project: its status
+  (Entwurf, Freigegeben but not live yet, Live), its errors if any,
+  **Bearbeiten** (opens the form under `/edit/?doc=section/id`) and
+  **Freigeben** for a draft or **Zurück zum Entwurf** for a released one. A
+  start page has Bearbeiten only.
+- Freigeben sets `status: published` in the lead file and nothing else, with
+  the same checks as any save. The site on the web shows it after the next
+  push ("Veröffentlichen" in the forms). "Not live yet" means the folder has
+  changes that are not committed, or commits that are not pushed.
+- A link switches between the view with drafts and the public view, and the
+  git state links to the forms, where committing and publishing are.
+
+The banner is left out of decks and demonstrators embedded in a page.
 
 ## What it does
 
@@ -60,7 +82,7 @@ YAML in a text field for now; everything else of them uses the forms.
 |---|---|
 | `scripts/editor.mjs` | the local server and its JSON interface |
 | `src/editor/store.mjs` | reading, checking and writing documents |
-| `src/editor/ui/` | the browser app: `index.html`, `editor.js`, `editor.css` |
+| `src/editor/ui/` | the browser app: `index.html`, `editor.js`, `editor.css`, and the banner on the site pages, `overlay.js`, `overlay.css` |
 
 ## Later
 

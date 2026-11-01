@@ -183,7 +183,7 @@ function renderDoc() {
         <button type="button" class="button" id="save">Speichern</button>
         ${'status' in d ? `<button type="button" class="text-button" id="archive">${d.status === 'archived' ? 'Wiederherstellen' : 'Archivieren'}</button>` : ''}
         ${work.section !== 'pages' ? '<button type="button" class="text-button danger" id="delete">Löschen</button>' : ''}
-        <a class="text-button" href="${doc.url?.[lang] ?? '#'}" target="_blank" rel="noopener" id="view">Ansehen</a>
+        <a class="text-button" href="${doc.url?.[lang] ?? '#'}" id="view">Ansehen</a>
       </div>
     </div>
     <div class="ed-messages" id="messages"></div>

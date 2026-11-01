@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Editor – Hands-on Computer Science</title>
-  <link rel="stylesheet" href="/site.css">
-  <link rel="stylesheet" href="/editor.css">
+  <link rel="stylesheet" href="/edit/site.css">
+  <link rel="stylesheet" href="/edit/editor.css">
   <script>try{const m=localStorage.getItem('hocs-theme');if(m)document.documentElement.dataset.theme=m}catch{}</script>
-  <script type="importmap">{ "imports": { "js-yaml": "/vendor/js-yaml.mjs" } }</script>
+  <script type="importmap">{ "imports": { "js-yaml": "/edit/vendor/js-yaml.mjs" } }</script>
 </head>
 <body class="editor">
   <header class="ed-bar">
@@ -18,7 +18,7 @@
     <button class="button" type="button" id="new">Neu anlegen</button>
     <span class="ed-spacer"></span>
     <span class="ed-git" id="git"></span>
-    <a class="tool" id="site" target="_blank" rel="noopener">Seite ansehen</a>
+    <a class="tool" id="site">Zur Seite</a>
   </header>
 
   <div class="ed-main">
@@ -63,6 +63,6 @@
     </form>
   </dialog>
 
-  <script type="module" src="/editor.js"></script>
+  <script type="module" src="/edit/editor.js"></script>
 </body>
 </html>
