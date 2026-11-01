@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>algorithms and programs</title>
+  <link rel="stylesheet" href="theme.css?v=1">
+  <link rel="stylesheet" href="../../stagekit/stagekit.css?v=0.4.0-62b883">
+  <style>
+    /* deck-specific layout only, colours and sizes come from the theme */
+    .lines .n { display: inline-block; width: 1.6em; color: var(--gray); font-family: var(--mono); }
+    /* the loop slide: the code needs 835 + 80 px for its widest line and the
+       copy button, the drawing beside it is exactly as wide as its viewBox */
+    .two.loop { grid-template-columns: minmax(0, 1fr) 680px; align-items: start; }
+    .two.loop .code { width: fit-content; }   /* copy button beside the code, not in the gap */
+    .two.loop .drawing svg { display: block; width: 100%; height: auto; }
+  </style>
+</head>
+<body>
+<div class="deck"
+     data-title="algorithms and programs"
+     data-subtitle="prof. dr. nicolas meseth"
+     data-parts='["be the machine", "the instruction follower", "four building blocks", "it does what is written", "working with the assistant"]'>
+
+  <section class="slide title">
+    <aside class="notes">Ein Programm ist ein Algorithmus, der so vollständig aufgeschrieben ist, dass eine Maschine ihn ausführen kann, Zeile für Zeile und ohne etwas zu ergänzen. Was das heißt, sehen wir an einer LED.</aside>
+  </section>
+
+  <section class="slide agenda">
+    <aside class="notes">Fünf Teile: Zuerst seid ihr selbst die Maschine, dann folgt der Rechner einer Liste, danach kommen die vier Bausteine jedes Programms, dann die Fehlermeldung und zum Schluss die Arbeit mit dem KI-Assistenten.</aside>
+  </section>
+
+  <!-- ===== part 1: be the machine ===== -->
+  <section class="slide part" data-part="be the machine">
+    <aside class="notes">Wie verrichtet ein Rechner seine Arbeit? Die Antwort kommt in zwei Stufen: zuerst der Algorithmus, den ihr gleich selbst ausführt, dann das Programm.</aside>
+  </section>
+
+  <section class="slide">
+    <img class="photo" src="img/pianola.jpg" alt="A self-playing piano with a paper roll above the keys and an empty stool">
+    <div class="photo-text">who is playing?</div>
+    <div class="footnote">image: ai-generated (gpt-image-2)</div>
+    <aside class="notes">Ein Klavier spielt, die Tasten bewegen sich, der Hocker ist leer. Solche selbstspielenden Klaviere standen um 1900 in vielen Salons. Der Spieler ist die Papierrolle über der Tastatur: Jedes gestanzte Loch bedeutet „drücke jetzt diese Taste“. Das Klavier versteht nichts von Musik, es führt nur aus. Der eigentliche Pianist ist der Mensch, der die Rolle gestanzt hat, vielleicht Jahrzehnte vorher. Die Rolle ist das Programm, das Klavier die Maschine und der Stanzer der Programmierer. Gleich seid ihr selbst das Klavier.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>live: you are the receiver</h2>
+    <div class="content">
+      <div class="lines">
+        <div><span class="n">1</span>look at the card.</div>
+        <div><span class="n">2</span>decide which colour it is.</div>
+        <div><span class="n">3</span>write down its first letter.</div>
+        <div><span class="n">4</span>wait for the next card.</div>
+      </div>
+    </div>
+    <aside class="notes">Live-Moment: Ich halte nacheinander zehn Farbkarten hoch, Rot, Grün, Blau und Gelb in zufälliger Folge, etwa alle zwei Sekunden. Alle folgen den vier Schritten auf der Folie und schreiben die Anfangsbuchstaben mit. Danach lese ich die Folge vor, und wir vergleichen. Wo jemand danebenlag, fragen: an welchem der vier Schritte? So arbeitet auch der Empfänger, den das Gerät später ersetzen soll: Er sieht hin, entscheidet, notiert und wartet.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="statement">that was an algorithm,<br>and you were the machine that ran it.</div>
+      <div class="sidenote">steps so precise that you can follow them without understanding what they are for.</div>
+    </div>
+    <aside class="notes">Jetzt bekommt das Kind seinen Namen: Eine Schrittfolge, die so genau beschrieben ist, dass man sie ausführen kann, ohne zu verstehen, worum es geht, heißt Algorithmus. Er braucht keinen Computer, er kann auf einem Zettel stehen, und genau so habt ihr ihn eben abgearbeitet.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>four lines, one of them hard</h2>
+    <div class="content">
+      <div class="lines">
+        <div class="dim"><span class="n">1</span>look at the card.</div>
+        <div><span class="n">2</span>decide which colour it is.</div>
+        <div class="dim"><span class="n">3</span>write down its first letter.</div>
+        <div class="dim"><span class="n">4</span>wait for the next card.</div>
+      </div>
+    </div>
+    <div class="punch">three of these lines are easy for a program, but deciding is the hard part.</div>
+    <aside class="notes">Dieselben vier Zeilen noch einmal. Drei davon kann ein Programm auf dem Gerät leicht übernehmen: Hinsehen heißt den Sensor auslesen, Aufschreiben heißt einen Wert speichern, und Warten ist eine einzige Zeile. Die zweite Zeile, das Entscheiden, ist die eigentliche Arbeit eines Empfängers, und an ihr hängt der größte Teil des LiFi-Projekts.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>one more algorithm, live</h2>
+    <div class="content">
+      <div class="lines">
+        <div><span class="n">1</span>stand in a row.</div>
+        <div><span class="n">2</span>look at your right neighbour.</div>
+        <div><span class="n">3</span>if they are shorter than you, swap.</div>
+        <div><span class="n">4</span>at the end of the row, start again.</div>
+        <div><span class="n">5</span>if a full pass had no swap, stop.</div>
+      </div>
+    </div>
+    <aside class="notes">Live-Moment: Sechs Freiwillige stellen sich unsortiert in eine Reihe und führen strikt diese Regeln aus, ohne nachzudenken und ohne abzukürzen. Nach zwei, drei Minuten steht die Reihe der Größe nach. Zwei Beobachtungen für später in diesem Foliensatz: Woran hat der Ablauf sein Ende erkannt? Und wie viele Vergleiche waren das bei sechs Personen, und wie viele wären es bei vierzig?</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="statement">what you just ran is called bubble sort,<br>and a computer can sort the same way.</div>
+      <div class="sidenote">it follows the same five rules, only millions of times faster.</div>
+    </div>
+    <aside class="notes">Das Verfahren heißt Bubble Sort, weil die Großen wie Blasen nach rechts aufsteigen. Ein Computer kann genau so sortieren, nach denselben fünf Regeln, nur viel schneller.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>bubble sort on six bars</h2>
+    <div class="figure" id="fig-bubble"></div>
+    <div class="punch" data-step="3">the procedure knows it is done when a full pass finds nothing left to swap.</div>
+    <aside class="notes">Dieselben Regeln an sechs Balken statt an sechs Personen. Jeder Tastendruck spielt einen Durchlauf ab: Gelb sind die beiden, die gerade verglichen werden, und wer größer ist als sein rechter Nachbar, tauscht mit ihm. Der erste Durchlauf hat drei Tausche, der zweite noch einmal drei, und der dritte findet keinen mehr. Genau daran erkennt das Verfahren sein Ende, ohne dass jemand von außen „fertig“ sagt. Diese Bedingung heißt Abbruch- oder Terminierungsbedingung, und sie kommt in Teil 3 wieder.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="statement">a program is an algorithm<br>written for a machine.</div>
+      <div class="sidenote">and it must be complete, because the machine adds nothing.</div>
+    </div>
+    <aside class="notes">Beim Übergang vom Zettel zur Maschine kommt eine Anforderung dazu, die der Zettel nicht hatte: Vollständigkeit. Ein Mensch ergänzt beim Lesen, was offensichtlich gemeint war. Die Maschine ergänzt nichts.</aside>
+  </section>
+
+  <!-- ===== part 2: the instruction follower ===== -->
+  <section class="slide part" data-part="the instruction follower">
+    <aside class="notes">Was folgt der Liste eigentlich, und wie sieht eine einzelne Zeile aus?</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="statement">a program is a list of instructions<br>that a computer follows<br>exactly and in order.</div>
+    </div>
+    <aside class="notes">Mehr Magie ist nicht im Spiel: eine Liste und ein Computer, der sie abarbeitet, Zeile für Zeile, von oben nach unten.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>the list at work</h2>
+    <div class="figure" id="fig-list"></div>
+    <div class="punch" data-step="4">the machine runs one line after the other, from top to bottom, exactly as written.</div>
+    <aside class="notes">Oben die beiden Zeilen, die Werkzeuge holen, darunter vier Anweisungen. Jeder Tastendruck führt eine Zeile aus, die gelbe ist die aktuelle: Die erste macht die LED rot, die zweite wartet eine Sekunde, die dritte macht sie blau, die vierte wartet wieder eine Sekunde. Rechts seht ihr die LED und die Zeit. Die Maschine weiß dabei nicht, was gemeint war: Sie führt aus, was dasteht, in der Reihenfolge, in der es dasteht, und nichts sonst. Aus genau diesem Unterschied entstehen fast alle Fehler im Projekt.</aside>
+  </section>
+
+  <section class="slide" data-on-show="drawAnatomy" data-on-step="drawAnatomy">
+    <h2>one line</h2>
+    <div class="figure" id="fig-anatomy"></div>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span>
+    <aside class="notes">Eine Zeile besteht aus drei Teilen. Schritt 1: „led“ sagt, welches Ding angesprochen wird. Schritt 2: „set_color“ sagt, was mit ihm geschehen soll. Schritt 3: Die Klammer sagt, mit welchen Werten, hier voller Rotanteil, kein Grün und kein Blau. Dieselbe Anweisung mit anderen Werten ergibt ein anderes Ergebnis.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>same instruction, different values</h2>
+    <div class="figure" id="fig-values"></div>
+    <div class="punch">the instruction stays the same, and the values decide what the <span class="keep-case">LED</span> shows.</div>
+    <aside class="notes">Dreimal dieselbe Anweisung, nur mit anderen Werten: Rot, Blau und Gelb, das sich aus vollem Rot und vollem Grün mischt. Der Name der Anweisung sagt, was passiert, und die Werte sagen, wie.</aside>
+  </section>
+
+  <!-- ===== part 3: four building blocks ===== -->
+  <section class="slide part" data-part="four building blocks">
+    <aside class="notes">Jedes Programm dieser Welt besteht aus vier Bausteinen: Anweisungen nacheinander, Werte mit Namen, Wiederholung und Bedingung. Alle vier seht ihr gleich an der LED.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>1 · one after another</h2>
+    <div class="content">
+      <div class="code">import time
+from lifi_hardware import led
+
+led.set_color(255, 0, 0)
+<span class="hl">time.sleep(1)</span>
+led.set_color(0, 0, 255)
+<span class="hl">time.sleep(1)</span></div>
+      <div class="sidenote">swap two lines, and you have a different program.</div>
+    </div>
+    <aside class="notes">Der erste Baustein: Anweisungen laufen der Reihe nach. Die Reihenfolge ist Teil des Programms, nicht nur eine Schreibweise. Neu ist hier „time.sleep(1)“: Das Programm wartet eine Sekunde, bevor es die nächste Zeile ausführt. Die beiden Zeilen oben holen die Werkzeuge; sie stehen in jedem Programm dieses Satzes, damit ihr es kopieren und sofort laufen lassen könnt.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>with a pause, and without</h2>
+    <div class="figure" id="fig-pause"></div>
+    <div class="punch" data-step="2">the program is not broken, it is only too fast for your eyes.</div>
+    <aside class="notes">Links das Programm von eben, rechts dasselbe ohne Pause zwischen den Farben. Der erste Tastendruck lässt eine halbe Sekunde laufen: Links ist die LED rot, rechts schon blau. Der zweite lässt die Zeit bis zwei Sekunden weiterlaufen. Beide Programme sind richtig. Ohne Pause lebt Rot nur etwa eine Millisekunde, viel zu kurz für ein Auge, und ihr seht nur Blau. Eure Augen sind langsam, die Maschine ist es nicht.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>pause in the middle, or at the end</h2>
+    <div class="figure" id="fig-order"></div>
+    <div class="punch" data-step="2">no line is missing, and still it is a different program.</div>
+    <aside class="notes">Dieselben drei Zeilen, nur steht „time.sleep(1)“ einmal in der Mitte und einmal am Ende. Links bleibt Rot eine Sekunde, dann kommt Blau, und sofort danach endet das Programm. Rechts kommt Blau sofort und bleibt eine Sekunde. Wenn ein Programm endet, schaltet das Kursmodul die LED aus. Darum seht ihr links nur Rot und rechts nur Blau. Die Maschine ordnet nicht um, was gemeint war, sie führt aus, was wo steht.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>2 · a value with a name</h2>
+    <div class="content">
+      <div class="code">import time
+from lifi_hardware import led
+
+<span class="hl">bright</span> = 120
+led.set_color(<span class="hl">bright</span>, 0, 0)
+time.sleep(1)
+led.set_color(0, <span class="hl">bright</span>, 0)
+time.sleep(1)
+led.set_color(0, 0, <span class="hl">bright</span>)
+time.sleep(1)</div>
+    </div>
+    <div class="punch">one place to change instead of three.</div>
+    <aside class="notes">Der zweite Baustein gibt einem Wert einen Namen, den man danach überall benutzt. Hier steht die Helligkeit einmal oben, und alle drei Farben richten sich danach. Der Gewinn ist nicht die Kürze, sondern die eine Stelle zum Ändern.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>3 · again</h2>
+    <div class="content">
+      <div class="code">import time
+from lifi_hardware import led
+
+colors = [(255, 0, 0), (0, 255, 0),
+          (0, 0, 255), (255, 255, 0)]
+<span class="hl">for r, g, b in colors:</span>
+    led.set_color(r, g, b)
+    time.sleep(1)</div>
+    </div>
+    <aside class="notes">Der dritte Baustein ist die Wiederholung. Eine Schleife ist keine Magie, sondern eine Schreibweise: Dieselben zwei eingerückten Zeilen laufen viermal, jedes Mal mit dem nächsten Wert aus der Liste. Jeder Wert ist ein Zahlentripel, und „for r, g, b in colors“ packt es in seine drei Teile aus, genau die drei Zahlen, die set_color erwartet.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>the loop you write, and what actually happens</h2>
+    <div class="two loop">
+      <div>
+        <div class="header">the loop you write</div>
+        <div class="code">import time
+from lifi_hardware import led
+colors = [(255, 0, 0),
+          (0, 255, 0),
+          (0, 0, 255),
+          (255, 255, 0)]
+for r, g, b in colors:
+    led.set_color(r, g, b)
+    time.sleep(1)</div>
+      </div>
+      <div>
+        <div class="header">what actually happens</div>
+        <div class="drawing" id="fig-loop"></div>
+      </div>
+    </div>
+    <div class="punch" data-step="4">the same two lines run four times, with one value and one second per pass.</div>
+    <aside class="notes">Links, was ihr schreibt, rechts, was daraus wird. Ein Tastendruck startet die Schleife, und die vier Durchläufe folgen von selbst aufeinander, jeder mit dem nächsten Wert aus der Liste und jeder eine Sekunde lang, zusammen vier Sekunden.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>4 · only if</h2>
+    <div class="content">
+      <div class="code">import time
+from lifi_hardware import led
+
+colors = [(255, 0, 0), (0, 255, 0),
+          (0, 0, 255), (255, 255, 0)]
+for r, g, b in colors:
+    led.set_color(r, g, b)
+    <span class="hl">if (r, g, b) == (255, 255, 0):</span>
+        time.sleep(3)
+    <span class="hl">else:</span>
+        time.sleep(1)</div>
+      <div class="sidenote">now the run depends on something that changes along the way.</div>
+    </div>
+    <aside class="notes">Der vierte Baustein führt eine Zeile nur aus, wenn eine Bedingung zutrifft, und „else“ sagt, was sonst passiert. Hier bleibt Gelb drei Sekunden, jede andere Farbe eine. Damit kann ein Programm auf etwas reagieren, statt stur abzuspulen, etwa auf den Wert, den der Sensor gerade misst.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>when does this end?</h2>
+    <div class="content">
+      <div class="code">import time
+from lifi_hardware import led
+
+<span class="hl">while True:</span>
+    led.set_color(255, 0, 0)
+    time.sleep(1)
+    led.set_color(0, 0, 255)
+    time.sleep(1)</div>
+      <div class="sidenote">never, because the condition is always true and the body has no way out.</div>
+    </div>
+    <div class="punch">"my program hangs" almost always means "my loop has no way out".</div>
+    <aside class="notes">Die Abbruchbedingung kennt ihr vom Sortieren in Teil 1: ein Durchlauf ohne Tausch. Hier fehlt sie. Fürs Dauerblinken ist die Endlosschleife sogar richtig, beendet wird sie mit Strg+C. Ein Empfänger, der auf das Ende einer Nachricht warten soll, braucht dagegen eine Bedingung, an der seine Schleife endet.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>what does it cost?</h2>
+    <div class="figure" id="fig-cost"></div>
+    <div class="punch">being correct is the minimum, and after that you compare how the cost grows.</div>
+    <aside class="notes">Ein Spiel zum Vergleich: Ich denke mir eine Zahl zwischen 1 und 100, und ihr dürft Fragen stellen, die ich mit Ja oder Nein beantworte. Wer jede Zahl einzeln abfragt, braucht im schlimmsten Fall 99 Fragen. Wer fragt, ob sie größer als 50 ist, und so den Bereich jedes Mal halbiert, braucht höchstens sieben. Bei tausend Zahlen steht es 999 gegen 10. Beide Verfahren sind korrekt und trennen trotzdem Welten. Dasselbe gilt fürs Sortieren aus Teil 1: Sechs Personen brauchen höchstens 30 Vergleiche, vierzig schon bis zu 1.560. Für eure Übertragung wird daraus die handfeste Frage, wie viele Sekunden eine Datei unterwegs ist.</aside>
+  </section>
+
+  <!-- ===== part 4: it does what is written ===== -->
+  <section class="slide part" data-part="it does what is written">
+    <aside class="notes">Jetzt der Moment, der beim Programmieren anfangs am meisten Nerven kostet: die rote Fehlermeldung.</aside>
+  </section>
+
+  <section class="slide" data-on-show="drawError" data-on-step="drawError">
+    <h2>an error message</h2>
+    <div class="figure" id="fig-error"></div>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span>
+    <aside class="notes">Ein Traceback sieht bedrohlich aus, ist aber eine präzise Auskunft. Schritt 1: welche Datei und welche Zeile. Schritt 2: was in dieser Zeile steht, und die Spitzen darunter zeigen auf die Stelle. Schritt 3: was genau nicht existiert, hier „slep“ statt „sleep“. Python rät sogar, was gemeint war, führt die Vermutung aber nicht aus. Die Maschine hat nicht versagt, sie hat ausgeführt, was dastand, und meldet genau, woran sie gescheitert ist.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="statement">an error message is information,<br>not a verdict.</div>
+      <div class="sidenote">read it out loud, because most of the time it says exactly what is wrong.</div>
+    </div>
+    <aside class="notes">Eine Fehlermeldung ist Information über das Programm und keine Bewertung eurer Person. Lest sie laut vor; meistens sagt sie wortwörtlich, was falsch ist.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="statement">now watch me get it wrong.</div>
+    </div>
+    <aside class="notes">Live-Moment: Ich baue vorn am Beamer absichtlich Fehler in das Blinkprogramm ein, einen nach dem anderen, und wir lesen gemeinsam, was die Meldung sagt: ein Tippfehler im Namen, eine vergessene Klammer, eine falsche Einrückung.</aside>
+  </section>
+
+  <!-- ===== part 5: working with the assistant ===== -->
+  <section class="slide part" data-part="working with the assistant">
+    <aside class="notes">Zum Schluss die Arbeitsteilung mit dem KI-Assistenten, die euch durch das ganze Projekt trägt.</aside>
+  </section>
+
+  <section class="slide" data-on-show="drawAsk" data-on-step="drawAsk">
+    <h2>two ways to ask</h2>
+    <div class="figure" id="fig-ask"></div>
+    <span data-step="1"></span>
+    <aside class="notes">Die erste Frage bringt euch Code, den ihr nicht versteht. Schritt 1: Die zweite bringt euch Code und Verständnis, weil sie sagt, was herauskommen soll, und die Erklärung gleich mitbestellt.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <div class="content">
+      <div class="statement">never keep code<br>you cannot change.</div>
+      <div class="sidenote">every hand-over ends with a small change: another colour, another waiting time.</div>
+    </div>
+    <div class="punch">if you cannot change it, you have not taken it over but only copied it.</div>
+    <aside class="notes">Jede Übernahme endet mit einer kleinen Änderung, die ihr selbst vornehmt: eine Farbe tauschen, eine Wartezeit anpassen. Wer das nicht kann, hat den Code nicht übernommen, sondern nur kopiert.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>your turn</h2>
+    <div class="content">
+      <div class="lines">
+        <div><span class="n">1</span>light on: red for two seconds, then off.</div>
+        <div><span class="n">2</span>blink five times, with the speed set in one place.</div>
+        <div><span class="n">3</span>show a list of colours, one second each.</div>
+      </div>
+      <div class="sidenote">number 2 is the real one, because changing the speed must not mean digging through the code.</div>
+    </div>
+    <aside class="notes">Der Werkstattauftrag an euren Geräten. Nummer zwei ist die eigentliche Aufgabe: Die Geschwindigkeit muss sich an genau einer Stelle ändern lassen, also mit Baustein 2. Nummer drei braucht Baustein 3, die Schleife über eine Liste.</aside>
+  </section>
+
+</div>
+<script src="../../stagekit/draw.js?v=0.4.0-62b883"></script>
+<script src="../../stagekit/anim.js?v=0.4.0-62b883"></script>
+<script src="deck.js?v=2"></script>
+<script src="../../stagekit/stagekit.js?v=0.4.0-62b883"></script>
+</body>
+</html>

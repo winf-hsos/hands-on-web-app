@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>what light means</title>
+  <link rel="stylesheet" href="theme.css?v=1">
+  <link rel="stylesheet" href="../../stagekit/stagekit.css?v=0.4.0-62b883">
+  <style>
+    /* deck-specific layout only, colours and sizes come from the theme */
+    .figure.wide { left: 110px; right: 110px; }
+    .photo-text.narrow { width: 600px; }
+    .content.tight .statement { line-height: 1.14; }
+  </style>
+</head>
+<body>
+<div class="deck"
+     data-title="what light means"
+     data-subtitle="prof. dr. nicolas meseth"
+     data-parts='["agreement", "counting information", "your alphabet"]'>
+
+  <section class="slide title">
+    <aside class="notes">Aus unterscheidbaren Zuständen werden durch eine Vereinbarung Symbole, und Information wird zählbar. Am Ende steht die Frage, wie groß das eigene Alphabet werden darf.</aside>
+  </section>
+
+  <section class="slide agenda">
+    <aside class="notes">Drei Teile: zuerst die Vereinbarung, ohne die Licht nichts bedeutet, dann das Zählen, wie viel ein Symbol trägt, und zuletzt das eigene Alphabet.</aside>
+  </section>
+
+  <!-- ================= part 1 ================= -->
+
+  <section class="slide part" data-part="agreement">
+    <aside class="notes">Die erste Frage ist nicht, wie man Licht überträgt, sondern wie Licht überhaupt etwas bedeuten kann.</aside>
+  </section>
+
+  <section class="slide">
+    <img class="photo" src="img/signal-lamp.jpg" alt="A signal lamp on the deck of a ship at night, its beam reaching into the dark">
+    <div class="photo-text narrow">what makes light mean something?</div>
+    <div class="footnote">image: ai-generated (gpt-image-2)</div>
+    <aside class="notes">Im Nordatlantik des Jahres 1942 herrscht Funkstille, weil jeder Funkspruch den Gegner anlockt, und trotzdem sprechen zwei Schiffe miteinander, mit einer Lampe und einer Klappe davor, die kurze und lange Blitze formt. Das Licht selbst weiß nichts; es bedeutet nur etwas, weil beide Seiten dieselbe Tabelle im Kopf haben.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="statement">a symbol is an agreed,<br>distinguishable state.</div>
+      <div class="sidenote" data-step="1">distinguishable: the receiver can tell it apart from the others.</div>
+      <div class="sidenote" data-step="2">agreed: both sides gave it the same meaning, beforehand.</div>
+    </div>
+    <aside class="notes">Beide Wörter tragen. Unterscheidbar ist eine Frage an die Physik und an den Sensor: Kann der Empfänger diesen Zustand von allen anderen trennen? Vereinbart ist eine Frage an Sender und Empfänger, und die kann keine Messung beantworten. Fehlt eines von beiden, ist die Übertragung wertlos, und die nächste Folie zeigt, wie das aussieht.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawNonsense" data-on-step="drawNonsense">
+    <h2>perfect reception, perfect nonsense</h2>
+    <div class="figure wide" id="fig-nonsense"></div>
+    <span data-step="1"></span>
+    <div class="punch" data-step="1">every colour arrived correctly, and still the message did not.</div>
+    <aside class="notes">Der Sender buchstabiert „team“ mit vier Farben, und alle vier kommen fehlerfrei an. Zuerst raten lassen, was beim Empfänger herauskommt und woran es liegen könnte; dann die Tabelle des Empfängers aufdecken, die Rot und Gelb vertauscht, und er liest „meat“. Es gab keinen Übertragungsfehler und keine Störung, nur die Vereinbarung fehlte. Live-Moment, wenn Zeit ist: Zwei Freiwillige bekommen heimlich voneinander abweichende Zuordnungstabellen, der eine zeigt Farbkarten, der andere schreibt mit, und der Raum sieht nur die Farben.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>the agreement, written down</h2>
+    <div class="content">
+      <div class="code"><span class="hl">ALPHABET</span> = {
+    "red":    "00",
+    "green":  "01",
+    "blue":   "10",
+    "yellow": "11",
+}
+print(ALPHABET["blue"])</div>
+    </div>
+    <div class="punch">both sides need this table beforehand, which makes it a promise rather than data.</div>
+    <aside class="notes">Als Code ist die Vereinbarung ein Wörterbuch, und sie ist die wichtigste Datei des ganzen Projekts. Sie steht in keiner Nachricht und wird nie übertragen, sondern muss vorher auf beiden Seiten liegen. Wer sie ändert, ohne es dem Partner zu sagen, baut genau die Folie davor nach.</aside>
+  </section>
+
+  <!-- ================= part 2 ================= -->
+
+  <section class="slide part" data-part="counting information">
+    <aside class="notes">Jetzt die zweite Frage: Wie viel ist eine Nachricht eigentlich wert?</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>the guessing game, measured</h2>
+    <div class="figure wide" id="fig-halving"></div>
+    <div class="punch" data-step="2">halving finds one card out of 32 in exactly five questions, and not only when you are lucky.</div>
+    <aside class="notes">Eine von 32 Karten ist gesucht, und erlaubt sind nur Ja-Nein-Fragen. Der erste Tastendruck stellt die erste Frage, etwa „ist sie rot?“, und die Hälfte der Karten scheidet aus. Der zweite stellt die vier übrigen, bis eine Karte bleibt. Wer immer halbiert, ist nach fünf Fragen fertig, und zwar in jedem Fall. Live-Moment mit einem Skatblatt: Eine Karte verdeckt ziehen, den Raum fragen lassen, erst raten lassen und dann die Fragen zählen.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>not every answer is worth one bit</h2>
+    <div class="figure wide" id="fig-questions"></div>
+    <div class="punch">you cannot choose which answer you get.</div>
+    <aside class="notes">Die Gegenprobe: „Ist es das Pik-Ass?“ kann alles auf einmal auflösen, gelingt aber nur in einem von 32 Fällen, und in den anderen 31 bleibt fast alles übrig. Die halbierende Frage liefert dagegen immer dasselbe, nämlich genau eine Halbierung.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>what a question is worth on average</h2>
+    <div class="figure wide" id="fig-worth"></div>
+    <aside class="notes">Die Rechnung im Vergleich. Eine seltene Antwort trägt viel, eine erwartbare wenig, aber welche man bekommt, lässt sich nicht aussuchen. Deshalb zählt der Durchschnitt, und im Durchschnitt gewinnt das Halbieren. Die schiefe Frage lohnt sich erst ganz am Ende, wenn nur noch zwei Möglichkeiten übrig sind.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawExpected" data-on-step="drawExpected">
+    <h2>and in general</h2>
+    <div class="figure wide" id="fig-expected"></div>
+    <span data-step="1"></span>
+    <div class="punch" data-step="1">a fair split is the only way to get a whole bit.</div>
+    <aside class="notes">Dieselbe Rechnung wie eben, nur allgemein: Jede mögliche Antwort steuert bei, wie wahrscheinlich sie ist, mal dem, was sie wert wäre. Für eine Ja-Nein-Frage sind das zwei Summanden, für eine Frage mit mehr Ausgängen entsprechend mehr. Entscheidend ist die Einsicht am Ende: Ein ganzes Bit bekommt nur, wer wirklich halbiert, und jede Schieflage kostet, gleich wie das Spiel diesmal ausgeht.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawBit" data-on-step="drawBit">
+    <h2>one bit</h2>
+    <div class="figure wide" id="fig-bit"></div>
+    <span data-step="1"></span>
+    <div class="punch">a light switch holds one bit, and it needs no computer for that.</div>
+    <aside class="notes">Ein Bit ist die Informationsmenge einer Entscheidung zwischen zwei gleich wahrscheinlichen Möglichkeiten. Danach die beiden Formeln in dieser Reihenfolge: Die Unsicherheit misst, wie viele Halbierungen noch fehlen, und die Information ist die Differenz zweier Unsicherheiten, also das, was eine Antwort beseitigt hat. Die 32 ist der Raum der Möglichkeiten, die Unsicherheit dagegen sind die 5 Bit.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawAlphabetBits" data-on-step="drawAlphabetBits">
+    <h2>what a bigger alphabet buys</h2>
+    <div class="figure wide" id="fig-alphabet-bits"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <div class="punch" data-step="2">the file and the symbol rate stay the same, and only the alphabet changes.</div>
+    <aside class="notes">Dasselbe Werkzeug, angewendet auf ein Farbalphabet: Ein Symbol aus N gleich wahrscheinlichen Möglichkeiten trägt log₂(N) Bit, vier Farben also zwei Bit und acht Farben drei. Weil dieselbe Datei damit weniger Symbole braucht, ist sie schneller übertragen; die Balken zeigen dieselbe Datei bei derselben Symbolrate.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>two symbols are enough for anything</h2>
+    <div class="figure wide" id="fig-groups"></div>
+    <div class="punch">what a big alphabet does per symbol, two symbols do in a group.</div>
+    <aside class="notes">Fünf Blitze mit je zwei Möglichkeiten ergeben 32 Kombinationen, genug für ein ganzes Alphabet. Genau deshalb kommt jeder Computer mit Null und Eins aus, und genau deshalb ist ein kleines Alphabet keine Sackgasse, sondern nur langsamer.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>when symbols are not equally likely</h2>
+    <div class="figure wide" id="fig-morse"></div>
+    <div class="punch">rare symbols may cost more, as long as the common ones stay short.</div>
+    <aside class="notes">Bisher galten alle Symbole als gleich wahrscheinlich. In echtem Text sind sie das nicht, und der Morsecode nutzt das aus, denn das häufigste Zeichen bekommt den kürzesten Code. Auf dieser Beobachtung beruht jede Kompression.</aside>
+  </section>
+
+  <!-- ================= part 3 ================= -->
+
+  <section class="slide part" data-part="your alphabet">
+    <aside class="notes">Damit steht die Entscheidung an, die jedes Team für seine Strecke treffen muss.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>the catch</h2>
+    <div class="figure wide" id="fig-catch"></div>
+    <div class="punch">the size of your alphabet is not a matter of taste but the result of a measurement.</div>
+    <aside class="notes">Links der Gewinn, rechts der Preis. Mehr Farben tragen mehr Bit je Symbol, aber sie rücken enger zusammen, und ab einer Grenze frisst das Rauschen den Gewinn wieder auf. Wo diese Grenze liegt, verrät keine Formel, sondern nur die eigene Messreihe; genau danach fragt Challenge 1.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="header">four steps to your alphabet</div>
+      <div class="lines">
+        <div>agree on your alphabet and write it down</div>
+        <div>measure a profile for every symbol</div>
+        <div>fill <span class="mono keep-case">send_symbol()</span> and <span class="mono keep-case">receive_symbol()</span></div>
+        <div>send 50 symbols and count the errors</div>
+      </div>
+    </div>
+    <aside class="notes">Der erste Schritt ist der, den alle überspringen wollen: die Vereinbarung aufschreiben. Wer sie nur im Kopf hat, baut die Unsinn-Folie nach, sobald zwei Leute parallel arbeiten. Danach messen, dann die beiden Funktionen füllen und zuletzt 50 Symbole senden und die Fehler zählen, wie es Challenge 1 verlangt.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content tight">
+      <div class="statement">light means nothing<br>until you agree what it means.</div>
+      <div class="sidenote" data-step="1">and how much it means, you can count.</div>
+    </div>
+    <aside class="notes">Der Schlusssatz fasst beide Teile zusammen: Die Vereinbarung macht aus einem Zustand ein Symbol, und das Zählen sagt, was dieses Symbol wert ist. Beides zusammen ist der Grund, warum die Größe des eigenen Alphabets eine Entscheidung mit Folgen ist.</aside>
+  </section>
+
+</div>
+<script src="../../stagekit/draw.js?v=0.4.0-62b883"></script>
+<script src="../../stagekit/anim.js?v=0.4.0-62b883"></script>
+<script src="deck.js?v=1"></script>
+<script src="../../stagekit/stagekit.js?v=0.4.0-62b883"></script>
+</body>
+</html>

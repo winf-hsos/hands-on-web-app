@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>drawing the line</title>
+  <link rel="stylesheet" href="theme.css?v=1">
+  <link rel="stylesheet" href="../../stagekit/stagekit.css?v=0.4.0-62b883">
+  <style>
+    /* deck-specific layout only, colours and sizes come from the theme */
+    .figure.wide { left: 110px; right: 110px; }
+    .photo-text.narrow { width: 560px; }
+    .content.tight .statement { line-height: 1.14; }
+  </style>
+</head>
+<body>
+<div class="deck"
+     data-title="drawing the line"
+     data-subtitle="prof. dr. nicolas meseth"
+     data-parts='["a world without steps", "two cuts and a price", "drawing your own lines"]'>
+
+  <section class="slide title">
+    <aside class="notes">Der Sensor liefert einen stufenlosen Wertebereich, ein Programm braucht aber Zustände. Dazwischen liegt eine Entscheidung, die niemand abnimmt: wie viele Grenzen es gibt und wo sie liegen.</aside>
+  </section>
+
+  <section class="slide agenda">
+    <aside class="notes">Drei Teile: zuerst, was digital überhaupt heißt, dann die zwei Schnitte, aus denen Digitalisieren besteht, samt ihrem Preis, und zuletzt die Grenze, die man im eigenen Programm selbst zieht.</aside>
+  </section>
+
+  <!-- ================= part 1 ================= -->
+
+  <section class="slide part" data-part="a world without steps">
+    <aside class="notes">Der Anfang ist ein Ding, das älter ist als jeder Computer im Raum.</aside>
+  </section>
+
+  <section class="slide">
+    <img class="photo" src="img/split-flap.jpg" alt="A split-flap departure board in a railway station at night">
+    <div class="photo-text narrow">is this digital?</div>
+    <div class="footnote">image: ai-generated (gpt-image-2)</div>
+    <aside class="notes">Eine Fallblattanzeige auf einem Bahnhof aus der Zeit vor den Chips, die Buchstabe für Buchstabe klappernd an ihren Platz fällt. Abstimmen lassen; die meisten sagen nein. Die Anzeige ist aber lupenrein digital, denn jedes Blatt kennt genau zwei Lagen, oben oder unten, und beim Umklappen gibt es keinen gültigen Zwischenzustand. Genau deshalb ist sie aus zwanzig Metern lesbar.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>digital is not the same as electronic</h2>
+    <div class="figure wide" id="fig-kinds"></div>
+    <div class="punch">not one of them contains a chip, so digital cannot mean electronic.</div>
+    <div class="footnote">images: ai-generated (gpt-image-2)</div>
+    <aside class="notes">Diese Folie räumt das häufigste Missverständnis aus dem Weg. Digital sind die Klapptafel aus der Sporthalle, der Lichtschalter, der Abakus und der Würfel; analog sind Rechenschieber, Zeigerthermometer, Dimmer und Sanduhr. Strom kommt in der Definition nicht vor, und umgekehrt gilt dasselbe: Ein Verstärker ist elektronisch und trotzdem stufenlos.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="statement">digital means finitely many states,<br>and nothing in between counts.</div>
+      <div class="remark">the second half carries the work, because it is what swallows disturbances.</div>
+    </div>
+    <aside class="notes">Erst die Beispiele, dann das Wort. Beide Bedingungen tragen: endlich viele Zustände, und dazwischen zählt nichts. An der zweiten hängt alles Weitere, denn weil zwischen den Zuständen nichts zählt, verschwindet dort auch jede Störung.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>the part no program controls</h2>
+    <div class="figure wide" id="fig-middle"></div>
+    <aside class="notes">Der Sender macht aus Zahlen Licht, und der Sensor macht aus Licht wieder Zahlen: digital, analog, digital. Die Mitte ist Physik, stufenlos und gestört von Umgebungslicht, Abstand und Rauschen, und kein Programm kontrolliert sie. Wer diese analoge Mitte vergisst, wundert sich später über jede Störung; wer sie ernst nimmt, weiß, warum gemessen werden muss.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="statement">light is analog:<br>between any two brightnesses lies another.</div>
+      <div class="statement" data-step="1">your program needs states:<br>finitely many, clearly apart.</div>
+    </div>
+    <aside class="notes">Zwischen zwei Helligkeiten liegt immer noch eine dritte, eine kleinste Stufe gibt es nicht. Ein Programm braucht das Gegenteil. Digitalisieren heißt deshalb nichts anderes, als ein stufenloses Signal durch eine endliche Folge von Zahlen darzustellen.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>same wobble, more regions</h2>
+    <div class="figure wide" id="fig-regions"></div>
+    <div class="punch" data-step="2">the wobble stays the same, but more regions leave each one a smaller margin.</div>
+    <aside class="notes">Jede Spalte ist derselbe Wertebereich, und in jeder fallen dieselben sieben Ablesungen mit derselben Schwankung in ihr Band. Bei zwei Bereichen liegt das Band bequem im eigenen Bereich. Mit dem nächsten Tastendruck wird der Bereich in vier Teile geschnitten, und es wird knapp, aber alles bleibt drin. Beim dritten Schnitt in acht Bereiche überragt dasselbe Band die Grenzen, und drei Ablesungen landen im Nachbarbereich. Der Abstand zwischen den Grenzen ist die Sicherheitsreserve, und mehr Bereiche verteilen dieselbe Reserve auf mehr Grenzen. Genau das ist die Frage von Challenge 1: wie viele Zustände eine Strecke in 50 Versuchen ohne einen Fehler unterscheidet.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>what the thrown-away precision buys</h2>
+    <div class="figure wide" id="fig-copies"></div>
+    <div class="punch" data-step="3">every digital copy is reborn from clean states, so it never inherits the noise.</div>
+    <aside class="notes">Zwei Kopierketten, und jeder Tastendruck macht in beiden eine Generation mehr. Das Band kopiert seine stufenlose Welle mitsamt dem Rauschen der vorigen Kopie und legt eigenes darauf. Die Datei wird bei jeder Kopie abgelesen und aus sauberen Zuständen neu gesetzt. Jede Störung, die kleiner ist als der Abstand zwischen den Zuständen, verschwindet dabei vollständig, und deshalb ist die tausendste Kopie einer Datei immer noch das Original.</aside>
+  </section>
+
+  <!-- ================= part 2 ================= -->
+
+  <section class="slide part" data-part="two cuts and a price">
+    <aside class="notes">Jetzt die praktische Frage: Wie kommt eine stufenlose Welt überhaupt in eine Datei?</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="statement">digitising throws information away,<br>and it does so on purpose.</div>
+      <div class="sidenote">which exact value inside a region it was is gone for good.</div>
+    </div>
+    <aside class="notes">Welcher der unendlich vielen Werte innerhalb eines Bereichs es wirklich war, lässt sich nach der Zuordnung nicht mehr feststellen. Digitalisieren ist eine Einbahnstraße, und das ist kein Unfall, sondern der Preis für die verlustfreien Kopien.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawCuts" data-on-step="drawCuts">
+    <h2>digitising takes two cuts</h2>
+    <div class="figure wide" id="fig-cuts"></div>
+    <span data-step="1"></span>
+    <div class="punch" data-step="1">sampling cuts the picture into points, and quantization cuts each point's value into levels.</div>
+    <aside class="notes">Der erste Schnitt geht durch die Fläche: Aus dem stufenlosen Bild werden Messpunkte, hier 16 mal 16, und wie fein geschnitten wird, ist die Auflösung. Der zweite Schnitt geht durch den Wert: Die Helligkeit jedes Punkts wird auf eine der vereinbarten Stufen gerundet, hier vier, und die Zahl der Stufen ist die Farbtiefe. Es sind genau die Bereiche von eben, nur auf ein Bild angewendet.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>which cut was too coarse?</h2>
+    <div class="figure wide" id="fig-artefacts"></div>
+    <aside class="notes">Beide Schnitte werfen Detail weg, aber sie hinterlassen verschiedene Spuren, und daran erkennt man, an welchem Regler man drehen muss. Klötzchen bedeuten zu wenige Punkte, harte Flecken in glatten Verläufen bedeuten zu wenige Stufen.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>what a picture costs</h2>
+    <div class="figure wide" id="fig-cost"></div>
+    <div class="punch">what you keep, you pay for in minutes.</div>
+    <aside class="notes">Jede Dateigröße trägt dieselbe Rechnung: Punkte mal Bits je Punkt. Über eine Lichtstrecke wird daraus sofort Zeit. Dasselbe Bild in voller Farbe und in Schwarz-Weiß macht aus knapp einer Stunde zwei Minuten. Auflösung und Farbtiefe sind damit keine Feinheiten, sondern die beiden Hebel, an denen die Übertragungsdauer hängt.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawExtreme" data-on-step="drawExtreme">
+    <h2>how far can you go?</h2>
+    <div class="figure wide" id="fig-extreme"></div>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span>
+    <div class="punch" data-step="3">where would you stop?</div>
+    <aside class="notes">Das Bild wird mit jedem Schritt gröber, und bei jedem Schritt geht die Frage in den Raum, ob es noch zu erkennen ist. Irgendwo zwischen dem dritten und dem vierten Bild kippt es, und wo genau, darüber sind sich die Leute uneins. Genau diese Uneinigkeit ist der Punkt, denn ein richtiges Maß gibt es nicht, nur eine Abwägung gegen die Übertragungszeit. Wer ein Bild über eine Lichtstrecke schicken will, steht genau vor dieser Frage.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="header">the same two cuts, for sound</div>
+      <div class="statement">sampling slices time,<br>and quantization slices loudness.</div>
+      <div class="remark">a <span class="keep-case">CD</span> stores 44,100 samples per second with 16 bits each.</div>
+    </div>
+    <aside class="notes">Die zwei Schnitte sind kein Bildthema, sondern das Verfahren. Beim Ton zerlegt die Abtastrate die Zeit statt der Fläche, und die Bittiefe zerlegt die Lautstärke statt der Helligkeit. Wer die Abtastrate einer Aufnahme herunterdreht, hört, wie eine Stimme blechern wird.</aside>
+  </section>
+
+  <!-- ================= part 3 ================= -->
+
+  <section class="slide part" data-part="drawing your own lines">
+    <aside class="notes">Jetzt die Stelle, an der jedes Team selbst entscheidet.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>where your alphabet is born</h2>
+    <div class="content">
+      <div class="code">from lifi_hardware import sensor
+r, g, b, c = sensor.read()
+
+<span class="hl">if c &gt; 250:</span>
+    symbol = "bright"
+else:
+    symbol = "dark"
+print(symbol)</div>
+    </div>
+    <div class="punch">this one line turns thousands of possible readings into just two symbols.</div>
+    <aside class="notes">Die blaue Zeile ist die Stelle, an der aus Tausenden möglicher Messwerte zwei Symbole werden. Die Grenze ist keine Naturkonstante, sondern eine Entscheidung, und ab hier gilt sie und nicht die Physik. Wo sie liegt, kommt nicht aus dem Bauch, sondern aus der eigenen Messreihe: erst kalibrieren, dann vergleichen. Der Wert 250 ist nur ein Beispiel.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content tight">
+      <div class="header">how many colours are safe?</div>
+      <div class="statement">two colours are safe,<br>and eight are fast.</div>
+      <div class="sidenote" data-step="1">somewhere in between sits your alphabet, and only your own measurements know where.</div>
+    </div>
+    <aside class="notes">Das ist die Frage von Challenge 1. Die Breite eines Bereichs muss zur Schwankung passen, sonst rutschen einzelne Ablesungen in den Nachbarbereich, und die Schwankung kennt nur, wer sie gemessen hat. Live-Moment, wenn mehrere Teams im Raum sind: Jedes Team nennt seinen Clear-Wert für Rot und für Blau, die Werte kommen auf eine Zahlengerade an der Tafel, und der Raum entscheidet, welche Farben er streichen würde.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content tight">
+      <div class="statement">you decide where the lines go.</div>
+      <div class="sidenote" data-step="1">from there on, your decision is the truth, not the physics.</div>
+    </div>
+    <aside class="notes">Der Schlusssatz ist wörtlich gemeint. Die Physik liefert einen stufenlosen Wertebereich und keine einzige Grenze dazu. Jede Grenze im eigenen System steht dort, weil jemand sie hingeschrieben hat, und deshalb ist sie auch das eigene Problem, wenn sie falsch liegt.</aside>
+  </section>
+
+</div>
+<script src="../../stagekit/draw.js?v=0.4.0-62b883"></script>
+<script src="../../stagekit/anim.js?v=0.4.0-62b883"></script>
+<script src="deck.js?v=1"></script>
+<script src="../../stagekit/stagekit.js?v=0.4.0-62b883"></script>
+</body>
+</html>

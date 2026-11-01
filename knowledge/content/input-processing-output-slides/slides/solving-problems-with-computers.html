@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>solving problems with computers</title>
+  <link rel="stylesheet" href="theme.css?v=1">
+  <link rel="stylesheet" href="../../stagekit/stagekit.css?v=0.4.0-62b883">
+</head>
+<body>
+<div class="deck"
+     data-title="solving problems with computers"
+     data-subtitle="prof. dr. nicolas meseth"
+     data-parts='["what happens in the middle?", "the boxes in the light link", "boxes all the way down", "two questions inside every box"]'>
+
+  <section class="slide title">
+    <aside class="notes">Ein Stück eines Problems, das ein Computer lösen kann, hat immer dieselbe Form: Eingabe, Verarbeitung, Ausgabe. Dieser Foliensatz handelt von dieser Form und von den Tests, die aus ihren klaren Grenzen entstehen.</aside>
+  </section>
+
+  <section class="slide agenda">
+    <aside class="notes">Wir gehen in vier Schritten vor: zuerst der unsichtbare Teil in der Mitte, dann die Kästen der Lichtstrecke, danach dieselbe Form auf mehreren Ebenen und zum Schluss die zwei Grundfragen, die in jedem Kasten stecken.</aside>
+  </section>
+
+  <!-- ================= part 1 ================= -->
+
+  <section class="slide part" data-part="what happens in the middle?">
+    <aside class="notes">Wir beginnen mit einer Situation, in der wir Eingabe und Ausgabe kennen, ohne die Verarbeitung dazwischen zu sehen.</aside>
+  </section>
+
+  <section class="slide">
+    <img class="photo" src="img/kiosk.jpg" alt="Ordering terminal in a fast-food restaurant">
+    <div class="photo-text">you order and<br>a tray appears,<br>but what happened<br>in between?</div>
+    <div class="footnote">image: ai-generated (gpt-image-2)</div>
+    <aside class="notes">Ihr tippt auf Kacheln, bezahlt und bekommt etwas später ein Tablett, während die Küche dazwischen unsichtbar bleibt. Bestellen könnt ihr trotzdem, weil klar ist, was hineingeht und was herauskommen soll. Auffällig ist auch die Form der Bestellung: Schon am Terminal wird sie so aufgeschrieben, dass ein System damit arbeiten kann. Darauf kommen wir am Ende zurück.</aside>
+  </section>
+
+  <section class="slide" data-on-show="drawIpoReveal" data-on-step="drawIpoReveal">
+    <h2>every computable piece has this shape</h2>
+    <div class="figure" id="fig-ipo-reveal"></div>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span>
+    <aside class="notes">Schritt 1: Vorn gehen Daten hinein, und hinten kommen Daten heraus. Schritt 2: Dazwischen liegt die Verarbeitung. Schritt 3: Das Muster heißt Input, Processing, Output, kurz IPO. Der Kasten ist kein bestimmtes Gerät, sondern eine Denkform für ein Stück, das sich lösen lässt.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>a box with clear edges brings its own test</h2>
+    <div class="figure" id="fig-add-test"></div>
+    <div class="punch" data-step="3">if you know the input and the expected output, you already have a test.</div>
+    <aside class="notes">Ein guter Schnitt durch ein Problem ist prüfbar, und hier sieht man, warum. Die Funktion add bekommt 2 und 3. Schritt 1: Bevor sie läuft, schreiben wir auf, was wir erwarten, nämlich 5. Schritt 2: Der Test läuft, die Eingabe geht in den Kasten, heraus kommt 5, und der Vergleich mit der Erwartung ergibt „pass“. Schritt 3: Liefert derselbe Kasten stattdessen 6, schlägt derselbe Test fehl. Für dieses Urteil müssen wir das Innere des Kastens nicht verstehen.</aside>
+  </section>
+
+  <!-- ================= part 2 ================= -->
+
+  <section class="slide part" data-part="the boxes in the light link">
+    <aside class="notes">Jetzt setzen wir dieselbe Form auf die Lichtstrecke des LiFi-Projekts, die Text mit farbigem Licht von einem Gerät zum anderen bringt.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>the sender is a box</h2>
+    <div class="figure" id="fig-sender"></div>
+    <div class="punch">which colour stands for which character is an agreement within the team.</div>
+    <aside class="notes">Der Sender ist ein IPO-Kasten: Eine Nachricht geht hinein, encode verarbeitet sie, und eine Farbfolge kommt heraus. Welche Farbe welches Zeichen bedeutet, ist kein Naturgesetz, sondern eine Absprache im Team. An den Rändern des Kastens steht, was der nächste Teil der Strecke tatsächlich bekommen muss.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>what enters the receiver?</h2>
+    <div class="figure" id="fig-receiver"></div>
+    <div class="punch" data-step="1">your eyes see red, but the box only sees four numbers.</div>
+    <aside class="notes">Auf den ersten Blick geht rotes Licht hinein. Schritt 1: Für den Computer stimmt das nicht, denn der Farbsensor misst das Licht und liefert vier Zahlen, drei Farbkanäle und die Gesamthelligkeit. Schritt 2: Erst die Verarbeitung entscheidet mit einer Regel, ob diese Zahlen „red“ bedeuten. Genau an dieser Stelle wird die Darstellung von Daten sichtbar.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawRule" data-on-step="drawRule">
+    <h2>same reading, two rules</h2>
+    <div class="figure" id="fig-rule"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <div class="punch" data-step="2">the rule decides what the numbers mean, and a test decides which rule is right.</div>
+    <aside class="notes">Die LED sendet schwaches Rot, und der Sensor liefert vier kleine Zahlen. Die erste Regel sagt „aus“, sobald die Helligkeit c unter 100 liegt, und meldet deshalb off. Schritt 1: Dieselbe Eingabe mit einer Schwelle von 50 ergibt red, weil r der größte Farbkanal ist; die Eingabe ist gleich geblieben, nur die Verarbeitung hat sich geändert. Schritt 2: Wer vorher aufschreibt, dass red herauskommen soll, hat einen Test, der die erste Regel durchfallen und die zweite bestehen lässt. Fragen, welche Schwelle bei hellem Raumlicht Probleme machen würde.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>boxes connect when their edges agree</h2>
+    <div class="figure" id="fig-chain"></div>
+    <div class="punch" data-step="3">every boundary needs an agreement about the form and meaning of the data.</div>
+    <aside class="notes">Schritt 1: Der Sender übersetzt den Text „hi“ in Farbsymbole. Schritt 2: Das Licht trägt die Farben hinüber, und der Empfänger macht daraus wieder „hi“; die ganze Strecke ist diese Kette. Schritt 3: Jede Steckstelle ist eine Absprache über Form und Bedeutung der Daten, und wenn dort zwei verschiedene Erwartungen aufeinandertreffen, scheitert die Strecke, obwohl jeder Kasten für sich richtig arbeitet.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content center">
+      <div class="statement">to find the fault, follow the data<br>from one boundary to the next.</div>
+      <div class="sidenote">the question is up to which boundary the data are still correct.</div>
+    </div>
+    <aside class="notes">Die Kette ist zugleich eine Route für die Fehlersuche. Wenn hinten nicht „hi“ ankommt, prüfen wir nicht alles gleichzeitig, sondern folgen den Daten und testen eine Grenze nach der anderen: ob der erzeugte Code stimmt, ob die richtige Farbe leuchtet, ob der Sensor plausible Zahlen misst und ob decode den richtigen Text liefert.</aside>
+  </section>
+
+  <!-- ================= part 3 ================= -->
+
+  <section class="slide part" data-part="boxes all the way down">
+    <aside class="notes">IPO gilt nicht nur für eine Größe von Problem, denn wir können denselben Kasten öffnen und wieder schließen.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>one box from the outside</h2>
+    <div class="figure" id="fig-nested-sender"></div>
+    <div class="punch">open a box only as far as your question requires.</div>
+    <aside class="notes">Von außen kann der gesamte Sender ein einziger Kasten sein, send. Schritt 1: Öffnen wir ihn, wird seine Verarbeitung zu einer Kette kleinerer Kästen. Schritt 2: Jeder davon hat eigene Eingaben und Ausgaben und lässt sich einzeln prüfen. Welche Auflösung richtig ist, hängt von der Frage ab, nämlich ob wir das Gesamtsystem testen, send oder nur die Ansteuerung der LED. Mit der Pfeiltaste nach links schließt sich der Kasten wieder.</aside>
+  </section>
+
+  <section class="slide" data-on-show="drawLevels" data-on-step="drawLevels">
+    <h2>the shape survives every level</h2>
+    <div class="figure" id="fig-levels"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <aside class="notes">Dasselbe Muster gilt auf verschiedenen Ebenen, oben für ein ganzes System. Schritt 1: Darunter steht eine Funktion. Schritt 2: Sogar ein Logikgatter hat Eingabe, Verarbeitung und Ausgabe. Die Größe ändert sich von Zeile zu Zeile, während die Form bleibt.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>two relationships, two questions</h2>
+    <div class="figure" id="fig-relations"></div>
+    <div class="punch">both cut a problem, once into steps in a row and once into smaller work inside.</div>
+    <aside class="notes">Die beiden Bilder sehen ähnlich aus, beantworten aber verschiedene Fragen. Kästen hintereinander zeigen den Datenfluss und fragen, wohin die Daten als Nächstes gehen. Kästen ineinander zeigen eine hierarchische Zerlegung und fragen, welche kleinere Arbeit im Inneren passiert. Wer beides verwechselt, verliert entweder die Reihenfolge oder die Ebenen. Beide Beziehungen sind Schnitte durch ein Problem, wie beim Zerlegen von Problemen: einmal in Schritte nacheinander, einmal in kleinere Arbeit im Inneren.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content center">
+      <div class="statement">the right level is the one<br>you can test.</div>
+    </div>
+    <aside class="notes">Es gibt nicht die eine richtige Ebene. Richtig ist die Ebene, auf der die aktuelle Frage eine klare Eingabe und eine erwartete Ausgabe hat. Lässt sich ein Kasten nicht prüfen, ist er meist noch zu groß, oder seine Grenzen sind noch unklar.</aside>
+  </section>
+
+  <!-- ================= part 4 ================= -->
+
+  <section class="slide part" data-part="two questions inside every box">
+    <aside class="notes">Zum Schluss schauen wir auf die zwei Grundfragen, die aus jedem IPO-Kasten entstehen.</aside>
+  </section>
+
+  <section class="slide" data-on-show="drawTwoQuestions" data-on-step="drawTwoQuestions">
+    <h2>every box leaves two questions</h2>
+    <div class="figure" id="fig-two-questions"></div>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span>
+    <aside class="notes">Schritt 1: Die erste Frage lautet, wie der Kasten arbeitet. Schritt 2: Die zweite lautet, wie Dinge so aufgeschrieben werden, dass eine Maschine mit ihnen arbeiten kann. Schritt 3: Die erste Frage beantwortet ein Programm, und was ein Programm ist, behandelt der Foliensatz „algorithms and programs“. Die zweite ist die Frage nach der Darstellung, die sich durch viele Themen zieht, von Messwerten über Symbole und Codes bis zu Zahlensystemen. Am Sensor haben wir sie schon gesehen, denn aus „rot“ mussten vier Zahlen werden, bevor ein Programm damit arbeiten konnte.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawAgent" data-on-step="drawAgent">
+    <h2>an <span class="keep-case">AI</span> agent is a box, too</h2>
+    <div class="figure" id="fig-agent"></div>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span>
+    <div class="punch">you do not have to trust a box when you have a test for it.</div>
+    <aside class="notes">Auch ein KI-Agent lässt sich als Kasten betrachten: Ihr gebt einen Auftrag hinein und bekommt Code heraus. Schritt 1: Ein klares Beispiel macht die Eingabe genau. Schritt 2: Ein erwartetes Ergebnis macht die Grenze prüfbar. Schritt 3: Ihr lasst den Code laufen, und der Vergleich mit der Erwartung entscheidet. Das Innere dieses Kastens ist schwer einzusehen, und umso wichtiger ist die Prüfung der Ausgabe.</aside>
+  </section>
+
+  <section class="slide">
+    <img class="photo" src="img/fast-food-kitchen.jpg" alt="Kitchen of a fast-food restaurant behind the counter, a tray with a burger and fries in front">
+    <div class="photo-text">inside the box,<br>a program works<br>through the order<br>step by step.</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">Zurück zum Bestellterminal vom Anfang, wo wir nur Eingabe und Ausgabe sahen, die Bestellung und das Tablett. Jetzt schauen wir hinter die Theke: Dort wird die Bestellung Schritt für Schritt abgearbeitet, Zettel für Zettel und Station für Station. Wir kennen jetzt die Form jedes Stücks, das ein Computer lösen kann, und wissen, wie man es prüft. Die Verarbeitung im mittleren Kasten heißt Programm, und was ein Programm genau ist, beantwortet der Foliensatz „algorithms and programs“.</aside>
+  </section>
+
+</div>
+<script src="../../stagekit/draw.js?v=0.4.0-62b883"></script>
+<script src="../../stagekit/anim.js?v=0.4.0-62b883"></script>
+<script src="deck.js?v=2"></script>
+<script src="../../stagekit/stagekit.js?v=0.4.0-62b883"></script>
+</body>
+</html>
