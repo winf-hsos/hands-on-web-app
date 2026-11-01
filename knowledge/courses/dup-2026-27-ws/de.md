@@ -17,11 +17,14 @@ sections:
         optional: true
       - knock-code
       - code-systems-quiz
-status: draft
-updated: 2026-10-26
+  - path: the-command-line
+  - project: lifi
+status: published
+updated: 2026-11-01
 ---
 
-Diese Sammlung begleitet die Vorlesung. Sie ist in Abschnitte gegliedert, und
-alle Inhalte sind von Anfang an verfügbar. Ein Abschnitt ist der Lernpfad für
-den Einstieg in Python, den es auch einzeln gibt. Was als freiwillig markiert
-ist, vertieft das Thema, wird aber nicht vorausgesetzt.
+Dieses Modul begleitet die Vorlesung. Es besteht aus Lernpfaden, die es auch
+einzeln gibt, einem Abschnitt zu Zahlen- und Codesystemen und dem LiFi-Projekt,
+das sich durch das ganze Semester zieht. Alle Inhalte sind von Anfang an
+verfügbar, und was als freiwillig markiert ist, vertieft das Thema, wird aber
+nicht vorausgesetzt.

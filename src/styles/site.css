@@ -1800,6 +1800,11 @@ details.callout[open] > summary::before {
   color: var(--quiet);
 }
 
+.course-project-summary {
+  margin: 0.5rem 0 0.75rem;
+  color: var(--quiet);
+}
+
 .course-path-link {
   margin: 0.75rem 0 0;
   font-size: 0.92rem;

@@ -414,10 +414,16 @@ sections:
       - python-values-and-variables
 ```
 
-## 9. Courses
+## 9. Courses (called modules on the site)
+
+On the site a course is called a **module** (Nicolas, 2026-11-01): every label
+says Modul/Module, the pages live under `/<area>/<lang>/modules/…`, and the
+build writes a page at each old `/courses/…` address that forwards there. In
+the knowledge base it stays a course (`courses/`, `kind: course`), because
+`module:` already names the module of the module handbook it belongs to.
 
 A course is a curated collection for one module, or a few, in one semester. All
-courses are listed on the site under "Courses" once they are published, and
+courses are listed on the site under "Module" once they are published, and
 opening one adds it to "My learning", which also makes it a filter in the
 content list. Access codes are not used for now (Nicolas, 2026-11-01): the
 home page leads to the list of courses instead of a field for a code, and a
@@ -427,7 +433,7 @@ link with a code from before, `/de/learning/?code=…`, still opens its course.
 ---
 kind: course
 code: 3307                   # short code, like any page
-access_code: LICHT-26        # optional, not used for now: courses are listed under Kurse (Nicolas, 2026-11-01)
+access_code: LICHT-26        # optional, not used for now: courses are listed under Module (Nicolas, 2026-11-01)
 module: dup                  # or a list, module: [ea, wmg]
 institution: hs-osnabrueck      # from vocabulary.yaml, with name, address and logo
 semester: 2026-27 - WS
@@ -442,15 +448,20 @@ sections:
       - item: knock-code
         optional: true
       - code-systems-quiz
+  - project: lifi              # a project as one section
 status: draft
 updated: 2026-10-21
 ---
 ```
 
 A course consists of **sections** (decision of Nicolas, 2026-10-26; until
-then "units" named after sessions). A section is either a title with its
-items, or a learning path given by `path:`, which brings its own title, parts
-and steps and stays the same path that can be followed on its own. Section
+then "units" named after sessions). A section is a title with its items, a
+learning path given by `path:`, which brings its own title, parts and steps
+and stays the same path that can be followed on its own, or a project given by
+`project:` (Nicolas, 2026-11-01). A module thus consists of one or more paths
+and possibly projects, and loose sections of items remain allowed. A project
+section shows the project's summary and its phases, each linking into the
+project page; it adds no steps to the progress of the course. Section
 titles are short labels and therefore written in both languages inline; the
 rule is that short labels in a structure may be bilingual in place, while
 prose belongs in the language files. Sections have no release dates:
@@ -634,7 +645,8 @@ progress stays valid. Nothing that is not archived may point to it.
 
 Drafts (`status: draft`) are not on the published site (Nicolas, 2026-10-30).
 The build writes the site twice (`src/build/drafts.mjs`): once without drafts
-and without whatever points to them (steps, course sections, relations,
+and without whatever points to them (steps, course sections with a draft path
+or project, relations,
 requirements, project items, the featured path and samples of a start page;
 a `[[link]]` to a draft keeps its text), and once in full under `/drafts/`,
 marked "draft" in every list, with a strip on top and `noindex`. `?drafts` on

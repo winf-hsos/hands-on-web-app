@@ -3,7 +3,7 @@
 Source of the learning platform planned for hands-on-computer-science.de: a
 knowledge base of learning items in Markdown, with typed relations between
 them, from which our own build script makes a static, bilingual (German and
-English) website with courses, learning paths and local progress. The site
+English) website with modules, learning paths and local progress. The site
 has three areas built from the same knowledge base, Hands-on Computer
 Science under `/cs/`, Hands-on Data Science under `/ds/` and Hands-on
 Artificial Intelligence under `/ai/` (see `docs/architecture.md`).

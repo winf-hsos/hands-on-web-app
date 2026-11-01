@@ -245,8 +245,13 @@ async function placeBack(link) {
   }
   if (from.origin !== location.origin || from.pathname === location.pathname) return;
   // paths look like /<area>/<lang>/<section>/<id>/, on the site with drafts
-  // with /drafts in front
-  const parts = (path) => path.split('/').filter(Boolean).filter((part, i) => i > 0 || part !== 'drafts');
+  // with /drafts in front. Courses are called modules on the site and live
+  // under /modules/.
+  const parts = (path) => {
+    const p = path.split('/').filter(Boolean).filter((part, i) => i > 0 || part !== 'drafts');
+    if (p[2] === 'modules') p[2] = 'courses';
+    return p;
+  };
   const [hereArea, lang, hereSection, hereId] = parts(location.pathname);
   const page = `${hereSection}/${hereId}`;
   let [fromArea, , section, id] = parts(from.pathname);

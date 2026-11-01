@@ -239,11 +239,17 @@ function renderSite(knowledge, base, { write, asset }) {
       write(page.path, String(layout({ site, lang, asset, pyodide: PYODIDE_BASE, webr: { base: WEBR_BASE, repo: WEBR_REPO_BASE }, total: site.items.length, entrances: entrances[lang], ...page })));
       count += 1;
     };
+    // courses are called modules since 2026-11-01; the old addresses lead there
+    const moved = (page) => {
+      const to = page.path;
+      write(to.replace('/modules/', '/courses/'), `<!doctype html><meta charset="utf-8"><title>${page.title}</title><meta name="robots" content="noindex"><link rel="canonical" href="${to}"><meta http-equiv="refresh" content="0; url=${to}"><a href="${to}">${page.title}</a>`);
+    };
     for (const lang of LANGS) {
       writePage(lang, pages.home(site, lang));
       writePage(lang, pages.items(site, lang));
       writePage(lang, pages.paths(site, lang));
       writePage(lang, pages.courses(site, lang));
+      moved(pages.courses(site, lang));
       writePage(lang, pages.map(site, lang));
       writePage(lang, pages.projects(site, lang));
       for (const doc of site.projects) writePage(lang, pages.project(site, doc, lang));
@@ -258,7 +264,11 @@ function renderSite(knowledge, base, { write, asset }) {
         if (drawings) copyFileSync(drawings.file, join(DIST, site.url(doc, lang), FIGURE_FILE));
       }
       for (const doc of site.paths) writePage(lang, pages.path(site, doc, lang));
-      for (const doc of site.courses) writePage(lang, pages.course(site, doc, lang));
+      for (const doc of site.courses) {
+        const page = pages.course(site, doc, lang);
+        writePage(lang, page);
+        moved(page);
+      }
       write(`${site.link(lang)}index.json`, JSON.stringify(clientIndex(site, lang)));
     }
   }

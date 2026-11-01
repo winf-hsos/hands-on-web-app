@@ -6,7 +6,7 @@ import yaml from 'js-yaml';
 const SECTIONS = [
   ['content', 'Inhalte'],
   ['paths', 'Lernpfade'],
-  ['courses', 'Kurse'],
+  ['courses', 'Module'],
   ['projects', 'Projekte'],
   ['pages', 'Seiten'],
 ];
@@ -247,8 +247,8 @@ function renderShared() {
     html.push(linkList('requires', 'Voraussetzungen'));
   }
   if (work.section === 'courses') {
-    html.push(field('Kurs-Code für Studierende', input('access_code', d.access_code), { hint: 'Vorerst nicht genutzt, Kurse stehen offen unter „Kurse“. Großbuchstaben, Ziffern, Bindestrich' }));
-    html.push(field('Modul', multi('module', Object.entries(v.modules).map(([k, l]) => [k, l.de]), [].concat(d.module ?? [])), { wide: true }));
+    html.push(field('Zugangscode für Studierende', input('access_code', d.access_code), { hint: 'Vorerst nicht genutzt, Module stehen offen unter „Module“. Großbuchstaben, Ziffern, Bindestrich' }));
+    html.push(field('Modul im Modulhandbuch', multi('module', Object.entries(v.modules).map(([k, l]) => [k, l.de]), [].concat(d.module ?? [])), { wide: true }));
     html.push(field('Semester', input('semester', d.semester), { hint: 'z. B. 2026-27 - WS' }));
   }
   if (work.section === 'projects') {
@@ -266,7 +266,7 @@ function renderShared() {
       work.section === 'projects'
         ? 'Phasen und Challenges mit ihren Kennungen. Jede Kennung braucht im Text eine Überschrift mit {#kennung}, in beiden Sprachen.'
         : work.section === 'courses'
-          ? 'Abschnitte mit Titel (de/en) und Inhalten, oder ein Lernpfad als Abschnitt: - path: kennung'
+          ? 'Abschnitte mit Titel (de/en) und Inhalten, ein Lernpfad als Abschnitt (- path: kennung) oder ein Projekt (- project: kennung)'
           : work.section === 'paths'
             ? 'Teile des Pfads mit Titel (de/en) und ihren Schritten.'
             : 'Weitere Kopfdaten';
@@ -702,7 +702,7 @@ function createDialog(section = state.section === 'pages' ? 'content' : state.se
       ${section === 'content' ? field('Typ', `<select name="type">${opt(Object.entries(v.types).map(([k, l]) => [k, l.de]), 'lesson')}</select>`) : ''}
       ${section === 'content' ? field('Thema', `<select name="topic">${opt(Object.entries(v.topics).map(([k, l]) => [k, l.de]))}</select>`) : ''}
       ${['paths', 'courses'].includes(section) ? field('Erster Inhalt', `<select name="first">${opt(items.map((d) => [d.id, titleOf(d)]))}</select>`, { hint: 'Weitere fügst du danach hinzu.' }) : ''}
-      ${section === 'courses' ? field('Modul', `<select name="module">${opt(Object.entries(v.modules).map(([k, l]) => [k, l.de]))}</select>`) + field('Semester', '<input name="semester" required placeholder="2026-27 - WS">') : ''}
+      ${section === 'courses' ? field('Modul im Modulhandbuch', `<select name="module">${opt(Object.entries(v.modules).map(([k, l]) => [k, l.de]))}</select>`) + field('Semester', '<input name="semester" required placeholder="2026-27 - WS">') : ''}
     </div>
     <p class="form-error" id="create-error"></p>
     <p class="ed-actions"><button class="text-button" value="cancel" formnovalidate>Abbrechen</button><button class="button" value="ok">Anlegen</button></p>`;

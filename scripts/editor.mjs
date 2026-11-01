@@ -25,7 +25,7 @@ const store = createStore(join(ROOT, 'knowledge'));
 
 // Links go to the view with drafts (build/drafts.mjs), in the document's
 // area, as served by this editor, so that the banner comes along.
-const SECTION_PATH = { content: 'items', paths: 'paths', courses: 'courses', projects: 'projects', pages: '' };
+const SECTION_PATH = { content: 'items', paths: 'paths', courses: 'modules', projects: 'projects', pages: '' };
 const siteUrl = (section, id, area, lang) =>
   `/drafts/${area}/${lang}/${section === 'pages' ? '' : `${SECTION_PATH[section]}/${id}/`}`;
 
@@ -92,7 +92,7 @@ function proxy(req, res) {
  * and the content items to link to.
  */
 function pageInfo(path) {
-  const m = path.match(/^(?:\/drafts)?\/([a-z]+)\/(de|en)\/(?:(items|paths|courses|projects)\/([a-z0-9-]+)\/)?$/);
+  const m = path.match(/^(?:\/drafts)?\/([a-z]+)\/(de|en)\/(?:(items|paths|modules|projects)\/([a-z0-9-]+)\/)?$/);
   const lang = m?.[2] ?? (path.includes('/en/') ? 'en' : 'de');
   const { docs, vocabulary } = store.list();
   const labels = (group) => Object.fromEntries(Object.entries(vocabulary[group] ?? {}).map(([key, def]) => [key, def[lang] ?? key]));
@@ -110,7 +110,7 @@ function pageInfo(path) {
 /** The document a page of the site shows, from the parts of its address. */
 function docAt(docs, [, area, lang, kind, id]) {
   const doc = kind
-    ? docs.find((d) => d.section === (kind === 'items' ? 'content' : kind) && d.id === id)
+    ? docs.find((d) => d.section === ({ items: 'content', modules: 'courses' }[kind] ?? kind) && d.id === id)
     : docs.find((d) => d.section === 'pages' && d.area === area);
   if (!doc) return null;
   const { section, status, errors, problems } = doc;

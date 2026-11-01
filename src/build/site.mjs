@@ -6,7 +6,10 @@ import { renderMarkdown } from './markdown.mjs';
 import { stepsOf, pathSteps, courseSteps } from './validate.mjs';
 import { splitProject } from './project.mjs';
 
-const SECTION_PATH = { content: 'items', paths: 'paths', courses: 'courses', projects: 'projects' };
+// Courses are called modules on the site (Nicolas, 2026-11-01) and live under
+// /modules/; the knowledge base keeps `courses`, since `module:` already names
+// the module of the module handbook.
+const SECTION_PATH = { content: 'items', paths: 'paths', courses: 'modules', projects: 'projects' };
 
 /** The areas a doc belongs to; without `areas` it is Computer Science. */
 export const areasOf = (doc) => doc.lead.areas ?? ['cs'];
@@ -16,7 +19,7 @@ export const areasOf = (doc) => doc.lead.areas ?? ['cs'];
 // Without an area the site spans all of them, as the entrance needs it.
 export function createSite({ vocabulary, sections, hidden = new Map() }, area, base = '') {
   /** Address of a page of this area: link('de', 'items') is /cs/de/items/. */
-  const link = (lang, ...parts) => `${base}/${[area, lang, ...parts].filter(Boolean).join('/')}/`.replace(/\/+/g, '/');
+  const link = (lang, first, ...parts) => `${base}/${[area, lang, SECTION_PATH[first] ?? first, ...parts].filter(Boolean).join('/')}/`.replace(/\/+/g, '/');
   const inArea = (doc) => !area || areasOf(doc).includes(area);
   const item = new Map(sections.content.map((d) => [d.id, d]));
   const path = new Map(sections.paths.map((d) => [d.id, d]));

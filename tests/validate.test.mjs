@@ -188,12 +188,17 @@ test('a section of a path needs a title in both languages', () => {
 
 test('course sections have no release dates', () => {
   const { errors } = check(({ find }) => (lead(find('courses', 'dup-2026-27-ws')).sections[1].available_from = new Date('2026-11-16')));
-  assert.deepEqual(errors, ['courses/dup-2026-27-ws/de.md: sections: unknown field available_from (allowed: title, items, or path alone)']);
+  assert.deepEqual(errors, ['courses/dup-2026-27-ws/de.md: sections: unknown field available_from (allowed: title, items, or path or project alone)']);
 });
 
 test('a course section can be a learning path, which must exist', () => {
   const { errors } = check(({ find }) => (lead(find('courses', 'dup-2026-27-ws')).sections[0].path = 'python-for-nobody'));
   assert.deepEqual(errors, ['courses/dup-2026-27-ws sections[1]: unknown path "python-for-nobody"']);
+});
+
+test('a course section can be a project, which must exist', () => {
+  const { errors } = check(({ find }) => (lead(find('courses', 'dup-2026-27-ws')).sections[3].project = 'lifi-nowhere'));
+  assert.deepEqual(errors, ['courses/dup-2026-27-ws sections[4]: unknown project "lifi-nowhere"']);
 });
 
 test('a course names a known institution, and its logo must exist', () => {

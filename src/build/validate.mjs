@@ -83,18 +83,20 @@ function shapes(vocabulary) {
     if (url(v.url) || !/^https:\/\/(www\.)?(youtube\.com|youtu\.be)\//.test(v.url)) return 'url: expected a YouTube link (https://www.youtube.com/… or https://youtu.be/…)';
     return v.slide === undefined ? null : int(1, 999)(v.slide);
   };
-  // A section of a course: a heading in both languages and its items, or a
-  // whole learning path, which brings its own title and steps. Sections have
-  // no release dates; everything is always available (Nicolas, 2026-10-26).
+  // A section of a course (a "Modul" on the site): a heading in both languages
+  // and its items, a whole learning path, which brings its own title and
+  // steps, or a project with its phases. Sections have no release dates;
+  // everything is always available (Nicolas, 2026-10-26).
   const courseSection = (v) => {
-    if (!v || typeof v !== 'object' || Array.isArray(v)) return 'expected { title, items } or { path }';
-    if ('path' in v) {
-      const extra = Object.keys(v).find((k) => k !== 'path');
-      if (extra) return `unknown field ${extra} (a section with a path has nothing else)`;
-      return id(v.path) && `path: ${id(v.path)}`;
+    if (!v || typeof v !== 'object' || Array.isArray(v)) return 'expected { title, items }, { path } or { project }';
+    for (const key of ['path', 'project']) {
+      if (!(key in v)) continue;
+      const extra = Object.keys(v).find((k) => k !== key);
+      if (extra) return `unknown field ${extra} (a section with a ${key} has nothing else)`;
+      return id(v[key]) && `${key}: ${id(v[key])}`;
     }
     const extra = Object.keys(v).find((k) => !['title', 'items'].includes(k));
-    if (extra) return `unknown field ${extra} (allowed: title, items, or path alone)`;
+    if (extra) return `unknown field ${extra} (allowed: title, items, or path or project alone)`;
     return (label(v.title) && `title: ${label(v.title)}`) ?? (list(step, 1)(v.items) && `items: ${list(step, 1)(v.items)}`) ?? null;
   };
   // A part of a learning path: a heading in both languages and its steps.
@@ -262,6 +264,7 @@ export function referencesOf(doc) {
   if (lead.kind === 'course') {
     (lead.sections ?? []).forEach((section, n) => {
       if (section.path) add(section.path, `sections[${n + 1}]`);
+      else if (section.project) add(section.project, `sections[${n + 1}]`);
       else stepsOf(section.items).forEach((s) => add(s.id, `sections[${n + 1}]`));
     });
   }
@@ -282,7 +285,7 @@ export const stepsOf = (list = []) =>
 
 /** All steps of a course, those of its learning paths included. */
 export const courseSteps = (lead, pathById) =>
-  (lead.sections ?? []).flatMap((s) => (s.path ? (pathById.has(s.path) ? pathSteps(pathById.get(s.path).lead) : []) : stepsOf(s.items ?? [])));
+  (lead.sections ?? []).flatMap((s) => (s.path ? (pathById.has(s.path) ? pathSteps(pathById.get(s.path).lead) : []) : s.project ? [] : stepsOf(s.items ?? [])));
 
 /** All steps of a path, whether it lists them flat or in sections. */
 export const pathSteps = (lead) =>
@@ -395,6 +398,8 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
       const where = `courses/${course.id} sections[${n + 1}]`;
       if (section.path) {
         if (!pathIds.has(section.path)) errors.push(`${where}: unknown path "${section.path}"`);
+      } else if (section.project) {
+        if (!projects.some((p) => p.id === section.project)) errors.push(`${where}: unknown project "${section.project}"`);
       } else for (const s of stepsOf(section.items)) needItem(where, s.id);
     });
   }

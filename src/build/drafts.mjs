@@ -37,9 +37,9 @@ export function withoutDrafts(knowledge) {
     }
     if (l.kind === 'course') {
       l.sections = (l.sections ?? [])
-        .filter((s) => !s.path || keep(s.path))
-        .map((s) => (s.path ? s : { ...s, items: steps(s.items) }))
-        .filter((s) => s.path || s.items.length);
+        .filter((s) => (!s.path || keep(s.path)) && (!s.project || keep(s.project)))
+        .map((s) => (s.path || s.project ? s : { ...s, items: steps(s.items) }))
+        .filter((s) => s.path || s.project || s.items.length);
     }
     if (l.kind !== 'course' && l.items) l.items = l.items.filter(keep);
     if (l.phases) l.phases = l.phases.map((p) => ({ ...items(p), ...(p.challenges && { challenges: p.challenges.map(items) }) }));

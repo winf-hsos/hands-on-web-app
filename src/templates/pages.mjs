@@ -417,14 +417,14 @@ export function path(site, doc, lang) {
   };
 }
 
-// --- courses -------------------------------------------------------------------
+// --- courses, called modules on the site --------------------------------------
 
 const courseIcon = raw(iconSvg('graduation-cap'));
 
 /** The English page of a page at hs-osnabrueck.de, which puts /en/ before the path. */
 const inLanguage = (url, lang) => (lang === 'en' ? url.replace(/^(https:\/\/www\.hs-osnabrueck\.de)\/(?!en\/)/, '$1/en/') : url);
 
-/** One card per module of the course: logo and name of the institution, the
+/** One card per handbook module of the course: logo and name of the institution, the
  *  module's name and its official description. Two or three modules stand
  *  side by side in smaller cards. */
 function institutionBlock(site, doc, lang) {
@@ -442,7 +442,7 @@ function institutionBlock(site, doc, lang) {
   return html`<div class="institutions${modules.length > 1 && ' is-several'}">${(modules.length ? modules : [null]).map(card)}</div>`;
 }
 
-/** All courses, open to everyone; opening one adds it to "My learning". */
+/** All modules, open to everyone; opening one adds it to "My learning". */
 export function courses(site, lang) {
   return {
     path: site.link(lang, 'courses'),
@@ -491,7 +491,7 @@ export function course(site, doc, lang) {
       ${body()}
     </details>`;
   };
-  // A path in a course shows its own parts and links to the path page.
+  // A path in a module shows its own parts and links to the path page.
   const pathSection = (p) => {
     const ptext = site.localize(p, lang);
     const steps = site.pathSteps(p);
@@ -502,6 +502,21 @@ export function course(site, doc, lang) {
           : trail(p.lead.steps)}
         <p class="course-path-link"><a href="${site.url(p, lang)}">${pathIcon}${t(lang, 'open_path')}</a></p>`,
       html`${t(lang, 'path')} · ${count(lang, steps.length, 'steps')}`,
+    );
+  };
+  // A project in a module lists its phases, each linking into the project page.
+  const projectSection = (p) => {
+    const ptext = site.localize(p, lang);
+    const phases = site.projectText(p, lang).phases;
+    return section(
+      ptext.title,
+      () => html`<p class="course-project-summary" lang="${ptext.lang}">${ptext.summary}</p>
+        <ol class="rows trail">${p.lead.phases.map((phase, i) => html`<li class="row">
+          <span class="row-step" aria-hidden="true"><span>${i + 1}</span></span>
+          <a class="row-link" href="${site.url(p, lang)}#${phase.id}">${projectIcon}<span class="row-head"><span class="row-title" lang="${ptext.lang}">${phases[i].title}</span></span></a>
+        </li>`)}</ol>
+        <p class="course-path-link"><a href="${site.url(p, lang)}">${projectIcon}${t(lang, 'open_project')}</a></p>`,
+      html`${t(lang, 'project')} · ${count(lang, p.lead.phases.length, 'phases')}`,
     );
   };
   return {
@@ -522,7 +537,10 @@ export function course(site, doc, lang) {
           ${required.length > 0 && progressBar(required, lang)}
         </header>
         ${doc.lead.sections.length === 0 && html`<p class="empty">${t(lang, 'course_empty')}</p>`}
-        ${doc.lead.sections.map((s) => (s.path ? pathSection(site.path.get(s.path)) : section(s.title[lang], () => trail(s.items))))}
+        ${doc.lead.sections.map((s) =>
+          s.path ? pathSection(site.path.get(s.path))
+          : s.project ? projectSection(site.project.get(s.project))
+          : section(s.title[lang], () => trail(s.items)))}
         ${more(t(lang, 'about_course'), html`<div class="prose" lang="${text.lang}">${raw(site.body(doc, lang))}</div>`)}
       </article>
     `,
