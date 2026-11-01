@@ -16,13 +16,13 @@ The picture carries straight over to working with an AI assistant. The assistant
 
 ### Three ways to answer the same question (Frames 5 to 7)
 
-A plausible explanation says why something might hold. An AI prediction can even attach concrete numbers or an instruction to the claim. Both remain a claim. Only the measurement series on your own setup provides evidence of whether, and how strongly, the effect actually occurs.
+A plausible explanation says why something might hold. An AI prediction can even attach concrete numbers or an instruction to the claim. Both remain a claim. Only the measurement series on your own setup provides evidence of whether, and how strongly, the effect actually occurs. That is why, once the evidence appears, the first two boxes turn yellow with a warning sign: they still have to stand up to a measurement.
 
 The example is the integration time. "Longer measurements collect more light" sounds reasonable. "Double the integration time, and recognition improves" is a clear prediction. Whether the recognition rate on this setup really rises from 41 to 47 correct recognitions out of 50 is decided only by the trial.
 
 ### A claim becomes a test (Frames 8 to 11)
 
-An experiment begins with a question. From it follows a prediction, which you write down before measuring. Then you measure under controlled conditions. Finally you compare the result with the prediction: the claim is supported or refuted. On the slide the four stations appear one after another, and the white frame marks the station the experiment has reached.
+An experiment begins with a question. From it follows a prediction, which you write down before measuring. Then you measure under controlled conditions; in the example, 50 symbols each with a short and with a long window, 41 recognised correctly with the short one and 47 with the long one. Finally you compare the result with the prediction: the hypothesis is supported or refuted. On the slide the four stations appear one after another, and the white frame marks the station the experiment has reached.
 
 The order is decisive. If you measure first and only afterwards decide which result counts as a success, you can read almost any outcome as a fit. An expectation written down beforehand protects you from reading your own hopes into the data after the fact.
 

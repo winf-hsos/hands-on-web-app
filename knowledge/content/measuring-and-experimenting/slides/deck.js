@@ -17,6 +17,18 @@ function circle(x, y, r, fill) {
   return `<circle cx="${x}" cy="${y}" r="${r}" fill="${fill}"/>`;
 }
 
+// Bootstrap Icons "exclamation-triangle-fill" 1.11.3 (MIT, (c) The Bootstrap Authors)
+const ICON_WARNING = '<path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>';
+
+// A verdict box without a verdict yet, framed yellow with a warning sign where
+// verdict() puts its check: the claim still needs a check of its own.
+function caution(x, y, w, h, text, o = {}) {
+  const c = d.colors();
+  const size = 40, cy = y + h - 44;
+  return d.verdict(x, y, w, h, text, null, { ...o, border: c.yellow }) +
+    d.icon(x + w / 2 - size / 2, cy - size / 2, size, ICON_WARNING, { color: c.yellow });
+}
+
 window.drawAuthorities = function (_slide, step = 0) {
   const c = d.colors();
   const xs = [50, 610, 1170];
@@ -31,7 +43,8 @@ window.drawAuthorities = function (_slide, step = 0) {
   for (let i = 0; i <= visible; i += 1) {
     parts.push(d.label(xs[i], 125, titles[i], { size: 32, color: c.gray }));
     const o = { size: 32, color: i === 2 ? c.white : c.light, mono: i > 0 };
-    parts.push(d.verdict(xs[i], 165, 460, 300, bodies[i], i === 2 ? true : null, { ...o, border: c.dark }));
+    if (i < 2 && step >= 2) parts.push(caution(xs[i], 165, 460, 300, bodies[i], o));
+    else parts.push(d.verdict(xs[i], 165, 460, 300, bodies[i], i === 2 ? true : null, { ...o, border: c.dark }));
     if (i === 2) parts.push(d.label(xs[i] + 230, 535, "evidence from your setup", { size: 32, color: c.green, anchor: "middle" }));
   }
   return put("fig-authorities", d.svg(1680, 640, ...parts));
@@ -50,15 +63,24 @@ window.drawAuthorities = function (_slide, step = 0) {
   const bodies = [
     "does a longer window\nimprove recognition?",
     "recognition should\nimprove",
-    "41  44  45  47  46\ncorrect out of 50",
-    "supported\nor refuted",
+    "",
+    "hypothesis\nsupported\nor refuted",
   ];
-  const sizes = [32, 32, 20, 32];
+  // The measurement box compares the two windows of the question: names left,
+  // values right-aligned, and what the numbers count underneath.
+  const results = (x) => [
+    d.label(x + 30, 0, "short", { size: 32, color: c.light, centerY: 258 }),
+    d.label(x + 300, 0, "41 / 50", { size: 32, color: c.white, mono: true, anchor: "end", centerY: 258 }),
+    d.label(x + 30, 0, "long", { size: 32, color: c.light, centerY: 313 }),
+    d.label(x + 300, 0, "47 / 50", { size: 32, color: c.white, mono: true, anchor: "end", centerY: 313 }),
+    d.label(x + 165, 0, "correct out of 50", { size: 20, color: c.gray, anchor: "middle", centerY: 372 }),
+  ];
   const wires = [], boxes = [], labels = [];
   xs.forEach((x, i) => {
     if (i < 3) wires.push(d.g("w" + i, d.arrow(x + 330, 305, xs[i + 1], 305, { color: c.gray, width: 3 })));
     labels.push(d.g("n" + i, d.label(x + 165, 120, names[i], { size: 32, color: c.gray, anchor: "middle" })));
-    boxes.push(d.g("b" + i, d.box(x, 190, 330, 230, bodies[i], { size: sizes[i], color: c.white, border: c.white, mono: i === 2 })));
+    const box = d.box(x, 190, 330, 230, bodies[i], { size: 32, color: c.white, border: c.white });
+    boxes.push(d.g("b" + i, box, i === 2 ? results(x) : []));
   });
   $("fig-experiment-loop").innerHTML = d.svg(1680, 620, ...d.layers(wires, boxes, labels));
   const a = d.anim("fig-experiment-loop");
@@ -74,12 +96,12 @@ function drawIpoMap() {
   const c = d.colors();
   const axis = 300;
   const wires = [
-    d.arrow(315, axis, 585, axis, { color: c.blue, width: 5 }),
+    d.arrow(315, axis, 585, axis, { color: c.gray, width: 3 }),
     d.arrow(1095, axis, 1365, axis, { color: c.gray, width: 3 }),
   ];
   const boxes = [d.box(585, 165, 510, 270, "classify()", { size: 48, mono: true, border: c.light })];
   const labels = [
-    d.label(265, axis + 11, "light", { size: 32, color: c.blue, anchor: "end" }),
+    d.label(265, axis + 11, "light", { size: 32, color: c.gray, anchor: "end" }),
     d.label(1415, axis + 11, '"red"', { size: 32, color: c.gray, mono: true }),
     d.label(450, 510, "we zoom in here", { size: 32, color: c.blue, anchor: "middle" }),
     d.line(450, 475, 450, 350, { color: c.blue, width: 3 }),
