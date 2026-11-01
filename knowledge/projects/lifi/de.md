@@ -11,11 +11,32 @@ modules: [dup]
 items: [petzold-code, visual-studio-code]
 phases:
   - id: start
-    items: [problem-decomposition, cutting-the-lifi-project]
+    items: [problem-decomposition, cutting-the-lifi-project, input-processing-output-slides, input-processing-output, input-processing-output-quiz, algorithms-and-programs-slides, algorithms-and-programs, algorithms-and-programs-quiz]
     challenges:
       - id: challenge-0
   - id: alphabet
-    items: [sent-is-not-measured, measuring-and-experimenting, place-value-systems, why-two-states, why-ten]
+    items:
+      - sent-is-not-measured
+      - measuring-and-experimenting
+      - measurement-and-experiments
+      - measurement-and-experiments-quiz
+      - analog-and-digital-slides
+      - analog-and-digital
+      - analog-and-digital-quiz
+      - symbols-and-information-slides
+      - symbols-and-information
+      - symbols-and-information-quiz
+      - perfect-reception-perfect-nonsense
+      - card-guessing
+      - colours-on-a-number-line
+      - signal-and-noise-slides
+      - signal-and-noise
+      - signal-and-noise-quiz
+      - measuring-your-noise
+      - believed-and-measured
+      - place-value-systems
+      - why-two-states
+      - why-ten
     challenges:
       - id: challenge-1
         items: [lifi-colour-alphabet-quiz]
