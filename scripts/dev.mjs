@@ -50,7 +50,7 @@ const errorPage = () =>
 <p>Fix them in the editor; this page reloads by itself.</p>
 <ul>${state.errors.map((e) => `<li><pre style="white-space:pre-wrap;margin:4px 0">${escape(e)}</pre></li>`).join('')}</ul>${RELOAD}`;
 
-createServer((req, res) => {
+const server = createServer((req, res) => {
   const path = decodeURIComponent(new URL(req.url, 'http://x').pathname);
   if (path === '/__reload') {
     res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache' });
@@ -81,13 +81,27 @@ createServer((req, res) => {
     res.writeHead(503, { 'Content-Type': 'text/plain', 'Retry-After': '1' });
     res.end('Building…');
   }
-}).listen(PORT, () => console.log(`[dev] http://localhost:${PORT}`));
+});
 
-let timer;
-for (const dir of ['knowledge', 'src', 'public']) {
-  watch(join(ROOT, dir), { recursive: true }, () => {
-    clearTimeout(timer);
-    timer = setTimeout(rebuild, 150);
-  });
-}
-rebuild();
+// Builds and watches only once it has the port. The editor starts this
+// preview itself, so a second start finds the port taken: it then waits
+// until the port is free instead of failing or building into dist/ at the
+// same time, and the pages meanwhile come from the preview already running.
+let waiting = false;
+server.on('error', (error) => {
+  if (error.code !== 'EADDRINUSE') throw error;
+  if (!waiting) console.log(`[dev] port ${PORT} is in use, probably by the preview the editor started; waiting until it is free`);
+  waiting = true;
+  setTimeout(() => server.listen(PORT), 2000);
+});
+server.listen(PORT, () => {
+  console.log(`[dev] http://localhost:${PORT}`);
+  let timer;
+  for (const dir of ['knowledge', 'src', 'public']) {
+    watch(join(ROOT, dir), { recursive: true }, () => {
+      clearTimeout(timer);
+      timer = setTimeout(rebuild, 150);
+    });
+  }
+  rebuild();
+});

@@ -1,4 +1,4 @@
-// My learning: courses opened by code, what is done, and taking the
+// My learning: the courses opened so far, what is done, and taking the
 // progress along to another browser (link, QR code, file).
 import qrcode from 'qrcode-generator';
 import { load, save, merge, encode, decode, isDone, loadIndex } from './progress.js';
@@ -16,32 +16,19 @@ const rich = (text) => codeParts(text).map((p) => (p.code ? el('code', { textCon
 
 // --- courses ------------------------------------------------------------------
 
-// Access codes are compared without case, spaces or hyphens, so that
-// "licht 26" opens LICHT-26 as well.
+// Courses are listed under "Kurse" and join "My learning" when opened
+// (course.js). A link with an access code from before, …/learning/?code=LICHT-26,
+// still opens its course; codes are compared without case, spaces or hyphens.
 const normal = (s) => s.toUpperCase().replace(/[\s-]/g, '');
 
-function openCourse(code, { replace = false } = {}) {
-  const course = data.courses.find((c) => normal(c.access) === normal(code));
-  $('course-error').hidden = !!course;
-  if (!course) return;
-  const progress = load();
-  if (!progress.courses.includes(course.id)) progress.courses.push(course.id);
-  save(progress);
-  // a link with the code should not come back here with "back"
-  if (replace) location.replace(course.url);
-  else location.href = course.url;
-}
-
-$('course-form').addEventListener('submit', (e) => {
-  e.preventDefault();
-  openCourse($('course-code').value);
-});
-
-// A course can be sent as a link: …/learning/?code=LICHT-26 adds it and opens it.
 const linked = new URLSearchParams(location.search).get('code');
-if (linked) {
-  $('course-code').value = linked;
-  openCourse(linked, { replace: true });
+const linkedCourse = linked && data.courses.find((c) => c.access && normal(c.access) === normal(linked));
+if (linkedCourse) {
+  const progress = load();
+  if (!progress.courses.includes(linkedCourse.id)) progress.courses.push(linkedCourse.id);
+  save(progress);
+  // the link should not come back here with "back"
+  location.replace(linkedCourse.url);
 }
 
 function renderCourses(progress) {
@@ -136,7 +123,6 @@ if (incoming) {
     })
     .catch(() => showResult(false));
 }
-if (location.hash === '#course') $('course-code').focus();
 
 $('copy').addEventListener('click', async (e) => {
   const button = e.currentTarget;

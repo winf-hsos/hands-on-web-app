@@ -39,8 +39,8 @@ export function home(site, lang) {
             <li><a class="way" href="${site.link(lang, 'items')}">
               <span class="way-title">${t(lang, 'browse')}</span>
               <span class="way-text">${t(lang, 'browse_text')}</span></a></li>
-            <li><a class="way" href="${site.link(lang, 'learning')}#course">
-              <span class="way-title">${t(lang, 'course_code')}</span>
+            <li><a class="way" href="${site.link(lang, 'courses')}">
+              <span class="way-title">${t(lang, 'nav_courses')}</span>
               <span class="way-text">${t(lang, 'course_code_text')}</span></a></li>
           </ul>
         </div>
@@ -417,6 +417,9 @@ export function path(site, doc, lang) {
 
 const courseIcon = raw(iconSvg('graduation-cap'));
 
+/** The English page of a page at hs-osnabrueck.de, which puts /en/ before the path. */
+const inLanguage = (url, lang) => (lang === 'en' ? url.replace(/^(https:\/\/www\.hs-osnabrueck\.de)\/(?!en\/)/, '$1/en/') : url);
+
 /** One card per module of the course: logo and name of the institution, the
  *  module's name and its official description. Two or three modules stand
  *  side by side in smaller cards. */
@@ -425,17 +428,17 @@ function institutionBlock(site, doc, lang) {
   const modules = [].concat(doc.lead.module ?? []).map((key) => site.vocabulary.modules[key]);
   if (!where && !modules.length) return '';
   const card = (module) => html`<div class="institution">
-    ${where && html`<a class="institution-logo" href="${where.url}" rel="noopener"><img src="/media/${where.logo}" alt="${where[lang]}" width="140" height="59"></a>`}
+    ${where && html`<a class="institution-logo" href="${inLanguage(where.url, lang)}" rel="noopener"><img src="/media/${where.logo}" alt="${where[lang]}" width="140" height="59"></a>`}
     <div class="institution-text">
       ${module && html`<span class="institution-module">${module[lang]}</span>`}
-      ${where && html`<a class="institution-name" href="${where.url}" rel="noopener">${where[lang]}</a>`}
-      ${module?.handbook && html`<a class="institution-handbook" href="${module.handbook}" rel="noopener">${t(lang, 'module_handbook')} ↗</a>`}
+      ${where && html`<a class="institution-name" href="${inLanguage(where.url, lang)}" rel="noopener">${where[lang]}</a>`}
+      ${module?.handbook && html`<a class="institution-handbook" href="${inLanguage(module.handbook, lang)}" rel="noopener">${t(lang, 'module_handbook')} ↗</a>`}
     </div>
   </div>`;
   return html`<div class="institutions${modules.length > 1 && ' is-several'}">${(modules.length ? modules : [null]).map(card)}</div>`;
 }
 
-/** All courses, open to everyone; the access code only adds one to "My learning". */
+/** All courses, open to everyone; opening one adds it to "My learning". */
 export function courses(site, lang) {
   return {
     path: site.link(lang, 'courses'),
@@ -706,14 +709,7 @@ export function learning(site, lang) {
       <section class="section" id="course">
         <h2>${t(lang, 'my_courses')}</h2>
         <ul class="rows" id="my-courses" data-empty="${t(lang, 'no_courses')}" data-remove="${t(lang, 'remove')}"></ul>
-        <form class="code-form" id="course-form">
-          <label for="course-code">${t(lang, 'enter_code')}</label>
-          <div class="code-row">
-            <input id="course-code" autocomplete="off" autocapitalize="characters" spellcheck="false" required>
-            <button class="button" type="submit">${t(lang, 'open_course')}</button>
-          </div>
-          <p class="form-error" id="course-error" hidden>${t(lang, 'code_unknown')}</p>
-        </form>
+        <p><a href="${site.link(lang, 'courses')}">${t(lang, 'all_courses')}</a></p>
       </section>
 
       <section class="section">

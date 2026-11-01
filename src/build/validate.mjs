@@ -177,8 +177,6 @@ function shapes(vocabulary) {
         required: {
           kind: oneOf(['course'], 'kind'),
           code: int(1000, 9999),
-          access_code: (v) =>
-            typeof v === 'string' && /^[A-Z0-9-]{4,16}$/.test(v) ? null : 'expected upper case letters, digits and hyphens',
           // the module or modules the course belongs to; their descriptions come from vocabulary.yaml
           module: oneOrMore(oneOf(modules, 'module')),
           semester: text,
@@ -190,7 +188,13 @@ function shapes(vocabulary) {
           updated: date,
         },
         // a subtitle and where the course is taught
-        optional: { subtitle: text, institution: oneOf(institutions, 'institution'), areas: inAreas },
+        // access codes are not used for now, courses are listed under "Kurse" (Nicolas, 2026-11-01)
+        optional: {
+          subtitle: text,
+          institution: oneOf(institutions, 'institution'),
+          areas: inAreas,
+          access_code: (v) => (typeof v === 'string' && /^[A-Z0-9-]{4,16}$/.test(v) ? null : 'expected upper case letters, digits and hyphens'),
+        },
       },
       translation: { required: translation.required, optional: { subtitle: text } },
     },
@@ -363,7 +367,7 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
     codes.set(doc.lead.code, `${doc.section}/${doc.id}`);
   }
   const access = new Map();
-  for (const course of courses) {
+  for (const course of courses.filter((c) => c.lead.access_code)) {
     const key = course.lead.access_code.replace(/-/g, '');
     if (access.has(key)) errors.push(`courses/${course.id}: access code ${course.lead.access_code} is already used by ${access.get(key)}`);
     access.set(key, course.id);

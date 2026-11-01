@@ -411,15 +411,17 @@ sections:
 ## 9. Courses
 
 A course is a curated collection for one module, or a few, in one semester. All
-courses are listed on the site under "Courses"; the access code (or a link
-with it, `/de/learning/?code=…`) adds a course to "My learning", which also
-makes it a filter in the content list.
+courses are listed on the site under "Courses" once they are published, and
+opening one adds it to "My learning", which also makes it a filter in the
+content list. Access codes are not used for now (Nicolas, 2026-11-01): the
+home page leads to the list of courses instead of a field for a code, and a
+link with a code from before, `/de/learning/?code=…`, still opens its course.
 
 ```yaml
 ---
 kind: course
 code: 3307                   # short code, like any page
-access_code: LICHT-26        # what students type in; see open decision 6
+access_code: LICHT-26        # optional, not used for now: courses are listed under Kurse (Nicolas, 2026-11-01)
 module: dup                  # or a list, module: [ea, wmg]
 institution: hs-osnabrueck      # from vocabulary.yaml, with name, address and logo
 semester: 2026-27 - WS
@@ -669,5 +671,5 @@ Approved by Nicolas on 2026-10-21 as proposed:
    on 2026-10-27 for data sets to download.
 5. **Levels** 1–4 with the labels above.
 6. **Access codes for courses** are readable word codes such as `LICHT-26`;
-   case, spaces and hyphens are ignored when typing them in.
+   case, spaces and hyphens are ignored. Not used for now (2026-11-01).
 7. **`access: code`** exists in the schema but has no effect yet.
