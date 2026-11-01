@@ -5,6 +5,13 @@ title: Werten einen Namen geben
 summary: >-
   Mit dem Pfeil <- legst du ein Ergebnis unter einem Namen ab und rechnest mit
   dem Namen weiter; dazu die Regeln für gute Namen.
+objectives:
+  intro: "In dieser Lektion lernst du, Ergebnissen mit dem Pfeil `<-` einen Namen zu geben, und kannst danach:"
+  goals:
+    - "einen Wert mit `<-` unter einem Namen ablegen und mit dem Namen weiterrechnen"
+    - "erklären, warum eine Zuweisung nichts anzeigt und ein neuer Wert den alten überschreibt"
+    - "gültige und aussagekräftige Namen in Kleinbuchstaben mit `_` zwischen den Wörtern wählen und beachten, dass Groß- und Kleinschreibung zählt"
+    - "die Meldung, dass R ein Objekt nicht findet, auf einen Tippfehler oder eine noch nicht ausgeführte Zeile zurückführen"
 level: 1
 duration: 8
 topics: [programming-with-r]
@@ -13,10 +20,8 @@ areas: [ds]
 relations:
   requires: [r-as-calculator]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Ein Ergebnis, das R nur anzeigt, ist im nächsten Moment wieder weg. Damit du
 damit weiterrechnen kannst, gibst du ihm einen Namen. Programmierer sprechen

@@ -6,6 +6,14 @@ summary: >-
   Für ihren Telegrafencode sollen Samuel Morse und Alfred Vail in einer
   Druckerei Lettern gezählt haben. Die Geschichte zeigt, warum häufige Zeichen
   kurze Codewörter verdienen und was das kostet.
+objectives:
+  intro: "Diese Geschichte erzählt, wie das E im Morsecode zu seinem einzelnen Punkt kam, und danach kannst du:"
+  goals:
+    - "erklären, warum ein Telegraf jeden Buchstaben in eine Folge kurzer und langer Signale übersetzen musste"
+    - "beschreiben, wie der Setzkasten einer Druckerei als Häufigkeitstabelle der Sprache dienen konnte"
+    - "begründen, warum häufige Buchstaben wie E und T kurze Codewörter bekommen und seltene wie Q lange"
+    - "erklären, warum Codewörter verschiedener Länge Pausen als Teil des Codes brauchen und wie eine zu kurze Pause aus einem I zwei E macht"
+    - "beschreiben, warum Gerke 1848 die Lücken innerhalb der Zeichen abschaffte"
 when: um 1838
 level: 1
 duration: 8
@@ -14,7 +22,7 @@ relations:
   example_of: [code-as-agreement]
   see_also: [prefix-free-code]
 status: draft
-updated: 2026-10-21
+updated: 2026-11-01
 ---
 
 ## Ein Problem mit dem Draht

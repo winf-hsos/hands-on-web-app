@@ -6,6 +6,14 @@ summary: >-
   Jede Variable eine Spalte, jede Beobachtung eine Zeile, jeder Wert eine
   Zelle: drei Regeln, nach denen sich Tabellen leicht auswerten lassen, und
   woran man Daten erkennt, die ihnen nicht folgen.
+objectives:
+  intro: "In dieser Lektion lernst du die Regeln von Tidy Data kennen, nach denen sich Tabellen leicht auswerten lassen, und kannst danach:"
+  goals:
+    - "die drei Regeln von Tidy Data nennen und prüfen, ob eine Tabelle ihnen folgt"
+    - "für eine Fragestellung bestimmen, was in einer Tabelle eine Beobachtung ist"
+    - "Werte in Spaltennamen, mehrere Werte in einer Zelle und Codes statt Bedeutungen als typische Muster unaufgeräumter Daten erkennen"
+    - "beschreiben, wie eine breite Tabelle durch Pivotieren mit `pivot_longer()` aus `tidyr` in die lange Form kommt"
+    - "begründen, warum sich das Aufräumen vor dem Auswerten lohnt"
 level: 1
 duration: 15
 topics: [transforming-data, getting-data]
@@ -14,10 +22,8 @@ areas: [ds]
 relations:
   deepens: [data-transformation-basics]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Die Grundoperationen aus [[data-transformation-basics]] funktionieren am
 besten, wenn eine Tabelle eine bestimmte Form hat. Hadley Wickham, der auch

@@ -3,11 +3,17 @@ title: A code is an agreement
 summary: >-
   Why the same eight bits can be a letter, a number or a shade of grey, and
   why a code means nothing without its table.
+objectives:
+  intro: "This lesson shows why bits only mean something through an agreed table, and afterwards you can:"
+  goals:
+    - "explain what a code is, why sender and receiver need the same table and how a code differs from encryption"
+    - "show how the same byte `01000001` can be read as a letter, a number or a shade of grey"
+    - "use kⁿ to work out how many positions a code needs for a given number of characters"
+    - "explain why mismatched tables cause no error message but wrong results that look right"
+    - "choose a defensible way to handle characters that are not in the table"
 translation_of: de
-based_on: 2026-10-21
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 Inside a computer there are no letters, colours or sounds, only sequences of
 states that we write down as zeros and ones. That `01000001` turns into an A on

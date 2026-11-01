@@ -4,11 +4,17 @@ summary: >-
   With def you give a piece of program a name and call it as often as you
   like. Parameters pass values in, return passes a result back, and a program
   made of small functions is easier to understand.
+objectives:
+  intro: "This lesson shows you how to write your own functions, and afterwards you can:"
+  goals:
+    - "define a function with `def` and explain why it only does something when it is called"
+    - "pass values into a function through parameters, in the same order as in the brackets"
+    - "hand a result back with `return`, explain how that differs from `print()` and why a function without `return` gives `None`"
+    - "explain why a variable created inside a function causes a `NameError` outside it"
+    - "build a program from a `main` function and small functions that each have one job"
 translation_of: de
-based_on: 2026-10-26
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 `print`, `input`, `len` and `round` are functions that come with Python. But
 you can also write your own. A function is a piece of program with a name: you

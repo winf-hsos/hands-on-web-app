@@ -4,11 +4,17 @@ summary: >-
   Describing, exploring, generalising, predicting, finding causes or
   understanding mechanisms: six kinds of questions about data, and six
   yes-or-no questions that tell you which one you are asking.
+objectives:
+  intro: "This lesson introduces six kinds of questions you can ask of data, and afterwards you can:"
+  goals:
+    - "tell descriptive, exploratory, inferential, predictive, causal and mechanistic questions apart"
+    - "use the six yes-or-no questions by Leek and Peng to determine which type a question is"
+    - "match each type to a suitable question about the survey on milk and chocolate"
+    - "explain what you may claim in the end, depending on the type of question"
+    - "spot when an exploratory finding is silently reported as an inferential or causal result"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 Before you calculate, you should know what kind of question you are asking.
 It determines which method fits, which data you need and, above all, what you

@@ -5,6 +5,14 @@ title: "Übung: Pizzarechner"
 summary: >-
   Eine Gruppe bestellt Pizza: Das Programm rechnet aus, wie viele Pizzen es
   braucht und was jede Person bezahlt, Trinkgeld eingerechnet.
+objectives:
+  intro: "In dieser Übung schreibst du einen Pizzarechner für eine Gruppe und kannst danach:"
+  goals:
+    - "eine Eingabe mit `int()` in eine Zahl umwandeln und damit weiterrechnen"
+    - "eine ganzzahlige Division so aufrunden, dass jede angebrochene Pizza mitzählt, etwa mit `(slices + SLICES_PER_PIZZA - 1) // SLICES_PER_PIZZA`"
+    - "einen prozentualen Aufschlag wie das Trinkgeld mit `1 + TIP` einrechnen und einen Betrag auf mehrere Personen aufteilen"
+    - "feste Werte als Konstanten in Großbuchstaben an den Anfang des Programms stellen"
+    - "Geldbeträge mit `:.2f` im f-String auf zwei Nachkommastellen ausgeben"
 level: 1
 duration: 20
 topics: [programming-with-python]
@@ -12,7 +20,7 @@ modules: [dup]
 relations:
   requires: [python-arithmetic, python-working-with-text]
 status: draft
-updated: 2026-10-26
+updated: 2026-11-01
 ---
 
 ## Aufgabe

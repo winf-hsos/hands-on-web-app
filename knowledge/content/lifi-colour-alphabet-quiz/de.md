@@ -3,8 +3,14 @@ title: "Quiz: Euer Farbalphabet ist ein Zahlensystem"
 summary: >-
   Zwei Fragen zum LiFi-Projekt: warum ein Alphabet aus Farben ein
   Stellenwertsystem ist und wie viele Farbstellen ein Buchstabe braucht.
+objectives:
+  intro: "Mit diesem Quiz zum LiFi-Projekt prüfst du, ob du Folgendes kannst:"
+  goals:
+    - "begründen, warum ein Alphabet aus vier Farben ein Stellenwertsystem zur Basis 4 ist"
+    - "erklären, warum die Reihenfolge der Farben zum Codewort gehört und keine Farbe als Null fehlt"
+    - "mit kⁿ berechnen, wie viele Farbstellen ein Buchstabe mindestens braucht, damit 26 Buchstaben unterscheidbar sind"
 translation_of: en
-based_on: 2026-10-30
+based_on: 2026-11-01
 ---
 
 Diese Fragen gehören zum Projekt [[lifi]], in dem ein Team Buchstaben als

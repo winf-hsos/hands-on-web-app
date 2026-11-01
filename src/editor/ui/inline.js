@@ -284,11 +284,31 @@ export function enableInlineEditing({ doc, vocabulary, items, api, say, session 
     });
   }
 
+  // --- what you learn: the sentence and the goals, in the language shown -----------------
+
+  async function editObjectives(el) {
+    const lang = el.lang || shownLang;
+    const source = await load();
+    const now = source.files[lang]?.data.objectives ?? {};
+    panel(
+      el,
+      `<label class="ed-inline-label">Einleitender Satz <input name="intro" value="${esc(now.intro)}" style="width: 100%"></label>
+       <label class="ed-inline-label">Lernziele, eines je Zeile <textarea name="goals" class="ed-inline-source" rows="5">${esc((now.goals ?? []).join('\n'))}</textarea></label>`,
+      (box) => {
+        const intro = box.querySelector('[name=intro]').value.trim();
+        const goals = box.querySelector('[name=goals]').value.split('\n').map((g) => g.replace(/^\s*[-*]\s*/, '').trim()).filter(Boolean);
+        return { objectives: intro || goals.length ? { intro, goals } : null };
+      },
+      lang,
+    );
+  }
+
   // --- what a click opens ----------------------------------------------------------------
 
   function editField(el) {
     const key = el.dataset.field;
     if (TEXT.has(key)) return editText(el, key);
+    if (key === 'objectives') return editObjectives(el);
     if (key === 'topics') return editList(el, 'topics', vocabulary.topics, 'Thema');
     if (key === 'modules') return editList(el, 'modules', vocabulary.modules, 'Modul');
     if (key === 'level') return editLevel(el);
@@ -303,6 +323,9 @@ export function enableInlineEditing({ doc, vocabulary, items, api, say, session 
     if (facts && !facts.querySelector('[data-field="modules"]')) {
       facts.querySelector('[data-field="level"]')?.insertAdjacentHTML('afterend', `<div data-field="modules" class="ed-inline-empty"><dt>${pageLang === 'en' ? 'Modules' : 'Module'}</dt><dd>–</dd></div>`);
     }
+  }
+  if (doc.section === 'content' && !document.querySelector('[data-field="objectives"]')) {
+    document.querySelector('.page-head')?.insertAdjacentHTML('afterend', `<p class="ed-inline-empty" data-field="objectives" lang="${shownLang}">Was du lernst ergänzen</p>`);
   }
   if (doc.section === 'content' && !document.querySelector('[data-field="relations"]')) {
     document.querySelector('.finish')?.insertAdjacentHTML('afterend', '<p class="ed-inline-empty" data-field="relations">Mit anderen Inhalten verknüpfen</p>');

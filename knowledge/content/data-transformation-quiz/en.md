@@ -1,8 +1,16 @@
 ---
 title: "Quiz: Transforming data"
 summary: Six questions on the basic operations, tidy data, select(), filter() and missing values.
+objectives:
+  intro: "This quiz lets you check whether you can:"
+  goals:
+    - "choose the basic operation that fits a question, such as filtering rows rather than selecting columns"
+    - "tell when `summarize()` returns a single row and when, with `group_by()` before it, one row per group"
+    - "recognise that a table is not tidy when a variable such as the year is hidden in the column names"
+    - "predict which rows and columns `select()` with `starts_with()` and `filter()` with `%in%` and several conditions return"
+    - "explain why `== NA` finds no row and why you look for missing values with `is.na()`"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
 
 ## You only want to look at the respondents from Bavaria. Which operation do you need?

@@ -3,8 +3,16 @@ title: "Exercise: Pizza calculator"
 summary: >-
   A group orders pizza: the program works out how many pizzas they need and
   what each person pays, tip included.
+objectives:
+  intro: "In this exercise you write a pizza calculator for a group, and afterwards you can:"
+  goals:
+    - "convert input into a number with `int()` and keep calculating with it"
+    - "round a whole-number division up so that every started pizza counts, for example with `(slices + SLICES_PER_PIZZA - 1) // SLICES_PER_PIZZA`"
+    - "add a percentage such as the tip by multiplying with `1 + TIP` and split an amount between several people"
+    - "put fixed values at the top of the program as constants written in capitals"
+    - "print amounts of money with two decimal places using `:.2f` in an f-string"
 translation_of: de
-based_on: 2026-10-26
+based_on: 2026-11-01
 ---
 
 ## Task

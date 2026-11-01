@@ -3,11 +3,16 @@ title: Vectors
 summary: >-
   In R almost everything is a vector, a series of values: how to build them,
   calculate with them and pick out single values.
+objectives:
+  intro: "This lesson introduces vectors, the form in which R stores almost every value, and afterwards you can:"
+  goals:
+    - "build a vector with `c()` and create a sequence of numbers with `1:10`"
+    - "calculate with a vector and combine two vectors of the same length position by position"
+    - "summarise a vector into a single value with `sum()`, `mean()`, `min()`, `max()` and `length()`"
+    - "pick out single positions with square brackets, counted from 1, or leave one out with a minus"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 Data rarely consist of a single value. The age of all respondents, the
 prices of a shopping trip, the answers to a question: these are series of

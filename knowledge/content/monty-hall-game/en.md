@@ -3,8 +3,14 @@ title: The game with three doors
 summary: >-
   Three doors, one car, two goats: play the guessing game yourself, decide to
   stay or switch, and take every round with you as R code.
+objectives:
+  intro: "With this demo you play the guessing game with three doors yourself, and afterwards you can:"
+  goals:
+    - "describe the course of a round from your pick and the door the host opens to the choice between staying and switching"
+    - "read from the running statistic over many rounds whether staying or switching wins more often"
+    - "copy your rounds as R code with one vector per column and analyse them further in R"
 translation_of: de
-based_on: 2026-10-31
+based_on: 2026-11-01
 ---
 
 **Goal:** Play the guessing game with three doors yourself and collect rounds

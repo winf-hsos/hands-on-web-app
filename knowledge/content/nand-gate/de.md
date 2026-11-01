@@ -5,6 +5,13 @@ title: NAND-Gatter
 summary: >-
   Ein Gatter, dessen Ausgang nur dann 0 ist, wenn alle Eingänge 1 sind. Aus ihm
   allein lässt sich jede andere Logikschaltung bauen.
+objectives:
+  intro: "Wenn du das NAND-Gatter kennst, kannst du:"
+  goals:
+    - "die Wahrheitstabelle des NAND-Gatters angeben"
+    - "NOT, AND und OR allein aus NAND-Gattern bauen und damit begründen, warum NAND universell ist"
+    - "ein XOR aus vier NAND-Gattern zusammensetzen und mit der Wahrheitstabelle prüfen"
+    - "erklären, warum Chips in CMOS-Technik gern aus NAND-Gattern aufgebaut werden"
 level: 2
 duration: 10
 topics: [processing-information]
@@ -12,7 +19,7 @@ modules: [dup]
 relations:
   part_of: [logic-gates]
 status: draft
-updated: 2026-10-22
+updated: 2026-11-01
 ---
 
 ## Definition

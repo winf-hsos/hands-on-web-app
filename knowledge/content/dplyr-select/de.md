@@ -6,6 +6,14 @@ summary: >-
   Mit select() behältst du nur die Spalten, die eine Frage braucht: nach
   Namen, Bereichen, Mustern oder Typen. Nebenbei lernst du rename() und
   relocate() kennen.
+objectives:
+  intro: "In dieser Lektion lernst du, mit `select()` nur die Spalten zu behalten, die eine Frage braucht, und kannst danach:"
+  goals:
+    - "mit `select()` Spalten beim Namen nennen und dabei ihre Reihenfolge im Ergebnis festlegen"
+    - "mit `:` einen Bereich von Spalten wählen und mit `-` Spalten ausschließen"
+    - "Spalten mit `starts_with()`, `ends_with()` und `contains()` nach Mustern und mit `where()` nach ihrem Typ auswählen"
+    - "Spalten mit `rename()` oder innerhalb von `select()` umbenennen"
+    - "mit `relocate()` bestimmte Spalten nach vorne holen, ohne die übrigen zu verlieren"
 level: 1
 duration: 20
 topics: [transforming-data, programming-with-r]
@@ -14,10 +22,8 @@ areas: [ds]
 relations:
   requires: [r-pipe]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Echte Datensätze sind breit. Die Umfrage, aus der `survey` stammt, hat über
 800 Spalten, und für eine einzelne Frage braucht man selten mehr als eine

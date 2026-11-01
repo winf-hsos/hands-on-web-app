@@ -6,6 +6,14 @@ summary: >-
   Ab welchem Preis ist ein Liter Milch zu teuer? Mit select() und filter()
   findest du heraus, wer die Frage beantwortet hat, und räumst eine
   unplausible Angabe aus dem Weg.
+objectives:
+  intro: "In dieser Übung wendest du `select()` und `filter()` auf die Preisfrage der Umfrage an und kannst danach:"
+  goals:
+    - "mit `!is.na()` die Zeilen finden, in denen eine Antwort vorliegt, und sie mit `nrow()` zählen"
+    - "mehrere Bedingungen in einem `filter()` durch ein Komma verbinden, etwa um einen unplausiblen Ausreißer auszuschließen"
+    - "mit `==` und `!=` nach Textwerten wie Marke und Ernährungsweise filtern"
+    - "nach dem Filtern mit `select()` nur die Spalten behalten, die du brauchst"
+    - "erklären, warum `filter()` Zeilen mit fehlendem Wert schon verwirft, sobald du mit diesem Wert vergleichst"
 level: 1
 duration: 20
 topics: [transforming-data, programming-with-r]
@@ -14,7 +22,7 @@ areas: [ds]
 relations:
   requires: [dplyr-select, dplyr-filter]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
 
 ## Aufgabe

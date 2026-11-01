@@ -4,11 +4,17 @@ summary: >-
   Eine Festplatte mit 1 TB zeigt 931 GB an, und es fehlt kein einziges Byte:
   Es gibt zwei Leitern von Einheiten, eine in Schritten von 1000 und eine in
   Schritten von 1024.
+objectives:
+  intro: "In dieser Lektion erfährst du, warum eine Festplatte mit 1 TB nur 931 GB anzeigt, und kannst danach:"
+  goals:
+    - "die dezimale Leiter der Einheiten in Schritten von 1000 von der binären in Schritten von 1024 unterscheiden"
+    - "begründen, warum Speicher in Zweierpotenzen gezählt wird und 2¹⁰ = 1024 der Zahl 1000 am nächsten kommt"
+    - "nachrechnen, wie aus einer Billion Byte 931 binäre Gigabyte werden"
+    - "abschätzen, wie weit die beiden Leitern auf jeder Stufe auseinanderliegen"
+    - "die Einheiten KiB, MiB, GiB und TiB korrekt verwenden und von kB, MB, GB und TB abgrenzen"
 translation_of: en
-based_on: 2026-10-30
+based_on: 2026-11-01
 ---
-
-## Worum es geht
 
 Auf der Packung steht 1 Terabyte, der Rechner zeigt 931 Gigabyte an, und es
 ist kein einziges Byte verloren gegangen. Es gibt zwei Leitern von Einheiten,

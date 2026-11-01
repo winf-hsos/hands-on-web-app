@@ -3,11 +3,17 @@ title: Positron
 summary: >-
   Posit's free development environment for data analysis: one program for R,
   Python and Quarto, with a console, a data viewer and plots.
+objectives:
+  intro: "This page introduces Positron, Posit's development environment for R, Python and Quarto on your own computer, and afterwards you can:"
+  goals:
+    - "install Positron, R and, if needed, Python"
+    - "create a project folder for each analysis and open it with File → Open Folder"
+    - "run code from the editor with Ctrl+Enter and look at the results in the console, Variables, Data Explorer and Plots"
+    - "open sessions for R and Python side by side and switch between them"
+    - "write a report as a Quarto document (`.qmd`) and render it as a preview"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 The code boxes on this platform are enough for learning. For analyses of
 your own you need a program on your computer in which you write scripts, run

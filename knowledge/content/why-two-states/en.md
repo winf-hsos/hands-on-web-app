@@ -5,6 +5,14 @@ title: Why computers use two states
 summary: >-
   Decimal computers existed and died out. The reason is not mathematics but
   engineering: two states can be told apart even when the wire wobbles.
+objectives:
+  intro: "This lesson explains why computers work with only two states, and afterwards you can:"
+  goals:
+    - "explain why two states survive noise on a wire better than ten"
+    - "use a voltage between 0 and 5 volts to show how the gap between states shrinks as their number grows"
+    - "tell the physical reason for base 2 apart from pleasant side effects such as the short multiplication table"
+    - "explain why computers happily accept longer numbers"
+    - "apply the trade-off between more information per symbol and more errors to other channels such as radio or light"
 level: 1
 duration: 10
 topics: [representing-information, transferring-information]
@@ -12,10 +20,8 @@ modules: [dup]
 relations:
   requires: [binary-numbers]
 status: draft
-updated: 2026-10-30
+updated: 2026-11-01
 ---
-
-## What this is about
 
 A computer could in principle use any base, and decimal computers really did
 exist in the early days. They died out, and the reason is worth knowing,

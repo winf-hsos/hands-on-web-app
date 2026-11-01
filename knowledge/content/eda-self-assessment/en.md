@@ -4,11 +4,17 @@ summary: >-
   Thirteen tasks on real product data: getting an overview, transforming,
   visualising and looking closely. This is how you check whether you are
   ready for exploratory data analysis.
+objectives:
+  intro: "This self-assessment uses real product data from the REWE online shop to let you check whether you are ready for exploratory data analysis, that is, whether you can:"
+  goals:
+    - "get an overview of columns, types and values with `glimpse()` and uncover duplicates with `distinct()`"
+    - "answer specific questions about a table with `arrange()`, `select()`, `filter()`, `count()` and `mutate()`"
+    - "select columns by their type with `where()` and convert them with `as.character()` or `across()`"
+    - "draw a bar chart, a histogram, box plots and stacked share bars with `position = \"fill\"` in `ggplot2`"
+    - "spot implausible values in a distribution, such as kilojoules entered as kilocalories"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 With this self-assessment you check whether you master the basics that
 exploratory data analysis starts with. If you have worked through the *Whole

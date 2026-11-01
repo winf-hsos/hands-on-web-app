@@ -5,6 +5,14 @@ title: Funktionen aufrufen
 summary: >-
   Funktionen sind die Werkzeuge von R: Sie bekommen Argumente, liefern ein
   Ergebnis und lassen sich ineinander schachteln.
+objectives:
+  intro: "In dieser Lektion lernst du, Funktionen in R aufzurufen, und kannst danach:"
+  goals:
+    - "eine Funktion wie `sqrt()` mit Argumenten in runden Klammern aufrufen und ihr Ergebnis weiterverwenden"
+    - "Argumente über ihren Namen angeben, etwa `digits` bei `round()`, und erklären, was ein Standardwert ist"
+    - "geschachtelte Aufrufe wie `round(sqrt(10), digits = 1)` von innen nach außen lesen"
+    - "die Hilfeseite einer Funktion mit `?` öffnen und ihre Beispiele nutzen"
+    - "die Meldung, dass R eine Funktion nicht findet, auf einen Tippfehler oder ein nicht geladenes Paket zurückführen"
 level: 1
 duration: 10
 topics: [programming-with-r]
@@ -13,10 +21,8 @@ areas: [ds]
 relations:
   requires: [r-names]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Fast jeder Arbeitsschritt in R ist der Aufruf einer **Funktion**. Eine Funktion
 hat einen Namen, dahinter stehen runde Klammern, und in den Klammern

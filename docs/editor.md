@@ -61,6 +61,7 @@ for exactly what it shows (Nicolas, 2026-11-01; `src/editor/ui/inline.js`):
 | Click on | Opens |
 |---|---|
 | title, summary (goal of a path, subtitle of a course) | the text itself; Enter saves, Escape cancels |
+| "Was du lernst" | the sentence and the goals, one per line; an item without them shows "Was du lernst ergänzen" |
 | a block of the text (paragraph, heading, list, table, callout) | its Markdown in a box; Ctrl+Enter saves, Escape cancels, saved empty the block is gone |
 | code box, demonstrator, quiz question, folded hint | a button "Bearbeiten" over the block, since a click there is used by the block itself |
 | type and duration above the title | a choice of type and the minutes |

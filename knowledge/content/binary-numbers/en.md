@@ -5,6 +5,14 @@ title: Counting in binary
 summary: >-
   The place value recipe with only two digits: how to count in base 2, how to
   read a binary number and how to write a number in binary yourself.
+objectives:
+  intro: "This lesson shows you how to count, read and write in base 2, and afterwards you can:"
+  goals:
+    - "count in binary and explain when a place rolls over and a new one opens"
+    - "convert a binary number such as `110` to decimal using the place values 1, 2, 4 and 8"
+    - "write a number such as 13 in binary by working down from the largest power of two that fits"
+    - "check your result in Python with `bin()` and `int(\"1101\", 2)`"
+    - "tell from the last digit whether a binary number is odd or even"
 level: 1
 duration: 15
 topics: [representing-information]
@@ -13,10 +21,8 @@ relations:
   requires: [place-value-systems]
   see_also: [bit]
 status: draft
-updated: 2026-10-30
+updated: 2026-11-01
 ---
-
-## What this is about
 
 Base 2 is the [[place-value-systems|place value trick]] pushed to its limit:
 only the digits 0 and 1 are left. Nothing about the recipe changes, so once

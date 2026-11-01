@@ -5,6 +5,12 @@ title: "Quiz: your colour alphabet is a number system"
 summary: >-
   Two questions for the LiFi project: why an alphabet of colours is a place
   value system, and how many colour positions a letter needs.
+objectives:
+  intro: "This quiz for the LiFi project lets you check whether you can:"
+  goals:
+    - "explain why an alphabet of four colours is a place value system in base 4"
+    - "explain why the order of the colours is part of the code word and why no colour is missing for zero"
+    - "use kⁿ to work out the minimum number of colour positions per letter that tells 26 letters apart"
 level: 1
 duration: 5
 topics: [representing-information]
@@ -12,7 +18,7 @@ modules: [dup]
 relations:
   checks: [place-value-systems]
 status: draft
-updated: 2026-10-30
+updated: 2026-11-01
 ---
 
 These questions belong to the [[lifi]] project, where a team sends letters as

@@ -97,6 +97,14 @@ test('projects have no topics: an old topics line is a warning, not an error', (
   assert.ok(warnings.includes('projects/lifi/de.md: projects have no topics; remove the line'));
 });
 
+test('objectives are a sentence and a list; missing ones are a warning', () => {
+  const broken = check(({ find }) => (lead(find('content', 'knock-code')).objectives = { intro: 'Du kannst danach:', goals: [] }));
+  assert.deepEqual(broken.errors, ['content/knock-code/de.md: objectives: goals: expected at least 1 entry']);
+  const missing = check(({ find }) => delete lead(find('content', 'knock-code')).objectives);
+  assert.deepEqual(missing.errors, []);
+  assert.ok(missing.warnings.includes('content/knock-code/de.md: no objectives (what you learn)'));
+});
+
 test('project phases and challenges must match the headings in every language', () => {
   const { errors } = check(({ find }) => {
     const file = find('projects', 'lifi').files.en;

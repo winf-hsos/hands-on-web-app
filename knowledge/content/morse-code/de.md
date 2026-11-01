@@ -5,13 +5,19 @@ title: Morsecode
 summary: >-
   Ein Code aus kurzen und langen Signalen, getrennt durch Pausen. Er funktioniert
   mit Strom, Ton und Licht und gibt häufigen Buchstaben kurze Zeichen.
+objectives:
+  intro: "Wenn du den Morsecode kennst, kannst du:"
+  goals:
+    - "beschreiben, wie der Morsecode Zeichen aus Punkten, Strichen und Pausen zusammensetzt"
+    - "die Dauer von Punkt, Strich und den drei Pausen als Vielfache der Grundeinheit angeben"
+    - "erklären, warum der Morsecode nicht präfixfrei ist und die Pausen deshalb zum Code gehören"
 level: 1
 duration: 6
 topics: [representing-information, transferring-information]
 relations:
   see_also: [morse-and-the-type-case, prefix-free-code]
 status: draft
-updated: 2026-10-22
+updated: 2026-11-01
 ---
 
 ## Definition

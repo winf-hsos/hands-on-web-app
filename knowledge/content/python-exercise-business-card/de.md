@@ -5,6 +5,13 @@ title: "Übung: Visitenkarte"
 summary: >-
   Ein Programm fragt nach Name, Studiengang und Stadt und gibt daraus eine
   ordentlich formatierte Visitenkarte aus, egal wie schlampig getippt wurde.
+objectives:
+  intro: "In dieser Übung baust du aus drei Eingaben eine ordentlich formatierte Visitenkarte und kannst danach:"
+  goals:
+    - "mehrere Eingaben mit `input()` nacheinander abfragen und in Variablen ablegen"
+    - "Eingaben mit verketteten Methoden wie `strip().upper()` und `strip().title()` aufräumen und in Form bringen"
+    - "eine Trennlinie mit `*` aus einem einzelnen Zeichen erzeugen und in einer Variablen ablegen, damit sie sich an einer Stelle ändern lässt"
+    - "mit einem f-String mehrere Werte zu einer Ausgabezeile zusammensetzen"
 level: 1
 duration: 15
 topics: [programming-with-python]
@@ -12,7 +19,7 @@ modules: [dup]
 relations:
   requires: [python-working-with-text]
 status: draft
-updated: 2026-10-26
+updated: 2026-11-01
 ---
 
 ## Aufgabe

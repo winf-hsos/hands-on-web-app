@@ -3,8 +3,16 @@ title: "Exercise: The weekly shop"
 summary: >-
   A receipt as vectors: you work out the total, count expensive items and
   deal with a price that is missing from the receipt.
+objectives:
+  intro: "In this exercise you analyse a receipt with a missing price using vectors, and afterwards you can:"
+  goals:
+    - "multiply prices and amounts as vectors position by position and add them up with `sum()`"
+    - "explicitly leave a missing price out of a total or a count with `na.rm = TRUE`"
+    - "count with `sum()` of a comparison how many items cost more than a given price"
+    - "select items with `%in%` and square brackets and calculate their share of the known total"
+    - "judge which answers change once the missing price is known"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
 
 ## Task

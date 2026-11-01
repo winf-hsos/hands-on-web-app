@@ -5,12 +5,19 @@ title: Bill Gates
 summary: >-
   Schrieb 1975 mit Paul Allen ein BASIC für einen Computer, den beide nie in
   der Hand gehabt hatten, und machte Software zu etwas, das man kauft.
+objectives:
+  intro: "Nach diesem Porträt weißt du, wer Bill Gates ist und welche drei Ideen aus seinen frühen Jahren bis heute wirken, und kannst:"
+  goals:
+    - "erklären, was ein Emulator ist, am Beispiel des BASIC, das Gates und Paul Allen 1975 für einen Altair 8800 schrieben, den sie nicht besaßen"
+    - "die Haltung aus Gates' offenem Brief von 1976 wiedergeben, dass Software Geld kostet, und ihr die Idee freier und offener Software gegenüberstellen"
+    - "erklären, was ein Betriebssystem als Schicht zwischen Programm und Maschine leistet"
+    - "begründen, warum der DOS-Vertrag mit IBM Microsoft so großen Einfluss auf Personal Computer verschaffte"
 born: 1955
 level: 1
 duration: 8
 topics: [solving-problems]
 status: draft
-updated: 2026-10-22
+updated: 2026-11-01
 ---
 
 ## Wer er ist

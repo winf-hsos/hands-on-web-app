@@ -5,6 +5,14 @@ title: Zahlen, Texte und Wahrheitswerte
 summary: >-
   Jeder Vektor hat einen Typ: Zahl, Text oder Wahrheitswert. Woran man ihn
   erkennt, warum ein Vektor nur einen Typ haben kann und wie man umwandelt.
+objectives:
+  intro: "In dieser Lektion lernst du die drei grundlegenden Datentypen von R kennen und kannst danach:"
+  goals:
+    - "Zahlen (`numeric`), Texte (`character`) und Wahrheitswerte (`logical`) unterscheiden und den Typ mit `class()` erfragen"
+    - "erklären, warum ein Vektor nur einen Typ haben kann und R gemischte Werte stillschweigend umwandelt"
+    - "begründen, warum Wahrheitswerte zu Zahlen und Zahlen zu Text werden, nie umgekehrt"
+    - "Texte mit `as.numeric()` in Zahlen umwandeln und vorhersagen, wo dabei `NA` entsteht"
+    - "die Fehlermeldung beim Rechnen mit Text erkennen und ihrer Ursache mit `class()` nachgehen"
 level: 1
 duration: 10
 topics: [programming-with-r]
@@ -13,10 +21,8 @@ areas: [ds]
 relations:
   requires: [r-vectors]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 R unterscheidet, welche Art von Wert in einem Vektor steht, denn davon hängt
 ab, wofür man ihn verwenden kann. Mit Zahlen kann man rechnen, mit Texten nicht.

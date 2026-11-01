@@ -5,6 +5,14 @@ title: "Place value: what 123 really says"
 summary: >-
   Why ten digits are enough for infinitely many numbers, why the ten itself
   is only anatomy, and how the same recipe reads a number in any base.
+objectives:
+  intro: "This lesson takes our way of writing numbers apart, and afterwards you can:"
+  goals:
+    - "explain why place value makes ten digits enough for infinitely many numbers"
+    - "separate the ten as mere convention from the recipe of digit times place value, which holds in every base"
+    - "convert a string of digits from any base to decimal, for example `123` in base 8 to 83"
+    - "explain why every base needs the digit 0 and why a string of digits is ambiguous until its base is known"
+    - "use kⁿ to work out how many positions a code of k symbols, such as four colours, needs for 26 letters"
 level: 1
 duration: 15
 topics: [representing-information]
@@ -12,10 +20,8 @@ modules: [dup]
 relations:
   see_also: [petzold-code, ifrah-universal-history-of-numbers]
 status: draft
-updated: 2026-10-30
+updated: 2026-11-01
 ---
-
-## What this is about
 
 That `123` means one hundred and twenty-three is an agreement, not a law of
 nature. Every place in the number carries a power of ten, the digit says how

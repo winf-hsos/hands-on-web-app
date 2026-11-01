@@ -3,11 +3,17 @@ title: Calling functions
 summary: >-
   Functions are R's tools: they receive arguments, return a result and can be
   nested inside each other.
+objectives:
+  intro: "This lesson shows you how to call functions in R, and afterwards you can:"
+  goals:
+    - "call a function such as `sqrt()` with arguments in round brackets and use its result further"
+    - "give arguments by name, such as `digits` in `round()`, and explain what a default value is"
+    - "read nested calls such as `round(sqrt(10), digits = 1)` from the inside out"
+    - "open a function's help page with `?` and make use of its examples"
+    - "trace the message that R cannot find a function back to a typo or a package that is not loaded"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 Almost everything you do in R, you do with a **function**. A function has a
 name, round brackets follow it, and inside the brackets it receives its

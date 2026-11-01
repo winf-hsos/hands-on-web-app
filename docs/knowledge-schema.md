@@ -111,6 +111,11 @@ code: 4821                         # required, four digits
 title: Ein Code ist eine Vereinbarung       # required
 summary: >-                        # required, one or two sentences, plain text
   Warum dieselben Bits ein Buchstabe, eine Farbe oder ein Ton sein können …
+objectives:                        # expected, in every language, see below
+  intro: "In dieser Lektion lernst du, warum ein Code eine Vereinbarung ist, und kannst danach:"
+  goals:
+    - "erklären, warum dieselben Bits Verschiedenes bedeuten können"
+    - "einen eigenen Code vereinbaren und anwenden"
 level: 1                           # required, 1–4, see vocabulary.yaml
 duration: 20                       # required, minutes of focused work
 topics: [representing-information] # required, at least one, see vocabulary.yaml
@@ -123,6 +128,16 @@ status: draft                      # required, draft, published or archived
 updated: 2026-10-21                # required, date of the last substantive change
 ---
 ```
+
+**What you learn** (Nicolas, 2026-11-01). Every item says what a learner takes
+away from it: `objectives` holds one sentence that leads into a list (`intro`,
+ending in a colon) and three to five concrete, checkable goals (`goals`),
+each continuing that sentence. They stand in every language file, since they
+are text, and the page shows them under the heading "Was du lernst" / "What you
+will learn" right after the summary, before a deck, a dataset or the text. The
+text itself therefore starts without a heading such as "Worum es geht"; the
+first paragraphs are the way into the topic. An item without `objectives` is a
+warning, not an error, so that a new draft can be saved first.
 
 Type-specific fields:
 

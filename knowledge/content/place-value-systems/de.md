@@ -4,11 +4,17 @@ summary: >-
   Warum zehn Ziffern für unendlich viele Zahlen reichen, warum die Zehn selbst
   nur Anatomie ist und wie dieselbe Bauanleitung eine Zahl in jeder Basis
   lesbar macht.
+objectives:
+  intro: "In dieser Lektion nimmst du unsere Schreibweise für Zahlen auseinander und kannst danach:"
+  goals:
+    - "erklären, warum zehn Ziffern dank des Stellenwerts für unendlich viele Zahlen reichen"
+    - "die Zehn als bloße Gewohnheit von der Bauanleitung aus Ziffer mal Stellenwert unterscheiden, die in jeder Basis gilt"
+    - "eine Ziffernfolge aus einer beliebigen Basis ins Zehnersystem umrechnen, etwa `123` zur Basis 8 in 83"
+    - "begründen, warum jede Basis die Ziffer 0 braucht und eine Ziffernfolge ohne Angabe ihrer Basis mehrdeutig ist"
+    - "mit kⁿ berechnen, wie viele Stellen ein Code aus k Zeichen, etwa vier Farben, für 26 Buchstaben braucht"
 translation_of: en
-based_on: 2026-10-30
+based_on: 2026-11-01
 ---
-
-## Worum es geht
 
 Dass `123` einhundertdreiundzwanzig bedeutet, ist eine Vereinbarung und kein
 Naturgesetz. Jede Stelle der Zahl trägt eine Zehnerpotenz, die Ziffer sagt,

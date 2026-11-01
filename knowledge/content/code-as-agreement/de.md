@@ -5,6 +5,14 @@ title: Ein Code ist eine Vereinbarung
 summary: >-
   Warum dieselben acht Bits ein Buchstabe, eine Zahl oder ein Grauwert sein
   können, und weshalb ein Code ohne seine Tabelle nichts bedeutet.
+objectives:
+  intro: "In dieser Lektion erfährst du, warum Bits erst durch eine vereinbarte Tabelle etwas bedeuten, und kannst danach:"
+  goals:
+    - "erklären, was ein Code ist, warum Sender und Empfänger dieselbe Tabelle brauchen und worin er sich von einer Verschlüsselung unterscheidet"
+    - "zeigen, wie dasselbe Byte `01000001` als Buchstabe, als Zahl oder als Grauwert gelesen werden kann"
+    - "mit kⁿ berechnen, wie viele Stellen ein Code für eine gegebene Zahl von Zeichen braucht"
+    - "begründen, warum abweichende Tabellen keine Fehlermeldung erzeugen, sondern falsche Ergebnisse, die richtig aussehen"
+    - "für Zeichen, die nicht in der Tabelle stehen, eine vertretbare Behandlung wählen"
 level: 1
 duration: 20
 topics: [representing-information]
@@ -12,10 +20,8 @@ modules: [dup]
 relations:
   requires: [byte]
 status: draft
-updated: 2026-10-21
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Im Rechner gibt es keine Buchstaben, keine Farben und keine Töne, sondern nur
 Folgen von Zuständen, die wir als Nullen und Einsen aufschreiben. Dass aus

@@ -5,6 +5,13 @@ title: Vektoren
 summary: >-
   In R ist fast alles ein Vektor, eine Reihe von Werten: wie man sie baut, mit
   ihnen rechnet und einzelne Werte herausholt.
+objectives:
+  intro: "In dieser Lektion lernst du Vektoren kennen, die Form, in der R fast alle Werte speichert, und kannst danach:"
+  goals:
+    - "mit `c()` einen Vektor bauen und mit `1:10` eine Zahlenfolge erzeugen"
+    - "mit einem Vektor rechnen und zwei gleich lange Vektoren Stelle für Stelle verrechnen"
+    - "einen Vektor mit `sum()`, `mean()`, `min()`, `max()` und `length()` zu einem einzigen Wert zusammenfassen"
+    - "mit eckigen Klammern einzelne Stellen herausholen oder mit einem Minus weglassen, gezählt ab 1"
 level: 1
 duration: 10
 topics: [programming-with-r]
@@ -13,10 +20,8 @@ areas: [ds]
 relations:
   requires: [r-functions]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Daten bestehen selten aus einem einzelnen Wert. Das Alter aller Befragten,
 die Preise eines Einkaufs, die Antworten auf eine Frage: Das sind Reihen von

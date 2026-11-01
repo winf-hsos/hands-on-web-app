@@ -169,6 +169,19 @@ const quizLabels = (lang) =>
     Object.fromEntries(['next', 'back', 'finish', 'position', 'result', 'score', 'open', 'restart'].map((k) => [k, t(lang, `quiz_${k}`)])),
   )}"`;
 
+/** What a learner takes away from an item: a sentence and the goals (Nicolas, 2026-11-01). */
+function objectivesBlock(site, text, lang) {
+  const o = text.data.objectives;
+  return (
+    o &&
+    html`<section class="prose objectives" lang="${text.lang}"${editable(site, 'objectives')}>
+      <h2>${t(lang, 'objectives')}</h2>
+      <p>${o.intro}</p>
+      <ul>${o.goals.map((goal) => html`<li>${goal}</li>`)}</ul>
+    </section>`
+  );
+}
+
 /** The topics of an item, each a link to the content of that topic. */
 const topicTags = (site, topics, lang) =>
   html`<p class="topic-tags"${editable(site, 'topics')}><span class="visually-hidden">${t(lang, 'topics')}:</span>${topics.map(
@@ -210,6 +223,7 @@ export function item(site, doc, lang) {
         </header>
         ${text.missing && html`<p class="notice">${t(lang, 'missing_translation')}</p>`}
         ${text.stale && html`<p class="notice">${t(lang, 'stale_translation')}</p>`}
+        ${objectivesBlock(site, text, lang)}
         ${lead.type === 'slides' && slidesBlock(site, doc, lang)}
         ${lead.type === 'dataset' && datasetBlock(doc, lang)}
         <div class="prose" lang="${text.lang}" ${isQuiz && quizLabels(lang)}>

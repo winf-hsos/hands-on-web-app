@@ -6,6 +6,12 @@ summary: >-
   Charles Petzold baut in diesem Buch einen Computer im Kopf auf, von zwei
   Taschenlampen über Schalter und Logikgatter bis zum Prozessor, ohne dass ein
   Schritt mehr voraussetzt als der vorige.
+objectives:
+  intro: "Aus diesem Buch nimmst du ein Bild davon mit, wie ein Computer von Grund auf funktioniert, und kannst danach:"
+  goals:
+    - "nachvollziehen, wie aus Taschenlampensignalen, Morsecode und Braille die Idee des Bits wird"
+    - "erklären, wie aus Schaltern und Relais Logikgatter werden"
+    - "beschreiben, wie aus Gattern ein Addierwerk, dann Speicher und schließlich ein einfacher Prozessor entsteht, der ein Programm ausführt"
 authors: [Charles Petzold]
 year: 2022
 publisher: Microsoft Press
@@ -17,10 +23,8 @@ topics: [representing-information, processing-information]
 relations:
   see_also: [morse-code, code-as-agreement, morse-and-the-type-case, logic-gates, nand-gate, place-value-systems, binary-numbers, hexadecimal]
 status: draft
-updated: 2026-10-22
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Charles Petzold erklärt, wie ein Computer funktioniert, und fängt dafür ganz
 unten an. Am Anfang stehen zwei Kinder, die sich abends über die Straße hinweg

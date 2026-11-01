@@ -1,8 +1,15 @@
 ---
 title: "Quiz: codes and code words"
 summary: Four questions about code tables, their size and unambiguous code words.
+objectives:
+  intro: "This quiz lets you check in four questions whether you can:"
+  goals:
+    - "explain why a byte such as `01000001` only gets its meaning from the table used to read it"
+    - "work out how many positions a code of four colours needs for 26 letters"
+    - "predict what arrives when sender and receiver use different tables"
+    - "recognise whether a code table is prefix-free"
 translation_of: de
-based_on: 2026-10-21
+based_on: 2026-11-01
 ---
 
 ## A program reads the byte `01000001`. What is it?

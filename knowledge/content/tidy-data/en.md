@@ -3,11 +3,17 @@ title: Tidy data
 summary: >-
   Every variable a column, every observation a row, every value a cell: three
   rules that make tables easy to analyse, and how to recognise untidy data.
+objectives:
+  intro: "This lesson introduces the rules of tidy data, which make tables easy to analyse, and afterwards you can:"
+  goals:
+    - "state the three rules of tidy data and check whether a table follows them"
+    - "decide for a given question what counts as an observation in a table"
+    - "recognise values in column names, several values in one cell and codes instead of meanings as typical patterns of untidy data"
+    - "describe how pivoting with `pivot_longer()` from `tidyr` brings a wide table into the long form"
+    - "explain why it pays to tidy data before analysing it"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 The basic operations from [[data-transformation-basics]] work best when a
 table has a particular shape. Hadley Wickham, who also wrote dplyr, calls

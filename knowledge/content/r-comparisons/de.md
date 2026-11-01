@@ -5,6 +5,14 @@ title: Vergleichen und zählen
 summary: >-
   Vergleiche liefern TRUE oder FALSE für jeden Wert. Wie man sie verknüpft,
   mit %in% gegen eine Liste prüft und damit zählt und Anteile berechnet.
+objectives:
+  intro: "In dieser Lektion lernst du, Werte zu vergleichen und mit dem Ergebnis zu zählen, und kannst danach:"
+  goals:
+    - "Vektoren mit `==`, `!=`, `<`, `<=`, `>` und `>=` vergleichen und das Ergebnis aus `TRUE` und `FALSE` lesen"
+    - "den Vergleich `==` von der Zuweisung mit `=` oder `<-` unterscheiden"
+    - "Bedingungen mit `&` und `|` verknüpfen und mit `!` umkehren"
+    - "mit `%in%` prüfen, ob Werte zu einer Liste gehören"
+    - "mit `sum()` die Treffer eines Vergleichs zählen und mit `mean()` ihren Anteil berechnen"
 level: 1
 duration: 10
 topics: [programming-with-r]
@@ -13,10 +21,8 @@ areas: [ds]
 relations:
   requires: [r-data-types]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Wie viele der Befragten sind älter als 50? Welcher Anteil ernährt sich vegan?
 Solche Fragen beginnen mit einem Vergleich. In R liefert ein Vergleich für

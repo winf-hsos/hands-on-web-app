@@ -5,6 +5,14 @@ title: "Hexadecimal: the shorthand for bytes"
 summary: >-
   Why base 16 became the way to read bytes: one hex digit is exactly four
   bits, so a byte fits into two digits, and a hex dump shows a file as it is.
+objectives:
+  intro: "This lesson introduces hexadecimal as the shorthand for bytes, and afterwards you can:"
+  goals:
+    - "explain why one hex digit covers exactly four bits and a byte fits into two hex digits"
+    - "convert between binary and hex without arithmetic, for example `1101 0010` to `D2`"
+    - "convert a hex number such as `AC` or `FF` to decimal and check it in Python with `hex()` and `int(\"AC\", 16)`"
+    - "split a colour value such as `#AC8909` into its three colour channels"
+    - "read a hex dump and recognise a file such as a PNG image from its first bytes"
 level: 1
 duration: 15
 topics: [representing-information, storing-information]
@@ -13,10 +21,8 @@ relations:
   requires: [byte]
   see_also: [place-value-systems]
 status: draft
-updated: 2026-10-30
+updated: 2026-11-01
 ---
-
-## What this is about
 
 Nobody reads eight zeroes and ones at a glance. Hexadecimal is the shorthand
 for them, and it is not a new number world but the same

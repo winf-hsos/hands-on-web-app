@@ -6,6 +6,14 @@ summary: >-
   Python als Taschenrechner und mehr: die Rechenzeichen, ganzzahlige Division
   mit Rest, Vorrang und Klammern, Runden und eine kleine Überraschung mit
   Kommazahlen.
+objectives:
+  intro: "In dieser Lektion lernst du, mit Python zu rechnen, und kannst danach:"
+  goals:
+    - "mit den Rechenzeichen `+`, `-`, `*`, `/` und `**` rechnen, auch in Kurzformen wie `total += 5`, und wissen, dass `/` immer einen `float` liefert"
+    - "mit `//` und `%` eine Menge in ganze Einheiten und einen Rest zerlegen und mit `%` prüfen, ob eine Zahl durch eine andere teilbar ist"
+    - "vorhersagen, in welcher Reihenfolge Python eine Rechnung auswertet, und die Reihenfolge mit Klammern selbst festlegen"
+    - "mit `round()` einen Wert runden und mit `:.2f` im f-String nur die Ausgabe auf zwei Stellen bringen"
+    - "erklären, warum `0.1 + 0.2` nicht genau `0.3` ergibt"
 level: 1
 duration: 15
 topics: [programming-with-python]
@@ -13,10 +21,8 @@ modules: [dup]
 relations:
   requires: [python-values-and-variables]
 status: draft
-updated: 2026-10-26
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Rechnen ist das, was Computer am schnellsten können, und in Python sieht eine
 Rechnung fast so aus wie auf dem Papier. Ein paar Rechenzeichen gibt es aber

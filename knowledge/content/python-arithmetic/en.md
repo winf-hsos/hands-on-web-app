@@ -4,11 +4,17 @@ summary: >-
   Python as a calculator and more: the operators, whole-number division with
   remainder, precedence and brackets, rounding, and a small surprise with
   decimal numbers.
+objectives:
+  intro: "This lesson shows you how to calculate in Python, and afterwards you can:"
+  goals:
+    - "calculate with the operators `+`, `-`, `*`, `/` and `**`, including shorthand such as `total += 5`, knowing that `/` always returns a `float`"
+    - "split an amount into whole units and a remainder with `//` and `%`, and use `%` to check whether one number divides another"
+    - "predict the order in which Python evaluates a calculation and set the order yourself with brackets"
+    - "round a value with `round()` and round only the output to two places with `:.2f` in an f-string"
+    - "explain why `0.1 + 0.2` does not come out as exactly `0.3`"
 translation_of: de
-based_on: 2026-10-26
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 Calculating is what computers do fastest, and in Python a calculation looks
 almost the way it does on paper. A few operators only exist in programming,

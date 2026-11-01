@@ -6,6 +6,14 @@ summary: >-
   Beschreiben, erkunden, verallgemeinern, vorhersagen, Ursachen finden oder
   Mechanismen verstehen: sechs Arten von Fragen an Daten, und sechs
   Ja-Nein-Fragen, mit denen man herausfindet, welche man gerade stellt.
+objectives:
+  intro: "In dieser Lektion lernst du sechs Arten von Fragen an Daten kennen und kannst danach:"
+  goals:
+    - "deskriptive, explorative, inferentielle, prädiktive, kausale und mechanistische Fragen unterscheiden"
+    - "mit den sechs Ja-Nein-Fragen nach Leek und Peng bestimmen, welchen Typ eine Frage hat"
+    - "jedem Typ eine passende Frage an die Umfrage zu Milch und Schokolade zuordnen"
+    - "begründen, was du je nach Typ der Frage am Ende behaupten darfst"
+    - "erkennen, wenn ein explorativer Befund stillschweigend als inferentielles oder kausales Ergebnis berichtet wird"
 level: 1
 duration: 12
 topics: [questions-and-measurement, exploring-data]
@@ -14,10 +22,8 @@ areas: [ds]
 relations:
   see_also: [leek-peng-what-is-the-question, the-effect, milk-chocolate-survey]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Bevor man rechnet, sollte man wissen, welche Art von Frage man stellt. Davon
 hängt ab, welche Methode passt, welche Daten man braucht und vor allem, was

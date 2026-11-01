@@ -5,6 +5,14 @@ title: Tabellen in R
 summary: >-
   Eine Tabelle ist in R ein Data Frame aus gleich langen Vektoren: wie man
   sie ansieht, ihre Spalten herausholt und den Datensatz survey kennenlernt.
+objectives:
+  intro: "In dieser Lektion lernst du, wie R Tabellen als Data Frame speichert, und kannst danach:"
+  goals:
+    - "erklären, dass ein Data Frame aus gleich langen Vektoren besteht und ein Tibble seine übersichtlichere Variante ist"
+    - "eine Tabelle wie `survey` anzeigen und die Spaltentypen `<int>`, `<dbl>` und `<chr>` in der Ausgabe lesen"
+    - "eine breite Tabelle mit `glimpse()` Spalte für Spalte ansehen"
+    - "eine Spalte mit `$` als Vektor herausholen und ihre Werte mit `table()` zählen"
+    - "die Größe einer Tabelle mit `nrow()` und `ncol()` und ihre Spalten mit `names()` bestimmen"
 level: 1
 duration: 12
 topics: [programming-with-r]
@@ -13,10 +21,8 @@ areas: [ds]
 relations:
   requires: [r-missing-values]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Bisher hattest du einzelne Vektoren. Echte Daten kommen als Tabelle: jede
 Zeile eine Person, jede Spalte eine Frage. In R heißt eine Tabelle

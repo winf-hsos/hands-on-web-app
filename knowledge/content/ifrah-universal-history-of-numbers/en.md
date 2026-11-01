@@ -5,6 +5,13 @@ title: The Universal History of Numbers
 summary: >-
   Georges Ifrah tells where our digits came from, why the zero took so long to
   arrive and how many other bases people have counted in.
+objectives:
+  intro: "From this book you take away the long history of our numbers, and afterwards you can:"
+  goals:
+    - "trace numbers from notches on bones through the number systems of Babylon, Egypt, Greece, China and the Maya to the Indian digits that reached Europe by way of the Arab world"
+    - "show with examples such as the twenty of the Maya and the sixty in our hours and minutes that people have counted in different bases"
+    - "explain that the place value idea was invented more than once and only really worked once there was a zero"
+    - "argue that ten as a base comes down to nothing more than the number of our fingers"
 authors: [Georges Ifrah]
 year: 2000
 publisher: Wiley
@@ -16,10 +23,8 @@ modules: [dup]
 relations:
   see_also: [place-value-systems]
 status: draft
-updated: 2026-10-30
+updated: 2026-11-01
 ---
-
-## What it is about
 
 Georges Ifrah follows numbers from notches on bones through the number
 systems of Babylon, Egypt, Greece, China and the Maya to the Indian digits

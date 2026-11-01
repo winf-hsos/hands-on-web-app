@@ -5,6 +5,12 @@ title: Bit
 summary: >-
   A binary digit, 0 or 1, and at the same time the unit of information: the
   answer to one yes/no question whose two answers are equally likely.
+objectives:
+  intro: "Once you know the term bit, you can:"
+  goals:
+    - "describe a bit both as a binary digit with the values 0 and 1 and as the unit of information"
+    - "explain why a binary digit carries at most one bit of information and sometimes less"
+    - "work out that n bits tell 2ⁿ cases apart"
 level: 1
 duration: 5
 topics: [representing-information]
@@ -12,7 +18,7 @@ modules: [dup]
 relations:
   see_also: [binary-numbers, byte, claude-shannon]
 status: draft
-updated: 2026-10-30
+updated: 2026-11-01
 ---
 
 ## Definition

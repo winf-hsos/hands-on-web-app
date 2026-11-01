@@ -4,11 +4,16 @@ summary: >-
   Transmit words in pairs by knocking and clapping, first with code words of
   equal length, then with code words of different lengths, and measure which
   is faster and which is safer.
+objectives:
+  intro: "In this experiment you and a partner build your own knock code, and afterwards you can:"
+  goals:
+    - "work out how many signals a fixed-length code word needs at least for eight characters"
+    - "design a code with code words of different lengths in which no code word is the beginning of another"
+    - "compare equal-length and variable-length code words by signals, time and errors"
+    - "explain why a secretly changed table produces no error but simply a different word"
 translation_of: de
-based_on: 2026-10-21
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 In this experiment you and a partner build your own code and use it to
 transmit words without speaking. You have only two signals: **knock** once on

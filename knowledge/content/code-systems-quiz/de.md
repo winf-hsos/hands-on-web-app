@@ -3,6 +3,13 @@ type: quiz
 code: 7353
 title: "Quiz: Codes und Codewörter"
 summary: Vier Fragen zu Codetabellen, ihrer Größe und eindeutig lesbaren Codewörtern.
+objectives:
+  intro: "Mit diesem Quiz prüfst du in vier Fragen, ob du Folgendes kannst:"
+  goals:
+    - "begründen, warum ein Byte wie `01000001` erst durch die verwendete Tabelle eine Bedeutung bekommt"
+    - "berechnen, wie viele Positionen ein Code aus vier Farben für 26 Buchstaben braucht"
+    - "vorhersagen, was ankommt, wenn Sender und Empfänger verschiedene Tabellen benutzen"
+    - "erkennen, ob eine Codetabelle präfixfrei ist"
 level: 1
 duration: 5
 topics: [representing-information]
@@ -10,7 +17,7 @@ modules: [dup]
 relations:
   checks: [code-as-agreement, prefix-free-code]
 status: draft
-updated: 2026-10-21
+updated: 2026-11-01
 ---
 
 ## Ein Programm liest das Byte `01000001`. Was ist es?

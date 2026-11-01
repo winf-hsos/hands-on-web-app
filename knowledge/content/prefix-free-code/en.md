@@ -3,8 +3,15 @@ title: Prefix-free code
 summary: >-
   A code in which no code word is the beginning of another. It can be read
   unambiguously without separators, even when the code words differ in length.
+objectives:
+  intro: "Once you know what a prefix-free code is, you can:"
+  goals:
+    - "check whether any code word in a code table is the beginning of another"
+    - "split a sequence such as `01011` unambiguously with a prefix-free table and show with another table how ambiguity arises"
+    - "explain why code words of different lengths can be read without separators only if the code is prefix-free"
+    - "place telephone country codes as a prefix-free code and Morse code as a counterexample"
 translation_of: de
-based_on: 2026-10-21
+based_on: 2026-11-01
 ---
 
 ## Definition

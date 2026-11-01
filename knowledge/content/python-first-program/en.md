@@ -4,11 +4,17 @@ summary: >-
   A program is a text of instructions that the computer carries out from top
   to bottom. You write your first one in Python, right here on the page, and
   learn to read error messages.
+objectives:
+  intro: "In this lesson you write your first Python program, and afterwards you can:"
+  goals:
+    - "explain that a program is a sequence of instructions that Python carries out from top to bottom"
+    - "print text, numbers and empty lines with `print()`, including several values separated by commas"
+    - "tell a string in quotation marks apart from a number without them"
+    - "write comments with `#` that Python skips"
+    - "read an error message from the bottom up and tell a `SyntaxError` from a `NameError`"
 translation_of: de
-based_on: 2026-10-26
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 A program is a text that contains instructions for the computer, and the
 computer carries them out exactly as they are written: one after the other,

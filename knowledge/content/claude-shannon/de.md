@@ -5,6 +5,14 @@ title: Claude Shannon
 summary: >-
   Zeigte, dass Schaltungen rechnen können wie die Logik, und begründete mit
   dem Bit die Informationstheorie, auf der jede digitale Übertragung beruht.
+objectives:
+  intro: "Nach diesem Porträt weißt du, wer Claude Shannon war und was er zu den Grundlagen der Informatik beigetragen hat, und kannst:"
+  goals:
+    - "zeigen, dass sich zwei Schalter hintereinander wie ein UND und zwei nebeneinander wie ein ODER verhalten, und erklären, warum man deshalb mit Schaltungen rechnen kann"
+    - "das Bit als Antwort auf eine Ja-Nein-Frage beschreiben"
+    - "erklären, warum die Menge an Information in einer Nachricht davon abhängt, wie überraschend sie ist, und nicht davon, was sie bedeutet"
+    - "begründen, warum kürzere Codewörter für häufige Zeichen im Schnitt Bits sparen"
+    - "erklären, was die Kapazität einer Leitung über zuverlässige Übertragung trotz Störungen aussagt"
 born: 1916
 died: 2001
 level: 1
@@ -14,7 +22,7 @@ modules: [dup]
 relations:
   see_also: [logic-gates, prefix-free-code]
 status: draft
-updated: 2026-10-26
+updated: 2026-11-01
 ---
 
 ## Wer er ist

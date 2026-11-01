@@ -3,11 +3,16 @@ title: Missing values
 summary: >-
   NA stands for a value nobody knows. Why every calculation with it gives NA
   again, how to find missing values and when to leave them out.
+objectives:
+  intro: "This lesson shows you how R deals with missing values, and afterwards you can:"
+  goals:
+    - "explain why every calculation and every comparison with `NA` gives `NA` again"
+    - "explicitly leave missing values out of a calculation such as `mean()` with `na.rm = TRUE`"
+    - "find missing values with `is.na()` and count them with `sum(is.na(x))`"
+    - "ask why values are missing before dropping them, and judge how that changes the group you are talking about"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 In real data, something is always missing: someone skipped a question, a
 measuring device failed, a question was never asked. R writes `NA` for this,

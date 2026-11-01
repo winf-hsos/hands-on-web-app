@@ -5,6 +5,13 @@ title: "Übung: Sekunden umrechnen"
 summary: >-
   Eine eigene Funktion macht aus einer Zahl von Sekunden eine lesbare Dauer
   wie 2 h 5 min 7 s, und ein kleines Hauptprogramm fragt danach.
+objectives:
+  intro: "In dieser Übung schreibst du eine eigene Funktion, die Sekunden in eine lesbare Dauer umrechnet, und kannst danach:"
+  goals:
+    - "mit `//` und `%` eine Zahl von Sekunden schrittweise in Stunden, Minuten und Sekunden zerlegen"
+    - "eine Funktion schreiben, die ihr Ergebnis mit `return` als Text zurückgibt, statt es selbst auszugeben"
+    - "Eingabe und Ausgabe in einer Funktion `main` von der eigentlichen Rechnung trennen"
+    - "eine Funktion einzeln mit Werten prüfen, deren Ergebnis du im Kopf kennst, etwa 59, 60, 3600 und 3661 Sekunden"
 level: 1
 duration: 20
 topics: [programming-with-python, solving-problems]
@@ -12,7 +19,7 @@ modules: [dup]
 relations:
   requires: [python-functions]
 status: draft
-updated: 2026-10-26
+updated: 2026-11-01
 ---
 
 ## Aufgabe
@@ -35,8 +42,10 @@ Wie viele Sekunden? 7507
 
 ```python
 def main():
-    seconds = int(input("Wie viele Sekunden? "))
-    print(f"{seconds} Sekunden sind {format_duration(seconds)}.")
+    answer = input("Wie viele Sekunden? ")
+    seconds = int(answer)
+    duration = format_duration(seconds)
+    print(f"{seconds} Sekunden sind {duration}.")
 
 
 def format_duration(seconds):
@@ -63,8 +72,10 @@ prüfen. Ersetze dazu die letzte Zeile vorübergehend durch
 > [!SOLUTION]
 > ```python
 > def main():
->     seconds = int(input("Wie viele Sekunden? "))
->     print(f"{seconds} Sekunden sind {format_duration(seconds)}.")
+>     answer = input("Wie viele Sekunden? ")
+>     seconds = int(answer)
+>     duration = format_duration(seconds)
+>     print(f"{seconds} Sekunden sind {duration}.")
 >
 >
 > def format_duration(seconds):

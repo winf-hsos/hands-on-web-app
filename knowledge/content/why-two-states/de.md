@@ -4,11 +4,17 @@ summary: >-
   Es gab Dezimalrechner, und sie sind ausgestorben. Der Grund ist keine
   Mathematik, sondern Technik: Zwei Zustände lassen sich auch dann
   unterscheiden, wenn die Leitung wackelt.
+objectives:
+  intro: "In dieser Lektion erfährst du, warum Rechner mit nur zwei Zuständen arbeiten, und kannst danach:"
+  goals:
+    - "erklären, warum zwei Zustände das Rauschen auf einer Leitung besser überstehen als zehn"
+    - "am Beispiel einer Spannung zwischen 0 und 5 Volt zeigen, wie der Abstand zwischen den Zuständen mit ihrer Zahl schrumpft"
+    - "den physikalischen Grund für die Basis 2 von angenehmen Nebenwirkungen wie dem kurzen Einmaleins unterscheiden"
+    - "begründen, warum Rechner längere Zahlen gern in Kauf nehmen"
+    - "die Abwägung zwischen mehr Information je Zeichen und mehr Fehlern auf andere Kanäle wie Funk oder Licht übertragen"
 translation_of: en
-based_on: 2026-10-30
+based_on: 2026-11-01
 ---
-
-## Worum es geht
 
 Ein Rechner könnte im Prinzip mit jeder Basis arbeiten, und in der Frühzeit
 gab es tatsächlich Dezimalrechner. Sie sind ausgestorben, und der Grund dafür

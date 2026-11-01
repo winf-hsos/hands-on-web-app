@@ -6,15 +6,21 @@ summary: >-
   Ein Programm ist ein Text mit Anweisungen, die der Computer von oben nach
   unten ausführt. Du schreibst dein erstes in Python, direkt hier auf der
   Seite, und lernst, Fehlermeldungen zu lesen.
+objectives:
+  intro: "In dieser Lektion schreibst du dein erstes Python-Programm und kannst danach:"
+  goals:
+    - "erklären, dass ein Programm eine Folge von Anweisungen ist, die Python von oben nach unten ausführt"
+    - "mit `print()` Texte, Zahlen und leere Zeilen ausgeben, auch mehrere Werte durch Kommas getrennt"
+    - "einen String in Anführungszeichen von einer Zahl ohne Anführungszeichen unterscheiden"
+    - "Kommentare mit `#` schreiben, die Python überspringt"
+    - "eine Fehlermeldung von unten nach oben lesen und einen `SyntaxError` von einem `NameError` unterscheiden"
 level: 1
 duration: 15
 topics: [programming-with-python]
 modules: [dup]
 status: draft
-updated: 2026-10-26
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Ein Programm ist ein Text, in dem Anweisungen an den Computer stehen, und der
 Computer führt diese Anweisungen genau so aus, wie sie dastehen: eine nach der

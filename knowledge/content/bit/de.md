@@ -4,8 +4,14 @@ summary: >-
   Eine Binärziffer, 0 oder 1, und zugleich die Einheit der Information: die
   Antwort auf eine Ja/Nein-Frage, deren beide Antworten gleich wahrscheinlich
   sind.
+objectives:
+  intro: "Wenn du den Begriff Bit kennst, kannst du:"
+  goals:
+    - "ein Bit sowohl als Binärziffer mit den Werten 0 und 1 als auch als Maßeinheit für Information beschreiben"
+    - "erklären, warum eine Binärziffer höchstens ein Bit Information trägt und manchmal weniger"
+    - "berechnen, dass n Bit 2ⁿ Fälle unterscheiden"
 translation_of: en
-based_on: 2026-10-30
+based_on: 2026-11-01
 ---
 
 ## Definition

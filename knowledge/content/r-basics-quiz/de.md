@@ -3,6 +3,14 @@ type: quiz
 code: 2189
 title: "Quiz: Einstieg in R"
 summary: Sieben Fragen zu Namen, Funktionen, Vektoren, Typen, Vergleichen, fehlenden Werten und der Pipe.
+objectives:
+  intro: "Mit diesem Quiz prüfst du, ob du Folgendes kannst:"
+  goals:
+    - "verfolgen, welchen Wert ein Name nach mehreren Zuweisungen mit `<-` trägt"
+    - "verschachtelte Aufrufe wie `round(sqrt(10), digits = 1)` von innen nach außen auswerten"
+    - "vorhersagen, wie R mit einem ganzen Vektor rechnet und welchen Typ ein Vektor mit gemischten Werten bekommt"
+    - "mit `mean()` über einen Vergleich einen Anteil berechnen und mit `na.rm = TRUE` trotz fehlender Werte einen Mittelwert erhalten"
+    - "erklären, was die Pipe `|>` an eine Funktion weiterreicht und dass sie dabei nichts speichert"
 level: 1
 duration: 8
 topics: [programming-with-r]
@@ -11,7 +19,7 @@ areas: [ds]
 relations:
   checks: [r-names, r-functions, r-vectors, r-data-types, r-comparisons, r-missing-values, r-pipe]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
 
 ## Was steht nach diesen drei Zeilen in `litres`?

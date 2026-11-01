@@ -4,8 +4,16 @@ summary: >-
   From which price is a litre of milk too expensive? With select() and
   filter() you find out who answered the question, and clear an implausible
   answer out of the way.
+objectives:
+  intro: "In this exercise you apply `select()` and `filter()` to the survey's price question, and afterwards you can:"
+  goals:
+    - "find the rows that hold an answer with `!is.na()` and count them with `nrow()`"
+    - "combine several conditions in one `filter()` with a comma, for instance to exclude an implausible outlier"
+    - "filter by text values such as brand and diet with `==` and `!=`"
+    - "keep only the columns you need with `select()` after filtering"
+    - "explain why `filter()` already drops rows with a missing value as soon as you compare that value"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
 
 ## Task

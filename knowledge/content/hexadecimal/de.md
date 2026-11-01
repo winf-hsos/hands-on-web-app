@@ -4,11 +4,17 @@ summary: >-
   Warum die Basis 16 die Art geworden ist, Bytes zu lesen: Eine Hexziffer sind
   genau vier Bit, ein Byte passt in zwei Ziffern, und ein Hex-Dump zeigt eine
   Datei, wie sie ist.
+objectives:
+  intro: "In dieser Lektion lernst du Hexadezimal als Kurzschrift für Bytes kennen und kannst danach:"
+  goals:
+    - "erklären, warum eine Hexziffer genau vier Bit abdeckt und ein Byte in zwei Hexziffern passt"
+    - "ohne Rechnung zwischen binär und hexadezimal umrechnen, etwa `1101 0010` in `D2`"
+    - "eine Hexzahl wie `AC` oder `FF` ins Zehnersystem umrechnen und mit `hex()` und `int(\"AC\", 16)` in Python prüfen"
+    - "eine Farbangabe wie `#AC8909` in ihre drei Farbkanäle zerlegen"
+    - "einen Hex-Dump lesen und eine Datei wie ein PNG-Bild an ihren ersten Bytes erkennen"
 translation_of: en
-based_on: 2026-10-30
+based_on: 2026-11-01
 ---
-
-## Worum es geht
 
 Acht Nullen und Einsen kann niemand auf einen Blick lesen. Hexadezimal ist die
 Kurzschrift dafür, und es ist keine neue Zahlenwelt, sondern dieselbe

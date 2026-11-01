@@ -6,6 +6,13 @@ summary: >-
   Gut 9.400 Lebensmittel und Drogerieartikel mit Preis, Kategorie, Herkunft,
   Bio-Kennzeichnung und Nährwerten: echte Daten mit Lücken, Dubletten und
   einigen Werten, die nicht stimmen können.
+objectives:
+  intro: "Mit diesem Datensatz übst du die explorative Datenanalyse an echten Produktdaten mit Lücken, Dubletten und fehlerhaften Werten und kannst damit:"
+  goals:
+    - "Produkte nach Kategorie, Herkunft, Preis und Bio-Kennzeichnung auswerten"
+    - "erklären, warum Nährwerte bei vielen Produkten fehlen und `vegan` und `vegetarian` nur selten angegeben sind"
+    - "Zeilen finden, die mehrfach vorkommen, und die verschiedenen Produkte über `product_id` zählen"
+    - "Nährwerte aufspüren, die so nicht stimmen können"
 url: https://github.com/winf-hsos/data-analytics-code
 file: rewe_products.csv
 level: 1
@@ -16,10 +23,8 @@ areas: [ds]
 relations:
   see_also: [eda-self-assessment]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Die Daten stammen aus dem Onlineshop von REWE und wurden für die Lehre
 gesammelt; sie liegen im Repository zu den Data-Analytics-Kursen, das unten

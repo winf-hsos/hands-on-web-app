@@ -3,11 +3,17 @@ title: Fundamentals of Data Visualization
 summary: >-
   Claus O. Wilke explains how a figure shows data honestly, makes a point and
   looks clean doing it, without any code and free to read online.
+objectives:
+  intro: "From this book you take away how a figure shows data honestly and makes a point, and afterwards you can:"
+  goals:
+    - "choose a suitable visualisation for amounts, distributions, proportions, associations, time series, places and uncertainty"
+    - "argue why the area of a bar must match its value and why three-dimensional charts hardly ever help"
+    - "use colour deliberately and make overlapping points visible"
+    - "spot a misleading figure and say what makes it misleading"
+    - "tell a story with figures"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
-
-## What it is about
 
 The first part of the book starts from the data and asks which visualisation
 suits them: for amounts, distributions, proportions, associations, time

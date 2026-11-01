@@ -3,11 +3,17 @@ title: Hands-On Programming with R
 summary: >-
   Garrett Grolemund introduces people without programming experience to R,
   through three small projects: loaded dice, a card game and a slot machine.
+objectives:
+  intro: "Through three small projects, this book shows you how R works as a programming language, and afterwards you can:"
+  goals:
+    - "explain what objects in R are made of, and reach and change their parts"
+    - "describe how R looks up a name"
+    - "write your own functions and build loops"
+    - "program small simulations such as loaded dice, a card game or a slot machine in R"
+    - "make slow code faster"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
-
-## What it is about
 
 The book teaches R as a programming language, not as a tool for one
 particular analysis. Each of its three parts is a project: first you build

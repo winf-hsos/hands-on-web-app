@@ -5,6 +5,13 @@ title: Fehlende Werte
 summary: >-
   NA steht für einen Wert, den niemand kennt. Warum jede Rechnung damit
   wieder NA ergibt, wie man fehlende Werte findet und wann man sie weglässt.
+objectives:
+  intro: "In dieser Lektion lernst du, wie R mit fehlenden Werten umgeht, und kannst danach:"
+  goals:
+    - "erklären, warum jede Rechnung und jeder Vergleich mit `NA` wieder `NA` ergibt"
+    - "fehlende Werte mit `na.rm = TRUE` ausdrücklich aus einer Rechnung wie `mean()` herausnehmen"
+    - "fehlende Werte mit `is.na()` finden und mit `sum(is.na(x))` zählen"
+    - "vor dem Weglassen fragen, warum Werte fehlen, und abschätzen, wie sich dadurch die betrachtete Gruppe verändert"
 level: 1
 duration: 8
 topics: [programming-with-r, data-pitfalls]
@@ -13,10 +20,8 @@ areas: [ds]
 relations:
   requires: [r-comparisons]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 In echten Daten fehlt immer etwas: Jemand hat eine Frage übersprungen, ein
 Messgerät ist ausgefallen, eine Frage wurde gar nicht erst gestellt. R

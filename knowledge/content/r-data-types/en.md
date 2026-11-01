@@ -3,11 +3,17 @@ title: Numbers, text and logical values
 summary: >-
   Every vector has a type: number, text or logical value. How to recognise
   it, why a vector can have only one type and how to convert.
+objectives:
+  intro: "This lesson introduces the three basic data types of R, and afterwards you can:"
+  goals:
+    - "tell numbers (`numeric`), text (`character`) and logical values (`logical`) apart and check the type with `class()`"
+    - "explain why a vector can have only one type and why R silently converts mixed values"
+    - "justify why logical values become numbers and numbers become text, never the other way round"
+    - "convert text into numbers with `as.numeric()` and predict where this produces `NA`"
+    - "recognise the error message when calculating with text and track down its cause with `class()`"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 R distinguishes what kind of value a vector holds, because that decides what
 you can do with it. You can calculate with numbers, not with text. Three

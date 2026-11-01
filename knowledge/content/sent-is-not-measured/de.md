@@ -6,6 +6,14 @@ summary: >-
   Die LED auf reines Rot setzen und ablesen, was der Sensor daraus macht,
   dann Licht, Hand und Abstand ändern und am Ende vor der Frage stehen, wie
   man aus vier Zahlen auf die gesendete Farbe zurückrechnen soll.
+objectives:
+  intro: "In diesem Experiment vergleichst du die Farbe, die du an die LED sendest, mit dem, was der Sensor daraus misst, und kannst danach:"
+  goals:
+    - "vor einer Messung eine Erwartung schriftlich festhalten und sie hinterher mit den Messwerten vergleichen"
+    - "erklären, warum der Sensor bei reinem Rot `(255, 0, 0)` auch in `g`, `b` und `c` Werte meldet"
+    - "eine Messreihe durchführen, in der du jeweils genau eine Bedingung änderst und jede Bedingung fünfmal abliest"
+    - "beschreiben, wie Deckenlicht, eine Hand im Strahl und der Abstand die vier Werte verändern und wie stark sie schon ohne jede Änderung schwanken"
+    - "begründen, warum man aus den Messwerten nicht einfach auf die gesendete Farbe zurückrechnen kann"
 level: 1
 duration: 20
 topics: [transferring-information]
@@ -15,8 +23,6 @@ relations:
 status: draft
 updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Ihr gebt der LED eine Farbe, deren Zahlen ihr genau kennt, und lest ab, was
 der Sensor daraus macht. Heraus kommt etwas anderes, als ihr hineingesteckt

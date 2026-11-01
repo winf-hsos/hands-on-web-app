@@ -5,6 +5,14 @@ title: Hands-On Programming with R
 summary: >-
   Garrett Grolemund führt Menschen ohne Programmiererfahrung in R ein, an drei
   kleinen Projekten: gezinkte Würfel, ein Kartenspiel und ein Spielautomat.
+objectives:
+  intro: "Aus diesem Buch nimmst du an drei kleinen Projekten mit, wie R als Programmiersprache funktioniert, und kannst danach:"
+  goals:
+    - "erklären, woraus Objekte in R bestehen, und auf ihre Teile zugreifen und sie ändern"
+    - "beschreiben, wie R einen Namen nachschlägt"
+    - "eigene Funktionen schreiben und Schleifen bauen"
+    - "kleine Simulationen wie gezinkte Würfel, ein Kartenspiel oder einen Spielautomaten in R programmieren"
+    - "langsamen Code schneller machen"
 authors: [Garrett Grolemund]
 year: 2014
 publisher: O'Reilly Media
@@ -19,10 +27,8 @@ areas: [ds]
 relations:
   see_also: [r-vectors, r-for-data-science]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Das Buch lehrt R als Programmiersprache, nicht als Werkzeug für eine bestimmte
 Auswertung. Jeder seiner drei Teile ist ein Projekt: Erst baut man Würfel, die

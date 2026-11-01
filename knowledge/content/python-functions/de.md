@@ -6,6 +6,14 @@ summary: >-
   Mit def gibst du einem Stück Programm einen Namen und rufst es auf, so oft du
   willst. Parameter geben ihm Werte mit, return gibt ein Ergebnis zurück, und
   ein Programm aus kleinen Funktionen ist leichter zu verstehen.
+objectives:
+  intro: "In dieser Lektion lernst du, eigene Funktionen zu schreiben, und kannst danach:"
+  goals:
+    - "eine Funktion mit `def` anlegen und erklären, warum sie erst beim Aufruf etwas bewirkt"
+    - "einer Funktion über Parameter Werte mitgeben, in derselben Reihenfolge wie in der Klammer"
+    - "mit `return` ein Ergebnis zurückgeben, den Unterschied zu `print()` erklären und begründen, warum eine Funktion ohne `return` `None` liefert"
+    - "erklären, warum eine Variable, die in einer Funktion entsteht, außerhalb davon einen `NameError` auslöst"
+    - "ein Programm aus einer Funktion `main` und kleinen Funktionen mit je einer Aufgabe aufbauen"
 level: 1
 duration: 25
 topics: [programming-with-python, solving-problems]
@@ -14,10 +22,8 @@ relations:
   requires: [python-working-with-text, python-arithmetic]
   see_also: [problem-decomposition]
 status: draft
-updated: 2026-10-26
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 `print`, `input`, `len` und `round` sind Funktionen, die Python mitbringt. Du
 kannst aber auch eigene schreiben. Eine Funktion ist ein Stück Programm mit

@@ -3,11 +3,17 @@ title: Working with text
 summary: >-
   Programs ask for input, put text together and tidy it up. That takes input,
   f-strings, a few useful methods and turning text into numbers.
+objectives:
+  intro: "This lesson shows you how to work with input and text, and afterwards you can:"
+  goals:
+    - "ask for input with `input()` and explain why the answer is always a string"
+    - "join text with `+`, repeat it with `*` and put values straight into a text with f-strings"
+    - "tidy up input with the methods `strip()`, `lower()`, `upper()`, `title()` and `replace()`, chaining them one after another"
+    - "count the characters of a text with `len()`"
+    - "convert text into numbers with `int()` and `float()` and back with `str()`, and recognise the `ValueError` that unsuitable input causes"
 translation_of: de
-based_on: 2026-10-26
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 So far your programs have always printed the same thing. It gets interesting
 when a program asks a question and works with the answer. Python has the

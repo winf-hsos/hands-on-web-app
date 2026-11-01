@@ -5,6 +5,14 @@ title: Positron
 summary: >-
   Die kostenlose Entwicklungsumgebung von Posit für die Datenanalyse: ein
   Programm für R, Python und Quarto, mit Konsole, Datenansicht und Grafiken.
+objectives:
+  intro: "Diese Seite stellt dir Positron vor, die Entwicklungsumgebung von Posit für R, Python und Quarto auf deinem eigenen Rechner, und danach kannst du:"
+  goals:
+    - "Positron, R und bei Bedarf Python installieren"
+    - "für jede Auswertung einen Projektordner anlegen und ihn über File → Open Folder öffnen"
+    - "Code aus dem Editor mit Strg+Enter ausführen und die Ergebnisse in Konsole, Variables, Data Explorer und Plots ansehen"
+    - "Sitzungen für R und Python nebeneinander öffnen und zwischen ihnen wechseln"
+    - "einen Bericht als Quarto-Dokument (`.qmd`) schreiben und als Vorschau rendern"
 url: https://positron.posit.co/
 license: Elastic License 2.0
 level: 1
@@ -13,10 +21,8 @@ topics: [reproducible-work, programming-with-r, programming-with-python]
 modules: [ea, dup]
 areas: [ds, cs]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Die Codekästen auf dieser Plattform genügen zum Lernen. Für eigene
 Auswertungen brauchst du ein Programm auf deinem Rechner, in dem du Skripte

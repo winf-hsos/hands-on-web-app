@@ -3,8 +3,15 @@ title: "Exercise: What does the milk cost per year?"
 summary: >-
   A household drinks milk every week: with names and functions you work out
   what that costs per year and how much switching brands saves.
+objectives:
+  intro: "In this exercise you use R to work out what milk costs a household per year and how much switching brands saves, and afterwards you can:"
+  goals:
+    - "store intermediate results under meaningful names with `<-` instead of writing one long calculation"
+    - "calculate annual costs and savings from quantity and price per litre and round them to whole euros with `round()`"
+    - "use `%/%` and `%%` to work out how often one amount fits into another and what is left over"
+    - "set up a calculation so that a changed assumption means changing just one number in the code"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
 
 ## Task

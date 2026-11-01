@@ -1,8 +1,16 @@
 ---
 title: "Quiz: Getting started with R"
 summary: Seven questions on names, functions, vectors, types, comparisons, missing values and the pipe.
+objectives:
+  intro: "This quiz lets you check whether you can:"
+  goals:
+    - "trace which value a name holds after several assignments with `<-`"
+    - "evaluate nested calls such as `round(sqrt(10), digits = 1)` from the inside out"
+    - "predict how R calculates with a whole vector and which type a vector with mixed values gets"
+    - "compute a share with `mean()` over a comparison and still get a mean despite missing values with `na.rm = TRUE`"
+    - "explain what the pipe `|>` passes on to a function and that it stores nothing in doing so"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
 
 ## What is in `litres` after these three lines?

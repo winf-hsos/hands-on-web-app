@@ -3,11 +3,17 @@ title: Values and variables
 summary: >-
   Programs work with numbers and text. To find a value again later, they give
   it a name, and that is exactly what a variable is.
+objectives:
+  intro: "This lesson explains values and variables, and afterwards you can:"
+  goals:
+    - "tell the data types `int`, `float` and `str` apart and ask for the type of a value with `type()`"
+    - "write decimal numbers with a point and explain why a number in quotation marks is text"
+    - "create a variable with `=`, give it a new value and read a line like `count = count + 1`"
+    - "choose variable names that follow Python's rules and say clearly what the variable holds"
+    - "predict what `+` does with numbers and with text, and when Python reports a `TypeError`"
 translation_of: de
-based_on: 2026-10-26
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 Almost every program works with **values**: a temperature, a price, a name.
 Python distinguishes different kinds of values, and the kind decides what you

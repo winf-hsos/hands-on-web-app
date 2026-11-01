@@ -1,8 +1,16 @@
 ---
 title: "Quiz: First programs"
 summary: Six questions on values, variables, text, calculating and your own functions in Python.
+objectives:
+  intro: "This quiz uses six questions to check whether you can:"
+  goals:
+    - "predict what `+` does with two strings and which type the value from `input()` has"
+    - "work out the results of `//` and `%`"
+    - "tell valid variable names from invalid and reserved ones"
+    - "recognise that a function without `return` gives `None`"
+    - "trace a `NameError` back to its likely cause"
 translation_of: de
-based_on: 2026-10-26
+based_on: 2026-11-01
 ---
 
 ## What does `print("3" + "4")` print?

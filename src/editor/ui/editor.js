@@ -48,7 +48,7 @@ const NUMBER_FIELDS = new Set(['year', 'born', 'died', 'duration', 'level']);
 // Fields the forms handle; everything else of a lead file appears as YAML.
 const HANDLED = {
   common: ['type', 'kind', 'code', 'title', 'summary', 'goal', 'audience', 'status', 'updated', 'translation_of', 'based_on'],
-  content: ['level', 'duration', 'topics', 'modules', 'relations', ...Object.keys(FIELD_LABEL)],
+  content: ['level', 'duration', 'topics', 'modules', 'relations', 'objectives', ...Object.keys(FIELD_LABEL)],
   paths: ['level', 'requires', 'steps'],
   courses: ['access_code', 'module', 'semester'],
   projects: ['level', 'modules', 'items'],
@@ -427,6 +427,8 @@ function renderLang() {
       ${field('Kurzbeschreibung', `<textarea data-text="summary" rows="2">${esc(d.summary)}</textarea>`, { wide: true, hint: 'Ein bis zwei Sätze, erscheint in Listen und in der Suche.' })}
       ${pathFields ? field('Ziel', `<textarea data-text="goal" rows="2">${esc(d.goal)}</textarea>`, { wide: true }) : ''}
       ${pathFields ? field('Für wen', `<input data-text="audience" value="${esc(d.audience)}">`, { wide: true }) : ''}
+      ${work.section === 'content' ? field('Was du lernst', `<input data-objectives="intro" value="${esc(d.objectives?.intro)}">`, { wide: true, hint: 'Ein einleitender Satz, der mit einem Doppelpunkt in die Liste führt.' }) : ''}
+      ${work.section === 'content' ? field('Lernziele', `<textarea data-objectives="goals" rows="4">${esc((d.objectives?.goals ?? []).join('\n'))}</textarea>`, { wide: true, hint: 'Eines je Zeile, drei bis fünf, jedes konkret und überprüfbar.' }) : ''}
     </div>
     <div class="ed-split">
       <div>
@@ -448,6 +450,12 @@ function renderLang() {
   box.oninput = (e) => {
     const t = e.target;
     if (t.dataset.text) file.data[t.dataset.text] = t.value;
+    if (t.dataset.objectives) {
+      const o = (file.data.objectives ??= { intro: '', goals: [] });
+      if (t.dataset.objectives === 'intro') o.intro = t.value;
+      else o.goals = t.value.split('\n').map((g) => g.replace(/^\s*[-*]\s*/, '').trim()).filter(Boolean);
+      if (!o.intro?.trim() && !o.goals?.length) delete file.data.objectives;
+    }
     if (t.id === 'body') {
       file.body = t.value;
       schedulePreview();
@@ -495,6 +503,7 @@ function createTranslation() {
   const updated = new Date(`${leadData().updated}T00:00:00Z`);
   updated.setUTCDate(updated.getUTCDate() - 1);
   const data = { title: lead.data.title, summary: lead.data.summary };
+  if (lead.data.objectives) data.objectives = structuredClone(lead.data.objectives);
   if (work.section === 'paths') Object.assign(data, { goal: lead.data.goal, audience: lead.data.audience });
   Object.assign(data, { translation_of: work.lead, based_on: updated.toISOString().slice(0, 10) });
   work.files[lang] = { data, body: lead.body };
@@ -713,7 +722,7 @@ function createDialog(section = state.section === 'pages' ? 'content' : state.se
     let body = '';
     if (f.section === 'content') {
       data = { type: f.type, code, ...base, level: 1, duration: 10, topics: [f.topic], status: 'draft', updated: today() };
-      body = f.type === 'quiz' ? '## Erste Frage?\n\n- [ ] Falsch\n- [x] Richtig\n\n> Warum.\n' : '## Worum es geht\n\nText …\n';
+      body = f.type === 'quiz' ? '## Erste Frage?\n\n- [ ] Falsch\n- [x] Richtig\n\n> Warum.\n' : 'Text …\n';
     } else if (f.section === 'paths') {
       data = { kind: 'path', code, ...base, goal: base.summary, audience: f.lang === 'de' ? 'Alle Interessierten' : 'Everyone interested', level: 1, steps: [f.first], status: 'draft', updated: today() };
     } else if (f.section === 'courses') {

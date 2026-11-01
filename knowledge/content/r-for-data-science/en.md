@@ -3,11 +3,17 @@ title: R for Data Science
 summary: >-
   The standard book on working with data in R: importing, tidying,
   transforming and visualising data and reporting on it, free to read online.
+objectives:
+  intro: "From this book you take away the whole course of a data analysis in R, from importing the data to the finished report, and afterwards you can:"
+  goals:
+    - "import and tidy data with the tools of the `tidyverse`"
+    - "transform tables with the verbs of `dplyr`"
+    - "visualise data with `ggplot2`"
+    - "program your own code so that you can reuse it across analyses"
+    - "communicate the results of an analysis in a finished report"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
-
-## What it is about
 
 The book shows how to analyse data with R, from importing it through tidying
 and transforming it to the chart and the finished report. It starts with a

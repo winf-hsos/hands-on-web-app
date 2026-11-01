@@ -3,11 +3,16 @@ title: R as a calculator
 summary: >-
   Your first contact with R: calculating, using brackets, dividing into whole
   numbers and writing comments, right in the browser.
+objectives:
+  intro: "This lesson introduces R from its simplest side, as a calculator in your browser, and afterwards you can:"
+  goals:
+    - "calculate with `+`, `-`, `*`, `/` and `^`, respecting operator precedence and brackets"
+    - "write decimal numbers in R with a point rather than a comma"
+    - "divide without a remainder using `%/%` and get the remainder with `%%`, for instance to assign an age to its decade"
+    - "write comments after `#` that explain your code"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 R is a programming language made for working with data. Before data come in,
 you get to know R from its simplest side: as a calculator. Every code box on

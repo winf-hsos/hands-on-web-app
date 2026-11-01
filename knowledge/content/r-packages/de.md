@@ -5,6 +5,14 @@ title: Pakete
 summary: >-
   Pakete erweitern R um neue Funktionen: einmal installieren, in jedem Skript
   laden. Dazu das tidyverse und was auf dieser Plattform schon bereitliegt.
+objectives:
+  intro: "In dieser Lektion lernst du, R mit Paketen um neue Funktionen zu erweitern, und kannst danach:"
+  goals:
+    - "erklären, was ein Paket ist und dass die meisten Pakete für R im Verzeichnis CRAN liegen"
+    - "ein Paket mit `install.packages()` einmal installieren und mit `library()` am Anfang jedes Skripts laden"
+    - "die Meldung, dass R eine Funktion nicht findet, auf ein installiertes, aber nicht geladenes Paket zurückführen"
+    - "das `tidyverse` als Paketfamilie beschreiben und `dplyr`, `ggplot2`, `readr` und `tidyr` darin einordnen"
+    - "begründen, warum `library()` in ein eigenes Skript gehört, obwohl `dplyr` auf dieser Plattform schon geladen ist"
 level: 1
 duration: 6
 topics: [programming-with-r, reproducible-work]
@@ -13,10 +21,8 @@ areas: [ds]
 relations:
   requires: [r-functions]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 R bringt von Haus aus viele Funktionen mit, aber längst nicht alle, die man
 beim Auswerten braucht. Den Rest liefern **Pakete**: Sammlungen von

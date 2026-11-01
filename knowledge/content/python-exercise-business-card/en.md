@@ -3,8 +3,15 @@ title: "Exercise: Business card"
 summary: >-
   A program asks for a name, a subject and a city and turns them into a neatly
   formatted business card, however sloppily they were typed.
+objectives:
+  intro: "In this exercise you turn three inputs into a neatly formatted business card, and afterwards you can:"
+  goals:
+    - "ask for several inputs one after another with `input()` and store them in variables"
+    - "tidy up and format input with chained methods such as `strip().upper()` and `strip().title()`"
+    - "build a dividing line from a single character with `*` and keep it in a variable so that it can be changed in one place"
+    - "combine several values into one line of output with an f-string"
 translation_of: de
-based_on: 2026-10-26
+based_on: 2026-11-01
 ---
 
 ## Task

@@ -6,6 +6,13 @@ summary: >-
   Jeffery Leek und Roger Peng ordnen Datenanalysen nach der Frage, die sie
   beantworten, in sechs Typen, und warnen davor, die Antwort auf eine Art von
   Frage als Antwort auf eine andere auszugeben.
+objectives:
+  intro: "Aus diesem kurzen Beitrag nimmst du mit, wie sich Datenanalysen nach der Frage ordnen lassen, die sie beantworten, und kannst danach:"
+  goals:
+    - "die sechs Typen deskriptiv, explorativ, inferentiell, prädiktiv, kausal und mechanistisch unterscheiden"
+    - "eine Analyse mit einer Folge von Ja-Nein-Fragen einem dieser Typen zuordnen"
+    - "erkennen, wenn die Antwort auf eine Art von Frage als Antwort auf eine andere ausgegeben wird, etwa eine gute Vorhersage als Erklärung"
+    - "erklären, warum ein Zusammenhang, der beim Erkunden aufgefallen ist, noch nicht allgemein gilt"
 authors: [Jeffery T. Leek, Roger D. Peng]
 year: 2015
 venue: Science 347 (6228), 1314–1315
@@ -16,10 +23,8 @@ topics: [questions-and-measurement]
 modules: [ea]
 areas: [ds]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Der kurze Beitrag in *Science* geht von einer Beobachtung aus: Viele
 Datenanalysen, die später kritisiert werden, rechnen nicht falsch, sondern

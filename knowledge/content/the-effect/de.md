@@ -6,6 +6,13 @@ summary: >-
   Nick Huntington-Klein erklärt anschaulich und mit wenigen Formeln, wann man
   aus Beobachtungsdaten auf Ursachen schließen darf und mit welchen Methoden,
   frei lesbar im Netz.
+objectives:
+  intro: "Aus diesem Buch nimmst du mit, wann und mit welchen Methoden man aus Beobachtungsdaten auf Ursachen schließen darf, und kannst danach:"
+  goals:
+    - "erklären, warum ein Experiment einen Schluss auf die Ursache erlaubt, Daten, die einfach angefallen sind, dagegen nicht ohne Weiteres"
+    - "eine kausale Frage als Kausaldiagramm aufschreiben und daraus ablesen, welche Einflüsse du ausschalten musst"
+    - "Methoden wie Regression, Matching, Differenz-von-Differenzen, Instrumentvariablen und Regressionsdiskontinuität unterscheiden"
+    - "einschätzen, woran eine kausale Antwort aus Beobachtungsdaten scheitern kann"
 authors: [Nick Huntington-Klein]
 year: 2025
 publisher: Chapman & Hall
@@ -18,10 +25,8 @@ topics: [questions-and-measurement, data-pitfalls]
 modules: [ea]
 areas: [ds]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Ein Experiment verteilt den Zufall selbst, und deshalb darf man aus seinem
 Ergebnis auf eine Ursache schließen. Meistens hat man aber nur Daten, die

@@ -3,11 +3,17 @@ title: Tables in R
 summary: >-
   In R a table is a data frame of vectors of equal length: how to look at it,
   pull out its columns and get to know the data set survey.
+objectives:
+  intro: "This lesson shows you how R stores tables as data frames, and afterwards you can:"
+  goals:
+    - "explain that a data frame consists of vectors of equal length and that a tibble is its clearer variant"
+    - "display a table such as `survey` and read the column types `<int>`, `<dbl>` and `<chr>` in the output"
+    - "look at a wide table column by column with `glimpse()`"
+    - "pull out a column as a vector with `$` and count its values with `table()`"
+    - "find the size of a table with `nrow()` and `ncol()` and its columns with `names()`"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 So far you had single vectors. Real data come as a table: each row a person,
 each column a question. In R a table is called a **data frame**, and it is

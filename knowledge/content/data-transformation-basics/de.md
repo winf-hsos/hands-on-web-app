@@ -6,16 +6,22 @@ summary: >-
   Kaum eine Frage lässt sich an Rohdaten direkt ablesen. Eine Handvoll
   Grundoperationen formt eine Tabelle in die Tabelle um, die die Antwort
   enthält, in R, Python, SQL oder Excel.
+objectives:
+  intro: "In dieser Lektion lernst du, was es heißt, Daten zu transformieren, und kannst danach:"
+  goals:
+    - "erklären, warum sich eine Frage selten direkt an Rohdaten ablesen lässt und was Daten transformieren bedeutet"
+    - "die Grundoperationen Spalten auswählen, Zeilen filtern, Sortieren, neue Spalten berechnen, Zusammenfassen und Gruppieren benennen und angeben, was jede an einer Tabelle ändert"
+    - "begründen, warum sich die Operationen beliebig verketten lassen"
+    - "eine Frage an Daten als Folge von Grundoperationen planen, bevor du Code schreibst"
+    - "jeder Operation ihr Verb in `dplyr`, etwa `select()` oder `filter()`, und ihre Entsprechung in SQL, pandas und Excel zuordnen"
 level: 1
 duration: 15
 topics: [transforming-data]
 modules: [ea]
 areas: [ds]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Angenommen, du hast eine Umfrage mit einigen tausend Befragten vor dir und
 willst wissen, ob Menschen, die sich vegan oder vegetarisch ernähren, mehr Bio

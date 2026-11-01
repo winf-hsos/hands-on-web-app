@@ -3,8 +3,15 @@ title: NAND gate
 summary: >-
   A gate whose output is 0 only when all inputs are 1. Every other logic
   circuit can be built from it alone.
+objectives:
+  intro: "Once you know the NAND gate, you can:"
+  goals:
+    - "write down the truth table of the NAND gate"
+    - "build NOT, AND and OR from NAND gates alone and use this to explain why NAND is universal"
+    - "put together an XOR from four NAND gates and check it against the truth table"
+    - "explain why chips in CMOS technology are often built from NAND gates"
 translation_of: de
-based_on: 2026-10-22
+based_on: 2026-11-01
 ---
 
 ## Definition

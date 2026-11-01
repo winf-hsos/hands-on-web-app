@@ -4,11 +4,15 @@ summary: >-
   In this book Charles Petzold builds a computer in your head, from two
   flashlights through switches and logic gates to a processor, without any
   step assuming more than the one before.
+objectives:
+  intro: "This book gives you a picture of how a computer works from the ground up, and afterwards you can:"
+  goals:
+    - "follow how flashlight signals, Morse code and Braille lead to the idea of the bit"
+    - "explain how switches and relays become logic gates"
+    - "describe how gates become an adding machine, then memory and finally a simple processor that runs a program"
 translation_of: de
-based_on: 2026-10-22
+based_on: 2026-11-01
 ---
-
-## What it is about
 
 Charles Petzold explains how a computer works and starts at the very bottom.
 At the beginning are two children who want to flash messages to each other

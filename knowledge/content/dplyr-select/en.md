@@ -3,11 +3,17 @@ title: Selecting columns with select()
 summary: >-
   With select() you keep only the columns a question needs: by name, range,
   pattern or type. Along the way you get to know rename() and relocate().
+objectives:
+  intro: "This lesson shows you how to keep only the columns a question needs with `select()`, and afterwards you can:"
+  goals:
+    - "name columns in `select()` and set their order in the result at the same time"
+    - "select a range of columns with `:` and exclude columns with `-`"
+    - "select columns by pattern with `starts_with()`, `ends_with()` and `contains()`, and by type with `where()`"
+    - "rename columns with `rename()` or within `select()`"
+    - "move certain columns to the front with `relocate()` without losing the others"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 Real data sets are wide. The survey that `survey` comes from has more than
 800 columns, and a single question rarely needs more than a handful of them.

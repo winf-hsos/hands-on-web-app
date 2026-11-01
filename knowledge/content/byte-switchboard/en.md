@@ -5,6 +5,13 @@ title: Byte switchboard
 summary: >-
   Eight switches, one byte: flip the bits and watch the number appear as a
   sum of place values, in binary, decimal and hexadecimal, and as a character.
+objectives:
+  intro: "With this demo you flip the eight bits of a byte yourself, and afterwards you can:"
+  goals:
+    - "find the value of a byte as the sum of the place values of the bits that are on"
+    - "read the same byte in binary, decimal and hexadecimal and as a character"
+    - "find the switch settings for a given decimal number, hex number or character"
+    - "predict which switch changes the number the most"
 level: 1
 duration: 10
 topics: [representing-information]
@@ -13,7 +20,7 @@ relations:
   example_of: [byte]
   see_also: [binary-numbers, hexadecimal]
 status: published
-updated: 2026-10-31
+updated: 2026-11-01
 ---
 
 **Goal:** See how eight bits make a number. It is the sum of the place values

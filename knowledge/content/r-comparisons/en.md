@@ -3,11 +3,17 @@ title: Comparing and counting
 summary: >-
   Comparisons give TRUE or FALSE for every value. How to combine them, check
   against a list with %in% and use them to count and to calculate shares.
+objectives:
+  intro: "This lesson shows you how to compare values and count with the result, and afterwards you can:"
+  goals:
+    - "compare vectors with `==`, `!=`, `<`, `<=`, `>` and `>=` and read the resulting `TRUE` and `FALSE` values"
+    - "tell the comparison `==` apart from assignment with `=` or `<-`"
+    - "combine conditions with `&` and `|` and reverse them with `!`"
+    - "check with `%in%` whether values belong to a list"
+    - "count the hits of a comparison with `sum()` and calculate their share with `mean()`"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 How many respondents are older than 50? What share are vegan? Such questions
 begin with a comparison. In R a comparison gives `TRUE` or `FALSE` for every

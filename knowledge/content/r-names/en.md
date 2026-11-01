@@ -3,11 +3,16 @@ title: Giving values a name
 summary: >-
   With the arrow <- you store a result under a name and keep calculating with
   the name; plus the rules for good names.
+objectives:
+  intro: "This lesson shows you how to give results a name with the arrow `<-`, and afterwards you can:"
+  goals:
+    - "store a value under a name with `<-` and keep calculating with that name"
+    - "explain why an assignment shows nothing and why a new value overwrites the old one"
+    - "choose valid, meaningful names in lower case with `_` between words, keeping in mind that case matters"
+    - "trace the message that R cannot find an object back to a typo or a line that has not been run yet"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 A result that R only shows is gone the next moment. To keep calculating
 with it, you give it a name. Programmers call this a *variable*: a name with

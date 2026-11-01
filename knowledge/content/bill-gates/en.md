@@ -3,8 +3,15 @@ title: Bill Gates
 summary: >-
   Wrote a BASIC with Paul Allen in 1975 for a computer neither of them had ever
   held, and turned software into something you buy.
+objectives:
+  intro: "After this portrait you know who Bill Gates is and which three ideas from his early years still matter today, and you can:"
+  goals:
+    - "explain what an emulator is, using the BASIC that Gates and Paul Allen wrote in 1975 for an Altair 8800 they did not own"
+    - "summarise the position of Gates's 1976 open letter that software costs money, and set the idea of free and open source software against it"
+    - "explain what an operating system does as a layer between program and machine"
+    - "explain why the DOS contract with IBM gave Microsoft so much influence over personal computers"
 translation_of: de
-based_on: 2026-10-22
+based_on: 2026-11-01
 ---
 
 ## Who he is

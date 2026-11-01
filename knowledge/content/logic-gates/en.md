@@ -3,11 +3,16 @@ title: Logic gates
 summary: >-
   The smallest building blocks a computer calculates with: circuits that turn
   one or two bits into a new bit according to a fixed rule.
+objectives:
+  intro: "This lesson introduces the logic gates a computer calculates with, and afterwards you can:"
+  goals:
+    - "tell the gates NOT, AND, OR, XOR, NAND and NOR apart by their rules"
+    - "write down and read the truth table of every two-input gate"
+    - "explain that a gate is a rule that can be built from relays, vacuum tubes or transistors"
+    - "build a half adder from XOR and AND and use it to add two bits"
 translation_of: de
-based_on: 2026-10-22
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 A computer does not calculate with numbers but with bits, and every
 calculation can be broken down into very small steps, each turning one or two

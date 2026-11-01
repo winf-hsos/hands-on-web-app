@@ -3,6 +3,14 @@ type: quiz
 code: 4381
 title: "Quiz: Erste Programme"
 summary: Sechs Fragen zu Werten, Variablen, Text, Rechnen und eigenen Funktionen in Python.
+objectives:
+  intro: "Mit diesem Quiz prüfst du in sechs Fragen, ob du Folgendes kannst:"
+  goals:
+    - "vorhersagen, was `+` bei zwei Texten ergibt und welchen Typ der Wert aus `input()` hat"
+    - "die Ergebnisse von `//` und `%` ausrechnen"
+    - "gültige Variablennamen von ungültigen und reservierten unterscheiden"
+    - "erkennen, dass eine Funktion ohne `return` den Wert `None` liefert"
+    - "einen `NameError` auf seine wahrscheinliche Ursache zurückführen"
 level: 1
 duration: 8
 topics: [programming-with-python]
@@ -10,7 +18,7 @@ modules: [dup]
 relations:
   checks: [python-first-program, python-values-and-variables, python-working-with-text, python-arithmetic, python-functions]
 status: draft
-updated: 2026-10-26
+updated: 2026-11-01
 ---
 
 ## Was gibt `print("3" + "4")` aus?

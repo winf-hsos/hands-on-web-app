@@ -35,6 +35,16 @@ const url = (v) => {
     return 'expected a full URL';
   }
 };
+// what a learner takes away: a sentence that leads into a list of goals (Nicolas, 2026-11-01)
+const objectives = (v) => {
+  if (!v || typeof v !== 'object' || Array.isArray(v)) return 'expected intro and goals';
+  const extra = Object.keys(v).find((k) => !['intro', 'goals'].includes(k));
+  if (extra) return `unknown field ${extra} (allowed: intro, goals)`;
+  const intro = text(v.intro);
+  if (intro) return `intro: ${intro}`;
+  const goals = list(text, 1)(v.goals);
+  return goals ? `goals: ${goals}` : null;
+};
 const step = (v) =>
   typeof v === 'string'
     ? id(v)
@@ -139,9 +149,10 @@ function shapes(vocabulary) {
           recordings: list(recording, 1),
           file: text,
           areas: inAreas,
+          objectives,
         },
       },
-      translation,
+      translation: { required: translation.required, optional: { objectives } },
     },
     paths: {
       lead: {
@@ -500,6 +511,7 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
       if (!file) warnings.push(`${doc.section}/${doc.id}: no ${lang} version`);
       else if (file.data.based_on && file.data.based_on < doc.lead.updated)
         warnings.push(`${file.path}: translation is older than its lead file`);
+      if (file && doc.section === 'content' && !file.data.objectives) warnings.push(`${file.path}: no objectives (what you learn)`);
     }
   }
   // A demo page says above the demonstrator what it is for and how to use it,

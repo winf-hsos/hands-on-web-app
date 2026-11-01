@@ -5,6 +5,14 @@ title: "Übung: Der Wocheneinkauf"
 summary: >-
   Ein Kassenbon als Vektoren: Du rechnest die Summe aus, zählst teure
   Artikel und gehst mit einem Preis um, der auf dem Bon fehlt.
+objectives:
+  intro: "In dieser Übung wertest du einen Kassenbon mit Vektoren aus, auf dem ein Preis fehlt, und kannst danach:"
+  goals:
+    - "Preise und Mengen als Vektoren Stelle für Stelle multiplizieren und mit `sum()` aufsummieren"
+    - "einen fehlenden Preis mit `na.rm = TRUE` ausdrücklich aus Summe und Zählung herausnehmen"
+    - "mit `sum()` über einen Vergleich zählen, wie viele Artikel mehr als einen bestimmten Preis kosten"
+    - "mit `%in%` und eckigen Klammern Artikel auswählen und ihren Anteil am bekannten Gesamtbetrag berechnen"
+    - "beurteilen, welche Antworten sich ändern, sobald der fehlende Preis bekannt ist"
 level: 1
 duration: 20
 topics: [programming-with-r]
@@ -13,7 +21,7 @@ areas: [ds]
 relations:
   requires: [r-missing-values]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
 
 ## Aufgabe

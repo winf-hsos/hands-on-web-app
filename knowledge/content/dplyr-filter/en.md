@@ -4,11 +4,17 @@ summary: >-
   With filter() you keep the rows for which a condition holds: comparisons,
   several conditions, sets with %in%, and why missing values follow rules of
   their own.
+objectives:
+  intro: "This lesson shows you how to pick the rows of a table with `filter()`, and afterwards you can:"
+  goals:
+    - "keep the rows for which a condition holds with `filter()` and a comparison, for numbers as well as for text in quotation marks"
+    - "combine several conditions with commas, `&` and `|` and reverse them with `!`"
+    - "filter against a list with `%in%` and against a range of numbers with `between()`"
+    - "find missing values with `is.na()` and explain why rows with `NA` in the condition silently drop out"
+    - "use `filter()` to track down implausible values before they distort an analysis"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 `select()` picks columns, `filter()` picks rows. You state a **condition**, R
 checks it for every row, and only the rows for which it is true remain in the

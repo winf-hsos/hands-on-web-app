@@ -6,6 +6,13 @@ summary: >-
   Zu zweit Wörter durch Klopfen und Klatschen übertragen, erst mit gleich
   langen, dann mit verschieden langen Codewörtern, und messen, was schneller
   und was sicherer ist.
+objectives:
+  intro: "In diesem Experiment baust du mit einer zweiten Person einen eigenen Klopfcode und kannst danach:"
+  goals:
+    - "berechnen, wie viele Signale ein gleich langes Codewort für acht Zeichen mindestens braucht"
+    - "einen Code mit verschieden langen Codewörtern entwerfen, in dem kein Codewort der Anfang eines anderen ist"
+    - "gleich lange und verschieden lange Codewörter anhand von Signalen, Zeit und Fehlern vergleichen"
+    - "erklären, warum eine heimlich geänderte Tabelle keinen Fehler meldet, sondern ein anderes Wort liefert"
 level: 1
 duration: 30
 topics: [representing-information, transferring-information]
@@ -14,10 +21,8 @@ relations:
   requires: [code-as-agreement]
   see_also: [prefix-free-code]
 status: draft
-updated: 2026-10-21
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 In diesem Experiment baust du mit einer zweiten Person einen eigenen Code und
 überträgst damit Wörter, ohne zu sprechen. Ihr habt nur zwei Signale: einmal

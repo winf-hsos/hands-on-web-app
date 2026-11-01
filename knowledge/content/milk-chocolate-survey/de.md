@@ -6,6 +6,14 @@ summary: >-
   Eine Online-Befragung von 2.811 Menschen zu Einkauf, Ernährung und
   Einstellungen, mit zwei Teilstudien zu Schokolade und Milch: echte Daten mit
   Filterfragen, Experimenten und allem, was beim Auswerten dazugehört.
+objectives:
+  intro: "Mit diesem Datensatz übst du an einer echten Befragung mit Filterfragen und Experimenten, wie man eine Marktforschungsstudie auswertet, und kannst damit:"
+  goals:
+    - "am Anfang eines Spaltennamens den Fragenblock ablesen und Rohdaten, aufbereitete Spalten und Textfassungen mit `f` am Ende unterscheiden"
+    - "erklären, warum ein fehlender Wert hier meist „nicht gefragt“ bedeutet und das Entfernen von `NA` die betrachtete Gruppe verändert"
+    - "Zahlencodes wie in `q004geschlecht` mithilfe der Spalten mit `f` am Ende deuten"
+    - "die zufällig gebildeten Gruppen eines eingebetteten Experiments über die Spalten mit `a` am Anfang vergleichen"
+    - "einschätzen, für wen die Ergebnisse einer quotierten Online-Stichprobe sprechen und für wen nicht"
 authors: [Ulrich Enneking]
 year: 2025
 file: mds12_schoko_milch.csv
@@ -17,10 +25,8 @@ areas: [ds]
 relations:
   see_also: [r-data-frames]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Prof. Dr. Ulrich Enneking (Fachgebiet Agrarmarketing, Hochschule Osnabrück)
 hat im November 2025 Menschen in ganz Deutschland online befragt, die für

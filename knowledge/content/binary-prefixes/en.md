@@ -5,6 +5,14 @@ title: "Kilo and kibi: the missing gigabytes"
 summary: >-
   A 1 TB disk shows up as 931 GB, and not a single byte is missing: there are
   two ladders of units, one in steps of 1000 and one in steps of 1024.
+objectives:
+  intro: "This lesson explains why a 1 TB disk shows up as only 931 GB, and afterwards you can:"
+  goals:
+    - "distinguish the decimal ladder of units in steps of 1000 from the binary ladder in steps of 1024"
+    - "explain why memory is counted in powers of two and why 2¹⁰ = 1024 is the power of two closest to 1000"
+    - "work out how a trillion bytes becomes 931 binary gigabytes"
+    - "estimate how far apart the two ladders are at each step"
+    - "use the units KiB, MiB, GiB and TiB correctly and tell them apart from kB, MB, GB and TB"
 level: 1
 duration: 10
 topics: [storing-information]
@@ -12,10 +20,8 @@ modules: [dup]
 relations:
   requires: [byte]
 status: draft
-updated: 2026-10-30
+updated: 2026-11-01
 ---
-
-## What this is about
 
 The box says 1 terabyte, the computer says 931 gigabytes, and not a single
 byte has gone missing. There are two ladders of units, and because they share

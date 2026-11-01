@@ -5,6 +5,14 @@ title: "Quiz: number systems"
 summary: >-
   Twelve questions on place value, binary and hexadecimal numbers, bits and
   bytes, and the two ladders of units. Every answer comes with its reason.
+objectives:
+  intro: "This quiz lets you check in twelve questions whether you can:"
+  goals:
+    - "read numbers in base 10, 8, 2 and 16 by the rule of digit times place value"
+    - "count in binary and write a number such as 13 in binary"
+    - "explain why ten is only anatomy and why computers work in base 2"
+    - "explain bits and bytes and show why a byte fits into exactly two hex digits"
+    - "explain why a 1 TB disk shows up as only 931 GB"
 level: 1
 duration: 15
 topics: [representing-information]
@@ -12,7 +20,7 @@ modules: [dup]
 relations:
   checks: [place-value-systems, binary-numbers, why-two-states, bit, byte, hexadecimal, binary-prefixes]
 status: draft
-updated: 2026-10-30
+updated: 2026-11-01
 ---
 
 ## Why does the digit sequence 123 mean one hundred and twenty-three? {#ns-001}

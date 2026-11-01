@@ -3,11 +3,16 @@ title: The pipe
 summary: >-
   The symbol |> passes a result on to the next function and turns nested
   brackets into a chain you read from top to bottom.
+objectives:
+  intro: "This lesson introduces the pipe `|>`, which joins several steps into a readable chain, and afterwards you can:"
+  goals:
+    - "explain how `|>` passes the result on its left as the first argument to the function on its right"
+    - "write a call such as `nrow(survey)` as `survey |> nrow()` and read it as \"and then\""
+    - "translate nested calls into a chain in which every step has a line of its own"
+    - "recognise `%>%` in older examples as the pipe from the package `magrittr`, which behaves the same for a start"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 An analysis consists of several steps: selecting rows, selecting columns,
 sorting, summarising. If you nest the functions for them inside each other,

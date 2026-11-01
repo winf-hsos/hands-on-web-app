@@ -5,16 +5,21 @@ title: R als Taschenrechner
 summary: >-
   Der erste Kontakt mit R: rechnen, Klammern setzen, ganzzahlig teilen und
   Kommentare schreiben, direkt im Browser.
+objectives:
+  intro: "In dieser Lektion lernst du R von seiner einfachsten Seite kennen, als Taschenrechner im Browser, und kannst danach:"
+  goals:
+    - "mit `+`, `-`, `*`, `/` und `^` rechnen und dabei Punkt vor Strich und Klammern berücksichtigen"
+    - "Dezimalzahlen in R mit Punkt statt Komma schreiben"
+    - "mit `%/%` ohne Rest teilen und mit `%%` den Rest berechnen, etwa um ein Alter seinem Jahrzehnt zuzuordnen"
+    - "Kommentare hinter `#` schreiben, die deinen Code erklären"
 level: 1
 duration: 8
 topics: [programming-with-r]
 modules: [ea]
 areas: [ds]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 R ist eine Programmiersprache, die für die Arbeit mit Daten gemacht wurde.
 Bevor es um Daten geht, lernst du R von seiner einfachsten Seite kennen: als

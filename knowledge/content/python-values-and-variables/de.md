@@ -5,6 +5,14 @@ title: Werte und Variablen
 summary: >-
   Programme rechnen mit Zahlen und Texten. Damit sie einen Wert später
   wiederfinden, geben sie ihm einen Namen, und genau das ist eine Variable.
+objectives:
+  intro: "In dieser Lektion lernst du, was Werte und Variablen sind, und kannst danach:"
+  goals:
+    - "die Datentypen `int`, `float` und `str` unterscheiden und mit `type()` den Typ eines Werts abfragen"
+    - "Kommazahlen mit Punkt schreiben und erklären, warum eine Zahl in Anführungszeichen ein Text ist"
+    - "eine Variable mit `=` anlegen, ihr einen neuen Wert zuweisen und eine Zeile wie `count = count + 1` lesen"
+    - "Variablennamen wählen, die den Regeln von Python folgen und verständlich sagen, was in der Variablen steckt"
+    - "vorhersagen, was `+` bei Zahlen und bei Texten bewirkt und wann Python einen `TypeError` meldet"
 level: 1
 duration: 20
 topics: [programming-with-python]
@@ -12,10 +20,8 @@ modules: [dup]
 relations:
   requires: [python-first-program]
 status: draft
-updated: 2026-10-26
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Fast jedes Programm arbeitet mit **Werten**: einer Temperatur, einem Preis,
 einem Namen. Python unterscheidet dabei verschiedene Arten von Werten, und von

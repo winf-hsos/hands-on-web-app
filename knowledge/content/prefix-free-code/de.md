@@ -6,6 +6,13 @@ summary: >-
   Ein Code, bei dem kein Codewort der Anfang eines anderen ist. Er lässt sich
   ohne Trennzeichen eindeutig lesen, auch wenn die Codewörter verschieden lang
   sind.
+objectives:
+  intro: "Wenn du weißt, was ein präfixfreier Code ist, kannst du:"
+  goals:
+    - "prüfen, ob in einer Codetabelle ein Codewort der Anfang eines anderen ist"
+    - "eine Folge wie `01011` mit einer präfixfreien Tabelle eindeutig zerlegen und an einer anderen Tabelle zeigen, wie Mehrdeutigkeit entsteht"
+    - "erklären, warum verschieden lange Codewörter ohne Trennzeichen nur dann eindeutig lesbar sind, wenn der Code präfixfrei ist"
+    - "Telefonvorwahlen als präfixfreien Code und den Morsecode als Gegenbeispiel einordnen"
 level: 2
 duration: 10
 topics: [representing-information]
@@ -13,7 +20,7 @@ modules: [dup]
 relations:
   deepens: [code-as-agreement]
 status: draft
-updated: 2026-10-21
+updated: 2026-11-01
 ---
 
 ## Definition

@@ -3,8 +3,15 @@ title: "Exercise: Converting seconds"
 summary: >-
   A function of your own turns a number of seconds into a readable duration
   such as 2 h 5 min 7 s, and a small main program asks for it.
+objectives:
+  intro: "In this exercise you write a function of your own that turns seconds into a readable duration, and afterwards you can:"
+  goals:
+    - "split a number of seconds step by step into hours, minutes and seconds with `//` and `%`"
+    - "write a function that returns its result as text with `return` instead of printing it"
+    - "keep input and output in a `main` function, separate from the actual calculation"
+    - "test a function on its own with values whose result you know by heart, such as 59, 60, 3600 and 3661 seconds"
 translation_of: de
-based_on: 2026-10-26
+based_on: 2026-11-01
 ---
 
 ## Task
@@ -26,8 +33,10 @@ How many seconds? 7507
 
 ```python
 def main():
-    seconds = int(input("How many seconds? "))
-    print(f"{seconds} seconds are {format_duration(seconds)}.")
+    answer = input("How many seconds? ")
+    seconds = int(answer)
+    duration = format_duration(seconds)
+    print(f"{seconds} seconds are {duration}.")
 
 
 def format_duration(seconds):
@@ -54,8 +63,10 @@ own. To do so, temporarily replace the last line with
 > [!SOLUTION]
 > ```python
 > def main():
->     seconds = int(input("How many seconds? "))
->     print(f"{seconds} seconds are {format_duration(seconds)}.")
+>     answer = input("How many seconds? ")
+>     seconds = int(answer)
+>     duration = format_duration(seconds)
+>     print(f"{seconds} seconds are {duration}.")
 >
 >
 > def format_duration(seconds):

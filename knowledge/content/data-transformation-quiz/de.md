@@ -3,6 +3,14 @@ type: quiz
 code: 6400
 title: "Quiz: Daten transformieren"
 summary: Sechs Fragen zu den Grundoperationen, Tidy Data, select(), filter() und fehlenden Werten.
+objectives:
+  intro: "Mit diesem Quiz prüfst du, ob du Folgendes kannst:"
+  goals:
+    - "zu einer Frage die passende Grundoperation wählen, etwa Zeilen filtern statt Spalten auswählen"
+    - "unterscheiden, wann `summarize()` eine einzige Zeile und wann es mit `group_by()` davor eine Zeile je Gruppe liefert"
+    - "erkennen, dass eine Tabelle nicht tidy ist, wenn eine Variable wie das Jahr in den Spaltennamen steckt"
+    - "vorhersagen, welche Zeilen und Spalten `select()` mit `starts_with()` und `filter()` mit `%in%` und mehreren Bedingungen liefern"
+    - "erklären, warum `== NA` keine Zeile findet und man fehlende Werte mit `is.na()` sucht"
 level: 1
 duration: 8
 topics: [transforming-data]
@@ -11,7 +19,7 @@ areas: [ds]
 relations:
   checks: [data-transformation-basics, tidy-data, dplyr-select, dplyr-filter]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
 
 ## Du willst nur die Befragten aus Bayern betrachten. Welche Operation brauchst du?

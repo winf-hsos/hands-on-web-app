@@ -4,11 +4,17 @@ summary: >-
   Set the LED to pure red and read what the sensor makes of it, then change
   the light, a hand and the distance, and end up facing the question of how to
   work back from four numbers to the colour that was sent.
+objectives:
+  intro: "In this experiment you compare the colour you send to the LED with what the sensor measures from it, and afterwards you can:"
+  goals:
+    - "write down an expectation before measuring and compare it with the readings afterwards"
+    - "explain why the sensor reports values in `g`, `b` and `c` as well when the LED shows pure red `(255, 0, 0)`"
+    - "carry out a measurement series in which you change exactly one condition at a time and read each condition five times"
+    - "describe how the ceiling light, a hand in the beam and the distance change the four values, and how much they vary even without any change"
+    - "argue why you cannot simply calculate back from the readings to the colour that was sent"
 translation_of: de
 based_on: 2026-11-01
 ---
-
-## What this is about
 
 You give the LED a colour whose numbers you know exactly and read what the
 sensor makes of it. Something different comes out from what you put in, and

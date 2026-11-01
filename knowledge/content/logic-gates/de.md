@@ -5,15 +5,20 @@ title: Logikgatter
 summary: >-
   Die kleinsten Bausteine, aus denen ein Computer rechnet: Schaltungen, die aus
   einem oder zwei Bits nach einer festen Regel ein neues Bit machen.
+objectives:
+  intro: "In dieser Lektion lernst du die Logikgatter kennen, mit denen ein Computer rechnet, und kannst danach:"
+  goals:
+    - "die Gatter NOT, AND, OR, XOR, NAND und NOR an ihrer Regel unterscheiden"
+    - "für jedes Gatter mit zwei Eingängen die Wahrheitstabelle aufstellen und lesen"
+    - "erklären, dass ein Gatter eine Regel ist, die sich mit Relais, Röhren oder Transistoren bauen lässt"
+    - "einen Halbaddierer aus XOR und AND zusammensetzen und damit zwei Bits addieren"
 level: 1
 duration: 15
 topics: [processing-information]
 modules: [dup]
 status: draft
-updated: 2026-10-22
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Ein Computer rechnet nicht mit Zahlen, sondern mit Bits, und jede Rechnung
 lässt sich in sehr kleine Schritte zerlegen, die jeweils aus ein oder zwei Bits

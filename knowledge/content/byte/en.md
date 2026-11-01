@@ -5,6 +5,12 @@ title: Byte
 summary: >-
   Eight bits in one packet, with 2⁸ = 256 possible values. Read as a number, a
   byte runs from 0 to 255.
+objectives:
+  intro: "Once you know what a byte is, you can:"
+  goals:
+    - "explain why a byte of eight bits can take 256 values from 0 to 255"
+    - "work out the value of a byte such as `01000001` as the sum of its place values"
+    - "explain why a byte is a unit of packaging whose meaning is set by an agreement"
 level: 1
 duration: 5
 topics: [representing-information, storing-information]
@@ -13,7 +19,7 @@ relations:
   requires: [binary-numbers]
   see_also: [bit, hexadecimal]
 status: draft
-updated: 2026-10-30
+updated: 2026-11-01
 ---
 
 ## Definition

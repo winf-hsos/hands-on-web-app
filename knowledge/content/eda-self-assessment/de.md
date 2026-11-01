@@ -6,6 +6,14 @@ summary: >-
   Dreizehn Aufgaben an echten Produktdaten: einen Überblick verschaffen,
   transformieren, visualisieren und genau hinsehen. So prüfst du, ob du für
   die explorative Datenanalyse bereit bist.
+objectives:
+  intro: "Mit diesem Selbsttest prüfst du an echten Produktdaten aus dem REWE-Onlineshop, ob du für die explorative Datenanalyse bereit bist, also ob du Folgendes kannst:"
+  goals:
+    - "dir mit `glimpse()` einen Überblick über Spalten, Typen und Werte verschaffen und mit `distinct()` Dubletten aufdecken"
+    - "gezielte Fragen an eine Tabelle mit `arrange()`, `select()`, `filter()`, `count()` und `mutate()` beantworten"
+    - "Spalten mit `where()` nach ihrem Typ auswählen und mit `as.character()` oder `across()` umwandeln"
+    - "mit `ggplot2` Balkendiagramm, Histogramm, Boxplot und gestapelte Anteilsbalken mit `position = \"fill\"` zeichnen"
+    - "an der Verteilung unplausible Werte erkennen, etwa Kilojoule, die als Kilokalorien eingetragen wurden"
 level: 2
 duration: 60
 topics: [exploring-data, transforming-data, visualising-data]
@@ -14,10 +22,8 @@ areas: [ds]
 relations:
   see_also: [r-for-data-science, fundamentals-of-data-visualization]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Mit diesem Selbsttest prüfst du, ob du die Grundlagen beherrschst, mit denen
 die explorative Datenanalyse beginnt. Wenn du den Teil *Whole game* aus

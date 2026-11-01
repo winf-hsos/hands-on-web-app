@@ -3,11 +3,16 @@ title: The Universal History of Numbers
 summary: >-
   Georges Ifrah erzählt, woher unsere Ziffern kommen, warum die Null so lange
   auf sich warten ließ und in wie vielen anderen Basen Menschen gezählt haben.
+objectives:
+  intro: "Aus diesem Buch nimmst du die lange Geschichte unserer Zahlen mit und kannst danach:"
+  goals:
+    - "den Weg der Zahlen von Kerben in Knochen über die Zahlsysteme Babylons, Ägyptens, Griechenlands, Chinas und der Maya bis zu den indischen Ziffern nachzeichnen, die über die arabische Welt nach Europa kamen"
+    - "an Beispielen wie der Zwanzig der Maya und der Sechzig in Stunden und Minuten zeigen, dass Menschen in verschiedenen Basen gezählt haben"
+    - "erläutern, dass die Idee des Stellenwerts mehr als einmal erfunden wurde und erst mit der Null richtig funktionierte"
+    - "begründen, warum die Zehn als Basis nur auf die Zahl unserer Finger zurückgeht"
 translation_of: en
-based_on: 2026-10-30
+based_on: 2026-11-01
 ---
-
-## Worum es geht
 
 Georges Ifrah verfolgt die Zahlen von Kerben in Knochen über die Zahlsysteme
 Babylons, Ägyptens, Griechenlands, Chinas und der Maya bis zu den indischen

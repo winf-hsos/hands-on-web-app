@@ -3,8 +3,16 @@ title: Claude Shannon
 summary: >-
   Showed that circuits can calculate the way logic does, and with the bit
   founded information theory, on which every digital transmission rests.
+objectives:
+  intro: "After this portrait you know who Claude Shannon was and what he contributed to the foundations of computer science, and you can:"
+  goals:
+    - "show that two switches in a row behave like an AND and two side by side like an OR, and explain why circuits can therefore calculate"
+    - "describe the bit as the answer to a yes-or-no question"
+    - "explain why the amount of information in a message depends on how surprising it is, not on what it means"
+    - "explain why shorter codewords for frequent symbols save bits on average"
+    - "explain what the capacity of a line says about reliable transmission despite noise"
 translation_of: de
-based_on: 2026-10-26
+based_on: 2026-11-01
 ---
 
 ## Who he is

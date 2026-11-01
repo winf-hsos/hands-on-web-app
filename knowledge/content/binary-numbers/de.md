@@ -3,11 +3,17 @@ title: Binär zählen
 summary: >-
   Die Stellenwert-Bauanleitung mit nur zwei Ziffern: wie man zur Basis 2
   zählt, eine Binärzahl liest und eine Zahl selbst binär aufschreibt.
+objectives:
+  intro: "In dieser Lektion lernst du, im Zweiersystem zu zählen, zu lesen und zu schreiben, und kannst danach:"
+  goals:
+    - "binär zählen und erklären, wann eine Stelle überläuft und eine neue dazukommt"
+    - "eine Binärzahl wie `110` mit den Stellenwerten 1, 2, 4 und 8 ins Zehnersystem umrechnen"
+    - "eine Zahl wie 13 ins Binärsystem übertragen, indem du von der größten passenden Zweierpotenz ausgehst"
+    - "dein Ergebnis in Python mit `bin()` und `int(\"1101\", 2)` prüfen"
+    - "an der letzten Ziffer erkennen, ob eine Binärzahl gerade oder ungerade ist"
 translation_of: en
-based_on: 2026-10-30
+based_on: 2026-11-01
 ---
-
-## Worum es geht
 
 Die Basis 2 ist der [[place-value-systems|Trick mit dem Stellenwert]] am
 Anschlag: Es bleiben nur die Ziffern 0 und 1. An der Bauanleitung ändert sich

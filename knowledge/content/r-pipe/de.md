@@ -5,6 +5,13 @@ title: Die Pipe
 summary: >-
   Das Zeichen |> reicht ein Ergebnis an die nächste Funktion weiter und macht
   aus geschachtelten Klammern eine Kette, die man von oben nach unten liest.
+objectives:
+  intro: "In dieser Lektion lernst du die Pipe `|>` kennen, die mehrere Schritte zu einer lesbaren Kette verbindet, und kannst danach:"
+  goals:
+    - "erklären, wie `|>` das Ergebnis links als erstes Argument an die Funktion rechts weiterreicht"
+    - "einen Aufruf wie `nrow(survey)` als `survey |> nrow()` schreiben und als „und dann“ lesen"
+    - "geschachtelte Aufrufe in eine Kette übersetzen, in der jeder Schritt eine eigene Zeile hat"
+    - "`%>%` aus älteren Beispielen als Pipe aus dem Paket `magrittr` erkennen, die sich für den Anfang genauso verhält"
 level: 1
 duration: 8
 topics: [programming-with-r]
@@ -13,10 +20,8 @@ areas: [ds]
 relations:
   requires: [r-data-frames, r-packages]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Eine Auswertung besteht aus mehreren Schritten: Zeilen auswählen, Spalten
 auswählen, sortieren, zusammenfassen. Schachtelt man die Funktionen dafür

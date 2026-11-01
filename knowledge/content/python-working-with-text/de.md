@@ -6,6 +6,14 @@ summary: >-
   Programme fragen nach Eingaben, setzen Texte zusammen und bringen sie in
   Form. Dazu gehören input, f-Strings, ein paar nützliche Methoden und das
   Umwandeln von Text in Zahlen.
+objectives:
+  intro: "In dieser Lektion lernst du, mit Eingaben und Texten zu arbeiten, und kannst danach:"
+  goals:
+    - "mit `input()` nach einer Eingabe fragen und erklären, warum die Antwort immer ein String ist"
+    - "Texte mit `+` verbinden, mit `*` vervielfachen und Werte mit f-Strings direkt in einen Text einsetzen"
+    - "Eingaben mit den Methoden `strip()`, `lower()`, `upper()`, `title()` und `replace()` aufräumen und diese dabei hintereinander hängen"
+    - "mit `len()` die Zeichen eines Texts zählen"
+    - "Text mit `int()` und `float()` in Zahlen umwandeln und mit `str()` zurück und den `ValueError` erkennen, den eine unpassende Eingabe auslöst"
 level: 1
 duration: 20
 topics: [programming-with-python]
@@ -13,10 +21,8 @@ modules: [dup]
 relations:
   requires: [python-values-and-variables]
 status: draft
-updated: 2026-10-26
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 Bisher haben deine Programme immer dasselbe ausgegeben. Spannend wird es, wenn
 ein Programm nachfragt und mit der Antwort weiterarbeitet. Dafür gibt es in

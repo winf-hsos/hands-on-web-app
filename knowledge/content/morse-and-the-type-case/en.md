@@ -4,8 +4,16 @@ summary: >-
   For their telegraph code, Samuel Morse and Alfred Vail are said to have
   counted type in a printing shop. The story shows why frequent characters
   deserve short code words, and what that costs.
+objectives:
+  intro: "This story tells how E got its single dot in Morse code, and afterwards you can:"
+  goals:
+    - "explain why a telegraph had to translate every letter into a sequence of short and long signals"
+    - "describe how a printer's type case could serve as a frequency table of the language"
+    - "explain why frequent letters such as E and T get short code words and rare ones such as Q longer ones"
+    - "explain why code words of different lengths need pauses as part of the code, and how a pause that is too short turns an I into two Es"
+    - "describe why Gerke did away with the gaps inside letters in 1848"
 translation_of: de
-based_on: 2026-10-21
+based_on: 2026-11-01
 ---
 
 ## A problem with the wire

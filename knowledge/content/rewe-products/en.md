@@ -4,11 +4,16 @@ summary: >-
   A good 9,400 groceries and drugstore items with price, category, origin,
   organic label and nutrition values: real data with gaps, duplicates and a
   few values that cannot be right.
+objectives:
+  intro: "With this data set you practise exploratory data analysis on real product data with gaps, duplicates and faulty values, and with it you can:"
+  goals:
+    - "analyse products by category, origin, price and organic label"
+    - "explain why many products lack nutrition values and why `vegan` and `vegetarian` are rarely given"
+    - "find rows that occur more than once and count the distinct products by `product_id`"
+    - "track down nutrition values that cannot be right"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 The data come from the online shop of REWE, a German supermarket chain, and
 were collected for teaching; they are in the repository for the data

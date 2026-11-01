@@ -4,11 +4,17 @@ summary: >-
   Hardly any question can be read straight off raw data. A handful of basic
   operations turns a table into the table that holds the answer, in R,
   Python, SQL or Excel.
+objectives:
+  intro: "This lesson explains what transforming data means, and afterwards you can:"
+  goals:
+    - "explain why a question can rarely be read straight off raw data and what transforming data means"
+    - "name the basic operations of selecting columns, filtering rows, sorting, computing new columns, summarising and grouping, and state what each changes in a table"
+    - "explain why the operations can be chained in any order"
+    - "plan a question about data as a sequence of basic operations before writing any code"
+    - "match each operation to its verb in `dplyr`, such as `select()` or `filter()`, and to its counterpart in SQL, pandas and Excel"
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-01
 ---
-
-## What this is about
 
 Suppose you have a survey with a few thousand respondents in front of you and
 want to know whether people who eat vegan or vegetarian buy more organic food

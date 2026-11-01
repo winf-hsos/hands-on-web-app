@@ -3,8 +3,14 @@ title: Morse code
 summary: >-
   A code of short and long signals separated by pauses. It works with current,
   sound and light, and gives frequent letters short signs.
+objectives:
+  intro: "Once you know Morse code, you can:"
+  goals:
+    - "describe how Morse code builds characters from dots, dashes and pauses"
+    - "give the lengths of the dot, the dash and the three pauses as multiples of the basic unit"
+    - "explain why Morse code is not prefix-free and why the pauses are therefore part of the code"
 translation_of: de
-based_on: 2026-10-22
+based_on: 2026-11-01
 ---
 
 ## Definition

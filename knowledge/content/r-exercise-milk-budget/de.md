@@ -5,6 +5,13 @@ title: "Übung: Was kostet die Milch im Jahr?"
 summary: >-
   Ein Haushalt trinkt jede Woche Milch: Du rechnest mit Namen und Funktionen
   aus, was das im Jahr kostet und wie viel ein Wechsel der Marke spart.
+objectives:
+  intro: "In dieser Übung rechnest du mit R aus, was Milch einen Haushalt im Jahr kostet und wie viel ein Wechsel der Marke spart, und kannst danach:"
+  goals:
+    - "Zwischenergebnisse mit `<-` unter aussagekräftigen Namen ablegen, statt alles in eine lange Rechnung zu schreiben"
+    - "Jahreskosten und Ersparnis aus Menge und Literpreis berechnen und mit `round()` auf ganze Euro runden"
+    - "mit `%/%` und `%%` bestimmen, wie oft ein Betrag in einen anderen passt und was übrig bleibt"
+    - "eine Rechnung so aufbauen, dass eine geänderte Annahme nur eine einzige Zahl im Code ändert"
 level: 1
 duration: 15
 topics: [programming-with-r]
@@ -13,7 +20,7 @@ areas: [ds]
 relations:
   requires: [r-functions]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
 
 ## Aufgabe

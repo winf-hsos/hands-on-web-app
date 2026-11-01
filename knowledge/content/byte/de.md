@@ -3,8 +3,14 @@ title: Byte
 summary: >-
   Acht Bit in einem Päckchen, mit 2⁸ = 256 möglichen Werten. Als Zahl gelesen
   reicht ein Byte von 0 bis 255.
+objectives:
+  intro: "Wenn du weißt, was ein Byte ist, kannst du:"
+  goals:
+    - "begründen, warum ein Byte aus acht Bit 256 Werte von 0 bis 255 annehmen kann"
+    - "den Wert eines Bytes wie `01000001` als Summe seiner Stellenwerte berechnen"
+    - "erklären, warum ein Byte eine Verpackungseinheit ist, deren Bedeutung eine Vereinbarung festlegt"
 translation_of: en
-based_on: 2026-10-30
+based_on: 2026-11-01
 ---
 
 ## Definition

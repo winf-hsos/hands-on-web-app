@@ -6,6 +6,14 @@ summary: >-
   Mit filter() behältst du die Zeilen, für die eine Bedingung zutrifft:
   Vergleiche, mehrere Bedingungen, Mengen mit %in%, und warum fehlende Werte
   dabei eigene Regeln haben.
+objectives:
+  intro: "In dieser Lektion lernst du, mit `filter()` die Zeilen einer Tabelle auszuwählen, und kannst danach:"
+  goals:
+    - "mit `filter()` und einem Vergleich die Zeilen behalten, für die eine Bedingung zutrifft, bei Zahlen wie bei Texten in Anführungszeichen"
+    - "mehrere Bedingungen mit Komma, `&` und `|` verknüpfen und mit `!` umkehren"
+    - "mit `%in%` gegen eine Liste und mit `between()` gegen einen Zahlenbereich filtern"
+    - "fehlende Werte mit `is.na()` finden und erklären, warum Zeilen mit `NA` in der Bedingung stillschweigend herausfallen"
+    - "mit `filter()` unplausible Werte aufspüren, bevor sie eine Auswertung verzerren"
 level: 1
 duration: 25
 topics: [transforming-data, programming-with-r]
@@ -15,10 +23,8 @@ relations:
   requires: [r-comparisons, r-pipe]
   see_also: [dplyr-select]
 status: draft
-updated: 2026-10-27
+updated: 2026-11-01
 ---
-
-## Worum es geht
 
 `select()` wählt Spalten, `filter()` wählt Zeilen. Du gibst eine
 **Bedingung** an, R prüft sie für jede Zeile, und im Ergebnis bleiben nur die
