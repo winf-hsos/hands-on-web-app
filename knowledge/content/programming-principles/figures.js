@@ -79,20 +79,23 @@
   const ROW = 190, IN_X = 220, BOX = { x: 520, y: 110, w: 560, h: 160 }, CUP_X = 1400, SAUCER_Y = 330;
   const BOX_MID = BOX.x + BOX.w / 2;
 
-  // a cup of cappuccino on its saucer, s = 1 for the large one
+  // a cup of cappuccino on its saucer, as a solid shape like an icon, s = 1
+  // for the large one: a round bowl with a handle, the coffee seen from above
+  // as an ellipse at the rim, three wisps of steam
   const cup = (s) => {
     const c = d.colors();
-    const stroke = `stroke="${c.light}" stroke-width="3"`;
-    const top = SAUCER_Y - 12 * s - 150 * s, bottom = SAUCER_Y - 12 * s;
     const x = (dx) => CUP_X + dx * s;
-    const steam = (dx) => `<path d="M${x(dx)},${top - 24 * s} c${-14 * s},${-14 * s} ${14 * s},${-28 * s} 0,${-42 * s} c${-14 * s},${-14 * s} ${14 * s},${-28 * s} 0,${-42 * s}" fill="none" stroke="${c.gray}" stroke-width="3" stroke-linecap="round"/>`;
+    const bottom = SAUCER_Y - 10 * s, top = bottom - 120 * s, half = 100 * s;
+    const steam = (dx) =>
+      `<path d="M${x(dx)},${top - 28 * s} c${-12 * s},${-12 * s} ${12 * s},${-24 * s} 0,${-36 * s} c${-12 * s},${-12 * s} ${12 * s},${-24 * s} 0,${-36 * s}" fill="none" stroke="${c.gray}" stroke-width="${5 * s}" stroke-linecap="round"/>`;
     return [
-      `<ellipse cx="${CUP_X}" cy="${SAUCER_Y}" rx="${150 * s}" ry="${18 * s}" fill="${c.bg}" ${stroke}/>`,
-      `<path d="M${x(92)},${top + 30 * s} C${x(150)},${top + 30 * s} ${x(150)},${top + 100 * s} ${x(82)},${top + 105 * s}" fill="none" ${stroke}/>`,
-      `<path d="M${x(-100)},${top} L${x(100)},${top} L${x(75)},${bottom - 20 * s} Q${x(70)},${bottom} ${x(50)},${bottom} L${x(-50)},${bottom} Q${x(-70)},${bottom} ${x(-75)},${bottom - 20 * s} Z" fill="${c.bg}" ${stroke}/>`,
-      `<ellipse cx="${CUP_X}" cy="${top}" rx="${100 * s}" ry="${16 * s}" fill="${c.bg}" ${stroke}/>`,
-      steam(-30),
-      steam(30),
+      `<ellipse cx="${CUP_X}" cy="${SAUCER_Y}" rx="${150 * s}" ry="${16 * s}" fill="${c.gray}"/>`,
+      `<path d="M${x(88)},${top + 28 * s} C${x(160)},${top + 20 * s} ${x(158)},${top + 96 * s} ${x(62)},${top + 100 * s}" fill="none" stroke="${c.white}" stroke-width="${14 * s}" stroke-linecap="round"/>`,
+      `<path d="M${CUP_X - half},${top} L${CUP_X + half},${top} C${CUP_X + half},${top + 80 * s} ${x(62)},${bottom} ${CUP_X},${bottom} C${x(-62)},${bottom} ${CUP_X - half},${top + 80 * s} ${CUP_X - half},${top} Z" fill="${c.white}"/>`,
+      `<ellipse cx="${CUP_X}" cy="${top}" rx="${half}" ry="${18 * s}" fill="${c.dark}" stroke="${c.white}" stroke-width="${6 * s}"/>`,
+      steam(-36),
+      steam(0),
+      steam(36),
     ].join('');
   };
 
@@ -101,7 +104,8 @@
       const t = p.say(lang);
       const c = d.colors();
       const head = (x, text) => d.label(x, 0, text, { size: 32, anchor: 'middle', color: c.gray, centerY: 40 });
-      // '"klein"' is 7 characters of code type at 48 units, 212, centred at 220
+      // parameter values are always English: '"large"' is 7 characters of code
+      // type at 48 units, 202, centred at 220
       const param = (text) => d.label(IN_X, 0, `"${text}"`, { size: 48, mono: true, keepCase: true, anchor: 'middle', centerY: ROW });
       const arrow = { color: c.light, width: 3, head: 16 };
       return d.svg(
@@ -112,14 +116,14 @@
         head(CUP_X, t('Rückgabewert', 'return value')),
         // the moving copies lie under arrow and box, so the box swallows them
         d.g('route', d.line(IN_X, ROW, BOX_MID, ROW, { color: 'none' })),
-        d.g('token-big', param(t('groß', 'large'))),
-        d.g('token-small', param(t('klein', 'small'))),
+        d.g('token-big', param('large')),
+        d.g('token-small', param('small')),
         d.arrow(345, ROW, BOX.x - 5, ROW, arrow),
         // "make_cappuccino" is 15 characters of code type at 48 units, 455 of the 560
         d.box(BOX.x, BOX.y, BOX.w, BOX.h, 'make_cappuccino', { size: 48, mono: true, keepCase: true, width: 3, rx: 10 }),
         d.arrow(BOX.x + BOX.w + 15, ROW, 1225, ROW, arrow),
-        d.g('in-big', param(t('groß', 'large'))),
-        d.g('in-small', param(t('klein', 'small'))),
+        d.g('in-big', param('large')),
+        d.g('in-small', param('small')),
         d.g('cup-big', cup(1)),
         d.g('cup-small', cup(0.65)),
       );

@@ -121,7 +121,7 @@ sondern nur `shopping.append("Käse")`.
 
 Ob ein Wert in der Liste vorkommt, fragst du mit `in`. Die Antwort ist `True`
 oder `False`, ein Wahrheitswert, mit dem du in Teil 2 dieses Pfads
-Entscheidungen triffst:
+Entscheidungen triffst ([[python-conditions]]):
 
 ```python
 shopping = ["Milch", "Brot", "Äpfel"]
@@ -174,7 +174,7 @@ Mit einer Liste kannst du jetzt viele Werte halten, einzelne herausgreifen und
 alle zusammenfassen. Was dir noch fehlt, ist ein Weg, mit **jedem** Element
 etwas Eigenes anzufangen, etwa jede Temperatur in Fahrenheit umzurechnen oder
 jeden Einkauf auf eine eigene Zeile zu schreiben. Das ist die Aufgabe von
-Schleifen, und sie folgen in Teil 2 dieses Pfads.
+Schleifen, und sie folgen in Teil 3 dieses Pfads mit [[python-for-loops]].
 
 ## Zum Mitnehmen
 

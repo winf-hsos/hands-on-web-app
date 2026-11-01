@@ -144,7 +144,7 @@ im Programm: eine Folge von Schritten, die einen Namen bekommt, etwa
 `make_cappuccino`, damit man sie mit einem Wort aufrufen kann, statt die Schritte jedes Mal neu
 hinzuschreiben.
 
-![Links der Parameter "groß", in der Mitte ein Kasten mit der Funktion make_cappuccino, rechts unter Rückgabewert noch nichts. Abgespielt verschwindet der Parameter in der Funktion, und eine große Tasse Cappuccino kommt heraus; danach dasselbe mit "klein" und einer kleinen Tasse.](figure:machine "Dieselbe Funktion, zweimal aufgerufen: Der Parameter ändert sich, die Schritte im Inneren bleiben gleich.")
+![Links der Parameter "large", in der Mitte ein Kasten mit der Funktion make_cappuccino, rechts unter Rückgabewert noch nichts. Abgespielt verschwindet der Parameter in der Funktion, und eine große Tasse Cappuccino kommt heraus; danach dasselbe mit "small" und einer kleinen Tasse.](figure:machine "Dieselbe Funktion, zweimal aufgerufen: Der Parameter ändert sich, die Schritte im Inneren bleiben gleich.")
 
 Was du der Funktion beim Aufruf mitgibst, heißt **Parameter**, und was sie
 dir zurückgibt, **Rückgabewert**. Eine Funktion ist also ein kleines Programm
@@ -172,10 +172,11 @@ Computer überspringt, so wie die Bleistiftnotiz am Rand eines Rezepts.
 | Folge von Anweisungen | Rezept | [[python-first-program]] |
 | Variable | Behälter mit Aufkleber | [[python-values-and-variables]] |
 | Eingabe und Ausgabe | Pfandautomat | [[python-working-with-text]] |
-| Funktion | Kaffeemaschine | [[python-functions]] |
 | Liste | Zug mit nummerierten Wagen | [[python-lists]] |
-| Verzweigung | Türsteher | folgt in Teil 2 dieses Pfads |
-| Schleife | Zwiebeln schälen | folgt in Teil 2 dieses Pfads |
+| Funktion | Kaffeemaschine | [[python-functions]] |
+| Verzweigung | Türsteher | [[python-if-else]] |
+| Schleife | Zwiebeln schälen | [[python-for-loops]], [[python-while-loops]] |
+| Debugging | Kuchen, der nicht aufgeht | [[python-error-messages]] |
 
 Behalte die Bilder im Kopf, wenn du gleich mit Python anfängst. Die Sprache
 ist neu, aber die Ideen dahinter kennst du jetzt.

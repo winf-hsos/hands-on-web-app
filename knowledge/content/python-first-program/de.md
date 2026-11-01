@@ -121,7 +121,8 @@ diesen Namen nicht.
 
 Fehler gehören zum Programmieren dazu, auch bei Profis. Wer programmiert,
 verbringt einen guten Teil der Zeit damit, Fehlermeldungen zu lesen und den
-Code daraufhin zu verbessern.
+Code daraufhin zu verbessern. Wie du jede Meldung Zeile für Zeile liest und
+welche Fehler am häufigsten vorkommen, zeigt dir später [[python-error-messages]].
 
 ## Zum Mitnehmen
 

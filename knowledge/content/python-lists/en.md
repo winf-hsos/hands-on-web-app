@@ -111,7 +111,8 @@ the methods of a list change the list itself: you do not write
 `shopping = shopping.append("cheese")` but only `shopping.append("cheese")`.
 
 Whether a value occurs in the list you ask with `in`. The answer is `True` or
-`False`, a truth value with which you make decisions in part 2 of this path:
+`False`, a truth value with which you make decisions in part 2 of this path
+([[python-conditions]]):
 
 ```python
 shopping = ["milk", "bread", "apples"]
@@ -164,9 +165,9 @@ With a list you can now hold many values, pick out single ones and sum up
 all of them. What you still lack is a way of doing something of its own with
 **each** element, such as converting every temperature to Fahrenheit or
 writing every item of shopping on a line of its own. That is the job of
-loops, and they follow in part 2 of this path.
+loops, and they follow in part 3 of this path with [[python-for-loops]].
 
-## To take away
+## Takeaways
 
 - A list stands in square brackets and holds many values in a fixed order.
 - The index starts at 0, `[-1]` is the last element, and a position outside

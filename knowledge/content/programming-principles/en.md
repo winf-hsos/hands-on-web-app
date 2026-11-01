@@ -159,10 +159,11 @@ the pencil note in the margin of a recipe.
 | Sequence of instructions | recipe | [[python-first-program]] |
 | Variable | container with a label | [[python-values-and-variables]] |
 | Input and output | bottle deposit machine | [[python-working-with-text]] |
-| Function | coffee machine | [[python-functions]] |
 | List | train with numbered carriages | [[python-lists]] |
-| Branch | bouncer | follows in part 2 of this path |
-| Loop | peeling onions | follows in part 2 of this path |
+| Function | coffee machine | [[python-functions]] |
+| Branch | bouncer | [[python-if-else]] |
+| Loop | peeling onions | [[python-for-loops]], [[python-while-loops]] |
+| Debugging | a cake that does not rise | [[python-error-messages]] |
 
 Keep the pictures in mind when you start with Python in a moment. The
 language is new, but you now know the ideas behind it.

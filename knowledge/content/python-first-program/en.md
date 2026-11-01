@@ -111,7 +111,8 @@ name.
 
 Errors are part of programming, for professionals too. People who program
 spend a good part of their time reading error messages and improving their
-code accordingly.
+code accordingly. How to read every message line by line, and which errors
+come up most often, is shown later in [[python-error-messages]].
 
 ## Takeaways
 
