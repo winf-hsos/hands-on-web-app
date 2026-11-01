@@ -27,7 +27,7 @@ for (const table of document.querySelectorAll('table[data-fillable]')) {
   box.append(table, tools);
   tools.append(clear);
   // the columns fill the screen, not the empty width of the text beside them
-  focusable(box, tools, () => table.querySelector('tr').getBoundingClientRect().width);
+  focusable(box, tools, { width: () => table.querySelector('tr').getBoundingClientRect().width });
 
   table.addEventListener('input', update);
   table.addEventListener('keydown', (e) => {

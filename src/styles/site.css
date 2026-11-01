@@ -3436,6 +3436,15 @@ details.callout[open] > summary::before {
   zoom: 1;
 }
 
+/* a copy of the question on show with everything opened, to measure how
+   large the quiz may be in focus (client/quiz.js) */
+.focusable.in-focus > .quiz-measure {
+  position: absolute;
+  visibility: hidden;
+  display: flow-root;
+  zoom: 1;
+}
+
 /* without the Fullscreen API: a layer over the page */
 .focusable.is-focus {
   position: fixed;

@@ -251,8 +251,11 @@ The body is plain Markdown with a few conventions:
   element alone in full screen, its parts keeping the width they had on the
   page and scaled up with CSS `zoom` to the width of the screen, at most two
   and a half times; a table is scaled by the width of its columns. The view
-  starts at the top and scrolls, so that nothing moves when an output or an
-  explanation opens. Where a browser has no full screen for elements, the
+  starts at the top and scrolls, so that nothing moves when an output opens.
+  A quiz fits the height as well (Nicolas, 2026-11-02): the question on show
+  is measured with its verdict, every reason and its explanation open, so
+  that all of it stays on the screen after the answer and nothing changes
+  size while it is answered; the next question is measured anew. Where a browser has no full screen for elements, the
   same view opens as a layer over the page. The code is `client/focus.js`,
   used by `runner.js`, `tables.js` and `quiz.js`.
 - **R code** in a ` ```r ` block works the same way with webR; ` ```r static `

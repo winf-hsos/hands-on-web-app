@@ -101,7 +101,11 @@ for (const question of questions) {
 // --- focus ---------------------------------------------------------------------
 
 // The questions, with the bar and the result, sit in one stage, which a
-// button shows alone and enlarged, to discuss the quiz in class.
+// button shows alone and enlarged, to discuss the quiz in class. It is as
+// large as the screen allows for the question on show once it is answered,
+// with every reason and the explanation open, so that nothing has to scroll
+// and nothing changes size when the answer is checked.
+let refit;
 if (questions.length) {
   const stage = Object.assign(document.createElement('div'), { className: 'quiz-stage' });
   const tools = Object.assign(document.createElement('div'), { className: 'quiz-tools' });
@@ -115,7 +119,31 @@ if (questions.length) {
     node = following;
   }
   stage.prepend(tools);
-  focusable(stage, tools);
+
+  // What is on show, copied as it looks at most after the answer, measured
+  // at page size: the explanation, and the reasons of what was chosen and of
+  // what is right, so for one answer the right one's and the longest other.
+  function measure() {
+    const probe = document.createElement('div');
+    probe.className = 'quiz-measure';
+    for (const part of stage.children) if (part !== tools && !part.hidden) probe.append(part.cloneNode(true));
+    probe.querySelectorAll('.quiz-explanation, .quiz-actions button').forEach((el) => el.removeAttribute('hidden'));
+    for (const options of probe.querySelectorAll('.quiz-options')) {
+      const all = [...options.querySelectorAll('.quiz-option')];
+      const wrong = all.filter((o) => o.dataset.correct !== 'true');
+      const longest = (list) => list.sort((x, y) => y.textContent.length - x.textContent.length).slice(0, 1);
+      const open = options.dataset.multiple === 'true' ? all : [...all.filter((o) => o.dataset.correct === 'true'), ...longest(wrong)];
+      for (const option of open) option.querySelector('.quiz-reason')?.removeAttribute('hidden');
+    }
+    const longest = [labels.correct, labels.wrong].sort((a, b) => b.length - a.length)[0];
+    probe.querySelectorAll('.quiz-verdict').forEach((el) => (el.textContent = longest));
+    stage.append(probe);
+    const height = probe.getBoundingClientRect().height;
+    probe.remove();
+    return height;
+  }
+  // on a wide screen, longer lines leave fewer of them and so larger text
+  refit = focusable(stage, tools, { height: measure, widths: [800, 960] });
 }
 
 // --- one question at a time ----------------------------------------------------
@@ -181,6 +209,7 @@ if (stepper) {
     }
     paint();
     remember(index);
+    refit?.();
     const shown = index === n ? result : questions[index];
     if (!reduceMotion && from !== index) {
       const dx = index > from ? 24 : -24;
