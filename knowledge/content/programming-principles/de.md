@@ -20,7 +20,7 @@ topics: [solving-problems, processing-information, programming-with-python]
 modules: [dup]
 relations:
   see_also: [problem-decomposition]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

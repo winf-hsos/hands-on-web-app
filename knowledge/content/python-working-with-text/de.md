@@ -20,7 +20,7 @@ topics: [programming-with-python]
 modules: [dup]
 relations:
   requires: [python-values-and-variables]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

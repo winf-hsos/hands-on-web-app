@@ -18,7 +18,7 @@ level: 1
 duration: 15
 topics: [programming-with-python]
 modules: [dup]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

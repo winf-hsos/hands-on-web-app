@@ -18,7 +18,7 @@ topics: [programming-with-python]
 modules: [dup]
 relations:
   requires: [python-working-with-text]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

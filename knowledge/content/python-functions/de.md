@@ -21,7 +21,7 @@ modules: [dup]
 relations:
   requires: [python-working-with-text, python-arithmetic]
   see_also: [problem-decomposition]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

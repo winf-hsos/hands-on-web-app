@@ -17,7 +17,7 @@ topics: [programming-with-python]
 modules: [dup]
 relations:
   checks: [python-first-program, python-values-and-variables, python-working-with-text, python-arithmetic, python-lists, python-functions]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

@@ -18,7 +18,7 @@ topics: [programming-with-python, solving-problems]
 modules: [dup]
 relations:
   requires: [python-functions]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

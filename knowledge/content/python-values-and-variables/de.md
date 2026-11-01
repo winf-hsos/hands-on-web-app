@@ -19,7 +19,7 @@ topics: [programming-with-python]
 modules: [dup]
 relations:
   requires: [python-first-program]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

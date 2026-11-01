@@ -27,7 +27,7 @@ sections:
         optional: true
       - python-exercise-seconds
       - python-first-programs-quiz
-status: draft
+status: published
 updated: 2026-11-01
 ---
 
