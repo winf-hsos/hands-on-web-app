@@ -1,4 +1,4 @@
-// The data behind the suggestions in R editors (client/r-complete.js): the
+// The data behind the suggestions in R editors (client/complete.js): the
 // functions and constants of r-functions.json, made by scripts/r-functions.R, and the
 // columns of every data set an R block can use, with their type as R would
 // read it. Written once per build as /assets/r-completions.json.

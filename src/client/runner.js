@@ -3,7 +3,9 @@
 // (python-worker.js), R with webR (r-engine.js); either starts on the first
 // click, so a page with code costs nothing until someone wants to run it.
 import { addCopyButton } from './copy.js';
-import { attachCompletion } from './r-complete.js';
+import { attachCompletion } from './complete.js';
+import { findR, loadR } from './r-complete.js';
+import { suggest as suggestPython } from './py-context.js';
 import { highlight } from './highlight.js';
 
 const { pythonWorker, pyodide, runnerLabels } = document.body.dataset;
@@ -103,7 +105,14 @@ function setup(box) {
   const hint = el('p', { className: 'runner-hint', hidden: true });
   box.replaceChildren(code, el('div', { className: 'runner-bar' }, run, reset, status), output, hint);
   addCopyButton(code, () => editor.value);
-  if (lang === 'r') attachCompletion(editor, L.complete);
+  if (lang === 'r') attachCompletion(editor, L.complete, findR, loadR);
+  // Python: the names of all Python editors on the page count in each of them
+  else
+    attachCompletion(editor, L.complete, async (ed, force) => {
+      const others = [...document.querySelectorAll('.runner:not([data-lang="r"]) textarea')].filter((t) => t !== ed);
+      const pageCode = others.map((t) => t.value).join('\n');
+      return suggestPython(ed.value, ed.selectionStart, { force, pageCode });
+    });
 
   let answers = [];
   let running = false;

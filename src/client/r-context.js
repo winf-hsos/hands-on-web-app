@@ -1,4 +1,4 @@
-// What to suggest at the cursor of an R editor; r-complete.js shows it. No
+// What to suggest at the cursor of an R editor; complete.js shows it. No
 // DOM, so that the tests run it in Node.
 //
 // The text before the cursor is read once from the start, as R would: names,

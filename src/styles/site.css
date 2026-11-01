@@ -981,10 +981,10 @@ select {
 }
 
 /* R prints tables in columns, which break apart when lines wrap */
-/* Suggestions while typing R (client/r-complete.js): a small list at the
+/* Suggestions while typing R or Python (client/complete.js): a small list at the
    cursor, the name on the left, its type or signature on the right, and for a
    function the package it comes from. */
-.r-complete {
+.complete {
   position: absolute;
   z-index: 50;
   min-width: 14rem;
@@ -1003,7 +1003,7 @@ select {
   font: 400 0.85rem/1.4 var(--mono);
 }
 
-.r-complete-item {
+.complete-item {
   display: flex;
   gap: 1rem;
   justify-content: space-between;
@@ -1012,19 +1012,19 @@ select {
   cursor: pointer;
 }
 
-.r-complete-item[aria-selected='true'] {
+.complete-item[aria-selected='true'] {
   background: color-mix(in srgb, var(--accent) 18%, transparent);
 }
 
-.r-complete-name {
+.complete-name {
   white-space: nowrap;
 }
 
-.r-complete-item.kind-column .r-complete-name {
+.complete-item.kind-column .complete-name {
   font-weight: 650;
 }
 
-.r-complete-detail {
+.complete-detail {
   flex: 1;
   overflow: hidden;
   color: var(--quiet);
@@ -1033,14 +1033,14 @@ select {
   text-overflow: ellipsis;
 }
 
-.r-complete-package {
+.complete-package {
   flex-shrink: 0;
   color: var(--accent);
   white-space: nowrap;
 }
 
 /* a hidden copy of the editor text, to find where the cursor is */
-.r-complete-mirror {
+.complete-mirror {
   position: absolute;
   inset: 0 auto auto 0;
   visibility: hidden;
