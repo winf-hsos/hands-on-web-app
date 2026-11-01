@@ -11,6 +11,6 @@ level: 1
 duration: 12
 topics: [solving-problems]
 modules: [dup]
-status: draft
+status: published
 updated: 2026-10-22
 ---

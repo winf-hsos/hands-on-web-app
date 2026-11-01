@@ -32,10 +32,7 @@ habt, und daraus entsteht die Frage, mit der dieses Experiment endet.
 
 ## Aufbau
 
-Stellt die beiden Geräte etwa fünf Zentimeter auseinander, sodass die LED des
-einen in den Sensor des anderen leuchtet. Mit nur einem Gerät haltet ihr das
-weiße Blatt etwa fünf Zentimeter vor das Gerät, damit das Licht der LED in den
-eigenen Sensor zurückfällt. Notiert den Abstand und ob das Deckenlicht an ist.
+Stellt die beiden Geräte etwa 8 Zentimeter auseinander, sodass die beiden Stege sich berühren und die LED des einen in den Sensor des anderen leuchtet. Mit nur einem Gerät haltet ihr das weiße Blatt etwa fünf Zentimeter vor das Gerät, damit das Licht der LED in den eigenen Sensor zurückfällt. Notiert den Abstand und ob das Deckenlicht an ist.
 
 ## Vorher: eure Erwartung
 

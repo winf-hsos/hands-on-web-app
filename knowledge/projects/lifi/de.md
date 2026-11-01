@@ -1,13 +1,12 @@
 ---
 kind: project
 code: 4577
-title: "LiFi: Daten mit Licht übertragen"
+title: Das LiFi-Projekt
 summary: >-
-  Zu zweit baut ihr aus einer farbigen LED und einem Farbsensor eine
-  Funkstrecke aus Licht und bringt sie in fünf Challenges dazu, am Ende eine
-  ganze Datei fehlerfrei zu übertragen.
+  Ihr baut aus einer farbigen LED und einem Farbsensor eine Funkstrecke aus
+  Licht und bringt sie in fünf Challenges, eine ganze Datei fehlerfrei zu
+  übertragen.
 level: 1
-topics: [transferring-information, representing-information]
 modules: [dup]
 items: [petzold-code]
 phases:
@@ -35,7 +34,7 @@ phases:
       - id: challenge-4
         items: [logic-gates]
 status: draft
-updated: 2026-10-30
+updated: 2026-11-01
 ---
 
 Jede Person im Team bekommt ein kleines Gerät mit einer RGB-LED und einem

@@ -13,6 +13,6 @@ topics: [solving-problems]
 modules: [dup]
 relations:
   example_of: [problem-decomposition]
-status: draft
+status: published
 updated: 2026-10-22
 ---
