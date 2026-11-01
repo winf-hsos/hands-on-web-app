@@ -5,7 +5,7 @@ summary: >-
   sensor, and in five challenges you get it to transmit a whole file without
   errors.
 translation_of: de
-based_on: 2026-10-30
+based_on: 2026-11-01
 ---
 
 Each person in the team gets a small device with an RGB LED and a colour
@@ -30,20 +30,71 @@ LED shows a colour you choose in code, and the sensor reports what it sees.
 ### Challenge 0: The spark {#challenge-0}
 
 **Goal:** On each device the LED shows a colour from your code, and the sensor
-keeps printing its four readings.
+keeps printing its four readings. Each person gets their own device running on
+their own laptop, and at the end you switch the LED of one device and watch the
+numbers of the sensor opposite change.
 
-**Task:** Six small programs that build on each other: light on, blink, cycle
-through colours, measure, react to a threshold, and finally a human as the
-receiver who reads the colours off by eye.
+**What is new** is everything: for most of you it is the first program you
+write, and two tools join you for the whole project, the terminal, where you
+start programs, and the AI assistant, which you work with. If this takes you a
+while, you are not behind; most people before you had never seen a terminal
+either.
 
-**It is done** when the programs run and you make a small change to them while
-someone watches. Nothing is measured and there is no ranking.
+**Task:** Six small programs, one file each, that build on each other. Wherever
+the template says `TODO`, your code is missing.
 
-**Typical pitfalls:** the Brick Daemon is not running, Python is missing from
-the search path on Windows, and on a Mac the commands are `python3` and `pip3`.
-If the Brick Viewer does not show the device, check cable, port and power. And
-do not be surprised that the sensor never reports exactly the numbers you sent
-to the LED: that is exactly where the next phase begins.
+| | File | What you learn |
+|---|---|---|
+| 1 | `task_1_light_on.py` | calling a function and handing it values |
+| 2 | `task_2_blink.py` | a loop, which means doing something several times |
+| 3 | `task_3_color_cycle.py` | a list and how to go through it |
+| 4 | `task_4_measure.py` | a function that gives values back, and measuring one situation at a time |
+| 5 | `task_5_react.py` | a condition, which means acting differently depending on the situation |
+| 6 | `task_6_human_receiver.py` | what a receiver actually has to manage |
+
+There are no more building blocks than these: everything you program in the
+project is made of instructions one after the other, repeated, and under a
+condition. You run each task on its own, for example with
+`python task_3_color_cycle.py`; task 5 keeps running until you stop it with
+Ctrl+C.
+
+**You find the threshold yourselves.** In task 4 you take one reading per
+Enter: in room light, with your hand over the sensor, with your phone torch
+from far away and close up. The value `c` is the brightness, and your threshold
+for task 5 goes between "covered" and "torch". If `c` sticks at 65535, the
+sensor is overloaded and you hold the torch further away.
+
+**Be the receiver yourself, once:** in task 6 your program sends a sequence of
+colours, and one of you writes it down without looking at the screen; then you
+compare. The first time this works without effort. It gets interesting when you
+change exactly one thing each time: send faster, use more colours, do not
+announce the start, send the same colour twice in a row. Write down what made
+it fail each time. That list is pretty much the list of problems your program
+will have to solve in the coming challenges, and you found it yourselves.
+
+**It is done** when the programs run on both devices and you make a small
+change to them while someone watches, such as "make the LED blink twice as
+fast" or "turn the condition in task 5 around". This is not a trap but the
+start of a habit that stays until the end: you can change your own code on the
+spot and know what will happen, even where parts of it were written with the
+assistant. Nothing is measured, there is no ranking and nothing to hand in, but
+without a running device you cannot even begin challenge 1.
+
+**Typical pitfalls:** the Brick Daemon is not running; without it your program
+cannot find the hardware, however correct the code is, so check it first, every
+time. On Windows Python is missing from the search path, almost always because
+of the missing tick at "Add python.exe to PATH" during installation, and on a
+Mac the commands are `python3` and `pip3`. If the Brick Viewer does not show
+the device, the problem lies before your code, not in it: cable, port, power.
+
+**The numbers do not match:** you send `(255, 0, 60)` to the LED, and the
+sensor reports completely different values. That is correct, not a bug. Why it
+is so and what follows from it is the subject of the next phase; leave the
+question open until then.
+
+**For the quick ones:** try different colours and note what the sensor reports
+for each, then change the distance and watch what happens to the numbers. You
+will need these notes in challenge 1 straight away.
 
 ## How many colours can the sensor tell apart? {#alphabet}
 
@@ -64,25 +115,96 @@ work out how many positions that costs.
 ### Challenge 1: The alphabet {#challenge-1}
 
 **Goal:** Find out how many states your link distinguishes in 50 attempts
-without a single error.
+without a single error. This decides the whole project: whoever reliably tells
+four states apart later sends two bits per symbol, whoever manages sixteen
+sends four and transmits twice as much at the same speed.
 
-**Task:** First note how many colours you can tell apart by eye. Then measure:
-a human presses Enter for each symbol, so timing does not matter yet. Measure
-once with the bare device and once with your own optics between the devices;
-the better value counts, and both belong in your notes.
+**What is new** is that for the first time you have to find something out about
+your setup instead of thinking it up. Nobody knows in advance how many states
+can be told apart, the AI assistant included, because it depends on your
+sensor, your distance, your room and whatever you build in between.
 
-**At the acceptance test** 20 random symbols are sent at the test table. As the
-live change you extend your alphabet, for example to up to twelve symbols, and
-run the test again; for that you have to find the places in your code that
-depend on the size of the alphabet.
+**Task:** The sender shows a colour from a set you define yourselves, and the
+receiver says which one it was. Timing does not matter yet: a human presses
+Enter, the program measures, and the name of the recognised state appears on
+the receiver's screen.
 
-**Typical pitfalls:** fixed thresholds instead of calibrating before every run,
+**You count three times,** and all three numbers belong in your notes:
+
+1. **By eye:** before you write a line of code, you count how many colours you
+   can reliably tell apart yourselves when you see them one at a time, not side
+   by side. In some respects your eye beats the sensor by far, in others it
+   clearly loses, and one reason matters for the rest of the challenge: your
+   vision recalibrates itself all the time when the light in the room changes,
+   while the sensor simply reports different numbers.
+2. **Without aids:** bare LED, bare sensor, fixed distance.
+3. **With your setup:** you build your light channel, a tube, a shade or
+   whatever you come up with, and measure again.
+
+The third, better result counts. Without the second, though, you cannot know
+whether your setup made any difference at all, which is exactly why this
+control measurement is required. What you may build is described under "What
+you need".
+
+**The three results of this challenge** (see "What every challenge produces")
+are therefore the measurement logs without and with aids, a photo of your
+setup with a sentence on why you built it that way as the description of your
+solution, and your log of mistakes. For the last one this challenge is the
+richest source: ask the assistant why the tube does not help, and it suggests
+matt black inner walls, shades and narrower openings, all plausible and none of
+it tested until you have measured it.
+
+**What you fill in in the template:** everything goes into `device.py`, and the
+test script asks for exactly five things, nothing more. How you build them
+inside is up to you, and you may add as many functions of your own as you like.
+
+| | What |
+|---|---|
+| `ALPHABET_SIZE` | how many symbols you use, numbered from 0 to `ALPHABET_SIZE - 1` |
+| `calibrate_sender()` | plays through your alphabet once |
+| `calibrate_receiver()` | measures along and remembers a reference value for each symbol |
+| `send_symbol(index)` | shows one symbol and returns only when the receiver has had enough time to measure |
+| `receive_symbol()` | measures and returns which symbol it was |
+
+The receiver cannot calculate which symbol has arrived; it first has to learn
+what your symbols look like in this setup and then compares every new reading
+with the references. Two things follow: during calibration both sides have to
+run in the same rhythm, otherwise the receiver assigns its readings to the
+wrong symbols, and you calibrate again before every run, at the test table too.
+
+**Self-test and acceptance test are the same script.** You start it on both
+computers, each in its role, with `python run_test.py sender` and
+`python run_test.py receiver`. Both sides write a log (`sent.txt` and
+`received.txt`); put both into one folder and compare them with
+`python compare.py`. For quick tries in between, fewer runs are enough
+(`--runs 10`). Because exactly this script runs at the acceptance test, you can
+rehearse the scored run as often as you like, and nothing new happens at the
+test table. A good approach is to start with `ALPHABET_SIZE = 2`, just off and
+white, and after 50 runs without a mistake go up to 4 and then to 8; the last
+size without mistakes is your result. If `compare.py` shows the same two
+symbols mixed up every time, they are too close together; if it looks random,
+timing or calibration is the more likely culprit.
+
+**At the acceptance test** you set up your optics at the test table, calibrate,
+and 20 random symbols are sent. A single mistake counts as a fail for that
+alphabet size, so eight states recognised reliably are worth more than sixteen
+with an occasional mix-up. As the live change you extend your alphabet, for
+example to up to twelve symbols, and run the test again; for that you have to
+find the places in your code that depend on the size of the alphabet.
+
+**Typical pitfalls:** fixed thresholds instead of calibrating before every run
+("above 500 in the red channel means red" works on Tuesday and fails on
+Thursday, because the light in the room is different; whoever notices this
+arrives at calibration, the strongest result this challenge has to offer),
 overlooking the unfiltered channel C although it is the most sensitive, too few
-repetitions when measuring, and colours that look nice rather than colours the
+repetitions when measuring (seeing each state three times without a mistake
+tells you nothing yet), and colours that look nice rather than colours the
 sensor can tell apart well.
 
 **For the quick ones:** try different integration times of the sensor and
-measure what they change.
+measure what they change. Longer measurements are calmer but allow fewer
+measurements per second, and exactly this trade-off decides your throughput in
+challenge 4.
 
 ## Colours become letters {#word}
 
@@ -179,6 +301,29 @@ survive the trip to the test table.
 ## What you need
 
 Each person gets a fully assembled device, so a team has both ends of the link.
+That matters more than it sounds: whoever builds only the sender has to guess
+what the receiver sees, and you can look. Each person works on their own
+laptop with their own device; split the work by the two ends and swap roles
+now and then, so that both of you know both sides. When one side does not
+work, the answer is usually on the other.
+
+**On your own works too.** If you take on the project without a partner,
+connect both devices to one laptop and run the sender and the receiver as two
+programs. Each program then says which device it means, by the UID of the
+master brick, which the Brick Viewer shows:
+
+```python static
+from lifi_hardware import led, sensor, use_device
+
+use_device("abc123")  # replace with the UID of your master brick
+led.set_color(255, 0, 0)
+```
+
+You lose the partner, not the project. Only the interop test in challenge 3
+needs another team; on your own, you hand your protocol description to someone
+who does not know your code, or to an AI assistant in a fresh session, and ask
+them to describe the receiver they would build. The gaps show up just the same.
+
 Inside the 3D-printed case are three parts from Tinkerforge:
 
 | Part | Job |
@@ -211,9 +356,26 @@ it, commands like `led.set_color(r, g, b)` and `sensor.read()` are enough,
 without you having to deal with the details of the hardware. How you get the
 course module and the templates onto your computer is stated in your course.
 
-For each challenge there is a template with fixed functions and a test script.
-You test yourselves with exactly this script, and it is also used for the
-acceptance test, so do not change it.
+For each challenge there is a template with a **contract**: a handful of
+functions with a fixed name, fixed arguments and a fixed return value. What you
+write inside these functions is up to you, and you may add as many functions of
+your own as you like. The test script calls only the contract functions, so
+every team runs the same test and the results are comparable.
+
+| Challenge | What you implement |
+|---|---|
+| 0 | six small tasks, one script each, from `task_1_light_on.py` to `task_6_human_receiver.py` |
+| 1 | `ALPHABET_SIZE`, `calibrate_sender()`, `calibrate_receiver()`, `send_symbol(index)`, `receive_symbol()` |
+| 2 | `send_text(text)`, `receive_text(n_chars)` |
+| 3 | `send_message(text)`, `receive_message()` |
+| 4 | `send_bits(bits)`, `receive_bits()` |
+
+The contracts grow along: first single symbols, then text of known length, then
+text whose length the receiver does not know, and finally only bits. At each
+stage you see exactly the abstraction the challenge is about. **Self-test and
+acceptance test are the same script:** you test yourselves with it as often as
+you like, and the acceptance test uses it too. So do not change it; the
+original version runs at the acceptance test anyway.
 
 ## How acceptance works
 
@@ -225,10 +387,29 @@ survives the trip there.
 
 Each acceptance test includes a live change: you change your code on the spot
 according to a given task. This shows that you understand what you built with
-the AI assistant. Written documentation is not required, but measurement logs
-and a short list of the places where a measurement disproved a suggestion from
-the AI help you most yourselves. The only exception is the protocol
-description from challenge 3, without which the interop test cannot work.
+the AI assistant. Written documentation is not required; the only exception
+is the protocol description from challenge 3, without which the interop test
+cannot work.
 
-How the challenges are assessed in your semester and when the acceptance tests
-take place is stated in your course.
+How the challenges are assessed and when the acceptance tests take place is
+stated in your course.
+
+## What every challenge produces
+
+Three results come out of every challenge, and nobody collects or grades them.
+They are for you, and they are worth keeping from the first day, because each
+challenge builds on the one before.
+
+- **Measurement logs:** what did you change, what did you keep the same, and
+  what came out? A good log is one your partner still understands a week later.
+- **A description of your solution:** how your link works, in enough detail
+  that another team could rebuild it. From challenge 3 on this grows into the
+  full description of your protocol.
+- **A log of mistakes:** two or three places where the AI assistant suggested
+  something and a measurement proved it wrong. This is not a confession but the
+  most useful document you will write, because it shows exactly where the
+  assistant's knowledge ends and yours begins.
+
+Together these three tell how you solved the problem, and they are the best
+preparation if you later want to explain why your device works the way it
+does.

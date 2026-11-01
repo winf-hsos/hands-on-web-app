@@ -60,21 +60,74 @@ meldet, was er sieht.
 ### Challenge 0: Der Funke {#challenge-0}
 
 **Ziel:** Auf jedem Gerät zeigt die LED eine Farbe aus eurem Code, und der
-Sensor gibt fortlaufend seine vier Messwerte aus.
+Sensor gibt fortlaufend seine vier Messwerte aus. Jede Person bringt dabei ihr
+eigenes Gerät an ihrem eigenen Laptop zum Laufen, und am Ende schaltet ihr die
+LED des einen Geräts um und seht, wie sich die Zahlen des Sensors gegenüber
+ändern.
 
-**Aufgabe:** Sechs kleine Programme, die aufeinander aufbauen: Licht an,
-blinken, durch Farben wechseln, messen, auf einen Schwellenwert reagieren und
-zum Schluss ein Mensch als Empfänger, der die Farben selbst abliest.
+**Neu ist** hier alles: Für die meisten ist es das erste eigene Programm, und
+zwei Werkzeuge kommen dazu, die euch durch das ganze Projekt begleiten, das
+Terminal, in dem ihr Programme startet, und der KI-Assistent, mit dem ihr
+arbeitet. Wer dafür länger braucht, ist nicht im Rückstand; die meisten vor
+euch hatten auch noch nie ein Terminal gesehen.
 
-**Geschafft ist sie,** wenn die Programme laufen und ihr vor Zuschauern eine
-kleine Änderung daran vornehmt. Hier wird nichts gemessen und keine Rangliste
-geführt.
+**Aufgabe:** Sechs kleine Programme, je eine Datei, die aufeinander aufbauen.
+Wo in der Vorlage `TODO` steht, fehlt euer Code.
 
-**Typische Stolpersteine:** Der Brick Daemon läuft nicht, unter Windows fehlt
-Python im Suchpfad, auf dem Mac heißen die Befehle `python3` und `pip3`. Zeigt
-der Brick Viewer das Gerät nicht an, prüft Kabel, Anschluss und Stromversorgung.
-Und wundert euch nicht, dass der Sensor nie genau die Zahlen meldet, die ihr der
-LED geschickt habt: Genau damit beginnt die nächste Phase.
+| | Datei | Was ihr dabei lernt |
+|---|---|---|
+| 1 | `task_1_light_on.py` | eine Funktion aufrufen und ihr Werte übergeben |
+| 2 | `task_2_blink.py` | eine Schleife, also etwas mehrmals ausführen |
+| 3 | `task_3_color_cycle.py` | eine Liste und wie man sie durchläuft |
+| 4 | `task_4_measure.py` | eine Funktion, die Werte zurückgibt, und Messen in einer Situation nach der anderen |
+| 5 | `task_5_react.py` | eine Bedingung, also je nach Lage etwas anderes ausführen |
+| 6 | `task_6_human_receiver.py` | was ein Empfänger eigentlich leisten muss |
+
+Mehr Bausteine gibt es nicht: Alles, was ihr im Projekt programmiert, besteht
+aus Anweisungen nacheinander, wiederholt und unter einer Bedingung. Jede
+Aufgabe startet ihr einzeln, etwa mit `python task_3_color_cycle.py`; Aufgabe 5
+läuft, bis ihr sie mit Strg+C beendet.
+
+**Den Schwellenwert findet ihr selbst.** In Aufgabe 4 nehmt ihr mit jeder
+Eingabetaste einen Messwert auf: bei Raumlicht, mit der Hand über dem Sensor,
+mit der Taschenlampe des Handys von weit weg und von nah. Der Wert `c` ist die
+Helligkeit, und euer Schwellenwert für Aufgabe 5 liegt zwischen „abgedeckt“
+und „Taschenlampe“. Bleibt `c` bei 65535 stehen, ist der Sensor übersteuert,
+und ihr haltet die Lampe weiter weg.
+
+**Selbst einmal Empfänger sein:** In Aufgabe 6 sendet euer Programm eine Folge
+von Farben, und eine Person schreibt sie auf, ohne auf den Bildschirm zu
+schauen; danach vergleicht ihr. Beim ersten Mal klappt das mühelos.
+Interessant wird es, wenn ihr jedes Mal genau eine Sache ändert: schneller
+senden, mehr Farben verwenden, den Start nicht ankündigen, dieselbe Farbe
+zweimal hintereinander senden. Schreibt auf, woran es jedes Mal gescheitert
+ist. Diese Liste ist ziemlich genau die Liste der Probleme, die euer Programm
+in den nächsten Challenges lösen muss, und ihr habt sie selbst gefunden.
+
+**Geschafft ist sie,** wenn die Programme auf beiden Geräten laufen und ihr vor
+Zuschauern eine kleine Änderung daran vornehmt, etwa „lass die LED doppelt so
+schnell blinken“ oder „dreh die Bedingung in Aufgabe 5 um“. Das ist keine
+Falle, sondern der Anfang einer Gewohnheit, die bis zum Schluss bleibt: Euren
+eigenen Code könnt ihr vor Ort ändern und wisst, was dann passiert, auch wenn
+Teile davon mit dem Assistenten entstanden sind. Hier wird nichts gemessen,
+keine Rangliste geführt und nichts abgegeben, aber ohne laufendes Gerät könnt
+ihr Challenge 1 nicht einmal beginnen.
+
+**Typische Stolpersteine:** Der Brick Daemon läuft nicht; ohne ihn findet euer
+Programm die Hardware nicht, so richtig der Code auch ist, also prüft ihn
+jedes Mal zuerst. Unter Windows fehlt Python im Suchpfad, fast immer wegen des
+fehlenden Häkchens bei „Add python.exe to PATH“ während der Installation, und
+auf dem Mac heißen die Befehle `python3` und `pip3`. Zeigt der Brick Viewer das
+Gerät nicht an, liegt das Problem vor eurem Code und nicht darin: Kabel,
+Anschluss, Stromversorgung.
+
+**Die Zahlen passen nicht:** Ihr schickt der LED `(255, 0, 60)`, und der Sensor
+meldet ganz andere Werte. Das ist richtig und kein Fehler. Warum das so ist und
+was daraus folgt, ist Thema der nächsten Phase; lasst die Frage bis dahin offen.
+
+**Für Schnelle:** Probiert verschiedene Farben aus und notiert, was der Sensor
+jeweils meldet, dann verändert den Abstand und beobachtet, was mit den Zahlen
+passiert. Diese Notizen braucht ihr in Challenge 1 sofort.
 
 ## Wie viele Farben kann der Sensor unterscheiden? {#alphabet}
 
@@ -95,26 +148,97 @@ wie viele Stellen das kostet.
 ### Challenge 1: Das Alphabet {#challenge-1}
 
 **Ziel:** Herausfinden, wie viele Zustände eure Strecke in 50 Versuchen ohne
-einen einzigen Fehler unterscheidet.
+einen einzigen Fehler unterscheidet. Das entscheidet über das ganze Projekt:
+Wer vier Zustände sicher unterscheidet, sendet später zwei Bit je Symbol, wer
+sechzehn schafft, sendet vier und überträgt bei gleichem Tempo doppelt so viel.
 
-**Aufgabe:** Notiert zuerst, wie viele Farben ihr mit bloßem Auge unterscheiden
-könnt. Dann misst ihr: Für jedes Symbol drückt ein Mensch die Eingabetaste,
-Timing spielt noch keine Rolle. Messt einmal mit dem nackten Gerät und einmal
-mit eurer eigenen Optik zwischen den Geräten; es zählt der bessere Wert, und
-beide gehören in eure Notizen.
+**Neu ist,** dass ihr zum ersten Mal etwas über euren Aufbau herausfinden müsst,
+statt es euch auszudenken. Wie viele Zustände unterscheidbar sind, weiß vorher
+niemand, auch der KI-Assistent nicht, denn es hängt von eurem Sensor, eurem
+Abstand, eurem Raum und dem ab, was ihr dazwischen baut.
 
-**Bei der Abnahme** werden am Testtisch 20 zufällige Symbole übertragen. Als
-Live-Änderung erweitert ihr euer Alphabet, etwa auf bis zu zwölf Symbole, und
-lasst den Test erneut laufen; dafür müsst ihr die Stellen in eurem Code finden,
-die von der Größe des Alphabets abhängen.
+**Aufgabe:** Der Sender zeigt eine Farbe aus einem Satz, den ihr selbst
+festlegt, und der Empfänger sagt, welche es war. Timing spielt noch keine
+Rolle: Ein Mensch drückt die Eingabetaste, das Programm misst, und der Name des
+erkannten Zustands erscheint beim Empfänger.
+
+**Dreimal gezählt** wird, und alle drei Zahlen gehören in eure Notizen:
+
+1. **Mit bloßem Auge:** Bevor ihr eine Zeile Code schreibt, zählt ihr, wie
+   viele Farben ihr selbst sicher unterscheidet, wenn ihr sie einzeln seht und
+   nicht nebeneinander. In manchem schlägt euer Auge den Sensor deutlich, in
+   anderem verliert es klar, und ein Grund dafür zählt für den Rest der
+   Challenge: Euer Sehen kalibriert sich ständig neu, wenn sich das Licht im
+   Raum ändert, der Sensor dagegen meldet einfach andere Zahlen.
+2. **Ohne Hilfsmittel:** nackte LED, nackter Sensor, fester Abstand.
+3. **Mit eurem Aufbau:** Ihr baut euren Lichtkanal, eine Röhre, eine Blende
+   oder was euch einfällt, und messt erneut.
+
+Es zählt das dritte, bessere Ergebnis. Ohne das zweite wisst ihr aber nicht, ob
+euer Aufbau überhaupt etwas gebracht hat, und genau darum ist diese
+Kontrollmessung Pflicht. Was ihr bauen dürft, steht unter „Was ihr braucht“.
+
+**Die drei Ergebnisse dieser Challenge** (siehe „Was jede Challenge
+hervorbringt“) sind damit die Messprotokolle ohne und mit Hilfsmitteln, als
+Beschreibung eurer Lösung ein Foto des Aufbaus mit einem Satz, warum ihr ihn so
+gebaut habt, und euer Irrtumsprotokoll. Für das letzte ist diese Challenge die
+ergiebigste Quelle: Fragt ihr den Assistenten, warum die Röhre nicht hilft,
+schlägt er mattschwarze Innenwände, Blenden und engere Öffnungen vor, alles
+plausibel und nichts davon geprüft, bis ihr es gemessen habt.
+
+**Was ihr in der Vorlage ausfüllt:** Alles kommt in `device.py`, und das
+Testskript fragt genau fünf Dinge ab, nicht mehr. Wie ihr sie innen baut, ist
+eure Sache, und eigene Funktionen dürft ihr beliebig ergänzen.
+
+| | Was |
+|---|---|
+| `ALPHABET_SIZE` | wie viele Symbole ihr verwendet, nummeriert von 0 bis `ALPHABET_SIZE - 1` |
+| `calibrate_sender()` | spielt euer Alphabet einmal durch |
+| `calibrate_receiver()` | misst dabei mit und merkt sich für jedes Symbol einen Referenzwert |
+| `send_symbol(index)` | zeigt ein Symbol und kehrt erst zurück, wenn der Empfänger genug Zeit zum Messen hatte |
+| `receive_symbol()` | misst und gibt zurück, welches Symbol es war |
+
+Der Empfänger kann nicht ausrechnen, welches Symbol angekommen ist, er muss
+vorher lernen, wie eure Symbole in diesem Aufbau aussehen, und vergleicht dann
+jeden neuen Messwert mit den Referenzen. Daraus folgt zweierlei: Beim
+Kalibrieren müssen beide Seiten im selben Takt laufen, sonst ordnet der
+Empfänger seine Messwerte den falschen Symbolen zu, und kalibriert wird vor
+jedem Durchgang neu, auch am Testtisch.
+
+**Selbsttest und Abnahme sind dasselbe Skript.** Ihr startet es auf beiden
+Rechnern, jeder in seiner Rolle, mit `python run_test.py sender` und
+`python run_test.py receiver`. Beide Seiten schreiben ein Protokoll
+(`sent.txt` und `received.txt`); legt beide in einen Ordner und vergleicht sie
+mit `python compare.py`. Für schnelle Versuche zwischendurch genügen weniger
+Durchgänge (`--runs 10`). Weil bei der Abnahme genau dieses Skript läuft, könnt
+ihr den Wertungslauf vorher so oft proben, wie ihr wollt, und am Testtisch
+passiert nichts Neues. Bewährt hat sich, mit `ALPHABET_SIZE = 2` anzufangen,
+also aus und weiß, und nach 50 fehlerfreien Durchgängen auf 4 und dann auf 8 zu
+gehen; die letzte Größe ohne Fehler ist euer Ergebnis. Verwechselt `compare.py`
+jedes Mal dieselben zwei Symbole, liegen sie zu dicht beieinander, sieht es
+zufällig aus, sind eher Timing oder Kalibrierung schuld.
+
+**Bei der Abnahme** baut ihr am Testtisch euren Aufbau auf, kalibriert, und es
+werden 20 zufällige Symbole übertragen. Ein einziger Fehler gilt für diese
+Alphabetgröße als nicht bestanden; acht sicher erkannte Zustände sind also mehr
+wert als sechzehn mit gelegentlicher Verwechslung. Als Live-Änderung erweitert
+ihr euer Alphabet, etwa auf bis zu zwölf Symbole, und lasst den Test erneut
+laufen; dafür müsst ihr die Stellen in eurem Code finden, die von der Größe des
+Alphabets abhängen.
 
 **Typische Stolpersteine:** feste Schwellenwerte statt einer Kalibrierung vor
-jedem Durchgang, der ungefilterte Kanal C wird übersehen, obwohl er der
-empfindlichste ist, zu wenige Wiederholungen beim Messen, und Farben, die
-schön aussehen, statt Farben, die der Sensor gut unterscheidet.
+jedem Durchgang („über 500 im Rotkanal heißt Rot“ klappt am Dienstag und
+versagt am Donnerstag, weil das Licht im Raum ein anderes ist; wer das bemerkt,
+kommt auf die Kalibrierung, und das ist das stärkste Ergebnis dieser
+Challenge), der ungefilterte Kanal C wird übersehen, obwohl er der
+empfindlichste ist, zu wenige Wiederholungen beim Messen (wer jeden Zustand
+dreimal ohne Fehler sieht, weiß noch nichts), und Farben, die schön aussehen,
+statt Farben, die der Sensor gut unterscheidet.
 
 **Für Schnelle:** Probiert verschiedene Integrationszeiten des Sensors aus und
-messt, was sie am Ergebnis ändern.
+messt, was sie am Ergebnis ändern. Längere Messungen sind ruhiger, erlauben aber
+weniger Messungen pro Sekunde, und genau dieser Tausch entscheidet in
+Challenge 4 über euren Durchsatz.
 
 ## Aus Farben werden Buchstaben {#word}
 
@@ -215,8 +339,32 @@ Timing und ein Aufbau, der den Weg zum Testtisch nicht übersteht.
 ## Was ihr braucht
 
 Jede Person bekommt ein fertig montiertes Gerät, ein Team hat also beide Enden
-der Strecke. Im Gehäuse aus dem 3D-Drucker stecken drei Bauteile von
-Tinkerforge:
+der Strecke. Das ist mehr wert, als es klingt: Wer nur den Sender baut, muss
+raten, was der Empfänger sieht, und ihr könnt nachsehen. Jede Person arbeitet
+an ihrem eigenen Laptop mit ihrem eigenen Gerät; teilt die Arbeit nach den
+beiden Enden auf und tauscht ab und zu die Rollen, damit ihr beide beide
+Seiten kennt. Wenn eine Seite nicht funktioniert, liegt die Antwort meist auf
+der anderen.
+
+**Allein geht es auch.** Wer das Projekt ohne Partner angeht, schließt beide
+Geräte an einen Laptop an und startet Sender und Empfänger als zwei Programme.
+Jedes Programm sagt dann, welches Gerät es meint, mit der Kennung des Master
+Bricks, die der Brick Viewer anzeigt:
+
+```python static
+from lifi_hardware import led, sensor, use_device
+
+use_device("abc123")  # replace with the UID of your master brick
+led.set_color(255, 0, 0)
+```
+
+Ihr verliert dabei den Partner, nicht das Projekt. Nur der Interop-Test in
+Challenge 3 braucht ein anderes Team; wer allein ist, gibt seine
+Protokollbeschreibung jemandem, der den Code nicht kennt, oder einem
+KI-Assistenten in einer neuen Sitzung, und lässt sich den Empfänger
+beschreiben, den er danach bauen würde. Die Lücken zeigen sich genauso.
+
+Im Gehäuse aus dem 3D-Drucker stecken drei Bauteile von Tinkerforge:
 
 | Bauteil | Aufgabe |
 |---|---|
@@ -248,9 +396,27 @@ reichen Befehle wie `led.set_color(r, g, b)` und `sensor.read()`, ohne dass ihr
 euch um die Details der Hardware kümmern müsst. Wie ihr das Kursmodul und die
 Vorlagen auf euren Rechner bekommt, steht in eurem Kurs.
 
-Für jede Challenge gibt es eine Vorlage mit fest vorgegebenen Funktionen und
-einem Testskript. Mit genau diesem Skript testet ihr selbst, und mit ihm wird
-auch abgenommen; ändert es deshalb nicht.
+Für jede Challenge gibt es eine Vorlage mit einem **Vertrag**: eine Handvoll
+Funktionen mit festem Namen, festen Argumenten und festem Rückgabewert. Was ihr
+innerhalb dieser Funktionen schreibt, ist eure Sache, und eigene Funktionen
+dürft ihr beliebig ergänzen. Das Testskript ruft ausschließlich die
+Vertragsfunktionen auf, deshalb läuft bei jedem Team derselbe Test, und die
+Ergebnisse sind vergleichbar.
+
+| Challenge | Was ihr umsetzt |
+|---|---|
+| 0 | sechs kleine Aufgaben, je ein Skript, von `task_1_light_on.py` bis `task_6_human_receiver.py` |
+| 1 | `ALPHABET_SIZE`, `calibrate_sender()`, `calibrate_receiver()`, `send_symbol(index)`, `receive_symbol()` |
+| 2 | `send_text(text)`, `receive_text(n_chars)` |
+| 3 | `send_message(text)`, `receive_message()` |
+| 4 | `send_bits(bits)`, `receive_bits()` |
+
+Die Verträge wachsen mit: erst einzelne Symbole, dann Text bekannter Länge,
+dann Text, dessen Länge der Empfänger nicht kennt, und zuletzt nur noch Bits.
+Auf jeder Stufe sieht man genau die Abstraktion, um die es in der Challenge
+geht. **Selbsttest und Abnahme sind dasselbe Skript:** Mit ihm testet ihr
+selbst, so oft ihr wollt, und mit ihm wird auch abgenommen. Ändert es deshalb
+nicht; bei der Abnahme läuft ohnehin die Originalfassung.
 
 ## So wird abgenommen
 
@@ -262,11 +428,29 @@ anderes als an eurem Platz, und baut eure Optik so, dass sie den Weg dorthin
 
 Zu jeder Abnahme gehört eine Live-Änderung: Ihr ändert euren Code vor Ort nach
 einer Vorgabe. Damit zeigt ihr, dass ihr versteht, was ihr mit dem KI-Assistenten
-gebaut habt. Eine schriftliche Dokumentation ist nicht verlangt, aber
-Messprotokolle und eine kurze Liste der Stellen, an denen eine Messung einen
-Vorschlag der KI widerlegt hat, helfen euch selbst am meisten. Einzige Ausnahme
-ist die Protokollbeschreibung aus Challenge 3, ohne die der Interop-Test nicht
-funktioniert.
+gebaut habt. Eine schriftliche Dokumentation ist nicht verlangt; einzige
+Ausnahme ist die Protokollbeschreibung aus Challenge 3, ohne die der
+Interop-Test nicht funktioniert.
 
-Wie die Challenges in eurem Semester bewertet werden und wann die Abnahmen
-stattfinden, steht in eurem Kurs.
+Wie die Challenges bewertet werden und wann die Abnahmen stattfinden, steht
+in eurem Kurs.
+
+## Was jede Challenge hervorbringt
+
+Aus jeder Challenge kommen drei Ergebnisse, die niemand einsammelt oder
+bewertet. Sie sind für euch, und es lohnt sich, sie vom ersten Tag an zu
+führen, denn jede Challenge baut auf der vorigen auf.
+
+- **Messprotokolle:** Was habt ihr verändert, was gleich gelassen, und was kam
+  heraus? Ein gutes Protokoll versteht euer Partner auch eine Woche später noch.
+- **Eine Beschreibung eurer Lösung:** wie eure Strecke funktioniert, so genau,
+  dass ein anderes Team sie nachbauen könnte. Ab Challenge 3 wird daraus die
+  vollständige Beschreibung eures Protokolls.
+- **Ein Irrtumsprotokoll:** zwei oder drei Stellen, an denen der KI-Assistent
+  etwas vorgeschlagen hat und eine Messung es widerlegt hat. Das ist kein
+  Geständnis, sondern das nützlichste Dokument, das ihr schreibt, weil es genau
+  zeigt, wo das Wissen des Assistenten endet und eures beginnt.
+
+Zusammen erzählen diese drei, wie ihr das Problem gelöst habt, und sie sind die
+beste Vorbereitung, wenn ihr später erklären wollt, warum euer Gerät so
+funktioniert, wie es funktioniert.
