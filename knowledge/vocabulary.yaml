@@ -63,6 +63,7 @@ topics:
   transferring-information: { de: Information übertragen, en: Transferring information }
   processing-information:   { de: Information verarbeiten, en: Processing information }
   programming-with-python:  { de: Programmieren mit Python, en: Programming with Python }
+  working-with-the-computer: { de: Mit dem Computer arbeiten, en: Working with the computer }
   # Data science, after the topic map of the Data Analytics material
   # (02 - Lehrinhalte\Data Analytics\Themenlandkarte.md, fields A to M and X)
   questions-and-measurement: { de: "Forschungsfragen und -design", en: "Research questions and design" }
