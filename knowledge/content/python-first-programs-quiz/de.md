@@ -2,21 +2,21 @@
 type: quiz
 code: 4381
 title: "Quiz: Erste Programme"
-summary: Sechs Fragen zu Werten, Variablen, Text, Rechnen und eigenen Funktionen in Python.
+summary: Acht Fragen zu Werten, Variablen, Text, Rechnen, Listen und eigenen Funktionen in Python.
 objectives:
-  intro: "Mit diesem Quiz prüfst du in sechs Fragen, ob du Folgendes kannst:"
+  intro: "Mit diesem Quiz prüfst du in acht Fragen, ob du Folgendes kannst:"
   goals:
     - "vorhersagen, was `+` bei zwei Texten ergibt und welchen Typ der Wert aus `input()` hat"
     - "die Ergebnisse von `//` und `%` ausrechnen"
     - "gültige Variablennamen von ungültigen und reservierten unterscheiden"
-    - "erkennen, dass eine Funktion ohne `return` den Wert `None` liefert"
-    - "einen `NameError` auf seine wahrscheinliche Ursache zurückführen"
+    - "mit dem Index auf Elemente einer Liste zugreifen und vorhersagen, wie `append()` sie verändert"
+    - "erkennen, dass eine Funktion ohne `return` den Wert `None` liefert, und einen `NameError` auf seine wahrscheinliche Ursache zurückführen"
 level: 1
-duration: 8
+duration: 10
 topics: [programming-with-python]
 modules: [dup]
 relations:
-  checks: [python-first-program, python-values-and-variables, python-working-with-text, python-arithmetic, python-functions]
+  checks: [python-first-program, python-values-and-variables, python-working-with-text, python-arithmetic, python-lists, python-functions]
 status: draft
 updated: 2026-11-01
 ---
@@ -60,6 +60,32 @@ updated: 2026-11-01
 > Namen bestehen aus Buchstaben, Ziffern und Unterstrichen und beginnen nicht
 > mit einer Ziffer. Ein Bindestrich wäre ein Minuszeichen, und `class` ist ein
 > reserviertes Wort von Python.
+
+## Was gibt `print(colors[1])` aus, wenn `colors = ["rot", "grün", "blau"]` ist?
+
+- [ ] `rot`
+- [x] `grün`
+- [ ] `blau`
+
+> Der Index beginnt bei 0: `colors[0]` ist `"rot"`, `colors[1]` ist `"grün"`.
+> Das letzte Element erreichst du mit `colors[-1]`.
+
+## Was gibt dieses Programm aus?
+
+```python static
+numbers = [3, 8, 1]
+numbers.append(5)
+print(len(numbers), max(numbers), sorted(numbers)[0])
+```
+
+- [ ] `3 8 3`
+- [x] `4 8 1`
+- [ ] `4 5 1`
+- [ ] `4 8 3`
+
+> `append` hängt die 5 hinten an, die Liste hat danach vier Elemente. Das
+> größte ist weiterhin die 8, und `sorted(numbers)[0]` ist das kleinste
+> Element, die 1. Die Liste `numbers` selbst bleibt dabei unsortiert.
 
 ## Welchen Wert hat `result` am Ende?
 

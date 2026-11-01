@@ -173,8 +173,9 @@ Computer überspringt, so wie die Bleistiftnotiz am Rand eines Rezepts.
 | Variable | Behälter mit Aufkleber | [[python-values-and-variables]] |
 | Eingabe und Ausgabe | Pfandautomat | [[python-working-with-text]] |
 | Funktion | Kaffeemaschine | [[python-functions]] |
+| Liste | Zug mit nummerierten Wagen | [[python-lists]] |
 | Verzweigung | Türsteher | folgt in Teil 2 dieses Pfads |
-| Schleife und Liste | Zwiebeln schälen, Zug | folgt in Teil 2 dieses Pfads |
+| Schleife | Zwiebeln schälen | folgt in Teil 2 dieses Pfads |
 
 Behalte die Bilder im Kopf, wenn du gleich mit Python anfängst. Die Sprache
 ist neu, aber die Ideen dahinter kennst du jetzt.

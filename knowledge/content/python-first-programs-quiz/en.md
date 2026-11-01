@@ -1,14 +1,14 @@
 ---
 title: "Quiz: First programs"
-summary: Six questions on values, variables, text, calculating and your own functions in Python.
+summary: Eight questions on values, variables, text, calculating, lists and your own functions in Python.
 objectives:
-  intro: "This quiz uses six questions to check whether you can:"
+  intro: "This quiz uses eight questions to check whether you can:"
   goals:
     - "predict what `+` does with two strings and which type the value from `input()` has"
     - "work out the results of `//` and `%`"
     - "tell valid variable names from invalid and reserved ones"
-    - "recognise that a function without `return` gives `None`"
-    - "trace a `NameError` back to its likely cause"
+    - "access elements of a list by their index and predict how `append()` changes it"
+    - "recognise that a function without `return` gives `None`, and trace a `NameError` back to its likely cause"
 translation_of: de
 based_on: 2026-11-01
 ---
@@ -52,6 +52,32 @@ based_on: 2026-11-01
 > Names consist of letters, digits and underscores and do not start with a
 > digit. A hyphen would be a minus sign, and `class` is a reserved word in
 > Python.
+
+## What does `print(colors[1])` print if `colors = ["red", "green", "blue"]`?
+
+- [ ] `red`
+- [x] `green`
+- [ ] `blue`
+
+> The index starts at 0: `colors[0]` is `"red"`, `colors[1]` is `"green"`.
+> You reach the last element with `colors[-1]`.
+
+## What does this program print?
+
+```python static
+numbers = [3, 8, 1]
+numbers.append(5)
+print(len(numbers), max(numbers), sorted(numbers)[0])
+```
+
+- [ ] `3 8 3`
+- [x] `4 8 1`
+- [ ] `4 5 1`
+- [ ] `4 8 3`
+
+> `append` adds the 5 at the end, so the list then has four elements. The
+> largest is still the 8, and `sorted(numbers)[0]` is the smallest element,
+> the 1. The list `numbers` itself stays unsorted.
 
 ## What value does `result` have at the end?
 

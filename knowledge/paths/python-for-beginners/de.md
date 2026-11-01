@@ -6,8 +6,8 @@ summary: >-
   Programmieren lernen mit Python, ohne Vorkenntnisse und ohne Installation:
   kleine Programme, die fragen, rechnen und antworten, direkt im Browser.
 goal: >-
-  Du schreibst kleine Python-Programme, die Eingaben lesen, mit Zahlen und
-  Texten arbeiten und ihre Schritte in eigene Funktionen gliedern.
+  Du schreibst kleine Python-Programme, die Eingaben lesen, mit Zahlen, Texten
+  und Listen arbeiten und ihre Schritte in eigene Funktionen gliedern.
 audience: Alle ohne Programmiererfahrung
 level: 1
 sections:
@@ -20,6 +20,8 @@ sections:
       - python-exercise-business-card
       - python-arithmetic
       - python-exercise-pizza
+      - python-lists
+      - python-exercise-weather
       - python-functions
       - item: problem-decomposition
         optional: true

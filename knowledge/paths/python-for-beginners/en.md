@@ -5,8 +5,8 @@ summary: >-
   installing anything: small programs that ask, calculate and answer, right in
   the browser.
 goal: >-
-  You write small Python programs that read input, work with numbers and text
-  and organise their steps in functions of their own.
+  You write small Python programs that read input, work with numbers, text and
+  lists and organise their steps in functions of their own.
 audience: Everyone without programming experience
 translation_of: de
 based_on: 2026-11-01
