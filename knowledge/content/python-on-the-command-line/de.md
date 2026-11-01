@@ -20,7 +20,7 @@ topics: [working-with-the-computer, programming-with-python]
 modules: [dup]
 relations:
   requires: [command-line-navigating, python-first-program]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

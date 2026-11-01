@@ -20,7 +20,7 @@ topics: [working-with-the-computer]
 modules: [dup]
 relations:
   requires: [files-and-folders]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

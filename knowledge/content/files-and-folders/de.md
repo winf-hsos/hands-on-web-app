@@ -18,7 +18,7 @@ level: 1
 duration: 15
 topics: [working-with-the-computer]
 modules: [dup]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

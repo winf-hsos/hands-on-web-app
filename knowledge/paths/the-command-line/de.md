@@ -22,7 +22,7 @@ steps:
   - command-line-quiz
   - item: python-virtual-environments
     optional: true
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

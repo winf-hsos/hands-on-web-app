@@ -17,7 +17,7 @@ topics: [working-with-the-computer]
 modules: [dup]
 relations:
   checks: [files-and-folders, command-line, command-line-navigating, command-line-files, python-on-the-command-line]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 
