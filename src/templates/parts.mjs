@@ -70,12 +70,20 @@ export const progressBar = (ids, lang) =>
     <span class="meter-label"></span>
   </div>`;
 
+/**
+ * Marks a part of a page that the editor changes in place when it is clicked
+ * (src/editor/ui/inline.js): the name of its field in the front matter. Only
+ * on the site with drafts; the published pages stay without it.
+ */
+export const editable = (site, field) => site.drafts && raw(` data-field="${field}"`);
+
 /** A disclosure for everything that is detail rather than overview. */
-export const more = (summary, content, { open = false, className = '' } = {}) =>
-  html`<details class="more ${className}" ${open && raw('open')}>
+export const more = (summary, content, { open = false, className = '', attributes = '' } = {}) =>
+  html`<details class="more ${className}" ${open && raw('open')}${attributes}>
     <summary>${summary}</summary>
     <div class="more-body">${content}</div>
   </details>`;
 
+/** Rows of term and value; a third entry adds attributes to the row, such as editable(). */
 export const facts = (rows) =>
-  html`<dl class="facts">${rows.filter(Boolean).map(([term, value]) => html`<div><dt>${term}</dt><dd>${value}</dd></div>`)}</dl>`;
+  html`<dl class="facts">${rows.filter(Boolean).map(([term, value, attributes = '']) => html`<div${attributes}><dt>${term}</dt><dd>${value}</dd></div>`)}</dl>`;

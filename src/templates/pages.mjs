@@ -3,7 +3,7 @@
 // what is not needed to choose or to read sits in a disclosure.
 import { html, raw, json } from '../build/html.mjs';
 import { t, count, formatDate } from '../build/i18n.mjs';
-import { itemRow, progressBar, more, facts, icons, typeIcon, viewSwitch, draftTag } from './parts.mjs';
+import { itemRow, progressBar, more, facts, icons, typeIcon, viewSwitch, draftTag, editable } from './parts.mjs';
 import { iconSvg, iconShapes } from '../build/icons.mjs';
 import { deckFile, deckPdf } from '../build/deck.mjs';
 import { datasetInfo, loadingCode } from '../build/dataset.mjs';
@@ -29,8 +29,8 @@ export function home(site, lang) {
     content: html`
       <section class="hero">
         <div class="hero-text">
-          <h1 class="hero-title"><span>${first}</span> <span>${rest.join(' ')}</span></h1>
-          <p class="lead">${text.summary}</p>
+          <h1 class="hero-title" lang="${text.lang}"${editable(site, 'title')}><span>${first}</span> <span>${rest.join(' ')}</span></h1>
+          <p class="lead" lang="${text.lang}"${editable(site, 'summary')}>${text.summary}</p>
           <ul class="ways">
             ${featured &&
             html`<li><a class="way way-main" href="${site.url(featured, lang)}">
@@ -51,7 +51,7 @@ export function home(site, lang) {
         <h2>${t(lang, 'samples')}</h2>
         <ul class="rows">${samples.map((item) => itemRow(site, item, lang))}</ul>
       </section>`}
-      ${more(t(lang, 'how_it_works'), html`<div class="prose">${raw(site.body(doc, lang))}</div>`)}
+      ${more(t(lang, 'how_it_works'), html`<div class="prose" lang="${text.lang}">${raw(site.body(doc, lang))}</div>`)}
     `,
   };
 }
@@ -171,7 +171,7 @@ const quizLabels = (lang) =>
 
 /** The topics of an item or project, each a link to the content of that topic. */
 const topicTags = (site, topics, lang) =>
-  html`<p class="topic-tags"><span class="visually-hidden">${t(lang, 'topics')}:</span>${topics.map(
+  html`<p class="topic-tags"${editable(site, 'topics')}><span class="visually-hidden">${t(lang, 'topics')}:</span>${topics.map(
     (key) => html`<a class="topic-tag" href="${site.link(lang, 'items')}?topic=${key}">${site.vocabulary.topics[key][lang]}</a>`,
   )}</p>`;
 
@@ -202,11 +202,11 @@ export function item(site, doc, lang) {
     content: html`
       <article class="page item" data-item-page="${doc.id}">
         <header class="page-head">
-          <p class="kicker">${typeIcon(site, doc)}<span>${typeLabel(site, doc, lang)}</span><span>${lead.duration} ${t(lang, 'minutes')}</span></p>
-          <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}">${text.title}</h1>
-          <p class="lead" lang="${text.lang}">${text.summary}</p>
+          <p class="kicker"${editable(site, 'kicker')}>${typeIcon(site, doc)}<span>${typeLabel(site, doc, lang)}</span><span>${lead.duration} ${t(lang, 'minutes')}</span></p>
+          <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}"${editable(site, 'title')}>${text.title}</h1>
+          <p class="lead" lang="${text.lang}"${editable(site, 'summary')}>${text.summary}</p>
           ${topicTags(site, lead.topics, lang)}
-          ${before.length > 0 && html`<p class="before">${t(lang, 'before')} ${before.map((b, i) => html`${i > 0 && ', '}${link(b)}`)}</p>`}
+          ${before.length > 0 && html`<p class="before"${editable(site, 'relations')}>${t(lang, 'before')} ${before.map((b, i) => html`${i > 0 && ', '}${link(b)}`)}</p>`}
         </header>
         ${text.missing && html`<p class="notice">${t(lang, 'missing_translation')}</p>`}
         ${text.stale && html`<p class="notice">${t(lang, 'stale_translation')}</p>`}
@@ -236,20 +236,21 @@ export function item(site, doc, lang) {
           other.map(
             (group) => html`<h3>${group.label}</h3><ul class="rows">${group.items.map((r) => itemRow(site, r, lang, { summary: false }))}</ul>`,
           ),
+          { attributes: editable(site, 'relations') },
         )}
         ${more(
           t(lang, 'details'),
           facts([
-            [t(lang, 'level'), v.levels[lead.level][lang]],
-            lead.modules?.length && [t(lang, 'modules'), lead.modules.map((k) => v.modules[k][lang]).join(', ')],
-            lead.authors && [t(lang, 'authors'), lead.authors.join(', ')],
-            lead.year && [t(lang, 'year'), lead.year],
-            lead.publisher && [t(lang, 'publisher'), lead.publisher],
-            lead.isbn && [t(lang, 'isbn'), lead.isbn],
-            lead.venue && [t(lang, 'venue'), lead.venue],
-            lead.doi && [t(lang, 'doi'), html`<a href="https://doi.org/${lead.doi}" rel="noopener">${lead.doi}</a>`],
-            lead.license && [t(lang, 'license'), lead.license],
-            lead.when && [t(lang, 'when'), lead.when],
+            [t(lang, 'level'), v.levels[lead.level][lang], editable(site, 'level')],
+            lead.modules?.length && [t(lang, 'modules'), lead.modules.map((k) => v.modules[k][lang]).join(', '), editable(site, 'modules')],
+            lead.authors && [t(lang, 'authors'), lead.authors.join(', '), editable(site, 'authors')],
+            lead.year && [t(lang, 'year'), lead.year, editable(site, 'year')],
+            lead.publisher && [t(lang, 'publisher'), lead.publisher, editable(site, 'publisher')],
+            lead.isbn && [t(lang, 'isbn'), lead.isbn, editable(site, 'isbn')],
+            lead.venue && [t(lang, 'venue'), lead.venue, editable(site, 'venue')],
+            lead.doi && [t(lang, 'doi'), html`<a href="https://doi.org/${lead.doi}" rel="noopener">${lead.doi}</a>`, editable(site, 'doi')],
+            lead.license && [t(lang, 'license'), lead.license, editable(site, 'license')],
+            lead.when && [t(lang, 'when'), lead.when, editable(site, 'when')],
             lead.born && [t(lang, 'lived'), lead.died ? `${lead.born}–${lead.died}` : `${t(lang, 'born')} ${lead.born}`],
             site.inProjects(doc.id, lang).length > 0 && [
               t(lang, 'in_projects'),
@@ -370,8 +371,8 @@ export function path(site, doc, lang) {
       <article class="page">
         <header class="page-head">
           <p class="kicker"><span>${t(lang, 'path')}</span><span>${time.required} ${t(lang, 'minutes')}</span></p>
-          <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}">${text.title}</h1>
-          <p class="lead" lang="${text.lang}">${text.data.goal}</p>
+          <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}"${editable(site, 'title')}>${text.title}</h1>
+          <p class="lead" lang="${text.lang}"${editable(site, 'goal')}>${text.data.goal}</p>
           ${progressBar(steps.filter((s) => !s.optional).map((s) => s.id), lang)}
         </header>
         ${text.missing && html`<p class="notice">${t(lang, 'missing_translation')}</p>`}
@@ -382,8 +383,8 @@ export function path(site, doc, lang) {
           t(lang, 'about_path'),
           html`<div class="prose" lang="${text.lang}">${raw(site.body(doc, lang))}</div>
           ${facts([
-            [t(lang, 'audience'), text.data.audience],
-            [t(lang, 'level'), site.vocabulary.levels[doc.lead.level][lang]],
+            [t(lang, 'audience'), text.data.audience, editable(site, 'audience')],
+            [t(lang, 'level'), site.vocabulary.levels[doc.lead.level][lang], editable(site, 'level')],
             (doc.lead.requires ?? []).length > 0 && [
               t(lang, 'requires'),
               doc.lead.requires.map((id, i) => html`${i > 0 && ', '}<a href="${site.url(requirement(id), lang)}">${site.localize(requirement(id), lang).title}</a>`),
@@ -493,9 +494,9 @@ export function course(site, doc, lang) {
       <article class="page" data-course="${doc.id}">
         <header class="page-head">
           <p class="kicker"><span>${t(lang, 'course')}</span><span>${doc.lead.semester}</span></p>
-          <h1 lang="${text.lang}">${text.title}</h1>
-          ${text.data.subtitle && html`<p class="subtitle" lang="${text.lang}">${text.data.subtitle}</p>`}
-          <p class="lead" lang="${text.lang}">${text.summary}</p>
+          <h1 lang="${text.lang}"${editable(site, 'title')}>${text.title}</h1>
+          ${text.data.subtitle && html`<p class="subtitle" lang="${text.lang}"${editable(site, 'subtitle')}>${text.data.subtitle}</p>`}
+          <p class="lead" lang="${text.lang}"${editable(site, 'summary')}>${text.summary}</p>
           ${institutionBlock(site, doc, lang)}
           ${required.length > 0 && progressBar(required, lang)}
         </header>
@@ -561,8 +562,8 @@ export function project(site, doc, lang) {
       <article class="page project">
         <header class="page-head">
           <p class="kicker">${projectIcon}<span>${t(lang, 'project')}</span><span>${count(lang, lead.phases.length, 'phases')}</span></p>
-          <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}">${text.title}</h1>
-          <p class="lead" lang="${text.lang}">${text.summary}</p>
+          <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}"${editable(site, 'title')}>${text.title}</h1>
+          <p class="lead" lang="${text.lang}"${editable(site, 'summary')}>${text.summary}</p>
           ${topicTags(site, lead.topics, lang)}
         </header>
         ${text.missing && html`<p class="notice">${t(lang, 'missing_translation')}</p>`}
@@ -603,8 +604,8 @@ export function project(site, doc, lang) {
         ${more(
           t(lang, 'details'),
           facts([
-            [t(lang, 'level'), v.levels[lead.level][lang]],
-            lead.modules?.length && [t(lang, 'modules'), lead.modules.map((k) => v.modules[k][lang]).join(', ')],
+            [t(lang, 'level'), v.levels[lead.level][lang], editable(site, 'level')],
+            lead.modules?.length && [t(lang, 'modules'), lead.modules.map((k) => v.modules[k][lang]).join(', '), editable(site, 'modules')],
             [t(lang, 'code'), html`<code>${lead.code}</code>`],
             [t(lang, 'updated'), formatDate(lead.updated, lang)],
             [t(lang, 'status'), t(lang, lead.status)],

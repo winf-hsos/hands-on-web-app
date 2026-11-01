@@ -2,7 +2,9 @@
 // (scripts/editor.mjs). It says that this is the editor, and on the page of a
 // content item, learning path, course or project it offers "Bearbeiten" and,
 // with one click, "Freigeben" or "Zurück zum Entwurf". A release changes the
-// file only; the site on the web shows it after the next push.
+// file only; the site on the web shows it after the next push. On the view
+// with drafts every marked part of the page can be edited in place (inline.js).
+import { enableInlineEditing } from './inline.js';
 
 const MARK = '<svg class="mark" width="26" height="14" viewBox="0 0 26 14" aria-hidden="true"><rect x="0.5" y="0.5" width="11" height="13" rx="2.5" fill="currentColor"/><rect x="14.5" y="0.5" width="11" height="13" rx="2.5" fill="none" stroke="currentColor"/></svg>';
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -58,7 +60,8 @@ function viewSwitch() {
 }
 
 async function render(banner) {
-  const { doc, git } = await api('GET', `/api/page?path=${encodeURIComponent(location.pathname)}`);
+  const page = await api('GET', `/api/page?path=${encodeURIComponent(location.pathname)}`);
+  const { doc, git } = page;
   banner.innerHTML = `
     <a class="ed-banner-brand" href="/edit/" title="Alle Inhalte im Editor">${MARK}Editor</a>
     <span class="ed-banner-doc">${docPart(doc)}</span>
@@ -82,6 +85,15 @@ async function render(banner) {
     banner.querySelector('.ed-banner-message').textContent =
       button.dataset.status === 'published' ? 'Freigegeben, live nach dem nächsten Veröffentlichen' : 'Wieder ein Entwurf';
   });
+  return page;
+}
+
+/** A line in the banner on what just happened. */
+function say(banner, text, error = false) {
+  const message = banner.querySelector('.ed-banner-message');
+  if (!message) return;
+  message.classList.toggle('is-error', error);
+  message.textContent = text;
 }
 
 // only on the page itself, not in the decks and demonstrators it embeds
@@ -93,5 +105,21 @@ if (window.top === window) {
   // the editor banner takes the place of the drafts banner, which says less
   document.querySelector('.drafts-banner')?.remove();
   document.body.prepend(banner);
-  render(banner);
+
+  // The preview says when it has rebuilt the site; the page follows, but not
+  // while something is open for editing, and then as soon as it is closed.
+  const session = {
+    editing: false,
+    stale: false,
+    done() {
+      this.editing = false;
+      if (this.stale) location.reload();
+    },
+  };
+  new EventSource('/__reload').onmessage = () => (session.editing ? (session.stale = true) : location.reload());
+
+  const page = await render(banner);
+  if (page.doc && document.querySelector('[data-field], .prose [data-src]')) {
+    enableInlineEditing({ ...page, api, session, say: (text, error) => say(banner, text, error) });
+  }
 }

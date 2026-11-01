@@ -259,6 +259,39 @@ export function createStore(root) {
     return save(section, id, { [current.lead]: { ...lead, data: { ...lead.data, status } } });
   }
 
+  /**
+   * Changes single fields and one passage of the text in the file of one
+   * language, as editing in place on the site pages sends them
+   * (ui/inline.js). `data` maps fields to new values, null removes a field.
+   * `body` replaces the characters from `start` to `end` with `text`,
+   * provided they still read `expected`; an empty text removes the passage
+   * with the blank lines after it. A change of the original moves its
+   * `updated` to today, as the form does.
+   */
+  function patch(section, id, lang, { data = {}, body } = {}) {
+    const current = read(section, id);
+    const file = current.files[lang];
+    if (!file) return { ok: false, errors: [`${section}/${id} has no ${lang} version`] };
+    const next = { data: { ...file.data }, body: file.body };
+    for (const [key, value] of Object.entries(data)) {
+      if (value === null) delete next.data[key];
+      else next.data[key] = value;
+    }
+    if (body) {
+      const { start, end, expected, text } = body;
+      if (next.body.slice(start, end) !== expected) return { ok: false, conflict: true, errors: ['The text has changed in the meantime; reload the page and try again.'] };
+      let head = next.body.slice(0, start);
+      let tail = next.body.slice(end);
+      if (!text.trim()) {
+        tail = tail.replace(/^(\r?\n)+/, '');
+        if (!tail) head = head.replace(/(\r?\n)+$/, '\n');
+      }
+      next.body = head + text.replace(/\s+$/, '') + tail;
+    }
+    if (lang === current.lead && 'updated' in next.data) next.data.updated = new Date().toISOString().slice(0, 10);
+    return save(section, id, { [lang]: next });
+  }
+
   /** Deletes a document for good, unless something still points to it. */
   function remove(section, id) {
     const knowledge = load();
@@ -285,5 +318,5 @@ export function createStore(root) {
     return code;
   }
 
-  return { list, read, save, setStatus, remove, newCode, areaOf, sections: SECTIONS, existsDir: (s) => existsSync(join(root, s)) && readdirSync(join(root, s)) };
+  return { list, read, save, setStatus, patch, remove, newCode, areaOf, sections: SECTIONS, existsDir: (s) => existsSync(join(root, s)) && readdirSync(join(root, s)) };
 }

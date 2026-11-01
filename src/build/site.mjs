@@ -42,10 +42,11 @@ export function createSite({ vocabulary, sections, hidden = new Map() }, area, b
   }
 
   /** Markdown written in `textLang`, with links pointing to pages in `lang`. */
-  const markdown = (md, lang, textLang = lang, quiz = false) =>
+  const markdown = (md, lang, textLang = lang, quiz = false, sourceMap = false) =>
     renderMarkdown(md, {
       lang: textLang,
       quiz,
+      sourceMap,
       resolve: (id) => {
         const target = byId.get(id);
         if (target) return { url: docUrl(target, lang), title: localize(target, lang).title };
@@ -58,7 +59,8 @@ export function createSite({ vocabulary, sections, hidden = new Map() }, area, b
   function body(doc, lang) {
     const text = localize(doc, lang);
     const key = `${doc.section}/${doc.id}/${text.lang}/${lang}`;
-    if (!rendered.has(key)) rendered.set(key, markdown(text.file.body, lang, text.lang, doc.lead.type === 'quiz'));
+    // on the site with drafts the blocks carry their place in the source, for the editor
+    if (!rendered.has(key)) rendered.set(key, markdown(text.file.body, lang, text.lang, doc.lead.type === 'quiz', base !== ''));
     return rendered.get(key);
   }
 

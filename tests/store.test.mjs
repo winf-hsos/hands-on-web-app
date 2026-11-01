@@ -69,3 +69,35 @@ test('releasing a draft changes its status line only, and taking it back restore
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test('a passage changed in place replaces exactly its characters, an empty one goes with its blank lines', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'hocs-store-'));
+  try {
+    cpSync(ROOT, dir, { recursive: true, filter: (src) => statSync(src).isDirectory() || statSync(src).size < 300_000 });
+    const store = createStore(dir);
+    const id = 'sent-is-not-measured';
+    const body = () => store.read('content', id).files.de.body;
+    const at = (text) => {
+      const start = body().indexOf(text);
+      return { start, end: start + text.length, expected: text };
+    };
+
+    const heading = '## Was ihr braucht';
+    assert.equal(store.patch('content', id, 'de', { body: { ...at(heading), text: '## Was ihr dazu braucht' } }).ok, true);
+    assert.ok(body().includes('\n## Was ihr dazu braucht\n'));
+
+    const before = body();
+    assert.equal(store.patch('content', id, 'de', { body: { ...at('## Was ihr dazu braucht'), text: '' } }).ok, true);
+    assert.ok(!body().includes('Was ihr dazu braucht') && !/\n{3}/.test(body().replace(/\r/g, '')));
+    assert.equal(body().length < before.length, true);
+
+    const stale = store.patch('content', id, 'de', { body: { start: 0, end: 4, expected: 'nope', text: 'x' } });
+    assert.equal(stale.ok, false);
+    assert.equal(stale.conflict, true);
+
+    assert.equal(store.patch('content', id, 'de', { data: { modules: null } }).ok, true);
+    assert.equal('modules' in store.read('content', id).files.de.data, false);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});

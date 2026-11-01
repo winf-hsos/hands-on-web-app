@@ -38,6 +38,7 @@ const STATIC = {
   '/edit/editor.js': 'src/editor/ui/editor.js',
   '/edit/editor.css': 'src/editor/ui/editor.css',
   '/edit/overlay.js': 'src/editor/ui/overlay.js',
+  '/edit/inline.js': 'src/editor/ui/inline.js',
   '/edit/overlay.css': 'src/editor/ui/overlay.css',
   '/edit/site.css': 'src/styles/site.css',
   '/edit/fonts/sans.woff2': 'node_modules/@fontsource-variable/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-wght-normal.woff2',
@@ -47,9 +48,12 @@ const STATIC = {
   '/edit/vendor/js-yaml.mjs': 'node_modules/js-yaml/dist/js-yaml.mjs',
 };
 
-// What every site page gets on its way through the editor.
+// What every site page gets on its way through the editor. The reload of the
+// preview (scripts/dev.mjs) goes, because the banner reloads by itself and
+// waits while something is being edited in place.
 const OVERLAY_HEAD = '<link rel="stylesheet" href="/edit/overlay.css">';
 const OVERLAY_BODY = '<script type="module" src="/edit/overlay.js"></script>';
+const PREVIEW_RELOAD = "<script>new EventSource('/__reload').onmessage=()=>location.reload()</script>";
 
 /**
  * Passes a request on to the site preview. Pages come back with the editor
@@ -71,7 +75,7 @@ function proxy(req, res) {
         const headers = { ...up.headers };
         delete headers['content-length'];
         res.writeHead(up.statusCode, headers);
-        res.end(text.replace('</head>', `${OVERLAY_HEAD}</head>`).replace('</body>', `${OVERLAY_BODY}</body>`));
+        res.end(text.replace(PREVIEW_RELOAD, '').replace('</head>', `${OVERLAY_HEAD}</head>`).replace('</body>', `${OVERLAY_BODY}</body>`));
       });
     },
   );
@@ -82,12 +86,29 @@ function proxy(req, res) {
   req.pipe(upstream);
 }
 
-/** The document a page of the site shows, from its address; null for lists and other pages. */
-function docAt(path) {
+/**
+ * What the banner of a site page needs: the document on it (null for lists
+ * and other pages), the labels of the vocabulary in the language of the page
+ * and the content items to link to.
+ */
+function pageInfo(path) {
   const m = path.match(/^(?:\/drafts)?\/([a-z]+)\/(de|en)\/(?:(items|paths|courses|projects)\/([a-z0-9-]+)\/)?$/);
-  if (!m) return null;
-  const [, area, lang, kind, id] = m;
-  const { docs } = store.list();
+  const lang = m?.[2] ?? (path.includes('/en/') ? 'en' : 'de');
+  const { docs, vocabulary } = store.list();
+  const labels = (group) => Object.fromEntries(Object.entries(vocabulary[group] ?? {}).map(([key, def]) => [key, def[lang] ?? key]));
+  const items = docs
+    .filter((d) => d.section === 'content' && d.status !== 'archived')
+    .map((d) => ({ id: d.id, title: d.titles[lang] ?? d.titles[d.lead] ?? d.id }))
+    .sort((a, b) => a.title.localeCompare(b.title, lang));
+  return {
+    doc: m && docAt(docs, m),
+    vocabulary: { types: labels('types'), levels: labels('levels'), topics: labels('topics'), modules: labels('modules'), relations: labels('relations') },
+    items,
+  };
+}
+
+/** The document a page of the site shows, from the parts of its address. */
+function docAt(docs, [, area, lang, kind, id]) {
   const doc = kind
     ? docs.find((d) => d.section === (kind === 'items' ? 'content' : kind) && d.id === id)
     : docs.find((d) => d.section === 'pages' && d.area === area);
@@ -160,7 +181,13 @@ async function api(req, res, path) {
   }
   // what the banner of a site page needs: the document on it and the git state
   if (req.method === 'GET' && resource === 'page') {
-    return json(res, 200, { doc: docAt(new URL(req.url, 'http://x').searchParams.get('path') ?? ''), git: gitState() });
+    return json(res, 200, { ...pageInfo(new URL(req.url, 'http://x').searchParams.get('path') ?? ''), git: gitState() });
+  }
+  // editing in place: single fields or one passage of the text (ui/inline.js)
+  if (req.method === 'PATCH' && resource === 'doc' && section && id) {
+    const { lang, data, body: passage } = await body(req);
+    const result = store.patch(section, id, lang, { data, body: passage });
+    return json(res, result.ok ? 200 : result.conflict ? 409 : 422, result);
   }
   if (req.method === 'PUT' && resource === 'status' && section && id) {
     const result = store.setStatus(section, id, (await body(req)).status);

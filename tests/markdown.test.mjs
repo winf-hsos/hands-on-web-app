@@ -67,3 +67,11 @@ test('a quote inside an option is its reason, hidden until answered; one after t
   assert.match(html, /<li class="quiz-option" data-correct="true">[\s\S]*<div class="quiz-reason" hidden>[\s\S]*Zwei Zustände\.[\s\S]*<\/li>/);
   assert.match(html, /<div class="quiz-explanation" hidden>[\s\S]*Allgemein\./);
 });
+
+test('with sourceMap every top-level block names its place in the source, a quiz question spanning its parts', () => {
+  const md = 'Eins\n\n```r\nx\n```\n\n## Frage\n\n- [x] ja\n- [ ] nein\n';
+  const html = renderMarkdown(md, { lang: 'de', resolve: () => null, sourceMap: true, quiz: true });
+  const places = [...html.matchAll(/data-src="(\d+)-(\d+)"/g)].map(([, a, b]) => md.slice(Number(a), Number(b)));
+  assert.deepEqual(places, ['Eins', '```r\nx\n```', '## Frage\n\n- [x] ja\n- [ ] nein']);
+  assert.doesNotMatch(render(md), /data-src/);
+});

@@ -53,6 +53,36 @@ passed on to the site preview, and every page gets a banner at the top
 
 The banner is left out of decks and demonstrators embedded in a page.
 
+## Editing in place
+
+On the view with drafts, a click on a part of a page turns it into an editor
+for exactly what it shows (Nicolas, 2026-11-01; `src/editor/ui/inline.js`):
+
+| Click on | Opens |
+|---|---|
+| title, summary (goal of a path, subtitle of a course) | the text itself; Enter saves, Escape cancels |
+| a block of the text (paragraph, heading, list, table, callout) | its Markdown in a box; Ctrl+Enter saves, Escape cancels, saved empty the block is gone |
+| code box, demonstrator, quiz question, folded hint | a button "Bearbeiten" over the block, since a click there is used by the block itself |
+| type and duration above the title | a choice of type and the minutes |
+| topics, modules, level | chips to remove and a menu to add, or a choice |
+| the relations ("Mehr dazu", "Setzt voraus") | each relation of this item with its targets, a search to add one |
+| authors, year, publisher and the other single values in the details | a field |
+
+Ctrl or Cmd with a click still follows a link. Every change is saved at once
+(`PATCH /api/doc/<section>/<id>`, `store.patch()`), with the same checks as
+any save, and moves `updated` of the original to today, as the form does. The
+page then reloads with the result; the reload of the preview waits while
+something is open.
+
+What makes this possible are marks that exist only on the site with drafts:
+`data-field` names a field of the front matter (`editable()` in
+`src/templates/parts.mjs`), and `data-src="start-end"` gives each top-level
+block of the text its place in the Markdown (`sourceMap` in
+`src/build/remark-knowledge.mjs`). A passage is only replaced if it still
+reads as it did when the page was built; otherwise the editor asks to reload.
+Phases and challenges of projects and the structure of paths and courses are
+edited in the forms.
+
 ## What it does
 
 A document with problems carries a red mark in the list; hovering over it, or
@@ -82,7 +112,7 @@ YAML in a text field for now; everything else of them uses the forms.
 |---|---|
 | `scripts/editor.mjs` | the local server and its JSON interface |
 | `src/editor/store.mjs` | reading, checking and writing documents |
-| `src/editor/ui/` | the browser app: `index.html`, `editor.js`, `editor.css`, and the banner on the site pages, `overlay.js`, `overlay.css` |
+| `src/editor/ui/` | the browser app: `index.html`, `editor.js`, `editor.css`; on the site pages the banner, `overlay.js`, `overlay.css`, and editing in place, `inline.js` |
 
 ## Later
 

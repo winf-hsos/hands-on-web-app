@@ -1,7 +1,8 @@
 // Remark plugin for the conventions of docs/knowledge-schema.md, sections 6–7:
 // [[id]] and [[id|text]] links, GitHub-style callouts (HINT and SOLUTION
 // fold away), Python and R code that runs in the browser, and quiz questions.
-// Options: lang, quiz (boolean), resolve(id) -> { url, title } | null; a url of null keeps only the text.
+// Options: lang, quiz (boolean), resolve(id) -> { url, title } | null; a url of null keeps only the text;
+// sourceMap (boolean) marks where each block stands in the source.
 import { visit, SKIP } from 'unist-util-visit';
 import { tokenize } from '../client/highlight.js';
 
@@ -16,14 +17,29 @@ const CALLOUT_TITLES = {
 // With several hints in one text they are numbered, since each builds on the one before.
 const NUMBERED_HINT = { de: (n) => `Tipp ${n} anzeigen`, en: (n) => `Show hint ${n}` };
 
-export function remarkKnowledge({ lang, quiz: isQuiz = false, resolve }) {
+export function remarkKnowledge({ lang, quiz: isQuiz = false, resolve, sourceMap = false }) {
   return (tree) => {
     wikiLinks(tree, resolve);
     callouts(tree, lang);
     runnable(tree);
     demos(tree);
     if (isQuiz) quiz(tree);
+    if (sourceMap) markSources(tree);
   };
+}
+
+// Where each top-level block stands in the source, as data-src="start-end"
+// (character offsets), so that the editor can open exactly that passage when
+// it is clicked on the page (src/editor/ui/inline.js). Only on the site with
+// drafts. A block without a position of its own, a quiz question, spans its
+// children.
+function markSources(tree) {
+  for (const node of tree.children) {
+    const start = node.position?.start.offset ?? node.children?.[0]?.position?.start.offset;
+    const end = node.position?.end.offset ?? node.children?.at(-1)?.position?.end.offset;
+    if (start === undefined || end === undefined) continue;
+    node.data = { ...node.data, hProperties: { ...node.data?.hProperties, dataSrc: `${start}-${end}` } };
+  }
 }
 
 function wikiLinks(tree, resolve) {
