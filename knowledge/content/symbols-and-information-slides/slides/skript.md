@@ -14,7 +14,7 @@ In the North Atlantic of 1942 the ships keep radio silence, because every radio 
 
 ### A symbol is an agreed, distinguishable state (Frames 5 to 7)
 
-Both words carry weight. **Distinguishable** is a question for physics and for your sensor: can the receiver tell this state apart from all the others? **Agreed** is a question for sender and receiver: did both give the same state the same meaning, and did they do so beforehand? No measurement can answer this second question.
+Both words carry weight, and the raised thumb on the slide shows both. **Distinguishable** is a question for physics and for your sensor: can the receiver tell this state apart from all the others? Nobody mistakes a thumbs-up for a fist or an open hand. **Agreed** is a question for sender and receiver: did both give the same state the same meaning, and did they do so beforehand? The thumb itself holds no meaning: in much of Europe it says "good", in parts of West Africa and the Middle East it is an insult, and a German who counts on their fingers raises the thumb for "one", where an American raises the index finger. No measurement can answer this second question.
 
 ### Perfect reception, perfect nonsense (Frames 8 and 9)
 

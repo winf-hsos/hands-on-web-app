@@ -10,6 +10,8 @@
     .figure.wide { left: 110px; right: 110px; }
     .photo-text.narrow { width: 600px; }
     .content.tight .statement { line-height: 1.14; }
+    /* the text stays on the black half, left of the hand in the photo */
+    .content.beside-photo { right: 47%; }
   </style>
 </head>
 <body>
@@ -40,12 +42,14 @@
   </section>
 
   <section class="slide">
-    <div class="content">
-      <div class="statement">a symbol is an agreed,<br>distinguishable state.</div>
+    <img class="photo" src="img/thumbs-up.jpg" alt="A hand giving a thumbs-up against a black background">
+    <div class="content beside-photo">
+      <div class="statement">a symbol is<br>an agreed,<br>distinguishable<br>state.</div>
       <div class="sidenote" data-step="1">distinguishable: the receiver can tell it apart from the others.</div>
       <div class="sidenote" data-step="2">agreed: both sides gave it the same meaning, beforehand.</div>
     </div>
-    <aside class="notes">Beide Wörter tragen. Unterscheidbar ist eine Frage an die Physik und an den Sensor: Kann der Empfänger diesen Zustand von allen anderen trennen? Vereinbart ist eine Frage an Sender und Empfänger, und die kann keine Messung beantworten. Fehlt eines von beiden, ist die Übertragung wertlos, und die nächste Folie zeigt, wie das aussieht.</aside>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">Beide Wörter tragen, und der Daumen zeigt beide. Unterscheidbar ist er sofort: Niemand verwechselt ihn mit einer Faust oder einer offenen Hand, das ist eine Frage an die Augen, beim Licht an den Sensor. Was er bedeutet, steht dagegen nirgends im Daumen. Hier heißt er „gut“, in Teilen Westafrikas und des Nahen Ostens ist er eine Beleidigung, und wer in Deutschland beim Zählen den Daumen hebt, meint „eins“, wo man in den USA den Zeigefinger hebt. Derselbe Zustand trägt also je nach Vereinbarung eine andere Bedeutung, und diese Frage an Sender und Empfänger kann keine Messung beantworten. Fehlt eines von beiden, ist die Übertragung wertlos, und die nächste Folie zeigt, wie das aussieht.</aside>
   </section>
 
   <section class="slide has-punch" data-on-show="drawNonsense" data-on-step="drawNonsense">
