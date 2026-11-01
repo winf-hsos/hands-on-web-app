@@ -2807,6 +2807,20 @@ details.callout[open] > summary::before {
   margin-bottom: 1.25rem;
 }
 
+.script-file {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.9rem;
+  max-width: var(--measure);
+  margin: 0 0 1.5rem;
+}
+
+.script-note {
+  color: var(--quiet);
+  font-size: 0.9rem;
+}
+
 .prose .dataset-facts {
   display: flex;
   flex-wrap: wrap;

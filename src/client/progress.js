@@ -51,8 +51,22 @@ export function merge(into, from) {
 let index;
 /** Titles, codes and URLs of everything, for search and transfer; fetched once. */
 export function loadIndex() {
-  index ??= fetch(document.body.dataset.index).then((r) => r.json());
+  index ??= fetch(document.body.dataset.index)
+    .then((r) => r.json())
+    .then((data) => {
+      renameCourses(data.courses);
+      return data;
+    });
   return index;
+}
+
+/** Courses recorded under an id they had before (`formerly`) get their present one. */
+function renameCourses(courses) {
+  const now = new Map(courses.flatMap((c) => (c.formerly ?? []).map((old) => [old, c.id])));
+  const progress = load();
+  if (!progress.courses.some((id) => now.has(id))) return;
+  progress.courses = [...new Set(progress.courses.map((id) => now.get(id) ?? id))];
+  save(progress);
 }
 
 // --- transfer -------------------------------------------------------------

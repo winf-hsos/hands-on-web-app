@@ -32,7 +32,7 @@ knowledge/
       de.md
       en.md
   courses/
-    dup-2026-27-ws/      curated collections per course and semester
+    digitalisation-and-programming/   curated collections per module, without a semester
       de.md
       en.md
   projects/
@@ -370,6 +370,16 @@ to the lessons it needs with `requires`.
 > ```
 ```
 
+Every exercise with Python or R boxes can be downloaded as a script with
+comments (Nicolas, 2026-11-01), to run it in VS Code or Positron: the build
+writes `<id>.py` or `<id>.R` next to the page in each language, and the page
+offers it above the task (`src/build/exercise-script.mjs`). Task, sample run,
+hints and extension become comments, headings become sections (`# Aufgabe ----`
+in R), the code of the boxes becomes code, and the solution stays on the page.
+Lines of setup that several boxes begin with appear once. An R script starts
+by loading what the boxes get in the browser: dplyr, ggplot2 where it draws,
+and every data set it names, read from the site.
+
 ## 8. Learning paths
 
 A path is a folder in `paths/` with the same lead/translation pattern. The
@@ -422,7 +432,9 @@ build writes a page at each old `/courses/…` address that forwards there. In
 the knowledge base it stays a course (`courses/`, `kind: course`), because
 `module:` already names the module of the module handbook it belongs to.
 
-A course is a curated collection for one module, or a few, in one semester. All
+A course is a curated collection for one module, or a few. It names no
+semester (Nicolas, 2026-11-01): the platform has no reference to a term, in
+fields, ids or texts, so a module stays valid from one year to the next. All
 courses are listed on the site under "Module" once they are published, and
 opening one adds it to "My learning", which also makes it a filter in the
 content list. Access codes are not used for now (Nicolas, 2026-11-01): the
@@ -435,10 +447,10 @@ kind: course
 code: 3307                   # short code, like any page
 access_code: LICHT-26        # optional, not used for now: courses are listed under Module (Nicolas, 2026-11-01)
 module: dup                  # or a list, module: [ea, wmg]
+formerly: [dup-2026-27-ws]   # optional: earlier ids, whose addresses lead here
 institution: hs-osnabrueck      # from vocabulary.yaml, with name, address and logo
-semester: 2026-27 - WS
 title: Digitalisierung und Programmierung
-summary: Begleitmaterial zur Vorlesung im Wintersemester 2026/27.
+summary: Programmieren mit Python von den Grundideen an, dazu …
 sections:
   - path: python-for-beginners  # a whole learning path as one section
   - title: { de: "Zahlen- und Codesysteme", en: "Number and code systems" }
@@ -610,7 +622,7 @@ by URL or title, and contains only what the browser observed:
     "code-as-agreement": { "seen": "2026-10-28", "done": "2026-10-28" },
     "code-systems-quiz": { "seen": "2026-10-28", "quiz": { "q1": 1, "q2": 0, "q3": 1 } }
   },
-  "courses": ["dup-2026-27-ws"]
+  "courses": ["digitalisation-and-programming"]
 }
 ```
 

@@ -182,7 +182,6 @@ function shapes(vocabulary) {
           code: int(1000, 9999),
           // the module or modules the course belongs to; their descriptions come from vocabulary.yaml
           module: oneOrMore(oneOf(modules, 'module')),
-          semester: text,
           title: text,
           summary: text,
           // may be empty while the content of a new course is being written
@@ -196,6 +195,8 @@ function shapes(vocabulary) {
           subtitle: text,
           institution: oneOf(institutions, 'institution'),
           areas: inAreas,
+          // earlier ids; their addresses lead to the course (scripts/build.mjs)
+          formerly: list(id),
           access_code: (v) => (typeof v === 'string' && /^[A-Z0-9-]{4,16}$/.test(v) ? null : 'expected upper case letters, digits and hyphens'),
         },
       },

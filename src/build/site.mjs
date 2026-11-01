@@ -5,6 +5,7 @@
 import { renderMarkdown } from './markdown.mjs';
 import { stepsOf, pathSteps, courseSteps } from './validate.mjs';
 import { splitProject } from './project.mjs';
+import { exerciseScript } from './exercise-script.mjs';
 
 // Courses are called modules on the site (Nicolas, 2026-11-01) and live under
 // /modules/; the knowledge base keeps `courses`, since `module:` already names
@@ -43,6 +44,17 @@ export function createSite({ vocabulary, sections, hidden = new Map() }, area, b
       file,
     };
   }
+
+  /** An exercise as a script with comments to download (build/exercise-script.mjs), or null. */
+  const script = (doc, lang) => {
+    if (doc.lead.type !== 'exercise') return null;
+    const text = localize(doc, lang);
+    const titleOf = (id) => {
+      const target = byId.get(id) ?? hidden.get(id);
+      return target ? localize(target, lang).title : null;
+    };
+    return exerciseScript({ id: doc.id, title: text.title, body: text.file.body, lang, url: docUrl(doc, lang), titleOf });
+  };
 
   /** Markdown written in `textLang`, with links pointing to pages in `lang`. */
   const markdown = (md, lang, textLang = lang, quiz = false, sourceMap = false) =>
@@ -145,6 +157,7 @@ export function createSite({ vocabulary, sections, hidden = new Map() }, area, b
     localize,
     body,
     markdown,
+    script,
     projectText,
     inProjects,
     relations,

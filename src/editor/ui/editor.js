@@ -50,7 +50,7 @@ const HANDLED = {
   common: ['type', 'kind', 'code', 'title', 'summary', 'goal', 'audience', 'status', 'updated', 'translation_of', 'based_on'],
   content: ['level', 'duration', 'topics', 'modules', 'relations', 'objectives', ...Object.keys(FIELD_LABEL)],
   paths: ['level', 'requires', 'steps'],
-  courses: ['access_code', 'module', 'semester'],
+  courses: ['access_code', 'module'],
   projects: ['level', 'modules', 'items'],
   pages: ['featured_path', 'samples'],
 };
@@ -249,7 +249,6 @@ function renderShared() {
   if (work.section === 'courses') {
     html.push(field('Zugangscode für Studierende', input('access_code', d.access_code), { hint: 'Vorerst nicht genutzt, Module stehen offen unter „Module“. Großbuchstaben, Ziffern, Bindestrich' }));
     html.push(field('Modul im Modulhandbuch', multi('module', Object.entries(v.modules).map(([k, l]) => [k, l.de]), [].concat(d.module ?? [])), { wide: true }));
-    html.push(field('Semester', input('semester', d.semester), { hint: 'z. B. 2026-27 - WS' }));
   }
   if (work.section === 'projects') {
     html.push(field('Niveau', select('level', levels, d.level)));
@@ -702,7 +701,7 @@ function createDialog(section = state.section === 'pages' ? 'content' : state.se
       ${section === 'content' ? field('Typ', `<select name="type">${opt(Object.entries(v.types).map(([k, l]) => [k, l.de]), 'lesson')}</select>`) : ''}
       ${section === 'content' ? field('Thema', `<select name="topic">${opt(Object.entries(v.topics).map(([k, l]) => [k, l.de]))}</select>`) : ''}
       ${['paths', 'courses'].includes(section) ? field('Erster Inhalt', `<select name="first">${opt(items.map((d) => [d.id, titleOf(d)]))}</select>`, { hint: 'Weitere fügst du danach hinzu.' }) : ''}
-      ${section === 'courses' ? field('Modul im Modulhandbuch', `<select name="module">${opt(Object.entries(v.modules).map(([k, l]) => [k, l.de]))}</select>`) + field('Semester', '<input name="semester" required placeholder="2026-27 - WS">') : ''}
+      ${section === 'courses' ? field('Modul im Modulhandbuch', `<select name="module">${opt(Object.entries(v.modules).map(([k, l]) => [k, l.de]))}</select>`) : ''}
     </div>
     <p class="form-error" id="create-error"></p>
     <p class="ed-actions"><button class="text-button" value="cancel" formnovalidate>Abbrechen</button><button class="button" value="ok">Anlegen</button></p>`;
@@ -726,7 +725,7 @@ function createDialog(section = state.section === 'pages' ? 'content' : state.se
     } else if (f.section === 'paths') {
       data = { kind: 'path', code, ...base, goal: base.summary, audience: f.lang === 'de' ? 'Alle Interessierten' : 'Everyone interested', level: 1, steps: [f.first], status: 'draft', updated: today() };
     } else if (f.section === 'courses') {
-      data = { kind: 'course', code, module: f.module, semester: f.semester, ...base, sections: [{ title: { de: 'Abschnitt 1', en: 'Section 1' }, items: [f.first] }], status: 'draft', updated: today() };
+      data = { kind: 'course', code, module: f.module, ...base, sections: [{ title: { de: 'Abschnitt 1', en: 'Section 1' }, items: [f.first] }], status: 'draft', updated: today() };
     } else {
       data = { kind: 'project', code, ...base, level: 1, phases: [{ id: 'phase-1' }], status: 'draft', updated: today() };
       body = f.lang === 'de' ? 'Worum es im Projekt geht.\n\n## Erste Phase {#phase-1}\n\nWorum es in dieser Phase geht.\n' : 'What the project is about.\n\n## First phase {#phase-1}\n\nWhat this phase is about.\n';

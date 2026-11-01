@@ -228,6 +228,7 @@ export function item(site, doc, lang) {
         ${text.missing && html`<p class="notice">${t(lang, 'missing_translation')}</p>`}
         ${text.stale && html`<p class="notice">${t(lang, 'stale_translation')}</p>`}
         ${objectivesBlock(site, text, lang)}
+        ${scriptBlock(site, doc, lang)}
         ${lead.type === 'slides' && slidesBlock(site, doc, lang)}
         ${lead.type === 'dataset' && datasetBlock(doc, lang)}
         <div class="prose" lang="${text.lang}" ${isQuiz && quizLabels(lang)}>
@@ -286,6 +287,18 @@ export function item(site, doc, lang) {
       </article>
     `,
   };
+}
+
+/** An exercise as a script to download, next to its page (build/exercise-script.mjs). */
+function scriptBlock(site, doc, lang) {
+  const script = site.script(doc, lang);
+  return (
+    script &&
+    html`<p class="script-file">
+      <a class="button button-quiet" href="${script.name}" download="${script.name}">${icons.download}<span>${t(lang, 'script_download')}</span></a>
+      <span class="script-note"><code>${script.name}</code> ${t(lang, 'script_note')}</span>
+    </p>`
+  );
 }
 
 /** A data set: its file to download, how big it is, and the lines that load it. */
@@ -464,7 +477,7 @@ export function courses(site, lang) {
               ${courseIcon}
               <span class="row-head">
                 <span class="row-title" lang="${text.lang}">${text.title}</span>
-                <span class="row-meta">${c.lead.institution && html`<span>${site.vocabulary.institutions[c.lead.institution][lang]}</span>`}<span>${c.lead.semester}</span>${c.lead.sections.length > 0 && html`<span>${count(lang, c.lead.sections.length, 'sections')}</span>`}${draftTag(site, c, lang)}</span>
+                <span class="row-meta">${c.lead.institution && html`<span>${site.vocabulary.institutions[c.lead.institution][lang]}</span>`}${c.lead.sections.length > 0 && html`<span>${count(lang, c.lead.sections.length, 'sections')}</span>`}${draftTag(site, c, lang)}</span>
               </span>
               ${text.data.subtitle && html`<span class="row-subtitle" lang="${text.lang}">${text.data.subtitle}</span>`}
               <span class="row-summary" lang="${text.lang}">${text.summary}</span>
@@ -529,7 +542,7 @@ export function course(site, doc, lang) {
     content: html`
       <article class="page" data-course="${doc.id}">
         <header class="page-head">
-          <p class="kicker"><span>${t(lang, 'course')}</span><span>${doc.lead.semester}</span></p>
+          <p class="kicker">${courseIcon}<span>${t(lang, 'course')}</span>${doc.lead.sections.length > 0 && html`<span>${count(lang, doc.lead.sections.length, 'sections')}</span>`}</p>
           <h1 lang="${text.lang}"${editable(site, 'title')}>${text.title}</h1>
           ${text.data.subtitle && html`<p class="subtitle" lang="${text.lang}"${editable(site, 'subtitle')}>${text.data.subtitle}</p>`}
           <p class="lead" lang="${text.lang}"${editable(site, 'summary')}>${text.summary}</p>

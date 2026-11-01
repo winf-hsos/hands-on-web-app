@@ -107,6 +107,7 @@ function clientIndex(site, lang) {
     projects: site.projects.map((p) => ({ id: p.id, code: p.lead.code, url: site.url(p, lang), title: site.localize(p, lang).title })),
     courses: site.courses.map((c) => ({
       id: c.id,
+      formerly: c.lead.formerly,
       code: c.lead.code,
       access: c.lead.access_code,
       url: site.url(c, lang),
@@ -239,10 +240,16 @@ function renderSite(knowledge, base, { write, asset }) {
       write(page.path, String(layout({ site, lang, asset, pyodide: PYODIDE_BASE, webr: { base: WEBR_BASE, repo: WEBR_REPO_BASE }, total: site.items.length, entrances: entrances[lang], ...page })));
       count += 1;
     };
-    // courses are called modules since 2026-11-01; the old addresses lead there
-    const moved = (page) => {
+    // courses are called modules since 2026-11-01, and a course may have had
+    // other ids before (`formerly`); the old addresses lead to the page
+    const forward = (from, page) => {
       const to = page.path;
-      write(to.replace('/modules/', '/courses/'), `<!doctype html><meta charset="utf-8"><title>${page.title}</title><meta name="robots" content="noindex"><link rel="canonical" href="${to}"><meta http-equiv="refresh" content="0; url=${to}"><a href="${to}">${page.title}</a>`);
+      write(from, `<!doctype html><meta charset="utf-8"><title>${page.title}</title><meta name="robots" content="noindex"><link rel="canonical" href="${to}"><meta http-equiv="refresh" content="0; url=${to}"><a href="${to}">${page.title}</a>`);
+    };
+    const moved = (page, ids = []) => {
+      const old = page.path.replace('/modules/', '/courses/');
+      forward(old, page);
+      for (const id of ids) for (const from of [page.path, old]) forward(from.replace(/[^/]+\/$/, `${id}/`), page);
     };
     for (const lang of LANGS) {
       writePage(lang, pages.home(site, lang));
@@ -262,12 +269,15 @@ function renderSite(knowledge, base, { write, asset }) {
         // and its drawings (docs/figures.md)
         const drawings = figureFile(doc);
         if (drawings) copyFileSync(drawings.file, join(DIST, site.url(doc, lang), FIGURE_FILE));
+        // and an exercise as a script with comments (build/exercise-script.mjs)
+        const script = site.script(doc, lang);
+        if (script) writeFileSync(join(DIST, site.url(doc, lang), script.name), script.text);
       }
       for (const doc of site.paths) writePage(lang, pages.path(site, doc, lang));
       for (const doc of site.courses) {
         const page = pages.course(site, doc, lang);
         writePage(lang, page);
-        moved(page);
+        moved(page, doc.lead.formerly);
       }
       write(`${site.link(lang)}index.json`, JSON.stringify(clientIndex(site, lang)));
     }
