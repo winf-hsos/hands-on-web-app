@@ -4,15 +4,16 @@
 // with Ctrl+Space; arrows choose, Enter or Tab takes, Esc closes. Nothing is
 // ever inserted without being chosen.
 
-/** Where the cursor is on the page, from a hidden copy of the text laid out like the editor. */
+/** Where the cursor is in the window, from a hidden copy of the text laid out like the editor. */
 function caret(editor, mirror) {
   const style = getComputedStyle(editor);
   for (const p of ['font', 'letterSpacing', 'lineHeight', 'padding', 'border', 'boxSizing', 'whiteSpace', 'overflowWrap', 'tabSize', 'width']) mirror.style[p] = style[p];
   const marker = document.createElement('span');
   marker.textContent = '​';
   mirror.replaceChildren(editor.value.slice(0, editor.selectionStart), marker);
-  const box = mirror.getBoundingClientRect();
-  return { left: box.left + marker.offsetLeft + scrollX, top: box.top + marker.offsetTop + marker.offsetHeight + scrollY };
+  // the rectangle as drawn, so it is right in focus mode too, where the box is zoomed
+  const { left, bottom } = marker.getBoundingClientRect();
+  return { left, top: bottom };
 }
 
 let count = 0;
@@ -69,10 +70,16 @@ export function attachCompletion(editor, labels, find, prepare = () => {}) {
         return li;
       }),
     );
-    const at = caret(editor, mirror);
-    list.style.left = `${Math.max(scrollX + 8, Math.min(at.left, scrollX + innerWidth - 320))}px`;
-    list.style.top = `${at.top + 4}px`;
+    // In focus mode only the box is shown (in full screen nothing else is
+    // drawn), so the list goes into it and takes on the zoom of the code.
+    const home = editor.closest('.in-focus') ?? document.body;
+    if (list.parentElement !== home) home.append(list);
     list.hidden = false;
+    const zoom = parseFloat(getComputedStyle(list).zoom) || 1;
+    const at = caret(editor, mirror);
+    // a zoomed element's left and top are zoomed as well
+    list.style.left = `${Math.max(8, Math.min(at.left, innerWidth - list.offsetWidth * zoom - 8)) / zoom}px`;
+    list.style.top = `${(at.top + 4) / zoom}px`;
     editor.setAttribute('aria-expanded', 'true');
     highlight(0);
   }
@@ -133,6 +140,7 @@ export function attachCompletion(editor, labels, find, prepare = () => {}) {
   );
   editor.addEventListener('blur', close);
   editor.addEventListener('click', close);
-  addEventListener('scroll', () => current && close(), { passive: true });
+  // the page or, in focus mode, the box scrolls; the list scrolling itself does not count
+  document.addEventListener('scroll', (e) => current && e.target !== list && close(), { capture: true, passive: true });
   addEventListener('resize', () => current && close());
 }

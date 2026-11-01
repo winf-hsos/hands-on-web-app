@@ -1009,7 +1009,7 @@ select {
    cursor, the name on the left, its type or signature on the right, and for a
    function the package it comes from. */
 .complete {
-  position: absolute;
+  position: fixed;
   z-index: 50;
   min-width: 14rem;
   max-width: min(30rem, calc(100vw - 1rem));
@@ -3434,6 +3434,12 @@ details.callout[open] > summary::before {
   width: auto;
   margin: 0;
   zoom: 1;
+}
+
+/* the suggestions of a code box in focus (client/complete.js), as large as the code */
+.focusable.in-focus > .complete {
+  width: auto;
+  margin: 0;
 }
 
 /* a copy of what must fit, to measure how large a quiz or a code box may be

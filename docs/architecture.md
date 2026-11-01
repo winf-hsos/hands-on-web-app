@@ -174,7 +174,9 @@ All motion is switched off for people who ask their system for reduced motion.
   width only; a quiz passes `height()`, which measures its question fully
   opened, and a code box one that measures its code with a fixed room for
   the output, so both fit the screen in both directions. Tables scale by the
-  width of their columns only.
+  width of their columns only. Full screen draws nothing outside the box, so
+  the suggestions of a code box (`complete.js`) move into it while it is in
+  focus and grow with the code.
 
 ## Areas
 
