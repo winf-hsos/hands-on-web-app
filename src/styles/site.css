@@ -3830,3 +3830,82 @@ details.callout[open] > summary::before {
   border-radius: 0.5rem;
   padding: 0.5rem;
 }
+
+/* --- drawings on content pages (docs/figures.md) --------------------------
+   stagekit's draw.js reads its colours from these names on :root, so the
+   eight roles of a deck get the colours of the page: blue is the colour of
+   the area, the ground is the page, and yellow, green and red keep their
+   meaning in a shade that reads on light and on dark. */
+:root {
+  --bg: var(--paper);
+  --white: var(--ink);
+  --gray-light: #4a5259;
+  --gray: #7d868f;
+  --gray-dark: #c5ccd3;
+  --blue: var(--accent-ink);
+  --green: #15803d;
+  --yellow: #b45309;
+  --red: #c2185b;
+  --font: var(--sans);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --gray-light: #b6bec6;
+    --gray-dark: #3a4b5c;
+    --green: #3fcf86;
+    --yellow: #ffd23f;
+    --red: #ff4d6d;
+  }
+}
+:root[data-theme='dark'] {
+  --gray-light: #b6bec6;
+  --gray-dark: #3a4b5c;
+  --green: #3fcf86;
+  --yellow: #ffd23f;
+  --red: #ff4d6d;
+}
+
+/* A drawing is 1600 units wide and takes the width of the page beyond the
+   text column, so that its labels (32 units) read at about 20 px; on a
+   phone it keeps 720 px and scrolls sideways. */
+.drawing {
+  width: min(61.5rem, calc(100vw - 2.5rem));
+  margin: 2rem 0;
+}
+.drawing-canvas {
+  overflow-x: auto;
+  padding: 1.25rem;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 0.75rem;
+}
+.drawing-canvas svg {
+  display: block;
+  width: 100%;
+  min-width: 720px;
+  height: auto;
+}
+.drawing figcaption {
+  margin-top: 0.6rem;
+  max-width: var(--measure);
+  color: var(--quiet);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.drawing-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin-top: 0.6rem;
+}
+.drawing-back {
+  padding-inline: 0.6rem;
+}
+.drawing-back:disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+.drawing-step {
+  color: var(--quiet);
+  font-size: 0.95rem;
+}

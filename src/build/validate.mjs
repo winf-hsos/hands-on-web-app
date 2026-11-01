@@ -8,6 +8,7 @@ import { iconExists } from './icons.mjs';
 import { splitProject } from './project.mjs';
 import { deckFile } from './deck.mjs';
 import { datasetInfo } from './dataset.mjs';
+import { figureFile, figureRefs, figureRules, FIGURE_FILE } from './figures.mjs';
 
 const ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
@@ -485,6 +486,19 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
     }
     const info = datasetInfo(item.dir, item.lead.file);
     if (info.error) errors.push(`${where}: file: ${info.error}`);
+  }
+
+  // Drawings (docs/figures.md): every figure:name in a text is registered in
+  // the item's figures.js, and that file keeps stagekit's sizes and colours.
+  for (const item of content) {
+    const drawings = figureFile(item);
+    for (const file of Object.values(item.files)) {
+      for (const name of figureRefs(file.body)) {
+        if (!drawings) errors.push(`${file.path}: figure:${name}, but the item has no ${FIGURE_FILE}`);
+        else if (!drawings.names.includes(name)) errors.push(`${file.path}: figure:${name} is not registered in ${FIGURE_FILE} (figure('${name}', …))`);
+      }
+    }
+    if (drawings) for (const problem of figureRules(drawings.source)) errors.push(`content/${item.id}/${FIGURE_FILE}: ${problem}`);
   }
 
   // Quizzes: every question needs options and at least one correct one.

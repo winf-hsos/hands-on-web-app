@@ -1,6 +1,6 @@
 // The frame around every page.
 import { html, raw } from '../build/html.mjs';
-import { t, runnerLabels, backLabels, demoLabels, copyLabels, montyHallLabels, byteSwitchboardLabels, demoFrameLabels } from '../build/i18n.mjs';
+import { t, runnerLabels, backLabels, demoLabels, copyLabels, montyHallLabels, byteSwitchboardLabels, demoFrameLabels, figureLabels } from '../build/i18n.mjs';
 import { icons, mark } from './parts.mjs';
 import { plainText } from '../client/code-terms.js';
 import { DRAFTS_BASE } from '../build/drafts.mjs';
@@ -23,7 +23,7 @@ const searchDialog = (lang) => html`<dialog class="search" aria-label="${t(lang,
     <p class="search-hint">${t(lang, 'search_hint')}</p>
   </dialog>`;
 
-export function layout({ site, lang, path, title, description, current, content, back, scripts = [], asset, pyodide, webr, total = 0, entrances = [] }) {
+export function layout({ site, lang, path, title, description, current, content, back, scripts = [], figures, asset, pyodide, webr, total = 0, entrances = [] }) {
   const other = lang === 'de' ? 'en' : 'de';
   const otherPath = path.replace(/\/(de|en)\//, `/${other}/`);
   const { areas } = site.vocabulary;
@@ -53,7 +53,7 @@ export function layout({ site, lang, path, title, description, current, content,
   <script>try{const d=document.documentElement.dataset,m=localStorage.getItem('hocs-theme'),u=new URLSearchParams(location.search).get('view'),v=['list','cards'].includes(u)?u:localStorage.getItem('hocs-view');if(m)d.theme=m;if(v)d.view=v}catch{}</script>
   <script type="importmap">${raw(JSON.stringify({ imports: { minisearch: asset('vendor/minisearch.js'), 'qrcode-generator': asset('vendor/qrcode.mjs') } }))}</script>
 </head>
-<body data-lang="${lang}" data-index="${link(lang)}index.json" data-total="${total}" data-marked-done="${t(lang, 'marked_done')}" data-mark-undone="${t(lang, 'mark_undone')}"${scripts.includes('runner') && html` data-python-worker="${asset('client/python-worker.js')}" data-pyodide="${pyodide}" data-webr="${webr?.base}" data-webr-repo="${webr?.repo}" data-r-completions="${asset('r-completions.json')}" data-datasets="/media/datasets/" data-runner-labels="${JSON.stringify(runnerLabels[lang])}"`}${scripts.includes('verb-demo') && html` data-datasets="/media/datasets/" data-verb-demo-labels="${JSON.stringify(demoLabels[lang])}"`}${scripts.includes('monty-hall') && html` data-monty-hall-labels="${JSON.stringify(montyHallLabels[lang])}"`}${scripts.includes('byte-switchboard') && html` data-byte-switchboard-labels="${JSON.stringify(byteSwitchboardLabels[lang])}"`}${String(content).includes('data-demo=') && html` data-demo-frame-labels="${JSON.stringify(demoFrameLabels[lang])}"`}${(String(content).includes('<pre') || scripts.includes('monty-hall')) && html` data-copy-labels="${JSON.stringify(copyLabels[lang])}"`}>
+<body data-lang="${lang}" data-index="${link(lang)}index.json" data-total="${total}" data-marked-done="${t(lang, 'marked_done')}" data-mark-undone="${t(lang, 'mark_undone')}"${scripts.includes('runner') && html` data-python-worker="${asset('client/python-worker.js')}" data-pyodide="${pyodide}" data-webr="${webr?.base}" data-webr-repo="${webr?.repo}" data-r-completions="${asset('r-completions.json')}" data-datasets="/media/datasets/" data-runner-labels="${JSON.stringify(runnerLabels[lang])}"`}${scripts.includes('verb-demo') && html` data-datasets="/media/datasets/" data-verb-demo-labels="${JSON.stringify(demoLabels[lang])}"`}${scripts.includes('monty-hall') && html` data-monty-hall-labels="${JSON.stringify(montyHallLabels[lang])}"`}${scripts.includes('byte-switchboard') && html` data-byte-switchboard-labels="${JSON.stringify(byteSwitchboardLabels[lang])}"`}${figures && html` data-figure-labels="${JSON.stringify(figureLabels[lang])}"`}${String(content).includes('data-demo=') && html` data-demo-frame-labels="${JSON.stringify(demoFrameLabels[lang])}"`}${(String(content).includes('<pre') || scripts.includes('monty-hall')) && html` data-copy-labels="${JSON.stringify(copyLabels[lang])}"`}>
   <a class="skip" href="#main">${t(lang, 'skip')}</a>
   ${site.drafts && html`<p class="drafts-banner">${t(lang, 'drafts_view')} <a href="/${site.area}/${lang}/">${t(lang, 'drafts_leave')}</a></p>`}
   <header class="bar">
@@ -87,6 +87,10 @@ export function layout({ site, lang, path, title, description, current, content,
   </header>
   <main id="main">${back && backLink(link, lang, back)}${content}</main>
   ${searchDialog(lang)}
+  ${figures && html`<script defer src="${asset('stagekit/draw.js')}"></script>
+  <script defer src="${asset('stagekit/anim.js')}"></script>
+  <script defer src="${asset('client/figure-parts.js')}"></script>
+  <script defer src="${figures}"></script>`}
   <script type="module" src="${asset('client/site.js')}"></script>
   ${scripts.map((name) => html`<script type="module" src="${asset(`client/${name}.js`)}"></script>`)}
 </body>

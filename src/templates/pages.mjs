@@ -9,6 +9,7 @@ import { deckFile, deckPdf } from '../build/deck.mjs';
 import { datasetInfo, loadingCode } from '../build/dataset.mjs';
 import { highlight } from '../client/highlight.js';
 import { areasOf } from '../build/site.mjs';
+import { figureFile } from '../build/figures.mjs';
 
 const typeLabel = (site, item, lang) => site.vocabulary.types[item.lead.type][lang];
 
@@ -195,6 +196,7 @@ const scriptsFor = (body) =>
     body.includes('data-verb-demo') && 'verb-demo',
     body.includes('data-monty-hall') && 'monty-hall',
     body.includes('data-byte-switchboard') && 'byte-switchboard',
+    body.includes('data-figure') && 'figures',
   ].filter(Boolean);
 
 export function item(site, doc, lang) {
@@ -212,6 +214,8 @@ export function item(site, doc, lang) {
     description: text.summary,
     back: 'items',
     scripts: [isQuiz && 'quiz', ...scriptsFor(body)].filter(Boolean),
+    // the item's own drawings, next to its page (docs/figures.md)
+    figures: body.includes('data-figure') && `figures.js?v=${figureFile(doc)?.hash}`,
     content: html`
       <article class="page item" data-item-page="${doc.id}">
         <header class="page-head">

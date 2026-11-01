@@ -26,6 +26,7 @@ knowledge/
       de.md              lead file: shared metadata + German text
       en.md              translation: English title, summary and text
       media/             images and other files used by this item only
+      figures.js         drawings drawn with stagekit's draw.js (docs/figures.md)
   paths/
     codes-in-one-hour/   learning paths, same pattern as content items
       de.md
@@ -216,6 +217,11 @@ The body is plain Markdown with a few conventions:
   kept language-neutral; otherwise there is one image per language
   (`codebook.de.svg`, `codebook.en.svg`). The build copies the folder next
   to the item's page, in every area and language and on the drafts site.
+- **Drawings** (diagrams, schemas, processes that play in steps) are code,
+  not images: `![What it shows](figure:name "Caption")` shows a drawing that
+  the item's `figures.js` registers. It is drawn on the page in the colours
+  of the area, light or dark, and in both languages from one source, and a
+  slide deck can reuse it. Rules and parts in `docs/figures.md`.
 - **Callouts** use the blockquote form known from GitHub:
   `> [!TIP]`, `> [!NOTE]`, `> [!WARNING]`. They render as boxes and remain
   readable as plain text. `> [!WARNING]` and `> [!CAUTION]` are not red,

@@ -11,6 +11,7 @@ import { validate } from '../src/build/validate.mjs';
 import { createSite } from '../src/build/site.mjs';
 import { t } from '../src/build/i18n.mjs';
 import { isUnpublished } from '../src/build/deck.mjs';
+import { figureFile, FIGURE_FILE } from '../src/build/figures.mjs';
 import { rCompletions } from '../src/build/r-completions.mjs';
 import { iconSvg } from '../src/build/icons.mjs';
 import { layout, chooser } from '../src/templates/layout.mjs';
@@ -38,6 +39,8 @@ const ASSETS = {
   'fonts/mono.woff2': modules('@fontsource-variable/atkinson-hyperlegible-mono/files/atkinson-hyperlegible-mono-latin-wght-normal.woff2'),
 };
 for (const file of readdirSync(join(ROOT, 'src/client'))) ASSETS[`client/${file}`] = join(ROOT, 'src/client', file);
+// stagekit's drawing functions, for the drawings of content pages (docs/figures.md)
+for (const file of ['draw.js', 'anim.js']) ASSETS[`stagekit/${file}`] = join(ROOT, 'vendor/stagekit', file);
 
 // Python in the browser (client/runner.js). Pyodide is copied as a whole into
 // a folder named after its version, so its files need no hashes of their own.
@@ -250,6 +253,9 @@ function renderSite(knowledge, base, { write, asset }) {
         // the item's own images, next to its page, where `media/…` points
         const media = join(doc.dir, 'media');
         if (existsSync(media)) cpSync(media, join(DIST, site.url(doc, lang), 'media'), { recursive: true });
+        // and its drawings (docs/figures.md)
+        const drawings = figureFile(doc);
+        if (drawings) copyFileSync(drawings.file, join(DIST, site.url(doc, lang), FIGURE_FILE));
       }
       for (const doc of site.paths) writePage(lang, pages.path(site, doc, lang));
       for (const doc of site.courses) writePage(lang, pages.course(site, doc, lang));

@@ -564,3 +564,23 @@ export const byteSwitchboardLabels = {
     notAscii: '“{c}” is character number {n} in Unicode and not part of ASCII, whose printable characters run from 32 to 126.',
   },
 };
+
+/** Labels of the buttons under an animated drawing (client/figures.js). */
+export const figureLabels = {
+  de: {
+    play: 'Ablauf abspielen',
+    next: 'Weiter',
+    again: 'Noch einmal',
+    back: 'Einen Schritt zurück',
+    step: 'Schritt {n} von {total}',
+    missing: 'Diese Zeichnung fehlt in figures.js.',
+  },
+  en: {
+    play: 'Play the sequence',
+    next: 'Next',
+    again: 'Play again',
+    back: 'One step back',
+    step: 'Step {n} of {total}',
+    missing: 'This drawing is missing from figures.js.',
+  },
+};

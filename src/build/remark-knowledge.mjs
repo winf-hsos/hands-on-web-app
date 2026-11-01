@@ -23,6 +23,7 @@ export function remarkKnowledge({ lang, quiz: isQuiz = false, resolve, sourceMap
     callouts(tree, lang);
     runnable(tree);
     demos(tree);
+    figures(tree);
     if (isQuiz) quiz(tree);
     if (sourceMap) markSources(tree);
   };
@@ -144,6 +145,26 @@ function demos(tree) {
     node.type = 'demo';
     const place = { type: 'element', tagName: 'div', properties: { ...demo, className: [demo.className] }, children: [] };
     node.data = { hName: 'div', hProperties: { className: ['demo'], dataDemo: '' }, hChildren: [place] };
+  });
+}
+
+// ![description](figure:name "caption"), alone in its paragraph, is the place
+// of a drawing from the item's figures.js (docs/figures.md), which
+// client/figures.js draws there. The description is what a screen reader
+// says, the caption stands below the drawing.
+function figures(tree) {
+  visit(tree, 'paragraph', (node, index, parent) => {
+    const [image, ...rest] = node.children;
+    if (image?.type !== 'image' || !image.url.startsWith('figure:') || rest.some((c) => c.type !== 'text' || c.value.trim())) return;
+    const name = image.url.slice('figure:'.length);
+    const canvas = { type: 'element', tagName: 'div', properties: { className: ['drawing-canvas'], id: `figure-${name}`, role: 'img', ariaLabel: image.alt }, children: [] };
+    const caption = image.title && { type: 'element', tagName: 'figcaption', properties: {}, children: [{ type: 'text', value: image.title }] };
+    parent.children[index] = {
+      type: 'figureDrawing',
+      position: node.position,
+      data: { hName: 'figure', hProperties: { className: ['drawing'], dataFigure: name }, hChildren: [canvas, caption].filter(Boolean) },
+    };
+    return SKIP;
   });
 }
 
