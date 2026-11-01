@@ -3,12 +3,12 @@
 // enlarged to the width of the screen, so that a class can read it on a
 // projector and work on it together (Nicolas, 2026-11-01).
 //
-// Unlike a demonstrator (demo-frame.js), a code box or a table is scaled by
-// its width only: a code box grows when it prints, and fitting the height as
-// well would make the text jump, so what does not fit scrolls. A quiz also
-// fits the height, measured with everything its question can open, so that
-// question, answers and explanation always stay on the screen together and
-// nothing changes size while it is answered (Nicolas, 2026-11-02).
+// Unlike a demonstrator (demo-frame.js), the element is not measured as it
+// is, because it grows while someone works with it and its text would jump.
+// A table is scaled by its width only. A quiz fits the height as well,
+// measured with everything its question can open, and a code box with a
+// fixed room for its output (Nicolas, 2026-11-02), so that nothing changes
+// size while a question is answered or a program runs.
 // F switches focus while the element has the focus, Escape leaves. Where the
 // browser has no full screen for elements, the same view opens as a layer
 // over the page.

@@ -125,7 +125,7 @@ if (questions.length) {
   // what is right, so for one answer the right one's and the longest other.
   function measure() {
     const probe = document.createElement('div');
-    probe.className = 'quiz-measure';
+    probe.className = 'focus-measure';
     for (const part of stage.children) if (part !== tools && !part.hidden) probe.append(part.cloneNode(true));
     probe.querySelectorAll('.quiz-explanation, .quiz-actions button').forEach((el) => el.removeAttribute('hidden'));
     for (const options of probe.querySelectorAll('.quiz-options')) {

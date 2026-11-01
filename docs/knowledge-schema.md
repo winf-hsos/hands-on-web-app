@@ -255,7 +255,10 @@ The body is plain Markdown with a few conventions:
   A quiz fits the height as well (Nicolas, 2026-11-02): the question on show
   is measured with its verdict, every reason and its explanation open, so
   that all of it stays on the screen after the answer and nothing changes
-  size while it is answered; the next question is measured anew. Where a browser has no full screen for elements, the
+  size while it is answered; the next question is measured anew. A code box
+  fits the height too: its code, the bar and a fixed room of eight lines for
+  the output, in which longer output scrolls and shows its newest line. Its
+  size follows the code when it is run, reset or left, not with every key. Where a browser has no full screen for elements, the
   same view opens as a layer over the page. The code is `client/focus.js`,
   used by `runner.js`, `tables.js` and `quiz.js`.
 - **R code** in a ` ```r ` block works the same way with webR; ` ```r static `

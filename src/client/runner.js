@@ -116,8 +116,25 @@ function setup(box) {
   const hint = el('p', { className: 'runner-hint', hidden: true });
   const bar = el('div', { className: 'runner-bar' }, run, reset, status);
   box.replaceChildren(code, bar, output, hint);
-  // larger, for working on the code together on a projector
-  focusable(box, bar);
+  // Larger, for working on the code together on a projector: the code, the
+  // bar and a fixed room for the output fit the screen, and longer output
+  // scrolls inside that room. The size follows the code when it is run or
+  // left, not with every key.
+  const measure = () => {
+    const probe = el('div', { className: 'focus-measure' }, code.cloneNode(true), bar.cloneNode(true), el('pre', { className: 'runner-output' }));
+    const room = el('p', { className: 'runner-hint' });
+    room.innerHTML = '&nbsp;<br>&nbsp;'; // two lines for a hint after an error
+    probe.append(room);
+    box.append(probe);
+    const height = probe.getBoundingClientRect().height;
+    probe.remove();
+    return height;
+  };
+  const refit = focusable(box, bar, { height: measure, widths: [800, 960] });
+  // after the buttons' own handlers below, which change the code
+  for (const button of [run, reset]) button.addEventListener('click', () => queueMicrotask(refit));
+  editor.addEventListener('blur', refit);
+  new MutationObserver(() => (output.scrollTop = output.scrollHeight)).observe(output, { childList: true, subtree: true, characterData: true });
   addCopyButton(code, () => editor.value);
   if (lang === 'r') attachCompletion(editor, L.complete, findR, loadR);
   // Python: the names of all Python editors on the page count in each of them

@@ -3436,13 +3436,21 @@ details.callout[open] > summary::before {
   zoom: 1;
 }
 
-/* a copy of the question on show with everything opened, to measure how
-   large the quiz may be in focus (client/quiz.js) */
-.focusable.in-focus > .quiz-measure {
+/* a copy of what must fit, to measure how large a quiz or a code box may be
+   in focus (client/quiz.js, client/runner.js) */
+.focusable.in-focus > .focus-measure {
   position: absolute;
   visibility: hidden;
   display: flow-root;
   zoom: 1;
+}
+
+/* In focus, the output of a code box has a fixed room of eight lines, which
+   counts when the box is fitted; longer output scrolls inside it. */
+.runner.in-focus .runner-output {
+  box-sizing: border-box;
+  height: calc(8 * 1.55 * 0.92rem + 1.8rem);
+  overflow: auto;
 }
 
 /* without the Fullscreen API: a layer over the page */
