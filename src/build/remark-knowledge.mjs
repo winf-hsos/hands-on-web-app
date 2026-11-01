@@ -1,6 +1,7 @@
 // Remark plugin for the conventions of docs/knowledge-schema.md, sections 6–7:
 // [[id]] and [[id|text]] links, GitHub-style callouts (HINT and SOLUTION
-// fold away), Python and R code that runs in the browser, and quiz questions.
+// fold away), Python and R code that runs in the browser, result tables to
+// fill in, and quiz questions.
 // Options: lang, quiz (boolean), resolve(id) -> { url, title } | null; a url of null keeps only the text;
 // sourceMap (boolean) marks where each block stands in the source.
 import { visit, SKIP } from 'unist-util-visit';
@@ -16,12 +17,17 @@ const CALLOUT_TITLES = {
 };
 // With several hints in one text they are numbered, since each builds on the one before.
 const NUMBERED_HINT = { de: (n) => `Tipp ${n} anzeigen`, en: (n) => `Show hint ${n}` };
+const TABLE_LABELS = {
+  de: { clear: 'Eingaben löschen', confirm: 'Alle Eingaben in dieser Tabelle löschen?' },
+  en: { clear: 'Clear entries', confirm: 'Clear all entries in this table?' },
+};
 
 export function remarkKnowledge({ lang, quiz: isQuiz = false, resolve, sourceMap = false }) {
   return (tree) => {
     wikiLinks(tree, resolve);
     callouts(tree, lang);
     runnable(tree);
+    fillableTables(tree, lang);
     demos(tree);
     figures(tree);
     if (isQuiz) quiz(tree);
@@ -124,6 +130,31 @@ function runnable(tree) {
     node.data = runs
       ? { hName: 'div', hProperties: { className: ['runner'], dataRunner: '', dataLang: lang }, hChildren: [pre] }
       : { hName: 'pre', hProperties: { className: ['code'] }, hChildren: [code] };
+  });
+}
+
+// A table with empty cells is a result table to fill in on the page (Nicolas,
+// 2026-11-01), as in an experiment: each empty cell below the head becomes a
+// field, named for screen readers by the first cell of its row and the head
+// of its column. client/tables.js keeps what is typed in this browser.
+function fillableTables(tree, lang) {
+  const text = (node) => (node.value ?? '') + (node.children ?? []).map(text).join('');
+  const empty = (cell) => !text(cell).trim();
+  let count = 0;
+  visit(tree, 'table', (node) => {
+    const [head, ...rows] = node.children;
+    if (!rows.some((row) => row.children.some(empty))) return;
+    count += 1;
+    rows.forEach((row, r) =>
+      row.children.forEach((cell, c) => {
+        if (!empty(cell)) return;
+        const label = [text(row.children[0]), head.children[c] && text(head.children[c])].filter((s) => s?.trim()).join(', ');
+        const input = { type: 'element', tagName: 'input', properties: { type: 'text', className: ['table-input'], dataCell: `${r}-${c}`, ariaLabel: label, autocomplete: 'off', spellCheck: 'false' }, children: [] };
+        cell.data = { ...cell.data, hChildren: [input] };
+      }),
+    );
+    const labels = TABLE_LABELS[lang] ?? TABLE_LABELS.en;
+    node.data = { ...node.data, hProperties: { ...node.data?.hProperties, dataFillable: String(count), dataClear: labels.clear, dataConfirm: labels.confirm } };
   });
 }
 

@@ -746,6 +746,31 @@ select {
   font-weight: 650;
 }
 
+/* a result table to fill in (client/tables.js) */
+.prose td:has(> .table-input) {
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+}
+
+.table-input {
+  width: 6rem;
+  font: inherit;
+  color: inherit;
+  padding: 0.25rem 0.45rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.35rem;
+  background: var(--paper-2);
+}
+
+.table-input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.table-clear {
+  margin: -0.5rem 0 1.25rem;
+}
+
 .prose code {
   background: var(--paper-2);
   padding: 0.1em 0.35em;

@@ -7,6 +7,7 @@ import { attachCompletion } from './complete.js';
 import { findR, loadR } from './r-complete.js';
 import { suggest as suggestPython } from './py-context.js';
 import { highlight } from './highlight.js';
+import { savedOnPage, fingerprint } from './saved.js';
 
 const { pythonWorker, pyodide, runnerLabels } = document.body.dataset;
 const L = JSON.parse(runnerLabels);
@@ -87,12 +88,21 @@ function el(tag, props = {}, ...children) {
   return node;
 }
 
+// What a learner changed in a box stays in this browser until "Reset"
+// (Nicolas, 2026-11-01). An entry belongs to the box's original code, so a
+// box the author changes starts afresh; equal boxes on a page count apart.
+const savedCode = savedOnPage('hocs-code');
+const seen = new Map();
+
 function setup(box) {
   const lang = box.dataset.lang === 'r' ? 'r' : 'python';
   const spec = LANGS[lang];
   const original = box.querySelector('code').textContent;
+  const print = fingerprint(original);
+  seen.set(print, (seen.get(print) ?? 0) + 1);
+  const id = `${print}-${seen.get(print)}`;
   const shown = el('code', { className: `language-${lang}` });
-  const editor = el('textarea', { className: 'runner-input', spellcheck: false, value: original });
+  const editor = el('textarea', { className: 'runner-input', spellcheck: false, value: savedCode.get(id) ?? original });
   editor.setAttribute('autocapitalize', 'off');
   editor.setAttribute('autocomplete', 'off');
   editor.setAttribute('aria-label', lang === 'r' ? L.editor_r : L.editor);
@@ -122,6 +132,7 @@ function setup(box) {
     shown.innerHTML = `${highlight(editor.value, lang)}\n`;
     reset.hidden = editor.value === original;
   };
+  const save = () => (editor.value === original ? savedCode.remove(id) : savedCode.set(id, editor.value));
   // Both labels are always in the button, stacked in one place, and only the
   // current one is visible: so the button keeps the width of the longer one
   // and the buttons next to it do not move while a program runs.
@@ -208,11 +219,17 @@ function setup(box) {
   reset.addEventListener('click', () => {
     editor.value = original;
     paint();
+    savedCode.remove(id);
     output.hidden = true;
     hint.hidden = true;
     editor.focus();
   });
-  editor.addEventListener('input', paint);
+  editor.addEventListener('input', () => {
+    paint();
+    save();
+  });
+  // completions may write into the box without an input event
+  editor.addEventListener('blur', save);
   editor.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       escaped = true;
@@ -248,6 +265,7 @@ function setup(box) {
     if (!document.execCommand?.('insertText', false, text)) {
       editor.setRangeText(text, editor.selectionStart, editor.selectionEnd, 'end');
       paint();
+      save();
     }
   }
 

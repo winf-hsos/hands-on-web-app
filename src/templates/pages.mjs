@@ -197,6 +197,7 @@ const scriptsFor = (body) =>
     body.includes('data-monty-hall') && 'monty-hall',
     body.includes('data-byte-switchboard') && 'byte-switchboard',
     body.includes('data-figure') && 'figures',
+    body.includes('data-fillable') && 'tables',
   ].filter(Boolean);
 
 export function item(site, doc, lang) {

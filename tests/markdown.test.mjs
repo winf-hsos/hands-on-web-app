@@ -75,3 +75,11 @@ test('with sourceMap every top-level block names its place in the source, a quiz
   assert.deepEqual(places, ['Eins', '```r\nx\n```', '## Frage\n\n- [x] ja\n- [ ] nein']);
   assert.doesNotMatch(render(md), /data-src/);
 });
+
+test('empty cells of a table become fields to fill in, labelled by their row and column', () => {
+  const html = render('| Bedingung | r | g |\n|---|---|---|\n| Erwartung | 255 | |\n| Hand | | |\n');
+  assert.equal((html.match(/class="table-input"/g) ?? []).length, 3);
+  assert.match(html, /<table data-fillable="1"/);
+  assert.match(html, /data-cell="0-2" aria-label="Erwartung, g"/);
+  assert.doesNotMatch(render('| a | b |\n|---|---|\n| 1 | 2 |\n'), /table-input|data-fillable/);
+});

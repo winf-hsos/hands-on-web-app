@@ -155,6 +155,13 @@ All motion is switched off for people who ask their system for reduced motion.
 - **Every code block has a copy button** (`src/client/copy.js`) in its upper
   right corner. A runnable block copies what is in its editor at that moment,
   changes included; any other block copies its text.
+- **What learners write is kept per page** (`src/client/saved.js`): changed
+  code in `hocs-code`, keyed by a fingerprint of the box's original code and
+  its count on the page, and entries of result tables in `hocs-tables`
+  (`src/client/tables.js`; the build turns empty table cells into inputs in
+  `fillableTables()` of `remark-knowledge.mjs`). Both are local storage
+  under the page's path without `/drafts`. They stay in the browser and are
+  not part of the progress link, which would grow with every line of code.
 
 ## Areas
 

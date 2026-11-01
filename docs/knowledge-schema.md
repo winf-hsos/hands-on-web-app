@@ -235,6 +235,16 @@ The body is plain Markdown with a few conventions:
   fragment that cannot run on its own is marked ` ```python static `, and
   ` ```text ` shows a sample run as it is. Names in code are English in both
   languages; what a program prints follows the language of the text.
+- **What a learner writes stays** (Nicolas, 2026-11-01): a changed code box
+  keeps its code in this browser until its "Zurücksetzen" button, across
+  reloads and visits. The entry belongs to the box's original code, so when
+  an author changes a box, learners see the new version and their old edit
+  is no longer offered.
+- **Result tables can be filled in.** Every empty body cell of a Markdown
+  table becomes a small input field, so a table for measurements is written
+  with empty cells where the values go. The entries are kept in this browser
+  like the code, and a button below the table clears them after asking.
+  Enter moves to the cell below.
 - **R code** in a ` ```r ` block works the same way with webR; ` ```r static `
   only shows it. Each block runs on its own, with dplyr loaded and the data
   sets `survey` (`media/datasets/milk_survey.csv`), `rewe`
