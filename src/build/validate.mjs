@@ -9,6 +9,8 @@ import { splitProject } from './project.mjs';
 import { deckFile } from './deck.mjs';
 import { datasetInfo } from './dataset.mjs';
 import { figureFile, figureRefs, figureRules, FIGURE_FILE } from './figures.mjs';
+import { shellScenario } from './remark-knowledge.mjs';
+import { scenarioProblems } from '../client/shell-model.js';
 
 const ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
@@ -542,8 +544,18 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
   // and ends with it (Nicolas, 2026-10-31).
   for (const item of content.filter((d) => d.lead.type === 'demo')) {
     for (const file of Object.values(item.files)) {
-      const after = file.body.split(/^```[\w-]+\r?\n```[ \t]*$/m)[1];
+      const after = file.body.split(/^```[\w-]+\r?\n(?:[\s\S]*?\n)?```[ \t]*$/m)[1];
       if (after?.trim()) warnings.push(`${file.path}: text after the demonstrator; a demo page ends with it`);
+    }
+  }
+  // The scenario of a folder tree and command line (client/shell-model.js).
+  for (const item of content) {
+    for (const file of Object.values(item.files)) {
+      for (const [, text] of file.body.matchAll(/^```shell-demo[ \t]*\r?\n([\s\S]*?)^```[ \t]*$/gm)) {
+        const scenario = shellScenario(text);
+        const problems = scenario === null ? ['the scenario is not valid YAML'] : scenarioProblems(scenario);
+        for (const problem of problems) errors.push(`${file.path}: shell-demo: ${problem}`);
+      }
     }
   }
   const published = [

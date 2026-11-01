@@ -17,13 +17,14 @@ steps:
   - command-line
   - command-line-navigating
   - command-line-files
+  - command-line-demo
   - command-line-exercise
   - python-on-the-command-line
   - command-line-quiz
   - item: python-virtual-environments
     optional: true
 status: published
-updated: 2026-11-01
+updated: 2026-11-02
 ---
 
 Dieser Pfad führt dich von der Maus zur Tastatur. Du lernst zuerst, wie ein

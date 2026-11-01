@@ -233,3 +233,11 @@ test('a course may have a subtitle and, while it is being written, no sections',
   });
   assert.deepEqual(errors, []);
 });
+
+test('the scenario of a folder tree and command line is checked', () => {
+  const { errors } = check(({ find }) => {
+    const body = find('content', 'command-line-demo').files.de;
+    body.body = body.body.replace('tree:\n', 'start: Fotos\ntree:\n');
+  });
+  assert.deepEqual(errors, ['content/command-line-demo/de.md: shell-demo: start: Fotos is not a folder of the tree']);
+});

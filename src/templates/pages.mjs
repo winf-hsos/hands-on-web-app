@@ -196,6 +196,7 @@ const scriptsFor = (body) =>
     body.includes('data-verb-demo') && 'verb-demo',
     body.includes('data-monty-hall') && 'monty-hall',
     body.includes('data-byte-switchboard') && 'byte-switchboard',
+    body.includes('data-shell-demo') && 'shell-demo',
     body.includes('data-figure') && 'figures',
     body.includes('data-fillable') && 'tables',
   ].filter(Boolean);

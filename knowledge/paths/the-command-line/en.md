@@ -10,7 +10,7 @@ goal: >-
   Python program in the command line.
 audience: Everyone who has so far only worked with the mouse and windows
 translation_of: de
-based_on: 2026-11-01
+based_on: 2026-11-02
 ---
 
 This path takes you from the mouse to the keyboard. You first learn how a

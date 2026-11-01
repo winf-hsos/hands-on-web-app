@@ -307,6 +307,31 @@ The body is plain Markdown with a few conventions:
   that cannot be one (300, G, ä) is marked and explained, Enter keeps it and
   Escape goes back. It is the first of the LiFi demonstrators to come
   over, rebuilt in the design of the platform rather than embedded.
+- **The folder tree and command line** (Nicolas, 2026-11-02) is placed with a
+  ` ```shell-demo ` block that holds its scenario in YAML, so a lesson can
+  bring its own tree; it may stand in any text, not only on a demo page:
+
+  ````markdown
+  ```shell-demo
+  start: ~/Documents      # optional; where the terminal starts, from home or absolute
+  tree:                   # what lies in the home folder (C:\Users\anna, /Users/anna)
+    Documents:
+      uni:
+        notizen.txt: "Zwei Ideen\n"   # a file with its text (cat shows it)
+    Meine Fotos: {}                   # a folder, here an empty one
+  ```
+  ````
+
+  A mapping is a folder, a text a file; a `.py` file whose lines are
+  `print("…")` with fixed text runs with `python`. The build checks names and
+  `start`. The terminal speaks PowerShell or zsh, switchable, with the
+  commands of the path „Die Kommandozeile“ (`cd`, `ls`, `pwd`, `mkdir`,
+  `New-Item`/`touch`, `cp`, `mv`, `rm`, `rmdir`, `cat`, `echo … >`,
+  `python`/`python3`, `clear`) and the first line of each real message,
+  PowerShell's in the language of the page. While a path is typed, the tree
+  shows the way it takes and where it breaks, and a line below says it in
+  words; a click on a folder writes the `cd` that leads there. „Vorhersagen“
+  holds every result back until a second Enter, for guessing in class.
 - **Nothing in a demonstrator moves while it is used** (Nicolas,
   2026-10-31): every part that changes (a status line, buttons that come and
   go, a result) has a place of a fixed size from the start, with room for

@@ -5,6 +5,7 @@
 // Options: lang, quiz (boolean), resolve(id) -> { url, title } | null; a url of null keeps only the text;
 // sourceMap (boolean) marks where each block stands in the source.
 import { visit, SKIP } from 'unist-util-visit';
+import yaml from 'js-yaml';
 import { tokenize } from '../client/highlight.js';
 
 const CALLOUT = /^\[!(NOTE|TIP|WARNING|IMPORTANT|CAUTION|HINT|SOLUTION)\]\s*/;
@@ -160,21 +161,34 @@ function fillableTables(tree, lang) {
 
 // ```verb-demo becomes the place of the dplyr demonstrator (client/verb-demo.js),
 // ```monty-hall the game with three doors (client/monty-hall.js),
-// ```byte-switchboard eight switches for one byte (client/byte-switchboard.js).
+// ```byte-switchboard eight switches for one byte (client/byte-switchboard.js),
+// ```shell-demo the folder tree and command line (client/shell-demo.js), whose
+// block holds its scenario in YAML (tree:, start:), checked by validate.mjs.
 // Each sits in a frame with buttons for its shortcuts and for full screen
 // (client/demo-frame.js), so that it can be shown on a projector in class.
 const DEMOS = {
   'verb-demo': { className: 'verb-demo', dataVerbDemo: '' },
   'monty-hall': { className: 'monty-hall', dataMontyHall: '' },
   'byte-switchboard': { className: 'byte-switchboard', dataByteSwitchboard: '' },
+  'shell-demo': { className: 'shell-demo', dataShellDemo: '' },
 };
+
+/** The scenario in a ```shell-demo block, or null when it is not YAML. */
+export function shellScenario(text) {
+  try {
+    return yaml.load(text) ?? {};
+  } catch {
+    return null;
+  }
+}
 
 function demos(tree) {
   visit(tree, 'code', (node) => {
     const demo = DEMOS[node.lang];
     if (!demo) return;
     node.type = 'demo';
-    const place = { type: 'element', tagName: 'div', properties: { ...demo, className: [demo.className] }, children: [] };
+    const data = node.lang === 'shell-demo' ? { dataShellDemo: JSON.stringify(shellScenario(node.value) ?? {}) } : {};
+    const place = { type: 'element', tagName: 'div', properties: { ...demo, ...data, className: [demo.className] }, children: [] };
     node.data = { hName: 'div', hProperties: { className: ['demo'], dataDemo: '' }, hChildren: [place] };
   });
 }

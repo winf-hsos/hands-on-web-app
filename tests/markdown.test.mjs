@@ -83,3 +83,8 @@ test('empty cells of a table become fields to fill in, labelled by their row and
   assert.match(html, /data-cell="0-2" aria-label="Erwartung, g"/);
   assert.doesNotMatch(render('| a | b |\n|---|---|\n| 1 | 2 |\n'), /table-input|data-fillable/);
 });
+
+test('a shell-demo block becomes the folder tree and command line, with its scenario as data', () => {
+  const html = render('```shell-demo\nstart: Documents\ntree:\n  Documents: {}\n```\n');
+  assert.match(html, /<div class="demo" data-demo=""><div class="shell-demo" data-shell-demo="\{&#x22;start&#x22;:&#x22;Documents&#x22;,&#x22;tree&#x22;:\{&#x22;Documents&#x22;:\{\}\}\}"><\/div><\/div>/);
+});

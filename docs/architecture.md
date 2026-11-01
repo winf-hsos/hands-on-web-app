@@ -157,6 +157,13 @@ All motion is switched off for people who ask their system for reduced motion.
   holds every function of that package, on any page, so `dplyr::` shows all
   of dplyr and `stats::` shows `sd()` but not `mean()`, which is in base;
   a longer list scrolls.
+- **The folder tree and command line** (` ```shell-demo `) is two modules:
+  `src/client/shell-model.js` holds a small file system in memory and a
+  shell that runs the commands of PowerShell and zsh on it, works out the
+  way of a path being typed and completes names; it touches no page, so
+  `tests/shell-model.test.mjs` runs it and the build uses it to check a
+  scenario. `src/client/shell-demo.js` draws the tree and the terminal and
+  moves rows by their node, so a moved file glides to its new place.
 - **Every code block has a copy button** (`src/client/copy.js`) in its upper
   right corner. A runnable block copies what is in its editor at that moment,
   changes included; any other block copies its text.

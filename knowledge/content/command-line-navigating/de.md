@@ -21,7 +21,7 @@ modules: [dup]
 relations:
   requires: [command-line]
 status: published
-updated: 2026-11-01
+updated: 2026-11-02
 ---
 
 Nach dem Öffnen steht die Kommandozeile in deinem Benutzerordner. Um mit
@@ -106,3 +106,22 @@ cd "Meine Fotos"
 ```
 
 Die Tabulatortaste erledigt das für dich: Tippe `cd Mei` und drücke Tab.
+
+## Selbst ausprobieren
+
+Hier steht derselbe Ordnerbaum wie in dieser Lektion, mit einem Terminal
+darunter. Wechsle mit `cd` nach `Documents\uni`, geh mit `cd ..` und `cd ~`
+zurück und spring mit einem absoluten Pfad. Schon während du tippst, leuchtet
+im Baum der Weg auf, den der Pfad nimmt. Probier auch `cd Meine Fotos` ohne
+Anführungszeichen und einen falsch geschriebenen Namen wie `cd Dokumente`.
+
+```shell-demo
+tree:
+  Desktop: {}
+  Documents:
+    uni:
+      notizen.txt: "Zwei Ideen für das LiFi-Projekt\n"
+  Downloads: {}
+  Meine Fotos:
+    urlaub.jpg: ""
+```

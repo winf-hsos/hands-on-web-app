@@ -13,7 +13,7 @@ objectives:
     - "put folder names that contain spaces in quotation marks"
     - "interpret the error message that appears when there is no folder of that name at that place"
 translation_of: de
-based_on: 2026-11-01
+based_on: 2026-11-02
 ---
 
 After opening, the command line is in your home folder. To work with files
@@ -100,3 +100,22 @@ cd "My Photos"
 ```
 
 The Tab key does this for you: type `cd My` and press Tab.
+
+## Try it yourself
+
+Here is the same folder tree as in this lesson, with a terminal below it.
+Change to `Documents\uni` with `cd`, go back with `cd ..` and `cd ~`, and jump
+with an absolute path. While you type, the tree lights up the way the path
+takes. Try `cd My Photos` without quotation marks as well, and a misspelt name
+such as `cd Dokumente`.
+
+```shell-demo
+tree:
+  Desktop: {}
+  Documents:
+    uni:
+      notes.txt: "Two ideas for the LiFi project\n"
+  Downloads: {}
+  My Photos:
+    holiday.jpg: ""
+```
