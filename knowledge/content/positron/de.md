@@ -34,7 +34,7 @@ lernen musst.
 
 Positron ist kostenlos, auch für die Arbeit an der Hochschule und im Beruf,
 und läuft unter Windows, macOS und Linux. Es baut auf Code OSS auf, demselben
-Fundament wie Visual Studio Code; wer VS Code kennt, findet sich sofort
+Fundament wie [[visual-studio-code|Visual Studio Code]]; wer VS Code kennt, findet sich sofort
 zurecht.
 
 ## Einrichten

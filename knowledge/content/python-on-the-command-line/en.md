@@ -44,7 +44,7 @@ again so that it knows the new command.
 ## Saving the program as a file
 
 For programs you need an **editor** that saves plain text. Good choices are
-[Visual Studio Code](https://code.visualstudio.com/) or [[positron]], which
+[[visual-studio-code|Visual Studio Code]] or [[positron]], which
 also highlight Python code in colour. Word or Pages are no use, because they
 write formatting into the file as well.
 

@@ -13,6 +13,7 @@ level: 1
 sections:
   - title: { de: "Teil 1: Erste Programme", en: "Part 1: First programs" }
     steps:
+      - programming-principles
       - python-first-program
       - python-values-and-variables
       - python-working-with-text
@@ -25,13 +26,15 @@ sections:
       - python-exercise-seconds
       - python-first-programs-quiz
 status: draft
-updated: 2026-10-26
+updated: 2026-11-01
 ---
 
 Dieser Pfad führt dich vom ersten `print` zu Programmen, die nach Eingaben
 fragen, damit rechnen und ihre Arbeit in eigene Funktionen aufteilen. Jeder
 Codekasten ist ein kleiner Editor, in dem du den Code ändern und ausführen
 kannst; Python läuft dabei in deinem Browser, installieren musst du nichts.
+Die erste Lektion kommt noch ganz ohne Code aus und stellt dir mit Bildern
+aus dem Alltag die Grundideen vor, die in jedem Programm stecken.
 
 Auf die Lektionen folgen Übungen, in denen du selbst ein Programm schreibst.
 Tipps und eine Musterlösung kannst du aufklappen, wenn du nicht weiterkommst,

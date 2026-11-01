@@ -8,7 +8,7 @@ summary: >-
   übertragen.
 level: 1
 modules: [dup]
-items: [petzold-code]
+items: [petzold-code, visual-studio-code]
 phases:
   - id: start
     items: [problem-decomposition, cutting-the-lifi-project]

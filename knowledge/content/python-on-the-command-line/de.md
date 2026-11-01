@@ -53,7 +53,7 @@ Python installieren. Schließe die Kommandozeile nach der Installation und
 ## Das Programm als Datei speichern
 
 Für Programme brauchst du einen **Editor**, der reinen Text speichert. Gut
-geeignet sind [Visual Studio Code](https://code.visualstudio.com/) oder
+geeignet sind [[visual-studio-code|Visual Studio Code]] oder
 [[positron]], die Python-Code auch farbig hervorheben. Word oder Pages taugen
 nicht, weil sie Formatierungen mit in die Datei schreiben.
 

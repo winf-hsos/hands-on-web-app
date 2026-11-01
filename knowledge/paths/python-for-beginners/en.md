@@ -9,13 +9,15 @@ goal: >-
   and organise their steps in functions of their own.
 audience: Everyone without programming experience
 translation_of: de
-based_on: 2026-10-26
+based_on: 2026-11-01
 ---
 
 This path takes you from your first `print` to programs that ask for input,
 calculate with it and split their work into functions of their own. Every code
 box is a small editor in which you can change and run the code; Python runs in
-your browser, and you do not need to install anything.
+your browser, and you do not need to install anything. The first lesson does
+without code altogether and uses pictures from everyday life to introduce the
+basic ideas behind every program.
 
 The lessons are followed by exercises in which you write a program yourself.
 You can unfold hints and a model solution if you get stuck, but try it on your
