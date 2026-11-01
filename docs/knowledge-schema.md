@@ -245,6 +245,16 @@ The body is plain Markdown with a few conventions:
   with empty cells where the values go. The entries are kept in this browser
   like the code, and a button below the table clears them after asking.
   Enter moves to the cell below.
+- **Code boxes, result tables and quizzes have a focus mode** for presenting
+  and working on them together in class (Nicolas, 2026-11-01). A button
+  „Fokus“ (`F` while the element has the focus, `Esc` leaves) shows the
+  element alone in full screen, its parts keeping the width they had on the
+  page and scaled up with CSS `zoom` to the width of the screen, at most two
+  and a half times; a table is scaled by the width of its columns. The view
+  starts at the top and scrolls, so that nothing moves when an output or an
+  explanation opens. Where a browser has no full screen for elements, the
+  same view opens as a layer over the page. The code is `client/focus.js`,
+  used by `runner.js`, `tables.js` and `quiz.js`.
 - **R code** in a ` ```r ` block works the same way with webR; ` ```r static `
   only shows it. Each block runs on its own, with dplyr loaded and the data
   sets `survey` (`media/datasets/milk_survey.csv`), `rewe`

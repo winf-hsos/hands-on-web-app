@@ -670,8 +670,11 @@ select {
 
 /* --- item, path and course pages ----------------------------------------- */
 
+/* The column stands in the middle, so that a page zoomed on a projector stays
+   centred (Nicolas, 2026-11-01). */
 .page {
   max-width: var(--measure);
+  margin-inline: auto;
 }
 
 .page-head {
@@ -765,10 +768,6 @@ select {
 .table-input:focus {
   outline: 2px solid var(--accent);
   outline-offset: 1px;
-}
-
-.table-clear {
-  margin: -0.5rem 0 1.25rem;
 }
 
 .prose code {
@@ -3365,6 +3364,87 @@ details.callout[open] > summary::before {
 .demo.is-fullscreen > :last-child {
   flex: none;
   width: var(--demo-width);
+}
+
+/* --- focus mode (client/focus.js) ---------------------------------------------------- */
+
+/* A code box, a result table or a quiz alone on the screen: its parts keep
+   the width they have on the page and are enlarged to the width of the
+   screen, and what does not fit scrolls. It starts at the top, so that
+   nothing moves when an explanation or an output opens below. */
+.focus-toggle {
+  gap: 0.4rem;
+}
+
+.runner-bar .focus-toggle {
+  margin-left: auto;
+}
+
+.table-tools,
+.quiz-tools {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.table-tools {
+  margin: -0.5rem 0 1.25rem;
+}
+
+.table-tools .button,
+.quiz-tools .button {
+  min-height: 2rem;
+  padding: 0 0.8rem;
+  font-size: 0.85rem;
+}
+
+.focusable.in-focus {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 3.5rem 0 2.5rem;
+  overflow: auto;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.focusable.in-focus > * {
+  flex: none;
+  box-sizing: border-box;
+  width: var(--focus-width);
+  margin-inline: auto;
+  zoom: var(--focus-zoom, 1);
+}
+
+/* a table only as wide as its columns, in the middle */
+.table-box.in-focus > table {
+  width: max-content;
+  max-width: var(--focus-width);
+}
+
+/* the buttons of a table or a quiz stay in the corner, at their usual size */
+.in-focus > .table-tools,
+.in-focus > .quiz-tools {
+  position: fixed;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: auto;
+  margin: 0;
+  zoom: 1;
+}
+
+/* without the Fullscreen API: a layer over the page */
+.focusable.is-focus {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
+
+.has-focus {
+  overflow: hidden;
 }
 
 /* --- the dplyr demonstrator ------------------------------------------------------------ */

@@ -6,9 +6,11 @@
 // question, the quiz shows one question at a time, with Back and Next, a bar
 // with one segment per question, and a short result at the end.
 import { load, update, today } from './progress.js';
+import { focusable } from './focus.js';
 
 const page = document.querySelector('[data-item-page]');
-const prose = document.querySelector('.prose');
+// the text of the quiz, not the goals above it, which are prose as well
+const prose = document.querySelector('.prose[data-labels]');
 const labels = prose.dataset;
 const L = JSON.parse(labels.labels);
 const questions = [...document.querySelectorAll('.quiz-question')];
@@ -94,6 +96,26 @@ for (const question of questions) {
 
   check.addEventListener('click', () => (checked() ? reset() : evaluate()));
   control.set(question, { evaluate, reset });
+}
+
+// --- focus ---------------------------------------------------------------------
+
+// The questions, with the bar and the result, sit in one stage, which a
+// button shows alone and enlarged, to discuss the quiz in class.
+if (questions.length) {
+  const stage = Object.assign(document.createElement('div'), { className: 'quiz-stage' });
+  const tools = Object.assign(document.createElement('div'), { className: 'quiz-tools' });
+  const last = questions.at(-1);
+  questions[0].before(stage);
+  let node = stage.nextSibling;
+  while (node) {
+    const following = node.nextSibling;
+    stage.append(node);
+    if (node === last) break;
+    node = following;
+  }
+  stage.prepend(tools);
+  focusable(stage, tools);
 }
 
 // --- one question at a time ----------------------------------------------------

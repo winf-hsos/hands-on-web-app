@@ -1,7 +1,9 @@
 // Result tables to fill in (build/remark-knowledge.mjs): what a learner types
 // stays in this browser, per page and table, until the table is cleared.
-// Enter moves to the field below, as in a spreadsheet.
+// Enter moves to the field below, as in a spreadsheet. A focus button shows
+// the table alone and enlarged, to fill it in together on a projector.
 import { savedOnPage } from './saved.js';
+import { focusable } from './focus.js';
 
 const saved = savedOnPage('hocs-tables');
 
@@ -19,7 +21,13 @@ for (const table of document.querySelectorAll('table[data-fillable]')) {
     clear.hidden = !Object.keys(values).length;
   };
   clear.hidden = !Object.keys(stored).length;
-  table.after(clear);
+  const tools = Object.assign(document.createElement('div'), { className: 'table-tools' });
+  const box = Object.assign(document.createElement('div'), { className: 'table-box' });
+  table.replaceWith(box);
+  box.append(table, tools);
+  tools.append(clear);
+  // the columns fill the screen, not the empty width of the text beside them
+  focusable(box, tools, () => table.querySelector('tr').getBoundingClientRect().width);
 
   table.addEventListener('input', update);
   table.addEventListener('keydown', (e) => {

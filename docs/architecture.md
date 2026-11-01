@@ -162,6 +162,11 @@ All motion is switched off for people who ask their system for reduced motion.
   `fillableTables()` of `remark-knowledge.mjs`). Both are local storage
   under the page's path without `/drafts`. They stay in the browser and are
   not part of the progress link, which would grow with every line of code.
+- **Focus mode** (`src/client/focus.js`): `focusable(box, bar)` gives a code
+  box, a result table or the questions of a quiz a button that shows them
+  alone and enlarged in full screen, for a projector. Unlike the full screen
+  of a demonstrator (`demo-frame.js`), it scales by width only, because these
+  elements grow while someone works with them.
 
 ## Areas
 

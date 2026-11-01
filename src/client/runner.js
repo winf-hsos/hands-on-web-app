@@ -8,6 +8,7 @@ import { findR, loadR } from './r-complete.js';
 import { suggest as suggestPython } from './py-context.js';
 import { highlight } from './highlight.js';
 import { savedOnPage, fingerprint } from './saved.js';
+import { focusable } from './focus.js';
 
 const { pythonWorker, pyodide, runnerLabels } = document.body.dataset;
 const L = JSON.parse(runnerLabels);
@@ -113,7 +114,10 @@ function setup(box) {
   const output = el('pre', { className: 'runner-output', hidden: true });
   output.setAttribute('aria-live', 'polite');
   const hint = el('p', { className: 'runner-hint', hidden: true });
-  box.replaceChildren(code, el('div', { className: 'runner-bar' }, run, reset, status), output, hint);
+  const bar = el('div', { className: 'runner-bar' }, run, reset, status);
+  box.replaceChildren(code, bar, output, hint);
+  // larger, for working on the code together on a projector
+  focusable(box, bar);
   addCopyButton(code, () => editor.value);
   if (lang === 'r') attachCompletion(editor, L.complete, findR, loadR);
   // Python: the names of all Python editors on the page count in each of them

@@ -455,6 +455,12 @@ export const demoFrameLabels = {
   },
 };
 
+/** Focus mode of code boxes, result tables and quizzes (client/focus.js). */
+export const focusLabels = {
+  de: { enter: 'Fokus', leave: 'Fokus beenden' },
+  en: { enter: 'Focus', leave: 'Leave focus' },
+};
+
 /** Labels of the dplyr demonstrator (client/verb-demo.js). */
 export const demoLabels = {
   de: { original: 'Original', hint: 'Jedes Verb beginnt bei der Originaltabelle.', keyOriginal: 'Originaltabelle', keyVerbs: 'die Verben der Reihe nach' },
