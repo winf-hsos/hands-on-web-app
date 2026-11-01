@@ -3865,16 +3865,16 @@ details.callout[open] > summary::before {
   --red: #ff4d6d;
 }
 
-/* A drawing is 1600 units wide and takes the width of the page beyond the
-   text column, so that its labels (32 units) read at about 20 px; on a
-   phone it keeps 720 px and scrolls sideways. */
+/* A drawing is 1600 units wide and as wide as the text column, so that 48
+   units read like the text and 32 units like a caption; on a phone it keeps
+   560 px and scrolls sideways. */
 .drawing {
-  width: min(61.5rem, calc(100vw - 2.5rem));
+  max-width: var(--measure);
   margin: 2rem 0;
 }
 .drawing-canvas {
   overflow-x: auto;
-  padding: 1.25rem;
+  padding: 0.75rem;
   background: var(--paper);
   border: 1px solid var(--rule);
   border-radius: 0.75rem;
@@ -3882,7 +3882,7 @@ details.callout[open] > summary::before {
 .drawing-canvas svg {
   display: block;
   width: 100%;
-  min-width: 720px;
+  min-width: 560px;
   height: auto;
 }
 .drawing figcaption {

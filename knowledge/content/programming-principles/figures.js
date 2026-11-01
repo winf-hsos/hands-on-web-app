@@ -4,52 +4,25 @@
   const p = window.figureParts;
 
   // Three variables as jars with a sticker: the name in blue on the sticker,
-  // the value inside. A new name replaces the old one, then the score goes up.
+  // the value inside.
   const JAR_W = 360, VALUE_Y = 330;
   const JARS = [
-    { x: 100, name: 'vorname', en: 'name' },
-    { x: 620, name: 'alter', en: 'age' },
-    { x: 1140, name: 'punkte', en: 'points' },
+    { x: 100, name: 'vorname', en: 'name', value: '"Anna"' },
+    { x: 620, name: 'alter', en: 'age', value: '19' },
+    { x: 1140, name: 'punkte', en: 'points', value: '0' },
   ];
-  const MID = (x) => x + JAR_W / 2;
 
   figure('containers', {
     draw(lang) {
       const t = p.say(lang);
       const c = d.colors();
-      const value = (x, text, o = {}) => d.label(MID(x), 0, text, { size: 48, mono: true, keepCase: true, anchor: 'middle', centerY: VALUE_Y, ...o });
       // the longest name, "vorname", is 7 characters of code type at 48 units, 212 of the 280 on the sticker
-      const jars = JARS.map((j) => {
-        const name = t(j.name, j.en);
-        return d.box(j.x, 60, JAR_W, 400, '', { border: c.light, rx: 40, width: 3 }) +
-          d.box(j.x + 50, 30, JAR_W - 100, 36, '', { border: c.light, width: 3 }) +
-          d.box(j.x + 40, 110, JAR_W - 80, 90, name, { border: c.blue, color: c.blue, size: 48, mono: true, keepCase: true, width: 3 });
-      });
-      return d.svg(
-        1600,
-        480,
-        ...jars,
-        d.g('anna', value(JARS[0].x, '"Anna"')),
-        d.g('ben', value(JARS[0].x, '"Ben"')),
-        value(JARS[1].x, '19'),
-        d.g('zero', value(JARS[2].x, '0')),
-        d.g('one', value(JARS[2].x, '1')),
-        // "+ 1" is 3 characters, 91 wide at 48 units, between the value and the wall of the jar
-        d.g('plus', d.label(MID(JARS[2].x) + 70, 0, '+ 1', { size: 48, mono: true, color: c.yellow, centerY: VALUE_Y })),
-      );
-    },
-    animate(a) {
-      a.set('ben', { opacity: 0, y: -80 });
-      a.set('one', { opacity: 0, y: -80 });
-      a.step(
-        a.par(a.hide('anna', { dur: 600 }), a.move('anna', 0, -80, { dur: 600 })),
-        a.par(a.show('ben', { dur: 600 }), a.move('ben', 0, 80, { dur: 600 })),
-      );
-      a.step(
-        a.show('plus', { dur: 400 }),
-        a.par(a.hide('zero', { dur: 600 }), a.move('zero', 0, -80, { dur: 600 })),
-        a.par(a.show('one', { dur: 600 }), a.move('one', 0, 80, { dur: 600 })),
-      );
+      const jars = JARS.map((j) =>
+        d.box(j.x, 60, JAR_W, 400, '', { border: c.light, rx: 40, width: 3 }) +
+        d.box(j.x + 50, 30, JAR_W - 100, 36, '', { border: c.light, width: 3 }) +
+        d.box(j.x + 40, 110, JAR_W - 80, 90, t(j.name, j.en), { border: c.blue, color: c.blue, size: 48, mono: true, keepCase: true, width: 3 }) +
+        d.label(j.x + JAR_W / 2, 0, j.value, { size: 48, mono: true, keepCase: true, anchor: 'middle', centerY: VALUE_Y }));
+      return d.svg(1600, 480, ...jars);
     },
   });
 
@@ -77,8 +50,9 @@
     },
   });
 
-  // A loop over a bag of onions: the yellow frame is the onion the loop is at.
-  const ITEM_W = 280, ITEM_Y = 240, ITEM_H = 120, GAP = 360;
+  // A loop over a bag of onions, as a still picture half-way through: two
+  // onions are peeled, the yellow frame is the one the loop is at.
+  const ITEM_W = 280, ITEM_Y = 240, ITEM_H = 120, GAP = 360, AT = 2;
   const itemX = (i) => 160 + i * GAP;
 
   figure('loop', {
@@ -87,66 +61,87 @@
       const c = d.colors();
       const items = [0, 1, 2, 3].map((i) =>
         d.box(itemX(i), ITEM_Y, ITEM_W, ITEM_H, t(`Zwiebel ${i + 1}`, `onion ${i + 1}`), { size: 48, border: c.light, color: c.light, width: 3 }) +
-        d.g(`done-${i}`, d.label(itemX(i) + ITEM_W / 2, 0, t('geschält', 'peeled'), { size: 32, anchor: 'middle', color: c.gray, centerY: 410 })));
+        (i < AT ? d.label(itemX(i) + ITEM_W / 2, 0, t('geschält', 'peeled'), { size: 32, anchor: 'middle', color: c.gray, centerY: 410 }) : ''));
       return d.svg(
         1600,
-        520,
+        440,
         // "für jede Zwiebel im Netz:" is 25 characters at 48 units, about 620, so it ends left of the box at 840
         d.label(160, 0, t('für jede Zwiebel im Netz:', 'for each onion in the bag:'), { size: 48, centerY: 80 }),
         d.box(840, 20, 360, 120, t('schälen', 'peel'), { size: 48, width: 3, rx: 10 }),
         ...items,
-        d.g('cursor', d.box(itemX(0) - 14, ITEM_Y - 14, ITEM_W + 28, ITEM_H + 28, '', { border: c.yellow, fill: 'none', width: 4, rx: 14 })),
-        d.g('end', d.label(800, 0, t('Das Netz ist leer, und die Schleife endet.', 'The bag is empty, and the loop ends.'), { size: 32, anchor: 'middle', centerY: 490 })),
+        d.box(itemX(AT) - 14, ITEM_Y - 14, ITEM_W + 28, ITEM_H + 28, '', { border: c.yellow, fill: 'none', width: 4, rx: 14 }),
       );
-    },
-    animate(a) {
-      const centre = (i) => [itemX(i) + ITEM_W / 2, ITEM_Y + ITEM_H / 2];
-      a.step(a.show('cursor', { dur: 300 }), a.show('done-0', { dur: 400 }));
-      a.step(a.moveTo('cursor', ...centre(1), { dur: 500 }), a.show('done-1', { dur: 400 }));
-      a.step(a.moveTo('cursor', ...centre(2), { dur: 500 }), a.show('done-2', { dur: 400 }));
-      a.step(a.moveTo('cursor', ...centre(3), { dur: 500 }), a.show('done-3', { dur: 400 }), a.par(a.hide('cursor', { dur: 400 }), a.show('end', { dur: 400 })));
     },
   });
 
-  // A function as input, processing, output (d.ipo), called twice with a
-  // different parameter: the steps inside stay the same.
-  const IPO = { x: 40, y: 120 };
-  const IN_X = IPO.x + 300, BOX_X = IPO.x + 830, OUT_X = IPO.x + 1380, ROW = IPO.y + 65;
+  // A function as input, processing, output, called twice in one segment:
+  // the parameter slips behind the box, and a large or a small cup comes out.
+  const ROW = 190, IN_X = 220, BOX = { x: 520, y: 110, w: 560, h: 160 }, CUP_X = 1400, SAUCER_Y = 330;
+  const BOX_MID = BOX.x + BOX.w / 2;
+
+  // a cup of cappuccino on its saucer, s = 1 for the large one
+  const cup = (s) => {
+    const c = d.colors();
+    const stroke = `stroke="${c.light}" stroke-width="3"`;
+    const top = SAUCER_Y - 12 * s - 150 * s, bottom = SAUCER_Y - 12 * s;
+    const x = (dx) => CUP_X + dx * s;
+    const steam = (dx) => `<path d="M${x(dx)},${top - 24 * s} c${-14 * s},${-14 * s} ${14 * s},${-28 * s} 0,${-42 * s} c${-14 * s},${-14 * s} ${14 * s},${-28 * s} 0,${-42 * s}" fill="none" stroke="${c.gray}" stroke-width="3" stroke-linecap="round"/>`;
+    return [
+      `<ellipse cx="${CUP_X}" cy="${SAUCER_Y}" rx="${150 * s}" ry="${18 * s}" fill="${c.bg}" ${stroke}/>`,
+      `<path d="M${x(92)},${top + 30 * s} C${x(150)},${top + 30 * s} ${x(150)},${top + 100 * s} ${x(82)},${top + 105 * s}" fill="none" ${stroke}/>`,
+      `<path d="M${x(-100)},${top} L${x(100)},${top} L${x(75)},${bottom - 20 * s} Q${x(70)},${bottom} ${x(50)},${bottom} L${x(-50)},${bottom} Q${x(-70)},${bottom} ${x(-75)},${bottom - 20 * s} Z" fill="${c.bg}" ${stroke}/>`,
+      `<ellipse cx="${CUP_X}" cy="${top}" rx="${100 * s}" ry="${16 * s}" fill="${c.bg}" ${stroke}/>`,
+      steam(-30),
+      steam(30),
+    ].join('');
+  };
 
   figure('machine', {
     draw(lang) {
       const t = p.say(lang);
       const c = d.colors();
-      const head = (x, text) => d.label(x, 0, text, { size: 32, anchor: 'middle', color: c.gray, centerY: 60 });
-      const at = (x, text, o = {}) => d.label(x, 0, text, { size: 32, anchor: 'middle', centerY: ROW, ...o });
+      const head = (x, text) => d.label(x, 0, text, { size: 32, anchor: 'middle', color: c.gray, centerY: 40 });
+      // '"klein"' is 7 characters of code type at 48 units, 212, centred at 220
+      const param = (text) => d.label(IN_X, 0, `"${text}"`, { size: 48, mono: true, keepCase: true, anchor: 'middle', centerY: ROW });
+      const arrow = { color: c.light, width: 3, head: 16 };
       return d.svg(
         1600,
-        300,
+        360,
         head(IN_X, 'Parameter'),
-        head(BOX_X, t('Funktion', 'function')),
-        head(OUT_X, t('Rückgabewert', 'return value')),
-        d.ipo(IPO.y, '', 'Cappuccino', '', { x: IPO.x }),
-        d.g('in-big', at(IN_X, t('groß', 'large'))),
-        d.g('in-small', at(IN_X, t('klein', 'small'))),
-        d.g('route', d.line(IN_X, ROW, BOX_X, ROW, { color: 'none' })),
-        d.g('token-big', at(IN_X, t('groß', 'large'), { color: c.yellow })),
-        d.g('token-small', at(IN_X, t('klein', 'small'), { color: c.yellow })),
-        // "kleiner Cappuccino" is 18 characters at 32 units, about 300, centred at 1420 inside the 1600
-        d.g('out-big', at(OUT_X, t('großer Cappuccino', 'large cappuccino'), { color: c.yellow })),
-        d.g('out-small', at(OUT_X, t('kleiner Cappuccino', 'small cappuccino'), { color: c.yellow })),
+        head(BOX_MID, t('Funktion', 'function')),
+        head(CUP_X, t('Rückgabewert', 'return value')),
+        // the moving copies lie under arrow and box, so the box swallows them
+        d.g('route', d.line(IN_X, ROW, BOX_MID, ROW, { color: 'none' })),
+        d.g('token-big', param(t('groß', 'large'))),
+        d.g('token-small', param(t('klein', 'small'))),
+        d.arrow(345, ROW, BOX.x - 5, ROW, arrow),
+        // "make_cappuccino" is 15 characters of code type at 48 units, 455 of the 560
+        d.box(BOX.x, BOX.y, BOX.w, BOX.h, 'make_cappuccino', { size: 48, mono: true, keepCase: true, width: 3, rx: 10 }),
+        d.arrow(BOX.x + BOX.w + 15, ROW, 1225, ROW, arrow),
+        d.g('in-big', param(t('groß', 'large'))),
+        d.g('in-small', param(t('klein', 'small'))),
+        d.g('cup-big', cup(1)),
+        d.g('cup-small', cup(0.65)),
       );
     },
     animate(a) {
       a.set('token-big', { opacity: 0 });
       a.set('token-small', { opacity: 0 });
       a.set('in-small', { opacity: 0 });
-      a.step(a.show('token-big', { dur: 200 }), a.along('token-big', 'route', { dur: 900 }), a.hide('token-big', { dur: 200 }), a.show('out-big', { dur: 500 }));
+      a.set('cup-big', { opacity: 0 });
+      a.set('cup-small', { opacity: 0 });
+      // both calls in one segment, as one sequence: large, then small
       a.step(
-        a.par(a.hide('out-big', { dur: 400 }), a.swap('in-big', 'in-small', { dur: 400 })),
-        a.show('token-small', { dur: 200 }),
+        a.show('token-big', { dur: 1 }),
+        a.along('token-big', 'route', { dur: 900 }),
+        a.hide('token-big', { dur: 1 }),
+        a.show('cup-big', { dur: 500 }),
+        a.wait(700),
+        a.par(a.hide('cup-big', { dur: 400 }), a.swap('in-big', 'in-small', { dur: 400 })),
+        a.show('token-small', { dur: 1 }),
         a.along('token-small', 'route', { dur: 900 }),
-        a.hide('token-small', { dur: 200 }),
-        a.show('out-small', { dur: 500 }),
+        a.hide('token-small', { dur: 1 }),
+        a.show('cup-small', { dur: 500 }),
       );
     },
   });

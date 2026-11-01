@@ -7,8 +7,8 @@ import { createHash } from 'node:crypto';
 import { join } from 'node:path';
 
 export const FIGURE_FILE = 'figures.js';
-// the four sizes of stagekit, in units of the drawing (docs/figures.md)
-const SIZES = new Set([20, 32, 48, 80]);
+// stagekit's sizes without 20, which is too small at the width of the text (docs/figures.md)
+const SIZES = new Set([32, 48, 80]);
 const cache = new Map();
 
 /** The item's figures.js: { file, source, names, hash }, or null if it has none. */
@@ -36,7 +36,7 @@ export function figureRules(source) {
   lines.forEach((line, i) => {
     const code = line.replace(/\/\/.*$/, '');
     for (const m of code.matchAll(/\bsize:\s*(\d+)/g)) {
-      if (!SIZES.has(Number(m[1]))) problems.push(`line ${i + 1}: size ${m[1]}; only 20, 32, 48 or 80`);
+      if (!SIZES.has(Number(m[1]))) problems.push(`line ${i + 1}: size ${m[1]}; only 32, 48 or 80`);
     }
     if (/#[0-9a-fA-F]{3,8}\b|\brgba?\(|\bhsla?\(/.test(code)) problems.push(`line ${i + 1}: a colour value; use the colours of the theme`);
   });

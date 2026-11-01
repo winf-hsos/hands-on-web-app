@@ -57,9 +57,9 @@ a container with a label stuck on it that carries a name. Inside the
 container lies a value, and through the name on the label the program finds
 it again whenever it needs it.
 
-![Three containers, each with a blue label: name holding the text Anna, age holding the number 19 and points holding the number 0. When played, Anna is replaced by Ben, then the points go up to 1.](figure:containers "Every container carries a name and holds exactly one value, and a new value pushes out the old one.")
+![Three containers, each with a blue label: name holding the text Anna, age holding the number 19 and points holding the number 0.](figure:containers "Every container carries a name and holds exactly one value.")
 
-The picture shows three things. A container always holds **exactly one
+Three things belong to this picture. A container always holds **exactly one
 value**: if you put a new one in, the old one is gone without being kept
 anywhere. The new value may be **calculated from the old one**: the variable
 `points` works like the scoreboard in a stadium, which looks at what it shows
@@ -108,7 +108,7 @@ peel each onion in the bag, one after the other, and stop when the bag is
 empty. A **loop** writes such a step down only once and adds how often or
 how long it is repeated.
 
-![At the top it says for each onion in the bag: peel, below it four boxes onion 1 to 4. When played, a yellow frame moves from box to box, peeled appears under each, and after the last one the loop ends.](figure:loop "The loop takes one piece after the other and ends when none is left.")
+![At the top it says for each onion in the bag: peel, below it four boxes onion 1 to 4. Peeled stands under the first two, and a yellow frame marks onion 3.](figure:loop "The loop takes one piece after the other and is at the third onion right now.")
 
 There are two ways of ending a loop. The first is the one in the picture:
 once **for each piece** of a list, so as often as the list is long. The
@@ -128,10 +128,10 @@ A coffee machine can make a cappuccino, and you do not need to know how hot
 the water has to be or how long the milk froths. You press a button, perhaps
 say whether the cup should be large or small, and get a cappuccino. A
 **function** is such a machine inside a program: a sequence of steps that
-gets a name, so that you can call it with one word instead of writing the
+gets a name, such as `make_cappuccino`, so that you can call it with one word instead of writing the
 steps out again every time.
 
-![The model input, processing, output: the size large goes as a parameter into the function cappuccino, and out comes a large cappuccino as the return value. When played, a second call with small follows.](figure:machine "The same function, called twice: the parameter changes, the steps inside stay the same.")
+![On the left the parameter "large", in the middle a box with the function make_cappuccino, on the right under return value nothing yet. When played, the parameter disappears into the function and a large cup of cappuccino comes out; then the same with "small" and a small cup.](figure:machine "The same function, called twice: the parameter changes, the steps inside stay the same.")
 
 What you give the function when you call it is called a **parameter**, and
 what it gives back to you is its **return value**. A function is thus a small

@@ -82,7 +82,7 @@
       // frame inset by half its stroke (stagekit: nothing runs over its place)
       `<rect x="${x + 1.5}" y="${y + 1.5}" width="${w - 3}" height="${h - 3}" rx="14" fill="${c.bg}" stroke="${c.gray}" stroke-width="3"/>`,
       d.line(x + 1.5, y + bar, x + w - 1.5, y + bar, { color: c.gray, width: 2 }),
-      d.label(x + 32, 0, o.title || '', { size: 20, color: c.gray, centerY: y + bar / 2 }),
+      d.label(x + 32, 0, o.title || '', { size: 32, color: c.gray, centerY: y + bar / 2 }),
     ];
     (o.lines || []).forEach((line, i) => {
       const l = typeof line === 'string' ? { text: line } : line;

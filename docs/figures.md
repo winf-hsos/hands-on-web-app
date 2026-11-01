@@ -37,13 +37,15 @@ when `figures.js` holds a colour value of its own.
 They are stagekit's rules for drawings (`docs/design-rules.md` in the stagekit
 repository), applied to a page. The ones that matter most:
 
-- **The canvas is 1600 units wide**, `d.svg(1600, h, …)`. The page shows it
-  at the full width of the page (up to 984 px), so the sizes below read as on a
-  slide, and a deck can put the drawing on a slide (1680 wide) without
-  changing anything. On a phone the drawing keeps 720 px and scrolls sideways.
-- **Four sizes**, `size: 20 | 32 | 48 | 80`, and no other. Labels, inputs and
-  outputs in 32, values and the one thing a drawing is about in 48; 20 only for
-  a small aside such as a window title. If text does not fit, the layout
+- **The canvas is 1600 units wide**, `d.svg(1600, h, …)`, and the page shows
+  it **as wide as the text column** (44rem, about 680 px of drawing), never
+  wider (decision of Nicolas, 2026-11-01). A deck can put the same drawing on
+  a slide (1680 wide) without changing anything. On a phone the drawing keeps
+  560 px and scrolls sideways.
+- **Four sizes**, `size: 32 | 48 | 80`, and no other on a page. At the width
+  of the text, 48 units read like the text and 32 like a caption, while 20
+  would be too small to read. What a drawing is about, values and boxes in
+  48; headings, notes and the lines of a terminal in 32. If text does not fit, the layout
   changes, not the size; widths are counted beforehand as characters × size ×
   0.6 plus 20 on each side, and the count stands as a comment next to the box.
 - **Colours only from the theme, and colour is meaning.** stagekit's eight
@@ -64,11 +66,17 @@ repository), applied to a page. The ones that matter most:
   inset by half their stroke from the edge of the canvas.
 - **Processing is drawn with `d.ipo`**, judging with `d.verdict`, a passage of
   text is highlighted with `d.highlight`.
-- **Animations show processes, not effects.** Animate only what is a process
-  in time: something moves, a procedure works step by step, a state turns
-  into another. Every resting state must make sense as a still picture; a
-  segment lasts at most about three seconds; what moves has a name (`d.g`)
-  and a path. On the page nothing moves until the reader presses play; each
+- **Animations show processes, not effects, and only where the still picture
+  would miss the point** (Nicolas, 2026-11-01). A structure, a comparison or a
+  concept such as a variable or a loop is a still picture, even if it could
+  be made to move; at most a snapshot shows where a process stands (the loop
+  at its third onion). Animate only what is a process in time and is
+  understood through its course: a command moves through the folder tree,
+  a file is copied, a function takes a parameter and returns a cup. Several
+  calls of the same kind may run one after the other in one segment. Every
+  resting state must make sense as a still picture; a segment lasts at most
+  about three seconds, or a little longer when it holds two calls; what moves
+  has a name (`d.g`) and a path. On the page nothing moves until the reader presses play; each
   press plays the next segment, a second button goes one step back, and with
   reduced motion the buttons jump from state to state. **The start state
   already shows the scene**, since it is what a reader sees first.

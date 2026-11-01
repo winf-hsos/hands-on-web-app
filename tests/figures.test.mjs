@@ -26,7 +26,7 @@ test('the names a text shows are found', () => {
 
 test('only the four sizes of stagekit and no colour values of its own', () => {
   assert.deepEqual(figureRules("d.label(0, 0, 'x', { size: 32 });\nd.box(0, 0, 9, 9, 'y', { size: 48 });"), []);
-  assert.deepEqual(figureRules("d.label(0, 0, 'x', { size: 30 });"), ['line 1: size 30; only 20, 32, 48 or 80']);
+  assert.deepEqual(figureRules("d.label(0, 0, 'x', { size: 30 });"), ['line 1: size 30; only 32, 48 or 80']);
   assert.deepEqual(figureRules("d.line(0, 0, 9, 9, { color: '#ff0000' });"), ['line 1: a colour value; use the colours of the theme']);
   // a comment may name anything
   assert.deepEqual(figureRules('// 30 × 0.6 = 18, size: 30 would be wrong, #fff too'), []);

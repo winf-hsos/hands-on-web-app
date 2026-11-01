@@ -67,9 +67,9 @@ Behälter vor, auf dem ein Aufkleber mit einem Namen klebt. Im Behälter liegt
 ein Wert, und über den Namen auf dem Aufkleber findet das Programm ihn
 wieder, wann immer es ihn braucht.
 
-![Drei Behälter mit je einem blauen Aufkleber: vorname mit dem Text Anna, alter mit der Zahl 19 und punkte mit der Zahl 0. Abgespielt wird Anna durch Ben ersetzt, danach steigen die Punkte auf 1.](figure:containers "Jeder Behälter trägt einen Namen und enthält genau einen Wert, und ein neuer Wert verdrängt den alten.")
+![Drei Behälter mit je einem blauen Aufkleber: vorname mit dem Text Anna, alter mit der Zahl 19 und punkte mit der Zahl 0.](figure:containers "Jeder Behälter trägt einen Namen und enthält genau einen Wert.")
 
-Drei Dinge zeigt das Bild. Ein Behälter enthält **immer genau einen Wert**:
+Zu diesem Bild gehören drei Dinge. Ein Behälter enthält **immer genau einen Wert**:
 Legst du einen neuen hinein, ist der alte weg, ohne dass er irgendwo
 aufgehoben wird. Der neue Wert darf **aus dem alten berechnet** werden: Die
 Variable `punkte` funktioniert wie die Anzeigetafel im Stadion, die bei jedem
@@ -120,7 +120,7 @@ einen Salat schälst du jede Zwiebel im Netz, eine nach der anderen, und hörst
 auf, wenn das Netz leer ist. Eine **Schleife** schreibt einen solchen Schritt
 nur einmal auf und sagt dazu, wie oft oder wie lange er wiederholt wird.
 
-![Oben steht für jede Zwiebel im Netz: schälen, darunter vier Kästen Zwiebel 1 bis 4. Abgespielt wandert ein gelber Rahmen von Kasten zu Kasten, unter jedem erscheint geschält, und nach dem letzten endet die Schleife.](figure:loop "Die Schleife nimmt sich ein Stück nach dem anderen vor und endet, wenn keines mehr übrig ist.")
+![Oben steht für jede Zwiebel im Netz: schälen, darunter vier Kästen Zwiebel 1 bis 4. Unter den ersten beiden steht geschält, und ein gelber Rahmen markiert Zwiebel 3.](figure:loop "Die Schleife nimmt sich ein Stück nach dem anderen vor und ist gerade bei der dritten Zwiebel.")
 
 Es gibt zwei Arten, eine Schleife zu beenden. Die erste ist die aus dem Bild:
 **für jedes Stück** einer Liste einmal, also so oft, wie die Liste lang ist.
@@ -140,11 +140,11 @@ Eine Kaffeemaschine kann einen Cappuccino machen, und du musst dafür nicht
 wissen, wie heiß das Wasser sein muss oder wie lange die Milch schäumt. Du
 drückst eine Taste, sagst vielleicht noch, ob die Tasse groß oder klein sein
 soll, und bekommst einen Cappuccino. Eine **Funktion** ist so eine Maschine
-im Programm: eine Folge von Schritten, die einen Namen bekommt, damit man sie
-mit einem Wort aufrufen kann, statt die Schritte jedes Mal neu
+im Programm: eine Folge von Schritten, die einen Namen bekommt, etwa
+`make_cappuccino`, damit man sie mit einem Wort aufrufen kann, statt die Schritte jedes Mal neu
 hinzuschreiben.
 
-![Das Modell Eingabe, Verarbeitung, Ausgabe: Die Größe groß geht als Parameter in die Funktion Cappuccino, heraus kommt als Rückgabewert ein großer Cappuccino. Abgespielt folgt ein zweiter Aufruf mit klein.](figure:machine "Dieselbe Funktion, zweimal aufgerufen: Der Parameter ändert sich, die Schritte im Inneren bleiben gleich.")
+![Links der Parameter "groß", in der Mitte ein Kasten mit der Funktion make_cappuccino, rechts unter Rückgabewert noch nichts. Abgespielt verschwindet der Parameter in der Funktion, und eine große Tasse Cappuccino kommt heraus; danach dasselbe mit "klein" und einer kleinen Tasse.](figure:machine "Dieselbe Funktion, zweimal aufgerufen: Der Parameter ändert sich, die Schritte im Inneren bleiben gleich.")
 
 Was du der Funktion beim Aufruf mitgibst, heißt **Parameter**, und was sie
 dir zurückgibt, **Rückgabewert**. Eine Funktion ist also ein kleines Programm
