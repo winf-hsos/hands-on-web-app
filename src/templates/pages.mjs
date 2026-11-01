@@ -169,7 +169,7 @@ const quizLabels = (lang) =>
     Object.fromEntries(['next', 'back', 'finish', 'position', 'result', 'score', 'open', 'restart'].map((k) => [k, t(lang, `quiz_${k}`)])),
   )}"`;
 
-/** The topics of an item or project, each a link to the content of that topic. */
+/** The topics of an item, each a link to the content of that topic. */
 const topicTags = (site, topics, lang) =>
   html`<p class="topic-tags"${editable(site, 'topics')}><span class="visually-hidden">${t(lang, 'topics')}:</span>${topics.map(
     (key) => html`<a class="topic-tag" href="${site.link(lang, 'items')}?topic=${key}">${site.vocabulary.topics[key][lang]}</a>`,
@@ -564,7 +564,6 @@ export function project(site, doc, lang) {
           <p class="kicker">${projectIcon}<span>${t(lang, 'project')}</span><span>${count(lang, lead.phases.length, 'phases')}</span></p>
           <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}"${editable(site, 'title')}>${text.title}</h1>
           <p class="lead" lang="${text.lang}"${editable(site, 'summary')}>${text.summary}</p>
-          ${topicTags(site, lead.topics, lang)}
         </header>
         ${text.missing && html`<p class="notice">${t(lang, 'missing_translation')}</p>`}
         ${parts.intro && html`<div class="prose" lang="${text.lang}">${md(parts.intro)}</div>`}

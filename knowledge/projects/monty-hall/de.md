@@ -7,7 +7,6 @@ summary: >-
   Experiment als Daten festzuhalten, es in R nachzubauen und so oft zu
   spielen, bis die Daten eine Antwort geben, die kaum jemand erwartet.
 level: 1
-topics: [questions-and-measurement, programming-with-r, getting-data]
 modules: [ea]
 areas: [ds]
 items: [lets-make-a-deal, hands-on-programming-with-r]

@@ -503,7 +503,6 @@ code: 4577
 title: "LiFi: Daten mit Licht übertragen"
 summary: …
 level: 1
-topics: [transferring-information, representing-information]
 modules: [dup]
 items: [petzold-code]          # optional: content for the whole project
 phases:
@@ -532,6 +531,10 @@ The build checks that phases and challenges in the front matter and the
 headings with ids match, in order and in every language, so a challenge can
 neither be forgotten in one language nor linked to the wrong place. Each
 phase and challenge can be linked directly as `…/projects/lifi/#challenge-2`.
+
+A project has **no topics** (Nicolas, 2026-11-01): topics sort the content
+items, and a project is found through its module and the content it links.
+An old `topics` line in a project is ignored with a warning.
 
 A project describes the content and is independent of a semester: dates,
 assessment and bonus rules belong to the course, as in the separation of

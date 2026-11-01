@@ -191,12 +191,13 @@ function shapes(vocabulary) {
           title: text,
           summary: text,
           level: int(1, 4),
-          topics: list(oneOf(topics, 'topic'), 1),
           phases: list(phase, 1),
           status,
           updated: date,
         },
-        optional: { modules: list(oneOf(modules, 'module')), items: list(id), areas: inAreas },
+        // projects have no topics (Nicolas, 2026-11-01); an old `topics` line
+        // is ignored with a warning instead of breaking the build
+        optional: { modules: list(oneOf(modules, 'module')), items: list(id), areas: inAreas, topics: () => null },
       },
       translation,
     },
@@ -321,6 +322,7 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
       }
       doc.lead = leads[0].data;
       doc.leadLang = leads[0].lang;
+      if (section === 'projects' && 'topics' in doc.lead) warnings.push(`${leads[0].path}: projects have no topics; remove the line`);
       for (const file of files) {
         checkFields(file.data, file === leads[0] ? shape[section].lead : shape[section].translation, file.path, errors);
         if (file !== leads[0] && file.data.translation_of !== doc.leadLang)

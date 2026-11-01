@@ -51,7 +51,7 @@ const HANDLED = {
   content: ['level', 'duration', 'topics', 'modules', 'relations', ...Object.keys(FIELD_LABEL)],
   paths: ['level', 'requires', 'steps'],
   courses: ['access_code', 'module', 'semester'],
-  projects: ['level', 'topics', 'modules', 'items'],
+  projects: ['level', 'modules', 'items'],
   pages: ['featured_path', 'samples'],
 };
 
@@ -253,7 +253,6 @@ function renderShared() {
   }
   if (work.section === 'projects') {
     html.push(field('Niveau', select('level', levels, d.level)));
-    html.push(field('Themen', multi('topics', Object.entries(v.topics).map(([k, l]) => [k, l.de]), d.topics), { wide: true }));
     html.push(field('Module', multi('modules', Object.entries(v.modules).map(([k, l]) => [k, l.de]), d.modules ?? []), { wide: true }));
     html.push(linkList('items', 'Inhalte zum ganzen Projekt'));
   }
@@ -692,7 +691,7 @@ function createDialog(section = state.section === 'pages' ? 'content' : state.se
       ${field('Kennung', '<input name="id" required pattern="[a-z0-9]+(-[a-z0-9]+)*">', { wide: true, hint: 'Englisch, kleingeschrieben mit Bindestrichen, z. B. logic-gates. Sie bleibt für immer gleich.' })}
       ${field('Kurzbeschreibung', '<textarea name="summary" rows="2" required></textarea>', { wide: true })}
       ${section === 'content' ? field('Typ', `<select name="type">${opt(Object.entries(v.types).map(([k, l]) => [k, l.de]), 'lesson')}</select>`) : ''}
-      ${['content', 'projects'].includes(section) ? field('Thema', `<select name="topic">${opt(Object.entries(v.topics).map(([k, l]) => [k, l.de]))}</select>`) : ''}
+      ${section === 'content' ? field('Thema', `<select name="topic">${opt(Object.entries(v.topics).map(([k, l]) => [k, l.de]))}</select>`) : ''}
       ${['paths', 'courses'].includes(section) ? field('Erster Inhalt', `<select name="first">${opt(items.map((d) => [d.id, titleOf(d)]))}</select>`, { hint: 'Weitere fügst du danach hinzu.' }) : ''}
       ${section === 'courses' ? field('Modul', `<select name="module">${opt(Object.entries(v.modules).map(([k, l]) => [k, l.de]))}</select>`) + field('Semester', '<input name="semester" required placeholder="2026-27 - WS">') + field('Kurs-Code', '<input name="access" required pattern="[A-Z0-9-]{4,16}" placeholder="LICHT-26">') : ''}
     </div>
@@ -720,7 +719,7 @@ function createDialog(section = state.section === 'pages' ? 'content' : state.se
     } else if (f.section === 'courses') {
       data = { kind: 'course', code, access_code: f.access, module: f.module, semester: f.semester, ...base, sections: [{ title: { de: 'Abschnitt 1', en: 'Section 1' }, items: [f.first] }], status: 'draft', updated: today() };
     } else {
-      data = { kind: 'project', code, ...base, level: 1, topics: [f.topic], phases: [{ id: 'phase-1' }], status: 'draft', updated: today() };
+      data = { kind: 'project', code, ...base, level: 1, phases: [{ id: 'phase-1' }], status: 'draft', updated: today() };
       body = f.lang === 'de' ? 'Worum es im Projekt geht.\n\n## Erste Phase {#phase-1}\n\nWorum es in dieser Phase geht.\n' : 'What the project is about.\n\n## First phase {#phase-1}\n\nWhat this phase is about.\n';
     }
     const result = await api('POST', `/api/doc/${f.section}/${f.id}`, { files: { [f.lang]: { data, body } } });

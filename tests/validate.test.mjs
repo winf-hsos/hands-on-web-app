@@ -91,6 +91,12 @@ test('an outdated translation is a warning, not an error', () => {
   assert.ok(warnings.includes('content/knock-code/en.md: translation is older than its lead file'));
 });
 
+test('projects have no topics: an old topics line is a warning, not an error', () => {
+  const { errors, warnings } = check(({ find }) => (lead(find('projects', 'lifi')).topics = ['solving-problems']));
+  assert.deepEqual(errors, []);
+  assert.ok(warnings.includes('projects/lifi/de.md: projects have no topics; remove the line'));
+});
+
 test('project phases and challenges must match the headings in every language', () => {
   const { errors } = check(({ find }) => {
     const file = find('projects', 'lifi').files.en;
