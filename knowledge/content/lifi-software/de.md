@@ -16,7 +16,7 @@ duration: 20
 topics: [working-with-the-computer, programming-with-python]
 modules: [dup]
 project: lifi
-status: draft
+status: published
 updated: 2026-11-02
 ---
 

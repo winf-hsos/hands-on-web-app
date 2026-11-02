@@ -22,6 +22,6 @@ topics: [solving-problems]
 modules: [dup]
 relations:
   see_also: [problem-decomposition, algorithms-and-programs-slides]
-status: draft
+status: published
 updated: 2026-11-01
 ---

@@ -16,7 +16,7 @@ duration: 9
 topics: [solving-problems]
 modules: [dup]
 project: lifi
-status: draft
+status: published
 updated: 2026-11-02
 ---
 

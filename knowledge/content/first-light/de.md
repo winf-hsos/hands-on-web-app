@@ -23,6 +23,6 @@ topics: [working-with-the-computer, programming-with-python]
 modules: [dup]
 relations:
   see_also: [problem-decomposition, visual-studio-code]
-status: draft
+status: published
 updated: 2026-11-02
 ---
