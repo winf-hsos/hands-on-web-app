@@ -292,9 +292,22 @@ export function referencesOf(doc) {
 export const stepsOf = (list = []) =>
   list.map((s) => (typeof s === 'string' ? { id: s, optional: false } : { id: s.item, optional: !!s.optional }));
 
-/** All steps of a course, those of its learning paths included. */
-export const courseSteps = (lead, pathById) =>
-  (lead.sections ?? []).flatMap((s) => (s.path ? (pathById.has(s.path) ? pathSteps(pathById.get(s.path).lead) : []) : s.project ? [] : stepsOf(s.items ?? [])));
+/** The items of a project phase: its challenge first, then its own items and those of its challenges. */
+export const phaseItems = (phase) => [...new Set([phase.challenge, ...(phase.items ?? []), ...(phase.challenges ?? []).flatMap((c) => c.items ?? [])].filter(Boolean))];
+
+/**
+ * All steps of a course, those of its learning paths included, and with
+ * `projectById` also the items of its projects, so that the progress of a
+ * module counts what it shows of a project.
+ */
+export const courseSteps = (lead, pathById, projectById = new Map()) =>
+  (lead.sections ?? []).flatMap((s) =>
+    s.path
+      ? (pathById.has(s.path) ? pathSteps(pathById.get(s.path).lead) : [])
+      : s.project
+        ? stepsOf([...new Set((projectById.get(s.project)?.lead.phases ?? []).flatMap(phaseItems))])
+        : stepsOf(s.items ?? []),
+  );
 
 /** All steps of a path, whether it lists them flat or in sections. */
 export const pathSteps = (lead) =>

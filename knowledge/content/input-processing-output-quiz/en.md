@@ -19,8 +19,8 @@ duration: 15
 topics: [solving-problems, processing-information]
 modules: [dup]
 relations:
-  checks: [input-processing-output]
-status: draft
+  checks: [input-processing-output-slides]
+status: published
 updated: 2026-11-01
 ---
 

@@ -119,7 +119,7 @@ zehn Sekunden nachprüfen kannst, ohne dem Assistenten glauben zu müssen.
 
 Du schneidest das Problem, der Assistent löst die Stücke, und du prüfst jedes
 davon. Was ein geschnittenes Stück braucht, sobald ein Rechner es lösen soll,
-zeigt [[input-processing-output]].
+zeigt [[input-processing-output-slides]].
 
 ## Zum Weiterlesen
 

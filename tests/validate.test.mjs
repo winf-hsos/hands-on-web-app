@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadKnowledge } from '../src/build/load.mjs';
-import { validate } from '../src/build/validate.mjs';
+import { validate, courseSteps } from '../src/build/validate.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', 'knowledge');
 
@@ -277,4 +277,11 @@ test('the scenario of a folder tree and command line is checked', () => {
     body.body = body.body.replace('tree:\n', 'start: Fotos\ntree:\n');
   });
   assert.deepEqual(errors, ['content/command-line-demo/de.md: shell-demo: start: Fotos is not a folder of the tree']);
+});
+
+test('the steps of a module count the items of its projects', () => {
+  const lead = { sections: [{ items: ['a'] }, { project: 'p' }] };
+  const project = { lead: { phases: [{ challenge: 'c1', items: ['x', 'y'] }, { challenge: 'c2', challenges: [{ items: ['y', 'z'] }] }] } };
+  const ids = courseSteps(lead, new Map(), new Map([['p', project]])).map((s) => s.id);
+  assert.deepEqual(ids, ['a', 'c1', 'x', 'y', 'c2', 'z']);
 });

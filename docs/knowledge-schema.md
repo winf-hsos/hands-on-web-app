@@ -131,6 +131,12 @@ updated: 2026-10-21                # required, date of the last substantive chan
 ---
 ```
 
+**Code in a title** (Nicolas, 2026-11-02). A title may set a name from code
+in backticks, as `` title: "`lifi_hardware`" ``. Headings, rows and `[[links]]`
+show it in code font; the browser tab, the search and other plain text show
+it without the backticks (`inlineCode` and `plainText` in
+`src/build/html.mjs`).
+
 **What you learn** (Nicolas, 2026-11-01). Every item says what a learner takes
 away from it: `objectives` holds one sentence that leads into a list (`intro`,
 ending in a colon) and three to five concrete, checkable goals (`goals`),
@@ -641,7 +647,10 @@ change to a drawing in `deck.js` thus reaches the lesson by running it again.
 **Slides to a concept carry its article** (Nicolas, 2026-11-02). Such an item
 has the types `[lesson, slides]`, and its `de.md` and `en.md` hold, below
 title and summary, the article on the concept, which the page shows after the
-deck. `problem-decomposition` is the first. The article shows only figures
+deck. `problem-decomposition` was the first, `input-processing-output-slides`
+the second; there the code to run went into an exercise of its own,
+`input-processing-output`, which requires the lesson, so the article shows code
+only as `python static`. The article shows only figures
 exported from its own deck, never drawings or pictures made apart from it:
 `slides/figures.js` names the figures (`window.figures`), the deck's
 `deck.js` writes its labels in both languages with `T(en, de)`, and
@@ -652,8 +661,11 @@ cropped to the drawing: a 16:9 frame left wide flat drawings in a lot of empty
 space (Nicolas, 2026-11-02). `figures.js` wraps each drawing with `rand`, which
 adds 16 px above and below, because some labels reach a few pixels above the
 slide's viewBox; where the slide leaves room under a drawing, its second
-argument trims the bottom so both margins match, and figures.py then reports
-no empty edges.
+argument trims the bottom so both margins match, a third one the top, and
+figures.py then reports no empty edges. figures.py loads no `anim.js`, so an
+animated drawing is a function with a `final` flag that draws the state its
+last segment ends in, and names its parts through a local `g` that falls back
+to plain SVG when `d.g` is missing (`input-processing-output-slides`).
 
 ## 9a. Projects
 

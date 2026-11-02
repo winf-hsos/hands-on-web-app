@@ -1,43 +1,31 @@
 ---
-title: "Eingabe, Verarbeitung, Ausgabe: ein Kasten, den du prüfen kannst"
+title: "Eingabe, Verarbeitung, Ausgabe: Das EVA-Modell"
 summary: >-
-  Jedes Stück eines Problems, das ein Computer lösen kann, hat eine Eingabe,
-  eine Verarbeitung und eine Ausgabe. Klare Ränder geben jedem Stück einen
-  eigenen Test, zeigen, wo Stücke übereinstimmen müssen, und führen zu dem
-  Kasten, der versagt.
+  Du prüfst Kästen, ohne in sie hineinzusehen: einen Test, der nur scheitert,
+  wenn er soll, eine Farbregel, die an einer einzigen Messung scheitert,
+  eigene Testfälle und eine Kette aus encode() und decode(), deren
+  Vereinbarung nicht übereinstimmt.
 objectives:
-  intro: "In dieser Lektion nimmst du die Form aus Eingabe, Verarbeitung und Ausgabe auseinander und kannst danach:"
+  intro: "In dieser Übung prüfst du Kästen an ihrer Eingabe und ihrer erwarteten Ausgabe und kannst danach:"
   goals:
-    - "Eingabe, Verarbeitung und Ausgabe eines Teilproblems benennen und aus einer bekannten Eingabe und einer erwarteten Ausgabe einen Test dafür schreiben"
-    - "erklären, warum ein Farbsensor vier Zahlen statt einer Farbe liefert und wo die Regel des Programms ins Spiel kommt"
-    - "begründen, warum Kästen in einer Kette an jeder Grenze eine Vereinbarung brauchen, und einen Fehler finden, indem du den Daten von Grenze zu Grenze folgst"
-    - "Kästen in einer Reihe (Datenfluss) von Kästen in einem Kasten (Zerlegung) unterscheiden und die Ebene wählen, die sich prüfen lässt"
-    - "die beiden Fragen jedes Kastens, wie er arbeitet und wie seine Daten dargestellt sind, den Programmen und der Darstellung zuordnen"
+    - "einen Test aus einer Eingabe und einer erwarteten Ausgabe schreiben, bevor du das Ergebnis kennst, und erkennen, wann ein einzelner Test einen Fehler nicht aufdeckt"
+    - "an einer fehlschlagenden Messung erklären, warum die Regel und nicht der Messwert falsch ist, und die Regel reparieren"
+    - "eigene Testfälle für eine Entscheidungsregel finden, auch solche, an denen sie scheitert"
+    - "in einer Kette aus encode() und decode() den Daten von Grenze zu Grenze folgen und die Vereinbarung finden, die nicht übereinstimmt"
 translation_of: en
-based_on: 2026-11-01
+based_on: 2026-11-02
 ---
 
-Denk an das Bestellterminal in einem Schnellrestaurant. Du tippst ein paar
-Bilder an und bezahlst, und wenig später steht ein Tablett bereit, während
-die Küche dazwischen unsichtbar bleibt. Du musst sie nicht sehen, denn du
-weißt, was du hineingibst und was herauskommen soll, und liegt das falsche
-Essen auf dem Tablett, weißt du auch, dass zwischen diesen beiden Rändern
-etwas schiefgegangen ist. Die [[programming-principles|Grundideen des
-Programmierens]] haben diese Form am Pfandautomaten als Eingabe,
-Verarbeitung und Ausgabe vorgestellt. Diese Lektion setzt sie ein, denn klare
-Ränder erlauben dir, ein Stück eines Problems zu prüfen, Stücke miteinander
-zu verbinden und das Stück zu finden, das versagt.
+[[input-processing-output-slides|Probleme lösen mit Computern]] hat gezeigt,
+dass jedes Stück, das ein Computer lösen kann, eine Eingabe, eine
+Verarbeitung und eine Ausgabe hat, und dass eine bekannte Eingabe mit einer
+erwarteten Ausgabe einen Test ergibt. In dieser Übung setzt du das an vier
+kleinen Kästen ein.
 
-## Ein Kasten, den du prüfen kannst
+## Schritt 1: Erst die Erwartung
 
-Angenommen, ein kleines Stück Code namens `add()` soll 2 und 3 addieren. Die
-beiden Zahlen sind die **Eingabe**, die Arbeit in `add()` ist die
-**Verarbeitung**, und das Ergebnis ist die **Ausgabe**; zusammen kürzt man
-sie nach den englischen Wörtern input, processing und output mit **IPO** ab,
-auf Deutsch auch mit EVA. Noch bevor der Code läuft, kannst
-du sagen, was herauskommen soll, nämlich 5, und damit ist ein Test
-geschrieben: Eingabe hineingeben, Verarbeitung laufen lassen und die
-tatsächliche Ausgabe mit der erwarteten vergleichen.
+Die Funktion `add()` soll zwei Zahlen addieren. Der Test unten gibt 2 und 3
+hinein und sagt, bevor er läuft, was herauskommen muss.
 
 ```python
 def add(a, b):
@@ -52,41 +40,30 @@ else:
     print("nicht bestanden")
 ```
 
-Der Test ist bestanden. Mach aus `a + b` ein `a * b` und lass ihn noch
-einmal laufen: 2 mal 3 ist 6, und der Test fällt durch. Um das zu
-entscheiden, musstest du keine einzige Zeile in `add()` lesen, denn die
-Ränder des Kastens genügten. Deshalb müssen die Stücke, in die du
-[[problem-decomposition|ein Problem zerlegst]], prüfbar sein: Ein Kasten mit
-unscharfen Rändern ist schwer zu lösen und unmöglich zu prüfen, während ein
-Kasten mit einer konkreten Eingabe und einer erwarteten Ausgabe genau sagt,
-was fertig heißt.
+Lass den Test laufen. Mach dann aus `a + b` ein `a * b`, sag voraus, was der
+Test melden wird, und lass ihn noch einmal laufen. Suche zum Schluss eine
+Eingabe, für die `a + b` und `a * b` dasselbe ergeben, sodass dieser Fehler
+durchrutschen würde.
 
-Die Erwartung muss vor dem Ergebnis feststehen. Wer `add(2, 3)` aufruft und
-nur ansieht, was herauskommt, nickt fast alles ab, und wer nur prüft, dass
-keine Fehlermeldung erscheint, erfährt, dass der Computer den Code ausführen
-konnte, aber nicht, dass er richtig gerechnet hat.
+> [!HINT]
+> Probiere kleine Zahlen, die gleich sind. Bei welcher Zahl ist es dasselbe,
+> sie zu sich selbst zu addieren und sie mit sich selbst zu multiplizieren?
 
-## Was der Kasten wirklich bekommt
+> [!SOLUTION]
+> Mit `a * b` liefert der Kasten 6 statt 5, und der Test meldet „nicht
+> bestanden“, ohne dass du eine Zeile in `add()` gelesen hast. Mit der
+> Eingabe 2 und 2 liefern dagegen beide Fassungen 4, und ein Test mit
+> `add(2, 2)` und der Erwartung 4 besteht, obwohl der Kasten multipliziert.
+> Ein einzelner Test prüft nur die eine Eingabe, die er verwendet, und
+> deshalb braucht ein Kasten meist mehrere Tests mit verschiedenen Eingaben.
 
-Halt eine rote Lampe vor einen Farbsensor. Deine Augen sehen Rot, der
-Computer nicht. Ein gängiger Farbsensor hat vier Messkanäle, einen, der vor
-allem auf rotes Licht anspricht, einen für Grün, einen für Blau und einen für
-die Gesamthelligkeit, und für eine einzelne Messung liefert er vielleicht
-203, 41, 57 und 310. Diese vier Zahlen sind alles, was das Programm bekommt.
+## Schritt 2: Eine Regel, die an einer Messung scheitert
 
-![Eine IPO-Zeile: links die vier Messwerte r=203 g=41 b=57 c=310, in der Mitte der Kasten classify(), rechts die Ausgabe "red". Darunter: vier Zahlen, eine Entscheidungsregel, ein Wort.](figure:receiver "Der Empfänger bekommt nicht das Wort Rot, sondern vier Zahlen, und eine Regel im Programm macht daraus eine Entscheidung.")
-
-Die Eingabe des Kastens sind also vier Zahlen und keine Farbe, während das
-Wort `red` seine Ausgabe ist. Dazwischen liegt eine Regel, die entscheidet,
-zum Beispiel: Ist das Licht zu schwach, gilt die Lampe als aus, und sonst
-gewinnt der stärkste der drei Farbkanäle. Mit dem Rot, das du siehst, kann
-ein Computer nicht arbeiten, weil er eine Darstellung braucht, die er
-verarbeiten kann, und auch die Zahlen tragen die Entscheidung nicht von
-selbst, denn die Regel kommt aus dem Programm.
-
-Der Kasten unten enthält eine solche Regel in der Funktion `classify()`,
-dazu vier Messungen, bei denen du weißt, welche Farbe wirklich leuchtete,
-sodass jede Zeile der Liste ein Test ist.
+Ein Farbsensor liefert vier Zahlen, die Stärke des roten, grünen und blauen
+Lichts und die Gesamthelligkeit. Die Funktion `classify()` entscheidet aus
+diesen Zahlen, welche Farbe die Lampe zeigt. Die Liste `tests` enthält vier
+Messungen zusammen mit der Farbe, die wirklich leuchtete, sodass jede Zeile
+ein Test ist.
 
 ```python
 def classify(r, g, b, c):
@@ -115,100 +92,144 @@ for r, g, b, c, expected in tests:
         print(r, g, b, c, "erwartet", expected, "tatsächlich", actual, "nicht bestanden")
 ```
 
-Drei Tests bestehen, der vierte fällt durch: Die rote Lampe war weiter vom
-Sensor entfernt, ihre Helligkeit von 95 liegt unter der Schwelle von 100, und
-die Regel erklärt sie für aus. Keine Zeile ist kaputt, aber Regel und
-Wirklichkeit passen nicht zusammen. Mach aus der `100` eine `80` und lass es
-noch einmal laufen, dann bestehen alle vier, obwohl sich kein Messwert
-geändert hat. Änderst du stattdessen einen Messwert und lässt die Regel, kann
-sich die Ausgabe ebenso ändern, denn Eingabe und Regel entscheiden gemeinsam,
-was herauskommt. Ein echter Empfänger braucht mehr Regeln als diese, etwa
-eine für Licht, in dem zwei Kanäle fast gleich stark sind.
+Lass die Tests laufen und finde den, der scheitert. Erkläre, warum er
+scheitert, und ändere die Regel, nicht die Messwerte, sodass alle vier Tests
+bestehen.
 
-## Kästen in einer Reihe
+> [!HINT]
+> Vergleiche die Helligkeit `c` der fehlschlagenden Messung mit der Zahl in
+> der ersten Zeile der Regel. Denk auch an den dritten Test: Eine Lampe, die
+> wirklich aus ist, muss danach weiter als aus gelten.
 
-Die meisten Systeme sind Ketten solcher Kästen, in denen die Ausgabe des
-einen zur Eingabe des nächsten wird. Eine Strecke, die Text mit Licht
-überträgt, wie im Projekt [[lifi]], ist eine solche Kette: Der Sender macht
-mit `encode()` aus dem Text `"hi"` eine Folge von Farben, das Licht trägt die
-Farben hinüber, und der Empfänger macht mit `decode()` wieder `"hi"` daraus.
+> [!SOLUTION]
+> Der vierte Test scheitert: Die rote Lampe war weiter vom Sensor entfernt,
+> ihre Helligkeit von 95 liegt unter der Schwelle von 100, und die Regel
+> erklärt sie für aus. Der Messwert stimmt, die Regel passt nicht zur
+> Wirklichkeit. Eine Schwelle über 60 und höchstens 95 behebt das, etwa
+> `if c < 80:`. Dann bestehen alle vier Tests, obwohl sich kein Messwert
+> geändert hat, denn Eingabe und Regel entscheiden gemeinsam, was
+> herauskommt.
 
-![Eine Kette von links nach rechts: der Text "hi", der Kasten encode() mit der Beschriftung Sender, fünf Punkte mit der Beschriftung Licht, der Kasten decode() mit der Beschriftung Empfänger und wieder der Text "hi". Eine blaue Klammer darüber verbindet encode() und decode() und sagt: dieselbe Vereinbarung auf beiden Seiten.](figure:chain "Die Ausgabe des einen Kastens ist die Eingabe des nächsten, und beide Enden des Lichts brauchen dieselbe Vereinbarung.")
+## Schritt 3: Eigene Testfälle
 
-Kästen passen nur zusammen, wenn ihre Ränder übereinstimmen. Verwendet der
-Sender Blau für den Buchstaben `a`, liest der Empfänger Blau aber als `b`,
-können beide Kästen genau so arbeiten, wie sie geschrieben sind, und das
-ganze System versagt trotzdem; jede Grenze braucht deshalb eine Vereinbarung
-über Form und Bedeutung der Daten.
+Hier steht die Regel mit der Schwelle 80. Ergänze die Liste um zwei eigene
+Tests: eine blaue Lampe und eine gelbe. Gelbes Licht ist eine Mischung aus
+Rot und Grün, der Sensor misst also Rot und Grün etwa gleich stark, zum
+Beispiel 180 und 175, und wenig Blau.
 
-Die Kette sagt dir auch, wie du suchst, wenn etwas schiefgeht. Kommt am Ende
-nicht `"hi"` an, hilft es wenig, auf das ganze System zu starren, und es ist
-besser, den Daten zu folgen und eine Grenze nach der anderen zu prüfen: ob
-`encode()` die richtigen Farben erzeugt hat, ob die Lampe sie gezeigt hat, ob
-der Sensor plausible Zahlen geliefert hat und ob `decode()` aus diesen Zahlen
-den richtigen Text gemacht hat. Die erste Grenze, an der die Daten falsch
-sind, sagt dir, welchen Kasten du öffnen musst.
+```python
+def classify(r, g, b, c):
+    if c < 80:
+        return "off"
+    strongest = max(r, g, b)
+    if strongest == r:
+        return "red"
+    if strongest == g:
+        return "green"
+    return "blue"
 
-## Kästen in Kästen
+tests = [
+    (203, 41, 57, 310, "red"),
+    (35, 180, 70, 290, "green"),
+    (30, 28, 34, 60, "off"),
+    (60, 14, 19, 95, "red"),
+    # deine Tests: (r, g, b, c, "erwartete Farbe"),
+]
 
-Von außen kann der ganze Sender ein einziger Kasten sein: Eine Nachricht
-geht hinein, Licht kommt heraus, und `send()` ist der Name für die gesamte
-Verarbeitung darin. Hat dieser Kasten die richtige Größe für deine Frage,
-hörst du dort auf. Schlägt ein Test fehl und du musst wissen, warum, öffnest
-du den Kasten und findest eine Kette kleinerer: einen, der den Text kodiert,
-einen, der die nächste Farbe wählt, und einen, der die Lampe schaltet, jeder
-mit eigener Eingabe, Verarbeitung, Ausgabe und eigenem Test, und jeden davon
-kannst du wieder öffnen.
+for r, g, b, c, expected in tests:
+    actual = classify(r, g, b, c)
+    if actual == expected:
+        print(r, g, b, c, "erwartet", expected, "tatsächlich", actual, "bestanden")
+    else:
+        print(r, g, b, c, "erwartet", expected, "tatsächlich", actual, "nicht bestanden")
+```
 
-![Drei IPO-Zeilen untereinander. System: Nachricht, Sender, Licht. Funktion: Text, encode(), Farben. Logikgatter: 1, 1, AND, 1.](figure:levels "Dieselbe Form auf drei Ebenen: ein System, eine Funktion und ein einzelnes Logikgatter.")
+Was antwortet die Regel für deine gelbe Lampe, und warum?
 
-Die Form übersteht jede Ebene. Ein ganzes System, eine einzelne Funktion und
-ein einzelnes [[logic-gates|Logikgatter]], das zwei Bits nimmt und eines
-zurückgibt, haben alle eine Eingabe, eine feste Verarbeitung und eine
-Ausgabe; ihre Größe ändert sich, ihre Form bleibt dieselbe.
+> [!HINT]
+> Ein Test ist eine weitere Zeile in der Liste, für eine blaue Lampe etwa
+> `(30, 50, 190, 260, "blue"),`. Schreib bei Gelb die Farbe hin, die du
+> erwartest, also `"yellow"`, und nicht das, was die Regel deiner Meinung
+> nach sagen wird.
 
-Zwei Arten von Beziehung zwischen Kästen solltest du auseinanderhalten.
-Kästen in einer Reihe zeigen, wohin die Daten als Nächstes gehen, was man
-**Datenfluss** nennt, während Kästen in einem Kasten zeigen, welche kleinere
-Arbeit darin geschieht, was **Zerlegung** heißt. Keine Ebene passt für jede
-Frage: Die richtige ist die, auf der deine aktuelle Frage eine klare Eingabe
-und eine erwartete Ausgabe hat, und kannst du für einen Kasten keinen Test
-schreiben, sind seine Ränder noch unscharf oder der Kasten ist noch zu groß.
+> [!SOLUTION]
+> ```python static
+> tests = [
+>     (203, 41, 57, 310, "red"),
+>     (35, 180, 70, 290, "green"),
+>     (30, 28, 34, 60, "off"),
+>     (60, 14, 19, 95, "red"),
+>     (30, 50, 190, 260, "blue"),
+>     (180, 175, 40, 380, "yellow"),
+> ]
+> ```
+>
+> Der blaue Test besteht, der gelbe scheitert mit `red`: Die Regel kennt nur
+> drei Farben und lässt den stärksten Kanal gewinnen, auch wenn er kaum
+> stärker ist als der zweite. Keine Zeile ist kaputt, aber die Regel hat für
+> diese Eingabe keine Antwort. Ein Test, der so scheitert, ist ein guter
+> Fund, denn er zeigt, was der Regel noch fehlt.
 
-## Zwei Fragen in jedem Kasten
+## Schritt 4: Der Fehler an der Grenze
 
-Sind die Ränder klar, hinterlässt jeder Kasten zwei Fragen. Die erste fragt,
-wie der Kasten seine Arbeit verrichtet, und ihre Antwort ist ein Programm,
-ein Algorithmus, der so aufgeschrieben ist, dass ein Computer ihn ausführen
-kann; dieser Frage folgt [[algorithms-and-programs]]. Die zweite fragt, wie
-das, was die Ränder überquert, geschrieben wird, damit eine Maschine damit
-arbeiten kann. Der Sensor hat sichtbares Licht in vier Zahlen verwandelt,
-und andere Antworten machen aus Zahlen, Buchstaben, Bildern und Dateien
-Bits, wie [[place-value-systems]] und [[binary-numbers]] zeigen.
+Ein Sender macht mit `encode()` aus Text Farben, und ein Empfänger macht mit
+`decode()` aus den Farben wieder Text. Beide schlagen ihre Farben in einer
+Tabelle nach: In einem Python-Wörterbuch ist `SENDER["a"]` die Farbe, die der
+Sender für den Buchstaben `a` verwendet, und `RECEIVER["blue"]` der
+Buchstabe, den der Empfänger für Blau liest.
 
-## Auch ein schwarzer Kasten braucht einen Test
+```python
+SENDER = {"h": "red", "i": "green", "a": "blue", "b": "white"}
+RECEIVER = {"red": "h", "green": "i", "blue": "b", "white": "a"}
 
-Ein KI-Assistent passt in dasselbe Bild, denn du gibst ihm eine Aufgabe und
-bekommst Code. Was darin geschieht, ist viel schwerer einzusehen als bei
-`add()`, und umso wichtiger sind klare Ränder: Gib ihm ein konkretes Beispiel
-als Eingabe, schreib das Ergebnis auf, das du erwartest, und lass dann den
-Code laufen, den du bekommen hast, und vergleiche. Mit einem Test musst du
-einem Kasten, in den du nicht hineinsehen kannst, nicht vertrauen. Im
-Restaurant ist es genauso, denn du musstest die Küche nicht sehen, um dein
-Tablett zu prüfen, aber sobald das Tablett falsch ist, reicht der große
-Kasten nicht mehr, und du verfolgst die Bestellung von Station zu Station.
+def encode(text):
+    colours = []
+    for letter in text:
+        colours.append(SENDER[letter])
+    return colours
 
-## Zum Mitnehmen
+def decode(colours):
+    text = ""
+    for colour in colours:
+        text = text + RECEIVER[colour]
+    return text
 
-- Jedes Stück eines Problems, das ein Computer lösen kann, hat eine Eingabe,
-  eine Verarbeitung und eine Ausgabe.
-- Eine bekannte Eingabe mit einer erwarteten Ausgabe ist ein Test, der ohne
-  Blick in den Kasten auskommt; die Erwartung steht vor dem Ergebnis.
-- Ein Computer bekommt nie, was du siehst, sondern eine Darstellung, etwa
-  vier Messwerte, und das Programm liefert die Regel, die daraus eine
-  Entscheidung macht.
-- Kästen in einer Reihe zeigen den Datenfluss und brauchen an jeder Grenze
-  eine Vereinbarung; Kästen in einem Kasten zeigen die Zerlegung, und die
-  richtige Ebene ist die, die du prüfen kannst.
-- Jeder Kasten stellt zwei Fragen: wie er arbeitet, was ein Programm
-  beantwortet, und wie seine Eingaben und Ausgaben dargestellt sind.
+message = "hi"
+colours = encode(message)
+received = decode(colours)
+print("gesendet:", message, "| Licht:", colours, "| empfangen:", received)
+if received == message:
+    print("bestanden")
+else:
+    print("nicht bestanden")
+```
+
+Lass die Kette mit `"hi"` laufen und danach mit `"ab"`. Folge den Daten mit
+Hilfe der ausgegebenen Zeile von Grenze zu Grenze und entscheide, welcher
+Kasten falsch ist: `encode()`, `decode()` oder keiner von beiden. Bring die
+Kette dann für beide Nachrichten zum Bestehen.
+
+> [!HINT]
+> Sieh dir bei `"ab"` das Licht dazwischen an. Welchen Buchstaben meint der
+> Sender mit `blue`, und welchen liest der Empfänger dafür?
+
+> [!SOLUTION]
+> Mit `"hi"` besteht der Test, mit `"ab"` scheitert er, weil `"ba"`
+> ankommt. Beide Funktionen arbeiten genau so, wie sie geschrieben sind:
+> `encode()` macht aus `a` Blau, wie seine Tabelle sagt, und `decode()` macht
+> aus Blau ein `b`, wie seine eigene Tabelle sagt. Der Fehler liegt in der
+> Vereinbarung an der Grenze, denn die beiden Tabellen sind sich bei Blau und
+> Weiß nicht einig. Sobald der Empfänger dieselbe Vereinbarung verwendet,
+> kommen beide Nachrichten an:
+>
+> ```python static
+> RECEIVER = {"red": "h", "green": "i", "blue": "a", "white": "b"}
+> ```
+
+## Für Schnelle
+
+Erweitere `classify()` aus Schritt 3 so, dass dein gelber Test besteht und
+alle anderen Tests weiter bestehen. Eine mögliche Regel: Sind Rot und Grün
+beide viel stärker als Blau und unterscheiden sich um weniger als 20, ist
+die Lampe gelb. Füge danach einen Test hinzu, bei dem deine neue Regel falsch
+antwortet, und überlege, ob diese Messung wirklich vorkommen kann.

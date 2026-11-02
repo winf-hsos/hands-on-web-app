@@ -5,11 +5,23 @@
 // per build-up step (data-on-show, data-on-step); animated ones are drawn once
 // when the deck loads, and their segments are the build-up steps.
 // Widths of text are estimated as characters x size x 0.6.
+//
+// Every drawing is a function that returns its SVG, so that stagekit's
+// tools/figures.py renders the same drawings for the article of this item
+// (slides/figures.js, scripts/deck-figures.mjs). An animated drawing takes
+// `final`: true draws the state its last segment ends in, as one still
+// picture. The slides are English; `window.deckLang = "de"` (set by
+// deck-figures.mjs) gives the German labels for the article.
 "use strict";
+
+const T = (en, de) => (window.deckLang === "de" ? de : en);
 
 const d = window.draw;
 const $ = (id) => document.getElementById(id);
 const put = (id, svg) => { const el = $(id); if (el) el.innerHTML = svg; return svg; };
+// a named group for anim.js; figures.py loads no anim.js, and a still picture
+// needs no names
+const g = (name, ...parts) => (d.g ? d.g(name, ...parts) : parts.flat().join(""));
 const W = 1680, H = 700, HP = 620;
 
 function circle(x, y, r, fill) {
@@ -70,31 +82,39 @@ window.drawIpoReveal = function (_slide, step = 0) {
  * is filled with the background), the box lights up, and "5" travels out from
  * under the box to the output, where the check appears. Segment 3 shows the
  * same test against a box that returns 6. Forward only: data running back
- * into the box would tell something wrong.
- * "pass" ends at 1550 + 4 x 19.2 = 1627, inside the 1680. */
-(function () {
-  if (!$("fig-add-test")) return;
+ * into the box would tell something wrong. The still picture is the passed
+ * test at the end of segment 2.
+ * "pass" ends at 1550 + 4 x 19.2 = 1627 and "passt" at 1646, inside the 1680. */
+function addTest(final = false) {
   const c = d.colors();
   const f = ioFrame("add()");
   const value = (x, text, o = {}) => d.label(x, 0, text, { size: 48, mono: true, anchor: "middle", centerY: AX, ...o });
+  const expected = g("expected",
+    d.label(1380, 0, T("expected", "erwartet"), { size: 32, color: c.gray, anchor: "middle", centerY: 70 }),
+    value(1380, "5", { centerY: 120 }));
+  const pass = g("pass", d.mark(1515, AX, true), d.label(1550, 0, T("pass", "passt"), { size: 32, color: c.green, centerY: AX }));
+  const captions = [caption(300, T("input", "Eingabe")), caption(840, T("processing", "Verarbeitung")), caption(1380, T("actual output", "tatsächliche Ausgabe"))];
+  if (final) return d.svg(W, HP, ...f.wires, f.box, value(300, "2, 3"), value(1380, "5"), expected, pass, ...captions);
   const hidden = [
-    d.g("route-in", d.line(300, AX, 840, AX, { color: "none" })),
-    d.g("route-out", d.line(840, AX, 1380, AX, { color: "none" })),
-    d.g("token", value(300, "2, 3", { color: c.yellow })),
-    d.g("out5", value(840, "5", { color: c.yellow })),
+    g("route-in", d.line(300, AX, 840, AX, { color: "none" })),
+    g("route-out", d.line(840, AX, 1380, AX, { color: "none" })),
+    g("token", value(300, "2, 3", { color: c.yellow })),
+    g("out5", value(840, "5", { color: c.yellow })),
   ];
   const labels = [
     value(300, "2, 3"),
-    d.g("q", value(1380, "?", { color: c.gray })),
-    d.g("out6", value(1380, "6", { color: c.red })),
-    d.g("expected",
-      d.label(1380, 0, "expected", { size: 32, color: c.gray, anchor: "middle", centerY: 70 }),
-      value(1380, "5", { centerY: 120 })),
-    d.g("pass", d.mark(1515, AX, true), d.label(1550, 0, "pass", { size: 32, color: c.green, centerY: AX })),
-    d.g("fail", d.mark(1515, AX, false), d.label(1550, 0, "fail", { size: 32, color: c.red, centerY: AX })),
-    caption(300, "input"), caption(840, "processing"), caption(1380, "actual output"),
+    g("q", value(1380, "?", { color: c.gray })),
+    g("out6", value(1380, "6", { color: c.red })),
+    expected,
+    pass,
+    g("fail", d.mark(1515, AX, false), d.label(1550, 0, "fail", { size: 32, color: c.red, centerY: AX })),
+    ...captions,
   ];
-  $("fig-add-test").innerHTML = d.svg(W, HP, ...f.wires, ...hidden, d.g("box", f.box), ...labels);
+  return d.svg(W, HP, ...f.wires, ...hidden, g("box", f.box), ...labels);
+}
+(function () {
+  if (!$("fig-add-test")) return;
+  $("fig-add-test").innerHTML = addTest();
   const a = d.anim("fig-add-test");
   a.set("out6", { opacity: 0 });
   a.set("fail", { opacity: 0 });
@@ -130,26 +150,36 @@ window.drawIpoReveal = function (_slide, step = 0) {
  * 367, clear of the arrow at 420; four lines 45 apart centred on 270.
  * Segment 2: the readings are processed by the decision rule, and "red" comes
  * out from under the box. Forward only, a measurement does not turn back into
- * light. */
-(function () {
-  if (!$("fig-receiver")) return;
+ * light. The still picture shows the readings and the output. "eine
+ * Entscheidungsregel" is 23 x 19.2 = 442 wide, 619..1061 under the box. */
+function receiver(final = false) {
   const c = d.colors();
   const f = ioFrame("classify()");
   const readings = [["r", 203], ["g", 41], ["b", 57], ["c", 310]].map(([name, v], k) => {
     const cy = AX - 67.5 + k * 45;
     return d.label(233, 0, name + " =", { size: 32, mono: true, centerY: cy }) +
-      d.g("v-" + name, d.label(367, 0, "0", { size: 32, mono: true, anchor: "end", centerY: cy }));
+      g("v-" + name, d.label(367, 0, final ? String(v) : "0", { size: 32, mono: true, anchor: "end", centerY: cy }));
   });
-  $("fig-receiver").innerHTML = d.svg(W, HP,
+  const numbers = g("numbers", ...readings);
+  const capNumbers = g("cap-numbers", caption(300, T("four readings", "vier Messwerte")));
+  const rule = caption(840, T("a decision rule", "eine Entscheidungsregel"));
+  if (final)
+    return d.svg(W, HP, ...f.wires, f.box, numbers, capNumbers, rule,
+      d.label(1380, 0, '"red"', { size: 48, mono: true, anchor: "middle", centerY: AX }));
+  return d.svg(W, HP,
     ...f.wires,
-    d.g("route-out", d.line(840, AX, 1380, AX, { color: "none" })),
-    d.g("out", d.label(840, 0, '"red"', { size: 48, mono: true, anchor: "middle", color: c.yellow, centerY: AX })),
-    d.g("box", f.box),
-    d.g("light", circle(300, AX, 76, c.red)),
-    d.g("cap-light", caption(300, "red light")),
-    d.g("numbers", ...readings),
-    d.g("cap-numbers", caption(300, "four readings")),
-    caption(840, "a decision rule"));
+    g("route-out", d.line(840, AX, 1380, AX, { color: "none" })),
+    g("out", d.label(840, 0, '"red"', { size: 48, mono: true, anchor: "middle", color: c.yellow, centerY: AX })),
+    g("box", f.box),
+    g("light", circle(300, AX, 76, c.red)),
+    g("cap-light", caption(300, "red light")),
+    numbers,
+    capNumbers,
+    rule);
+}
+(function () {
+  if (!$("fig-receiver")) return;
+  $("fig-receiver").innerHTML = receiver();
   const a = d.anim("fig-receiver");
   a.set("numbers", { opacity: 0 });
   a.set("cap-numbers", { opacity: 0 });
@@ -214,22 +244,26 @@ window.drawRule = function (_slide, step = 0) {
  * need the same agreement. Forward only: the data have a direction.
  * The colours of the symbols are real colours of light; the yellow of the
  * boundaries is the one exception the design rules allow next to them, since
- * yellow is none of the colours shown and marks only the arrows. */
-(function () {
-  if (!$("fig-chain")) return;
+ * yellow is none of the colours shown and marks only the arrows. The still
+ * picture is the end of segment 3, with the boundaries marked. */
+function chain(final = false) {
   const c = d.colors();
   const y = 290;
-  const arrow = (name, x1, x2) => d.g(name, d.arrow(x1, y, x2, y, { color: c.light, width: 4, head: 18 }));
-  const card = (name, x, text) => d.g(name, d.box(x, y - 75, 270, 150, text, { border: c.white, size: 32, mono: true, width: 3, rx: 10 }));
-  $("fig-chain").innerHTML = d.svg(W, HP,
+  const arrow = (name, x1, x2) => g(name, d.arrow(x1, y, x2, y, { color: final ? c.yellow : c.light, width: 4, head: 18 }));
+  const card = (name, x, text) => g(name, d.box(x, y - 75, 270, 150, text, { border: c.white, size: 32, mono: true, width: 3, rx: 10 }));
+  return d.svg(W, HP,
     arrow("a0", 190, 300), arrow("a1", 570, 660), arrow("a2", 1015, 1110), arrow("a3", 1380, 1470),
     card("enc", 300, "encode()"), card("dec", 1110, "decode()"),
     d.label(60, 0, '"hi"', { size: 48, mono: true, centerY: y }),
-    ...[0, 1, 2, 3, 4].map((i) => d.g("dot" + i, circle(700 + i * 68, y, 23, [c.red, c.blue, c.green, c.blue, c.red][i]))),
-    d.g("out", d.label(1490, 0, '"hi"', { size: 48, mono: true, centerY: y })),
-    d.label(435, 0, "sender", { size: 32, color: c.gray, anchor: "middle", centerY: 440 }),
-    d.label(836, 0, "light", { size: 32, color: c.gray, anchor: "middle", centerY: 440 }),
-    d.label(1245, 0, "receiver", { size: 32, color: c.gray, anchor: "middle", centerY: 440 }));
+    ...[0, 1, 2, 3, 4].map((i) => g("dot" + i, circle(700 + i * 68, y, 23, [c.red, c.blue, c.green, c.blue, c.red][i]))),
+    g("out", d.label(1490, 0, '"hi"', { size: 48, mono: true, centerY: y })),
+    d.label(435, 0, T("sender", "Sender"), { size: 32, color: c.gray, anchor: "middle", centerY: 440 }),
+    d.label(836, 0, T("light", "Licht"), { size: 32, color: c.gray, anchor: "middle", centerY: 440 }),
+    d.label(1245, 0, T("receiver", "Empfänger"), { size: 32, color: c.gray, anchor: "middle", centerY: 440 }));
+}
+(function () {
+  if (!$("fig-chain")) return;
+  $("fig-chain").innerHTML = chain();
   const a = d.anim("fig-chain");
   const lit = (box) => [a.color(box, "yellow", { dur: 200 }), a.color(box, "white", { dur: 200 })];
   const dots = [0, 1, 2, 3, 4].map((i) => a.show("dot" + i, { dur: 120 }));
@@ -259,12 +293,12 @@ window.drawRule = function (_slide, step = 0) {
     d.box(280, 105, 1120, 390, "", { border: c.white, width: 4, rx: 14 }),
     d.label(180, 0, "message", { size: 32, anchor: "middle", centerY: 262 }),
     d.label(1500, 0, "light", { size: 32, anchor: "middle", centerY: 262 }),
-    d.g("closed", d.label(840, 0, "send()", { size: 48, mono: true, anchor: "middle", centerY: 300 })),
-    d.g("inner",
+    g("closed", d.label(840, 0, "send()", { size: 48, mono: true, anchor: "middle", centerY: 300 })),
+    g("inner",
       d.arrow(610, 300, 695, 300, { color: c.light, width: 3, head: 16 }),
       d.arrow(985, 300, 1070, 300, { color: c.light, width: 3, head: 16 }),
       ...xs.map((x, i) => d.box(x, 220, 290, 160, names[i], { border: c.light, size: 32, mono: i === 0, keepCase: i === 2, width: 3, rx: 10 }))),
-    d.g("notes", ...xs.map((x, i) => d.label(x + 145, 0, notes[i], { size: 32, color: c.gray, anchor: "middle", centerY: 440 }))));
+    g("notes", ...xs.map((x, i) => d.label(x + 145, 0, notes[i], { size: 32, color: c.gray, anchor: "middle", centerY: 440 }))));
   const a = d.anim("fig-nested-sender", { back: "play" });
   a.step(a.par(a.hide("closed", { dur: 500 }), a.show("inner", { dur: 700 })));
   a.step(a.show("notes", { dur: 500 }));
@@ -272,42 +306,47 @@ window.drawRule = function (_slide, step = 0) {
 
 /* --- the same shape at three levels (still, build-up) ------------------------------
  * d.ipo rows (fixed geometry: level at x + 60, output centred at x + 1380);
- * x 80 centres the rows, which reach from 140 to about 1520. */
+ * x 80 centres the rows, which reach from 140 to about 1520. In German,
+ * "Funktion" (8 x 19.2 = 154) ends at 294, before "Text" starts at 342. */
 window.drawLevels = function (_slide, step = 0) {
   const rows = [
-    d.ipo(35, "message", "sender", "light", { x: 80, level: "system" }),
-    d.ipo(275, "text", "encode()", "symbols", { x: 80, level: "function", monoBox: true }),
-    d.ipo(515, "1, 1", "AND", "1", { x: 80, level: "gate", monoIn: true, monoOut: true, keepCase: true }),
+    d.ipo(35, T("message", "Nachricht"), T("sender", "Sender"), T("light", "Licht"), { x: 80, level: T("system", "System") }),
+    d.ipo(275, T("text", "Text"), "encode()", T("symbols", "Symbole"), { x: 80, level: T("function", "Funktion"), monoBox: true }),
+    d.ipo(515, "1, 1", "AND", "1", { x: 80, level: T("gate", "Gatter"), monoIn: true, monoOut: true, keepCase: true }),
   ];
   return put("fig-levels", d.svg(W, H, ...rows.slice(0, step + 1)));
 };
 
-/* --- boxes in a row, boxes inside boxes (still) ---------------------------------- */
-(function () {
-  if (!$("fig-relations")) return;
+/* --- boxes in a row, boxes inside boxes (still) ----------------------------------
+ * The German questions are the longest lines: "Welche kleinere Arbeit steckt
+ * darin?" is 36 x 19.2 = 691 wide, 894..1586 around 1240, clear of the
+ * divider at 820. */
+function relations() {
   const c = d.colors();
   const card = (x, y, w, h, t) => d.box(x, y, w, h, t, { border: c.light, size: 32, width: 3, rx: 10 });
-  put("fig-relations", d.svg(W, HP,
-    d.label(390, 0, "boxes in a row", { size: 48, anchor: "middle", centerY: 60 }),
-    d.label(390, 0, "where do the data go next?", { size: 32, color: c.gray, anchor: "middle", centerY: 125 }),
+  return put("fig-relations", d.svg(W, HP,
+    d.label(390, 0, T("boxes in a row", "Kästen in einer Reihe"), { size: 48, anchor: "middle", centerY: 60 }),
+    d.label(390, 0, T("where do the data go next?", "Wohin gehen die Daten als Nächstes?"), { size: 32, color: c.gray, anchor: "middle", centerY: 125 }),
     d.arrow(330, 360, 450, 360, { color: c.light, width: 4, head: 18 }),
     card(90, 285, 240, 150, "a"),
     card(450, 285, 240, 150, "b"),
-    d.label(390, 0, "data flow", { size: 32, color: c.light, anchor: "middle", centerY: 565 }),
+    d.label(390, 0, T("data flow", "Datenfluss"), { size: 32, color: c.light, anchor: "middle", centerY: 565 }),
     d.line(820, 30, 820, 590, { color: c.dark, width: 2 }),
-    d.label(1240, 0, "boxes inside boxes", { size: 48, anchor: "middle", centerY: 60 }),
-    d.label(1240, 0, "what smaller work happens inside?", { size: 32, color: c.gray, anchor: "middle", centerY: 125 }),
+    d.label(1240, 0, T("boxes inside boxes", "Kästen in Kästen"), { size: 48, anchor: "middle", centerY: 60 }),
+    d.label(1240, 0, T("what smaller work happens inside?", "Welche kleinere Arbeit steckt darin?"), { size: 32, color: c.gray, anchor: "middle", centerY: 125 }),
     d.box(930, 220, 620, 280, "", { border: c.light, width: 4, rx: 12 }),
     card(990, 290, 220, 140, "a"),
     card(1270, 290, 220, 140, "b"),
-    d.label(1240, 0, "hierarchy", { size: 32, color: c.light, anchor: "middle", centerY: 565 })));
-})();
+    d.label(1240, 0, T("hierarchy", "Hierarchie"), { size: 32, color: c.light, anchor: "middle", centerY: 565 })));
+}
+if ($("fig-relations")) relations();
 
 /* --- two questions (still, build-up) ------------------------------------------------
  * The box 600..1080 x 250..410 (centre 330). The upper question is centred on
- * 840 and ends at 840 + 30 x 9.6 = 1128; its answer starts at 1160. The lower
- * question, 56 x 19.2 = 1075 wide, runs from 302 to 1378. The answers are blue
- * because they point to where each question is taken up. */
+ * 840 and ends at 840 + 30 x 9.6 = 1128 ("Wie arbeitet der Kasten?" at 1070);
+ * its answer starts at 1160. The lower question, 56 x 19.2 = 1075 wide in
+ * English and 1094 in German, runs from about 300 to 1390. The answers are
+ * blue because they point to where each question is taken up. */
 window.drawTwoQuestions = function (_slide, step = 0) {
   const c = d.colors();
   const mid = 330;
@@ -315,23 +354,23 @@ window.drawTwoQuestions = function (_slide, step = 0) {
     d.arrow(420, mid, 600, mid, { color: c.light, width: 4, head: 20 }),
     d.arrow(1080, mid, 1260, mid, { color: c.light, width: 4, head: 20 }),
   ];
-  const boxes = [d.box(600, 250, 480, 160, "processing", { border: c.white, size: 48, width: 4, rx: 12 })];
+  const boxes = [d.box(600, 250, 480, 160, T("processing", "Verarbeitung"), { border: c.white, size: 48, width: 4, rx: 12 })];
   const labels = [
-    d.label(300, 0, "input", { size: 48, anchor: "middle", centerY: mid }),
-    d.label(1380, 0, "output", { size: 48, anchor: "middle", centerY: mid }),
+    d.label(300, 0, T("input", "Eingabe"), { size: 48, anchor: "middle", centerY: mid }),
+    d.label(1380, 0, T("output", "Ausgabe"), { size: 48, anchor: "middle", centerY: mid }),
   ];
   if (step >= 1) {
     wires.push(d.arrow(840, 250, 840, 150, { color: c.light, width: 3, head: 16 }));
-    labels.push(d.label(840, 0, "how does the box do its work?", { size: 32, anchor: "middle", centerY: 110 }));
+    labels.push(d.label(840, 0, T("how does the box do its work?", "Wie arbeitet der Kasten?"), { size: 32, anchor: "middle", centerY: 110 }));
   }
   if (step >= 2) {
     wires.push(d.arrow(300, 372, 300, 500, { color: c.light, width: 3, head: 16 }));
     wires.push(d.arrow(1380, 372, 1380, 500, { color: c.light, width: 3, head: 16 }));
-    labels.push(d.label(840, 0, "how are things written so a machine can work with them?", { size: 32, anchor: "middle", centerY: 545 }));
+    labels.push(d.label(840, 0, T("how are things written so a machine can work with them?", "Wie ist aufgeschrieben, womit eine Maschine arbeiten kann?"), { size: 32, anchor: "middle", centerY: 545 }));
   }
   if (step >= 3) {
-    labels.push(d.label(1160, 0, "a program", { size: 32, color: c.blue, centerY: 110 }));
-    labels.push(d.label(840, 0, "representation", { size: 32, color: c.blue, anchor: "middle", centerY: 610 }));
+    labels.push(d.label(1160, 0, T("a program", "ein Programm"), { size: 32, color: c.blue, centerY: 110 }));
+    labels.push(d.label(840, 0, T("representation", "Darstellung"), { size: 32, color: c.blue, anchor: "middle", centerY: 610 }));
   }
   return put("fig-two-questions", d.svg(W, H, ...d.layers(wires, boxes, labels)));
 };
@@ -339,7 +378,8 @@ window.drawTwoQuestions = function (_slide, step = 0) {
 /* --- an AI agent as a box (still, build-up) -----------------------------------------
  * The newest addition is yellow, earlier ones turn light gray; the comparison
  * at the end is the verdict and green. "an expected result" is 18 x 19.2 =
- * 346 wide, centred on 1420: 1247..1593. */
+ * 346 wide, centred on 1420: 1247..1593; "ein erwartetes Ergebnis" is 442,
+ * 1209..1651. */
 window.drawAgent = function (_slide, step = 0) {
   const c = d.colors();
   const axis = 275;
@@ -348,18 +388,29 @@ window.drawAgent = function (_slide, step = 0) {
     d.arrow(300, axis, 470, axis, { color: c.light, width: 4, head: 20 }),
     d.arrow(1210, axis, 1380, axis, { color: c.light, width: 4, head: 20 }),
   ];
-  const boxes = [d.box(470, 135, 740, 280, "AI agent", { border: c.gray, size: 48, keepCase: true, dashed: true, width: 4, rx: 12 })];
+  const boxes = [d.box(470, 135, 740, 280, T("AI agent", "KI-Agent"), { border: c.gray, size: 48, keepCase: true, dashed: true, width: 4, rx: 12 })];
   const labels = [
-    d.label(280, 0, "your task", { size: 32, anchor: "end", centerY: axis }),
-    d.label(1400, 0, "code", { size: 32, centerY: axis }),
+    d.label(280, 0, T("your task", "deine Aufgabe"), { size: 32, anchor: "end", centerY: axis }),
+    d.label(1400, 0, T("code", "Code"), { size: 32, keepCase: true, centerY: axis }),
   ];
   // one row under the drawing: example under the task, comparison under the
   // box (mark 34 + gap + 18 x 19.2 = 346, centred on 840), result under the code
-  if (step >= 1) labels.push(d.label(195, 0, "a clear example", { size: 32, color: tone(1), anchor: "middle", centerY: 480 }));
-  if (step >= 2) labels.push(d.label(1430, 0, "an expected result", { size: 32, color: tone(2), anchor: "middle", centerY: 480 }));
+  if (step >= 1) labels.push(d.label(195, 0, T("a clear example", "ein klares Beispiel"), { size: 32, color: tone(1), anchor: "middle", centerY: 480 }));
+  if (step >= 2) labels.push(d.label(1430, 0, T("an expected result", "ein erwartetes Ergebnis"), { size: 32, color: tone(2), anchor: "middle", centerY: 480 }));
   if (step >= 3) {
     labels.push(d.mark(667, 480, true));
-    labels.push(d.label(702, 0, "run it and compare", { size: 32, color: c.green, centerY: 480 }));
+    labels.push(d.label(702, 0, T("run it and compare", "ausführen und vergleichen"), { size: 32, color: c.green, centerY: 480 }));
   }
   return put("fig-agent", d.svg(W, HP, ...d.layers(wires, boxes, labels)));
+};
+
+// the drawings for the article of this item (slides/figures.js)
+window.deck02 = {
+  addTest: () => addTest(true),
+  receiver: () => receiver(true),
+  chain: () => chain(true),
+  levels: () => window.drawLevels(null, 2),
+  relations,
+  twoQuestions: () => window.drawTwoQuestions(null, 3),
+  agent: () => window.drawAgent(null, 3),
 };

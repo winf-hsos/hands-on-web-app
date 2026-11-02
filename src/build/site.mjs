@@ -7,6 +7,7 @@ import { stepsOf, pathSteps, courseSteps } from './validate.mjs';
 import { splitProject } from './project.mjs';
 import { exerciseScript } from './exercise-script.mjs';
 import { hasType } from './types.mjs';
+import { inlineCode, plainText } from './html.mjs';
 
 // Courses are called modules on the site (Nicolas, 2026-11-01) and live under
 // /modules/; the knowledge base keeps `courses`, since `module:` already names
@@ -39,7 +40,11 @@ export function createSite({ vocabulary, sections, hidden = new Map() }, area, b
       lang: file.lang,
       missing: !own,
       stale: !!own?.data.based_on && own.data.based_on < doc.lead.updated,
-      title: file.data.title,
+      // a title may set a name in code font with backticks: `title` is the
+      // plain text, `titleHtml` shows the code, `titleSource` keeps both
+      title: plainText(file.data.title),
+      titleHtml: inlineCode(file.data.title),
+      titleSource: file.data.title,
       summary: file.data.summary,
       data: file.data,
       file,
@@ -65,9 +70,9 @@ export function createSite({ vocabulary, sections, hidden = new Map() }, area, b
       sourceMap,
       resolve: (id) => {
         const target = byId.get(id);
-        if (target) return { url: docUrl(target, lang), title: localize(target, lang).title };
+        if (target) return { url: docUrl(target, lang), title: localize(target, lang).titleSource };
         // a draft on the published site: its text without the link
-        return hidden.has(id) ? { url: null, title: localize(hidden.get(id), lang).title } : null;
+        return hidden.has(id) ? { url: null, title: localize(hidden.get(id), lang).titleSource } : null;
       },
     });
 
@@ -167,6 +172,6 @@ export function createSite({ vocabulary, sections, hidden = new Map() }, area, b
     duration,
     steps: stepsOf,
     pathSteps: (doc) => pathSteps(doc.lead),
-    courseSteps: (doc) => courseSteps(doc.lead, path),
+    courseSteps: (doc) => courseSteps(doc.lead, path, project),
   };
 }

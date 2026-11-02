@@ -53,18 +53,21 @@ test('releasing a draft changes its status line only, and taking it back restore
   try {
     cpSync(ROOT, dir, { recursive: true, filter: (src) => statSync(src).isDirectory() || statSync(src).size < 300_000 });
     const store = createStore(dir);
-    const path = join(dir, 'content', 'sent-is-not-measured', 'de.md');
+    // any draft whose German file leads, since drafts get released over time
+    const draft = loadKnowledge(dir).sections.content.find((d) => d.files.de && !d.files.de.data.translation_of && d.files.de.data.status === 'draft');
+    assert.ok(draft, 'the knowledge base has no draft with a German lead file');
+    const path = join(dir, 'content', draft.id, 'de.md');
     const before = readFileSync(path, 'utf8');
     assert.ok(before.includes('status: draft'));
 
-    assert.equal(store.setStatus('content', 'sent-is-not-measured', 'published').ok, true);
+    assert.equal(store.setStatus('content', draft.id, 'published').ok, true);
     const after = readFileSync(path, 'utf8');
     const changed = after.split(/\r?\n/).filter((line, i) => line !== before.split(/\r?\n/)[i]);
     assert.deepEqual(changed, ['status: published']);
 
-    assert.equal(store.setStatus('content', 'sent-is-not-measured', 'draft').ok, true);
+    assert.equal(store.setStatus('content', draft.id, 'draft').ok, true);
     assert.equal(readFileSync(path, 'utf8'), before);
-    assert.equal(store.setStatus('content', 'sent-is-not-measured', 'archived').ok, false);
+    assert.equal(store.setStatus('content', draft.id, 'archived').ok, false);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }

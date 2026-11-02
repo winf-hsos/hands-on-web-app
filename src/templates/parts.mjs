@@ -53,7 +53,7 @@ export function itemRow(site, item, lang, { optional = false, summary = true, to
     <a class="row-link" href="${site.url(item, lang)}">
       ${typeIcon(site, item)}
       <span class="row-head">
-        <span class="row-title" style="view-transition-name: t-${item.id}" lang="${text.lang}">${text.title}</span>
+        <span class="row-title" style="view-transition-name: t-${item.id}" lang="${text.lang}">${text.titleHtml}</span>
         <span class="row-meta">
           <span>${typeLabel(site, item, lang)}</span>
           ${lead.duration && html`<span>${lead.duration} ${t(lang, 'minutes')}</span>`}

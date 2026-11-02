@@ -10,6 +10,7 @@ import { deckFile, deckPdf } from '../build/deck.mjs';
 import { datasetInfo, loadingCode } from '../build/dataset.mjs';
 import { highlight } from '../client/highlight.js';
 import { areasOf } from '../build/site.mjs';
+import { phaseItems } from '../build/validate.mjs';
 import { figureFile } from '../build/figures.mjs';
 
 // --- start page -------------------------------------------------------------
@@ -247,7 +248,7 @@ export function item(site, doc, lang) {
   const lead = doc.lead;
   const { before, after, other } = site.relations(doc, lang);
   const inPaths = site.paths.filter((p) => site.pathSteps(p).some((s) => s.id === doc.id));
-  const link = (target) => html`<a href="${site.url(target, lang)}">${site.localize(target, lang).title}</a>`;
+  const link = (target) => html`<a href="${site.url(target, lang)}">${site.localize(target, lang).titleHtml}</a>`;
   const isQuiz = hasType(lead, 'quiz');
   const v = site.vocabulary;
   const body = site.body(doc, lang);
@@ -266,7 +267,7 @@ export function item(site, doc, lang) {
         ${toc}
         <header class="page-head">
           <p class="kicker"${editable(site, 'kicker')}>${typeIcon(site, doc)}<span>${typeLabel(site, doc, lang)}</span>${lead.duration && html`<span>${lead.duration} ${t(lang, 'minutes')}</span>`}${backIcon(site, lang, back)}</p>
-          <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}"${editable(site, 'title')}>${text.title}</h1>
+          <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}"${editable(site, 'title')}>${text.titleHtml}</h1>
           <p class="lead" lang="${text.lang}"${editable(site, 'summary')}>${text.summary}</p>
           ${topicTags(site, lead.topics, lang)}
           ${before.length > 0 && html`<p class="before"${editable(site, 'relations')}>${t(lang, 'before')} ${before.map((b, i) => html`${i > 0 && ', '}${link(b)}`)}</p>`}
@@ -416,7 +417,7 @@ export function paths(site, lang) {
             <a class="row-link" href="${site.url(p, lang)}">
               ${pathIcon}
               <span class="row-head">
-                <span class="row-title" style="view-transition-name: t-${p.id}">${text.title}</span>
+                <span class="row-title" style="view-transition-name: t-${p.id}">${text.titleHtml}</span>
                 <span class="row-meta"><span>${count(lang, steps.length, 'steps')}</span><span>${site.duration(steps).required} ${t(lang, 'minutes')}</span>${draftTag(site, p, lang)}</span>
               </span>
               <span class="row-summary">${text.summary}</span>
@@ -448,7 +449,7 @@ export function path(site, doc, lang) {
       <article class="page">
         <header class="page-head">
           <p class="kicker"><span>${t(lang, 'path')}</span><span>${time.required} ${t(lang, 'minutes')}</span>${backIcon(site, lang, 'paths')}</p>
-          <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}"${editable(site, 'title')}>${text.title}</h1>
+          <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}"${editable(site, 'title')}>${text.titleHtml}</h1>
           <p class="lead" lang="${text.lang}"${editable(site, 'goal')}>${text.data.goal}</p>
           ${progressBar(steps.filter((s) => !s.optional).map((s) => s.id), lang)}
         </header>
@@ -524,7 +525,7 @@ export function courses(site, lang) {
             <a class="row-link" href="${site.url(c, lang)}">
               ${courseIcon}
               <span class="row-head">
-                <span class="row-title" lang="${text.lang}">${text.title}</span>
+                <span class="row-title" lang="${text.lang}">${text.titleHtml}</span>
                 <span class="row-meta">${c.lead.institution && html`<span>${site.vocabulary.institutions[c.lead.institution][lang]}</span>`}${c.lead.sections.length > 0 && html`<span>${count(lang, c.lead.sections.length, 'sections')}</span>`}${draftTag(site, c, lang)}</span>
               </span>
               ${text.data.subtitle && html`<span class="row-subtitle" lang="${text.lang}">${text.data.subtitle}</span>`}
@@ -597,7 +598,7 @@ export function course(site, doc, lang) {
       <article class="page" data-course="${doc.id}">
         <header class="page-head">
           <p class="kicker">${courseIcon}<span>${t(lang, 'course')}</span>${doc.lead.sections.length > 0 && html`<span>${count(lang, doc.lead.sections.length, 'sections')}</span>`}${backIcon(site, lang, 'courses')}</p>
-          <h1 lang="${text.lang}"${editable(site, 'title')}>${text.title}</h1>
+          <h1 lang="${text.lang}"${editable(site, 'title')}>${text.titleHtml}</h1>
           ${text.data.subtitle && html`<p class="subtitle" lang="${text.lang}"${editable(site, 'subtitle')}>${text.data.subtitle}</p>`}
           <p class="lead" lang="${text.lang}"${editable(site, 'summary')}>${text.summary}</p>
           ${institutionBlock(site, doc, lang)}
@@ -618,9 +619,6 @@ export function course(site, doc, lang) {
 
 const projectIcon = raw(iconSvg('hammer'));
 
-/** The items of a phase in order: its challenge first, then the content for it. */
-const phaseItems = (phase) => [...new Set([phase.challenge, ...(phase.items ?? []), ...(phase.challenges ?? []).flatMap((c) => c.items ?? [])].filter(Boolean))];
-
 export function projects(site, lang) {
   return {
     path: site.link(lang, 'projects'),
@@ -640,7 +638,7 @@ export function projects(site, lang) {
             <a class="row-link" href="${site.url(p, lang)}">
               ${projectIcon}
               <span class="row-head">
-                <span class="row-title" style="view-transition-name: t-${p.id}">${text.title}</span>
+                <span class="row-title" style="view-transition-name: t-${p.id}">${text.titleHtml}</span>
                 <span class="row-meta">
                   <span>${count(lang, p.lead.phases.length, 'phases')}</span>
                   ${challenges > 0 && html`<span>${count(lang, challenges, 'challenges')}</span>`}
@@ -670,7 +668,7 @@ export function project(site, doc, lang) {
       <article class="page project">
         <header class="page-head">
           <p class="kicker">${projectIcon}<span>${t(lang, 'project')}</span><span>${count(lang, lead.phases.length, 'phases')}</span>${backIcon(site, lang, 'projects')}</p>
-          <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}"${editable(site, 'title')}>${text.title}</h1>
+          <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}"${editable(site, 'title')}>${text.titleHtml}</h1>
           <p class="lead" lang="${text.lang}"${editable(site, 'summary')}>${text.summary}</p>
         </header>
         ${text.missing && html`<p class="notice">${t(lang, 'missing_translation')}</p>`}

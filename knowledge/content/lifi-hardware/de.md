@@ -1,7 +1,7 @@
 ---
 type: info
 code: 5274
-title: "Das Kursmodul lifi_hardware"
+title: "`lifi_hardware`"
 summary: >-
   Was das Python-Modul lifi_hardware euch abnimmt und was es bewusst sichtbar lässt, wie ihr LED und Sensor damit ansprecht, und was sein Messprotokoll festhält.
 objectives:

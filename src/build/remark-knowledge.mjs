@@ -12,6 +12,13 @@ import { iconShapes } from './icons.mjs';
 const CALLOUT = /^\[!(NOTE|TIP|WARNING|IMPORTANT|CAUTION|HINT|SOLUTION)\]\s*/;
 const FOLDED = new Set(['HINT', 'SOLUTION']);
 const WIKI = /\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g;
+
+/** A title as Markdown nodes: text, and `code` in backticks as inline code. */
+const titleNodes = (title) =>
+  title
+    .split(/`([^`]+)`/)
+    .map((part, i) => (i % 2 ? { type: 'inlineCode', value: part } : { type: 'text', value: part }))
+    .filter((node) => node.value);
 // Every callout title stands in capitals after an icon of its kind (Nicolas,
 // 2026-11-02), as warnings did first; warnings are not red (2026-10-30).
 const CALLOUT_TITLES = {
@@ -94,12 +101,13 @@ function wikiLinks(tree, resolve) {
       const target = resolve(id);
       if (!target) continue;
       if (match.index > last) parts.push({ type: 'text', value: node.value.slice(last, match.index) });
-      if (!target.url) parts.push({ type: 'text', value: text ?? target.title });
+      const label = text ? [{ type: 'text', value: text }] : titleNodes(target.title);
+      if (!target.url) parts.push(...label);
       else parts.push({
         type: 'link',
         url: target.url,
         data: { hProperties: { className: ['wiki-link'] } },
-        children: [{ type: 'text', value: text ?? target.title }],
+        children: label,
       });
       last = match.index + whole.length;
     }

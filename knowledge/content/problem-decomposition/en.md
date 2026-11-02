@@ -107,7 +107,7 @@ answer in ten seconds without having to believe the assistant.
 
 You cut the problem, the assistant solves the pieces, and you check each one.
 What a cut piece needs once a computer is supposed to solve it is shown in
-[[input-processing-output]].
+[[input-processing-output-slides]].
 
 ## Further reading
 
