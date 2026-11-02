@@ -10,6 +10,11 @@ QR-Code; Folie 18 legt den Faktor unter neuem Namen ab, damit `decision` für
 den Data Frame Text bleibt; Folie 9 zeigt nur `typeof()`, `class()` steht in
 den Notizen.
 
+Nach Nicolas' Durchsicht (2026-11-02) geändert: dunkelblau statt pink wie
+Hands-on Data Science (`style.toml`, double jetzt orange), hinter Tür 1 steht
+eine erzeugte Ziege statt des Worts, das Beispiel hat fünf statt zehn Runden,
+und beide Live-Abfragen sind gestrichen (jetzt 29 Folien, 48 Frames).
+
 **Verortung:** Folien-Inhalt auf Hands-on Data Science
 (`knowledge/content/data-representation-slides/`), Kennung und Titel
 „Vektoren und Data Frames“ / „Vectors and data frames“. Er gehört zum

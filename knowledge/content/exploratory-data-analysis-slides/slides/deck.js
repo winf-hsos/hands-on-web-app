@@ -14,7 +14,7 @@ function textBox(x, y, w, h, text, o = {}) {
     d.label(x + 24, 0, text, { size: o.size || 32, centerY: y + h / 2, color: o.color || C.white, keepCase: o.keepCase });
 }
 
-// The six types: exploratory, the type of this deck, is pink everywhere,
+// The six types: exploratory, the type of this deck, is blue everywhere,
 // the other five stay neutral.
 const typeBox = (x, y, w, h, name, o = {}) => name === "exploratory"
   ? d.box(x, y, w, h, name, { border: C.blue, color: C.blue, width: 3, size: o.size || 32 })
@@ -176,7 +176,7 @@ const typeBox = (x, y, w, h, name, o = {}) => name === "exploratory"
 /* --- slide: search long enough ---------------------------------------------------
  * Figure 1680 x 660 (has-punch). One dot per column of the survey, 606 dots in
  * rows of 34 on a pitch of 28 from (40, 70), so the grid ends at x 964 and
- * y 546. Pink lines join dots at random: the pairs that pass a test by chance.
+ * y 546. Blue lines join dots at random: the pairs that pass a test by chance.
  * The numbers stand on the right from x 1060, each number at 48 with its
  * caption in grey below; the longest caption line is about 30 characters
  * (480 at 32). The count comes from the last section of figures.R:

@@ -224,6 +224,7 @@ const scriptsFor = (body) =>
     body.includes('data-monty-hall') && 'monty-hall',
     body.includes('data-byte-switchboard') && 'byte-switchboard',
     body.includes('data-shell-demo') && 'shell-demo',
+    body.includes('data-data-table') && 'data-table',
     body.includes('data-figure') && 'figures',
     body.includes('data-model') && 'model',
     body.includes('data-fillable') && 'tables',
@@ -707,8 +708,11 @@ export function project(site, doc, lang) {
           const part = parts.phases[p];
           // A phase is a part like those of a path: its challenge comes first,
           // then the content for it. Challenges written into the project text
-          // (the older form) stay folded inside their phase.
-          return html`<details class="fold path-section phase" id="${phase.id}" data-fold="project:${doc.id}:${p + 1}" open>
+          // (the older form) stay folded inside their phase. Phases start
+          // closed like the sections of a module, unless there is only one;
+          // fold.js remembers what the learner changed, and project.js opens
+          // the phase a link points to.
+          return html`<details class="fold path-section phase" id="${phase.id}" data-fold="project:${doc.id}:${p + 1}"${openIfSingle(lead.phases)}>
             <summary><h2 lang="${text.lang}">${part.title}</h2><span class="fold-meta">${count(lang, phaseItems(phase).length, 'results')}</span></summary>
             ${part.md && html`<div class="prose" lang="${text.lang}">${md(part.md)}</div>`}
             ${(phase.challenges ?? []).map((challenge, c) => {

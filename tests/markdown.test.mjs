@@ -80,7 +80,7 @@ test('a byte-switchboard block becomes the place of the eight switches', () => {
 });
 
 test('every demonstrator sits in a frame that gets the full-screen button', () => {
-  for (const name of ['verb-demo', 'monty-hall', 'byte-switchboard']) {
+  for (const name of ['verb-demo', 'monty-hall', 'byte-switchboard', 'data-table']) {
     assert.match(render('```' + name + '\n```\n'), new RegExp(`<div class="demo" data-demo=""><div class="${name}" data-${name}=""></div></div>`));
   }
 });

@@ -6,7 +6,7 @@ const C = d.colors();
 const el = (id) => document.getElementById(id);
 
 /* --- the four types and their colours -----------------------------------------
- * double blue, integer turquoise, character purple, logical yellow, through the
+ * double orange, integer turquoise, character purple, logical yellow, through the
  * whole deck. Logical values follow the rule of yellow as 1: TRUE is yellow,
  * FALSE stays dark. Green and red only judge (won, lost). */
 const TYPE = { double: "groups-g1", integer: "groups-g3", character: "groups-g2", logical: "yellow" };
@@ -20,11 +20,11 @@ function cellBox(x, y, w, h, value, type, o = {}) {
     { border: off ? C.dark : color, color, size: o.size || 32, mono: true, rx: 6, width: o.width || 2, keepCase: true });
 }
 
-/* --- ten rounds of the game, the vectors of the project phase "vectors" ------- */
-const PRIZE = [2, 1, 3, 3, 1, 2, 2, 3, 1, 1];
-const CHOICE = [2, 3, 1, 1, 1, 1, 3, 2, 2, 1];
-const OPENS = [1, 2, 2, 2, 3, 3, 1, 1, 3, 2];
-const DECISION = ["stay", "switch", "stay", "switch", "switch", "stay", "switch", "stay", "switch", "stay"];
+/* --- five rounds of the game, the first five of the project phase "vectors" --- */
+const PRIZE = [2, 1, 3, 3, 1];
+const CHOICE = [2, 3, 1, 1, 1];
+const OPENS = [1, 2, 2, 2, 3];
+const DECISION = ["stay", "switch", "stay", "switch", "switch"];
 const VECTORS = [
   { name: "prize_door", values: PRIZE, type: "double" },
   { name: "contestant_choice", values: CHOICE, type: "double" },
@@ -35,7 +35,7 @@ const STAY = DECISION.map((v) => v === "stay");
 const FIRST_RIGHT = PRIZE.map((p, k) => p === CHOICE[k]);
 
 /* --- slide: four shapes of data ------------------------------------------------
- * Figure 1680 x 660 (has-punch). Cells 56 x 40 on a pitch of 44, ten rows from
+ * Figure 1680 x 660 (has-punch). Cells 56 x 40 on a pitch of 44, five rows from
  * y 60 down to 496; the text column of the data frame is 140 wide ("switch" in
  * the code font at 32 is 115). x: scalar 138, vector 518, matrix 838/898/958,
  * data frame 1230/1290/1350/1410..1550; the span 138..1550 sits in the middle.
@@ -61,7 +61,8 @@ const FIRST_RIGHT = PRIZE.map((p, k) => p === CHOICE[k]);
 
 /* --- slide: one game, four facts --------------------------------------------------
  * Figure 1680 x 804. Three doors 220 x 360 at x 40, 300, 560 (y 120..480):
- * door 1 stands open with a goat, door 2 holds the car (Bootstrap Icons
+ * door 1 stands open with a goat (img/goat.png, generated, 200 x 195 from y
+ * 224), door 2 holds the car (Bootstrap Icons
  * "car-front-fill" 1.11.3, MIT, (c) The Bootstrap Authors). Captions under the
  * doors at 32: "opened by the host" is about 290 wide around 150, "your pick"
  * about 150 around 410. The four facts on the right in the code font at 48
@@ -75,7 +76,7 @@ const CAR = '<path d="M2.52 3.515A2.5 2.5 0 0 1 4.82 2h6.362c1 0 1.904.596 2.298
     d.label(900, 0, name, { size: 48, mono: true, centerY: 180 + 90 * k, color: C.light }) +
     d.label(1440, 0, value, { size: 48, mono: true, centerY: 180 + 90 * k, color: tc(type) });
   el("fig-game").innerHTML = d.svg(1680, 804,
-    door(40, 1, { open: true }), d.label(150, 0, "goat", { size: 32, anchor: "middle", centerY: 340, color: C.gray }),
+    door(40, 1, { open: true }), d.image(50, 224, 200, 195, "img/goat.png"),
     door(300, 2), d.icon(340, 250, 140, CAR, { color: C.light }),
     door(560, 3),
     d.label(150, 0, "opened by the host", { size: 32, anchor: "middle", centerY: 530, color: C.gray }),
@@ -87,28 +88,29 @@ const CAR = '<path d="M2.52 3.515A2.5 2.5 0 0 1 4.82 2h6.362c1 0 1.904.596 2.298
 })();
 
 /* --- slide: the same position, the same round ----------------------------------------
- * Figure 1680 x 660 (has-punch). Ten cells per row on a pitch of 168, 156 wide,
- * x = 6 + 168 k, so the last ends at 1674. Positions 1..10 above at y 24; the
+ * Figure 1680 x 660 (has-punch). Five cells per row on a pitch of 300, 280 wide,
+ * x = 6 + 300 k, so the last ends at 1486. Positions 1..5 above at y 24; the
  * name of each vector above its row (y 66 + 128 r, 18 free above the cells), the cells below it (top
  * 100 + 128 r, 52 high). The marker is one frame per row around position k,
  * grouped, so it moves as one; it never covers a name. The sentence for the
- * round at y 610, swapped between round 1 and round 8. */
-const ROW_CELL = (k) => 6 + 168 * k;
+ * round at y 610, swapped between round 1 and round 4. */
+const ROW_CELL = (k) => 6 + 300 * k;
+const ROW_W = 280;
 (function () {
-  const parts = PRIZE.map((v, k) => d.label(ROW_CELL(k) + 78, 0, String(k + 1), { size: 32, mono: true, anchor: "middle", centerY: 24, color: C.gray }));
+  const parts = PRIZE.map((v, k) => d.label(ROW_CELL(k) + ROW_W / 2, 0, String(k + 1), { size: 32, mono: true, anchor: "middle", centerY: 24, color: C.gray }));
   VECTORS.forEach((v, r) => {
     parts.push(d.label(6, 0, v.name, { size: 32, mono: true, centerY: 66 + 128 * r, color: C.light }));
-    v.values.forEach((val, k) => parts.push(cellBox(ROW_CELL(k), 100 + 128 * r, 156, 52, val, v.type)));
+    v.values.forEach((val, k) => parts.push(cellBox(ROW_CELL(k), 100 + 128 * r, ROW_W, 52, val, v.type)));
   });
   parts.push(d.g("marker", ...VECTORS.map((v, r) =>
-    `<rect x="${ROW_CELL(0) - 5}" y="${95 + 128 * r}" width="166" height="62" rx="9" fill="none" stroke="${C.yellow}" stroke-width="4"/>`)));
+    `<rect x="${ROW_CELL(0) - 5}" y="${95 + 128 * r}" width="${ROW_W + 10}" height="62" rx="9" fill="none" stroke="${C.yellow}" stroke-width="4"/>`)));
   const round = (k) => `round ${k + 1}: car behind door ${PRIZE[k]}, door ${CHOICE[k]} picked, host opened door ${OPENS[k]}, player ${DECISION[k] === "stay" ? "stayed" : "switched"}`;
   parts.push(d.g("round1", d.label(6, 0, round(0), { size: 32, centerY: 610 })),
-             d.g("round8", d.label(6, 0, round(7), { size: 32, centerY: 610 })));
+             d.g("round4", d.label(6, 0, round(3), { size: 32, centerY: 610 })));
   el("fig-position").innerHTML = d.svg(1680, 660, ...parts);
   const a = d.anim("fig-position");
   a.step(a.par(a.show("marker", { dur: 500 }), a.show("round1", { dur: 500 })));
-  a.step(a.par(a.move("marker", 7 * 168, 0, { dur: 1200 }), a.swap("round1", "round8", { dur: 600 })));
+  a.step(a.par(a.move("marker", 3 * 300, 0, { dur: 1200 }), a.swap("round1", "round4", { dur: 600 })));
 })();
 
 /* --- slide: one vector, one type --------------------------------------------------
@@ -172,50 +174,50 @@ const ROW_CELL = (k) => 6 + 168 * k;
 
 /* --- slide: comparing whole vectors ---------------------------------------------------
  * Figure 1680 x 660 (has-punch). Names on the left in the code font at 32
- * ("contestant_choice" is 326), cells from x 380 on a pitch of 128, 116 wide,
- * the last ending at 1648: prize_door at y 120, contestant_choice at y 220,
+ * ("contestant_choice" is 326), cells from x 380 on a pitch of 200, 180 wide,
+ * the last ending at 1360: prize_door at y 120, contestant_choice at y 220,
  * the result at y 380 ("FALSE" is 96 < 116). A frame runs over both values of
  * one position while the answer appears below it; the expression stands under
  * the result at y 480. */
 (function () {
-  const X = (k) => 380 + 128 * k;
+  const X = (k) => 380 + 200 * k;
   const parts = [
     d.label(0, 0, "prize_door", { size: 32, mono: true, centerY: 120, color: C.light }),
     d.label(0, 0, "contestant_choice", { size: 32, mono: true, centerY: 220, color: C.light }),
   ];
-  PRIZE.forEach((v, k) => parts.push(cellBox(X(k), 92, 116, 56, v, "double"), cellBox(X(k), 192, 116, 56, CHOICE[k], "double"),
-    d.g("res" + k, cellBox(X(k), 352, 116, 56, FIRST_RIGHT[k], "logical"))));
-  parts.push(d.g("scan", `<rect x="${X(0) - 6}" y="84" width="128" height="172" rx="10" fill="none" stroke="${C.yellow}" stroke-width="4"/>`),
+  PRIZE.forEach((v, k) => parts.push(cellBox(X(k), 92, 180, 56, v, "double"), cellBox(X(k), 192, 180, 56, CHOICE[k], "double"),
+    d.g("res" + k, cellBox(X(k), 352, 180, 56, FIRST_RIGHT[k], "logical"))));
+  parts.push(d.g("scan", `<rect x="${X(0) - 6}" y="84" width="192" height="172" rx="10" fill="none" stroke="${C.yellow}" stroke-width="4"/>`),
     d.g("expr", d.label(X(0), 0, "prize_door == contestant_choice", { size: 32, mono: true, centerY: 480 })));
   el("fig-compare").innerHTML = d.svg(1680, 660, ...parts);
   const a = d.anim("fig-compare");
   const walk = [a.show("scan", { dur: 150 })];
   PRIZE.forEach((v, k) => {
     walk.push(a.show("res" + k, { dur: 120 }));
-    if (k < PRIZE.length - 1) walk.push(a.move("scan", 128, 0, { dur: 140 }));
+    if (k < PRIZE.length - 1) walk.push(a.move("scan", 200, 0, { dur: 180 }));
   });
   a.step(...walk, a.par(a.hide("scan", { dur: 200 }), a.show("expr", { dur: 400 })));
 })();
 
 /* --- slide: picking values by a condition -----------------------------------------------
- * Figure 1680 x 660 (has-punch), the same grid as the rounds: pitch 168, cells
- * 156 wide. Above decision == "stay" (cells at y 90), below first_pick_right
- * (cells at y 260). The cells below a FALSE fade and sink, the five that are
+ * Figure 1680 x 660 (has-punch), the same grid as the rounds: pitch 300, cells
+ * 280 wide. Above decision == "stay" (cells at y 90), below first_pick_right
+ * (cells at y 260). The cells below a FALSE fade and sink, the two that are
  * left close up from the left; the expression appears at y 420. */
 (function () {
   const parts = [
     d.label(6, 0, 'decision == "stay"', { size: 32, mono: true, centerY: 52, color: C.light }),
     d.label(6, 0, "first_pick_right", { size: 32, mono: true, centerY: 222, color: C.light }),
   ];
-  STAY.forEach((v, k) => parts.push(cellBox(ROW_CELL(k), 90, 156, 56, v, "logical"),
-    d.g("p" + k, cellBox(ROW_CELL(k), 260, 156, 56, FIRST_RIGHT[k], "logical"))));
+  STAY.forEach((v, k) => parts.push(cellBox(ROW_CELL(k), 90, ROW_W, 56, v, "logical"),
+    d.g("p" + k, cellBox(ROW_CELL(k), 260, ROW_W, 56, FIRST_RIGHT[k], "logical"))));
   parts.push(d.g("expr", d.label(6, 0, 'first_pick_right[decision == "stay"]', { size: 32, mono: true, centerY: 420 })));
   el("fig-subset").innerHTML = d.svg(1680, 660, ...parts);
   const a = d.anim("fig-subset");
   const kept = STAY.map((v, k) => (v ? k : -1)).filter((k) => k >= 0);
   a.step(
     a.par(...STAY.map((v, k) => (v ? null : a.par(a.hide("p" + k, { dur: 700 }), a.move("p" + k, 0, 60, { dur: 700 })))).filter(Boolean)),
-    a.par(...kept.map((k, j) => a.move("p" + k, (j - k) * 168, 0, { dur: 900 })), a.show("expr", { dur: 600 })));
+    a.par(...kept.map((k, j) => a.move("p" + k, (j - k) * 300, 0, { dur: 900 })), a.show("expr", { dur: 600 })));
 })();
 
 /* --- slide: when a value is missing ------------------------------------------------------
@@ -241,8 +243,8 @@ const ROW_CELL = (k) => 6 + 168 * k;
 
 /* --- slide: vectors become a table -------------------------------------------------------
  * Figure "below" with a punchline: 1680 x 528 on the canvas from y 300. The
- * header at y 30 in gray, a rule at 52, ten rows on a pitch of 44 from y 74
- * to 470. Final columns: row numbers 285..355, prize_door 355..585,
+ * header at y 30 in gray, a rule at 52, five rows on a pitch of 44 from y 74
+ * to 250. Final columns: row numbers 285..355, prize_door 355..585,
  * contestant_choice 585..945 (its name is 326 + 2 x 17), monty_opens 945..1195,
  * decision 1195..1395. At first the four vectors stand apart, shifted by
  * -120, -40, 40, 120. Numbers right-aligned 24 from the column's right edge,
@@ -261,9 +263,9 @@ const ROW_CELL = (k) => 6 + 168 * k;
   });
   parts.push(d.g("rule", d.line(285, 52, 1395, 52, { color: C.dark })),
     d.g("rownums", ...PRIZE.map((v, k) => d.label(339, 0, String(k + 1), { size: 32, mono: true, anchor: "end", centerY: cy(k), color: C.gray }))),
-    d.g("rowframe", `<rect x="281" y="${cy(7) - 22}" width="1118" height="44" rx="8" fill="none" stroke="${C.yellow}" stroke-width="4"/>`,
-      d.label(1430, 0, "one row\nis one game", { size: 32, centerY: cy(7), color: C.light })),
-    d.g("colframe", `<rect x="1191" y="10" width="208" height="482" rx="8" fill="none" stroke="${C.yellow}" stroke-width="4"/>`,
+    d.g("rowframe", `<rect x="281" y="${cy(3) - 22}" width="1118" height="44" rx="8" fill="none" stroke="${C.yellow}" stroke-width="4"/>`,
+      d.label(1430, 0, "one row\nis one game", { size: 32, centerY: cy(3), color: C.light })),
+    d.g("colframe", `<rect x="1191" y="10" width="208" height="262" rx="8" fill="none" stroke="${C.yellow}" stroke-width="4"/>`,
       d.label(1430, 0, "one column\nis one vector", { size: 32, centerY: 100, color: C.light })));
   el("fig-frame").innerHTML = d.svg(1680, 528, ...parts);
   const a = d.anim("fig-frame");
@@ -325,7 +327,7 @@ function tableColumn(col, rows, cyHead, cyRow, color, headColor = C.gray) {
 /* --- slide: a new column from the others ------------------------------------------------------
  * Figure 1680 x 502 under the code (from y 470 on the canvas). The six rows
  * with prize_door 0..240, contestant_choice 240..614, decision 614..814 and
- * the new column won 814..974, its name in pink as the new part, TRUE green
+ * the new column won 814..974, its name in blue as the new part, TRUE green
  * and FALSE red because won judges the game. Header at y 30, rule at 54, rows
  * on a pitch of 52 from y 82 to 342. The note on the right from x 1100. */
 (function () {
@@ -347,7 +349,7 @@ function tableColumn(col, rows, cyHead, cyRow, color, headColor = C.gray) {
  * Figure 1680 x 660 (has-punch), after the figure in R for Data Science: three
  * panels 520 wide with 60 between, centred at 260, 840, 1420. Each holds the
  * same small table, 4 columns x 5 rows of cells 64 x 40 with 8 between (280 x
- * 232, from y 80), and marks in pink what the rule is about: every column,
+ * 232, from y 80), and marks in blue what the rule is about: every column,
  * every row, every cell. The rule in words under each panel at y 420; the
  * longest, "each observation is a row", is about 400 wide. */
 (function () {

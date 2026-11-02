@@ -4104,6 +4104,256 @@ details.callout[open] > summary::before {
   }
 }
 
+/* The table to record observations in (client/data-table.js): buttons for
+   columns and rows above, a table that scrolls sideways when it grows wider
+   than the text, a name and a type in the head of every column, and below
+   it the two exports with the R code that reads them. A cell that does not
+   fit its type gets a yellow outline, which warns without blocking. */
+.data-table {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.75rem;
+}
+
+.dt-tools,
+.dt-export {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+.data-table .button:disabled {
+  opacity: 0.45;
+  cursor: default;
+  pointer-events: none;
+}
+
+.dt-size {
+  color: var(--quiet);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.dt-link {
+  margin-left: auto;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--accent-ink);
+  font: inherit;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.prose .dt-empty {
+  margin: 1rem 0 0;
+  color: var(--quiet);
+}
+
+.dt-scroll {
+  margin-top: 1rem;
+  overflow-x: auto;
+}
+
+.prose .dt-table {
+  display: table;
+  margin: 0;
+  overflow: visible;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.prose .dt-table th,
+.prose .dt-table td {
+  padding: 0.3rem 0.35rem;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+
+.prose .dt-table thead th {
+  border-bottom: 2px solid var(--rule);
+  font-weight: 400;
+}
+
+/* the row numbers stay in view when the table scrolls sideways */
+.prose .dt-table .dt-corner,
+.prose .dt-table .dt-rowhead {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--paper);
+  color: var(--quiet);
+  font: 400 0.8rem/1 var(--mono);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.prose .dt-table .dt-corner {
+  vertical-align: bottom;
+  padding-bottom: 0.6rem;
+}
+
+.dt-rowhead .dt-index {
+  display: inline-block;
+  min-width: 1.5em;
+  padding-top: 0.55rem;
+}
+
+.dt-col {
+  min-width: 10rem;
+}
+
+.dt-head,
+.dt-type-line {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.dt-type-line {
+  margin-top: 0.3rem;
+}
+
+.dt-name,
+.dt-cell,
+.dt-type {
+  min-width: 0;
+  padding: 0.3rem 0.45rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.35rem;
+  background: var(--paper-2);
+  color: inherit;
+  font: inherit;
+}
+
+.dt-name {
+  flex: 1;
+  width: 8rem;
+  font: 650 0.9rem/1.3 var(--mono);
+}
+
+.dt-type {
+  flex: 1;
+  width: 7rem;
+  font-size: 0.8rem;
+}
+
+.dt-cell {
+  width: 100%;
+  min-width: 6rem;
+  font-family: var(--mono);
+}
+
+.dt-name:focus,
+.dt-cell:focus,
+.dt-type:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.dt-name.is-warn {
+  border-color: var(--warn);
+}
+
+.dt-cell.is-misfit {
+  border-color: var(--warn);
+  box-shadow: inset 0 0 0 1px var(--warn);
+  background: color-mix(in srgb, var(--warn) 12%, var(--paper-2));
+}
+
+.dt-abbr {
+  color: var(--accent-ink);
+  font: 400 0.8rem/1 var(--mono);
+  white-space: nowrap;
+}
+
+.dt-abbr.is-inferred {
+  color: var(--quiet);
+  font-style: italic;
+}
+
+.dt-note,
+.dt-levels {
+  max-width: 14rem;
+  margin-top: 0.3rem;
+  color: var(--quiet);
+  font-size: 0.78rem;
+  line-height: 1.35;
+  white-space: normal;
+}
+
+.dt-note.is-warn {
+  color: var(--ink);
+  padding-left: 0.4rem;
+  border-left: 3px solid var(--warn);
+}
+
+.dt-note .dt-link {
+  margin-left: 0.25rem;
+  font-size: inherit;
+}
+
+.dt-levels {
+  font-family: var(--mono);
+}
+
+.dt-delete {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: none;
+  border-radius: 0.35rem;
+  background: none;
+  color: var(--quiet);
+  cursor: pointer;
+  vertical-align: top;
+}
+
+.dt-delete:hover,
+.dt-delete:focus-visible {
+  background: color-mix(in srgb, var(--error) 12%, transparent);
+  color: var(--error);
+}
+
+.prose .dt-misfits {
+  margin: 0.75rem 0 0;
+  padding-left: 0.5rem;
+  border-left: 3px solid var(--warn);
+  font-size: 0.85rem;
+}
+
+.dt-export {
+  margin-top: 1.25rem;
+}
+
+.prose .dt-code-head {
+  margin: 1rem 0 0.4rem;
+  font-size: 0.85rem;
+  color: var(--quiet);
+}
+
+.prose .data-table .code-block {
+  margin: 0;
+}
+
+@media (max-width: 40rem) {
+  .data-table {
+    padding: 0.75rem;
+  }
+
+  .dt-tools .button,
+  .dt-export .button {
+    flex: 1 1 12rem;
+    justify-content: center;
+  }
+}
+
 /* The byte switchboard (client/byte-switchboard.js): eight switches with
    their place values, the sum, and the byte in four readings. A switch that
    is on takes the accent colour, like a chosen quiz option. */

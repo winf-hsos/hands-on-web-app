@@ -104,9 +104,11 @@ All motion is switched off for people who ask their system for reduced motion.
   (`hocs-opened`) in local storage; a key names the path, part or section
   (`path:<id>:<part>`), not the page, so a part opened on the path page is
   open in every module that shows the path.
-- **Projects** show their phases as a numbered, folded list; a phase opens to
-  its text, its challenges and the content linked to it. A link to
-  `#challenge-2` opens exactly that part.
+- **Projects** show their phases as a numbered, folded list that starts
+  closed like the sections of a module (Nicolas, 2026-11-02); a phase opens to
+  its challenge and the content linked to it. A link to a phase such as
+  `#vectors`, or to anything inside one, opens exactly that part
+  (`src/client/project.js`).
 - **The map** shows topics as large nodes with their items in a ring around
   them; an item with several topics sits between them and links them, and
   topics that share items are drawn close together (a small layout of our

@@ -741,10 +741,11 @@ A challenge item has the usual fields of an item but no `duration`, since it
 runs over weeks; its page shows the project and phase it belongs to. The build
 checks that `challenge` names an item of type `challenge`.
 
-The older form, still used by the Monty Hall project, writes challenges into
-the project text as `### … {#id}` below their phase and lists them under
-`challenges:` with optional `items`; the page shows them folded inside their
-phase. New projects use challenge items.
+The older form writes challenges into the project text as `### … {#id}` below
+their phase and lists them under `challenges:` with optional `items`; the page
+shows them folded inside their phase. No project uses it any more since the
+Monty Hall project moved to challenge items (2026-11-02), but the build and
+the page still understand it. New projects use challenge items.
 
 The build checks that phases and challenges in the front matter and the
 headings with ids match, in order and in every language, so a phase can

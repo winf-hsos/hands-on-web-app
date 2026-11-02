@@ -203,6 +203,7 @@ function fillableTables(tree, lang) {
 // ```verb-demo becomes the place of the dplyr demonstrator (client/verb-demo.js),
 // ```monty-hall the game with three doors (client/monty-hall.js),
 // ```byte-switchboard eight switches for one byte (client/byte-switchboard.js),
+// ```data-table an empty table to record observations in (client/data-table.js),
 // ```shell-demo the folder tree and command line (client/shell-demo.js), whose
 // block holds its scenario in YAML (tree:, start:), checked by validate.mjs.
 // Each sits in a frame with buttons for its shortcuts and for full screen
@@ -212,6 +213,7 @@ const DEMOS = {
   'monty-hall': { className: 'monty-hall', dataMontyHall: '' },
   'byte-switchboard': { className: 'byte-switchboard', dataByteSwitchboard: '' },
   'shell-demo': { className: 'shell-demo', dataShellDemo: '' },
+  'data-table': { className: 'data-table', dataDataTable: '' },
 };
 
 /** The scenario in a ```shell-demo block, or null when it is not YAML. */
