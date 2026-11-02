@@ -20,7 +20,7 @@ topics: [solving-problems, processing-information]
 modules: [dup]
 relations:
   checks: [algorithms-and-programs]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

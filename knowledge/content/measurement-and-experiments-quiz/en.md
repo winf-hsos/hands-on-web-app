@@ -21,7 +21,7 @@ modules: [dup]
 relations:
   checks: [measurement-and-experiments]
   see_also: [measuring-and-experimenting]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

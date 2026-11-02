@@ -21,7 +21,7 @@ modules: [dup]
 relations:
   requires: [programming-principles]
   see_also: [algorithms-and-programs-slides, python-first-program, python-while-loops, card-guessing]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 
