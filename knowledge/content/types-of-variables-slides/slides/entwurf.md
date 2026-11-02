@@ -1,6 +1,6 @@
 # Entwurf: Input „types of variables“
 
-**Status:** von Nicolas am 2026-11-02 freigegeben und gebaut. Abweichungen vom Entwurf beim Bau: Folie 12 nennt die Endpunkte der Skala so, wie die Daten sie beschreiben (1 hardly any, 5 almost all), und zeigt Median und Mittelwert der 30 Personen; Folie 14 behält den Baum von Folie 8 und schreibt unter Intervall und Verhältnis `<dbl>` und `<int>`, statt einen zweiten Baum mit stetig und Zählwert zu zeigen; Folie 15 teilt den Code auf `monty_hall` und `survey` auf, damit er kopiert sofort läuft; Folie 17 trägt einen QR-Code zur Tabelle; die Schlussfolie wiederholt den Merksatz mit den Leseempfehlungen. 19 Folien, 34 Frames.
+**Status:** von Nicolas am 2026-11-02 freigegeben und gebaut. Abweichungen vom Entwurf beim Bau: Folie 12 nennt die Endpunkte der Skala so, wie die Daten sie beschreiben (1 hardly any, 5 almost all), und zeigt Median und Mittelwert der 30 Personen; Folie 14 behält den Baum von Folie 8 und schreibt unter Intervall und Verhältnis `<dbl>` und `<int>`, statt einen zweiten Baum mit stetig und Zählwert zu zeigen; Folie 15 teilt den Code auf `monty_hall` und `survey` auf, damit er kopiert sofort läuft; Folie 17 trägt einen QR-Code zur Tabelle; zum Merksatz kommen auf derselben Folie in einem zweiten Schritt die Leseempfehlungen. 18 Folien, 34 Frames.
 
 **Verortung:** Folien-Inhalt auf Hands-on Data Science
 (`knowledge/content/types-of-variables-slides/`), Titel „Arten von
