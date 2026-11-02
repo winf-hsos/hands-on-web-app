@@ -21,7 +21,8 @@ is recognised.
 
 For access to LED and sensor there is the course module `lifi_hardware`. With
 it, commands like `led.set_color(r, g, b)` and `sensor.read()` are enough,
-without you having to deal with the details of the hardware. How to set everything up is shown in the slides [[first-light]]; how you get the course module and the templates onto your computer is stated in your course.
+without you having to deal with the details of the hardware; what it can do
+and why it exists is in [[lifi-hardware]]. How to set everything up is shown in the slides [[first-light]]; how you get the course module and the templates onto your computer is stated in your course.
 
 For each challenge there is a template with a **contract**: a handful of
 functions with a fixed name, fixed arguments and a fixed return value. What you

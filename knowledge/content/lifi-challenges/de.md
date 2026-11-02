@@ -1,7 +1,7 @@
 ---
 type: lesson
 code: 1473
-title: "Meilensteine im LiFi-Projekt"
+title: "Challenges im LiFi-Projekt"
 summary: >-
   Wie eine Challenge am Testtisch abgenommen wird und welche drei Ergebnisse ihr aus jeder Challenge mitnehmt.
 objectives:

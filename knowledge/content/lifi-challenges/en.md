@@ -1,5 +1,5 @@
 ---
-title: "Milestones in the LiFi project"
+title: "Challenges in the LiFi project"
 summary: >-
   How a challenge is accepted at the test table, and which three results you take away from every challenge.
 objectives:

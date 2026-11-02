@@ -28,7 +28,8 @@ erkannt wird.
 
 Für den Zugriff auf LED und Sensor gibt es das Kursmodul `lifi_hardware`. Damit
 reichen Befehle wie `led.set_color(r, g, b)` und `sensor.read()`, ohne dass ihr
-euch um die Details der Hardware kümmern müsst. Wie ihr alles einrichtet, zeigen die Folien [[first-light]]; wie ihr das Kursmodul und die Vorlagen auf euren Rechner bekommt, steht in eurem Kurs.
+euch um die Details der Hardware kümmern müsst; was es kann und warum es das
+gibt, steht in [[lifi-hardware]]. Wie ihr alles einrichtet, zeigen die Folien [[first-light]]; wie ihr das Kursmodul und die Vorlagen auf euren Rechner bekommt, steht in eurem Kurs.
 
 Für jede Challenge gibt es eine Vorlage mit einem **Vertrag**: eine Handvoll
 Funktionen mit festem Namen, festen Argumenten und festem Rückgabewert. Was ihr

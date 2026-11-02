@@ -64,7 +64,7 @@ Es zählt das dritte, bessere Ergebnis. Ohne das zweite wisst ihr aber nicht, ob
 euer Aufbau überhaupt etwas gebracht hat, und genau darum ist diese
 Kontrollmessung Pflicht. Was ihr bauen dürft, steht unter [[lifi-device]].
 
-**Die drei Ergebnisse dieser Challenge** (siehe [[lifi-milestones]]) sind damit die Messprotokolle ohne und mit Hilfsmitteln, als
+**Die drei Ergebnisse dieser Challenge** (siehe [[lifi-challenges]]) sind damit die Messprotokolle ohne und mit Hilfsmitteln, als
 Beschreibung eurer Lösung ein Foto des Aufbaus mit einem Satz, warum ihr ihn so
 gebaut habt, und euer Irrtumsprotokoll. Für das letzte ist diese Challenge die
 ergiebigste Quelle: Fragt ihr den Assistenten, warum die Röhre nicht hilft,

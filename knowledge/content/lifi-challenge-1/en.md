@@ -58,7 +58,7 @@ The third, better result counts. Without the second, though, you cannot know
 whether your setup made any difference at all, which is exactly why this
 control measurement is required. What you may build is described in [[lifi-device]].
 
-**The three results of this challenge** (see [[lifi-milestones]])
+**The three results of this challenge** (see [[lifi-challenges]])
 are therefore the measurement logs without and with aids, a photo of your
 setup with a sentence on why you built it that way as the description of your
 solution, and your log of mistakes. For the last one this challenge is the

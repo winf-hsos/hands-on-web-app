@@ -96,7 +96,7 @@ Out of the box the course module `lifi_hardware` sets a medium-long
 integration time and a gain of 16, which is a safe place to start and almost
 certainly not where you will end up. The two settings are deliberately easy to
 change, so change them and measure what happens; the course module is
-described in [[lifi-software]].
+described in [[lifi-hardware]].
 
 **The numbers do not come back the way you sent them.** When you give the LED
 the values (255, 0, 60), the sensor reports something completely different.

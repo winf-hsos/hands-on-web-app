@@ -102,7 +102,7 @@ Ab Werk stellt das Kursmodul `lifi_hardware` eine mittellange Integrationszeit
 und die Verstärkung 16 ein, ein sicherer Anfang und fast sicher nicht das, wo
 ihr landet. Beide Einstellungen lassen sich mit Absicht leicht ändern, also
 ändert sie und messt, was passiert; das Kursmodul beschreibt
-[[lifi-software]].
+[[lifi-hardware]].
 
 **Die Zahlen kommen nicht so zurück, wie ihr sie gesendet habt.** Gebt ihr der
 LED die Werte (255, 0, 60), meldet der Sensor etwas völlig anderes. Das ist kein
