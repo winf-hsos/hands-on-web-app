@@ -2850,23 +2850,14 @@ details.callout[open] > summary::before {
   margin: 0;
 }
 
-/* a lone photo stands centred, its caption no wider than the picture */
-.photo:only-child {
-  display: table;
-  margin-inline: auto;
-}
-
-.photo:only-child figcaption {
-  display: table-caption;
-  caption-side: bottom;
-}
-
+/* Photos always show as 16:9 and fill their column (Nicolas, 2026-11-02);
+   the files are cut to that format, and cover only catches one that is not. */
 .photo img {
   display: block;
-  width: auto;
-  max-width: 100%;
-  max-height: 34rem;
+  width: 100%;
   height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
   border-radius: 0.75rem;
 }
 

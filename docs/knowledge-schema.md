@@ -226,8 +226,9 @@ The body is plain Markdown with a few conventions:
   to the item's page, in every area and language and on the drafts site.
   A photo with a title, `![Alt text](media/front.jpg "Caption")`, alone in
   its paragraph shows with its caption below; several such photos in one
-  paragraph stand side by side, and a lone one stands centred and at most
-  34rem tall.
+  paragraph stand side by side. Every photo shows as 16:9 and fills its
+  column (Nicolas, 2026-11-02), so a photo in another format is cut to 16:9
+  before it goes into `media/`, with what matters in the middle.
 - **3D models** are STL files in `media/`:
   `![What it shows](model:media/case.stl "Caption")`. The page shows them in
   a small viewer of its own (`src/client/model.js`, plain WebGL, loaded only
@@ -625,7 +626,10 @@ The lead file holds the structure, the text holds titles and prose. A `##`
 heading with an id names a phase, such as `## Phase 2: Aus Farben werden
 Buchstaben {#word}`; text below it is optional, since the challenge item
 carries the description. Headings without an id are ordinary sections, such as
-"What you need".
+"What you need". The introduction before the first heading folds away below
+the phases as "Über dieses Projekt", like "Über dieses Modul" on a module
+page, so that the page opens with the summary and then the phases (Nicolas,
+2026-11-02).
 
 ```yaml
 ---

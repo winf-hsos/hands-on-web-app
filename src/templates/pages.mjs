@@ -673,7 +673,6 @@ export function project(site, doc, lang) {
           <p class="lead" lang="${text.lang}"${editable(site, 'summary')}>${text.summary}</p>
         </header>
         ${text.missing && html`<p class="notice">${t(lang, 'missing_translation')}</p>`}
-        ${parts.intro && html`<div class="prose" lang="${text.lang}">${md(parts.intro)}</div>`}
         ${lead.phases.map((phase, p) => {
           const part = parts.phases[p];
           // A phase is a part like those of a path: its challenge comes first,
@@ -695,6 +694,7 @@ export function project(site, doc, lang) {
           </details>`;
         })}
         ${related(lead.items)}
+        ${parts.intro && more(t(lang, 'about_project'), html`<div class="prose" lang="${text.lang}">${md(parts.intro)}</div>`)}
         ${parts.sections.map((section) => more(section.title, html`<div class="prose" lang="${text.lang}">${md(section.md)}</div>`))}
         ${more(
           t(lang, 'details'),
