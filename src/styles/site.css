@@ -4394,6 +4394,13 @@ details.callout[open] > summary::before {
   overflow: visible;
 }
 
+/* Full screen is for filling in, so saving and the R code below the table
+   stay on the page and leave the room to the table. */
+.demo:fullscreen .data-table > :is(.dt-export, .dt-code-head, .code-block),
+.demo.is-fullscreen .data-table > :is(.dt-export, .dt-code-head, .code-block) {
+  display: none;
+}
+
 .prose .dt-misfits {
   margin: 0.75rem 0 0;
   padding-left: 0.5rem;
