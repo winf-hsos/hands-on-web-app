@@ -17,7 +17,7 @@ duration: 15
 topics: [transferring-information, working-with-the-computer]
 modules: [dup]
 project: lifi
-status: draft
+status: published
 updated: 2026-11-02
 ---
 

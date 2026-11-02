@@ -3,21 +3,46 @@ type: lesson
 code: 1473
 title: "Challenges im LiFi-Projekt"
 summary: >-
-  Wie eine Challenge am Testtisch abgenommen wird und welche drei Ergebnisse ihr aus jeder Challenge mitnehmt.
+  Welchen Vertrag jede Challenge festlegt, wie sie am Testtisch abgenommen wird und welche drei Ergebnisse ihr aus jeder Challenge mitnehmt.
 objectives:
   intro: "Hier erfährst du, woran eine Challenge gemessen wird, und kannst danach:"
   goals:
+    - "erklären, was der Vertrag einer Challenge festlegt und was er dir freilässt"
     - "beschreiben, wie eine Abnahme am Testtisch abläuft"
     - "erklären, wozu die Live-Änderung bei jeder Abnahme dient"
     - "Messprotokoll, Lösungsbeschreibung und Irrtumsprotokoll führen"
 level: 1
-duration: 6
+duration: 9
 topics: [solving-problems]
 modules: [dup]
 project: lifi
 status: draft
 updated: 2026-11-02
 ---
+
+## Vorlagen und Verträge
+
+Für jede Challenge gibt es eine Vorlage mit einem **Vertrag**: eine Handvoll
+Funktionen mit festem Namen, festen Argumenten und festem Rückgabewert. Was ihr
+innerhalb dieser Funktionen schreibt, ist eure Sache, und eigene Funktionen
+dürft ihr beliebig ergänzen. Das Testskript ruft ausschließlich die
+Vertragsfunktionen auf, deshalb läuft bei jedem Team derselbe Test, und die
+Ergebnisse sind vergleichbar.
+
+| Challenge | Was ihr umsetzt |
+|---|---|
+| 0 | sechs kleine Aufgaben, je ein Skript, von `task_1_light_on.py` bis `task_6_human_receiver.py` |
+| 1 | `ALPHABET_SIZE`, `calibrate_sender()`, `calibrate_receiver()`, `send_symbol(index)`, `receive_symbol()` |
+| 2 | `send_text(text)`, `receive_text(n_chars)` |
+| 3 | `send_message(text)`, `receive_message()` |
+| 4 | `send_bits(bits)`, `receive_bits()` |
+
+Die Verträge wachsen mit: erst einzelne Symbole, dann Text bekannter Länge,
+dann Text, dessen Länge der Empfänger nicht kennt, und zuletzt nur noch Bits.
+Auf jeder Stufe sieht man genau die Abstraktion, um die es in der Challenge
+geht. **Selbsttest und Abnahme sind dasselbe Skript:** Mit ihm testet ihr
+selbst, so oft ihr wollt, und mit ihm wird auch abgenommen. Ändert es deshalb
+nicht; bei der Abnahme läuft ohnehin die Originalfassung.
 
 ## So wird abgenommen
 

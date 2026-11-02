@@ -47,7 +47,7 @@ phases:
   - id: packet
     challenge: lifi-challenge-4
     items: [byte, hexadecimal, binary-prefixes, logic-gates]
-status: draft
+status: published
 updated: 2026-11-02
 ---
 

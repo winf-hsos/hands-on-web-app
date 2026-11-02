@@ -1,16 +1,40 @@
 ---
 title: "Challenges in the LiFi project"
 summary: >-
-  How a challenge is accepted at the test table, and which three results you take away from every challenge.
+  Which contract every challenge fixes, how it is accepted at the test table, and which three results you take away from every challenge.
 objectives:
   intro: "Here you find out what a challenge is measured by and can then:"
   goals:
+    - "explain what the contract of a challenge fixes and what it leaves to you"
     - "describe how an acceptance at the test table works"
     - "explain what the live change at every acceptance is for"
     - "keep a measurement log, a description of your solution and a log of mistakes"
 translation_of: de
 based_on: 2026-11-02
 ---
+
+## Templates and contracts
+
+For each challenge there is a template with a **contract**: a handful of
+functions with a fixed name, fixed arguments and a fixed return value. What you
+write inside these functions is up to you, and you may add as many functions of
+your own as you like. The test script calls only the contract functions, so
+every team runs the same test and the results are comparable.
+
+| Challenge | What you implement |
+|---|---|
+| 0 | six small tasks, one script each, from `task_1_light_on.py` to `task_6_human_receiver.py` |
+| 1 | `ALPHABET_SIZE`, `calibrate_sender()`, `calibrate_receiver()`, `send_symbol(index)`, `receive_symbol()` |
+| 2 | `send_text(text)`, `receive_text(n_chars)` |
+| 3 | `send_message(text)`, `receive_message()` |
+| 4 | `send_bits(bits)`, `receive_bits()` |
+
+The contracts grow along: first single symbols, then text of known length, then
+text whose length the receiver does not know, and finally only bits. At each
+stage you see exactly the abstraction the challenge is about. **Self-test and
+acceptance test are the same script:** you test yourselves with it as often as
+you like, and the acceptance test uses it too. So do not change it; the
+original version runs at the acceptance test anyway.
 
 ## How acceptance works
 
