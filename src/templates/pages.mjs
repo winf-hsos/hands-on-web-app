@@ -185,16 +185,20 @@ const quizLabels = (lang) =>
     Object.fromEntries(['next', 'back', 'finish', 'position', 'result', 'score', 'open', 'restart'].map((k) => [k, t(lang, `quiz_${k}`)])),
   )}"`;
 
-/** What a learner takes away from an item: a sentence and the goals (Nicolas, 2026-11-01). */
+/** What a learner takes away from an item: a sentence and the goals (Nicolas, 2026-11-01).
+    It is a guide to the content rather than part of it, so it sits in a box of its
+    own, folded until asked for and outside the table of contents (Nicolas, 2026-11-02). */
 function objectivesBlock(site, text, lang) {
   const o = text.data.objectives;
   return (
     o &&
-    html`<section class="prose objectives" lang="${text.lang}"${editable(site, 'objectives')}>
-      <h2>${t(lang, 'objectives')}</h2>
-      <p>${o.intro}</p>
-      <ul>${o.goals.map((goal) => html`<li>${goal}</li>`)}</ul>
-    </section>`
+    html`<details class="objectives" lang="${text.lang}">
+      <summary>${raw(iconSvg('goal', 'objectives-icon'))}<span>${t(lang, 'objectives')}</span></summary>
+      <div class="objectives-body" lang="${text.lang}"${editable(site, 'objectives')}>
+        <p>${o.intro}</p>
+        <ul>${o.goals.map((goal) => html`<li>${goal}</li>`)}</ul>
+      </div>
+    </details>`
   );
 }
 
@@ -656,10 +660,6 @@ export function project(site, doc, lang) {
   const text = site.localize(doc, lang);
   const parts = site.projectText(doc, lang);
   const md = (source) => raw(site.markdown(source, lang, text.lang));
-  const related = (ids = []) =>
-    ids.length > 0 &&
-    html`<div class="related"><h4>${t(lang, 'related_content')}</h4>
-      <ul class="rows">${ids.map((id) => itemRow(site, site.item.get(id), lang, { summary: false }))}</ul></div>`;
   // Items are numbered through the whole project, also across its phases.
   let number = 0;
   const trail = (ids) =>
@@ -694,7 +694,6 @@ export function project(site, doc, lang) {
             ${trail(phaseItems(phase))}
           </details>`;
         })}
-        ${related(lead.items)}
         ${parts.intro && more(t(lang, 'about_project'), html`<div class="prose" lang="${text.lang}">${md(parts.intro)}</div>`)}
         ${parts.sections.map((section) => more(section.title, html`<div class="prose" lang="${text.lang}">${md(section.md)}</div>`))}
         ${more(

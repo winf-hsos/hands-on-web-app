@@ -1,5 +1,5 @@
 ---
-type: lesson
+type: info
 code: 5033
 title: "Das Team-Cockpit"
 summary: >-

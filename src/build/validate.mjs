@@ -223,7 +223,7 @@ function shapes(vocabulary) {
         },
         // projects have no topics (Nicolas, 2026-11-01); an old `topics` line
         // is ignored with a warning instead of breaking the build
-        optional: { modules: list(oneOf(modules, 'module')), items: list(id), areas: inAreas, topics: () => null },
+        optional: { modules: list(oneOf(modules, 'module')), areas: inAreas, topics: () => null },
       },
       translation,
     },
@@ -276,7 +276,6 @@ export function referencesOf(doc) {
       else stepsOf(section.items).forEach((s) => add(s.id, `sections[${n + 1}]`));
     });
   }
-  for (const i of lead.items ?? []) add(i, 'items');
   for (const phase of lead.phases ?? []) {
     if (phase.challenge) add(phase.challenge, phase.id);
     for (const part of [phase, ...(phase.challenges ?? [])]) for (const i of part.items ?? []) add(i, part.id);
@@ -415,7 +414,6 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
   }
   for (const project of projects) {
     const where = `projects/${project.id}`;
-    for (const i of project.lead.items ?? []) needItem(`${where} items`, i);
     const seen = new Set();
     for (const phase of project.lead.phases) {
       if (phase.challenge) {
@@ -448,7 +446,7 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
       errors.push(`content/${item.id}: unknown project "${item.lead.project}"`);
       continue;
     }
-    const linked = [...(project.lead.items ?? []), ...project.lead.phases.flatMap((p) => [p.challenge, ...(p.items ?? []), ...(p.challenges ?? []).flatMap((c) => c.items ?? [])])];
+    const linked = project.lead.phases.flatMap((p) => [p.challenge, ...(p.items ?? []), ...(p.challenges ?? []).flatMap((c) => c.items ?? [])]);
     if (!linked.includes(item.id)) errors.push(`content/${item.id}: belongs to project ${project.id}, which does not link it`);
   }
   for (const page of pages) {
@@ -577,7 +575,8 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
       if (!file) warnings.push(`${doc.section}/${doc.id}: no ${lang} version`);
       else if (file.data.based_on && file.data.based_on < doc.lead.updated)
         warnings.push(`${file.path}: translation is older than its lead file`);
-      if (file && doc.section === 'content' && !file.data.objectives) warnings.push(`${file.path}: no objectives (what you learn)`);
+      // an info page introduces no concept, so it need not say what is learnt
+      if (file && doc.section === 'content' && !file.data.objectives && !hasType(doc.lead, 'info')) warnings.push(`${file.path}: no objectives (what you learn)`);
     }
   }
   // A demo page says above the demonstrator what it is for and how to use it,

@@ -1,5 +1,5 @@
 ---
-type: lesson
+type: info
 code: 5274
 title: "Das Kursmodul lifi_hardware"
 summary: >-

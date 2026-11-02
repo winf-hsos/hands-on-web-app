@@ -135,11 +135,15 @@ updated: 2026-10-21                # required, date of the last substantive chan
 away from it: `objectives` holds one sentence that leads into a list (`intro`,
 ending in a colon) and three to five concrete, checkable goals (`goals`),
 each continuing that sentence. They stand in every language file, since they
-are text, and the page shows them under the heading "Was du lernst" / "What you
-will learn" right after the summary, before a deck, a dataset or the text. The
+are text, and the page shows them right after the summary, before a deck, a
+dataset or the text, in a box of their own titled "Was du lernst" / "What you
+will learn". The box is folded until opened and is not part of the table of
+contents, because it guides into the content rather than belonging to it
+(Nicolas, 2026-11-02). The
 text itself therefore starts without a heading such as "Worum es geht"; the
 first paragraphs are the way into the topic. An item without `objectives` is a
-warning, not an error, so that a new draft can be saved first.
+warning, not an error, so that a new draft can be saved first; an item of type
+`info` may leave them out without a warning.
 
 **Several types** (Nicolas, 2026-11-02). An item may have more than one
 type, written as a list: `type: [lesson, slides]`. The item is found under
@@ -163,6 +167,7 @@ Type-specific fields:
 | `dataset` | `file`, the name of a CSV in `media/datasets/`; `authors`, `year`, `license` where known. The page offers the file for download with its rows, columns and size, measured when building, and the lines that load it in R and in Python; the body describes the data. Only a dataset has a `file` |
 | `quiz` | none; the questions are in the body, see section 7 |
 | `challenge` | no `duration`; the task of one phase of a project, see section 9a |
+| `info` | none; a page that tells what to know or set up, such as the software for a project, without introducing a concept. A concept is a `lesson` (Nicolas, 2026-11-02) |
 
 Fields deliberately **not** in an item:
 
@@ -237,7 +242,9 @@ The body is plain Markdown with a few conventions:
   its paragraph shows with its caption below; several such photos in one
   paragraph stand side by side. Every photo shows as 16:9 and fills its
   column (Nicolas, 2026-11-02), so a photo in another format is cut to 16:9
-  before it goes into `media/`, with what matters in the middle.
+  before it goes into `media/`, with what matters in the middle. A drawing
+  (`.svg`) fills the column too but keeps its own height, so a wide flat one
+  does not stand in empty space.
 - **3D models** are STL files in `media/`:
   `![What it shows](model:media/case.stl "Caption")`. The page shows them in
   a small viewer of its own (`src/client/model.js`, plain WebGL, loaded only
@@ -629,10 +636,13 @@ exported from its own deck, never drawings or pictures made apart from it:
 `deck.js` writes its labels in both languages with `T(en, de)`, and
 `scripts/deck-figures.mjs <id>`, run after the build, renders them with
 stagekit's `tools/figures.py` in the light palette into `media/` as
-`<name>.de.svg` and `<name>.en.svg`. Like every picture on a page, they are
-16:9: `figures.js` keeps the full width of a drawing and centres it in a frame
-of nine sixteenths of that width, so figures.py reports the space above and
-below as empty, which here is intended.
+`<name>.de.svg` and `<name>.en.svg`. Unlike photos, they are not 16:9 but
+cropped to the drawing: a 16:9 frame left wide flat drawings in a lot of empty
+space (Nicolas, 2026-11-02). `figures.js` wraps each drawing with `rand`, which
+adds 16 px above and below, because some labels reach a few pixels above the
+slide's viewBox; where the slide leaves room under a drawing, its second
+argument trims the bottom so both margins match, and figures.py then reports
+no empty edges.
 
 ## 9a. Projects
 
@@ -663,7 +673,6 @@ title: Das LiFi-Projekt
 summary: …
 level: 1
 modules: [dup]
-items: [petzold-code]          # optional: content for the whole project
 phases:
   - id: word
     challenge: lifi-challenge-2 # an item of type challenge
@@ -708,6 +717,10 @@ phase can be linked directly as `…/projects/lifi/#word`, which opens it.
 A project has **no topics** (Nicolas, 2026-11-01): topics sort the content
 items, and a project is found through its module and the content it links.
 An old `topics` line in a project is ignored with a warning.
+
+A project has **no content for the whole project** (Nicolas, 2026-11-02): the
+list "Dazu passend" below the phases is gone, and with it the field `items` at
+the top of a project. Everything a project links belongs to one of its phases.
 
 A project describes the content and is independent of a semester: dates,
 assessment and bonus rules belong to the course, as in the separation of
@@ -825,7 +838,8 @@ Approved by Nicolas on 2026-10-21 as proposed:
    `story`, `tool`, `quiz`, `source`, `paper`; `person` added on 2026-10-22,
    when Nicolas asked for an entry on Bill Gates; `slides` added on 2026-10-22
    for stagekit decks, which come without text of their own; `dataset` added
-   on 2026-10-27 for data sets to download.
+   on 2026-10-27 for data sets to download; `info` added on 2026-11-02 for
+   pages that inform or guide without introducing a concept.
 5. **Levels** 1–4 with the labels above.
 6. **Access codes for courses** are readable word codes such as `LICHT-26`;
    case, spaces and hyphens are ignored. Not used for now (2026-11-01).

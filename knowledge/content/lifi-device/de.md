@@ -1,5 +1,5 @@
 ---
-type: lesson
+type: info
 code: 2724
 title: "Das LiFi-Gerät"
 summary: >-

@@ -51,7 +51,7 @@ const HANDLED = {
   content: ['level', 'duration', 'topics', 'modules', 'relations', 'objectives', ...Object.keys(FIELD_LABEL)],
   paths: ['level', 'requires', 'steps'],
   courses: ['access_code', 'module'],
-  projects: ['level', 'modules', 'items'],
+  projects: ['level', 'modules'],
   pages: ['featured_path', 'samples'],
 };
 
@@ -254,7 +254,6 @@ function renderShared() {
   if (work.section === 'projects') {
     html.push(field('Niveau', select('level', levels, d.level)));
     html.push(field('Module', multi('modules', Object.entries(v.modules).map(([k, l]) => [k, l.de]), d.modules ?? []), { wide: true }));
-    html.push(linkList('items', 'Inhalte zum ganzen Projekt'));
   }
   if (work.section === 'pages') {
     html.push(field('Hervorgehobener Lernpfad', select('featured_path', [['', '–'], ...state.list.filter((x) => x.section === 'paths').map((p) => [p.id, titleOf(p)])], d.featured_path)));

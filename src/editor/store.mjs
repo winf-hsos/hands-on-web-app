@@ -16,7 +16,7 @@ const ORDER = {
   content: ['type', 'code', 'title', 'summary', 'objectives', 'authors', 'year', 'publisher', 'isbn', 'buy', 'url', 'doi', 'venue', 'license', 'when', 'born', 'died', 'file', 'level', 'duration', 'topics', 'modules', 'relations', 'access', 'status', 'updated'],
   paths: ['kind', 'code', 'title', 'summary', 'goal', 'audience', 'level', 'requires', 'steps', 'sections', 'status', 'updated'],
   courses: ['kind', 'code', 'access_code', 'module', 'institution', 'formerly', 'title', 'subtitle', 'summary', 'sections', 'status', 'updated'],
-  projects: ['kind', 'code', 'title', 'summary', 'level', 'modules', 'items', 'phases', 'status', 'updated'],
+  projects: ['kind', 'code', 'title', 'summary', 'level', 'modules', 'phases', 'status', 'updated'],
   pages: ['kind', 'title', 'summary', 'featured_path', 'samples', 'updated'],
   translation: ['title', 'subtitle', 'summary', 'objectives', 'goal', 'audience', 'translation_of', 'based_on'],
 };

@@ -9,7 +9,6 @@ summary: >-
 level: 1
 modules: [ea]
 areas: [ds]
-items: [lets-make-a-deal, hands-on-programming-with-r]
 phases:
   - id: play
     items: [monty-hall-game]

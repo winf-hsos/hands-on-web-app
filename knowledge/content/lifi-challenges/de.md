@@ -1,5 +1,5 @@
 ---
-type: lesson
+type: info
 code: 1473
 title: "Challenges im LiFi-Projekt"
 summary: >-

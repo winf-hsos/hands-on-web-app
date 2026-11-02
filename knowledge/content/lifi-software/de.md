@@ -1,5 +1,5 @@
 ---
-type: lesson
+type: info
 code: 2165
 title: "Benötigte Software im LiFi-Projekt"
 summary: >-

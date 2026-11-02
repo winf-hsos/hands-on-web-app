@@ -8,7 +8,6 @@ summary: >-
   übertragen.
 level: 1
 modules: [dup]
-items: [petzold-code, visual-studio-code]
 phases:
   - id: start
     challenge: lifi-challenge-0

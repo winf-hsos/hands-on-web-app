@@ -6,6 +6,7 @@
 # checks that it exists.
 types:
   lesson:     { de: Lektion,         en: Lesson,     icon: book-open }
+  info:       { de: Info,            en: Info,       icon: info }
   demo:       { de: Demo,            en: Demo,       icon: mouse-pointer-click }
   experiment: { de: Experiment,      en: Experiment, icon: flask-conical }
   term:       { de: Begriff,         en: Term,       icon: tag }

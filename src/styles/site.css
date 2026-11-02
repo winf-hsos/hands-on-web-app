@@ -1315,6 +1315,84 @@ details.callout[open] > summary::before {
   border-top: 1px solid var(--rule);
 }
 
+/* --- what you learn: a folded box beside the content (pages.mjs) --------------- */
+
+.objectives {
+  max-width: var(--measure);
+  margin: 1.5rem 0;
+  border: 1px solid var(--rule);
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--accent) 4%, var(--paper));
+}
+
+.objectives > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  color: var(--quiet);
+  font-weight: 600;
+}
+
+.objectives > summary::-webkit-details-marker {
+  display: none;
+}
+
+.objectives > summary::after {
+  content: '';
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-left: auto;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 0.25s var(--ease);
+}
+
+.objectives[open] > summary::after {
+  transform: rotate(225deg);
+}
+
+.objectives > summary:hover {
+  color: var(--ink);
+}
+
+.objectives-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--accent);
+}
+
+.objectives::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition: block-size 0.35s var(--ease), content-visibility 0.35s allow-discrete;
+}
+
+.objectives[open]::details-content {
+  block-size: auto;
+}
+
+.objectives-body {
+  padding: 0 1rem 0.9rem 2.7rem;
+  font-size: 0.95rem;
+}
+
+.objectives-body p {
+  margin: 0 0 0.4rem;
+}
+
+.objectives-body ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.objectives-body li + li {
+  margin-top: 0.25rem;
+}
+
 /* --- details on request --------------------------------------------------- */
 
 .more {
@@ -2826,17 +2904,6 @@ details.callout[open] > summary::before {
   padding: 0 0.9rem 0.5rem;
 }
 
-.related {
-  margin: 1rem 0 0.5rem;
-}
-
-.related h4 {
-  margin: 0 0 0.4rem;
-  font-size: 0.9rem;
-  color: var(--quiet);
-  font-weight: 600;
-}
-
 /* --- photos with captions ---------------------------------------------------- */
 
 .photo-row {
@@ -2861,9 +2928,12 @@ details.callout[open] > summary::before {
   border-radius: 0.75rem;
 }
 
-/* a figure from a deck is 16:9 already and keeps every edge of its drawing */
+/* a drawing keeps its own height, so a wide flat one does not stand in empty
+   space (Nicolas, 2026-11-02); the margin keeps it apart from the text */
 .photo img[src$='.svg'] {
-  object-fit: contain;
+  aspect-ratio: auto;
+  border-radius: 0;
+  margin: 1rem 0 0.25rem;
 }
 
 .photo figcaption {

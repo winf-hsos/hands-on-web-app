@@ -126,7 +126,6 @@ export function createSite({ vocabulary, sections, hidden = new Map() }, area, b
     const refs = [];
     for (const doc of sections.projects) {
       const text = projectText(doc, lang);
-      if ((doc.lead.items ?? []).includes(itemId)) refs.push({ project: doc, anchor: '', title: '' });
       doc.lead.phases.forEach((phase, p) => {
         if (phase.challenge === itemId || (phase.items ?? []).includes(itemId)) refs.push({ project: doc, anchor: phase.id, title: text.phases[p].title });
         (phase.challenges ?? []).forEach((challenge, c) => {
