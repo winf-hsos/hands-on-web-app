@@ -15,7 +15,7 @@ level: 1
 topics: [transferring-information, representing-information]
 modules: [dup]
 project: lifi
-status: draft
+status: published
 updated: 2026-11-02
 ---
 
