@@ -19,7 +19,7 @@ modules: [ea]
 areas: [ds]
 relations:
   example_of: [data-transformation-basics]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

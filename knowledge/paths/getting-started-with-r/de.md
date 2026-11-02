@@ -34,7 +34,7 @@ sections:
       - r-basics-quiz
       - item: positron
         optional: true
-status: draft
+status: published
 updated: 2026-10-27
 ---
 

@@ -16,7 +16,7 @@ sections:
     items: [eda-self-assessment, rewe-products]
   - path: getting-started-with-r
   - path: data-transformation-with-r
-status: draft
+status: published
 updated: 2026-10-27
 ---
 

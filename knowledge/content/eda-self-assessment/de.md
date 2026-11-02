@@ -21,7 +21,7 @@ modules: [ea]
 areas: [ds]
 relations:
   see_also: [r-for-data-science, fundamentals-of-data-visualization]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

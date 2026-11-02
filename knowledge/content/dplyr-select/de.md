@@ -21,7 +21,7 @@ modules: [ea]
 areas: [ds]
 relations:
   requires: [r-pipe]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

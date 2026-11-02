@@ -17,7 +17,7 @@ duration: 8
 topics: [programming-with-r]
 modules: [ea]
 areas: [ds]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

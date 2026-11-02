@@ -20,7 +20,7 @@ modules: [ea]
 areas: [ds]
 relations:
   requires: [r-vectors]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

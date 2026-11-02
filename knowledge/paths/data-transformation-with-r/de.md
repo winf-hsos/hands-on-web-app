@@ -26,7 +26,7 @@ sections:
       - dplyr-filter
       - dplyr-exercise-price
       - data-transformation-quiz
-status: draft
+status: published
 updated: 2026-10-30
 ---
 

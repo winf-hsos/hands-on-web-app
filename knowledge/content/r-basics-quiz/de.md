@@ -18,7 +18,7 @@ modules: [ea]
 areas: [ds]
 relations:
   checks: [r-names, r-functions, r-vectors, r-data-types, r-comparisons, r-missing-values, r-pipe]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

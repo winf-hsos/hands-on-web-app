@@ -18,7 +18,7 @@ modules: [ea]
 areas: [ds]
 relations:
   checks: [data-transformation-basics, tidy-data, dplyr-select, dplyr-filter]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 
