@@ -15,10 +15,10 @@ phases:
   - id: vectors
     items: [monty-hall-game, data-representation-slides, r-vectors, r-data-types, monty-hall-experiment-2]
   - id: tibble
-    items: [lets-make-a-deal, r-packages, r-pipe, dplyr-select, dplyr-filter, monty-hall-experiment-3]
+    items: [lets-make-a-deal, monty-hall-experiment-3]
   - id: simulate
-    items: [r-functions, tidy-data, monty-hall-experiment-4]
-status: draft
+    items: [r-functions, monty-hall-experiment-4]
+status: published
 updated: 2026-11-03
 ---
 

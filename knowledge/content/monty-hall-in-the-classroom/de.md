@@ -21,7 +21,7 @@ modules: [ea]
 project: monty-hall
 relations:
   see_also: [monty-hall-game, what-should-we-measure]
-status: draft
+status: published
 updated: 2026-11-03
 ---
 

@@ -17,7 +17,7 @@ topics: [programming-with-r]
 areas: [ds]
 modules: [ea]
 project: monty-hall
-status: draft
+status: published
 updated: 2026-11-03
 ---
 

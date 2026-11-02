@@ -22,6 +22,6 @@ modules: [ea]
 areas: [ds]
 relations:
   see_also: [monty-hall-game, lets-make-a-deal]
-status: draft
+status: published
 updated: 2026-11-02
 ---

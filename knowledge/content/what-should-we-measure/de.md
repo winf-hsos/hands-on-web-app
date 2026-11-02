@@ -20,7 +20,7 @@ modules: [ea]
 areas: [ds]
 relations:
   see_also: [monty-hall-game, types-of-variables-slides]
-status: draft
+status: published
 updated: 2026-11-02
 ---
 
