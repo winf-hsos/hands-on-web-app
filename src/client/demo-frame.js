@@ -92,13 +92,23 @@ function setup(frame) {
   // the width the demonstrator had on the page, scaled to fit the screen
   function fit() {
     if (!isFull(frame)) return;
-    // measured as drawn and divided by the zoom, so that setting the same
-    // zoom again changes nothing and the observer below comes to rest
-    const zoom = Number(stage.style.zoom) || 1;
-    const { width, height } = stage.getBoundingClientRect();
+    // Text and borders do not scale exactly with the zoom, so a demonstrator
+    // measured as drawn and divided by its zoom comes out a few per cent
+    // larger or smaller at every zoom, and a table with text in it jumped
+    // between two sizes. Measured always at zoom 1, then corrected once if
+    // it still overflows, the zoom depends only on the content and the
+    // screen, and setting it again changes nothing, so the observer below
+    // comes to rest.
     const room = { width: innerWidth * 0.94, height: (innerHeight - bar.offsetHeight) * 0.92 };
-    const next = Math.min(MAX_ZOOM, room.width / (width / zoom), room.height / (height / zoom));
-    if (Math.abs(next - zoom) > 0.01) stage.style.zoom = next.toFixed(3);
+    const scale = () => {
+      const { width, height } = stage.getBoundingClientRect();
+      return Math.min(room.width / width, room.height / height);
+    };
+    stage.style.zoom = '1';
+    const zoom = Math.min(MAX_ZOOM, scale());
+    stage.style.zoom = zoom.toFixed(3);
+    const over = scale();
+    if (over < 1) stage.style.zoom = (zoom * over).toFixed(3);
   }
 
   function enter() {
