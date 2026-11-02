@@ -657,6 +657,18 @@ export const shellDemoLabels = {
   },
 };
 
+/** Texts of a 3D model (client/model.js). */
+export const modelLabels = {
+  de: {
+    hint: 'Ziehen dreht das Modell, zwei Finger oder nach einem Klick das Mausrad zoomen, ein Doppelklick stellt es zurück.',
+    failed: 'Das 3D-Modell ließ sich nicht laden; die Datei steht unten zum Herunterladen.',
+  },
+  en: {
+    hint: 'Drag to turn the model, zoom with two fingers or, after a click, with the mouse wheel, and double-click to reset it.',
+    failed: 'The 3D model could not be loaded; the file is below for download.',
+  },
+};
+
 /** Labels of the buttons under an animated drawing (client/figures.js). */
 export const figureLabels = {
   de: {

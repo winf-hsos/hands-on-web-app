@@ -198,6 +198,7 @@ const scriptsFor = (body) =>
     body.includes('data-byte-switchboard') && 'byte-switchboard',
     body.includes('data-shell-demo') && 'shell-demo',
     body.includes('data-figure') && 'figures',
+    body.includes('data-model') && 'model',
     body.includes('data-fillable') && 'tables',
   ].filter(Boolean);
 

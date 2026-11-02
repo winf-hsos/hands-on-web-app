@@ -219,6 +219,18 @@ The body is plain Markdown with a few conventions:
   kept language-neutral; otherwise there is one image per language
   (`codebook.de.svg`, `codebook.en.svg`). The build copies the folder next
   to the item's page, in every area and language and on the drafts site.
+  A photo with a title, `![Alt text](media/front.jpg "Caption")`, alone in
+  its paragraph shows with its caption below; several such photos in one
+  paragraph stand side by side, and a lone one stands centred and at most
+  34rem tall.
+- **3D models** are STL files in `media/`:
+  `![What it shows](model:media/case.stl "Caption")`. The page shows them in
+  a small viewer of its own (`src/client/model.js`, plain WebGL, loaded only
+  when the model comes near the screen): dragging turns the model, two
+  fingers or, after a click, the mouse wheel zoom it, a double click resets
+  it. Several models in one paragraph stand side by side. Link the file as
+  well, for downloading. The validator checks that every `model:` path is an
+  STL file that exists.
 - **Drawings** (diagrams, schemas, processes that play in steps) are code,
   not images: `![What it shows](figure:name "Caption")` shows a drawing that
   the item's `figures.js` registers. It is drawn on the page in the colours

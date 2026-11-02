@@ -538,6 +538,16 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
     if (drawings) for (const problem of figureRules(drawings.source)) errors.push(`content/${item.id}/${FIGURE_FILE}: ${problem}`);
   }
 
+  // 3D models: every model:media/… in a text is an STL file of the item.
+  for (const item of content) {
+    for (const file of Object.values(item.files)) {
+      for (const [, ref] of file.body.matchAll(/\]\(model:([^)\s]+)/g)) {
+        if (!/^media\/[\w.-]+\.stl$/.test(ref)) errors.push(`${file.path}: model:${ref} is not an STL file in media/`);
+        else if (!existsSync(join(item.dir, ref))) errors.push(`${file.path}: model:${ref} does not exist`);
+      }
+    }
+  }
+
   // Quizzes: every question needs options and at least one correct one.
   for (const item of content.filter((d) => d.lead.type === 'quiz')) {
     for (const file of Object.values(item.files)) {

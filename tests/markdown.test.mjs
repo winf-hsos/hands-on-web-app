@@ -30,6 +30,18 @@ test('every callout title stands in capitals after an icon of its kind', () => {
   assert.equal((html.match(/<p class="callout-title"><svg class="callout-icon"[^>]*aria-hidden="true">/g) ?? []).length, 5);
 });
 
+test('models in one paragraph become a row of viewers with captions', () => {
+  const html = render('![Die Wanne](model:media/a.stl "Wanne") ![Der Deckel](model:media/b.stl "Deckel")\n');
+  assert.match(html, /^<div class="model-row"[^>]*><figure class="model" data-model="media\/a.stl"><div class="model-canvas" role="img" aria-label="Die Wanne"><\/div><figcaption>Wanne<\/figcaption><\/figure><figure class="model" data-model="media\/b.stl">/);
+  assert.doesNotMatch(html, /<img/);
+});
+
+test('photos with a title become figures with captions, side by side', () => {
+  const html = render('![Vorn](media/a.jpg "Von vorn") ![Hinten](media/b.jpg "Von hinten")\n');
+  assert.match(html, /^<div class="photo-row"[^>]*><figure class="photo"><img src="media\/a.jpg" alt="Vorn"[^>]*><figcaption>Von vorn<\/figcaption><\/figure><figure class="photo">/);
+  assert.doesNotMatch(render('![Vorn](media/a.jpg)\n'), /photo-row/);
+});
+
 test('the highlighter knows keywords, builtins, strings, numbers, comments and defined names', () => {
   const kinds = tokenize('def area(w):  # size\n    return print("x", 4.5)')
     .filter((t) => t.type)

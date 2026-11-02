@@ -61,6 +61,8 @@ export function remarkKnowledge({ lang, quiz: isQuiz = false, resolve, sourceMap
     fillableTables(tree, lang);
     demos(tree);
     figures(tree);
+    models(tree);
+    photos(tree);
     if (isQuiz) quiz(tree);
     if (sourceMap) markSources(tree);
   };
@@ -238,6 +240,55 @@ function figures(tree) {
       type: 'figureDrawing',
       position: node.position,
       data: { hName: 'figure', hProperties: { className: ['drawing'], dataFigure: name }, hChildren: [canvas, caption].filter(Boolean) },
+    };
+    return SKIP;
+  });
+}
+
+// ![description](model:media/part.stl "caption") is a 3D model that can be
+// turned and zoomed (client/model.js); several in one paragraph stand side by
+// side. The description is what a screen reader says.
+function models(tree) {
+  visit(tree, 'paragraph', (node, index, parent) => {
+    const images = node.children.filter((c) => c.type === 'image' && c.url.startsWith('model:'));
+    if (!images.length || node.children.some((c) => !images.includes(c) && (c.type !== 'text' || c.value.trim()))) return;
+    const figure = (image) => ({
+      type: 'element',
+      tagName: 'figure',
+      properties: { className: ['model'], dataModel: image.url.slice('model:'.length) },
+      children: [
+        { type: 'element', tagName: 'div', properties: { className: ['model-canvas'], role: 'img', ariaLabel: image.alt }, children: [] },
+        image.title && { type: 'element', tagName: 'figcaption', properties: {}, children: [{ type: 'text', value: image.title }] },
+      ].filter(Boolean),
+    });
+    parent.children[index] = {
+      type: 'modelRow',
+      position: node.position,
+      data: { hName: 'div', hProperties: { className: ['model-row'] }, hChildren: images.map(figure) },
+    };
+    return SKIP;
+  });
+}
+
+// Images alone in their paragraph, one of them with a "caption", become
+// figures with their caption below; several stand side by side.
+function photos(tree) {
+  visit(tree, 'paragraph', (node, index, parent) => {
+    const images = node.children.filter((c) => c.type === 'image' && !/^(figure|model):/.test(c.url));
+    if (!images.some((i) => i.title) || node.children.some((c) => !images.includes(c) && (c.type !== 'text' || c.value.trim()))) return;
+    const figure = (image) => ({
+      type: 'element',
+      tagName: 'figure',
+      properties: { className: ['photo'] },
+      children: [
+        { type: 'element', tagName: 'img', properties: { src: image.url, alt: image.alt, loading: 'lazy' }, children: [] },
+        image.title && { type: 'element', tagName: 'figcaption', properties: {}, children: [{ type: 'text', value: image.title }] },
+      ].filter(Boolean),
+    });
+    parent.children[index] = {
+      type: 'photoRow',
+      position: node.position,
+      data: { hName: 'div', hProperties: { className: ['photo-row'] }, hChildren: images.map(figure) },
     };
     return SKIP;
   });
