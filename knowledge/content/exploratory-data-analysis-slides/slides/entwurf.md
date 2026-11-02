@@ -114,7 +114,7 @@ anderen fünf grau, bis sie an der Reihe sind.
 ### Folie 1 🎬
 
 **Titel:** `exploratory data analysis`
-**Untertitel:** `hands-on data science · Prof. Dr. Nicolas Meseth`
+**Untertitel:** `Prof. Dr. Nicolas Meseth`
 
 Die Agenda-Folie danach füllt stagekit aus den drei Teilen: `where exploring
 fits`, `what is the question?`, `exploring the survey`.

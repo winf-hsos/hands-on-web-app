@@ -23,6 +23,6 @@ modules: [ea]
 areas: [ds]
 relations:
   see_also: [what-should-we-measure, doering-research-methods, data-representation-slides]
-status: draft
+status: published
 updated: 2026-11-02
 ---

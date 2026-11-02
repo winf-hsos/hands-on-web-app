@@ -70,7 +70,7 @@ Tabelle „Was sollen wir messen?“ am Schluss.
 ### Folie 1 🎬
 
 **Titel:** `types of variables`
-**Untertitel:** `hands-on data science · prof. dr. nicolas meseth`
+**Untertitel:** `prof. dr. nicolas meseth`
 
 ### Folie 2
 
