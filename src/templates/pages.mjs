@@ -400,6 +400,7 @@ export function path(site, doc, lang) {
     description: text.summary,
     current: 'paths',
     back: 'paths',
+    scripts: doc.lead.sections ? ['fold'] : [],
     content: html`
       <article class="page">
         <header class="page-head">
@@ -410,7 +411,10 @@ export function path(site, doc, lang) {
         </header>
         ${text.missing && html`<p class="notice">${t(lang, 'missing_translation')}</p>`}
         ${doc.lead.sections
-          ? doc.lead.sections.map((section) => html`<section class="path-section"><h2>${section.title[lang]}</h2>${trail(section.steps)}</section>`)
+          ? doc.lead.sections.map((section, i) => html`<details class="fold path-section" data-fold="path:${doc.id}:${i + 1}" open>
+              <summary><h2>${section.title[lang]}</h2><span class="fold-meta">${count(lang, section.steps.length, 'steps')}</span></summary>
+              ${trail(section.steps)}
+            </details>`)
           : trail(doc.lead.steps)}
         ${more(
           t(lang, 'about_path'),
@@ -499,10 +503,10 @@ export function course(site, doc, lang) {
   let number = 0;
   const trail = (list) =>
     html`<ol class="rows trail">${site.steps(list).map((s) => itemRow(site, site.item.get(s.id), lang, { optional: s.optional, summary: false, number: ++number }))}</ol>`;
-  const section = (title, body, meta) => {
+  const section = (key, title, body, meta) => {
     number = 0;
-    return html`<details class="course-section" open>
-      <summary><span class="course-section-title">${title}</span>${meta && html`<span class="course-section-meta">${meta}</span>`}</summary>
+    return html`<details class="fold course-section" data-fold="${key}" open>
+      <summary><span class="course-section-title">${title}</span>${meta && html`<span class="fold-meta">${meta}</span>`}</summary>
       ${body()}
     </details>`;
   };
@@ -510,10 +514,15 @@ export function course(site, doc, lang) {
   const pathSection = (p) => {
     const ptext = site.localize(p, lang);
     const steps = site.pathSteps(p);
+    // its parts share their folded state with the path page
     return section(
+      `path:${p.id}`,
       ptext.title,
       () => html`${p.lead.sections
-          ? p.lead.sections.map((part) => html`<h3 class="course-path-part">${part.title[lang]}</h3>${trail(part.steps)}`)
+          ? p.lead.sections.map((part, i) => html`<details class="fold course-path-part" data-fold="path:${p.id}:${i + 1}" open>
+              <summary><h3>${part.title[lang]}</h3><span class="fold-meta">${count(lang, part.steps.length, 'steps')}</span></summary>
+              ${trail(part.steps)}
+            </details>`)
           : trail(p.lead.steps)}
         <p class="course-path-link"><a href="${site.url(p, lang)}">${pathIcon}${t(lang, 'open_path')}</a></p>`,
       html`${t(lang, 'path')} · ${count(lang, steps.length, 'steps')}`,
@@ -524,6 +533,7 @@ export function course(site, doc, lang) {
     const ptext = site.localize(p, lang);
     const phases = site.projectText(p, lang).phases;
     return section(
+      `project:${p.id}`,
       ptext.title,
       () => html`<p class="course-project-summary" lang="${ptext.lang}">${ptext.summary}</p>
         <ol class="rows trail">${p.lead.phases.map((phase, i) => html`<li class="row">
@@ -540,7 +550,7 @@ export function course(site, doc, lang) {
     description: text.summary,
     current: 'courses',
     back: 'courses',
-    scripts: ['course'],
+    scripts: ['course', 'fold'],
     content: html`
       <article class="page" data-course="${doc.id}">
         <header class="page-head">
@@ -552,10 +562,10 @@ export function course(site, doc, lang) {
           ${required.length > 0 && progressBar(required, lang)}
         </header>
         ${doc.lead.sections.length === 0 && html`<p class="empty">${t(lang, 'course_empty')}</p>`}
-        ${doc.lead.sections.map((s) =>
+        ${doc.lead.sections.map((s, i) =>
           s.path ? pathSection(site.path.get(s.path))
           : s.project ? projectSection(site.project.get(s.project))
-          : section(s.title[lang], () => trail(s.items)))}
+          : section(`course:${doc.id}:${i + 1}`, s.title[lang], () => trail(s.items)))}
         ${more(t(lang, 'about_course'), html`<div class="prose" lang="${text.lang}">${raw(site.body(doc, lang))}</div>`)}
       </article>
     `,

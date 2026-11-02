@@ -1180,8 +1180,12 @@ details.callout[open] > summary::before {
   color: var(--accent-ink);
 }
 
-.path-section h2 {
-  margin: 2.25rem 0 0.5rem;
+.path-section {
+  margin-top: 1.75rem;
+}
+
+.path-section > summary h2 {
+  margin: 0;
   font-size: 1.2rem;
 }
 
@@ -1773,7 +1777,8 @@ details.callout[open] > summary::before {
   margin-top: 1.5rem;
 }
 
-.course-section > summary {
+/* A foldable path part or module section; fold.js remembers closed ones. */
+.fold > summary {
   list-style: none;
   display: flex;
   align-items: baseline;
@@ -1783,11 +1788,11 @@ details.callout[open] > summary::before {
   padding: 0.5rem 0;
 }
 
-.course-section > summary::-webkit-details-marker {
+.fold > summary::-webkit-details-marker {
   display: none;
 }
 
-.course-section > summary::before {
+.fold > summary::before {
   content: '';
   align-self: center;
   width: 0.55rem;
@@ -1799,27 +1804,36 @@ details.callout[open] > summary::before {
   margin-right: 0.25rem;
 }
 
-.course-section[open] > summary::before {
+.fold[open] > summary::before {
   transform: rotate(45deg);
 }
 
-.course-section::details-content {
+.fold::details-content {
   block-size: 0;
   overflow: hidden;
   transition: block-size 0.35s var(--ease), content-visibility 0.35s allow-discrete;
 }
 
-.course-section[open]::details-content {
+.fold[open]::details-content {
   block-size: auto;
 }
 
-.course-section-meta {
+.fold-restoring .fold::details-content,
+.fold-restoring .fold > summary::before {
+  transition: none;
+}
+
+.fold-meta {
   color: var(--quiet);
   font-size: 0.9rem;
 }
 
 .course-path-part {
-  margin: 1.25rem 0 0.25rem;
+  margin-top: 0.75rem;
+}
+
+.course-path-part > summary h3 {
+  margin: 0;
   font-size: 0.95rem;
   color: var(--quiet);
 }
