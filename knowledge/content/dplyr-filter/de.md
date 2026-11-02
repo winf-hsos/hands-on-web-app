@@ -22,7 +22,7 @@ areas: [ds]
 relations:
   requires: [r-comparisons, r-pipe]
   see_also: [dplyr-select]
-status: published
+status: draft
 updated: 2026-11-01
 ---
 

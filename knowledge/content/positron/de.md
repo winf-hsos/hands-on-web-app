@@ -20,7 +20,7 @@ duration: 12
 topics: [reproducible-work, programming-with-r, programming-with-python]
 modules: [ea, dup]
 areas: [ds, cs]
-status: published
+status: draft
 updated: 2026-11-01
 ---
 

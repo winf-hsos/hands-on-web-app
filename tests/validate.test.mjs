@@ -271,6 +271,13 @@ test('a course may have a subtitle and, while it is being written, no sections',
   assert.deepEqual(errors, []);
 });
 
+test('a path may, while it is being written, have no parts', () => {
+  const { errors } = check(({ find }) => {
+    lead(find('paths', 'getting-started-with-r')).sections = [];
+  });
+  assert.deepEqual(errors, []);
+});
+
 test('the scenario of a folder tree and command line is checked', () => {
   const { errors } = check(({ find }) => {
     const body = find('content', 'command-line-demo').files.de;

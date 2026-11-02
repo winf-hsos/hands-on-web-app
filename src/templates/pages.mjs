@@ -450,11 +450,11 @@ export function paths(site, lang) {
               ${pathIcon}
               <span class="row-head">
                 <span class="row-title" style="view-transition-name: t-${p.id}">${text.titleHtml}</span>
-                <span class="row-meta"><span>${count(lang, steps.length, 'steps')}</span><span>${site.duration(steps).required} ${t(lang, 'minutes')}</span>${draftTag(site, p, lang)}</span>
+                <span class="row-meta">${steps.length > 0 && html`<span>${count(lang, steps.length, 'steps')}</span><span>${site.duration(steps).required} ${t(lang, 'minutes')}</span>`}${draftTag(site, p, lang)}</span>
               </span>
               <span class="row-summary">${text.summary}</span>
             </a>
-            ${progressBar(steps.filter((s) => !s.optional).map((s) => s.id), lang)}
+            ${steps.length > 0 && progressBar(steps.filter((s) => !s.optional).map((s) => s.id), lang)}
           </li>`;
         })}
       </ul>
@@ -480,12 +480,13 @@ export function path(site, doc, lang) {
     content: html`
       <article class="page">
         <header class="page-head">
-          <p class="kicker"><span>${t(lang, 'path')}</span><span>${time.required} ${t(lang, 'minutes')}</span>${backIcon(site, lang, 'paths')}</p>
+          <p class="kicker"><span>${t(lang, 'path')}</span>${steps.length > 0 && html`<span>${time.required} ${t(lang, 'minutes')}</span>`}${backIcon(site, lang, 'paths')}</p>
           <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}"${editable(site, 'title')}>${text.titleHtml}</h1>
           <p class="lead" lang="${text.lang}"${editable(site, 'goal')}>${text.data.goal}</p>
-          ${progressBar(steps.filter((s) => !s.optional).map((s) => s.id), lang)}
+          ${steps.length > 0 && progressBar(steps.filter((s) => !s.optional).map((s) => s.id), lang)}
         </header>
         ${text.missing && html`<p class="notice">${t(lang, 'missing_translation')}</p>`}
+        ${steps.length === 0 && html`<p class="empty">${t(lang, 'path_empty')}</p>`}
         ${doc.lead.sections
           ? doc.lead.sections.map((section, i) => html`<details class="fold path-section" data-fold="path:${doc.id}:${i + 1}"${openIfSingle(doc.lead.sections)}>
               <summary><h2>${section.title[lang]}</h2><span class="fold-meta">${count(lang, section.steps.length, 'steps')}</span></summary>
@@ -593,14 +594,14 @@ export function course(site, doc, lang) {
     return section(
       `path:${p.id}`,
       ptext.title,
-      () => html`${p.lead.sections
+      () => html`${steps.length === 0 && html`<p class="empty">${t(lang, 'path_empty')}</p>`}${p.lead.sections
           ? p.lead.sections.map((part, i) => html`<details class="fold course-path-part" data-fold="path:${p.id}:${i + 1}"${openIfSingle(p.lead.sections)}>
               <summary><h3>${part.title[lang]}</h3><span class="fold-meta">${count(lang, part.steps.length, 'steps')}</span></summary>
               ${trail(part.steps)}
             </details>`)
           : trail(p.lead.steps)}
         <p class="course-path-link"><a href="${site.url(p, lang)}">${pathIcon}${t(lang, 'open_path')}</a></p>`,
-      html`${t(lang, 'path')} · ${count(lang, steps.length, 'steps')}`,
+      steps.length > 0 ? html`${t(lang, 'path')} · ${count(lang, steps.length, 'steps')}` : t(lang, 'path'),
     );
   };
   // A project in a module shows its phases like the parts of a path, and they

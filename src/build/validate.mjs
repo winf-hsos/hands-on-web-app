@@ -179,8 +179,9 @@ function shapes(vocabulary) {
           status,
           updated: date,
         },
-        // either a flat list of steps or parts with headings, see pathSteps
-        optional: { requires: list(id), steps: list(step, 1), sections: list(pathSection, 1), areas: inAreas },
+        // either a flat list of steps or parts with headings, see pathSteps;
+        // the parts may be empty while the content of a new path is being written
+        optional: { requires: list(id), steps: list(step, 1), sections: list(pathSection), areas: inAreas },
       },
       translation: { required: { ...translation.required, goal: text, audience: text }, optional: {} },
     },

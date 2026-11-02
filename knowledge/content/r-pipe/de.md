@@ -19,7 +19,7 @@ modules: [ea]
 areas: [ds]
 relations:
   requires: [r-data-frames, r-packages]
-status: published
+status: draft
 updated: 2026-11-01
 ---
 

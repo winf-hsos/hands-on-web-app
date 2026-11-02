@@ -21,7 +21,7 @@ modules: [ea]
 areas: [ds]
 relations:
   deepens: [data-transformation-basics]
-status: published
+status: draft
 updated: 2026-11-01
 ---
 
