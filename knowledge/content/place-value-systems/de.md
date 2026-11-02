@@ -90,8 +90,7 @@ verschiedene Zahlen sind. Und die Rechnung geht in beide Richtungen: Mit *k*
 Zeichen und *n* Stellen lassen sich *k*ⁿ Codewörter unterscheiden, und wer
 weiß, wie viele Zeichen er braucht, kann ausrechnen, wie viele Stellen das
 kostet. Vier Farben und zwei Stellen ergeben 16 Kombinationen, zu wenig für 26
-Buchstaben; drei Stellen ergeben 64, und das reicht. Wie aus einer Tabelle
-solcher Codewörter ein Code wird, behandelt [[code-as-agreement]].
+Buchstaben; drei Stellen ergeben 64, und das reicht.
 
 ## Kurz gesagt
 

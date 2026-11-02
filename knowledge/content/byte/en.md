@@ -33,7 +33,7 @@ a binary number, it runs from 0 (all eight bits 0) to 255 (all eight bits 1).
 The place values are 128, 64, 32, 16, 8, 4, 2 and 1, each double its
 right-hand neighbour, and the value of the byte is the sum of the places that
 are set. The byte in the figure, `01000001`, is 64 + 1 = 65; read as text it
-is a capital A, and why that is so is explained in [[code-as-agreement]].
+is a capital A according to the ASCII table.
 
 ## A unit of packaging, not a number
 

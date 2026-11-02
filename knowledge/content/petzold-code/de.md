@@ -21,7 +21,7 @@ level: 1
 duration: 5
 topics: [representing-information, processing-information]
 relations:
-  see_also: [morse-code, code-as-agreement, morse-and-the-type-case, logic-gates, nand-gate, place-value-systems, binary-numbers, hexadecimal]
+  see_also: [morse-code, logic-gates, nand-gate, place-value-systems, binary-numbers, hexadecimal]
 status: draft
 updated: 2026-11-01
 ---
@@ -38,10 +38,9 @@ hat man eine Maschine verstanden, die man vorher nur benutzt hat.
 ## Warum es hierher passt
 
 Das Buch geht denselben Weg wie die Inhalte hier, vom Zeichen über den Code bis
-zur Maschine. Wer [[code-as-agreement]] gelesen hat, findet in den ersten
-Kapiteln dieselbe Frage aus einem anderen Blickwinkel, und der Morsecode aus
-[[morse-and-the-type-case|der Geschichte vom Setzkasten]] ist auch dort einer
-der Ausgangspunkte. Die Gatter, aus denen Petzold sein Addierwerk baut, fasst
+zur Maschine. In den ersten
+Kapiteln geht es um Codes, und der [[morse-code|Morsecode]] ist einer der
+Ausgangspunkte. Die Gatter, aus denen Petzold sein Addierwerk baut, fasst
 die Lektion [[logic-gates]] zusammen, und das [[nand-gate]] kommt bei ihm
 ebenso vor wie hier.
 

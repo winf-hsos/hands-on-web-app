@@ -47,7 +47,7 @@ Two results follow from this that still govern every transmission. The first:
 if some symbols are more frequent than others, they can be written with
 shorter codewords, saving bits on average, and Shannon stated how far this
 can go at most. With Robert Fano he developed a method for such
-[[prefix-free-code|prefix-free codes]]. The second: every line has a
+prefix-free codes. The second: every line has a
 **capacity**. Below this limit, messages can be sent as reliably as you like
 despite noise, if they are cleverly given extra check bits; above it, this is
 impossible however you go about it.

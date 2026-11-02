@@ -41,10 +41,9 @@ phases:
       - id: challenge-1
         items: [lifi-colour-alphabet-quiz]
   - id: word
-    items: [knock-code, morse-code, morse-and-the-type-case]
+    items: [morse-code]
     challenges:
       - id: challenge-2
-        items: [code-as-agreement, prefix-free-code, code-systems-quiz]
   - id: protocol
     challenges:
       - id: challenge-3

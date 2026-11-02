@@ -20,7 +20,7 @@ duration: 20
 topics: [representing-information, transferring-information]
 modules: [dup]
 relations:
-  see_also: [code-as-agreement, knock-code, symbols-and-information-slides]
+  see_also: [symbols-and-information-slides]
 status: draft
 updated: 2026-11-01
 ---
@@ -161,9 +161,7 @@ print("gelesen: ", received)
   Programmen und wird nie übertragen. Was passiert, wenn eine Person sie
   ändert und es der anderen nicht sagt?
 
-Warum ein Code ohne seine Tabelle nichts bedeutet und weshalb abweichende
-Tabellen keine Fehlermeldung erzeugen, erklärt die Lektion
-[[code-as-agreement]]. Dass ein Symbol ein vereinbarter und unterscheidbarer
+Dass ein Symbol ein vereinbarter und unterscheidbarer
 Zustand ist, zeigen die Folien [[symbols-and-information-slides]].
 
 > [!NOTE]

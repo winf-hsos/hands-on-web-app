@@ -140,8 +140,7 @@ and the receiver turns them back into `"hi"` with `decode()`.
 Boxes connect only when their edges agree. If the sender uses blue for the
 letter `a` but the receiver reads blue as `b`, both boxes may work exactly as
 written and the whole system still fails, so every boundary needs an
-agreement about the form and the meaning of the data. How such an agreement
-becomes a code is the subject of [[code-as-agreement]].
+agreement about the form and the meaning of the data.
 
 The chain also tells you how to search when something goes wrong. If `"hi"`
 does not arrive at the end, staring at the whole system helps little, and it
@@ -184,8 +183,7 @@ down so that a computer can carry it out; [[algorithms-and-programs]]
 follows this question. The second asks how what crosses the edges is written
 so that a machine can work with it. The sensor turned visible light into
 four numbers, and other answers turn numbers, letters, pictures and files
-into bits, as [[place-value-systems]], [[binary-numbers]] and
-[[code-as-agreement]] show.
+into bits, as [[place-value-systems]] and [[binary-numbers]] show.
 
 ## A black box still needs a test
 

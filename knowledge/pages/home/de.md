@@ -5,8 +5,6 @@ title: Hands-on Computer Science
 summary: >-
   Lektionen, Experimente und Geschichten zur Informatik zum Selbststudium und
   als Begleitung zu Vorlesungen, frei zugänglich und ohne Anmeldung.
-featured_path: codes-in-one-hour
-samples: [knock-code, morse-and-the-type-case, prefix-free-code]
 updated: 2026-11-01
 ---
 

@@ -81,8 +81,7 @@ the signal can be perfect and the meaning still wrong.
 
 In code, the agreement is a dictionary like `sender_table`. It is never
 transmitted; it has to sit on both sides beforehand, which makes it not data
-but a promise. Why every code is such an agreement is the subject of
-[[code-as-agreement]], and the experiment
+but a promise. The experiment
 [[perfect-reception-perfect-nonsense]] lets you run into the broken promise
 yourself.
 
@@ -210,7 +209,7 @@ The unequal treatment pays off because it shortens the average message: what
 occurs often should cost little. A rare symbol carries more information than a
 common one, so it may also take up more room. Codes of unequal length have a
 price of their own, though, since the receiver has to find out where one code
-word ends; Morse code uses pauses for that, and a [[prefix-free-code]] gets by
+word ends; Morse code uses pauses for that, and a prefix-free code gets by
 without them.
 
 ## Takeaways

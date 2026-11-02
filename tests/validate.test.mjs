@@ -31,64 +31,64 @@ test('a label with an unquoted comma in the vocabulary is an error', () => {
 });
 
 test('a missing required field is named', () => {
-  const { errors } = check(({ find }) => delete lead(find('content', 'knock-code')).level);
-  assert.deepEqual(errors, ['content/knock-code/de.md: level is missing']);
+  const { errors } = check(({ find }) => delete lead(find('content', 'command-line-navigating')).level);
+  assert.deepEqual(errors, ['content/command-line-navigating/de.md: level is missing']);
 });
 
 test('an unknown type lists the known ones', () => {
-  const { errors } = check(({ find }) => (lead(find('content', 'knock-code')).type = 'experimnt'));
+  const { errors } = check(({ find }) => (lead(find('content', 'command-line-navigating')).type = 'experimnt'));
   assert.match(errors[0], /type: "experimnt" is not a known type \(lesson, /);
 });
 
 test('an unknown field is an error, so typos in field names do not go unnoticed', () => {
-  const { errors } = check(({ find }) => (lead(find('content', 'knock-code')).duratoin = 5));
-  assert.deepEqual(errors, ['content/knock-code/de.md: unknown field duratoin']);
+  const { errors } = check(({ find }) => (lead(find('content', 'command-line-navigating')).duratoin = 5));
+  assert.deepEqual(errors, ['content/command-line-navigating/de.md: unknown field duratoin']);
 });
 
 test('codes are unique', () => {
-  const { errors } = check(({ find }) => (lead(find('content', 'knock-code')).code = 4821));
-  assert.deepEqual(errors, ['content/knock-code: code 4821 is already used by content/code-as-agreement']);
+  const { errors } = check(({ find }) => (lead(find('content', 'command-line-navigating')).code = 1512));
+  assert.deepEqual(errors, ['content/command-line-navigating: code 1512 is already used by content/command-line-files']);
 });
 
 test('relations, path steps, course items and links must point to existing ids', () => {
   const { errors } = check(({ find }) => {
-    lead(find('content', 'knock-code')).relations.requires = ['nowhere'];
-    lead(find('paths', 'codes-in-one-hour')).steps.push('nowhere-path');
-    lead(find('courses', 'digitalisation-and-programming')).sections[1].items.push('nowhere-course');
-    find('content', 'knock-code').files.de.body += '\n[[nowhere-link]]\n';
+    lead(find('content', 'command-line-navigating')).relations.requires = ['nowhere'];
+    lead(find('paths', 'the-command-line')).steps.push('nowhere-path');
+    lead(find('courses', 'digitalisation-and-programming')).sections.push({ title: { de: 'A', en: 'A' }, items: ['nowhere-course'] });
+    find('content', 'command-line-navigating').files.de.body += '\n[[nowhere-link]]\n';
   });
   assert.deepEqual(errors.sort(), [
-    'content/knock-code relations.requires: unknown item "nowhere"',
-    'content/knock-code/de.md: link to unknown id [[nowhere-link]]',
-    'courses/digitalisation-and-programming sections[2]: unknown item "nowhere-course"',
-    'paths/codes-in-one-hour steps: unknown item "nowhere-path"',
+    'content/command-line-navigating relations.requires: unknown item "nowhere"',
+    'content/command-line-navigating/de.md: link to unknown id [[nowhere-link]]',
+    'courses/digitalisation-and-programming sections[4]: unknown item "nowhere-course"',
+    'paths/the-command-line steps: unknown item "nowhere-path"',
   ]);
 });
 
 test('a cycle in requires is an error', () => {
   const { errors } = check(({ find }) => {
-    lead(find('content', 'code-as-agreement')).relations = { requires: ['knock-code'] };
+    lead(find('content', 'command-line')).relations = { requires: ['command-line-navigating'] };
   });
-  assert.deepEqual(errors, ['requires has a cycle: code-as-agreement -> knock-code -> code-as-agreement']);
+  assert.deepEqual(errors, ['requires has a cycle: command-line -> command-line-navigating -> command-line']);
 });
 
 test('a quiz question needs a correct answer', () => {
   const { errors } = check(({ find }) => {
-    const file = find('content', 'code-systems-quiz').files.de;
-    file.body = file.body.replace('- [x] Drei', '- [ ] Drei');
+    const file = find('content', 'command-line-quiz').files.de;
+    file.body = file.body.replace('- [x] `uni`', '- [ ] `uni`');
   });
-  assert.deepEqual(errors, ['content/code-systems-quiz/de.md: question 2 has no correct answer (- [x] …)']);
+  assert.deepEqual(errors, ['content/command-line-quiz/de.md: question 1 has no correct answer (- [x] …)']);
 });
 
 test('a folder needs exactly one lead file', () => {
-  const { errors } = check(({ find }) => delete find('content', 'knock-code').files.en.data.translation_of);
-  assert.match(errors[0], /content\/knock-code: expected exactly one lead file/);
+  const { errors } = check(({ find }) => delete find('content', 'command-line-navigating').files.en.data.translation_of);
+  assert.match(errors[0], /content\/command-line-navigating: expected exactly one lead file/);
 });
 
 test('an outdated translation is a warning, not an error', () => {
-  const { errors, warnings } = check(({ find }) => (lead(find('content', 'knock-code')).updated = new Date('2027-01-01')));
+  const { errors, warnings } = check(({ find }) => (lead(find('content', 'command-line-navigating')).updated = new Date('2027-01-01')));
   assert.deepEqual(errors, []);
-  assert.ok(warnings.includes('content/knock-code/en.md: translation is older than its lead file'));
+  assert.ok(warnings.includes('content/command-line-navigating/en.md: translation is older than its lead file'));
 });
 
 test('projects have no topics: an old topics line is a warning, not an error', () => {
@@ -98,11 +98,11 @@ test('projects have no topics: an old topics line is a warning, not an error', (
 });
 
 test('objectives are a sentence and a list; missing ones are a warning', () => {
-  const broken = check(({ find }) => (lead(find('content', 'knock-code')).objectives = { intro: 'Du kannst danach:', goals: [] }));
-  assert.deepEqual(broken.errors, ['content/knock-code/de.md: objectives: goals: expected at least 1 entry']);
-  const missing = check(({ find }) => delete lead(find('content', 'knock-code')).objectives);
+  const broken = check(({ find }) => (lead(find('content', 'command-line-navigating')).objectives = { intro: 'Du kannst danach:', goals: [] }));
+  assert.deepEqual(broken.errors, ['content/command-line-navigating/de.md: objectives: goals: expected at least 1 entry']);
+  const missing = check(({ find }) => delete lead(find('content', 'command-line-navigating')).objectives);
   assert.deepEqual(missing.errors, []);
-  assert.ok(missing.warnings.includes('content/knock-code/de.md: no objectives (what you learn)'));
+  assert.ok(missing.warnings.includes('content/command-line-navigating/de.md: no objectives (what you learn)'));
 });
 
 test('project phases and challenges must match the headings in every language', () => {
@@ -152,10 +152,10 @@ test('a slides item needs its deck and every file the deck loads', () => {
 test('a dataset names a CSV that exists, and nothing else has a file', () => {
   const { errors } = check(({ find }) => {
     lead(find('content', 'milk-chocolate-survey')).file = 'no_such_file.csv';
-    lead(find('content', 'knock-code')).file = 'mds12_schoko_milch.csv';
+    lead(find('content', 'command-line-navigating')).file = 'mds12_schoko_milch.csv';
   });
   assert.deepEqual(errors, [
-    'content/knock-code: file: only a dataset has a file',
+    'content/command-line-navigating: file: only a dataset has a file',
     'content/milk-chocolate-survey: file: media/datasets/no_such_file.csv does not exist',
   ]);
 });
@@ -171,11 +171,11 @@ test('recordings must be YouTube links', () => {
 test('a path has either steps or sections, and steps in sections are checked like any other', () => {
   const { errors } = check(({ find }) => {
     lead(find('paths', 'python-for-beginners')).sections[0].steps.push('nowhere-section');
-    lead(find('paths', 'codes-in-one-hour')).sections = [{ title: { de: 'A', en: 'A' }, steps: ['knock-code'] }];
+    lead(find('paths', 'the-command-line')).sections = [{ title: { de: 'A', en: 'A' }, steps: ['command-line'] }];
   });
   assert.deepEqual(errors.sort(), [
-    'paths/codes-in-one-hour: needs either steps or sections, not both',
     'paths/python-for-beginners steps: unknown item "nowhere-section"',
+    'paths/the-command-line: needs either steps or sections, not both',
   ]);
 });
 
@@ -187,7 +187,7 @@ test('a section of a path needs a title in both languages', () => {
 });
 
 test('course sections have no release dates', () => {
-  const { errors } = check(({ find }) => (lead(find('courses', 'digitalisation-and-programming')).sections[1].available_from = new Date('2026-11-16')));
+  const { errors } = check(({ find }) => (lead(find('courses', 'digitalisation-and-programming')).sections.push({ title: { de: 'A', en: 'A' }, items: ['command-line'], available_from: new Date('2026-11-16') })));
   assert.deepEqual(errors, ['courses/digitalisation-and-programming/de.md: sections: unknown field available_from (allowed: title, items, or path or project alone)']);
 });
 
@@ -197,8 +197,8 @@ test('a course section can be a learning path, which must exist', () => {
 });
 
 test('a course section can be a project, which must exist', () => {
-  const { errors } = check(({ find }) => (lead(find('courses', 'digitalisation-and-programming')).sections[3].project = 'lifi-nowhere'));
-  assert.deepEqual(errors, ['courses/digitalisation-and-programming sections[4]: unknown project "lifi-nowhere"']);
+  const { errors } = check(({ find }) => (lead(find('courses', 'digitalisation-and-programming')).sections[2].project = 'lifi-nowhere'));
+  assert.deepEqual(errors, ['courses/digitalisation-and-programming sections[3]: unknown project "lifi-nowhere"']);
 });
 
 test('a course names a known institution, and its logo must exist', () => {
@@ -219,8 +219,8 @@ test('a course belongs to one module or several, and a module description is a f
 });
 
 test('areas: an item names known areas, and every area has one start page', () => {
-  const unknown = check(({ find }) => (lead(find('content', 'knock-code')).areas = ['xs']));
-  assert.match(unknown.errors[0], /^content\/knock-code\/de\.md: areas: "xs" is not a known area/);
+  const unknown = check(({ find }) => (lead(find('content', 'command-line-navigating')).areas = ['xs']));
+  assert.match(unknown.errors[0], /^content\/command-line-navigating\/de\.md: areas: "xs" is not a known area/);
   const homeless = check(({ find }) => delete lead(find('pages', 'home-ds')).area);
   assert.deepEqual(homeless.errors, ['pages: area ds needs exactly one start page (a page with area: ds), found 0']);
 });

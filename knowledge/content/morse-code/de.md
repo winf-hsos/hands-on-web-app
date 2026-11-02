@@ -14,8 +14,6 @@ objectives:
 level: 1
 duration: 6
 topics: [representing-information, transferring-information]
-relations:
-  see_also: [morse-and-the-type-case, prefix-free-code]
 status: draft
 updated: 2026-11-01
 ---
@@ -38,8 +36,7 @@ Telegrafendraht, als Ton im Funk oder als Licht mit einer Taschenlampe.
 | A | `·−` | | N | `−·` |
 
 Häufige Buchstaben wie E und T bestehen aus einem einzigen Signal, seltene wie
-Q oder Y aus vier. Woher diese Verteilung kommt, erzählt
-[[morse-and-the-type-case]].
+Q oder Y aus vier.
 
 ## Der Takt
 
@@ -55,7 +52,7 @@ Länge eines Punkts:
 | Pause zwischen zwei Wörtern | 7 Einheiten |
 
 Die Pausen sind dabei kein Beiwerk, sondern Teil des Codes. Der Morsecode ist
-nämlich **nicht** [[prefix-free-code|präfixfrei]]: Das E (`·`) ist der Anfang
+nämlich **nicht** präfixfrei: Das E (`·`) ist der Anfang
 des I (`··`) und des S (`···`). Erst die längere Pause sagt dem Empfänger, dass
 ein Buchstabe zu Ende ist.
 

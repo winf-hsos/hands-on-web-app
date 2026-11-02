@@ -74,8 +74,7 @@ sein und die Bedeutung trotzdem falsch.
 
 Im Code ist die Vereinbarung ein Wörterbuch wie `sender_table`. Es wird nie
 übertragen, es muss vorher auf beiden Seiten liegen, und damit ist es keine
-Nachricht, sondern ein Versprechen. Warum jeder Code eine solche Vereinbarung
-ist, erklärt [[code-as-agreement]], und im Experiment
+Nachricht, sondern ein Versprechen. Im Experiment
 [[perfect-reception-perfect-nonsense]] erlebst du das gebrochene Versprechen
 selbst.
 
@@ -208,7 +207,7 @@ verkürzt: Was oft vorkommt, soll wenig kosten. Ein seltenes Symbol trägt mehr
 Information als ein häufiges, also darf es auch mehr Platz einnehmen. Codes
 mit ungleich langen Codewörtern haben allerdings ihren eigenen Preis, denn der
 Empfänger muss herausfinden, wo ein Codewort endet; der Morsecode verwendet
-dafür Pausen, und ein [[prefix-free-code|präfixfreier Code]] kommt ohne sie
+dafür Pausen, und ein präfixfreier Code kommt ohne sie
 aus.
 
 ## Zum Mitnehmen

@@ -95,8 +95,7 @@ numbers. And the arithmetic runs both ways: with *k* symbols and *n* positions
 you can distinguish *k*ⁿ code words, so if you know how many characters you
 need, you can work out how many positions that costs. Four colours and two
 positions give 16 combinations, which is not enough for 26 letters; three
-positions give 64, which is. How a table of such code words becomes a code is
-the subject of [[code-as-agreement]].
+positions give 64, which is.
 
 ## In short
 

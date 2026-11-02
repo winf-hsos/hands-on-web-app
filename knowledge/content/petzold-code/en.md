@@ -26,10 +26,8 @@ machine you had only used until then.
 ## Why it belongs here
 
 The book follows the same path as the content here, from characters through
-codes to the machine. If you have read [[code-as-agreement]], you will find
-the same question from another angle in the first chapters, and the Morse code
-from [[morse-and-the-type-case|the story of the type case]] is one of its
-starting points as well. The gates Petzold builds his adding machine from are
+codes to the machine. The first chapters are about
+codes, and [[morse-code|Morse code]] is one of their starting points. The gates Petzold builds his adding machine from are
 summarised in the lesson [[logic-gates]], and the [[nand-gate]] appears in his
 book just as it does here.
 

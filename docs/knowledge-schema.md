@@ -22,13 +22,13 @@ knowledge/
   README.md              how the knowledge base is organised (short)
   vocabulary.yaml        content types, relation types, levels, topics, areas, modules
   content/
-    code-as-agreement/   one folder per content item, named by its id
+    place-value-systems/ one folder per content item, named by its id
       de.md              lead file: shared metadata + German text
       en.md              translation: English title, summary and text
       media/             images and other files used by this item only
       figures.js         drawings drawn with stagekit's draw.js (docs/figures.md)
   paths/
-    codes-in-one-hour/   learning paths, same pattern as content items
+    the-command-line/    learning paths, same pattern as content items
       de.md
       en.md
   courses/
@@ -56,7 +56,7 @@ Every content item, path and course has two identifiers.
 
 | | `id` | `code` |
 |---|---|---|
-| Example | `code-as-agreement` | `4821` |
+| Example | `place-value-systems` | `4821` |
 | Form | English kebab case, equal to the folder name | four digits |
 | Used for | file system, relations, progress records, URLs | slides, live search, saying it aloud in a lecture |
 | Stability | never changes once published | never changes, never reused |
@@ -123,7 +123,7 @@ topics: [representing-information] # required, at least one, see vocabulary.yaml
 modules: [dup]                     # optional, modules this item is written for
 relations:                         # optional, see section 5
   requires: [number-systems]
-  see_also: [prefix-free-code]
+  see_also: [binary-numbers]
 access: public                     # optional, public (default) or code, see open decision 7
 status: draft                      # required, draft, published or archived
 updated: 2026-10-21                # required, date of the last substantive change
@@ -207,8 +207,8 @@ The body is plain Markdown with a few conventions:
   backticks work the same way (``title: Die Pipe `|>` ``), and the tab title
   and the description drop them.
 - **Headings start at `##`.** The title comes from the front matter.
-- **Links to other items** are written as `[[code-as-agreement]]` or with
-  their own text as `[[code-as-agreement|the lesson on codes]]`. The build
+- **Links to other items** are written as `[[place-value-systems]]` or with
+  their own text as `[[place-value-systems|the lesson on place values]]`. The build
   turns them into links in the current language, and the validator checks them.
   Inside the knowledge base this form stays readable and survives renaming of
   URLs; a normal Markdown link would hard-wire a URL.
@@ -436,27 +436,31 @@ and every data set it names, read from the site.
 A path is a folder in `paths/` with the same lead/translation pattern. The
 lead holds the structure; the translation holds title, summary, `goal`,
 `audience` and the introductory text, since those are prose. The example in
-`knowledge/paths/codes-in-one-hour/` shows both files.
+`knowledge/paths/the-command-line/` shows both files.
 
 ```yaml
 ---
 kind: path
-code: 1094
-title: Codes in einer Stunde
-summary: Vom Codebuch zum präfixfreien Code, mit einem Experiment zum Mitmachen.
-goal: Du kannst erklären, warum ein Code eine Vereinbarung ist und wann Codewörter eindeutig lesbar sind.
-audience: Erstes Semester, ohne Vorkenntnisse
+code: 6378
+title: Die Kommandozeile
+summary: Dateien, Ordner und Pfade verstehen und den Rechner mit getippten Befehlen steuern.
+goal: Du bewegst dich sicher durch den Ordnerbaum deines Rechners und startest ein Python-Programm in der Kommandozeile.
+audience: Alle, die bisher nur mit Maus und Fenstern gearbeitet haben
 level: 1
 requires: []                 # ids of items or paths that should come first
 steps:
-  - code-as-agreement
-  - prefix-free-code
-  - item: morse-and-the-type-case
+  - files-and-folders
+  - command-line
+  - command-line-navigating
+  - command-line-files
+  - command-line-demo
+  - command-line-exercise
+  - python-on-the-command-line
+  - command-line-quiz
+  - item: python-virtual-environments
     optional: true
-  - knock-code
-  - code-systems-quiz
-status: draft
-updated: 2026-10-21
+status: published
+updated: 2026-11-02
 ---
 ```
 

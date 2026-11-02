@@ -139,8 +139,7 @@ Kästen passen nur zusammen, wenn ihre Ränder übereinstimmen. Verwendet der
 Sender Blau für den Buchstaben `a`, liest der Empfänger Blau aber als `b`,
 können beide Kästen genau so arbeiten, wie sie geschrieben sind, und das
 ganze System versagt trotzdem; jede Grenze braucht deshalb eine Vereinbarung
-über Form und Bedeutung der Daten. Wie aus einer solchen Vereinbarung ein
-Code wird, zeigt [[code-as-agreement]].
+über Form und Bedeutung der Daten.
 
 Die Kette sagt dir auch, wie du suchst, wenn etwas schiefgeht. Kommt am Ende
 nicht `"hi"` an, hilft es wenig, auf das ganze System zu starren, und es ist
@@ -185,8 +184,7 @@ kann; dieser Frage folgt [[algorithms-and-programs]]. Die zweite fragt, wie
 das, was die Ränder überquert, geschrieben wird, damit eine Maschine damit
 arbeiten kann. Der Sensor hat sichtbares Licht in vier Zahlen verwandelt,
 und andere Antworten machen aus Zahlen, Buchstaben, Bildern und Dateien
-Bits, wie [[place-value-systems]], [[binary-numbers]] und
-[[code-as-agreement]] zeigen.
+Bits, wie [[place-value-systems]] und [[binary-numbers]] zeigen.
 
 ## Auch ein schwarzer Kasten braucht einen Test
 

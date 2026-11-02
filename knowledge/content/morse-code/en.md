@@ -31,8 +31,7 @@ radio, or light from a flashlight.
 | A | `·−` | | N | `−·` |
 
 Frequent letters such as E and T consist of a single signal, rare ones such as
-Q or Y of four. Where this distribution comes from is told in
-[[morse-and-the-type-case]].
+Q or Y of four.
 
 ## The timing
 
@@ -48,7 +47,7 @@ length of a dot:
 | Pause between two words | 7 units |
 
 The pauses are not decoration but part of the code. Morse code is **not**
-[[prefix-free-code|prefix-free]]: E (`·`) is the beginning of I (`··`) and of
+prefix-free: E (`·`) is the beginning of I (`··`) and of
 S (`···`). Only the longer pause tells the receiver that a letter has ended.
 
 ## Where it is used

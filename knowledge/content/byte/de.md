@@ -25,8 +25,7 @@ annehmen. Als Binärzahl gelesen reicht es von 0 (alle acht Bit 0) bis 255
 Die Stellenwerte sind 128, 64, 32, 16, 8, 4, 2 und 1, jeder doppelt so groß
 wie sein rechter Nachbar, und der Wert des Bytes ist die Summe der gesetzten
 Stellen. Das Byte in der Abbildung, `01000001`, ist 64 + 1 = 65; als Text
-gelesen ist es ein großes A, und warum das so ist, erklärt
-[[code-as-agreement]].
+gelesen ist es nach der ASCII-Tabelle ein großes A.
 
 ## Eine Verpackung, keine Zahl
 

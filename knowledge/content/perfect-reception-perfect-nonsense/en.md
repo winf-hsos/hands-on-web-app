@@ -148,8 +148,7 @@ print("read:", received)
   and is never transmitted. What happens when one person changes it and does
   not tell the other?
 
-Why a code means nothing without its table, and why differing tables produce
-no error message, is explained in the lesson [[code-as-agreement]]. That a
+That a
 symbol is an agreed and distinguishable state is shown in the slides
 [[symbols-and-information-slides]].
 

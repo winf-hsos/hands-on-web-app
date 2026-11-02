@@ -20,7 +20,7 @@ duration: 8
 topics: [transferring-information, representing-information, processing-information]
 modules: [dup]
 relations:
-  see_also: [logic-gates, prefix-free-code]
+  see_also: [logic-gates]
 status: draft
 updated: 2026-11-01
 ---
@@ -59,7 +59,7 @@ Daraus folgen zwei Ergebnisse, die bis heute jede Übertragung bestimmen. Das
 erste: Wenn manche Zeichen häufiger sind als andere, kann man sie mit kürzeren
 Codewörtern schreiben und so im Schnitt Bits sparen, und Shannon gab an, wie
 weit das höchstens geht. Mit Robert Fano entwickelte er ein Verfahren für
-solche [[prefix-free-code|präfixfreien Codes]]. Das zweite: Jede Leitung hat
+solche präfixfreien Codes. Das zweite: Jede Leitung hat
 eine **Kapazität**. Unterhalb dieser Grenze lassen sich Nachrichten trotz
 Störungen beliebig zuverlässig übertragen, wenn man sie geschickt mit
 zusätzlichen Prüfbits versieht; oberhalb geht das nicht, egal wie man es

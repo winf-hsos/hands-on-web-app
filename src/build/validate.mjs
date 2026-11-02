@@ -21,7 +21,7 @@ const date = (v) => (v instanceof Date && !isNaN(v) ? null : 'expected a date li
 const bool = (v) => (typeof v === 'boolean' ? null : 'expected true or false');
 const int = (min, max) => (v) =>
   Number.isInteger(v) && v >= min && v <= max ? null : `expected a whole number from ${min} to ${max}`;
-const id = (v) => (typeof v === 'string' && ID.test(v) ? null : `"${v}" is not an id (kebab case, like code-as-agreement)`);
+const id = (v) => (typeof v === 'string' && ID.test(v) ? null : `"${v}" is not an id (kebab case, like place-value-systems)`);
 const oneOf = (keys, what) => (v) => (keys.includes(v) ? null : `"${v}" is not a known ${what} (${keys.join(', ')})`);
 const list = (check, min = 0) => (v) => {
   if (!Array.isArray(v)) return 'expected a list';
