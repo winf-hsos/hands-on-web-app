@@ -5,7 +5,7 @@ summary: >-
   experiment as data, rebuild it in R and play it so often that the data give
   an answer hardly anyone expects.
 translation_of: de
-based_on: 2026-10-31
+based_on: 2026-11-02
 ---
 
 On a game show there are three doors. Behind one waits a car, behind each of
@@ -53,6 +53,8 @@ was chosen first, which one the host opened, and whether the player stayed or
 switched. Many rounds can therefore be written down as four vectors, one per
 fact, where the first position always belongs to the first round, the second
 to the second, and so on.
+[[data-representation-slides|The slides]] use exactly these four facts to show
+how R holds vectors and tables, and they reach into the next phase.
 
 Below are ten example rounds. Replace them with your own: copy the R code
 under [[monty-hall-game|the game with three doors]] and paste it in place of the four lines.

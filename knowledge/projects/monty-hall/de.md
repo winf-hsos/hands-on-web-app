@@ -15,7 +15,7 @@ phases:
     challenges:
       - id: challenge-1
   - id: vectors
-    items: [r-vectors, r-comparisons]
+    items: [data-representation-slides, r-vectors, r-comparisons]
     challenges:
       - id: challenge-2
   - id: data-frame
@@ -40,7 +40,7 @@ phases:
       - id: challenge-10
       - id: challenge-11
 status: draft
-updated: 2026-10-31
+updated: 2026-11-02
 ---
 
 In einer Spielshow stehen drei Türen. Hinter einer wartet ein Auto, hinter
@@ -90,6 +90,8 @@ welche Tür zuerst gewählt wurde, welche der Moderator geöffnet hat und ob die
 Person geblieben ist oder gewechselt hat. Viele Runden lassen sich deshalb als
 vier Vektoren aufschreiben, einer je Angabe, in denen die erste Stelle immer
 zur ersten Runde gehört, die zweite zur zweiten und so weiter.
+[[data-representation-slides|Die Folien]] zeigen an genau diesen vier
+Angaben, wie R Vektoren und Tabellen hält, und reichen bis zur nächsten Phase.
 
 Unten stehen zehn Beispielrunden. Ersetzt sie durch eure eigenen: Kopiert den
 R-Code unter dem [[monty-hall-game|Drei-Türen-Spiel]] und fügt ihn statt der vier Zeilen ein.

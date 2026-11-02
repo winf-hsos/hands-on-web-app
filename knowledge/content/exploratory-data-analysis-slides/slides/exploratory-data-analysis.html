@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>exploratory data analysis</title>
+  <link rel="stylesheet" href="theme.css?v=1">
+  <link rel="stylesheet" href="../../stagekit/stagekit.css?v=0.4.0-62b883">
+  <style>
+    /* deck-specific layout, colours and sizes only from the theme */
+    .code .gr { color: var(--gray); }
+    /* the opening photo with its sentence on the left: photo at 64 % height */
+    .slide img.photo.side { height: 64%; top: 18%; }
+    .slide .photo-text.side { width: 40%; font-size: var(--normal); line-height: 1.25; }
+    /* what R prints, in the code font but without a copy button */
+    .console { font-family: var(--mono); font-size: var(--small); color: var(--gray-light); white-space: pre; text-transform: none; line-height: 1.35; }
+    .stack { display: flex; flex-direction: column; gap: 48px; }
+    .stack.tight { gap: 32px; }
+    .code.small { font-size: var(--small); }
+    /* the six types and a question for the survey each */
+    table.types { border-collapse: collapse; font-size: var(--small); width: 1680px; }
+    table.types th { color: var(--gray); font-weight: normal; text-align: left; padding: 0 40px 20px 0; }
+    table.types td { color: var(--white); padding: 18px 40px 18px 0; border-top: 2px solid var(--gray-dark); vertical-align: top; }
+    table.types td:first-child { white-space: nowrap; }
+    table.types .expl { color: var(--blue); }
+    .keep-case { text-transform: none; }
+  </style>
+</head>
+<body>
+<div class="deck" data-title="exploratory data analysis"
+     data-subtitle="hands-on data science · prof. dr. nicolas meseth"
+     data-parts='["where exploring fits", "what is the question?", "exploring the survey"]'
+     data-live-url="https://live.hsos.uber.space" data-live-series="exploratory-data-analysis">
+
+  <section class="slide title">
+    <aside class="notes">This input is about the first look into a new data set. The message to take home is one sentence: exploring finds questions worth asking, it does not answer them.</aside>
+  </section>
+  <section class="slide agenda">
+    <aside class="notes">Three parts: where exploring fits into a data analysis, which type of question an analysis asks, and a first exploration of the survey on milk and chocolate.</aside>
+  </section>
+
+  <!-- opening photo, before the first part -->
+  <section class="slide">
+    <img class="photo side" src="img/opening-expedition-map.jpg" alt="A half-drawn map on a wooden table at night: coast and river inked on the left, blank paper with pencil lines and question marks on the right, a head torch, a compass and a notebook">
+    <div class="photo-text side">an explorer draws the map while walking, and every blank spot on it is the next question.</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">Explorers in the past did not know what they would find; they walked, drew what they saw and marked what they did not understand yet. Exploring data works the same way: you start without knowing what is in the table, you draw a first picture, and the picture tells you where to look next. What you bring home is a better map and a list of good questions, not yet the answers.</aside>
+  </section>
+
+  <!-- ===== part 1: where exploring fits ===== -->
+  <section class="slide part" data-part="where exploring fits" data-subtitle="the workflow of a data analysis">
+    <aside class="notes">First the big picture: where exploring sits in a data analysis.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>the workflow of a data analysis</h2>
+    <div class="figure" id="fig-workflow"></div>
+    <div class="footnote">after <span class="keep-case">Wickham, Çetinkaya-Rundel &amp; Grolemund</span>: <a href="https://r4ds.hadley.nz/intro.html" target="_blank" rel="noopener"><span class="keep-case">R for Data Science</span>, 2nd ed.</a></div>
+    <div class="punch">exploring sits in the middle, and it is a loop, not a step.</div>
+    <aside class="notes">Every analysis loads data and brings it into a tidy shape; that is preparation. Understanding happens in the loop: you transform the data, look at it in a picture, perhaps fit a simple model, and every picture sends you back with a new idea. Only at the end do you communicate, and programming holds it all together so that every step can be repeated.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="stack">
+        <div class="statement">exploratory data analysis is a state of mind, not a fixed procedure.</div>
+        <div class="sidenote"><span class="keep-case">R for Data Science</span>: generate questions, search for answers by transforming and visualising, and use what you learn to refine the questions.</div>
+      </div>
+    </div>
+    <aside class="notes">There is no checklist that makes an exploration complete. What R for Data Science describes is a cycle of three moves: generate questions about your data, search for answers by transforming and visualising, and use what you learn to refine the questions or ask new ones. The quality of an exploration depends on the questions you bring into it.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>two kinds of questions</h2>
+    <div class="figure" id="fig-questions"></div>
+    <div class="punch">almost every exploratory question asks how values vary, or how two variables vary together.</div>
+    <aside class="notes">These two questions from R for Data Science are a good starting point when you face a new table and do not know where to begin. Variation is the spread of values within one column: which values occur, which are common, which are rare. Covariation is the tendency of two columns to vary together. The third part asks both of the milk survey.</aside>
+  </section>
+
+  <!-- ===== part 2: what is the question? ===== -->
+  <section class="slide part" data-part="what is the question?" data-subtitle="six types of data analysis">
+    <aside class="notes">Before looking at data, it helps to know which type of question you are asking, because the type decides what you may claim at the end.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>the wrong question, answered correctly</h2>
+    <div class="content">
+      <div class="statement">many analyses that are criticised later did not compute anything wrong, they answered a different question than the one people read into them.</div>
+    </div>
+    <div class="footnote"><a href="https://doi.org/10.1126/science.aaa6146" target="_blank" rel="noopener"><span class="keep-case">Leek &amp; Peng</span> (2015): <span class="keep-case">What is the question? Science</span> 347, 1314–1315</a></div>
+    <aside class="notes">This is the observation behind a two-page paper by Jeffery Leek and Roger Peng. A pattern found while exploring is reported as if it held for everyone, or a good prediction is read as an explanation. To avoid it, they suggest deciding which type of question you are asking before you start.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>six yes-or-no questions</h2>
+    <div class="figure" id="fig-tree"></div>
+    <div class="footnote">after <a href="https://doi.org/10.1126/science.aaa6146" target="_blank" rel="noopener"><span class="keep-case">Leek &amp; Peng</span> (2015), <span class="keep-case">Science</span> 347, 1314–1315</a></div>
+    <aside class="notes">You start at the top and answer until you reach a type. If you did not summarise the data, for example because you only show single rows, it is not yet a data analysis. A summary reported without interpretation is descriptive. If you do not check whether your discoveries would hold in a new sample, the analysis is exploratory, and that is the type of this deck. If you do check it, the next question is whether you want to know how changing one quantity changes another. If not, you either predict values for individuals, which is predictive and the field of machine learning, or you generalise from the sample, which is inferential. If you do, an effect on average is causal, found best with experiments and the methods of causal inference, and an effect that occurs in exactly this way in every single case is mechanistic. The two questions that matter most are whether you want to say something beyond the sample at hand and whether you are asking for a cause. The tree is strict on purpose: it names what you are entitled to claim at the end.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>six types, asked of one survey</h2>
+    <div class="content">
+      <table class="types">
+        <tr><th>type</th><th>what you do</th><th>a question for the milk survey</th></tr>
+        <tr><td>descriptive</td><td>count and summarise</td><td>how many drink milk every day?</td></tr>
+        <tr><td class="expl">exploratory</td><td>look for patterns</td><td>are the young more open to oat milk?</td></tr>
+        <tr><td>inferential</td><td>generalise beyond the sample</td><td>does that hold for all of <span class="keep-case">Germany</span>?</td></tr>
+        <tr><td>predictive</td><td>predict for individuals</td><td>can age and diet predict oat milk?</td></tr>
+        <tr><td>causal</td><td>change one thing, watch another</td><td>does a higher price change the choice?</td></tr>
+        <tr><td>mechanistic</td><td>understand each single case</td><td>how much energy heats a litre of milk?</td></tr>
+      </table>
+    </div>
+    <aside class="notes">The examples are those of the lesson on analytic questions. 1,452 of the 2,387 people asked drink milk every day, which answers the descriptive question. The causal question can actually be answered with this survey, because the price of alpro oat drink was an experiment: chance decided whether a respondent saw it ten cents cheaper, at its normal price, or ten or thirty cents dearer. The mechanistic one cannot be answered by any survey; it belongs to physics.</aside>
+  </section>
+
+  <section class="slide poll" data-poll="eda-type-organic-share">
+    <div class="poll-q">which type of question is this: “what share of the respondents buys (almost) only organic food?”</div>
+    <ol class="poll-opts"><li data-correct>descriptive</li><li>exploratory</li><li>inferential</li><li>causal</li></ol>
+    <aside class="notes">Descriptive: the question counts and summarises without interpreting. The answer is 111 of 2,793 people, about 4 percent. It would turn inferential the moment we claimed that 4 percent of all Germans buy (almost) only organic food.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>the step people skip</h2>
+    <div class="figure" id="fig-skip"></div>
+    <div class="punch">the data stay the same, only the claim grows, and with it what you would have to show.</div>
+    <aside class="notes">The most common mistake is not a wrong calculation but a silent promotion. The first sentence is exploratory and honest: in our survey, the younger respondents are more open to oat milk. The second claims the same for all young people in Germany; that is inferential and needs a check beyond the sample, which nobody made. The third says that being young causes it; that is causal and would need an experiment. Nothing in the data changed between the three sentences; only the claim did.</aside>
+  </section>
+
+  <section class="slide poll" data-poll="eda-type-vegetarians">
+    <div class="poll-q">which type of claim is this: “vegetarians in <span class="keep-case">Germany</span> buy more organic food than others.”</div>
+    <ol class="poll-opts"><li>descriptive</li><li>exploratory</li><li data-correct>inferential</li><li>causal</li></ol>
+    <aside class="notes">Inferential: the sentence speaks of all vegetarians in Germany, not of the 134 in our survey. In the survey the pattern is there, so as an exploratory finding it is fine; as a statement about Germany it needs a test beyond the sample, and a quota sample makes that harder still.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>search long enough, and you will find something</h2>
+    <div class="figure" id="fig-chance"></div>
+    <div class="punch">with 606 columns some pattern always appears, even if it lives only in these 2,811 people.</div>
+    <aside class="notes">With 606 columns there are 183,315 pairs of variables. To see what chance alone produces, shuffle every column on its own, so that no column has anything to do with any other, and test every pair that can be tested: about 7,000 pairs still pass a test at the 5 percent level, with correlations of up to about 0.5. That is no reason not to explore; it is the reason why an exploratory finding is a question for the next study and not its result.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="statement">exploring finds questions worth asking, it does not answer them.</div>
+    </div>
+    <aside class="notes">This is the sentence of the whole deck. Everything you find while exploring deserves a name that says what it is: a pattern in these data, worth checking.</aside>
+  </section>
+
+  <!-- ===== part 3: exploring the survey ===== -->
+  <section class="slide part" data-part="exploring the survey" data-subtitle="variation, covariation, the unexpected">
+    <aside class="notes">Now a first exploration of the survey on milk and chocolate: 2,811 people who shop for their household, 606 columns.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>a first look</h2>
+    <div class="content">
+      <div class="stack tight">
+        <div class="code">library(tidyverse)
+survey &lt;- read_csv("mds12_schoko_milch.csv")
+<span class="hl">dim</span>(survey)
+<span class="hl">glimpse</span>(survey)</div>
+        <div class="console">[1] 2811  606
+Rows: 2,811
+Columns: 606
+$ q001hheinkauf                    &lt;dbl&gt; 2, 1, 2, 2, 2, 2, 2, 2,…
+$ q002geburt                       &lt;dbl&gt; 1970, 1990, 1963, 1989,…
+$ q003land                         &lt;dbl&gt; 1, 7, 6, 13, 4, 2, 14, …
+$ q004geschlecht                   &lt;dbl&gt; 1, 1, 1, 2, 1, 1, 2, 1,…</div>
+        <div class="sidenote">before any question: how many rows, how many columns, which types, and what one row stands for.</div>
+      </div>
+    </div>
+    <aside class="notes">dim() gives the size, 2,811 rows and 606 columns, and glimpse() shows every column with its type and first values, one line per column. One row is one person who shops for a household, one column is one answer or a value derived from answers. That sentence is worth writing down before anything else, because every later question depends on it. The names are codes from the questionnaire; the codebook says what each one means.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>readable names</h2>
+    <div class="content">
+      <div class="stack">
+        <div class="code small">survey &lt;- survey |&gt;
+  <span class="hl">rename</span>(
+    age = Q002alter,
+    organic_share = v032bioanteil,
+    price_too_expensive = U017pvonwzuteuer2,
+    no_oat_milk = m073haferpro1_nohafer
+  ) |&gt;
+  mutate(diet = <span class="hl">factor</span>(
+    v041nofleisch,
+    levels = 0:4,
+    labels = c("omnivore", "flexitarian", "vegetarian",
+               "vegan", "pescetarian")
+  ))</div>
+        <div class="sidenote">the codebook says what each code means; give the columns you need names you can read.</div>
+      </div>
+    </div>
+    <aside class="notes">Of the 606 columns this exploration needs five, and their codes are hard to read. rename() gives them names, new name on the left, old name on the right. The diet is stored as a number from 0 to 4; factor() turns it into a variable with named levels, in the order of the questionnaire. organic_share runs from 1, (almost) never organic, to 5, (almost) only organic. no_oat_milk is 1 for everyone who would never buy oat milk; it was asked only of the 234 people in the milk part of the survey.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>half of the table is empty</h2>
+    <div class="figure" id="fig-missing"></div>
+    <div class="punch">in a survey, missing usually means “not asked”, and dropping those rows changes who you are talking about.</div>
+    <aside class="notes">Here is the whole table, one pixel per cell, answered cells light, empty ones dark. Almost exactly half of all cells are empty, and almost none of them because someone refused to answer. Many questions went only to a part of the respondents: the chocolate questions to 275 people, the milk questions to 234, and those two groups sit at the top of the picture. Remove every row with a missing value, and nobody is left, because every single row has gaps; remove them for one question, and you are talking about a different group than you think.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>variation: how old are the respondents?</h2>
+    <div class="figure" id="fig-age"><svg viewBox="0 0 1680 660" xmlns="http://www.w3.org/2000/svg"><image href="img/age-histogram.svg" x="0" y="0" width="1680" height="660"/></svg></div>
+    <div class="code figcode">ggplot(survey, aes(x = age)) +
+  geom_histogram(binwidth = 5)</div>
+    <div class="punch">ages from 18 to 80 with the middle at 50: a quota sample, not a random one.</div>
+    <aside class="notes">The histogram is the first tool for variation: what values occur, which are common, which are rare. All 2,811 people gave their age, from 18 to 80, with a median of 50. The shape is no accident; the panel provider filled quotas for age, gender and federal state. That matters for every later claim beyond the sample.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>unusual values: when is milk too expensive?</h2>
+    <div class="figure" id="fig-price"></div>
+    <div class="code figcode">ggplot(survey, aes(x = price_too_expensive)) +
+  geom_histogram(binwidth = 10)
+
+ggplot(survey, aes(x = price_too_expensive)) +
+  geom_histogram(binwidth = 0.1) +
+  coord_cartesian(xlim = c(0, 5))</div>
+    <div class="punch">one strange value can hide a whole distribution, so look at the extremes before you look at the average.</div>
+    <aside class="notes">612 people said from which price on a litre of milk is too expensive for them. The first picture is useless: a single bar, because a few answers up to 999 stretch the axis to a thousand euros. Zoom in with coord_cartesian(), and the real distribution appears, with its middle at 1.99 euros. Then look at the extreme values themselves: 16 answers lie above 20 euros. A 160 is almost certainly 1.60 typed without the point, a 344 perhaps 3.44, and 999 is a common code for "don't know".</aside>
+  </section>
+
+  <section class="slide">
+    <h2>deal with them, and say so</h2>
+    <div class="content">
+      <div class="stack">
+        <div class="code">survey &lt;- survey |&gt;
+  mutate(price_too_expensive = <span class="hl">if_else</span>(
+    price_too_expensive &gt; 20, <span class="hl">NA</span>, price_too_expensive
+  ))</div>
+        <div class="sidenote"><span class="keep-case">R for Data Science</span>: replace unusual values with <span class="keep-case">NA</span> rather than dropping the rows, and report what you did.</div>
+      </div>
+    </div>
+    <aside class="notes">Dropping the whole row would also drop everything else the person said. Setting only this one answer to missing keeps the rest. Which threshold is right is a judgement, and that is why it belongs in the report, not hidden in the code.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>mean or median?</h2>
+    <div class="figure" id="fig-mean"></div>
+    <div class="punch">the median barely notices a typing error, while the mean is dragged along by it.</div>
+    <aside class="notes">With all 612 answers the mean is 8.11 euros, a price at which nobody in the survey would really stop buying milk; it is pulled up by the 16 extreme answers. Set those to NA, and the mean drops to 2.17 euros. The median stays at 1.99 euros in both cases, because it only depends on the middle of the sorted values. When a distribution has extreme values, report the median, or say what you removed.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>covariation: organic food and diet</h2>
+    <div class="figure" id="fig-organic"><svg viewBox="0 0 1680 660" xmlns="http://www.w3.org/2000/svg"><image href="img/organic-by-diet.svg" x="0" y="0" width="1680" height="660"/></svg></div>
+    <div class="code figcode">ggplot(survey, aes(x = diet, y = organic_share)) +
+  geom_boxplot()</div>
+    <div class="punch">the groups differ, and the smallest group differs most, which is exactly where chance plays the biggest part.</div>
+    <aside class="notes">A categorical and a numerical variable: the boxplot is the standard picture. The median share of organic food rises from 2 for omnivores to 3 for flexitarians, vegetarians and pescetarians and 4 for vegans. Read the group sizes before the boxes: 1,816 omnivores, but only 36 vegans. A striking box built on a handful of people is a reason for a closer look, not for a headline.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>covariation: oat milk and age</h2>
+    <div class="figure" id="fig-oat"><svg viewBox="0 0 1680 660" xmlns="http://www.w3.org/2000/svg"><image href="img/oat-milk-by-age.svg" x="0" y="0" width="1680" height="660"/></svg></div>
+    <div class="code figcode">survey |&gt;
+  filter(!is.na(no_oat_milk)) |&gt;
+  mutate(age_group = cut(age, c(17, 29, 44, 59, 80))) |&gt;
+  ggplot(aes(x = age_group, fill = no_oat_milk == 0)) +
+  geom_bar(position = "fill")</div>
+    <div class="punch">a pattern in 234 people is a question for the next study, not yet an answer.</div>
+    <aside class="notes">This is the exploratory question from the table of types. In yellow the share of people who would buy oat milk at all: 68 percent of the youngest group, 38 percent of those over 60. The picture suggests an answer, but it rests on 234 people from a quota sample, and the youngest group holds only 34 of them. To say something about everyone in Germany, the question becomes inferential, and that needs different methods.</aside>
+  </section>
+
+  <section class="slide poll" data-poll="eda-type-alpro-price">
+    <div class="poll-q">chance decided which price for alpro oat drink each respondent saw. which type of question can this answer?</div>
+    <ol class="poll-opts"><li>descriptive</li><li>exploratory</li><li>predictive</li><li data-correct>causal</li></ol>
+    <aside class="notes">Causal: because chance decided who saw which price, the groups differ only in the price, and a difference in their answers can be put down to it. That is the idea of an experiment, and it is the strongest way to answer a causal question.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>from exploring to the next question</h2>
+    <div class="figure" id="fig-cards"></div>
+    <div class="punch">the result of an exploration is a list of better questions.</div>
+    <aside class="notes">Three findings from this exploration and the questions they raise. That younger respondents are more open to oat milk raises the inferential question whether it holds for Germany. That vegans and vegetarians buy more organic food raises a causal one: is it the diet, or something behind both, such as income? And the 16 price answers above 20 euros raise a question for the design of the next survey: how should it ask for a price so that typing errors and "don't know" do not end up as numbers?</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="stack">
+        <div class="statement">exploring finds questions worth asking, it does not answer them.</div>
+        <div class="sidenote">to read on: <a href="https://doi.org/10.1126/science.aaa6146" target="_blank" rel="noopener"><span class="keep-case">Leek &amp; Peng</span> (2015), “<span class="keep-case">What is the question?</span>”</a>, and <a href="https://r4ds.hadley.nz/EDA.html" target="_blank" rel="noopener"><span class="keep-case">R for Data Science</span>, chapter “exploratory data analysis”</a></div>
+      </div>
+    </div>
+    <aside class="notes">Take the map with you: draw what you see, mark what you do not understand, and keep the question marks. Exploring is the start of every analysis, and the honest name for its findings is "worth checking". The paper is two pages long, and R for Data Science is free online.</aside>
+  </section>
+
+</div>
+<script src="../../stagekit/draw.js?v=0.4.0-62b883"></script>
+<script src="../../stagekit/anim.js?v=0.4.0-62b883"></script>
+<script src="deck.js?v=2"></script>
+<script src="../../stagekit/stagekit.js?v=0.4.0-62b883"></script>
+</body>
+</html>

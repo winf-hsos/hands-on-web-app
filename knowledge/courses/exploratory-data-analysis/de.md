@@ -14,15 +14,19 @@ summary: >-
 sections:
   - title: { de: Selbsttest, en: Self-assessment }
     items: [eda-self-assessment, rewe-products]
+  - title: { de: "Erkunden und fragen", en: "Exploring and asking" }
+    items: [exploratory-data-analysis-slides, analytic-questions, leek-peng-what-is-the-question]
   - path: getting-started-with-r
   - path: data-transformation-with-r
 status: published
-updated: 2026-10-27
+updated: 2026-11-02
 ---
 
 Diese Sammlung begleitet den Teil zur explorativen Datenanalyse im
 Mastermodul Empirisches Arbeiten. Ein Selbsttest zeigt dir zu Beginn, wo du
-stehst; danach führt ein Abschnitt in R ein, der nächste in die
+stehst. [[exploratory-data-analysis-slides|Die Folien]] zeigen danach an
+der Umfrage zu Milch und Schokolade, was Erkunden leistet und welche Art von
+Frage es beantworten kann; dann führt ein Abschnitt in R ein, der nächste in die
 Datentransformation mit dplyr; weitere Abschnitte zum Beschreiben,
 Visualisieren und Prüfen von Daten entstehen gerade und sind dann ebenfalls
 von Anfang an verfügbar.

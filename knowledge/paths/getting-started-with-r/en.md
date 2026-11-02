@@ -8,7 +8,7 @@ goal: >-
   a table, deal with missing values and chain steps with the pipe.
 audience: Everyone who wants to analyse data with R, without programming experience
 translation_of: de
-based_on: 2026-10-27
+based_on: 2026-11-02
 ---
 
 This path takes you in small lessons from the first calculation to a table
@@ -18,7 +18,9 @@ browser; there is nothing to install.
 
 The first part shows R as a calculator, with names for values and with
 functions. The second introduces vectors, the basic form of all data in R,
-with their types, with comparisons and with missing values. The third brings
+with their types, with comparisons and with missing values; at its start,
+[[data-representation-slides|the slides]] use the game with three doors to
+show the way from a vector to a data frame in one go. The third brings
 everything together in a table and ends with the pipe, on which data
 transformation with dplyr builds. Each of the first two parts is followed by
 an exercise, the third by a quiz. If you want to continue on your own

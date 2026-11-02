@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>vectors and data frames in R</title>
+  <link rel="stylesheet" href="theme.css?v=1">
+  <link rel="stylesheet" href="../../stagekit/stagekit.css?v=0.4.0-62b883">
+  <style>
+    /* deck-specific layout, colours and sizes only from the theme */
+    /* the four types keep their colours through the whole deck */
+    .t-dbl { color: var(--groups-g1); }
+    .t-int { color: var(--groups-g3); }
+    .t-chr { color: var(--groups-g2); }
+    .t-lgl { color: var(--yellow); }
+    .code .gr { color: var(--gray); }
+    .code.small { font-size: var(--small); }
+    /* code above a figure, the figure below it at a fixed place */
+    .slide .code.verb-code { position: absolute; left: var(--margin); top: 180px; }
+    .figure.below { top: 300px; bottom: calc(var(--margin) * 0.9); }
+    .slide.has-punch .figure.below { bottom: calc(var(--margin) * 2.1); }
+    .figure.under-code { top: 470px; }
+    /* the opening photo with its sentence on the left: photo at 64 % height, starts at x 691,
+       but the case itself only from about x 1000, so the text may run to 888 */
+    .slide img.photo.side { height: 64%; top: 18%; }
+    .slide .photo-text.side { width: 40%; font-size: var(--normal); line-height: 1.25; }
+    /* the game on the site: text on the left, a QR code on the right */
+    .play { display: grid; grid-template-columns: 1fr 340px; column-gap: 120px; align-items: center; width: 1680px; }
+    .play .sidenote { margin-top: 40px; }
+    .play .address { font-size: var(--small); margin-top: 40px; }
+    /* the one fixed colour, as on poll slides: a QR code needs a white ground in every theme */
+    .play .qr { width: 340px; height: 340px; border-radius: 12px; background: #fff; color: #000; display: block; }
+    .play .qr svg { width: 100%; height: 100%; display: block; }
+    /* what R prints, in the code font but without a copy button */
+    .console { font-family: var(--mono); font-size: var(--small); color: var(--gray-light); white-space: pre; text-transform: none; line-height: 1.35; }
+    .console.tiny { font-size: var(--tiny); }
+    .stack { display: flex; flex-direction: column; gap: 48px; }
+    .consoles { display: grid; grid-template-columns: auto auto; column-gap: 48px; align-items: start; }
+    .consoles .label { font-family: var(--mono); font-size: var(--small); color: var(--white); text-transform: none; margin-bottom: 24px; }
+    .consoles .faded { color: var(--gray-dark); }
+    .statement .keep-case { text-transform: none; }
+  </style>
+</head>
+<body>
+<div class="deck" data-title="vectors and data frames in <span class='keep-case'>R</span>"
+     data-subtitle="prof. dr. nicolas meseth"
+     data-parts='["from a value to a table", "vectors", "data frames"]'
+     data-live-url="https://live.hsos.uber.space" data-live-series="vectors-and-data-frames-in-r">
+
+  <section class="slide title">
+    <aside class="notes">This input is about how R holds data. The message to take home is one sentence: a data frame is a list of equally long vectors, and every vector holds values of one type. Everything else in this deck unfolds that sentence.</aside>
+  </section>
+  <section class="slide agenda">
+    <aside class="notes">Three parts: from a single value to a table, then vectors in detail, then data frames, the tables of R.</aside>
+  </section>
+
+  <!-- opening photo, before the first part -->
+  <section class="slide">
+    <img class="photo side" src="img/opening-type-case.jpg" alt="An old printer's type case: lead letters, brass screws, glass beads and paper slips, one kind per column">
+    <div class="photo-text side">a type case keeps many small things in order because every column holds only one kind of thing.</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">A printer's type case looks like a mess of tiny compartments, and yet a typesetter finds every letter blind, because each column holds one kind of thing and every compartment has its place. R keeps data in the same way: a table is a row of columns, and each column holds values of exactly one kind. Once you see this, most of what R does with data stops being a surprise.</aside>
+  </section>
+
+  <!-- ===== part 1: from a value to a table ===== -->
+  <section class="slide part" data-part="from a value to a table" data-subtitle="four shapes of data">
+    <aside class="notes">First the big picture: which shapes data takes in R, and the example that runs through the whole deck.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>four shapes of data</h2>
+    <div class="figure" id="fig-shapes"></div>
+    <div class="punch">in a matrix every cell has the same type, in a data frame every column has its own.</div>
+    <aside class="notes">A single value, here the number 2, is rare in data analysis. First key: almost everything comes as many values of the same kind, a vector; the single value is called a scalar. Second key: a matrix puts several vectors of one type side by side into a block, which suits numbers but not a table in which one column holds numbers and another words. Third key: that is what the data frame is for, and it is where we are heading. The matrix stays on this slide; in exploratory analysis you will hardly need it.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>one game, four facts</h2>
+    <div class="figure" id="fig-game"></div>
+    <aside class="notes">Our example for the whole session is the game with three doors, known as the Monty Hall problem. A car stands behind one door, goats behind the other two. You pick a door, the host, who knows where the car is, opens another door with a goat behind it, and you decide whether to stay with your door or switch to the last closed one. Every game can be written down as four facts: where the car was, which door was picked first, which door the host opened and whether the player stayed or switched. Whether staying or switching is better is the question of the project, and the data will answer it, not us.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>play a few rounds</h2>
+    <div class="content">
+      <div class="play">
+        <div>
+          <div class="statement">play the game on the site, and stay or switch.</div>
+          <div class="sidenote">after a few rounds the game shows your rounds as <span class="keep-case">R</span> code, one line per fact.</div>
+          <div class="address"><a href="https://hands-on-computer-science.de/ds/en/items/monty-hall-game/" target="_blank" rel="noopener">hands-on-computer-science.de/ds/en/items/monty-hall-game</a></div>
+        </div>
+        <div class="qr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41 41" aria-label="QR code to the game"><path class="qrline" stroke="currentColor" d="M2 2.5h7m2 0h1m1 0h1m1 0h5m3 0h1m3 0h1m2 0h1m1 0h7m-37 1h1m5 0h1m3 0h2m2 0h1m1 0h2m2 0h1m2 0h5m2 0h1m5 0h1m-37 1h1m1 0h3m1 0h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h1m2 0h1m1 0h1m3 0h2m1 0h1m1 0h3m1 0h1m-37 1h1m1 0h3m1 0h1m1 0h4m3 0h3m5 0h1m1 0h1m4 0h1m1 0h3m1 0h1m-37 1h1m1 0h3m1 0h1m1 0h3m2 0h2m2 0h3m1 0h1m1 0h1m1 0h1m2 0h1m1 0h1m1 0h3m1 0h1m-37 1h1m5 0h1m1 0h3m6 0h1m2 0h2m4 0h3m1 0h1m5 0h1m-37 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-29 1h1m1 0h1m1 0h1m1 0h5m1 0h3m5 0h1m-29 1h1m1 0h5m6 0h2m1 0h1m4 0h1m2 0h2m4 0h5m-34 1h1m1 0h1m3 0h4m1 0h1m1 0h2m2 0h1m1 0h1m1 0h1m1 0h2m2 0h1m2 0h1m3 0h1m-34 1h7m1 0h1m1 0h5m2 0h1m1 0h2m1 0h1m1 0h3m2 0h3m1 0h2m-37 1h2m2 0h1m3 0h3m1 0h4m2 0h5m1 0h1m1 0h2m2 0h3m3 0h1m-35 1h1m1 0h4m1 0h1m1 0h2m2 0h1m1 0h1m1 0h1m2 0h1m1 0h4m1 0h2m1 0h5m-37 1h1m2 0h1m3 0h3m1 0h2m1 0h1m1 0h1m1 0h3m1 0h2m1 0h1m2 0h1m2 0h1m3 0h1m-34 1h2m1 0h2m1 0h2m1 0h3m1 0h2m1 0h1m1 0h1m1 0h1m1 0h1m1 0h4m1 0h3m1 0h2m-37 1h2m1 0h1m1 0h1m2 0h1m1 0h1m2 0h4m2 0h1m6 0h3m2 0h2m2 0h2m-36 1h2m3 0h2m1 0h1m1 0h1m1 0h1m1 0h1m2 0h1m1 0h3m1 0h3m2 0h2m1 0h1m1 0h1m-35 1h1m1 0h1m8 0h1m1 0h4m4 0h1m2 0h1m3 0h2m1 0h1m3 0h1m-36 1h3m2 0h2m1 0h1m11 0h1m4 0h1m1 0h1m2 0h2m3 0h2m-37 1h1m3 0h2m3 0h3m1 0h1m2 0h1m4 0h3m2 0h2m1 0h4m3 0h1m-36 1h1m2 0h1m1 0h1m3 0h1m1 0h1m4 0h2m3 0h2m1 0h2m2 0h2m1 0h3m-34 1h1m2 0h2m1 0h2m1 0h2m2 0h1m1 0h6m1 0h1m9 0h1m-28 1h1m7 0h4m3 0h1m3 0h9m1 0h2m-35 1h1m2 0h1m2 0h2m2 0h2m2 0h7m3 0h1m3 0h3m2 0h1m-32 1h1m1 0h1m1 0h2m1 0h1m1 0h1m2 0h1m2 0h1m1 0h1m2 0h4m1 0h2m1 0h1m1 0h2m-36 1h2m2 0h2m1 0h1m1 0h4m2 0h1m1 0h2m1 0h6m2 0h2m1 0h1m2 0h1m-35 1h1m1 0h1m1 0h1m1 0h2m4 0h1m1 0h4m1 0h1m5 0h5m1 0h2m2 0h2m-37 1h1m1 0h4m3 0h2m1 0h2m1 0h1m3 0h4m3 0h3m2 0h2m2 0h2m-37 1h1m3 0h4m2 0h2m2 0h2m1 0h1m1 0h1m2 0h1m2 0h2m1 0h5m1 0h1m1 0h1m-29 1h1m1 0h1m1 0h2m4 0h3m2 0h1m4 0h1m3 0h2m-34 1h7m3 0h3m2 0h2m1 0h1m1 0h1m1 0h1m1 0h1m3 0h1m1 0h1m1 0h1m1 0h1m1 0h1m-37 1h1m5 0h1m1 0h1m2 0h3m6 0h1m3 0h1m1 0h1m1 0h1m3 0h2m-34 1h1m1 0h3m1 0h1m1 0h1m1 0h2m1 0h3m2 0h1m1 0h3m1 0h9m1 0h2m-36 1h1m1 0h3m1 0h1m1 0h3m2 0h4m6 0h1m1 0h1m1 0h1m1 0h2m1 0h2m2 0h1m-37 1h1m1 0h3m1 0h1m1 0h7m5 0h2m4 0h1m7 0h3m-37 1h1m5 0h1m4 0h4m1 0h1m1 0h1m2 0h2m3 0h3m3 0h2m2 0h1m-37 1h7m1 0h2m1 0h2m3 0h2m4 0h2m1 0h3m1 0h2m1 0h5"/></svg></div>
+      </div>
+    </div>
+    <aside class="notes">Live moment: two or three volunteers play one round each on the projector, and the room calls out stay or switch. Everyone else can play on their phone with the QR code. Then look at what the game writes down after a few rounds: four lines, one per fact, each with as many values as rounds were played. Those four lines are already the data, and the rest of this session is about how R holds them.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>rounds as vectors</h2>
+    <div class="content">
+      <div class="stack">
+        <div class="code">prize_door &lt;- <span class="hl">c</span>(2, 1, 3, 3, 1, 2, 2, 3, 1, 1)
+contestant_choice &lt;- <span class="hl">c</span>(2, 3, 1, 1, 1, 1, 3, 2, 2, 1)
+monty_opens &lt;- <span class="hl">c</span>(1, 2, 2, 2, 3, 3, 1, 1, 3, 2)
+decision &lt;- <span class="hl">c</span>("stay", "switch", "stay", "switch",
+              "switch", "stay", "switch", "stay",
+              "switch", "stay")</div>
+        <div class="sidenote">c() combines values into a vector, and the first value of each vector belongs to the first round.</div>
+      </div>
+    </div>
+    <aside class="notes">Here are ten rounds, written the way the game writes them. The function c(), for combine, puts values together into a vector, and the arrow gives the vector a name. Each line is one fact, each position one round: the first value of every vector belongs to round one, the second to round two, and so on.</aside>
+  </section>
+
+  <!-- ===== part 2: vectors ===== -->
+  <section class="slide part" data-part="vectors" data-subtitle="many values of one kind">
+    <aside class="notes">Now the vector itself: what holds it together, which types there are, and what you can do with a whole vector at once.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>the same position, the same round</h2>
+    <div class="figure" id="fig-position"></div>
+    <div class="punch">four vectors of the same length describe ten rounds, as long as nobody mixes up the order.</div>
+    <aside class="notes">The four vectors one below the other, the positions 1 to 10 above them. First key: position 1 in all four vectors is round 1, in which the car was behind door 2, the player picked door 2, the host opened door 1 and the player stayed. Second key: position 8 is round 8. Nothing in R ties the first value of prize_door to the first value of decision; only the position does. That works as long as all four vectors have the same length and the same order, and a data frame, later, is the structure that guarantees exactly that.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>one vector, one type</h2>
+    <div class="figure" id="fig-types"></div>
+    <div class="punch">every value in a vector has the same type, and typeof() tells you which one.</div>
+    <aside class="notes">Hands-On Programming with R calls these atomic vectors: the smallest building block of data in R, and always of one type. Numbers you type are doubles, numbers with a decimal point or without. Whole numbers with an L, or whole numbers read from a file, are integers. Text in quotes is character, and TRUE and FALSE are logical. The colours stay with these four types for the rest of the deck. There are two more types, complex and raw, which you will hardly meet in data analysis. A second function, class(), says what a vector is meant to be, for example numeric or factor; for the four basic types typeof() is the honest answer.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>asking a vector</h2>
+    <div class="content">
+      <div class="stack">
+        <div class="code"><span class="hl">length</span>(prize_door)    <span class="gr"># 10</span>
+<span class="hl">typeof</span>(decision)      <span class="gr"># "character"</span>
+<span class="hl">mean</span>(prize_door)      <span class="gr"># 1.9</span>
+<span class="hl">table</span>(decision)       <span class="gr"># stay 5, switch 5</span></div>
+        <div class="sidenote">sum, mean, median, min, max, range, sd, sort, unique, table: functions that take a whole vector at once.</div>
+      </div>
+    </div>
+    <aside class="notes">Many functions take a whole vector and return one answer about it. length() counts the values, typeof() names the type, mean() averages, table() counts how often each value occurs; R prints that as a small table, here five rounds stayed and five switched. The list below the code names the ones you will use most often. The mean of the prize doors, 1.9, shows that a function computes whatever you ask, whether it means something or not: door numbers are labels, and their mean is meaningless.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>when types meet</h2>
+    <div class="figure" id="fig-coerce"></div>
+    <div class="punch"><span class="keep-case">R</span> never mixes types in a vector, it quietly converts to the most general one.</div>
+    <aside class="notes">What happens if you combine values of different types? First key: a number and a logical value become two numbers, because TRUE counts as 1; the vector is a double. Second key: as soon as one text value joins in, everything becomes text, the 1 becomes the text "1" and TRUE the text "TRUE". The order behind it is logical, then double, then character, and R always picks the most general type that holds every value. This rule from Hands-On Programming with R explains many surprises later: one stray text value in a column of numbers, a dash or "n/a", and the whole column becomes text, so mean() no longer works. When a column has the wrong type, look for the one value that pulled it there.</aside>
+  </section>
+
+  <section class="slide poll" data-poll="typeof-mixed">
+    <div class="poll-q">what does <span class="mono keep-case">typeof(c(3, 1, "2"))</span> return?</div>
+    <ol class="poll-opts"><li>double</li><li>integer</li><li data-correct>character</li><li>an error</li></ol>
+    <aside class="notes">Quick check. Two numbers and one text value: the text wins, so the vector is character, and the 3 and the 1 become "3" and "1". No error: R converts without a word.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>comparing whole vectors</h2>
+    <div class="figure" id="fig-compare"></div>
+    <div class="punch">an operation on two vectors works position by position, with no loop to write.</div>
+    <aside class="notes">Was the first pick already right? On the key, R compares prize_door and contestant_choice position by position, the first with the first, the second with the second, and writes one answer per position. The result is a logical vector of the same length, TRUE where the two were equal. This is the most useful habit of R: arithmetic and comparisons work on whole vectors at once, and you never write a loop for it.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>counting with <span class="keep-case">TRUE</span> and <span class="keep-case">FALSE</span></h2>
+    <div class="content">
+      <div class="stack">
+        <div class="code">first_pick_right &lt;- prize_door == contestant_choice
+<span class="hl">sum</span>(first_pick_right)     <span class="gr"># 3</span>
+<span class="hl">mean</span>(first_pick_right)    <span class="gr"># 0.3</span></div>
+        <div class="sidenote"><span class="keep-case">R</span> counts <span class="keep-case">TRUE</span> as 1 and <span class="keep-case">FALSE</span> as 0, so the mean of a logical vector is a share.</div>
+      </div>
+    </div>
+    <aside class="notes">We keep the comparison under a name. sum() counts the TRUE values, because R counts TRUE as 1 and FALSE as 0: in three of ten rounds the first pick was right. mean() divides by the length and gives the share, 0.3. R for Data Science devotes a chapter to logical vectors for a reason: almost every question about data passes through one.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>picking values by position</h2>
+    <div class="content">
+      <div class="stack">
+        <div class="code"><div>decision<span class="hl">[1]</span>          <span class="gr"># "stay"</span></div><div data-step="1">decision<span class="hl">[-1]</span>         <span class="gr"># all but the first</span></div><div data-step="2">decision<span class="hl">[2:4]</span>        <span class="gr"># "switch" "stay" "switch"</span></div><div data-step="3">decision<span class="hl">[c(1, 3)]</span>    <span class="gr"># "stay" "stay"</span></div></div>
+        <div class="sidenote">square brackets select, a minus leaves out, and the result is again a vector.</div>
+      </div>
+    </div>
+    <aside class="notes">Square brackets pick values from a vector by their position. Line by line: the first value; with a minus everything except the first; a range from the second to the fourth; and with c() any positions you like, here the first and the third. Whatever comes out is again a vector, so you can keep working with it. R starts counting at 1, not at 0 as Python does.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>picking values by a condition</h2>
+    <div class="figure" id="fig-subset"></div>
+    <div class="punch">a logical vector in square brackets keeps exactly the positions that are <span class="keep-case">TRUE</span>.</div>
+    <aside class="notes">Above, the rounds in which the player stayed, as a logical vector; below, whether the first pick was right. On the key, the logical vector goes into the square brackets: every position with FALSE above drops out, and the five rounds in which the player stayed remain. Two of them were won, because whoever stays wins exactly when the first pick was right. This is how you will answer the project question: take the wins, keep only the rounds in which the player stayed, then only those in which the player switched, and compare the shares.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>when a value is missing</h2>
+    <div class="figure" id="fig-na"></div>
+    <div class="punch"><span class="keep-case">NA</span> means "not known", so anything computed with it is not known either, until you say what to do.</div>
+    <aside class="notes">A round in which nobody wrote down the host's door is not a door 0; it is missing, and R marks it with NA, not available. The mean of 2, an unknown value and 3 is unknown, so R answers NA. With na.rm = TRUE you tell it to leave missing values out, and the mean of 2 and 3 is 2.5. R for Data Science treats missing values as a topic of their own because they spread through every calculation; is.na() finds them, and the decision whether to leave them out is yours. On the right three relatives that look similar but mean something else: NULL is nothing at all, NaN is the result of an impossible calculation such as 0 divided by 0, and Inf is infinity, for example 1 divided by 0.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>factors: text with fixed levels</h2>
+    <div class="content">
+      <div class="stack">
+        <div class="code">decision_factor &lt;- <span class="hl">factor</span>(
+  decision,
+  <span class="hl">levels</span> = c("stay", "switch")
+)
+levels(decision_factor)    <span class="gr"># "stay" "switch"</span></div>
+        <div class="sidenote">a factor knows all its possible values and their order, even those that do not occur.</div>
+      </div>
+    </div>
+    <aside class="notes">For a variable with a fixed set of values, such as stay and switch, a factor is the better type. It knows its levels and their order, which tables and plots respect; a value outside the levels becomes NA instead of a silent new category, which catches typos; and table() counts a level even if it does not occur. The package forcats, part of the tidyverse, offers functions to reorder and combine levels.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="statement">a vector is a row of values of one type, and position <span class="mono">i</span> belongs to observation <span class="mono">i</span>.</div>
+    </div>
+    <aside class="notes">That is all a vector is. Everything we did, comparing, counting, picking, works because the values share one type and because position i belongs to the same round, the same person, the same observation in every vector.</aside>
+  </section>
+
+  <!-- ===== part 3: data frames ===== -->
+  <section class="slide part" data-part="data frames" data-subtitle="vectors side by side">
+    <aside class="notes">Now the vectors come together in a table, and the table takes over the promise we had to keep by hand: same length, same order.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>vectors become a table</h2>
+    <div class="code small verb-code">games &lt;- <span class="hl">data.frame</span>(prize_door, contestant_choice, monty_opens, decision)</div>
+    <div class="figure below" id="fig-frame"></div>
+    <div class="punch">a data frame is a list of equally long vectors, and every vector holds values of one type.</div>
+    <aside class="notes">The four vectors, each in the colour of its type. First key: data.frame() puts them side by side, their names become the header, and R numbers the rows. Second key: one row is one game, and one column is one vector. This is the central sentence of the session, and it is how both books describe the data frame: a list of equally long vectors. The table guarantees what we had to promise ourselves before: all columns have the same length, and row 8 is round 8 in every column. And because every column is a vector, every column has one type, but different columns may have different ones.</aside>
+  </section>
+
+  <section class="slide poll" data-poll="data-frame-columns">
+    <div class="poll-q">which of these can be a column of a data frame?</div>
+    <ol class="poll-opts"><li><span class="mono keep-case">c(1, 2, 3)</span></li><li><span class="mono keep-case">c("stay", "switch")</span></li><li><span class="mono keep-case">c(TRUE, FALSE)</span></li><li data-correct>all of them</li></ol>
+    <aside class="notes">Every vector can be a column, whatever its type; what a data frame demands is only that all its columns have the same length.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>100 games from a file</h2>
+    <div class="content">
+      <div class="stack">
+        <div class="code">monty_hall &lt;- <span class="hl">read.csv</span>("lets_make_a_deal.csv")
+<span class="hl">str</span>(monty_hall)</div>
+        <div class="console">'data.frame':  100 obs. of  5 variables:
+ $ contestant       : <span class="t-chr">chr</span>  "Charles" "Patricia" "Karen" "Jessica" ...
+ $ prize_door       : <span class="t-int">int</span>  3 1 3 3 1 1 3 2 3 3 ...
+ $ contestant_choice: <span class="t-int">int</span>  3 3 3 1 3 3 1 3 1 2 ...
+ $ monty_opens      : <span class="t-int">int</span>  2 2 1 2 2 2 2 1 2 1 ...
+ $ decision         : <span class="t-chr">chr</span>  "stay" "stay" "stay" "stay" ...</div>
+        <div class="sidenote">str() shows every column with its type and its first values, and it is the first thing to run on new data.</div>
+      </div>
+    </div>
+    <aside class="notes">The project's data set holds 100 games, one per row, with the name of the contestant as a fifth column. read.csv() reads the file into a data frame, and str(), for structure, shows what came in: 100 observations of 5 variables, and for every column its type and first values. The doors arrived as int, integers, because the file holds whole numbers; the names and decisions as chr, character. Run str() on every new data set before anything else: a column with the wrong type shows up here first.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>a vector or a table?</h2>
+    <div class="figure" id="fig-access"></div>
+    <div class="punch">$ takes the vector out of the table, single brackets keep a smaller table.</div>
+    <aside class="notes">The first six rows of the data. First key: monty_hall$decision takes the column out as a vector, without its name, the same kind of thing as the vectors in part 2. Second key: monty_hall["decision"] with single brackets keeps a table, with one column and its header. Both look almost the same on screen, but they are different things: a function like mean() wants the vector, a function like head() works on the table. When an error says something about a "list" or a "data.frame", this is usually the reason.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>rows and columns</h2>
+    <div class="content">
+      <div class="stack">
+        <div class="code"><div>monty_hall<span class="hl">[1, ]</span>     <span class="gr"># the first row</span></div><div data-step="1">monty_hall<span class="hl">[, 2]</span>     <span class="gr"># the second column, a vector</span></div><div data-step="2">monty_hall<span class="hl">[1:10, c("prize_door", "decision")]</span></div><div data-step="3"><span class="hl">nrow</span>(monty_hall)     <span class="gr"># 100</span></div><div data-step="3"><span class="hl">ncol</span>(monty_hall)     <span class="gr"># 5</span></div></div>
+        <div class="sidenote">[rows, columns]: an empty place means all of them.</div>
+      </div>
+    </div>
+    <aside class="notes">A data frame has two directions, so square brackets take two places, rows first, then columns. Line by line: the first row with all columns; all rows of the second column, which comes out as a vector; the first ten rows of two columns named in c(), which stays a table; and nrow() and ncol() count rows and columns. The comma is the part people forget: without it R reads a single number as a column.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>a new column from the others</h2>
+    <div class="code small verb-code">monty_hall<span class="hl">$won</span> &lt;-
+  (monty_hall$decision == "stay" &amp;
+     monty_hall$prize_door == monty_hall$contestant_choice) |
+  (monty_hall$decision == "switch" &amp;
+     monty_hall$prize_door != monty_hall$contestant_choice)</div>
+    <div class="figure under-code" id="fig-won"></div>
+    <aside class="notes">Whether a game was won is not in the file, but it follows from three columns: whoever stays wins if the first pick was the prize door, and whoever switches wins if it was not. The code compares whole columns at once, combines the comparisons with and and or, and assigns the result to a new column with $. A column is a vector, so everything from part 2 works on it. The rule is long, and with dplyr it becomes much shorter; here it shows that a new column is nothing but a vector computed from other vectors.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>data frame and tibble</h2>
+    <div class="content">
+      <div class="consoles">
+        <div>
+          <div class="label">monty_hall</div>
+          <div class="console tiny"><span class="faded">86       Linda          2                 1           3     stay FALSE
+87      Robert          3                 3           2     stay  TRUE
+88     Barbara          1                 3           2     stay FALSE</span>
+89       Karen          2                 2           1     stay  TRUE
+90       Sarah          1                 3           2   switch  TRUE
+91      Joseph          1                 1           3     stay  TRUE
+92     Richard          1                 2           3   switch  TRUE
+93     Charles          1                 1           3     stay  TRUE
+94       Susan          3                 1           2     stay FALSE
+95    Patricia          1                 3           2     stay FALSE
+96     Richard          1                 2           3     stay FALSE
+97    Patricia          1                 3           2   switch  TRUE
+98       Susan          3                 3           1     stay  TRUE
+99     Jessica          1                 2           3     stay FALSE
+100   Patricia          1                 1           3     stay  TRUE</div>
+        </div>
+        <div>
+          <div class="label"><span class="hl">as_tibble</span>(monty_hall)</div>
+          <div class="console tiny"># A tibble: 100 × 6
+   contestant prize_door contestant_choice monty_opens decision won
+   <span class="t-chr">&lt;chr&gt;</span>           <span class="t-int">&lt;int&gt;</span>             <span class="t-int">&lt;int&gt;</span>       <span class="t-int">&lt;int&gt;</span> <span class="t-chr">&lt;chr&gt;</span>    <span class="t-lgl">&lt;lgl&gt;</span>
+ 1 Charles             3                 3           2 stay     TRUE
+ 2 Patricia            1                 3           2 stay     FALSE
+ 3 Karen               3                 3           1 stay     TRUE
+ 4 Jessica             3                 1           2 stay     FALSE
+ 5 Joseph              1                 3           2 stay     FALSE
+ 6 Robert              1                 3           2 stay     FALSE
+ 7 John                3                 1           2 stay     FALSE
+ 8 Richard             2                 3           1 switch   TRUE
+ 9 Michael             3                 1           2 stay     FALSE
+10 Elizabeth           3                 2           1 switch   TRUE
+# ℹ 90 more rows</div>
+        </div>
+      </div>
+    </div>
+    <div class="punch">a tibble is a data frame with better manners: it shows the types and does not flood the console.</div>
+    <aside class="notes">On the left what you see after typing the name of a data frame: all 100 rows rush through the console, and what remains on screen is the end, while the header has long scrolled away. On the right the same data as a tibble, the data frame of the tidyverse: it says how many rows and columns there are, shows the type of every column under its name, and prints only the first ten rows. R for Data Science works with tibbles throughout, and every tidyverse function returns one. For everything in this deck a tibble behaves like a data frame; it prints more helpfully, keeps a table a table when you select one column with single brackets, and never turns text into factors behind your back.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>tidy data</h2>
+    <div class="figure" id="fig-tidy"></div>
+    <div class="footnote">after <span class="keep-case">Wickham, Çetinkaya-Rundel &amp; Grolemund</span>: <a href="https://r4ds.hadley.nz/data-tidy.html" target="_blank" rel="noopener"><span class="keep-case">R for Data Science</span>, chapter "data tidying"</a></div>
+    <div class="punch">when a table is tidy, every column is a vector of one variable, and the tools of <span class="keep-case">R</span> fit it.</div>
+    <aside class="notes">R for Data Science calls a table tidy when three rules hold: each variable is a column, each observation is a row, and each value is a cell. Our game table is tidy: one row per game, one column per fact. Data from the wild often is not, for example with one column per year or two facts in one cell, and then it has to be reshaped first. The reward for tidy data is that every column is a vector, and every tool from this deck and from dplyr fits it.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="stack">
+        <div class="statement">a data frame is a list of equally long vectors, and every vector holds values of one type.</div>
+        <div class="sidenote">to read on: <a href="https://rstudio-education.github.io/hopr/r-objects.html" target="_blank" rel="noopener"><span class="keep-case">Hands-On Programming with R</span>, chapter "<span class="keep-case">R</span> objects"</a>, and <span class="keep-case">R for Data Science</span>, chapters <a href="https://r4ds.hadley.nz/data-tidy.html" target="_blank" rel="noopener">"data tidying"</a>, <a href="https://r4ds.hadley.nz/logicals.html" target="_blank" rel="noopener">"logical vectors"</a>, <a href="https://r4ds.hadley.nz/factors.html" target="_blank" rel="noopener">"factors"</a> and <a href="https://r4ds.hadley.nz/missing-values.html" target="_blank" rel="noopener">"missing values"</a></div>
+      </div>
+    </div>
+    <aside class="notes">If you remember one picture from this deck, take the type case: compartments in columns, each column one kind of thing, all columns equally long. Everything else, transforming, visualising, modelling, works on tables of this kind. Both books are free online; the chapters named here cover this deck in more depth.</aside>
+  </section>
+
+</div>
+<script src="../../stagekit/draw.js?v=0.4.0-62b883"></script>
+<script src="../../stagekit/anim.js?v=0.4.0-62b883"></script>
+<script src="deck.js?v=1"></script>
+<script src="../../stagekit/stagekit.js?v=0.4.0-62b883"></script>
+</body>
+</html>

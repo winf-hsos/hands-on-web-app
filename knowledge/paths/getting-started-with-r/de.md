@@ -21,6 +21,7 @@ sections:
       - r-exercise-milk-budget
   - title: { de: "Teil 2: Vektoren und Datentypen", en: "Part 2: Vectors and data types" }
     steps:
+      - data-representation-slides
       - r-vectors
       - r-data-types
       - r-comparisons
@@ -35,7 +36,7 @@ sections:
       - item: positron
         optional: true
 status: published
-updated: 2026-10-27
+updated: 2026-11-02
 ---
 
 Dieser Pfad führt dich in kleinen Lektionen von der ersten Rechnung bis zu
@@ -46,7 +47,9 @@ nichts.
 
 Der erste Teil zeigt R als Taschenrechner, mit Namen für Werte und mit
 Funktionen. Der zweite führt Vektoren ein, die Grundform aller Daten in R,
-mit ihren Typen, mit Vergleichen und mit fehlenden Werten. Der dritte bringt
+mit ihren Typen, mit Vergleichen und mit fehlenden Werten; zu Beginn zeigen
+[[data-representation-slides|die Folien]] am Drei-Türen-Spiel in einem
+Durchgang den Weg vom Vektor bis zum Data Frame. Der dritte bringt
 alles in einer Tabelle zusammen und endet mit der Pipe, auf der die
 Datentransformation mit dplyr aufbaut. Auf die beiden ersten Teile folgt je
 eine Übung, auf den dritten ein Quiz. Wer danach auf dem eigenen Rechner
