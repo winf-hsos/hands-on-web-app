@@ -41,38 +41,53 @@ read before it can be counted. The scales of measurement, which Döring calls
 Skalenniveaus (chapter 8.4), divide the first two branches further: a
 categorical variable is nominal if its groups have no order and ordinal if
 they do, and a numerical variable is on an interval scale if only differences
-are meaningful and on a ratio scale if it also has a true zero. One example
-each: the decision in the game (`"stay"`, `"switch"`), the share of organic
-food in the milk survey (`organic_share`, 1 to 5), a year, a price, and a free
-comment. Döring also calls interval and ratio together metric. Some books
+are meaningful and on a ratio scale if it also has a true zero. One common
+example each: eye colour is nominal, shirt size from S to L is ordinal, a
+temperature in degrees Celsius is on an interval scale, body height in
+centimetres is on a ratio scale, and a free comment is qualitative. Other
+interval variables are calendar dates and years, the time of day and IQ
+scores: their differences mean something, but their zero was set by someone. Döring also calls interval and ratio together metric. Some books
 split numerical variables into continuous values and counts instead, which
 matters for the types of R in part 3.
 
 **What each scale allows (frames 14 to 17).** Nominal values may only be
-compared for equal or not equal. Ordinal values add an order: an organic share
-of 4 is more than one of 2, but by how much is unknown. Interval values add
-equal distances, so the ten years from 1990 to 2000 are as long as those from
-2000 to 2010. Ratio values add a true zero, and only then is "twice as much"
-meaningful: a milk at 2 euros costs twice as much as one at 1 euro. Each scale
+compared for equal or not equal. Ordinal values add an order: shirt size L is
+larger than M, but by how much is unknown. Interval values add equal
+distances, so from 10 to 20 degrees is as far as from 20 to 30. Ratio values
+add a true zero, and only then is "twice as much" meaningful: a child of 90 cm
+is half as tall as an adult of 180 cm. Each scale
 keeps everything the one above it allows and adds one more question you may
 ask. Döring adds a useful rule: you may always step down a scale, for example
 turn prices into the groups cheap and expensive, but never up.
 
-**Door 3 is not three times door 1 (frame 18).** The doors carry numbers, but
-the numbers are names, and left, middle and right would do as well. R does not
-know that and computes the mean of the prize doors from five rounds,
-`mean(prize_door)`, without complaint: 2. The sentence that the average car
-stands behind door 2 is nonsense. Döring warns of exactly this: statistics
-software computes meaningless means whenever categories are coded as numbers.
-A number used as a name is still a name, and its mean means nothing. A coding
-plan that records what each number stands for is the defence, and in R so is
-the type of the column.
+**Door 3 is not three times door 1 (frame 18).** In five games of the room the
+car stood twice behind door 1, once behind door 2 and twice behind door 3. The
+doors carry numbers, but the numbers are names, and left, middle and right
+would do as well. R does not know that and computes the mean of the prize
+doors, `mean(prize_door)`, without complaint: 2, as if the average car stood
+behind door 2, the door that had it least often. Döring warns of exactly this:
+statistics software computes meaningless means whenever categories are coded
+as numbers. A number used as a name is still a name, so count it instead of
+averaging it, which `table(prize_door)` does. A coding plan that records what
+each number stands for is the defence, and in R so is the type of the column.
+Whether the doors in a table stay numbers or become a factor is worth a short
+debate: as numbers they can be compared, as in `prize_door ==
+contestant_choice`, as a factor they are more honest, and either is fine as
+long as nobody reports the mean door.
+
+```r
+prize_door <- c(2, 1, 3, 3, 1)
+mean(prize_door)     # 2
+table(prize_door)    # 2 1 2
+```
 
 **Ten degrees are not twice as warm as five (frames 19 and 20).** Two
-thermometers show 5 and 10 degrees Celsius, and 10 looks like twice 5; two
+thermometers on the same scale show 5 and 10 degrees Celsius, and 10 looks
+like twice 5; two
 prices are 1 and 2 euros. When both change their unit while the things
-themselves stay the same, the temperatures become 41 and 50 degrees
-Fahrenheit, and nothing is twice anything any more, whereas the prices become
+themselves stay the same, the scale and the temperatures become degrees
+Fahrenheit, 41 and 50, and nothing is twice anything any more, although the
+columns did not move, whereas the prices become
 100 and 200 cents, and the second is still twice the first. Zero degrees
 Celsius is just where water freezes, a point someone picked, while zero cents
 is truly nothing. Ratios need a true zero, which a price has and a temperature
@@ -81,11 +96,13 @@ methods need a ratio scale, which is why Döring often treats both as metric.
 
 **Is a rating scale ordinal or interval? (frame 21).** The milk survey asks for
 the share of organic food when shopping, from 1 (hardly any) to 5 (almost
-all). Strictly, only the order is known, so the scale is ordinal and the
-median is the right summary. Many researchers treat rating scales with five or
-more roughly equal steps as interval and report the mean, and Döring describes
-this as common practice. For the 30 people in the sample on the platform the
-median is 2 and the mean 2.37, and both tell the same story. If in doubt,
+all). Of the 30
+people in the sample, 7 answered 1, 13 answered 2, 5 answered 3, 2 answered 4
+and 3 answered 5. Strictly, only the order is known, so the scale is ordinal
+and the median is the right summary. Many researchers treat rating scales with
+five or more roughly equal steps as interval and report the mean, and Döring
+describes this as common practice. Here the median is 2 and the mean 2.37,
+close together, and both tell the same story. If in doubt,
 compute both, and say which one you report.
 
 ```r
@@ -101,8 +118,7 @@ prints them. Nominal values are text (`<chr>`), logical values for yes and no
 (`<lgl>`) or a factor (`<fct>`); ordinal values are an ordered factor
 (`<ord>`). Numerical values are doubles (`<dbl>`) or integers (`<int>`), the
 natural type for counts and whole numbers such as years. Free text stays text.
-The colours are those of the types in the deck on vectors and data frames,
-with the factor added in red. A factor is how R remembers that a column is
+The two factor types are blue, because they are the point of the slide. A factor is how R remembers that a column is
 categorical.
 
 **Telling R what a column is (frame 27).** One line per scale: the decision
@@ -131,19 +147,7 @@ deviation (`mean()`, `sd()`) and a histogram or a boxplot. A ratio variable
 adds ratios, such as a new price divided by an old one. The scale tells you
 which function makes sense, while R will run all of them anyway.
 
-**Back to our table (frame 32).** The table from the start, *What should we
-measure?*, gets a type for every column. The decision becomes a factor; the
-doors can be numbers or a factor, and both are defensible: as numbers they can
-be compared, as in `prize_door == contestant_choice`, as a factor they are
-more honest. Either is fine as long as the choice is justified and nobody
-reports the mean door. Saved as RDS, the table keeps its types, which a CSV
-file would lose, and `str()` shows them after reading it in R:
-
-```r
-str(readRDS("monty_hall_rounds.rds"))
-```
-
-**The sentence to take home (frames 33 and 34).** The scale of a variable
+**The sentence to take home (frames 32 and 33).** The scale of a variable
 decides what you may compute with it, and R's type should say so. To read on:
 Döring (2023), *Forschungsmethoden und Evaluation in den Sozial- und
 Humanwissenschaften*, chapter 8.4

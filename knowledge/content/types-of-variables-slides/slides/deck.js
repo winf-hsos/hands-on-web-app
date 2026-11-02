@@ -7,11 +7,6 @@ const C = d.colors();
 const el = (id) => document.getElementById(id);
 const W32 = 19.2; // one character at 32
 
-/* --- the types of R and their colours -----------------------------------------
- * As in "vectors and data frames in R": double orange, integer turquoise,
- * character purple, logical yellow; the factor, new in this deck, is red. */
-const TYPE = { dbl: d.color("groups-g1"), int: d.color("groups-g3"), chr: d.color("groups-g2"), lgl: C.yellow, fct: C.red, ord: C.red };
-
 /* --- five games of the room, the first four as a table ---------------------------- */
 const PRIZE = [2, 1, 3, 3, 1];
 const CHOICE = [2, 3, 1, 1, 1];
@@ -97,24 +92,26 @@ function tree(showLeaves) {
   return d.layers(wires, boxes);
 }
 
-/* Step 2 of "types of variables": one example per leaf and for free text, the
- * name in the code font at y 440 ("organic_share" is 250 wide around 600) and
- * a few values in gray at y 495. */
+/* Step 2 of "types of variables": one everyday example per leaf and for free
+ * text, the name in the code font at y 440 ("temp_celsius" is 230 wide around
+ * 920, 805..1035) and a few values in gray at y 495 ('"blue", "brown"' is 288
+ * wide around 240). The same examples stand on "what each scale allows". */
+const EXAMPLES = [
+  { cx: 240, name: "eye_colour", values: '"blue", "brown"' }, { cx: 600, name: "shirt_size", values: '"S", "M", "L"' },
+  { cx: 920, name: "temp_celsius", values: "-3.5, 21.0" }, { cx: 1280, name: "height_cm", values: "162, 185" },
+];
 window.drawTree = function (_slide, step = 0) {
-  const examples = [
-    { cx: 240, name: "decision", values: '"stay", "switch"' }, { cx: 600, name: "organic_share", values: "1 to 5" },
-    { cx: 920, name: "year", values: "1994, 2026" }, { cx: 1280, name: "price", values: "1.51" },
-    { cx: QUALITATIVE_CX, name: "comment", values: "free text", plain: true },
-  ];
+  const examples = [...EXAMPLES, { cx: QUALITATIVE_CX, name: "comment", values: "free text", plain: true }];
   const parts = [tree(step >= 1)];
   if (step >= 2) examples.forEach((e) => parts.push(
     d.label(e.cx, 0, e.name, { size: 32, mono: true, anchor: "middle", centerY: 440, color: C.light }),
-    d.label(e.cx, 0, e.values, { size: 32, mono: !e.plain, anchor: "middle", centerY: 495, color: C.gray })));
+    d.label(e.cx, 0, e.values, { size: 32, mono: !e.plain, anchor: "middle", centerY: 495, color: C.gray, keepCase: true })));
   el("fig-tree").innerHTML = d.svg(1680, 660, ...parts);
 };
 
 /* "every scale has its type in R": the same tree with all leaves, and under
- * each leaf the types R uses, as a tibble prints them, in their colours. A
+ * each leaf the types R uses, as a tibble prints them. The two factor types
+ * are blue, because the slide points to them; the others are light gray. A
  * type is 5 characters (96 wide at 32) with 24 between, the group centred
  * under its leaf: three types under nominal span 336 (72..408). Step 1 the
  * categorical types, step 2 the numerical ones, step 3 free text. */
@@ -128,7 +125,7 @@ window.drawTypes = function (_slide, step = 0) {
   groups.filter((g) => step >= g.step).forEach((g) => {
     const width = g.types.length * 96 + (g.types.length - 1) * 24;
     g.types.forEach((t, k) => parts.push(d.label(g.cx - width / 2 + 120 * k, 0, `<${t}>`,
-      { size: 32, mono: true, centerY: 440, color: TYPE[t], keepCase: true })));
+      { size: 32, mono: true, centerY: 440, color: t === "fct" || t === "ord" ? C.blue : C.light, keepCase: true })));
   });
   el("fig-types").innerHTML = d.svg(1680, 660, ...parts);
 };
@@ -136,13 +133,13 @@ window.drawTypes = function (_slide, step = 0) {
 /* --- slide: what each scale allows ---------------------------------------------------
  * Figure 1680 x 660 (has-punch). Header at y 100 in gray, four questions
  * centred at 420, 680, 940 and 1200 ("equal or not" is about 230 wide), the
- * examples left-aligned at 1360 ("organic_share" ends at 1610). Rule at 136,
+ * examples left-aligned at 1360 ("temp_celsius" ends at 1590). Rule at 136,
  * rows at y 200, 300, 400, 500 with the scale at 48 on the left. A green tick
  * where the question may be asked, a short dark dash where not; one row more
  * per step. */
 window.drawAllows = function (_slide, step = 0) {
   const questions = [{ text: "equal or not", cx: 420 }, { text: "order", cx: 680 }, { text: "differences", cx: 940 }, { text: "ratios", cx: 1200 }];
-  const scales = [["nominal", "decision"], ["ordinal", "organic_share"], ["interval", "year"], ["ratio", "price"]];
+  const scales = LEAVES.map((l, i) => [l.text, EXAMPLES[i].name]);
   const parts = questions.map((q) => d.label(q.cx, 0, q.text, { size: 32, anchor: "middle", centerY: 100, color: C.gray }));
   parts.push(d.label(1360, 0, "example", { size: 32, centerY: 100, color: C.gray }), d.line(2, 136, 1678, 136, { color: C.dark }));
   scales.slice(0, step + 1).forEach(([scale, example], i) => {
@@ -155,81 +152,135 @@ window.drawAllows = function (_slide, step = 0) {
 };
 
 /* --- slide: door 3 is not three times door 1 ------------------------------------------
- * Figure 1680 x 660 (has-punch). Three doors 160 x 300 at x 40, 250, 460
- * (y 80..380), their numbers at 48 in the middle. On the right the code at 48
- * from x 700: "prize_door <- c(2, 1, 3, 3, 1)" is 864 wide and ends at 1564,
- * mean(prize_door) is 461, its result 2 after an arrow at 1200..1280. Below the
- * claim as a judged box 976 x 150 from x 700, ending at 1676 (2 inside the
- * edge for the half stroke); the claim at 32 is about 691 wide. */
+ * Figure 1680 x 660 (has-punch). Left the five games of the room as a grid:
+ * the door numbers at 48 above three columns around x 300, 460 and 620, the
+ * games at 32 in gray from x 40 ("game 5" is 115 wide), cells 120 x 56 on a
+ * pitch of 72 from y 130 (the last ends at 474). The cell with the car is
+ * framed in white and says "car", the others are dark and empty. Under each
+ * column how often the car stood there, at 48 (y 540). Right, from x 840, the
+ * two calls at 48: mean(prize_door) is 461 wide (to 1301), its result after an
+ * arrow at 1330..1410; table(prize_door) is 490 wide, and R's answer below it
+ * as R prints it, the doors in gray and the counts in white. */
 (function () {
-  const door = (x, n) => d.box(x, 80, 160, 300, "", { border: C.white, width: 3, fill: "none" }) +
-    d.label(x + 80, 0, String(n), { size: 48, anchor: "middle", centerY: 230 });
+  const COLS = [300, 460, 620];
+  const top = (k) => 130 + 72 * k;
+  const cells = [];
+  PRIZE.forEach((prize, k) => {
+    cells.push(d.label(40, 0, `game ${k + 1}`, { size: 32, centerY: top(k) + 28, color: C.gray }));
+    COLS.forEach((cx, j) => cells.push(j + 1 === prize
+      ? d.box(cx - 60, top(k), 120, 56, "car", { size: 32, border: C.white, width: 3 })
+      : d.box(cx - 60, top(k), 120, 56, "", { border: C.dark })));
+  });
+  const counts = COLS.map((_, j) => PRIZE.filter((p) => p === j + 1).length);
   el("fig-doors").innerHTML = d.svg(1680, 660,
-    door(40, 1), door(250, 2), door(460, 3),
-    d.label(700, 0, "prize_door <- c(2, 1, 3, 3, 1)", { size: 48, mono: true, centerY: 120, keepCase: true }),
-    d.label(700, 0, "mean(prize_door)", { size: 48, mono: true, centerY: 220 }),
-    d.arrow(1200, 220, 1280, 220, { color: C.gray, width: 3 }),
-    d.label(1310, 0, "2", { size: 48, mono: true, centerY: 220, color: TYPE.dbl }),
-    d.verdict(700, 320, 976, 150, "the average car stands behind door 2", false, { size: 32 }));
+    ...COLS.map((cx, j) => d.label(cx, 0, String(j + 1), { size: 48, anchor: "middle", centerY: 80 })),
+    ...cells,
+    d.label(40, 0, "cars", { size: 32, centerY: 540, color: C.gray }),
+    ...COLS.map((cx, j) => d.label(cx, 0, String(counts[j]), { size: 48, anchor: "middle", centerY: 540 })),
+    d.label(840, 0, "mean(prize_door)", { size: 48, mono: true, centerY: 160 }),
+    d.arrow(1330, 160, 1410, 160, { color: C.gray, width: 3 }),
+    d.label(1440, 0, "2", { size: 48, mono: true, centerY: 160, color: C.gray }),
+    d.label(840, 0, "table(prize_door)", { size: 48, mono: true, centerY: 320 }),
+    d.label(840, 0, "1 2 3", { size: 48, mono: true, centerY: 410, color: C.gray }),
+    d.label(840, 0, counts.join(" "), { size: 48, mono: true, centerY: 480 }));
 })();
 
 /* --- slide: ten degrees are not twice as warm as five ------------------------------------
  * Figure 1680 x 660 (has-punch), animated in one section. Left: two
- * thermometers around x 300 and 540, tube 40 x 300 from y 90, bulb at y 420;
- * the column maps -10..40 °C to y 370..110, so 5 °C stands at 292 and 10 °C at
- * 266. The readings at 48 under the bulbs (y 500), a sentence at 32 around 420
- * (y 590). Right: two prices in boxes 240 x 100 around x 1140 and 1420 (y
- * 220..320), "200 ct" at 48 is 173 wide; the sentence around 1280 ("200 is still
- * twice 100" is about 420 wide). The section swaps every number to the other
- * unit at once; the thermometers do not move, because the heat stays the same. */
+ * thermometers around x 320 and 520 on one shared scale, -10..40 °C at
+ * y 380..120 (5.2 per degree, so 5 °C stands at 302, 10 °C at 276 and 0 °C at
+ * 328). Each is one outline: a tube 44 wide with a round top, flowing into a
+ * bulb of radius 40 around y 440, the tube meeting the bulb where it is 44
+ * wide (y 406.6). Inside a column 16 wide and a filled bulb of radius 30.
+ * Ticks every 5 degrees on the right of each tube, longer every 10; the
+ * numbers of the scale at 32 left of the first, ending at x 270 ("104" is 58
+ * wide). A dashed line marks where water freezes, its label at 32 from x 610
+ * (about 250 wide). The readings at 48 under the bulbs (y 530), a sentence at
+ * 32 around 420 (y 605). Right: two prices in boxes 240 x 100 around x 1140
+ * and 1420 (y 220..320), "200 ct" at 48 is 173 wide; the sentence around 1280
+ * ("200 is still twice 100" is about 420 wide). The section swaps every
+ * number to the other unit at once, the scale with them; the columns do not
+ * move, because the heat stays the same. */
 (function () {
-  const level = (t) => 370 - (t + 10) * 5.2;
-  const thermo = (cx, t) =>
-    `<rect x="${cx - 10}" y="${level(t)}" width="20" height="${420 - level(t)}" fill="${C.light}"/>` +
-    `<circle cx="${cx}" cy="420" r="26" fill="${C.light}"/>` +
-    `<rect x="${cx - 20}" y="90" width="40" height="320" rx="20" fill="none" stroke="${C.light}" stroke-width="3"/>` +
-    `<circle cx="${cx}" cy="420" r="34" fill="none" stroke="${C.light}" stroke-width="3"/>`;
-  const reading = (name, cx, text) => d.g(name, d.label(cx, 0, text, { size: 48, anchor: "middle", centerY: 500, keepCase: true }));
+  const level = (t) => 380 - (t + 10) * 5.2;
+  const TUBE = 22, BULB_Y = 440, BULB_R = 40;
+  const neck = BULB_Y - Math.sqrt(BULB_R ** 2 - TUBE ** 2);
+  const SCALE = [-10, 0, 10, 20, 30, 40];
+  const fahrenheit = (c) => c * 9 / 5 + 32;
+  const thermo = (cx, t) => {
+    const ticks = [];
+    for (let v = -10; v <= 40; v += 5) ticks.push(d.line(cx + TUBE, level(v), cx + TUBE + (v % 10 === 0 ? 22 : 12), level(v), { color: C.gray }));
+    const top = level(40) - 8;
+    return `<path d="M${cx - TUBE},${neck} L${cx - TUBE},${top} A${TUBE},${TUBE} 0 0 1 ${cx + TUBE},${top} ` +
+      `L${cx + TUBE},${neck} A${BULB_R},${BULB_R} 0 1 1 ${cx - TUBE},${neck} Z" fill="${C.bg}" stroke="${C.light}" stroke-width="3"/>` +
+      `<circle cx="${cx}" cy="${BULB_Y}" r="30" fill="${C.white}"/>` +
+      `<rect x="${cx - 8}" y="${level(t)}" width="16" height="${BULB_Y - level(t)}" rx="4" fill="${C.white}"/>` + ticks.join("");
+  };
+  const scale = (unit, convert) => SCALE.map((v) => d.g(`${unit}${v}`,
+    d.label(270, 0, String(convert(v)), { size: 32, anchor: "end", centerY: level(v), color: C.gray })));
+  const reading = (name, cx, text) => d.g(name, d.label(cx, 0, text, { size: 48, anchor: "middle", centerY: 530, keepCase: true }));
   const price = (name, cx, text) => d.g(name, d.label(cx, 0, text, { size: 48, anchor: "middle", centerY: 270 }));
-  const sentence = (name, cx, text) => d.g(name, d.label(cx, 0, text, { size: 32, anchor: "middle", centerY: 590, color: C.light }));
+  const sentence = (name, cx, text) => d.g(name, d.label(cx, 0, text, { size: 32, anchor: "middle", centerY: 605, color: C.light }));
   el("fig-zero").innerHTML = d.svg(1680, 660,
     d.label(420, 0, "temperature", { size: 32, anchor: "middle", centerY: 40, color: C.gray }),
     d.label(1280, 0, "price", { size: 32, anchor: "middle", centerY: 40, color: C.gray }),
-    thermo(300, 5), thermo(540, 10),
-    reading("c5", 300, "5 °C"), reading("c10", 540, "10 °C"), reading("f41", 300, "41 °F"), reading("f50", 540, "50 °F"),
+    d.line(320 - TUBE, level(0), 590, level(0), { color: C.gray, dashed: true }),
+    d.label(610, 0, "water freezes", { size: 32, centerY: level(0), color: C.gray }),
+    thermo(320, 5), thermo(520, 10),
+    ...scale("c", (v) => v), ...scale("f", fahrenheit),
+    reading("c5", 320, "5 °C"), reading("c10", 520, "10 °C"), reading("f41", 320, "41 °F"), reading("f50", 520, "50 °F"),
     sentence("twice-c", 420, "10 is twice 5"), sentence("twice-f", 420, "50 is not twice 41"),
     d.box(1020, 220, 240, 100, "", { border: C.light }), d.box(1300, 220, 240, 100, "", { border: C.light }),
     price("e1", 1140, "1 €"), price("e2", 1420, "2 €"), price("ct100", 1140, "100 ct"), price("ct200", 1420, "200 ct"),
     sentence("twice-e", 1280, "2 is twice 1"), sentence("twice-ct", 1280, "200 is still twice 100"));
   // a change of unit is reversible, so ← plays it backwards
   const a = d.anim("fig-zero", { back: "play" });
-  a.step(a.par(a.swap("c5", "f41", { dur: 1500 }), a.swap("c10", "f50", { dur: 1500 }), a.swap("twice-c", "twice-f", { dur: 1500 }),
+  a.step(a.par(...SCALE.map((v) => a.swap(`c${v}`, `f${v}`, { dur: 1500 })),
+    a.swap("c5", "f41", { dur: 1500 }), a.swap("c10", "f50", { dur: 1500 }), a.swap("twice-c", "twice-f", { dur: 1500 }),
     a.swap("e1", "ct100", { dur: 1500 }), a.swap("e2", "ct200", { dur: 1500 }), a.swap("twice-e", "twice-ct", { dur: 1500 })));
 })();
 
 /* --- slide: is a rating scale ordinal or interval? -----------------------------------------
- * Figure 1680 x 660 (has-punch). The variable name at y 40, five answer boxes
- * 160 x 100 on a pitch of 200 from x 360 (y 80..180), the meaning of 1 and 5 at
- * y 225 under the outer boxes. Two positions as boxes 820 x 160 at y 300, from
- * x 2 and from x 856 (ending at 1676, 2 inside the edge). Each holds two lines
- * left-aligned 40 from its edge: the line centres at 359 and 401 leave 43
- * above the first (32 high) and 43 below the second. The second line is code,
- * its result in gray after two spaces; the medians and means are those of the
- * 30 people in the survey sample (median 2, mean 71 / 30 = 2.366667; "# 2.366667" ends at 896 + 40 + 31 x 19.2 = 1531). */
+ * Figure 1680 x 660 (has-punch). Left the answers of the 30 people in
+ * milk_survey.csv as bars, 7, 13, 5, 2 and 3 for the values 1 to 5: bars 100
+ * wide on a pitch of 150 around x 180..780, baseline at y 380, 20 per person
+ * (13 reach y 120), the count at 32 above each bar, the values at 32 in the
+ * code font below (y 415) and the meaning of 1 and 5 under them (y 455,
+ * "hardly any" is 192 wide around 180). Under the bars the same values as a
+ * line (y 540) with the two summaries as dots: the median at 2, the mean at
+ * 2.37, their names at 32 below, the median's ending 20 left of its dot and
+ * the mean's starting 20 right of it. Right, from x 1000, the two calls at 32
+ * under their reading ("median(organic_share)  # 2" is 26 x 19.2 = 499 wide,
+ * "mean(organic_share)  # 2.366667" 31 x 19.2 = 595, to 1595). */
 (function () {
-  const position = (x, title, code, result) => [
-    d.box(x, 300, 820, 160, "", { border: C.light }),
-    d.label(x + 40, 0, title, { size: 32, centerY: 359 }),
-    d.label(x + 40, 0, code, { size: 32, mono: true, centerY: 401 }),
-    d.label(x + 40 + (code.length + 2) * W32, 0, result, { size: 32, mono: true, centerY: 401, color: C.gray }),
+  const COUNTS = [7, 13, 5, 2, 3];
+  const n = COUNTS.reduce((s, c) => s + c, 0);
+  const mean = COUNTS.reduce((s, c, k) => s + c * (k + 1), 0) / n;
+  const x = (value) => 180 + 150 * (value - 1);
+  const bars = COUNTS.flatMap((c, k) => [
+    `<rect x="${x(k + 1) - 50}" y="${380 - 20 * c}" width="100" height="${20 * c}" fill="${C.gray}"/>`,
+    d.label(x(k + 1), 0, String(c), { size: 32, anchor: "middle", centerY: 380 - 20 * c - 26 }),
+    d.label(x(k + 1), 0, String(k + 1), { size: 32, mono: true, anchor: "middle", centerY: 415, color: C.light }),
+  ]);
+  const dot = (value) => `<circle cx="${x(value)}" cy="540" r="12" fill="${C.white}"/>`;
+  const reading = (cy, title, code, result) => [
+    d.label(1000, 0, title, { size: 32, centerY: cy, color: C.gray }),
+    d.label(1000, 0, code, { size: 32, mono: true, centerY: cy + 50 }),
+    d.label(1000 + (code.length + 2) * W32, 0, result, { size: 32, mono: true, centerY: cy + 50, color: C.gray }),
   ];
   el("fig-rating").innerHTML = d.svg(1680, 660,
-    d.label(840, 0, "organic_share", { size: 32, mono: true, anchor: "middle", centerY: 40, color: C.light }),
-    ...[1, 2, 3, 4, 5].map((n, k) => d.box(360 + 200 * k, 80, 160, 100, String(n), { size: 48, mono: true, border: C.light })),
-    d.label(440, 0, "hardly any", { size: 32, anchor: "middle", centerY: 225, color: C.gray }),
-    d.label(1240, 0, "almost all", { size: 32, anchor: "middle", centerY: 225, color: C.gray }),
-    ...position(2, "purists: it is ordinal", "median(organic_share)", "# 2"),
-    ...position(856, "pragmatists: five or more steps", "mean(organic_share)", "# 2.366667"));
+    d.label(480, 0, "organic_share", { size: 32, mono: true, anchor: "middle", centerY: 40, color: C.light }),
+    ...bars,
+    d.line(x(1) - 70, 380, x(5) + 70, 380, { color: C.light }),
+    d.label(x(1), 0, "hardly any", { size: 32, anchor: "middle", centerY: 455, color: C.gray }),
+    d.label(x(5), 0, "almost all", { size: 32, anchor: "middle", centerY: 455, color: C.gray }),
+    d.line(x(1), 540, x(5), 540, { color: C.dark, width: 3 }),
+    ...[1, 2, 3, 4, 5].map((v) => d.line(x(v), 528, x(v), 552, { color: C.dark, width: 3 })),
+    dot(2), dot(mean),
+    d.label(x(2) - 20, 0, "median", { size: 32, anchor: "end", centerY: 590 }),
+    d.label(x(mean) + 20, 0, "mean", { size: 32, centerY: 590 }),
+    ...reading(200, "as an ordinal scale", "median(organic_share)", "# 2"),
+    ...reading(360, "as an interval scale", "mean(organic_share)", "# 2.366667"));
 })();
 
 /* --- slide: what you may compute ------------------------------------------------------------
