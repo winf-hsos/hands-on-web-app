@@ -132,7 +132,8 @@ updated: 2026-10-21                # required, date of the last substantive chan
 ```
 
 **Code in a title** (Nicolas, 2026-11-02). A title may set a name from code
-in backticks, as `` title: "`lifi_hardware`" ``. Headings, rows and `[[links]]`
+in backticks, as `` title: "Das Kursmodul `lifi_hardware`" ``, where only the
+name is code and the rest of the title stays text. Headings, rows and `[[links]]`
 show it in code font; the browser tab, the search and other plain text show
 it without the backticks (`inlineCode` and `plainText` in
 `src/build/html.mjs`).

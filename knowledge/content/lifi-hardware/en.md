@@ -1,5 +1,5 @@
 ---
-title: "`lifi_hardware`"
+title: "The course module `lifi_hardware`"
 summary: >-
   What the Python module lifi_hardware takes off your hands and what it deliberately leaves visible, how you address LED and sensor with it, and what its measurement log records.
 objectives:
