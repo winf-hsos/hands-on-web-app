@@ -16,7 +16,7 @@ topics: [programming-with-python]
 modules: [dup]
 relations:
   checks: [python-for-loops, python-while-loops]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

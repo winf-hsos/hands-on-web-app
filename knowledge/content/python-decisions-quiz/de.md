@@ -17,7 +17,7 @@ topics: [programming-with-python]
 modules: [dup]
 relations:
   checks: [python-conditions, python-if-else]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

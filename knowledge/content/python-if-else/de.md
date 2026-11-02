@@ -21,7 +21,7 @@ modules: [dup]
 relations:
   requires: [python-conditions, python-functions]
   see_also: [programming-principles]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 
