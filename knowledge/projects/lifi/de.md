@@ -11,7 +11,7 @@ modules: [dup]
 items: [petzold-code, visual-studio-code]
 phases:
   - id: start
-    items: [problem-decomposition, cutting-the-lifi-project, input-processing-output-slides, input-processing-output, input-processing-output-quiz, algorithms-and-programs-slides, algorithms-and-programs, algorithms-and-programs-quiz]
+    items: [first-light, problem-decomposition, cutting-the-lifi-project, input-processing-output-slides, input-processing-output, input-processing-output-quiz, algorithms-and-programs-slides, algorithms-and-programs, algorithms-and-programs-quiz]
     challenges:
       - id: challenge-0
   - id: alphabet

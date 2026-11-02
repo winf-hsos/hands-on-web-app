@@ -579,6 +579,8 @@ The deck loads the stagekit runtime from `../../stagekit/`, as in the folders
 where decks are made; the repository keeps that runtime in `vendor/stagekit/`
 and the build publishes it next to the decks. The build fails if the deck or
 any file it loads is missing, or if it loads anything from another site.
+Links (`<a href="https://…">`) may point elsewhere, since a link is followed
+and not loaded, and stagekit wants every address on a slide to be one.
 
 The drawings of a deck can serve its lessons as well. `scripts/why-ten-figures.mjs`,
 run after the build, renders the figures of the deck `why-ten` with stagekit's

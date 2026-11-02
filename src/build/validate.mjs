@@ -470,7 +470,9 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
     // the script is what a learning assistant reads instead of the slides
     if (!existsSync(join(deck, 'skript.md'))) warnings.push(`content/${item.id}/slides: no skript.md (the text to the slides, kept off the site)`);
     const html = readFileSync(join(deck, found.file), 'utf8');
-    for (const [, ref] of html.matchAll(/(?:src|href)="([^"#?]+)[^"]*"/g)) {
+    for (const [, tag, ref] of html.matchAll(/<(\w+)\b[^>]*?\s(?:src|href)="([^"#?]+)[^"]*"/g)) {
+      // a link is followed, not loaded, and stagekit wants addresses on slides as links
+      if (tag === 'a' && ref.startsWith('https://')) continue;
       if (/^(https?:|data:|mailto:)/.test(ref)) {
         errors.push(`${where}: loads ${ref} from elsewhere; everything a deck shows must be in the knowledge base`);
         continue;
