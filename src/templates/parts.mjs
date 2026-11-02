@@ -52,7 +52,7 @@ export function itemRow(site, item, lang, { optional = false, summary = true, to
         <span class="row-title" style="view-transition-name: t-${item.id}" lang="${text.lang}">${text.title}</span>
         <span class="row-meta">
           <span>${site.vocabulary.types[lead.type][lang]}</span>
-          <span>${lead.duration} ${t(lang, 'minutes')}</span>
+          ${lead.duration && html`<span>${lead.duration} ${t(lang, 'minutes')}</span>`}
           ${optional && html`<span class="row-optional">${t(lang, 'optional')}</span>`}
           ${draftTag(site, item, lang)}
         </span>

@@ -108,7 +108,7 @@ test('objectives are a sentence and a list; missing ones are a warning', () => {
 test('project phases and challenges must match the headings in every language', () => {
   const { errors } = check(({ find }) => {
     const file = find('projects', 'lifi').files.en;
-    file.body = file.body.replace('{#challenge-2}', '{#challenge-two}');
+    file.body = file.body.replace('{#word}', '{#words}');
   });
   assert.equal(errors.length, 1);
   assert.match(errors[0], /^projects\/lifi\/en\.md: headings with \{#id\} do not match/);
@@ -116,9 +116,24 @@ test('project phases and challenges must match the headings in every language', 
 
 test('items linked in a project must exist', () => {
   const { errors } = check(({ find }) => {
-    lead(find('projects', 'lifi')).phases[0].challenges[0].items = ['nowhere'];
+    lead(find('projects', 'lifi')).phases[0].items = ['nowhere'];
   });
-  assert.deepEqual(errors, ['projects/lifi challenge-0: unknown item "nowhere"']);
+  assert.deepEqual(errors, ['projects/lifi start: unknown item "nowhere"']);
+});
+
+test('the challenge of a phase must be a challenge item', () => {
+  const { errors } = check(({ find }) => {
+    lead(find('projects', 'lifi')).phases[0].challenge = 'first-light';
+  });
+  assert.deepEqual(errors, ['projects/lifi start: challenge first-light has type slides, not challenge']);
+});
+
+test('every item but a challenge states its duration', () => {
+  const { errors } = check(({ find }) => {
+    delete lead(find('content', 'first-light')).duration;
+    delete lead(find('content', 'lifi-challenge-0')).duration;
+  });
+  assert.deepEqual(errors, ['content/first-light: duration is missing']);
 });
 
 test('nothing visible may point to archived content', () => {

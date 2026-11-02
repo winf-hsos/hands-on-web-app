@@ -42,7 +42,13 @@ export function withoutDrafts(knowledge) {
         .filter((s) => s.path || s.project || s.items.length);
     }
     if (l.kind !== 'course' && l.items) l.items = l.items.filter(keep);
-    if (l.phases) l.phases = l.phases.map((p) => ({ ...items(p), ...(p.challenges && { challenges: p.challenges.map(items) }) }));
+    if (l.phases) {
+      l.phases = l.phases.map(({ challenge, ...p }) => ({
+        ...items(p),
+        ...(challenge && keep(challenge) && { challenge }),
+        ...(p.challenges && { challenges: p.challenges.map(items) }),
+      }));
+    }
     if (l.featured_path && !keep(l.featured_path)) delete l.featured_path;
     if (l.samples) l.samples = l.samples.filter(keep);
     return l;

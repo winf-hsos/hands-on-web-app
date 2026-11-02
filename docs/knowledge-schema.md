@@ -118,7 +118,7 @@ objectives:                        # expected, in every language, see below
     - "erklären, warum dieselben Bits Verschiedenes bedeuten können"
     - "einen eigenen Code vereinbaren und anwenden"
 level: 1                           # required, 1–4, see vocabulary.yaml
-duration: 20                       # required, minutes of focused work
+duration: 20                       # required, minutes of focused work (not for a challenge)
 topics: [representing-information] # required, at least one, see vocabulary.yaml
 modules: [dup]                     # optional, modules this item is written for
 relations:                         # optional, see section 5
@@ -152,6 +152,7 @@ Type-specific fields:
 | `slides` | a stagekit deck in the folder `slides/` (one `.html` file, optionally `export/<deck>.pdf`); `deck_lang` if the slides are in one language only; `recordings` later, as `{ title, url, slide }` with YouTube links per part. The subtitle of the title slide is the author's name only, `data-subtitle="prof. dr. nicolas meseth"`, without the area, module or anything else (Nicolas, 2026-11-01) |
 | `dataset` | `file`, the name of a CSV in `media/datasets/`; `authors`, `year`, `license` where known. The page offers the file for download with its rows, columns and size, measured when building, and the lines that load it in R and in Python; the body describes the data. Only a dataset has a `file` |
 | `quiz` | none; the questions are in the body, see section 7 |
+| `challenge` | no `duration`; the task of one phase of a project, see section 9a |
 
 Fields deliberately **not** in an item:
 
@@ -591,49 +592,59 @@ change to a drawing in `deck.js` thus reaches the lesson by running it again.
 ## 9a. Projects
 
 A project is a larger undertaking that learners carry out over weeks, such as
-the LiFi project. It is divided into **phases**, and a phase may contain
-**challenges**. Relevant content is linked where it is needed: to the project
-as a whole, to a phase or to a single challenge.
+the LiFi project. It is divided into **phases**, shown like the parts of a
+path (Nicolas, 2026-11-02): each phase folds, its folded state is remembered
+together with the module page that shows the project, and its content is
+numbered through the whole project. Each phase has one **challenge**, an item
+of its own of type `challenge` that describes the task, and it comes first in
+its phase; after it follows the content for that phase, which may be specific
+to the project or shared with others. Content for the project as a whole is
+listed at the end.
 
-The lead file holds the structure and the links, the text holds titles and
-prose. A heading with an id marks a phase (`##`) or a challenge (`###`);
-headings without an id are ordinary sections, such as "What you need".
+The lead file holds the structure, the text holds titles and prose. A `##`
+heading with an id names a phase, such as `## Phase 2: Aus Farben werden
+Buchstaben {#word}`; text below it is optional, since the challenge item
+carries the description. Headings without an id are ordinary sections, such as
+"What you need".
 
 ```yaml
 ---
 kind: project
 code: 4577
-title: "LiFi: Daten mit Licht übertragen"
+title: Das LiFi-Projekt
 summary: …
 level: 1
 modules: [dup]
 items: [petzold-code]          # optional: content for the whole project
 phases:
   - id: word
-    items: [knock-code]        # optional: content for this phase
-    challenges:                # optional
-      - id: challenge-2
-        items: [code-as-agreement, prefix-free-code]
+    challenge: lifi-challenge-2 # an item of type challenge
+    items: [morse-code]        # optional: content for this phase
 status: draft
-updated: 2026-10-22
+updated: 2026-11-02
 ---
 
 Introduction …
 
-## Aus Farben werden Buchstaben {#word}
-Text of the phase …
-
-### Challenge 2: Das Wort {#challenge-2}
-Text of the challenge …
+## Phase 2: Aus Farben werden Buchstaben {#word}
 
 ## Was ihr braucht
 An ordinary section …
 ```
 
+A challenge item has the usual fields of an item but no `duration`, since it
+runs over weeks; its page shows the project and phase it belongs to. The build
+checks that `challenge` names an item of type `challenge`.
+
+The older form, still used by the Monty Hall project, writes challenges into
+the project text as `### … {#id}` below their phase and lists them under
+`challenges:` with optional `items`; the page shows them folded inside their
+phase. New projects use challenge items.
+
 The build checks that phases and challenges in the front matter and the
-headings with ids match, in order and in every language, so a challenge can
+headings with ids match, in order and in every language, so a phase can
 neither be forgotten in one language nor linked to the wrong place. Each
-phase and challenge can be linked directly as `…/projects/lifi/#challenge-2`.
+phase can be linked directly as `…/projects/lifi/#word`, which opens it.
 
 A project has **no topics** (Nicolas, 2026-11-01): topics sort the content
 items, and a project is found through its module and the content it links.

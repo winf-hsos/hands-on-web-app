@@ -110,7 +110,7 @@ export function createSite({ vocabulary, sections, hidden = new Map() }, area, b
     let required = 0;
     let optional = 0;
     for (const s of steps) {
-      const minutes = item.get(s.id).lead.duration;
+      const minutes = item.get(s.id).lead.duration ?? 0;
       if (s.optional) optional += minutes;
       else required += minutes;
     }
@@ -127,7 +127,7 @@ export function createSite({ vocabulary, sections, hidden = new Map() }, area, b
       const text = projectText(doc, lang);
       if ((doc.lead.items ?? []).includes(itemId)) refs.push({ project: doc, anchor: '', title: '' });
       doc.lead.phases.forEach((phase, p) => {
-        if ((phase.items ?? []).includes(itemId)) refs.push({ project: doc, anchor: phase.id, title: text.phases[p].title });
+        if (phase.challenge === itemId || (phase.items ?? []).includes(itemId)) refs.push({ project: doc, anchor: phase.id, title: text.phases[p].title });
         (phase.challenges ?? []).forEach((challenge, c) => {
           if ((challenge.items ?? []).includes(itemId))
             refs.push({ project: doc, anchor: challenge.id, title: text.phases[p].challenges[c].title });

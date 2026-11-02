@@ -115,7 +115,10 @@ function shapes(vocabulary) {
     return id(v.id) ?? (v.items === undefined ? null : list(id)(v.items));
   };
   const challenge = part(['id', 'items']);
-  const phase = (v) => part(['id', 'items', 'challenges'])(v) ?? (v.challenges === undefined ? null : list(challenge)(v.challenges));
+  const phase = (v) =>
+    part(['id', 'challenge', 'items', 'challenges'])(v) ??
+    (v.challenge === undefined ? null : id(v.challenge) && `challenge: ${id(v.challenge)}`) ??
+    (v.challenges === undefined ? null : list(challenge)(v.challenges));
   const translation = {
     required: { title: text, summary: text, translation_of: oneOf(['de', 'en'], 'language'), based_on: date },
     optional: {},
@@ -129,12 +132,12 @@ function shapes(vocabulary) {
           title: text,
           summary: text,
           level: int(1, 4),
-          duration: int(1, 600),
           topics: list(oneOf(topics, 'topic'), 1),
           status,
           updated: date,
         },
         optional: {
+          duration: int(1, 600),
           modules: list(oneOf(modules, 'module')),
           relations,
           access: oneOf(['public', 'code'], 'access'),
@@ -273,6 +276,7 @@ export function referencesOf(doc) {
   }
   for (const i of lead.items ?? []) add(i, 'items');
   for (const phase of lead.phases ?? []) {
+    if (phase.challenge) add(phase.challenge, phase.id);
     for (const part of [phase, ...(phase.challenges ?? [])]) for (const i of part.items ?? []) add(i, part.id);
   }
   if (lead.featured_path) add(lead.featured_path, 'featured_path');
@@ -411,6 +415,11 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
     for (const i of project.lead.items ?? []) needItem(`${where} items`, i);
     const seen = new Set();
     for (const phase of project.lead.phases) {
+      if (phase.challenge) {
+        needItem(`${where} ${phase.id}`, phase.challenge);
+        const item = items.get(phase.challenge);
+        if (item && item.lead.type !== 'challenge') errors.push(`${where} ${phase.id}: challenge ${phase.challenge} has type ${item.lead.type}, not challenge`);
+      }
       for (const part of [phase, ...(phase.challenges ?? [])]) {
         if (seen.has(part.id)) errors.push(`${where}: id ${part.id} is used twice`);
         seen.add(part.id);
@@ -482,6 +491,11 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
       if (!existsSync(file)) errors.push(`${where}: ${ref} does not exist`);
     }
   }
+
+  // Every item states its minutes of focused work, except a challenge, which
+  // runs over weeks of a project.
+  for (const item of content.filter((d) => d.lead.type !== 'challenge' && d.lead.duration === undefined))
+    errors.push(`content/${item.id}: duration is missing`);
 
   // Datasets: `file` names a CSV in media/datasets/, and only datasets have one.
   for (const item of content) {

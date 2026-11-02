@@ -151,7 +151,7 @@ export function finder(site, lang, { areas = false } = {}) {
               topics: item.lead.topics.join(' '),
               topic: item.lead.topics[0],
               level: item.lead.level,
-              duration: item.lead.duration,
+              duration: item.lead.duration ?? 0,
               paths: pathsOf.get(item.id).join(' '),
               projects: projectsOf.get(item.id).join(' '),
             },
@@ -221,7 +221,7 @@ export function item(site, doc, lang) {
     content: html`
       <article class="page item" data-item-page="${doc.id}">
         <header class="page-head">
-          <p class="kicker"${editable(site, 'kicker')}>${typeIcon(site, doc)}<span>${typeLabel(site, doc, lang)}</span><span>${lead.duration} ${t(lang, 'minutes')}</span></p>
+          <p class="kicker"${editable(site, 'kicker')}>${typeIcon(site, doc)}<span>${typeLabel(site, doc, lang)}</span>${lead.duration && html`<span>${lead.duration} ${t(lang, 'minutes')}</span>`}</p>
           <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}"${editable(site, 'title')}>${text.title}</h1>
           <p class="lead" lang="${text.lang}"${editable(site, 'summary')}>${text.summary}</p>
           ${topicTags(site, lead.topics, lang)}
@@ -528,7 +528,8 @@ export function course(site, doc, lang) {
       html`${t(lang, 'path')} · ${count(lang, steps.length, 'steps')}`,
     );
   };
-  // A project in a module lists its phases, each linking into the project page.
+  // A project in a module shows its phases like the parts of a path, and they
+  // share their folded state with the project page.
   const projectSection = (p) => {
     const ptext = site.localize(p, lang);
     const phases = site.projectText(p, lang).phases;
@@ -536,10 +537,10 @@ export function course(site, doc, lang) {
       `project:${p.id}`,
       ptext.title,
       () => html`<p class="course-project-summary" lang="${ptext.lang}">${ptext.summary}</p>
-        <ol class="rows trail">${p.lead.phases.map((phase, i) => html`<li class="row">
-          <span class="row-step" aria-hidden="true"><span>${i + 1}</span></span>
-          <a class="row-link" href="${site.url(p, lang)}#${phase.id}">${projectIcon}<span class="row-head"><span class="row-title" lang="${ptext.lang}">${phases[i].title}</span></span></a>
-        </li>`)}</ol>
+        ${p.lead.phases.map((phase, i) => html`<details class="fold course-path-part" data-fold="project:${p.id}:${i + 1}" open>
+          <summary><h3 lang="${ptext.lang}">${phases[i].title}</h3><span class="fold-meta">${count(lang, phaseItems(phase).length, 'results')}</span></summary>
+          ${trail(phaseItems(phase))}
+        </details>`)}
         <p class="course-path-link"><a href="${site.url(p, lang)}">${projectIcon}${t(lang, 'open_project')}</a></p>`,
       html`${t(lang, 'project')} · ${count(lang, p.lead.phases.length, 'phases')}`,
     );
@@ -576,6 +577,9 @@ export function course(site, doc, lang) {
 
 const projectIcon = raw(iconSvg('hammer'));
 
+/** The items of a phase in order: its challenge first, then the content for it. */
+const phaseItems = (phase) => [...new Set([phase.challenge, ...(phase.items ?? []), ...(phase.challenges ?? []).flatMap((c) => c.items ?? [])].filter(Boolean))];
+
 export function projects(site, lang) {
   return {
     path: site.link(lang, 'projects'),
@@ -591,7 +595,7 @@ export function projects(site, lang) {
       <ul class="rows switchable">
         ${site.projects.map((p) => {
           const text = site.localize(p, lang);
-          const challenges = p.lead.phases.flatMap((phase) => phase.challenges ?? []).length;
+          const challenges = p.lead.phases.reduce((n, phase) => n + (phase.challenge ? 1 : 0) + (phase.challenges ?? []).length, 0);
           return html`<li class="row">
             <a class="row-link" href="${site.url(p, lang)}">
               ${projectIcon}
@@ -620,6 +624,10 @@ export function project(site, doc, lang) {
     ids.length > 0 &&
     html`<div class="related"><h4>${t(lang, 'related_content')}</h4>
       <ul class="rows">${ids.map((id) => itemRow(site, site.item.get(id), lang, { summary: false }))}</ul></div>`;
+  // Items are numbered through the whole project, also across its phases.
+  let number = 0;
+  const trail = (ids) =>
+    ids.length > 0 && html`<ol class="rows trail">${ids.map((id) => itemRow(site, site.item.get(id), lang, { summary: false, number: ++number }))}</ol>`;
   const v = site.vocabulary;
   const lead = doc.lead;
   const content = html`
@@ -631,37 +639,26 @@ export function project(site, doc, lang) {
         </header>
         ${text.missing && html`<p class="notice">${t(lang, 'missing_translation')}</p>`}
         ${parts.intro && html`<div class="prose" lang="${text.lang}">${md(parts.intro)}</div>`}
-        <ol class="phases">
-          ${lead.phases.map((phase, p) => {
-            const part = parts.phases[p];
-            return html`<li class="phase" id="${phase.id}">
-              <details class="phase-box">
-                <summary>
-                  <span class="phase-number" aria-hidden="true">${p + 1}</span>
-                  <span class="phase-head">
-                    <span class="phase-title">${part.title}</span>
-                    ${part.challenges.length === 1 && html`<span class="phase-meta">${part.challenges[0].title}</span>`}
-                    ${part.challenges.length > 1 && html`<span class="phase-meta">${count(lang, part.challenges.length, 'challenges')}</span>`}
-                  </span>
-                </summary>
-                <div class="phase-body">
-                  ${part.md && html`<div class="prose" lang="${text.lang}">${md(part.md)}</div>`}
-                  ${related(phase.items)}
-                  ${(phase.challenges ?? []).map((challenge, c) => {
-                    const cpart = part.challenges[c];
-                    return html`<details class="challenge" id="${challenge.id}">
-                      <summary>${cpart.title}</summary>
-                      <div class="challenge-body">
-                        <div class="prose" lang="${text.lang}">${md(cpart.md)}</div>
-                        ${related(challenge.items)}
-                      </div>
-                    </details>`;
-                  })}
+        ${lead.phases.map((phase, p) => {
+          const part = parts.phases[p];
+          // A phase is a part like those of a path: its challenge comes first,
+          // then the content for it. Challenges written into the project text
+          // (the older form) stay folded inside their phase.
+          return html`<details class="fold path-section phase" id="${phase.id}" data-fold="project:${doc.id}:${p + 1}" open>
+            <summary><h2 lang="${text.lang}">${part.title}</h2><span class="fold-meta">${count(lang, phaseItems(phase).length, 'results')}</span></summary>
+            ${part.md && html`<div class="prose" lang="${text.lang}">${md(part.md)}</div>`}
+            ${(phase.challenges ?? []).map((challenge, c) => {
+              const cpart = part.challenges[c];
+              return html`<details class="challenge" id="${challenge.id}">
+                <summary>${cpart.title}</summary>
+                <div class="challenge-body">
+                  <div class="prose" lang="${text.lang}">${md(cpart.md)}</div>
                 </div>
-              </details>
-            </li>`;
-          })}
-        </ol>
+              </details>`;
+            })}
+            ${trail(phaseItems(phase))}
+          </details>`;
+        })}
         ${related(lead.items)}
         ${parts.sections.map((section) => more(section.title, html`<div class="prose" lang="${text.lang}">${md(section.md)}</div>`))}
         ${more(
@@ -683,7 +680,7 @@ export function project(site, doc, lang) {
     current: 'projects',
     back: 'projects',
     // phases may hold code boxes and demonstrators like any item
-    scripts: ['project', ...scriptsFor(String(content))],
+    scripts: ['fold', 'project', ...scriptsFor(String(content))],
     content,
   };
 }

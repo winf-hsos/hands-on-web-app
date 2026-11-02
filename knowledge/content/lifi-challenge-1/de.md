@@ -1,0 +1,125 @@
+---
+type: challenge
+code: 9618
+title: "Challenge 1: Das Alphabet"
+summary: >-
+  Wie viele Farben unterscheidet eure Strecke in 50 Versuchen ohne einen Fehler? Die Antwort ist euer Alphabet für alles Weitere.
+objectives:
+  intro: "Mit dieser Challenge findest du mit deinem Team das Alphabet eurer Strecke und kannst danach:"
+  goals:
+    - "Sender und Empfänger vor jedem Durchgang kalibrieren"
+    - "mit einer Kontrollmessung zeigen, ob ein Aufbau etwas bringt"
+    - "aus der Zahl der Farben und Stellen die Zahl der Codewörter berechnen"
+    - "Verwechslungen im Protokoll auf ihre Ursache zurückführen"
+level: 1
+topics: [transferring-information, representing-information]
+modules: [dup]
+status: draft
+updated: 2026-11-02
+---
+
+Jetzt geht es um die Strecke selbst. Ein Sensor misst nie zweimal genau
+dasselbe, Umgebungslicht stört, und der Abstand verändert alles. Die Frage
+dieser Phase ist, wie viele Zustände euer Aufbau zuverlässig auseinanderhalten
+kann, denn das ist euer Alphabet für alles Weitere.
+
+Ein solches Alphabet ist ein Stellenwertsystem, und die Zahl eurer Farben ist
+seine Basis: Wer vier Farben sicher unterscheidet, arbeitet zur Basis 4, und
+eine Folge von Farben ist eine Zahl ([[place-value-systems]]). Daraus folgt
+zweierlei für alles Weitere: Die Reihenfolge gehört zur Nachricht, denn
+Rot-Gelb-Grün und Grün-Gelb-Rot sind verschiedene Codewörter, und die Rechnung
+geht in beide Richtungen. Mit *k* Farben und *n* Stellen unterscheidet ihr
+*k*ⁿ Codewörter, und wer weiß, wie viele Zeichen er braucht, kann ausrechnen,
+wie viele Stellen das kostet.
+
+**Ziel:** Herausfinden, wie viele Zustände eure Strecke in 50 Versuchen ohne
+einen einzigen Fehler unterscheidet. Das entscheidet über das ganze Projekt:
+Wer vier Zustände sicher unterscheidet, sendet später zwei Bit je Symbol, wer
+sechzehn schafft, sendet vier und überträgt bei gleichem Tempo doppelt so viel.
+
+**Neu ist,** dass ihr zum ersten Mal etwas über euren Aufbau herausfinden müsst,
+statt es euch auszudenken. Wie viele Zustände unterscheidbar sind, weiß vorher
+niemand, auch der KI-Assistent nicht, denn es hängt von eurem Sensor, eurem
+Abstand, eurem Raum und dem ab, was ihr dazwischen baut.
+
+**Aufgabe:** Der Sender zeigt eine Farbe aus einem Satz, den ihr selbst
+festlegt, und der Empfänger sagt, welche es war. Timing spielt noch keine
+Rolle: Ein Mensch drückt die Eingabetaste, das Programm misst, und der Name des
+erkannten Zustands erscheint beim Empfänger.
+
+**Dreimal gezählt** wird, und alle drei Zahlen gehören in eure Notizen:
+
+1. **Mit bloßem Auge:** Bevor ihr eine Zeile Code schreibt, zählt ihr, wie
+   viele Farben ihr selbst sicher unterscheidet, wenn ihr sie einzeln seht und
+   nicht nebeneinander. In manchem schlägt euer Auge den Sensor deutlich, in
+   anderem verliert es klar, und ein Grund dafür zählt für den Rest der
+   Challenge: Euer Sehen kalibriert sich ständig neu, wenn sich das Licht im
+   Raum ändert, der Sensor dagegen meldet einfach andere Zahlen.
+2. **Ohne Hilfsmittel:** nackte LED, nackter Sensor, fester Abstand.
+3. **Mit eurem Aufbau:** Ihr baut euren Lichtkanal, eine Röhre, eine Blende
+   oder was euch einfällt, und messt erneut.
+
+Es zählt das dritte, bessere Ergebnis. Ohne das zweite wisst ihr aber nicht, ob
+euer Aufbau überhaupt etwas gebracht hat, und genau darum ist diese
+Kontrollmessung Pflicht. Was ihr bauen dürft, steht im [[lifi|LiFi-Projekt]] unter „Was ihr braucht“.
+
+**Die drei Ergebnisse dieser Challenge** (siehe „Was jede Challenge hervorbringt“ im [[lifi|LiFi-Projekt]]) sind damit die Messprotokolle ohne und mit Hilfsmitteln, als
+Beschreibung eurer Lösung ein Foto des Aufbaus mit einem Satz, warum ihr ihn so
+gebaut habt, und euer Irrtumsprotokoll. Für das letzte ist diese Challenge die
+ergiebigste Quelle: Fragt ihr den Assistenten, warum die Röhre nicht hilft,
+schlägt er mattschwarze Innenwände, Blenden und engere Öffnungen vor, alles
+plausibel und nichts davon geprüft, bis ihr es gemessen habt.
+
+**Was ihr in der Vorlage ausfüllt:** Alles kommt in `device.py`, und das
+Testskript fragt genau fünf Dinge ab, nicht mehr. Wie ihr sie innen baut, ist
+eure Sache, und eigene Funktionen dürft ihr beliebig ergänzen.
+
+| | Was |
+|---|---|
+| `ALPHABET_SIZE` | wie viele Symbole ihr verwendet, nummeriert von 0 bis `ALPHABET_SIZE - 1` |
+| `calibrate_sender()` | spielt euer Alphabet einmal durch |
+| `calibrate_receiver()` | misst dabei mit und merkt sich für jedes Symbol einen Referenzwert |
+| `send_symbol(index)` | zeigt ein Symbol und kehrt erst zurück, wenn der Empfänger genug Zeit zum Messen hatte |
+| `receive_symbol()` | misst und gibt zurück, welches Symbol es war |
+
+Der Empfänger kann nicht ausrechnen, welches Symbol angekommen ist, er muss
+vorher lernen, wie eure Symbole in diesem Aufbau aussehen, und vergleicht dann
+jeden neuen Messwert mit den Referenzen. Daraus folgt zweierlei: Beim
+Kalibrieren müssen beide Seiten im selben Takt laufen, sonst ordnet der
+Empfänger seine Messwerte den falschen Symbolen zu, und kalibriert wird vor
+jedem Durchgang neu, auch am Testtisch.
+
+**Selbsttest und Abnahme sind dasselbe Skript.** Ihr startet es auf beiden
+Rechnern, jeder in seiner Rolle, mit `python run_test.py sender` und
+`python run_test.py receiver`. Beide Seiten schreiben ein Protokoll
+(`sent.txt` und `received.txt`); legt beide in einen Ordner und vergleicht sie
+mit `python compare.py`. Für schnelle Versuche zwischendurch genügen weniger
+Durchgänge (`--runs 10`). Weil bei der Abnahme genau dieses Skript läuft, könnt
+ihr den Wertungslauf vorher so oft proben, wie ihr wollt, und am Testtisch
+passiert nichts Neues. Bewährt hat sich, mit `ALPHABET_SIZE = 2` anzufangen,
+also aus und weiß, und nach 50 fehlerfreien Durchgängen auf 4 und dann auf 8 zu
+gehen; die letzte Größe ohne Fehler ist euer Ergebnis. Verwechselt `compare.py`
+jedes Mal dieselben zwei Symbole, liegen sie zu dicht beieinander, sieht es
+zufällig aus, sind eher Timing oder Kalibrierung schuld.
+
+**Bei der Abnahme** baut ihr am Testtisch euren Aufbau auf, kalibriert, und es
+werden 20 zufällige Symbole übertragen. Ein einziger Fehler gilt für diese
+Alphabetgröße als nicht bestanden; acht sicher erkannte Zustände sind also mehr
+wert als sechzehn mit gelegentlicher Verwechslung. Als Live-Änderung erweitert
+ihr euer Alphabet, etwa auf bis zu zwölf Symbole, und lasst den Test erneut
+laufen; dafür müsst ihr die Stellen in eurem Code finden, die von der Größe des
+Alphabets abhängen.
+
+**Typische Stolpersteine:** feste Schwellenwerte statt einer Kalibrierung vor
+jedem Durchgang („über 500 im Rotkanal heißt Rot“ klappt am Dienstag und
+versagt am Donnerstag, weil das Licht im Raum ein anderes ist; wer das bemerkt,
+kommt auf die Kalibrierung, und das ist das stärkste Ergebnis dieser
+Challenge), der ungefilterte Kanal C wird übersehen, obwohl er der
+empfindlichste ist, zu wenige Wiederholungen beim Messen (wer jeden Zustand
+dreimal ohne Fehler sieht, weiß noch nichts), und Farben, die schön aussehen,
+statt Farben, die der Sensor gut unterscheidet.
+
+**Für Schnelle:** Probiert verschiedene Integrationszeiten des Sensors aus und
+messt, was sie am Ergebnis ändern. Längere Messungen sind ruhiger, erlauben aber
+weniger Messungen pro Sekunde, und genau dieser Tausch entscheidet in
+Challenge 4 über euren Durchsatz.

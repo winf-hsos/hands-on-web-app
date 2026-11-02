@@ -437,7 +437,7 @@ function renderLang() {
           <button type="button" data-insert="TIP">Tipp</button>
           <button type="button" data-insert="WARNING">Achtung</button>
           ${leadData().type === 'quiz' ? '<button type="button" data-insert="question">Frage</button>' : ''}
-          ${work.section === 'projects' ? '<button type="button" data-insert="phase">Phase</button><button type="button" data-insert="challenge">Challenge</button>' : ''}
+          ${work.section === 'projects' ? '<button type="button" data-insert="phase">Phase</button>' : ''}
         </div>
         <textarea class="ed-body" id="body" spellcheck="true" lang="${lang}">${esc(file.body.replace(/^\n+/, ''))}</textarea>
       </div>
@@ -489,8 +489,8 @@ async function toolbar(e) {
     const selected = area.value.slice(area.selectionStart, area.selectionEnd);
     text = selected ? `[[${id}|${selected}]]` : `[[${id}]]`;
   } else if (kind === 'question') text = '\n## Frage?\n\n- [ ] Falsche Antwort\n- [x] Richtige Antwort\n\n> Erklärung, warum.\n';
-  else if (kind === 'phase') text = '\n## Neue Phase {#neue-phase}\n\nWorum es in dieser Phase geht.\n';
-  else if (kind === 'challenge') text = '\n### Challenge: Titel {#neue-challenge}\n\n**Ziel:** …\n';
+  // the challenge of a phase is an item of its own, named in the front matter
+  else if (kind === 'phase') text = '\n## Phase 1: Titel {#neue-phase}\n';
   else text = `\n> [!${kind}]\n> Text\n`;
   area.setRangeText(text, area.selectionStart, area.selectionEnd, 'end');
   area.focus();

@@ -2683,102 +2683,18 @@ details.callout[open] > summary::before {
 
 /* --- projects ----------------------------------------------------------------- */
 
-.phases {
-  list-style: none;
-  margin: 2rem 0 0;
-  padding: 0;
-  border-top: 1px solid var(--rule);
-}
-
 .phase {
-  border-bottom: 1px solid var(--rule);
   scroll-margin-top: 1rem;
 }
 
-.phase-box > summary {
-  list-style: none;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem 0.25rem;
-  cursor: pointer;
-}
-
-.phase-box > summary::-webkit-details-marker {
-  display: none;
-}
-
-.phase-box > summary:hover .phase-title {
-  color: var(--accent-ink);
-}
-
-.phase-number {
-  flex: none;
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: 50%;
-  border: 2px solid var(--accent);
-  display: grid;
-  place-items: center;
-  font-weight: 700;
-  transition: background 0.25s, color 0.25s;
-}
-
-.phase-box[open] .phase-number {
-  background: var(--accent);
-  color: var(--paper);
-}
-
-.phase-head {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.1rem 1rem;
-}
-
-.phase-title {
-  font-weight: 700;
-  font-size: 1.2rem;
-  margin-right: auto;
-}
-
-.phase-meta {
-  color: var(--quiet);
-  font-size: 0.875rem;
-}
-
-.phase-box > summary::after {
-  content: '';
-  flex: none;
-  width: 0.55rem;
-  height: 0.55rem;
-  border-right: 2px solid var(--quiet);
-  border-bottom: 2px solid var(--quiet);
-  transform: rotate(45deg);
-  transition: transform 0.25s var(--ease);
-  margin: 0 0.5rem;
-}
-
-.phase-box[open] > summary::after {
-  transform: rotate(-135deg);
-}
-
-.phase-box::details-content,
 .challenge::details-content {
   block-size: 0;
   overflow: hidden;
   transition: block-size 0.35s var(--ease), content-visibility 0.35s allow-discrete;
 }
 
-.phase-box[open]::details-content,
 .challenge[open]::details-content {
   block-size: auto;
-}
-
-.phase-body {
-  padding: 0 0 1.5rem 3.25rem;
 }
 
 .challenge {
@@ -2819,12 +2735,6 @@ details.callout[open] > summary::before {
   font-size: 0.9rem;
   color: var(--quiet);
   font-weight: 600;
-}
-
-@media (max-width: 640px) {
-  .phase-body {
-    padding-left: 0;
-  }
 }
 
 /* --- slide decks --------------------------------------------------------------- */
@@ -2902,10 +2812,6 @@ details.callout[open] > summary::before {
   align-items: center;
   gap: 0.75rem 1.25rem;
   margin-top: 0.75rem;
-}
-
-.item:has(.deck) {
-  max-width: var(--wide);
 }
 
 /* --- back to where the learner came from ---------------------------------------- */

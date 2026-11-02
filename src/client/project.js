@@ -1,5 +1,5 @@
-// Project page: phases and challenges are folded, so the page starts as an
-// overview. A link to #phase-or-challenge opens exactly that part.
+// Project page: a link to #phase-or-challenge opens exactly that part, also
+// when its phase was folded on an earlier visit (fold.js runs first).
 function reveal() {
   const id = decodeURIComponent(location.hash.slice(1));
   const target = id && document.getElementById(id);
