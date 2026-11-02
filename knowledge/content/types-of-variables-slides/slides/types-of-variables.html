@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>types of variables</title>
+  <link rel="stylesheet" href="theme.css?v=1">
+  <link rel="stylesheet" href="../../stagekit/stagekit.css?v=0.4.0-62b883">
+  <style>
+    /* deck-specific layout, colours and sizes only from the theme */
+    .code.small { font-size: var(--small); }
+    .stack { display: flex; flex-direction: column; gap: 48px; }
+    .statement .keep-case, .sidenote .keep-case { text-transform: none; }
+    /* the opening photo with its sentence on the left: photo at 64 % height, starts at x 691,
+       the tools themselves only from about x 1000, so the text may run to 888 */
+    .slide img.photo.side { height: 64%; top: 18%; }
+    .slide .photo-text.side { width: 40%; font-size: var(--normal); line-height: 1.25; }
+    /* the table on the site: text on the left, a QR code on the right */
+    .play { display: grid; grid-template-columns: 1fr 340px; column-gap: 120px; align-items: center; width: 1680px; }
+    .play .sidenote { margin-top: 40px; }
+    .play .address { font-size: var(--small); margin-top: 40px; }
+    /* the one fixed colour, as on poll slides: a QR code needs a white ground in every theme */
+    .play .qr { width: 340px; height: 340px; border-radius: 12px; background: #fff; color: #000; display: block; }
+    .play .qr svg { width: 100%; height: 100%; display: block; }
+  </style>
+</head>
+<body>
+<div class="deck" data-title="types of variables"
+     data-subtitle="hands-on data science · prof. dr. nicolas meseth"
+     data-parts='["observations and variables", "four scales", "scales in <span class=&#39;keep-case&#39;>R</span>"]'>
+
+  <section class="slide title">
+    <aside class="notes">This input gives the columns of our game table their names and their kinds. The one sentence to take home: the scale of a variable decides what you may compute with it, and R's type should say so.</aside>
+  </section>
+  <section class="slide agenda">
+    <aside class="notes">Three parts: what a row and a column of a table mean, the four scales of measurement, and how R records which scale a column has.</aside>
+  </section>
+
+  <!-- opening photo, before the first part -->
+  <section class="slide">
+    <img class="photo side" src="img/opening-measuring-tools.jpg" alt="A folding ruler, a glass thermometer, a kitchen scale and a sheet with a tally list on a black surface">
+    <div class="photo-text side">a ruler, a thermometer, a scale and a tally sheet all measure, but what you may do with their numbers is not the same.</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">Four tools that all produce numbers. A length you may double: a board of two metres is twice as long as one of one metre. A temperature in degrees Celsius you may not double: ten degrees are not twice as warm as five. The kitchen scale behaves like the ruler, and the strokes on the tally sheet only count how often something happened. The numbers look alike, but they allow different questions, and this deck is about telling them apart.</aside>
+  </section>
+
+  <!-- ===== part 1: observations and variables ===== -->
+  <section class="slide part" data-part="observations and variables" data-subtitle="what a row and a column mean">
+    <aside class="notes">First the words for what we built when we wrote down our games: rows, columns and cells.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawTable" data-on-step="drawTable">
+    <h2>one row per game, one column per fact</h2>
+    <div class="figure" id="fig-table"></div>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span>
+    <div class="punch">an observation is one game, and a variable is one fact that can differ from game to game.</div>
+    <div class="footnote">after <a href="https://doi.org/10.1007/978-3-662-64762-2" target="_blank" rel="noopener"><span class="keep-case">Döring</span> (2023)</a>, p. 577, and <a href="https://r4ds.hadley.nz/data-tidy.html" target="_blank" rel="noopener"><span class="keep-case">R for Data Science</span>, chapter "data tidying"</a></div>
+    <aside class="notes">This is the table we built in the room, with four games. First key: one row is one game, an observation, which Döring calls a case. Second key: one column is one fact about every game, a variable; here the door with the car. Third key: where a row meets a column there is exactly one value, here the decision in game 4. Cases in the rows, variables in the columns, one value per cell: that is the order R for Data Science calls tidy and Döring calls a data matrix, and we had already built it before we knew its name.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>a variable varies</h2>
+    <div class="figure" id="fig-constant"></div>
+    <div class="punch">a fact that is the same in every game is a constant, and a constant needs no column.</div>
+    <aside class="notes">Döring defines a variable as a feature that can take different values. The decision is a variable: it is stay in one game and switch in the next. The number of doors is three in every game, so it is a constant; it belongs in the description of the study, not in the table. One more pair of words in passing: some variables can be observed directly, such as the door that was opened, others only through indicators, such as how willing someone is to take a risk. The first kind is called manifest, the second latent, and questionnaires are mostly about latent ones.</aside>
+  </section>
+
+  <!-- ===== part 2: four scales ===== -->
+  <section class="slide part" data-part="four scales" data-subtitle="what the numbers may mean">
+    <aside class="notes">Not every column of numbers is a column of quantities. The four scales of measurement say what a value may mean.</aside>
+  </section>
+
+  <section class="slide" data-on-show="drawTree" data-on-step="drawTree">
+    <h2>types of variables</h2>
+    <div class="figure" id="fig-tree"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <div class="footnote">after <a href="https://doi.org/10.1007/978-3-662-64762-2" target="_blank" rel="noopener"><span class="keep-case">Döring</span> (2023)</a>, chapter 8.4</div>
+    <aside class="notes">Three branches first. Categorical variables sort observations into groups, numerical variables measure an amount, and qualitative variables hold free text that has to be read before it can be counted. On the key, the scales of measurement, which Döring calls Skalenniveaus: a categorical variable is nominal if its groups have no order and ordinal if they do; a numerical variable is on an interval scale if only differences are meaningful and on a ratio scale if it has a true zero. On the key, one example each: the decision in our game, the share of organic food in the milk survey from 1 to 5, a year, a price, and a free comment. Döring also calls interval and ratio together metric. Some books split numerical variables into continuous ones and counts instead; that matters for R and comes back in part 3.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawAllows" data-on-step="drawAllows">
+    <h2>what each scale allows</h2>
+    <div class="figure" id="fig-allows"></div>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span>
+    <div class="punch">each scale keeps everything the one above it allows and adds one more question you may ask.</div>
+    <aside class="notes">Row by row. Nominal values may only be compared for equal or not equal: two games with the same decision. Ordinal values add an order: 4 is more organic than 2, but we do not know by how much. Interval values add equal distances: from 1990 to 2000 is as long as from 2000 to 2010. Ratio values add a true zero, and only then is a statement like "twice as much" meaningful: a milk at 2 euros costs twice as much as one at 1 euro. Döring adds a useful rule: you may always step down a scale, for example turn prices into the groups cheap and expensive, but never up.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>door 3 is not three times door 1</h2>
+    <div class="figure" id="fig-doors"></div>
+    <div class="punch">a number used as a name is still a name, and its mean means nothing.</div>
+    <aside class="notes">The doors carry numbers, but the numbers are names: we could just as well call them left, middle and right. R does not know that and computes the mean of the prize doors without complaint, here 2. The sentence underneath, that the average car stands behind door 2, is nonsense. Döring warns of exactly this: statistics software computes meaningless means whenever categories are coded as numbers. A coding plan, which writes down what each number stands for, is the defence, and in R so is the type of the column, as part 3 shows.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>ten degrees are not twice as warm as five</h2>
+    <div class="figure" id="fig-zero"></div>
+    <div class="punch">ratios need a true zero, which a price has and a temperature in Celsius does not.</div>
+    <aside class="notes">On the left two thermometers at 5 and 10 degrees Celsius, and 10 looks like twice 5. On the right two prices, 1 and 2 euros. On the key, both change their unit, while the things themselves stay the same: the temperatures become 41 and 50 degrees Fahrenheit, and suddenly nothing is twice anything; the prices become 100 and 200 cents, and the second is still twice the first. Zero degrees Celsius is just where water freezes, a point someone picked, whereas zero cents is truly nothing. In practice the difference between interval and ratio rarely matters, because few methods need a ratio scale, which is why Döring often puts both together as metric.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>is a rating scale ordinal or interval?</h2>
+    <div class="figure" id="fig-rating"></div>
+    <div class="punch">if in doubt, compute both, and say which one you report.</div>
+    <aside class="notes">The milk survey asks for the share of organic food from 1, hardly any, to 5, almost all. Strictly, only the order is known, so the scale is ordinal and the median is the right summary. Many researchers treat such rating scales with five or more roughly equal steps as interval and report the mean, and Döring describes this as common practice. For the 30 people in our sample the median is 2 and the mean 2.37, and both tell the same story. If in doubt, compute both; they usually agree, and when they do not, that is worth reporting.</aside>
+  </section>
+
+  <!-- ===== part 3: scales in R ===== -->
+  <section class="slide part" data-part="scales in <span class='keep-case'>R</span>" data-subtitle="from a scale to a data type">
+    <aside class="notes">R knows nothing about scales of measurement, but it has data types, and with the right type a column says what it is.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawTypes" data-on-step="drawTypes">
+    <h2>every scale has its type in <span class="keep-case">R</span></h2>
+    <div class="figure" id="fig-types"></div>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span>
+    <div class="punch">a factor is how <span class="keep-case">R</span> remembers that a column is categorical.</div>
+    <aside class="notes">The same tree, now with the types R uses, written the way a tibble prints them. First key: nominal values are text, chr, logical values for yes and no, lgl, or a factor, fct; ordinal values are an ordered factor, ord. Second key: numerical values are doubles, dbl, or integers, int, which is the natural type for counts and whole numbers such as years. Third key: free text stays text. The colours are the colours of the types in the other decks, with the factor added in red. The important type here is the factor: it is the only one that tells R that a column is categorical.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>telling <span class="keep-case">R</span> what a column is</h2>
+    <div class="content">
+      <div class="stack">
+        <div class="code small">library(dplyr)
+
+monty_hall &lt;- monty_hall |&gt;
+  mutate(decision = <span class="hl">factor</span>(decision, <span class="hl">levels</span> = c("stay", "switch")))
+
+survey &lt;- survey |&gt;
+  mutate(organic_share = <span class="hl">factor</span>(organic_share, <span class="hl">levels</span> = 1:5, <span class="hl">ordered = TRUE</span>))</div>
+        <div class="sidenote"><span class="mono keep-case">factor()</span> marks a column as nominal, <span class="mono keep-case">ordered = TRUE</span> as ordinal, and numbers stay double or integer.</div>
+      </div>
+    </div>
+    <aside class="notes">Two lines, one per scale. The decision becomes a factor with the levels stay and switch, which makes it nominal. The organic share becomes an ordered factor with the levels 1 to 5, which makes it ordinal. Numerical columns stay as they are. From then on tables and plots sort the levels in their order, a typo becomes NA instead of a new category, and mean() on a factor returns NA with a warning instead of a meaningless number.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawCompute" data-on-step="drawCompute">
+    <h2>what you may compute</h2>
+    <div class="figure" id="fig-compute"></div>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span>
+    <div class="punch">the scale tells you which function makes sense, while <span class="keep-case">R</span> will run all of them anyway.</div>
+    <aside class="notes">Row by row, each new row in white and what it inherits in gray. Nominal: count how often each value occurs and show it as a bar chart. Ordinal: in addition the median and quantiles, and bars in the order of the scale. Interval: in addition the mean and the standard deviation, and a histogram or a boxplot. Ratio: in addition ratios, such as a new price divided by an old one. R will compute every one of these functions on any column of numbers; choosing the right one is your job.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>back to our table</h2>
+    <div class="content">
+      <div class="play">
+        <div>
+          <div class="statement">give every column of our table a type, then save it as <span class="keep-case">RDS</span>.</div>
+          <div class="sidenote">in <span class="keep-case">R</span>: <span class="mono keep-case">str(readRDS("monty_hall_rounds.rds"))</span></div>
+          <div class="address"><a href="https://hands-on-computer-science.de/ds/en/items/what-should-we-measure/" target="_blank" rel="noopener">hands-on-computer-science.de/ds/en/items/what-should-we-measure</a></div>
+        </div>
+        <div class="qr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41 41" aria-label="QR code to the table"><path class="qrline" stroke="currentColor" d="M2 2.5h7M10 2.5h3M14 2.5h1M18 2.5h2M23 2.5h3M27 2.5h1M30 2.5h1M32 2.5h7M2 3.5h1M8 3.5h1M10 3.5h5M16 3.5h2M20 3.5h1M23 3.5h1M25 3.5h3M30 3.5h1M32 3.5h1M38 3.5h1M2 4.5h1M4 4.5h3M8 4.5h1M11 4.5h1M13 4.5h3M17 4.5h1M21 4.5h1M24 4.5h1M27 4.5h1M32 4.5h1M34 4.5h3M38 4.5h1M2 5.5h1M4 5.5h3M8 5.5h1M10 5.5h2M15 5.5h1M19 5.5h1M27 5.5h1M29 5.5h1M32 5.5h1M34 5.5h3M38 5.5h1M2 6.5h1M4 6.5h3M8 6.5h1M11 6.5h5M17 6.5h2M21 6.5h2M26 6.5h5M32 6.5h1M34 6.5h3M38 6.5h1M2 7.5h1M8 7.5h1M11 7.5h2M15 7.5h2M19 7.5h6M26 7.5h3M32 7.5h1M38 7.5h1M2 8.5h7M10 8.5h1M12 8.5h1M14 8.5h1M16 8.5h1M18 8.5h1M20 8.5h1M22 8.5h1M24 8.5h1M26 8.5h1M28 8.5h1M30 8.5h1M32 8.5h7M10 9.5h2M13 9.5h1M15 9.5h3M24 9.5h3M28 9.5h3M2 10.5h1M4 10.5h2M7 10.5h3M11 10.5h1M13 10.5h5M20 10.5h2M23 10.5h1M28 10.5h2M32 10.5h1M35 10.5h1M37 10.5h2M3 11.5h1M5 11.5h1M11 11.5h2M17 11.5h1M20 11.5h1M22 11.5h1M24 11.5h2M27 11.5h1M30 11.5h1M33 11.5h1M37 11.5h1M3 12.5h2M7 12.5h2M10 12.5h3M14 12.5h3M18 12.5h5M24 12.5h3M30 12.5h3M34 12.5h1M2 13.5h1M6 13.5h2M9 13.5h2M12 13.5h2M15 13.5h2M18 13.5h1M22 13.5h1M26 13.5h4M33 13.5h4M8 14.5h5M14 14.5h1M17 14.5h1M19 14.5h1M21 14.5h1M24 14.5h1M26 14.5h3M31 14.5h2M34 14.5h5M2 15.5h1M4 15.5h1M7 15.5h1M10 15.5h1M12 15.5h1M15 15.5h5M21 15.5h1M24 15.5h1M26 15.5h1M28 15.5h8M38 15.5h1M2 16.5h1M4 16.5h1M8 16.5h6M21 16.5h2M27 16.5h2M34 16.5h1M36 16.5h2M4 17.5h1M6 17.5h1M9 17.5h1M12 17.5h1M14 17.5h1M17 17.5h2M21 17.5h1M23 17.5h2M29 17.5h6M37 17.5h2M2 18.5h1M5 18.5h4M10 18.5h4M19 18.5h1M23 18.5h3M27 18.5h3M35 18.5h4M2 19.5h1M4 19.5h2M9 19.5h4M16 19.5h1M20 19.5h2M25 19.5h3M29 19.5h1M31 19.5h2M35 19.5h4M6 20.5h3M12 20.5h5M22 20.5h1M27 20.5h1M29 20.5h1M32 20.5h3M37 20.5h2M2 21.5h1M4 21.5h4M11 21.5h1M15 21.5h6M22 21.5h1M24 21.5h3M33 21.5h3M37 21.5h1M2 22.5h2M5 22.5h1M8 22.5h2M14 22.5h1M16 22.5h4M21 22.5h1M23 22.5h1M25 22.5h2M28 22.5h4M33 22.5h2M38 22.5h1M2 23.5h2M5 23.5h1M11 23.5h1M13 23.5h1M15 23.5h2M18 23.5h6M25 23.5h1M27 23.5h1M35 23.5h1M5 24.5h2M8 24.5h8M18 24.5h1M20 24.5h1M22 24.5h2M25 24.5h2M30 24.5h1M33 24.5h1M4 25.5h1M9 25.5h1M13 25.5h1M16 25.5h2M19 25.5h1M22 25.5h1M24 25.5h1M26 25.5h5M34 25.5h5M3 26.5h1M5 26.5h2M8 26.5h1M11 26.5h6M18 26.5h1M21 26.5h1M24 26.5h1M26 26.5h4M32 26.5h3M36 26.5h2M3 27.5h3M9 27.5h1M12 27.5h1M26 27.5h2M29 27.5h10M3 28.5h1M6 28.5h1M8 28.5h5M15 28.5h1M19 28.5h2M23 28.5h2M26 28.5h1M28 28.5h1M31 28.5h2M34 28.5h4M2 29.5h1M7 29.5h1M10 29.5h2M14 29.5h2M17 29.5h1M21 29.5h4M28 29.5h1M33 29.5h2M38 29.5h1M4 30.5h1M7 30.5h2M10 30.5h2M13 30.5h1M16 30.5h1M20 30.5h5M26 30.5h2M30 30.5h9M10 31.5h1M12 31.5h2M16 31.5h3M22 31.5h1M24 31.5h4M29 31.5h2M34 31.5h1M36 31.5h1M38 31.5h1M2 32.5h7M10 32.5h4M17 32.5h2M20 32.5h1M22 32.5h3M26 32.5h3M30 32.5h1M32 32.5h1M34 32.5h1M36 32.5h1M38 32.5h1M2 33.5h1M8 33.5h1M10 33.5h1M12 33.5h1M15 33.5h3M19 33.5h2M24 33.5h2M29 33.5h2M34 33.5h1M37 33.5h2M2 34.5h1M4 34.5h3M8 34.5h1M14 34.5h1M18 34.5h1M21 34.5h1M23 34.5h2M28 34.5h1M30 34.5h6M37 34.5h2M2 35.5h1M4 35.5h3M8 35.5h1M10 35.5h2M14 35.5h1M17 35.5h2M25 35.5h3M29 35.5h1M31 35.5h2M34 35.5h2M38 35.5h1M2 36.5h1M4 36.5h3M8 36.5h1M10 36.5h1M15 36.5h3M19 36.5h2M25 36.5h2M29 36.5h1M31 36.5h2M34 36.5h3M2 37.5h1M8 37.5h1M11 37.5h4M16 37.5h2M22 37.5h1M26 37.5h4M31 37.5h4M36 37.5h1M2 38.5h7M10 38.5h1M15 38.5h1M18 38.5h2M21 38.5h1M24 38.5h1M27 38.5h2M31 38.5h2M34 38.5h5"/></svg></div>
+      </div>
+    </div>
+    <aside class="notes">Live moment: the table from the start on the projector. For every column the room decides on a scale and sets the type: the decision as a factor, the doors as numbers or as a factor. Let the room argue about the doors, because both are defensible: as numbers they can be compared, as in prize_door == contestant_choice, as a factor they are more honest. Either is fine as long as the choice is justified and nobody reports the mean door. Then save the table as RDS, read it in R with readRDS(), and str() shows that the types survived; a CSV file would have lost them.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="statement">the scale of a variable decides what you may compute with it, and <span class="keep-case">R</span>'s type should say so.</div>
+    </div>
+    <aside class="notes">That is the whole input in one sentence. Before you compute anything, ask which scale a column has, and give it a type that says so.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="stack">
+        <div class="statement">the scale of a variable decides what you may compute with it, and <span class="keep-case">R</span>'s type should say so.</div>
+        <div class="sidenote">to read on: <a href="https://doi.org/10.1007/978-3-662-64762-2" target="_blank" rel="noopener"><span class="keep-case">Döring</span> (2023), <span class="keep-case">Forschungsmethoden und Evaluation</span>, chapter 8.4</a>, and <a href="https://r4ds.hadley.nz/factors.html" target="_blank" rel="noopener"><span class="keep-case">R for Data Science</span>, chapter "factors"</a></div>
+      </div>
+    </div>
+    <aside class="notes">Döring's chapter 8.4 explains the four scales with many examples from the social sciences, and the chapter on factors in R for Data Science shows everything you can do with factors in the tidyverse. Both are worth reading before the first analysis of your own data.</aside>
+  </section>
+
+</div>
+<script src="../../stagekit/draw.js?v=0.4.0-62b883"></script>
+<script src="../../stagekit/anim.js?v=0.4.0-62b883"></script>
+<script src="deck.js?v=3"></script>
+<script src="../../stagekit/stagekit.js?v=0.4.0-62b883"></script>
+</body>
+</html>

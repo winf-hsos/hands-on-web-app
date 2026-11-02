@@ -19,7 +19,7 @@ topics: [questions-and-measurement]
 modules: [ea]
 areas: [ds]
 relations:
-  see_also: [monty-hall-game]
+  see_also: [monty-hall-game, types-of-variables-slides]
 status: draft
 updated: 2026-11-02
 ---

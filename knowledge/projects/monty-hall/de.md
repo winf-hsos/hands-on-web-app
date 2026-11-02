@@ -12,7 +12,7 @@ areas: [ds]
 phases:
   - id: play
     challenge: monty-hall-challenge-1
-    items: [geh-aufs-ganze, monty-hall-game, what-should-we-measure]
+    items: [geh-aufs-ganze, monty-hall-game, what-should-we-measure, types-of-variables-slides]
   - id: vectors
     challenge: monty-hall-challenge-2
     items: [data-representation-slides, r-vectors, r-comparisons]
