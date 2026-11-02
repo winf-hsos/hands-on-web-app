@@ -20,7 +20,7 @@ modules: [dup]
 relations:
   example_of: [command-line-navigating, command-line-files]
   see_also: [files-and-folders]
-status: draft
+status: published
 updated: 2026-11-02
 ---
 
