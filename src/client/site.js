@@ -233,10 +233,12 @@ addEventListener('pagehide', () => {
   } catch {}
 });
 
-const backLink = document.querySelector('[data-back]');
-if (backLink) placeBack(backLink);
+// a page has two such links: an arrow beside its kicker and, on an item, a
+// button at the end; both name the place in their tooltip
+const backLinks = [...document.querySelectorAll('[data-back]')];
+if (backLinks.length) placeBack(backLinks);
 
-async function placeBack(link) {
+async function placeBack(links) {
   let from;
   try {
     from = new URL(document.referrer);
@@ -272,7 +274,7 @@ async function placeBack(link) {
     sessionStorage.setItem('hocs-back', JSON.stringify({ page, from: `${from.pathname}${from.search}` }));
   } catch {}
 
-  const labels = JSON.parse(link.dataset.back);
+  const labels = JSON.parse(links[0].dataset.back);
   let label;
   // a page of the other area is named by the area, not by its own title
   if (fromArea !== hereArea) return;
@@ -291,13 +293,16 @@ async function placeBack(link) {
   // A course link (…/learning/?code=…) would only open the course again, and
   // it replaced itself in the history, so back would go too far.
   const viaHistory = !switched && section !== 'learning' && lastPage === `${from.pathname}${from.search}` && history.length > 1;
-  link.href = section === 'learning' ? from.pathname : `${from.pathname}${from.search}`;
-  link.querySelector('.back-label').textContent = label;
-  link.addEventListener('click', (e) => {
-    if (!viaHistory || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
-    e.preventDefault();
-    history.back();
-  });
+  for (const link of links) {
+    link.href = section === 'learning' ? from.pathname : `${from.pathname}${from.search}`;
+    link.setAttribute('aria-label', label);
+    link.dataset.tip = label;
+    link.addEventListener('click', (e) => {
+      if (!viaHistory || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+      e.preventDefault();
+      history.back();
+    });
+  }
 }
 
 // --- the area menu behind the title -----------------------------------------------------

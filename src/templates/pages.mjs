@@ -2,7 +2,7 @@
 // layout; the build writes them out. Overview first, details on request:
 // what is not needed to choose or to read sits in a disclosure.
 import { html, raw, json } from '../build/html.mjs';
-import { t, count, formatDate } from '../build/i18n.mjs';
+import { t, count, formatDate, backLabels } from '../build/i18n.mjs';
 import { itemRow, progressBar, more, facts, icons, typeIcon, viewSwitch, draftTag, editable } from './parts.mjs';
 import { iconSvg, iconShapes } from '../build/icons.mjs';
 import { deckFile, deckPdf } from '../build/deck.mjs';
@@ -64,7 +64,6 @@ export function items(site, lang) {
     path: site.link(lang, 'items'),
     title: t(lang, 'nav_items'),
     current: 'items',
-    back: 'home',
     scripts: ['list'],
     content: html`<h1>${t(lang, 'nav_items')}</h1>${finder(site, lang)}`,
   };
@@ -162,6 +161,21 @@ export function finder(site, lang, { areas = false } = {}) {
     `;
 }
 
+// --- back to where the learner came from -------------------------------------------
+
+/** The link to where the learner came from, at first to `back` (a key of
+    backLabels); client/site.js points it to the page the learner came from
+    and names that page. */
+const backTo = (site, lang, back) =>
+  html`href="${site.link(lang, back)}" data-back="${JSON.stringify(backLabels[lang])}" aria-label="${backLabels[lang][back]}" data-tip="${backLabels[lang][back]}"`;
+
+/** Small and quiet beside the kicker of a page (Nicolas, 2026-11-02). */
+const backIcon = (site, lang, back) => html`<a class="back-icon" ${backTo(site, lang, back)}>${raw(iconSvg('arrow-left', 'icon'))}</a>`;
+
+/** At the end of an item, beside "mark as done". */
+const backButton = (site, lang, back) =>
+  html`<a class="button button-quiet back-button" ${backTo(site, lang, back)}>${raw(iconSvg('arrow-left', 'icon'))}<span>${t(lang, 'go_back')}</span></a>`;
+
 // --- one item ----------------------------------------------------------------
 
 /** Labels for client/quiz.js, as data attributes on the quiz text. */
@@ -233,12 +247,12 @@ export function item(site, doc, lang) {
   const v = site.vocabulary;
   const body = site.body(doc, lang);
   const toc = tocBlock(body, lang);
+  const back = lead.project ? 'projects' : 'items';
   return {
     path: site.url(doc, lang),
     title: text.title,
     description: text.summary,
     // an item of one project is not in the list of items
-    back: doc.lead.project ? 'projects' : 'items',
     scripts: [isQuiz && 'quiz', toc && 'toc', ...scriptsFor(body)].filter(Boolean),
     // the item's own drawings, next to its page (docs/figures.md)
     figures: body.includes('data-figure') && `figures.js?v=${figureFile(doc)?.hash}`,
@@ -246,7 +260,7 @@ export function item(site, doc, lang) {
       <article class="page item" data-item-page="${doc.id}">
         ${toc}
         <header class="page-head">
-          <p class="kicker"${editable(site, 'kicker')}>${typeIcon(site, doc)}<span>${typeLabel(site, doc, lang)}</span>${lead.duration && html`<span>${lead.duration} ${t(lang, 'minutes')}</span>`}</p>
+          <p class="kicker"${editable(site, 'kicker')}>${typeIcon(site, doc)}<span>${typeLabel(site, doc, lang)}</span>${lead.duration && html`<span>${lead.duration} ${t(lang, 'minutes')}</span>`}${backIcon(site, lang, back)}</p>
           <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}"${editable(site, 'title')}>${text.title}</h1>
           <p class="lead" lang="${text.lang}"${editable(site, 'summary')}>${text.summary}</p>
           ${topicTags(site, lead.topics, lang)}
@@ -270,6 +284,7 @@ export function item(site, doc, lang) {
           <button type="button" class="button done-toggle" data-mark-done aria-pressed="false" data-open="${t(lang, 'mark_done')}" data-done="${t(lang, 'marked_done')}">
             ${icons.check}<span>${t(lang, 'mark_done')}</span>
           </button>
+          ${backButton(site, lang, back)}
         </div>
         ${after.length > 0 &&
         html`<section class="section">
@@ -382,7 +397,6 @@ export function paths(site, lang) {
     path: site.link(lang, 'paths'),
     title: t(lang, 'nav_paths'),
     current: 'paths',
-    back: 'home',
     content: html`
       <h1>${t(lang, 'nav_paths')}</h1>
       <div class="list-bar">
@@ -424,12 +438,11 @@ export function path(site, doc, lang) {
     title: text.title,
     description: text.summary,
     current: 'paths',
-    back: 'paths',
     scripts: doc.lead.sections ? ['fold'] : [],
     content: html`
       <article class="page">
         <header class="page-head">
-          <p class="kicker"><span>${t(lang, 'path')}</span><span>${time.required} ${t(lang, 'minutes')}</span></p>
+          <p class="kicker"><span>${t(lang, 'path')}</span><span>${time.required} ${t(lang, 'minutes')}</span>${backIcon(site, lang, 'paths')}</p>
           <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}"${editable(site, 'title')}>${text.title}</h1>
           <p class="lead" lang="${text.lang}"${editable(site, 'goal')}>${text.data.goal}</p>
           ${progressBar(steps.filter((s) => !s.optional).map((s) => s.id), lang)}
@@ -492,7 +505,6 @@ export function courses(site, lang) {
     path: site.link(lang, 'courses'),
     title: t(lang, 'nav_courses'),
     current: 'courses',
-    back: 'home',
     content: html`
       <h1>${t(lang, 'nav_courses')}</h1>
       <div class="list-bar">
@@ -575,12 +587,11 @@ export function course(site, doc, lang) {
     title: text.title,
     description: text.summary,
     current: 'courses',
-    back: 'courses',
     scripts: ['course', 'fold'],
     content: html`
       <article class="page" data-course="${doc.id}">
         <header class="page-head">
-          <p class="kicker">${courseIcon}<span>${t(lang, 'course')}</span>${doc.lead.sections.length > 0 && html`<span>${count(lang, doc.lead.sections.length, 'sections')}</span>`}</p>
+          <p class="kicker">${courseIcon}<span>${t(lang, 'course')}</span>${doc.lead.sections.length > 0 && html`<span>${count(lang, doc.lead.sections.length, 'sections')}</span>`}${backIcon(site, lang, 'courses')}</p>
           <h1 lang="${text.lang}"${editable(site, 'title')}>${text.title}</h1>
           ${text.data.subtitle && html`<p class="subtitle" lang="${text.lang}"${editable(site, 'subtitle')}>${text.data.subtitle}</p>`}
           <p class="lead" lang="${text.lang}"${editable(site, 'summary')}>${text.summary}</p>
@@ -610,7 +621,6 @@ export function projects(site, lang) {
     path: site.link(lang, 'projects'),
     title: t(lang, 'nav_projects'),
     current: 'projects',
-    back: 'home',
     content: html`
       <h1>${t(lang, 'nav_projects')}</h1>
       <div class="list-bar">
@@ -658,7 +668,7 @@ export function project(site, doc, lang) {
   const content = html`
       <article class="page project">
         <header class="page-head">
-          <p class="kicker">${projectIcon}<span>${t(lang, 'project')}</span><span>${count(lang, lead.phases.length, 'phases')}</span></p>
+          <p class="kicker">${projectIcon}<span>${t(lang, 'project')}</span><span>${count(lang, lead.phases.length, 'phases')}</span>${backIcon(site, lang, 'projects')}</p>
           <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}"${editable(site, 'title')}>${text.title}</h1>
           <p class="lead" lang="${text.lang}"${editable(site, 'summary')}>${text.summary}</p>
         </header>
@@ -703,7 +713,6 @@ export function project(site, doc, lang) {
     title: text.title,
     description: text.summary,
     current: 'projects',
-    back: 'projects',
     // phases may hold code boxes and demonstrators like any item
     scripts: ['fold', 'project', ...scriptsFor(String(content))],
     content,
@@ -741,7 +750,6 @@ export function map(site, lang) {
     path: site.link(lang, 'map'),
     title: t(lang, 'nav_map'),
     current: 'map',
-    back: 'home',
     scripts: ['map'],
     content: html`
       <h1>${t(lang, 'nav_map')}</h1>
@@ -764,7 +772,6 @@ export function learning(site, lang) {
     path: site.link(lang, 'learning'),
     title: t(lang, 'nav_learning'),
     current: 'learning',
-    back: 'home',
     scripts: ['learning'],
     content: html`
       <h1>${t(lang, 'nav_learning')}</h1>

@@ -1306,6 +1306,10 @@ details.callout[open] > summary::before {
 }
 
 .finish {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
   margin: 2.5rem 0 0;
   padding-top: 1.5rem;
   border-top: 1px solid var(--rule);
@@ -3017,35 +3021,80 @@ details.callout[open] > summary::before {
 
 /* --- back to where the learner came from ---------------------------------------- */
 
-.back {
-  margin: -1.25rem 0 1.5rem;
-  font-size: 0.92rem;
-}
-
-.back-link {
+/* A small, quiet arrow at the end of the kicker, and a button beside "mark
+   as done"; both name their place in a tooltip (Nicolas, 2026-11-02). */
+.back-icon {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  min-height: 2rem;
-  padding: 0 0.85rem 0 0.7rem;
-  border: 1px solid var(--rule);
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  margin-left: -0.4rem;
   border-radius: 999px;
   color: var(--quiet);
-  text-decoration: none;
-  transition: border-color 0.2s, color 0.2s;
+  opacity: 0.75;
+  transition: color 0.2s, opacity 0.2s, background-color 0.2s;
 }
 
-.back-link:hover {
-  border-color: var(--quiet);
-  color: var(--ink);
-}
-
-.back-link span[aria-hidden] {
+.back-icon .icon {
+  width: 16px;
+  height: 16px;
   transition: transform 0.2s var(--ease);
 }
 
-.back-link:hover span[aria-hidden] {
-  transform: translateX(-3px);
+.back-icon:hover,
+.back-icon:focus-visible {
+  background: var(--paper-2);
+  color: var(--ink);
+  opacity: 1;
+}
+
+.back-icon:hover .icon {
+  transform: translateX(-2px);
+}
+
+.back-button {
+  position: relative;
+}
+
+.back-button .icon {
+  width: 18px;
+  height: 18px;
+}
+
+.back-icon::after,
+.back-button::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 0.4rem);
+  z-index: 5;
+  padding: 0.3rem 0.55rem;
+  border-radius: 0.4rem;
+  background: var(--ink);
+  color: var(--paper);
+  font: 500 0.78rem/1.3 var(--sans);
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -2px);
+  transition: opacity 0.15s, transform 0.15s var(--ease);
+}
+
+/* the button stands at the end of the page, so its tooltip opens upwards */
+.back-button::after {
+  top: auto;
+  bottom: calc(100% + 0.4rem);
+  transform: translate(-50%, 2px);
+}
+
+:is(.back-icon, .back-button):is(:hover, :focus-visible)::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  transition-delay: 0.3s;
 }
 
 /* --- areas: one accent colour each ---------------------------------------------- */

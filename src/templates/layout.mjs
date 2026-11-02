@@ -1,6 +1,6 @@
 // The frame around every page.
 import { html, raw } from '../build/html.mjs';
-import { t, runnerLabels, backLabels, demoLabels, copyLabels, montyHallLabels, byteSwitchboardLabels, shellDemoLabels, demoFrameLabels, focusLabels, figureLabels, modelLabels } from '../build/i18n.mjs';
+import { t, runnerLabels, demoLabels, copyLabels, montyHallLabels, byteSwitchboardLabels, shellDemoLabels, demoFrameLabels, focusLabels, figureLabels, modelLabels } from '../build/i18n.mjs';
 import { icons, mark } from './parts.mjs';
 import { plainText } from '../client/code-terms.js';
 import { DRAFTS_BASE } from '../build/drafts.mjs';
@@ -23,7 +23,7 @@ const searchDialog = (lang) => html`<dialog class="search" aria-label="${t(lang,
     <p class="search-hint">${t(lang, 'search_hint')}</p>
   </dialog>`;
 
-export function layout({ site, lang, path, title, description, current, content, back, scripts = [], figures, asset, pyodide, webr, total = 0, entrances = [] }) {
+export function layout({ site, lang, path, title, description, current, content, scripts = [], figures, asset, pyodide, webr, total = 0, entrances = [] }) {
   const other = lang === 'de' ? 'en' : 'de';
   const otherPath = path.replace(/\/(de|en)\//, `/${other}/`);
   const { areas } = site.vocabulary;
@@ -85,7 +85,7 @@ export function layout({ site, lang, path, title, description, current, content,
       <button class="tool theme" type="button" title="${t(lang, 'theme')}" aria-label="${t(lang, 'theme')}">${icons.theme}</button>
     </div>
   </header>
-  <main id="main">${back && backLink(link, lang, back)}${content}</main>
+  <main id="main">${content}</main>
   ${searchDialog(lang)}
   ${figures && html`<script defer src="${asset('stagekit/draw.js')}"></script>
   <script defer src="${asset('stagekit/anim.js')}"></script>
@@ -97,13 +97,6 @@ export function layout({ site, lang, path, title, description, current, content,
 </html>
 `;
 }
-
-/**
- * "Back to …": `back` names where to go without better knowledge (a key of
- * backLabels); client/site.js replaces it with the page the learner came from.
- */
-const backLink = (link, lang, back) =>
-  html`<p class="back"><a class="back-link" href="${link(lang, back === 'home' ? '' : back)}" data-back="${JSON.stringify(backLabels[lang])}"><span aria-hidden="true">←</span> <span class="back-label">${backLabels[lang][back]}</span></a></p>`;
 
 /**
  * The entrance at /de/ and /en/: one card per area, each in its own accent
