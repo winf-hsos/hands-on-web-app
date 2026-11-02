@@ -2,8 +2,10 @@
 // opens another one with a goat behind it, then stay or switch. Every round
 // is recorded: a bar per decision shows how often it won, and on request the
 // record appears as R code (one vector per column, the same columns as the
-// data set lets_make_a_deal.csv), ready to be copied into an R box. The
-// rounds are kept in this browser, so a reload keeps them.
+// data set lets_make_a_deal.csv), ready to be copied into an R box, and can
+// be saved as CSV or RDS like the table of observations
+// (client/data-table-model.js). The rounds are kept in this browser, so a
+// reload keeps them.
 //
 // Nothing moves while playing: the status, the buttons and the statistics
 // have places of a fixed size, and the doors swing open in place.
@@ -12,6 +14,7 @@
 // come from the page (data-monty-hall-labels on <body>).
 import { addCopyButton } from './copy.js';
 import { keys } from './demo-frame.js';
+import { gzip, toCsv, toRds } from './data-table-model.js';
 
 const L = JSON.parse(document.body.dataset.montyHallLabels ?? '{}');
 const KEY = 'hocs-monty-hall';
@@ -51,6 +54,26 @@ function asR(rounds) {
   ].join('\n');
 }
 
+/** The rounds as a table of the model behind the table of observations: the doors whole numbers, the decision text. */
+function asTable(rounds) {
+  const columns = [
+    { name: 'prize_door', type: 'integer' },
+    { name: 'contestant_choice', type: 'integer' },
+    { name: 'monty_opens', type: 'integer' },
+    { name: 'decision', type: 'character' },
+  ];
+  return { columns, rows: rounds.map((r) => columns.map((c) => String(r[c.name]))) };
+}
+
+function download(bytes, name, type) {
+  const url = URL.createObjectURL(new Blob([bytes], { type }));
+  const a = Object.assign(document.createElement('a'), { href: url, download: name });
+  document.body.append(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+
 function setup(box) {
   let rounds = stored();
   let round = null; // { prize_door, contestant_choice, monty_opens, decision }
@@ -79,6 +102,8 @@ function setup(box) {
         ).join('')}
         <p class="mh-tools">
           <button type="button" class="mh-link" data-act="code" aria-expanded="false">${L.showCode}</button>
+          <button type="button" class="mh-link" data-act="csv">${L.saveCsv}</button>
+          <button type="button" class="mh-link" data-act="rds">${L.saveRds}</button>
           <button type="button" class="mh-link" data-act="reset">${L.reset}</button>
         </p>
       </div>
@@ -107,6 +132,8 @@ function setup(box) {
 
   function showStats() {
     code.textContent = asR(rounds);
+    act('csv').disabled = rounds.length === 0;
+    act('rds').disabled = rounds.length === 0;
     box.querySelector('.mh-stats-head').textContent = rounds.length === 1 ? L.round : fill(L.rounds, { n: rounds.length });
     for (const decision of DECISIONS) {
       const games = rounds.filter((r) => r.decision === decision);
@@ -179,6 +206,8 @@ function setup(box) {
     act('code').textContent = record.hidden ? L.showCode : L.hideCode;
     act('code').setAttribute('aria-expanded', String(!record.hidden));
   });
+  act('csv').addEventListener('click', () => download(toCsv(asTable(rounds)), `${L.file}.csv`, 'text/csv;charset=utf-8'));
+  act('rds').addEventListener('click', async () => download(await gzip(toRds(asTable(rounds))), `${L.file}.rds`, 'application/octet-stream'));
   act('reset').addEventListener('click', () => {
     rounds = [];
     store(rounds);

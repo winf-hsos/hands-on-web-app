@@ -55,7 +55,7 @@ organic_share <- c(5, NA, 2, 4)
 is.na(organic_share)
 ```
 
-Together with what you know about [[r-comparisons|counting]],
+Together with what you know about [[r-vectors|counting]],
 `sum(is.na(organic_share))` gives the number of missing values.
 
 ## Ask first why something is missing

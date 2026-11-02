@@ -87,8 +87,8 @@ as.numeric(c("3", "5", "keine Angabe", "2"))
 ```
 
 Ebenso gibt es `as.character()`. Umgekehrt zählt R `TRUE` als 1 und `FALSE`
-als 0, wenn du mit Wahrheitswerten rechnest; das wird beim
-[[r-comparisons|Vergleichen]] sehr nützlich.
+als 0, wenn du mit Wahrheitswerten rechnest; das hast du beim
+[[r-vectors|Zählen mit Vergleichen]] schon genutzt.
 
 ## Wenn R mit Text rechnen soll
 

@@ -18,7 +18,7 @@ topics: [programming-with-r, data-pitfalls]
 modules: [ea]
 areas: [ds]
 relations:
-  requires: [r-comparisons]
+  requires: [r-vectors]
 status: published
 updated: 2026-11-01
 ---
@@ -65,7 +65,7 @@ organic_share <- c(5, NA, 2, 4)
 is.na(organic_share)
 ```
 
-Zusammen mit dem, was du über [[r-comparisons|das Zählen]] weißt, ergibt
+Zusammen mit dem, was du über [[r-vectors|das Zählen]] weißt, ergibt
 `sum(is.na(organic_share))` die Zahl der fehlenden Werte.
 
 ## Vorher fragen, warum etwas fehlt

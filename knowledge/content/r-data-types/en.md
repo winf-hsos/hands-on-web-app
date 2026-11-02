@@ -78,8 +78,8 @@ as.numeric(c("3", "5", "no answer", "2"))
 ```
 
 There is also `as.character()`. The other way round, R counts `TRUE` as 1
-and `FALSE` as 0 when you calculate with logical values; that becomes very
-useful for [[r-comparisons|comparisons]].
+and `FALSE` as 0 when you calculate with logical values; you already used
+that for [[r-vectors|counting with comparisons]].
 
 ## When R is to calculate with text
 

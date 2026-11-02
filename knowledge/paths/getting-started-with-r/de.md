@@ -24,7 +24,6 @@ sections:
       - data-representation-slides
       - r-vectors
       - r-data-types
-      - r-comparisons
       - r-missing-values
       - r-exercise-shopping
   - title: { de: "Teil 3: Tabellen und Pakete", en: "Part 3: Tables and packages" }

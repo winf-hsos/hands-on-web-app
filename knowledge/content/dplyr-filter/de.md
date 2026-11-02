@@ -20,7 +20,7 @@ topics: [transforming-data, programming-with-r]
 modules: [ea]
 areas: [ds]
 relations:
-  requires: [r-comparisons, r-pipe]
+  requires: [r-vectors, r-pipe]
   see_also: [dplyr-select]
 status: draft
 updated: 2026-11-01

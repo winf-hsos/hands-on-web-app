@@ -196,6 +196,14 @@ function setup(box) {
       hint.hidden = true;
     };
     const reply = (message) => {
+      if (message.type === 'file') {
+        // a file the R code wrote, to be saved like a download
+        clear();
+        const href = URL.createObjectURL(new Blob([message.bytes]));
+        const link = el('a', { className: 'runner-file', href, download: message.name }, `${L.file} ${message.name}`);
+        output.append(link, document.createTextNode('\n'));
+        return;
+      }
       if (message.type === 'image') {
         // a plot from R, drawn at full size and scaled to the box by CSS
         clear();

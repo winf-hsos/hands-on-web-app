@@ -1,7 +1,7 @@
 ---
 type: experiment
 code: 2061
-title: Drei Türen im Seminarraum
+title: "Experiment 1: Drei Türen im Seminarraum"
 summary: >-
   Ihr spielt das Spiel mit den drei Türen gemeinsam vorne im Seminarraum, zehn
   Spiele oder mehr, mit verteilten Rollen und einem Protokoll an der Tafel, und
@@ -22,7 +22,7 @@ project: monty-hall
 relations:
   see_also: [monty-hall-game, what-should-we-measure]
 status: draft
-updated: 2026-11-02
+updated: 2026-11-03
 ---
 
 Bevor ihr das Spiel am Rechner spielt, spielt ihr es gemeinsam vorne im

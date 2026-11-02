@@ -5,9 +5,9 @@ title: "Let's Make a Deal: 100 Spiele mit drei Türen"
 summary: >-
   Wo stand das Auto, welche Tür wählte die Person, welche öffnete der
   Moderator, und blieb sie bei ihrer Wahl oder wechselte sie? Ein kleiner,
-  sauberer Datensatz für die ersten Schritte mit Vektoren und Data Frames.
+  sauberer Datensatz für die ersten Schritte mit Vektoren und Tibbles.
 objectives:
-  intro: "Mit diesem kleinen, sauberen Datensatz übst du die ersten Schritte mit Vektoren und Data Frames am Drei-Türen-Spiel und kannst damit:"
+  intro: "Mit diesem kleinen, sauberen Datensatz übst du die ersten Schritte mit Vektoren und Tibbles am Drei-Türen-Spiel und kannst damit:"
   goals:
     - "beschreiben, welchen Ablauf eines Spiels die Spalten `prize_door`, `contestant_choice`, `monty_opens` und `decision` festhalten"
     - "aus `prize_door`, `contestant_choice` und `decision` ableiten, ob ein Spiel gewonnen wurde"
@@ -20,7 +20,7 @@ topics: [getting-data, programming-with-r]
 modules: [ea]
 areas: [ds]
 status: published
-updated: 2026-11-01
+updated: 2026-11-03
 ---
 
 Jede Zeile ist ein Spiel nach den Regeln der Spielshow „Let's Make a Deal“:

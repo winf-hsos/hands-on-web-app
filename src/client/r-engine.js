@@ -6,7 +6,8 @@
 // that names `rewe` loads the REWE products first, one that draws loads
 // ggplot2, and its plots come back as images. A block that names the file
 // itself, as in read.csv("lets_make_a_deal.csv"), finds it in its working
-// directory.
+// directory. A file the block writes there, with write.csv() or saveRDS(),
+// comes back as { type: 'file' }, so that the box can offer it for download.
 //
 // Every block runs in an environment of its own (.hocs_run), so a block
 // cannot break the next one by overwriting `survey`; what a block assigns is
@@ -67,7 +68,7 @@ async function prepare(r, code) {
     if (!byName && !code.includes(file)) continue;
     if (!loaded.has(file)) {
       const csv = await fetch(`${datasets}${file}`).then((response) => response.arrayBuffer());
-      await r.FS.writeFile(`/home/web_user/${file}`, new Uint8Array(csv));
+      await r.FS.writeFile(`${HOME}/${file}`, new Uint8Array(csv));
       loaded.add(file);
     }
     if (!byName || loaded.has(name)) continue;
@@ -80,6 +81,18 @@ async function prepare(r, code) {
     await r.evalRVoid('suppressPackageStartupMessages(library(ggplot2)); theme_set(theme_gray(base_size = 14))');
     loaded.add('ggplot2');
   }
+}
+
+const HOME = '/home/web_user';
+
+/**
+ * The files in the working directory, each with its time and size, to see
+ * afterwards what a block wrote; without Rplots.pdf, which the graphics device
+ * leaves behind, not the block.
+ */
+async function listFiles(r) {
+  const lines = await r.evalRString(`paste(list.files(), as.numeric(file.mtime(list.files())), file.size(list.files()), sep = "\\t", collapse = "\\n")`);
+  return new Map(lines.split('\n').filter(Boolean).map((line) => [line.split('\t')[0], line]).filter(([name]) => name !== 'Rplots.pdf'));
 }
 
 /** Whether R has been started before, so the status can say "running". */
@@ -100,6 +113,7 @@ export async function run(code, onMessage) {
   }
   const shelter = await new r.Shelter();
   try {
+    const before = await listFiles(r);
     // messages, warnings and errors come as text on stderr
     const result = await shelter.captureR(`.hocs_run(${JSON.stringify(code)})`, { captureStreams: true, captureConditions: false, captureGraphics: PLOT });
     let failed = false;
@@ -109,6 +123,9 @@ export async function run(code, onMessage) {
       onMessage({ type: 'output', kind: item.type === 'stdout' ? 'out' : error ? 'err' : 'note', text: `${item.data}\n` });
     }
     for (const image of result.images) onMessage({ type: 'image', image });
+    for (const [name, line] of await listFiles(r)) {
+      if (before.get(name) !== line) onMessage({ type: 'file', name, bytes: await r.FS.readFile(`${HOME}/${name}`) });
+    }
     onMessage({ type: 'done', status: failed ? 'error' : 'ok' });
   } catch (error) {
     onMessage({ type: 'output', kind: 'err', text: `Error: ${String(error?.message ?? error).replace(/^Error:\s*/, '')}\n` });

@@ -1183,6 +1183,11 @@ select {
   background: #fff;
 }
 
+/* a file the R code wrote, offered for download */
+.runner-file {
+  color: var(--accent-ink);
+}
+
 .runner[data-lang='r'] .runner-output {
   white-space: pre;
   overflow-wrap: normal;
@@ -4069,6 +4074,13 @@ details.callout[open] > summary::before {
   font: inherit;
   text-decoration: underline;
   cursor: pointer;
+}
+
+/* nothing to save before the first round */
+.mh-link:disabled {
+  color: var(--quiet);
+  text-decoration: none;
+  cursor: default;
 }
 
 .mh-record {

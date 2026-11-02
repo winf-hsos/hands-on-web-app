@@ -1,5 +1,5 @@
 ---
-title: Three doors in the classroom
+title: "Experiment 1: Three doors in the classroom"
 summary: >-
   You play the game with three doors together at the front of the classroom,
   ten games or more, with assigned roles and a record on the board, and so
@@ -12,7 +12,7 @@ objectives:
     - "break a game into five steps and record every game so that it can be analysed later"
     - "see in your own games when the host has a choice and when he does not"
 translation_of: de
-based_on: 2026-11-02
+based_on: 2026-11-03
 ---
 
 Before you play the game on a computer, you play it together at the front of
