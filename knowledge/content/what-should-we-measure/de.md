@@ -28,9 +28,11 @@ updated: 2026-11-02
 Drei-Türen-Spiels festgehalten werden, und entscheidest dabei, welche Fakten
 über ein Spiel notiert werden und in welcher Form ihre Werte vorliegen.
 
-**Bedienung:** Die Tabelle beginnt leer. Mit „Spalte hinzufügen“ legst du eine
-Variable an, gibst ihr oben einen Namen und wählst darunter auf Wunsch einen
-Datentyp, und mit „Zeile hinzufügen“ trägst du ein weiteres Spiel ein. Jede
+**Bedienung:** Die Tabelle beginnt mit drei leeren Spalten und zwei leeren
+Zeilen. Jede Spalte ist eine Variable, der du oben einen Namen gibst und
+darunter auf Wunsch einen Datentyp. Fährst du mit der Maus über die Tabelle,
+erscheint rechts ein + für eine weitere Spalte und unten eines für ein
+weiteres Spiel. Jede
 Zelle lässt sich bearbeiten, wobei Enter zur Zeile darunter springt. Ein Wert,
 der nicht zum gewählten Typ passt, bekommt einen gelben Rahmen, bleibt aber
 stehen. Zum Schluss speicherst du die Tabelle als CSV oder als RDS, und

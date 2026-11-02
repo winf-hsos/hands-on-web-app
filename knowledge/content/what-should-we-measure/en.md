@@ -19,9 +19,11 @@ based_on: 2026-11-02
 three doors, and decide along the way which facts about a game are noted and in
 which form their values come.
 
-**How to use:** The table starts empty. "Add column" creates a variable, which
-you name at the top and, if you like, give a data type below, and "Add row"
-enters another game. Every cell can be edited, and Enter jumps to the row
+**How to use:** The table starts with three empty columns and two empty rows.
+Each column is a variable, which you name at the top and, if you like, give a
+data type below. When you move the mouse over the table, a + appears on the
+right for another column and one below for another game. Every cell can be
+edited, and Enter jumps to the row
 below. A value that does not fit the chosen type gets a yellow outline but
 stays in place. Finally you save the table as CSV or as RDS, and below the
 buttons stands the R code that reads the file back. The table stays stored in

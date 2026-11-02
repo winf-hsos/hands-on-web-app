@@ -1,8 +1,10 @@
-// A table to record observations in, which starts empty: buttons add a column
-// for each variable and a row for each observation, every column has a name
-// and, if wanted, an R data type, and every cell can be edited. A cell that
-// does not fit the type of its column is marked but kept. The table can be
-// saved as CSV or as RDS, an R data.frame written in the browser
+// A table to record observations in, which starts with three empty columns
+// waiting for their names and two empty rows: a quiet + right of the last
+// column adds a variable and one below the last row an observation, both
+// shown when the pointer or the focus is in the table. Every column has a
+// name and, if wanted, an R data type, and every cell can be edited. A cell
+// that does not fit the type of its column is marked but kept. The table can
+// be saved as CSV or as RDS, an R data.frame written in the browser
 // (client/data-table-model.js), and below the buttons stands the R code that
 // reads both files. The table is kept in this browser until "Start over".
 //
@@ -11,7 +13,7 @@
 import { addCopyButton } from './copy.js';
 import { keys } from './demo-frame.js';
 import { highlight } from './highlight.js';
-import { ABBREVIATIONS, TYPES, columnType, exportNames, fits, gzip, isSnakeCase, isSyntactic, levels, readCode, suggestName, toCsv, toRds } from './data-table-model.js';
+import { ABBREVIATIONS, TYPES, columnType, exportNames, fits, gzip, isMissing, isSnakeCase, isSyntactic, levels, readCode, suggestName, toCsv, toRds } from './data-table-model.js';
 
 const L = JSON.parse(document.body.dataset.dataTableLabels ?? '{}');
 const KEY = 'hocs-data-table';
@@ -23,12 +25,13 @@ const PLUS = icon('<path d="M12 5v14M5 12h14"/>');
 const CROSS = icon('<path d="M6 6l12 12M18 6 6 18"/>');
 const SAVE = icon('<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>');
 
-const empty = () => ({ columns: [], rows: [] });
+// the table to begin with: three columns without names, two rows without values
+const empty = () => ({ columns: [0, 1, 2].map(() => ({ name: '', type: '' })), rows: [0, 1].map(() => ['', '', '']) });
 
 function stored() {
   try {
     const table = JSON.parse(localStorage.getItem(KEY) ?? 'null');
-    const ok = table && Array.isArray(table.columns) && Array.isArray(table.rows);
+    const ok = table && Array.isArray(table.columns) && table.columns.length > 0 && Array.isArray(table.rows);
     return ok ? { columns: table.columns.map((c) => ({ name: String(c.name ?? ''), type: TYPES.includes(c.type) ? c.type : '' })), rows: table.rows.map((r) => table.columns.map((_, i) => String(r?.[i] ?? ''))) } : empty();
   } catch {
     return empty();
@@ -57,24 +60,22 @@ function setup(box) {
 
   box.innerHTML = `
     <div class="dt-tools">
-      <button type="button" class="button" data-act="column">${PLUS}${L.addColumn}</button>
-      <button type="button" class="button button-quiet" data-act="row">${PLUS}${L.addRow}</button>
       <span class="dt-size" aria-live="polite"></span>
       <button type="button" class="dt-link" data-act="reset">${L.reset}</button>
     </div>
     <p class="dt-empty"></p>
-    <div class="dt-scroll"><table class="dt-table"><thead></thead><tbody></tbody></table></div>
+    <div class="dt-scroll"><table class="dt-table"><thead></thead><tbody></tbody><tfoot></tfoot></table></div>
     <p class="dt-misfits" aria-live="polite"></p>
     <div class="dt-export">
-      <button type="button" class="button" data-act="csv">${SAVE}${L.saveCsv}</button>
-      <button type="button" class="button" data-act="rds">${SAVE}${L.saveRds}</button>
+      <button type="button" class="button button-quiet" data-act="csv">${SAVE}${L.saveCsv}</button>
+      <button type="button" class="button button-quiet" data-act="rds">${SAVE}${L.saveRds}</button>
     </div>
     <p class="dt-code-head">${L.codeHead}</p>
     <div class="code-block"><pre class="code"><code class="language-r"></code></pre></div>`;
   const act = (name) => box.querySelector(`[data-act="${name}"]`);
   const head = box.querySelector('thead');
   const body = box.querySelector('tbody');
-  const scroll = box.querySelector('.dt-scroll');
+  const foot = box.querySelector('tfoot');
   const code = box.querySelector('code');
   let codeText = '';
   addCopyButton(box.querySelector('.code-block'), () => codeText);
@@ -93,8 +94,8 @@ function setup(box) {
   function render() {
     const typeOptions = (type) =>
       [`<option value=""${type ? '' : ' selected'}>${L.auto}</option>`, ...TYPES.map((t) => `<option value="${t}"${t === type ? ' selected' : ''}>${t} · ${L.types[t]}</option>`)].join('');
-    head.innerHTML = table.columns.length
-      ? `<tr><th scope="col" class="dt-corner"><span class="visually-hidden">${L.rowHead}</span>#</th>${table.columns
+    const plus = (act, text) => `<button type="button" class="dt-plus" data-act="${act}" aria-label="${esc(text)}" title="${esc(text)}">${PLUS}</button>`;
+    head.innerHTML = `<tr><th scope="col" class="dt-corner"><span class="visually-hidden">${L.rowHead}</span>#</th>${table.columns
           .map(
             (col, c) => `<th scope="col" class="dt-col">
               <div class="dt-head">
@@ -109,16 +110,16 @@ function setup(box) {
               <div class="dt-levels" data-col="${c}" hidden></div>
             </th>`,
           )
-          .join('')}</tr>`
-      : '';
+          .join('')}<th class="dt-add">${plus('column', L.addColumn)}</th></tr>`;
     body.innerHTML = table.rows
       .map(
         (row, r) => `<tr><th scope="row" class="dt-rowhead"><span class="dt-index">${r + 1}</span><button type="button" class="dt-delete" data-delete-row="${r}" aria-label="${esc(fill(L.deleteRow, { r: r + 1 }))}" title="${esc(fill(L.deleteRow, { r: r + 1 }))}">${CROSS}</button></th>${table.columns
           .map((_, c) => `<td><input type="text" class="dt-cell" data-row="${r}" data-col="${c}" value="${esc(row[c] ?? '')}" autocomplete="off" spellcheck="false"></td>`)
-          .join('')}</tr>`,
+          .join('')}<td class="dt-add"></td></tr>`,
       )
       .join('');
-    scroll.hidden = table.columns.length === 0;
+    foot.innerHTML = table.columns.length ? `<tr><td class="dt-add-row" colspan="${table.columns.length + 2}">${plus('row', L.addRow)}</td></tr>` : '';
+    box.classList.toggle('is-blank', table.columns.length === 0);
     update();
   }
 
@@ -145,7 +146,8 @@ function setup(box) {
       let text = '';
       let warn = false;
       let offer = '';
-      if (!own) text = fill(L.noName, { name });
+      // an empty column is waiting for its name, which needs no note yet
+      if (!own) text = table.rows.some((row) => !isMissing(row[c] ?? '')) ? fill(L.noName, { name }) : '';
       else if (names.some((n, i) => i !== c && n === own)) [text, warn] = [L.duplicate, true];
       else if (!isSyntactic(own)) [text, warn, offer] = [fill(L.invalidName, { name: suggestion || '…' }), true, suggestion];
       else if (!isSnakeCase(own) && suggestion && suggestion !== own) [text, offer] = [fill(L.styleName, { name: suggestion }), suggestion];
@@ -179,7 +181,6 @@ function setup(box) {
     const summary = box.querySelector('.dt-misfits');
     summary.textContent = misfits === 0 ? '' : misfits === 1 ? L.misfitCount : fill(L.misfitCounts, { n: misfits });
     summary.hidden = misfits === 0;
-    act('row').disabled = nc === 0;
     act('csv').disabled = nc === 0;
     act('rds').disabled = nc === 0;
     codeText = readCode(table, L);
@@ -221,7 +222,9 @@ function setup(box) {
   box.addEventListener('click', (e) => {
     const t = e.target.closest('button');
     if (!t || !box.contains(t)) return;
-    if (t.dataset.deleteCol !== undefined) {
+    if (t.dataset.act === 'column') addColumn();
+    else if (t.dataset.act === 'row') addRow();
+    else if (t.dataset.deleteCol !== undefined) {
       const c = Number(t.dataset.deleteCol);
       table.columns.splice(c, 1);
       for (const row of table.rows) row.splice(c, 1);
@@ -269,15 +272,13 @@ function setup(box) {
     target?.focus();
   });
 
-  act('column').addEventListener('click', addColumn);
-  act('row').addEventListener('click', addRow);
   act('reset').addEventListener('click', () => {
-    const filled = table.columns.length > 0;
+    const filled = table.columns.some((col) => col.name.trim()) || table.rows.some((row) => row.some((v) => !isMissing(v)));
     if (filled && !window.confirm(L.confirmReset)) return;
     table = empty();
     store(table);
     render();
-    act('column').focus();
+    nameInput(0).focus();
   });
   act('csv').addEventListener('click', () => download(toCsv(table), `${L.file}.csv`, 'text/csv;charset=utf-8'));
   act('rds').addEventListener('click', async () => download(await gzip(toRds(table)), `${L.file}.rds`, 'application/octet-stream'));

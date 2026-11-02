@@ -4104,11 +4104,12 @@ details.callout[open] > summary::before {
   }
 }
 
-/* The table to record observations in (client/data-table.js): buttons for
-   columns and rows above, a table that scrolls sideways when it grows wider
-   than the text, a name and a type in the head of every column, and below
-   it the two exports with the R code that reads them. A cell that does not
-   fit its type gets a yellow outline, which warns without blocking. */
+/* The table to record observations in (client/data-table.js): its size and
+   "start over" above, a table that scrolls sideways when it grows wider than
+   the text, a name and a type in the head of every column, a quiet + for
+   another column and another row, and below it the two exports with the R
+   code that reads them. A cell that does not fit its type gets a yellow
+   outline, which warns without blocking. */
 .data-table {
   margin: 1.5rem 0;
   padding: 1rem;
@@ -4321,6 +4322,78 @@ details.callout[open] > summary::before {
   color: var(--error);
 }
 
+/* A quiet + right of the last column and below the last row. It shows when
+   the pointer or the focus is in the table, always on touch screens, and
+   always when the table has no column left. */
+.prose .dt-table .dt-add,
+.prose .dt-table .dt-add-row {
+  border-bottom: none;
+}
+
+.prose .dt-table thead .dt-add {
+  vertical-align: top;
+  padding-top: 0.45rem;
+}
+
+.dt-plus {
+  display: inline-grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 1px dashed var(--rule);
+  border-radius: 50%;
+  background: none;
+  color: var(--quiet);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.dt-scroll:hover .dt-plus,
+.data-table:focus-within .dt-plus,
+.data-table.is-blank .dt-plus {
+  opacity: 1;
+}
+
+.dt-plus:hover,
+.dt-plus:focus-visible {
+  border-style: solid;
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+@media (hover: none) {
+  .dt-plus {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dt-plus {
+    transition: none;
+  }
+}
+
+/* In full screen the table sets the width: everything else wraps within it
+   (inline-size containment leaves them out of the measure), the table no
+   longer scrolls, and the frame scales the whole to fit the screen. */
+.demo:fullscreen > .data-table,
+.demo.is-fullscreen > .data-table {
+  width: max-content;
+  min-width: 34rem;
+}
+
+.demo:fullscreen .data-table > :not(.dt-scroll),
+.demo.is-fullscreen .data-table > :not(.dt-scroll) {
+  contain: inline-size;
+}
+
+.demo:fullscreen .dt-scroll,
+.demo.is-fullscreen .dt-scroll {
+  overflow: visible;
+}
+
 .prose .dt-misfits {
   margin: 0.75rem 0 0;
   padding-left: 0.5rem;
@@ -4347,7 +4420,6 @@ details.callout[open] > summary::before {
     padding: 0.75rem;
   }
 
-  .dt-tools .button,
   .dt-export .button {
     flex: 1 1 12rem;
     justify-content: center;
