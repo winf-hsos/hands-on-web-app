@@ -294,8 +294,16 @@ export function referencesOf(doc) {
 export const stepsOf = (list = []) =>
   list.map((s) => (typeof s === 'string' ? { id: s, optional: false } : { id: s.item, optional: !!s.optional }));
 
-/** The items of a project phase: its challenge first, then its own items and those of its challenges. */
-export const phaseItems = (phase) => [...new Set([phase.challenge, ...(phase.items ?? []), ...(phase.challenges ?? []).flatMap((c) => c.items ?? [])].filter(Boolean))];
+/**
+ * The items of a project phase: its challenge first, then its own items and
+ * those of its challenges. A challenge listed among the items stands there
+ * instead, after a video that sets the scene, say.
+ */
+export const phaseItems = (phase) => {
+  const own = phase.items ?? [];
+  const lead = own.includes(phase.challenge) ? [] : [phase.challenge];
+  return [...new Set([...lead, ...own, ...(phase.challenges ?? []).flatMap((c) => c.items ?? [])].filter(Boolean))];
+};
 
 /**
  * All steps of a course, those of its learning paths included, and with

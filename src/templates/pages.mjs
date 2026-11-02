@@ -707,7 +707,8 @@ export function project(site, doc, lang) {
         ${lead.phases.map((phase, p) => {
           const part = parts.phases[p];
           // A phase is a part like those of a path: its challenge comes first,
-          // then the content for it. Challenges written into the project text
+          // then the content for it, unless the challenge is listed among the
+          // items at another place. Challenges written into the project text
           // (the older form) stay folded inside their phase. Phases start
           // closed like the sections of a module, unless there is only one;
           // fold.js remembers what the learner changed, and project.js opens
