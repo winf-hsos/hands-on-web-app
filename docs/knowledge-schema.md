@@ -328,9 +328,9 @@ The body is plain Markdown with a few conventions:
   commands of the path „Die Kommandozeile“ (`cd`, `ls`, `pwd`, `mkdir`,
   `New-Item`/`touch`, `cp`, `mv`, `rm`, `rmdir`, `cat`, `echo … >`,
   `python`/`python3`, `clear`) and the first line of each real message,
-  PowerShell's in the language of the page. While a path is typed, the tree
-  shows the way it takes and where it breaks, and a line below says it in
-  words; a click on a folder writes the `cd` that leads there. „Vorhersagen“
+  in English, as the lessons quote them (Nicolas, 2026-11-02). While a path
+  is typed, the tree shows the way it takes and where it breaks, and a line
+  below says it in words; a click on a folder writes the `cd` that leads there. „Vorhersagen“
   holds every result back until a second Enter, for guessing in class.
 - **Nothing in a demonstrator moves while it is used** (Nicolas,
   2026-10-31): every part that changes (a status line, buttons that come and

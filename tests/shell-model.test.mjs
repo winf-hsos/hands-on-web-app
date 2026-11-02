@@ -36,11 +36,11 @@ test('cd moves through the tree, and the prompt shows where you are', () => {
 
 test('a wrong name or a blank without quotes gets the message of the real shell', () => {
   const win = shell('windows');
-  assert.equal(text(win.run('cd Dokumente')), 'Set-Location : Der Pfad "C:\\Users\\anna\\Dokumente" kann nicht gefunden werden, da er nicht vorhanden ist.');
-  assert.equal(text(shell('windows', 'en').run('cd Dokumente')), "Set-Location : Cannot find path 'C:\\Users\\anna\\Dokumente' because it does not exist.");
-  assert.match(text(win.run('cd Meine Fotos')), /Positionsparameter .* "Fotos"/);
+  // PowerShell speaks English on German pages too, as the lessons quote it
+  assert.equal(text(win.run('cd Dokumente')), "Set-Location : Cannot find path 'C:\\Users\\anna\\Dokumente' because it does not exist.");
+  assert.equal(text(win.run('cd Meine Fotos')), "Set-Location : A positional parameter cannot be found that accepts argument 'Fotos'.");
   assert.equal(win.run('cd "Meine Fotos"').output.length, 0);
-  assert.match(text(win.run('touch a.txt')), /^touch : Die Benennung "touch" wurde nicht/);
+  assert.match(text(win.run('touch a.txt')), /^touch : The term 'touch' is not recognized/);
 
   const mac = shell('mac');
   assert.equal(text(mac.run('cd Dokumente')), 'cd: no such file or directory: Dokumente');
@@ -52,7 +52,7 @@ test('a wrong name or a blank without quotes gets the message of the real shell'
 
 test('ls lists folders and files as PowerShell and zsh do', () => {
   const lines = text(shell('windows').run('ls')).split('\n');
-  assert.equal(lines[1], '    Verzeichnis: C:\\Users\\anna');
+  assert.equal(lines[1], '    Directory: C:\\Users\\anna');
   assert.equal(lines[4], 'Mode                 LastWriteTime         Length Name');
   assert.equal(lines[6], 'd-----        02.11.2026     09:14                Desktop');
   assert.equal(lines.at(-2), '-a----        02.11.2026     09:14             16 hallo.py');

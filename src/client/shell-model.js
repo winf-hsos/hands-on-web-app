@@ -5,37 +5,25 @@
 // A small file system lives in memory: C:\Users\anna on Windows, /Users/anna
 // on a Mac, with the scenario's tree inside. The shell knows the commands of
 // the learning path "Die Kommandozeile" in PowerShell and in zsh, answers
-// with the messages the real shells print (PowerShell in the language of the
-// page, zsh always in English), and for what is being typed it works out
-// which way through the tree a path takes, so the tree can light it up
-// before Enter.
+// with the messages the real shells print, both in English, and for what is
+// being typed it works out which way through the tree a path takes, so the
+// tree can light it up before Enter.
 
 export const PLATFORMS = ['windows', 'mac'];
 const HOME = ['Users', 'anna'];
 
-// PowerShell answers in the language of Windows; the first line of each
-// message, as Windows PowerShell 5.1 writes it.
+// PowerShell's messages, the first line of each as Windows PowerShell 5.1
+// writes it, in English on every page, as the lessons quote them (Nicolas,
+// 2026-11-02); only the date in ls follows the page, as a region would.
 const PS = {
-  de: {
-    notFound: (cmd, p) => `${cmd} : Der Pfad "${p}" kann nicht gefunden werden, da er nicht vorhanden ist.`,
-    unknown: (c) => `${c} : Die Benennung "${c}" wurde nicht als Name eines Cmdlet, einer Funktion, einer Skriptdatei oder eines ausführbaren Programms erkannt.`,
-    extra: (cmd, a) => `${cmd} : Es wurde kein Positionsparameter gefunden, der das Argument "${a}" akzeptiert.`,
-    exists: (p) => `New-Item : Es ist bereits ein Element mit dem angegebenen Namen "${p}" vorhanden.`,
-    fileExists: (p) => `New-Item : Die Datei "${p}" ist bereits vorhanden.`,
-    moveExists: () => 'Move-Item : Eine Datei kann nicht erstellt werden, wenn sie bereits vorhanden ist.',
-    denied: (p) => `Get-Content : Der Zugriff auf den Pfad "${p}" wurde verweigert.`,
-    directory: 'Verzeichnis:',
-  },
-  en: {
-    notFound: (cmd, p) => `${cmd} : Cannot find path '${p}' because it does not exist.`,
-    unknown: (c) => `${c} : The term '${c}' is not recognized as the name of a cmdlet, function, script file, or operable program.`,
-    extra: (cmd, a) => `${cmd} : A positional parameter cannot be found that accepts argument '${a}'.`,
-    exists: (p) => `New-Item : An item with the specified name ${p} already exists.`,
-    fileExists: (p) => `New-Item : The file '${p}' already exists.`,
-    moveExists: () => 'Move-Item : Cannot create a file when that file already exists.',
-    denied: (p) => `Get-Content : Access to the path '${p}' is denied.`,
-    directory: 'Directory:',
-  },
+  notFound: (cmd, p) => `${cmd} : Cannot find path '${p}' because it does not exist.`,
+  unknown: (c) => `${c} : The term '${c}' is not recognized as the name of a cmdlet, function, script file, or operable program.`,
+  extra: (cmd, a) => `${cmd} : A positional parameter cannot be found that accepts argument '${a}'.`,
+  exists: (p) => `New-Item : An item with the specified name ${p} already exists.`,
+  fileExists: (p) => `New-Item : The file '${p}' already exists.`,
+  moveExists: () => 'Move-Item : Cannot create a file when that file already exists.',
+  denied: (p) => `Get-Content : Access to the path '${p}' is denied.`,
+  directory: 'Directory:',
 };
 
 // What the demonstrator adds in its own words, in grey, where a real shell
@@ -139,7 +127,7 @@ export function createShell({ tree, start = '~' } = {}, { platform = 'windows', 
   const root = folder('', [folder('Users', [folder('anna', build(tree))])]);
   let cwd = HOME;
   let os = platform;
-  const ps = () => PS[lang] ?? PS.en;
+  const ps = () => PS;
   const notes = NOTES[lang] ?? NOTES.en;
 
   const node = (path) => path.reduce((n, name) => (n?.dir ? n.children.find((c) => lower(c.name) === lower(name)) : undefined), root);
