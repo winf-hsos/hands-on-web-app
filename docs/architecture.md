@@ -97,10 +97,13 @@ All motion is switched off for people who ask their system for reduced motion.
   their phases, and loose sections of items. The access
   code on "My learning", or a link with it, adds a course there.
 - **Folding** (`src/client/fold.js`): the sections of a module and the parts
-  of a path fold, on the path page and inside a module alike. The browser
-  keeps the keys of closed ones in local storage (`hocs-folded`); a key names
-  the path, part or section (`path:<id>:<part>`), not the page, so a part
-  closed on the path page is closed in every module that shows the path.
+  of a path fold, on the path page and inside a module alike. On a first
+  visit they start closed, so that the page shows its outline, except the part
+  of a path or project that has only one (Nicolas, 2026-11-02). The browser
+  keeps the keys of the ones a learner closed (`hocs-folded`) or opened
+  (`hocs-opened`) in local storage; a key names the path, part or section
+  (`path:<id>:<part>`), not the page, so a part opened on the path page is
+  open in every module that shows the path.
 - **Projects** show their phases as a numbered, folded list; a phase opens to
   its text, its challenges and the content linked to it. A link to
   `#challenge-2` opens exactly that part.

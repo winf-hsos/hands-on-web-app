@@ -11,6 +11,11 @@ import { datasetInfo, loadingCode } from '../build/dataset.mjs';
 import { highlight } from '../client/highlight.js';
 import { areasOf } from '../build/site.mjs';
 import { phaseItems } from '../build/validate.mjs';
+
+// Folds start closed, so that a first visit sees the outline of a module or a
+// path (Nicolas, 2026-11-02); a path or project of a single part shows it
+// open. What a learner opens or closes, client/fold.js remembers.
+const openIfSingle = (parts) => (parts.length === 1 ? raw(' open') : '');
 import { figureFile } from '../build/figures.mjs';
 
 // --- start page -------------------------------------------------------------
@@ -455,7 +460,7 @@ export function path(site, doc, lang) {
         </header>
         ${text.missing && html`<p class="notice">${t(lang, 'missing_translation')}</p>`}
         ${doc.lead.sections
-          ? doc.lead.sections.map((section, i) => html`<details class="fold path-section" data-fold="path:${doc.id}:${i + 1}" open>
+          ? doc.lead.sections.map((section, i) => html`<details class="fold path-section" data-fold="path:${doc.id}:${i + 1}"${openIfSingle(doc.lead.sections)}>
               <summary><h2>${section.title[lang]}</h2><span class="fold-meta">${count(lang, section.steps.length, 'steps')}</span></summary>
               ${trail(section.steps)}
             </details>`)
@@ -548,7 +553,7 @@ export function course(site, doc, lang) {
     html`<ol class="rows trail">${site.steps(list).map((s) => itemRow(site, site.item.get(s.id), lang, { optional: s.optional, summary: false, number: ++number }))}</ol>`;
   const section = (key, title, body, meta) => {
     number = 0;
-    return html`<details class="fold course-section" data-fold="${key}" open>
+    return html`<details class="fold course-section" data-fold="${key}">
       <summary><span class="course-section-title">${title}</span>${meta && html`<span class="fold-meta">${meta}</span>`}</summary>
       ${body()}
     </details>`;
@@ -562,7 +567,7 @@ export function course(site, doc, lang) {
       `path:${p.id}`,
       ptext.title,
       () => html`${p.lead.sections
-          ? p.lead.sections.map((part, i) => html`<details class="fold course-path-part" data-fold="path:${p.id}:${i + 1}" open>
+          ? p.lead.sections.map((part, i) => html`<details class="fold course-path-part" data-fold="path:${p.id}:${i + 1}"${openIfSingle(p.lead.sections)}>
               <summary><h3>${part.title[lang]}</h3><span class="fold-meta">${count(lang, part.steps.length, 'steps')}</span></summary>
               ${trail(part.steps)}
             </details>`)
@@ -580,7 +585,7 @@ export function course(site, doc, lang) {
       `project:${p.id}`,
       ptext.title,
       () => html`<p class="course-project-summary" lang="${ptext.lang}">${ptext.summary}</p>
-        ${p.lead.phases.map((phase, i) => html`<details class="fold course-path-part" data-fold="project:${p.id}:${i + 1}" open>
+        ${p.lead.phases.map((phase, i) => html`<details class="fold course-path-part" data-fold="project:${p.id}:${i + 1}"${openIfSingle(p.lead.phases)}>
           <summary><h3 lang="${ptext.lang}">${phases[i].title}</h3><span class="fold-meta">${count(lang, phaseItems(phase).length, 'results')}</span></summary>
           ${trail(phaseItems(phase))}
         </details>`)}
