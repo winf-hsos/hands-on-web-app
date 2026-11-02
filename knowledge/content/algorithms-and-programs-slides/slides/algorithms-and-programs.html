@@ -8,11 +8,14 @@
   <style>
     /* deck-specific layout only, colours and sizes come from the theme */
     .lines .n { display: inline-block; width: 1.6em; color: var(--gray); font-family: var(--mono); }
-    /* the loop slide: the code stands exactly as on the slide before, ending
-       with its copy button at 1266 of 1920; the drawing sits right of it,
-       centred in height and exactly as wide as its viewBox */
-    .loop-drawing { position: absolute; right: 0; top: 50%; width: 460px; transform: translateY(-50%); }
-    .loop-drawing svg { display: block; width: 100%; height: auto; }
+    /* runs in time: the code stands exactly as on the slide before, ending
+       with its copy button at 1266 of 1920 at most; the drawing sits right of
+       it, centred in height and exactly as wide as its viewBox */
+    .run-drawing { position: absolute; right: 0; top: 50%; width: 460px; transform: translateY(-50%); }
+    .run-drawing svg { display: block; width: 100%; height: auto; }
+    /* the loop without end: two seconds of strip, red and blue, every two seconds */
+    @keyframes run-forever { to { transform: translateY(-200px); } }
+    .run-forever { animation: run-forever 2s linear infinite; }
   </style>
 </head>
 <body>
@@ -224,7 +227,7 @@ colors = [(255, 0, 0), (0, 255, 0),
 <span class="hl">for r, g, b in colors:</span>
     led.set_color(r, g, b)
     time.sleep(1)</div>
-      <div class="drawing loop-drawing" id="fig-loop"></div>
+      <div class="drawing run-drawing" id="fig-loop"></div>
     </div>
     <div class="punch" data-step="4">the same two lines run four times, with one value and one second per pass.</div>
     <aside class="notes">Links, was ihr schreibt, rechts, was daraus wird. Ein Tastendruck startet die Schleife, und die vier Durchläufe folgen von selbst aufeinander, jeder mit dem nächsten Wert aus der Liste und jeder eine Sekunde lang, zusammen vier Sekunden.</aside>
@@ -245,8 +248,9 @@ for r, g, b in colors:
     <span class="hl">else:</span>
         time.sleep(1)</div>
       <div class="sidenote">now the run depends on something that changes along the way.</div>
+      <div class="drawing run-drawing" id="fig-if"></div>
     </div>
-    <aside class="notes">Der vierte Baustein führt eine Zeile nur aus, wenn eine Bedingung zutrifft, und „else“ sagt, was sonst passiert. Hier bleibt Gelb drei Sekunden, jede andere Farbe eine. Damit kann ein Programm auf etwas reagieren, statt stur abzuspulen, etwa auf den Wert, den der Sensor gerade misst.</aside>
+    <aside class="notes">Der vierte Baustein führt eine Zeile nur aus, wenn eine Bedingung zutrifft, und „else“ sagt, was sonst passiert. Hier bleibt Gelb drei Sekunden, jede andere Farbe eine; ein Tastendruck startet den Lauf rechts, und der gelbe Balken wird dreimal so lang wie die anderen. Damit kann ein Programm auf etwas reagieren, statt stur abzuspulen, etwa auf den Wert, den der Sensor gerade misst.</aside>
   </section>
 
   <section class="slide has-punch">
@@ -261,9 +265,18 @@ from lifi_hardware import led
     led.set_color(0, 0, 255)
     time.sleep(1)</div>
       <div class="sidenote">never, because the condition is always true and the body has no way out.</div>
+      <div class="drawing run-drawing" id="fig-forever"></div>
     </div>
     <div class="punch">"my program hangs" almost always means "my loop has no way out".</div>
-    <aside class="notes">Die Abbruchbedingung kennt ihr vom Sortieren in Teil 1: ein Durchlauf ohne Tausch. Hier fehlt sie. Fürs Dauerblinken ist die Endlosschleife sogar richtig, beendet wird sie mit Strg+C. Ein Empfänger, der auf das Ende einer Nachricht warten soll, braucht dagegen eine Bedingung, an der seine Schleife endet.</aside>
+    <aside class="notes">Rechts ziehen Rot und Blau vorbei, solange die Folie steht, und ein Ende kommt nicht. Die Abbruchbedingung kennt ihr vom Sortieren in Teil 1: ein Durchlauf ohne Tausch. Hier fehlt sie. Fürs Dauerblinken ist die Endlosschleife sogar richtig, beendet wird sie mit Strg+C. Ein Empfänger, der auf das Ende einer Nachricht warten soll, braucht dagegen eine Bedingung, an der seine Schleife endet.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="statement">working alone is not enough.</div>
+      <div class="sidenote">two correct programs can still differ by far in how long they take.</div>
+    </div>
+    <aside class="notes">Alle Programme bis hierher haben funktioniert, und für die LED reicht das. Sobald ein Programm aber viele Daten verarbeitet, etwa eine ganze Datei über das Licht schickt, kommt eine zweite Frage dazu: Wie viel Arbeit braucht es dafür? Zwei korrekte Programme können sich darin um Welten unterscheiden.</aside>
   </section>
 
   <section class="slide has-punch">
@@ -293,13 +306,6 @@ from lifi_hardware import led
     <aside class="notes">Eine Fehlermeldung ist Information über das Programm und keine Bewertung eurer Person. Lest sie laut vor; meistens sagt sie wortwörtlich, was falsch ist.</aside>
   </section>
 
-  <section class="slide">
-    <div class="content">
-      <div class="statement">now watch me get it wrong.</div>
-    </div>
-    <aside class="notes">Live-Moment: Ich baue vorn am Beamer absichtlich Fehler in das Blinkprogramm ein, einen nach dem anderen, und wir lesen gemeinsam, was die Meldung sagt: ein Tippfehler im Namen, eine vergessene Klammer, eine falsche Einrückung.</aside>
-  </section>
-
   <!-- ===== part 5: working with the assistant ===== -->
   <section class="slide part" data-part="working with the assistant">
     <aside class="notes">Zum Schluss die Arbeitsteilung mit dem KI-Assistenten, die euch durch das ganze Projekt trägt.</aside>
@@ -321,23 +327,10 @@ from lifi_hardware import led
     <aside class="notes">Jede Übernahme endet mit einer kleinen Änderung, die ihr selbst vornehmt: eine Farbe tauschen, eine Wartezeit anpassen. Wer das nicht kann, hat den Code nicht übernommen, sondern nur kopiert.</aside>
   </section>
 
-  <section class="slide">
-    <h2>your turn</h2>
-    <div class="content">
-      <div class="lines">
-        <div><span class="n">1</span>light on: red for two seconds, then off.</div>
-        <div><span class="n">2</span>blink five times, with the speed set in one place.</div>
-        <div><span class="n">3</span>show a list of colours, one second each.</div>
-      </div>
-      <div class="sidenote">number 2 is the real one, because changing the speed must not mean digging through the code.</div>
-    </div>
-    <aside class="notes">Der Werkstattauftrag an euren Geräten. Nummer zwei ist die eigentliche Aufgabe: Die Geschwindigkeit muss sich an genau einer Stelle ändern lassen, also mit Baustein 2. Nummer drei braucht Baustein 3, die Schleife über eine Liste.</aside>
-  </section>
-
 </div>
 <script src="../../stagekit/draw.js?v=0.4.0-62b883"></script>
 <script src="../../stagekit/anim.js?v=0.4.0-62b883"></script>
-<script src="deck.js?v=2"></script>
+<script src="deck.js?v=3"></script>
 <script src="../../stagekit/stagekit.js?v=0.4.0-62b883"></script>
 </body>
 </html>

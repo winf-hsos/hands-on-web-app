@@ -86,17 +86,21 @@ A list of colours and a loop over it. Every colour in the list is a triple of nu
 
 ### The loop you write, and what actually happens (Frames 37 to 41)
 
-On the left the loop as you write it, on the right what becomes of it on a time axis. Once started, the four passes follow each other on their own, each with the next value from the list and each lasting one second: red, green, blue and yellow, four passes and four seconds in all.
+The same program again, at the same place, and beside it what becomes of it on a time axis that runs downwards. Once started, the four passes follow each other on their own, each with the next value from the list and each lasting one second: red, green, blue and yellow, four passes and four seconds in all.
 
-### Building block 4: only if (Frame 42)
+### Building block 4: only if (Frames 42 to 46)
 
-A condition executes a line only if it holds, and `else` says what happens otherwise. Here yellow stays for three seconds and every other colour for one. With that, the run depends on something that changes along the way, and a program can react to something instead of reeling off the same thing, for instance to the value the sensor is measuring right now.
+A condition executes a line only if it holds, and `else` says what happens otherwise. Here yellow stays for three seconds and every other colour for one, and the time axis beside the code shows it: once started, the passes follow each other as before, but the yellow bar grows three times as long as the others, four passes and six seconds in all. With that, the run depends on something that changes along the way, and a program can react to something instead of reeling off the same thing, for instance to the value the sensor is measuring right now.
 
-### When does this end? (Frame 43)
+### When does this end? (Frame 47)
 
-A loop `while True:` that switches between red and blue. You know the termination condition from sorting in part 1, a pass without a swap; here it is missing. The condition is always true and the body has no way out, so this program never ends. For continuous blinking that is even right, and Ctrl+C stops it. A receiver that is meant to wait for the end of a message, on the other hand, needs a condition at which its loop ends. The workshop classic "my program hangs" almost always means "my loop has no way out".
+A loop `while True:` that switches between red and blue. Beside it red and blue pass by on the time axis for as long as the slide is on show, one second each, and no end comes. You know the termination condition from sorting in part 1, a pass without a swap; here it is missing. The condition is always true and the body has no way out, so this program never ends. For continuous blinking that is even right, and Ctrl+C stops it. A receiver that is meant to wait for the end of a message, on the other hand, needs a condition at which its loop ends. The workshop classic "my program hangs" almost always means "my loop has no way out".
 
-### What does it cost? (Frame 44)
+### Working alone is not enough (Frame 48)
+
+All the programs so far have worked, and for the LED that is enough. As soon as a program handles a lot of data, though, say a whole file sent over the light, a second question joins the first: how much work does it take? Two correct programs can differ by far in how long they take.
+
+### What does it cost? (Frame 49)
 
 A game for comparison: someone thinks of a number between 1 and 100, and you may ask questions that are answered with yes or no. Asking every number one by one takes 99 questions in the worst case. Asking whether it is greater than 50, and so halving the range every time, takes at most seven. With a thousand numbers it is 999 against 10.
 
@@ -104,7 +108,7 @@ Both procedures are correct and are still worlds apart. The same holds for sorti
 
 ## 4. It does what is written
 
-### An error message (Frames 46 to 49)
+### An error message (Frames 51 to 54)
 
 A traceback looks threatening, but it is a precise report, and the slide reads it line by line. The program `blink.py` contains the line `time.slep(1)`, and Python answers:
 
@@ -118,20 +122,16 @@ AttributeError: module 'time' has no attribute 'slep'. Did you mean: 'sleep'?
 
 First it names the file and the line. Then it shows what stands in that line, and the carets point at the place. The last line says what exactly does not exist, here `slep` instead of `sleep`, and Python even guesses what was meant. It does not act on the guess, though: the machine did not fail, it executed what was written and reports exactly where it got stuck.
 
-### Information, not a verdict (Frames 50 and 51)
+### Information, not a verdict (Frame 55)
 
-An error message is information about the program and not a judgement of you as a person. Read it out loud, because most of the time it says literally what is wrong. In a live moment the lecturer then builds errors into the blinking program on purpose, one after another, and the audience reads together what the message says: a typo in a name, a forgotten bracket, a wrong indentation.
+An error message is information about the program and not a judgement of you as a person. Read it out loud, because most of the time it says literally what is wrong.
 
 ## 5. Working with the assistant
 
-### Two ways to ask (Frames 53 and 54)
+### Two ways to ask (Frames 57 and 58)
 
 The first request, "write me a program for the LED.", gets you code you do not understand. The second says what should come out and orders the explanation along with it: "the LED should be red for three seconds, then blue. explain each line before you write it." That gets you code and understanding.
 
-### Never keep code you cannot change (Frame 55)
+### Never keep code you cannot change (Frame 59)
 
 Every hand-over ends with a small change you make yourself: swap a colour, adjust a waiting time. If you cannot change it, you have not taken the code over but only copied it.
-
-### Your turn (Frame 56)
-
-Three small programs on your own device. First, light on: red for two seconds, then off. Second, blink five times, with the speed set in one place. Third, show a list of colours, one second each. Number two is the real task, because changing the speed must not mean digging through the code, so it needs building block 2; number three needs building block 3, the loop over a list.

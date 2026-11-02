@@ -1,7 +1,7 @@
 // Drawings and animations of "algorithms and programs".
 // Every figure is 1680 units wide, the width of a figure on the 1920 canvas,
-// so text sizes come out as written (20, 32, 48, 80); the loop drawing is 460
-// wide and sits beside the code in a box exactly that wide. Figures without an animation
+// so text sizes come out as written (20, 32, 48, 80); the three runs in time
+// are 460 wide and sit beside their code in a box exactly that wide. Figures without an animation
 // are redrawn per build-up step (data-on-show, data-on-step); animated ones
 // are drawn once when the deck loads.
 //
@@ -308,45 +308,86 @@ drawTimelines("fig-order", {
   note: "after the last line the program ends, and the LED goes off.",
 });
 
-/* --- the loop, unrolled in time ---------------------------------------------------
- * 460 wide, the width of its box beside the code, which stands exactly as on
- * the slide before. Time runs downwards on an axis at x 64 from 20 to 500, 120
- * per second, with its seconds left of it, ending at 44. A pass is a bar from
- * 70 to 150 in the colour the LED shows, with its number and its values right
- * of it from 180 (the widest, "255, 255, 0", is 11 x 12 = 132). The passes
- * follow each other on their own once started (auto), one second each as on
- * the device. No marker for "now": one of the colours is yellow. Forward
- * only, like time. */
-(function () {
-  if (!$("fig-loop")) return;
-  const c = d.colors();
-  const ty = (t) => 20 + t * 120;
-  const passes = [
-    { color: c.red, values: "255, 0, 0" },
-    { color: c.green, values: "0, 255, 0" },
-    { color: c.blue, values: "0, 0, 255" },
-    { color: c.yellow, values: "255, 255, 0" },
-  ];
-  const parts = [d.line(64, ty(0), 64, ty(4), { color: c.dark, width: 2 })];
-  for (let t = 0; t <= 4; t += 1) {
-    parts.push(d.line(54, ty(t), 64, ty(t), { color: c.gray, width: 2 }));
-    parts.push(d.label(44, 0, t + " s", { size: 20, color: c.gray, anchor: "end", mono: true, centerY: ty(t) }));
-  }
-  passes.forEach((p, k) => {
-    const mid = ty(k + 0.5);
-    parts.push(d.g("n" + k, d.label(180, 0, "pass " + (k + 1), { size: 20, color: c.gray, mono: true, centerY: mid - 16 })));
-    parts.push(d.g("p" + k, `<line x1="110" y1="${ty(k) + 3}" x2="110" y2="${ty(k + 1) - 3}" stroke="${p.color}" stroke-width="80"/>`));
-    parts.push(d.g("v" + k, d.label(180, 0, p.values, { size: 20, color: c.light, mono: true, centerY: mid + 16 })));
-  });
-  parts.push(d.g("sum", d.label(4, 0, "four passes, four seconds", { size: 32, color: c.gray, centerY: 560 })));
-  $("fig-loop").innerHTML = d.svg(460, 600, ...parts);
+/* --- runs, unrolled in time --------------------------------------------------------
+ * The loop, the loop with its condition and the loop without end, each 460
+ * wide, in a box beside its code, which stands exactly as on the slide before.
+ * Time runs downwards on an axis at x 64 from 20, 100 per second in all three,
+ * so that yellow's three seconds are three times as long as a red one. A pass
+ * is a bar from 70 to 150 in the colour the LED shows, as long as it lasts,
+ * with its number and its values right of it from 180 (the widest,
+ * "255, 255, 0", is 11 x 12 = 132). No marker for "now": one of the colours is
+ * yellow. */
+const runY = (t) => 20 + t * 100;
 
-  const a = d.anim("fig-loop", { auto: true, gap: 150 });
-  passes.forEach((_, k) => {
-    a.step(a.par(a.show("n" + k, { dur: 150 }), a.show("v" + k, { dur: 150 })),
-      a.draw("p" + k, { dur: 1000, ease: "linear" }),
-      ...(k === 3 ? [a.show("sum", { dur: 300 })] : []));
+function runBar(k, from, to, color) {
+  return `<line x1="110" y1="${runY(from) + 3}" x2="110" y2="${runY(to) - 3}" stroke="${color}" stroke-width="80"/>`;
+}
+
+/* The passes follow each other on their own once started (auto), each as long
+ * as on the device. Forward only, like time. */
+function drawRun(id, passes, summary) {
+  if (!$(id)) return;
+  const c = d.colors();
+  const total = passes.reduce((t, p) => t + p.seconds, 0);
+  const parts = [d.line(64, runY(0), 64, runY(total), { color: c.dark, width: 2 })];
+  for (let t = 0; t <= total; t += 1) {
+    parts.push(d.line(54, runY(t), 64, runY(t), { color: c.gray, width: 2 }));
+    parts.push(d.label(44, 0, t + " s", { size: 20, color: c.gray, anchor: "end", mono: true, centerY: runY(t) }));
+  }
+  let at = 0;
+  passes.forEach((p, k) => {
+    const mid = runY(at + p.seconds / 2);
+    parts.push(d.g("n" + k, d.label(180, 0, "pass " + (k + 1), { size: 20, color: c.gray, mono: true, centerY: mid - 16 })));
+    parts.push(d.g("p" + k, runBar(k, at, at + p.seconds, c[p.color])));
+    parts.push(d.g("v" + k, d.label(180, 0, p.values, { size: 20, color: c.light, mono: true, centerY: mid + 16 })));
+    at += p.seconds;
   });
+  parts.push(d.g("sum", d.label(4, 0, summary, { size: 32, color: c.gray, centerY: runY(total) + 60 })));
+  $(id).innerHTML = d.svg(460, runY(total) + 100, ...parts);
+
+  const a = d.anim(id, { auto: true, gap: 150 });
+  passes.forEach((p, k) => {
+    a.step(a.par(a.show("n" + k, { dur: 150 }), a.show("v" + k, { dur: 150 })),
+      a.draw("p" + k, { dur: p.seconds * 1000, ease: "linear" }),
+      ...(k === passes.length - 1 ? [a.show("sum", { dur: 300 })] : []));
+  });
+}
+
+const fourColors = [
+  { color: "red", values: "255, 0, 0", seconds: 1 },
+  { color: "green", values: "0, 255, 0", seconds: 1 },
+  { color: "blue", values: "0, 0, 255", seconds: 1 },
+  { color: "yellow", values: "255, 255, 0", seconds: 1 },
+];
+drawRun("fig-loop", fourColors, "four passes, four seconds");
+drawRun("fig-if", fourColors.map((p) => (p.color === "yellow" ? { ...p, seconds: 3 } : p)), "four passes, six seconds");
+
+/* The loop without end: red and blue pass by for as long as the slide is on
+ * show. Five seconds are in view, from 20 to 520, fading out at both ends;
+ * the strip holds eight seconds and moves up by two, one red and one blue,
+ * every two seconds (.run-forever in the deck's style), so the present stays
+ * at the lower edge and the past leaves at the top. No seconds on the axis:
+ * there is no end to count towards. */
+(function () {
+  if (!$("fig-forever")) return;
+  const c = d.colors();
+  const strip = [];
+  for (let t = 0; t < 8; t += 1) {
+    const red = t % 2 === 0;
+    strip.push(d.line(54, runY(t), 64, runY(t), { color: c.gray, width: 2 }));
+    strip.push(runBar(t, t, t + 1, red ? c.red : c.blue));
+    strip.push(d.label(180, 0, red ? "255, 0, 0" : "0, 0, 255", { size: 20, color: c.light, mono: true, centerY: runY(t + 0.5) }));
+  }
+  const fade = `<defs><linearGradient id="forever-fade" x1="0" y1="0" x2="0" y2="1">` +
+    `<stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="0.15" stop-color="#fff"/>` +
+    `<stop offset="0.85" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>` +
+    `<mask id="forever-mask" maskUnits="userSpaceOnUse" x="0" y="20" width="460" height="500">` +
+    `<rect x="0" y="20" width="460" height="500" fill="url(#forever-fade)"/></mask></defs>`;
+  $("fig-forever").innerHTML = d.svg(460, 620, fade,
+    `<g mask="url(#forever-mask)">`,
+    d.line(64, 20, 64, 520, { color: c.dark, width: 2 }),
+    `<g class="run-forever">${strip.join("")}</g></g>`,
+    d.label(4, 0, "and so on, until ctrl+c", { size: 32, color: c.gray, centerY: 580 }));
 })();
 
 /* --- what does it cost: two correct procedures ------------------------------------
