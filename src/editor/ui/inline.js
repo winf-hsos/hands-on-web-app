@@ -208,11 +208,15 @@ export function enableInlineEditing({ doc, vocabulary, items, api, say, session 
     const source = await load();
     const lead = source.files[source.lead].data;
     const types = Object.entries(vocabulary.types).map(([k, label]) => `<option value="${k}" ${lead.type === k ? 'selected' : ''}>${esc(label)}</option>`).join('');
+    // several types are changed in the full editor, so that none gets lost here
+    const several = Array.isArray(lead.type);
     panel(
       el,
-      `<label class="ed-inline-label">Art <select name="type">${types}</select></label>
+      `${several
+        ? `<p class="ed-inline-label">Art: ${lead.type.map((k) => esc(vocabulary.types[k])).join(' · ')} <span class="ed-inline-hint">mehrere Arten, änderbar im Editor</span></p>`
+        : `<label class="ed-inline-label">Art <select name="type">${types}</select></label>`}
        <label class="ed-inline-label">Dauer in Minuten <input name="duration" type="number" min="1" step="1" value="${esc(lead.duration)}"></label>`,
-      (box) => ({ type: box.querySelector('[name=type]').value, duration: Number(box.querySelector('[name=duration]').value) }),
+      (box) => ({ ...(several ? {} : { type: box.querySelector('[name=type]').value }), duration: Number(box.querySelector('[name=duration]').value) }),
       source.lead,
     );
   }

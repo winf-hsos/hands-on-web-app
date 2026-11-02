@@ -7,6 +7,7 @@ import { join } from 'node:path';
 import { iconExists } from './icons.mjs';
 import { splitProject } from './project.mjs';
 import { deckFile } from './deck.mjs';
+import { typesOf, hasType } from './types.mjs';
 import { datasetInfo } from './dataset.mjs';
 import { figureFile, figureRefs, figureRules, FIGURE_FILE } from './figures.mjs';
 import { shellScenario } from './remark-knowledge.mjs';
@@ -127,7 +128,7 @@ function shapes(vocabulary) {
     content: {
       lead: {
         required: {
-          type: oneOf(types, 'type'),
+          type: oneOrMore(oneOf(types, 'type')),
           code: int(1000, 9999),
           title: text,
           summary: text,
@@ -420,7 +421,7 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
       if (phase.challenge) {
         needItem(`${where} ${phase.id}`, phase.challenge);
         const item = items.get(phase.challenge);
-        if (item && item.lead.type !== 'challenge') errors.push(`${where} ${phase.id}: challenge ${phase.challenge} has type ${item.lead.type}, not challenge`);
+        if (item && !hasType(item.lead, 'challenge')) errors.push(`${where} ${phase.id}: challenge ${phase.challenge} has type ${typesOf(item.lead).join(', ')}, not challenge`);
       }
       for (const part of [phase, ...(phase.challenges ?? [])]) {
         if (seen.has(part.id)) errors.push(`${where}: id ${part.id} is used twice`);
@@ -480,7 +481,7 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
   for (const item of content) visit(item.id, []);
 
   // Slides: the deck exists and every file it loads is there.
-  for (const item of content.filter((d) => d.lead.type === 'slides')) {
+  for (const item of content.filter((d) => hasType(d.lead, 'slides'))) {
     const deck = join(item.dir, 'slides');
     const found = deckFile(item.dir);
     if (found.error) {
@@ -507,13 +508,13 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
 
   // Every item states its minutes of focused work, except a challenge, which
   // runs over weeks of a project.
-  for (const item of content.filter((d) => d.lead.type !== 'challenge' && d.lead.duration === undefined))
+  for (const item of content.filter((d) => !hasType(d.lead, 'challenge') && d.lead.duration === undefined))
     errors.push(`content/${item.id}: duration is missing`);
 
   // Datasets: `file` names a CSV in media/datasets/, and only datasets have one.
   for (const item of content) {
     const where = `content/${item.id}`;
-    if (item.lead.type !== 'dataset') {
+    if (!hasType(item.lead, 'dataset')) {
       if (item.lead.file !== undefined) errors.push(`${where}: file: only a dataset has a file`);
       continue;
     }
@@ -549,7 +550,7 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
   }
 
   // Quizzes: every question needs options and at least one correct one.
-  for (const item of content.filter((d) => d.lead.type === 'quiz')) {
+  for (const item of content.filter((d) => hasType(d.lead, 'quiz'))) {
     for (const file of Object.values(item.files)) {
       const questions = file.body.split(/^## /m).slice(1);
       if (!questions.length) errors.push(`${file.path}: a quiz needs at least one question (## heading)`);
@@ -581,7 +582,7 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
   }
   // A demo page says above the demonstrator what it is for and how to use it,
   // and ends with it (Nicolas, 2026-10-31).
-  for (const item of content.filter((d) => d.lead.type === 'demo')) {
+  for (const item of content.filter((d) => hasType(d.lead, 'demo'))) {
     for (const file of Object.values(item.files)) {
       const after = file.body.split(/^```[\w-]+\r?\n(?:[\s\S]*?\n)?```[ \t]*$/m)[1];
       if (after?.trim()) warnings.push(`${file.path}: text after the demonstrator; a demo page ends with it`);

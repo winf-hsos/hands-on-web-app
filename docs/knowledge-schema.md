@@ -107,7 +107,7 @@ Lead file, all fields:
 
 ```yaml
 ---
-type: lesson                       # required, see vocabulary.yaml
+type: lesson                       # required, see vocabulary.yaml; several as [lesson, slides]
 code: 4821                         # required, four digits
 title: Ein Code ist eine Vereinbarung       # required
 summary: >-                        # required, one or two sentences, plain text
@@ -140,6 +140,15 @@ will learn" right after the summary, before a deck, a dataset or the text. The
 text itself therefore starts without a heading such as "Worum es geht"; the
 first paragraphs are the way into the topic. An item without `objectives` is a
 warning, not an error, so that a new draft can be saved first.
+
+**Several types** (Nicolas, 2026-11-02). An item may have more than one
+type, written as a list: `type: [lesson, slides]`. The item is found under
+each of them in the list of items, its rows and its page name all of them
+("Lektion · Folien"), and it takes the icon, the group in the list and the
+type-specific fields of the first. The slides to a concept always carry the
+article on that concept, so such an item is `[lesson, slides]`: the page shows
+what you learn, then the deck, then the article (section 8a). In the editor
+the types are boxes to tick, and the first one ticked stays first.
 
 Type-specific fields:
 
@@ -575,7 +584,8 @@ the item's `de.md` and `en.md`:
 
 ```
 knowledge/content/problem-decomposition/
-  de.md, en.md        title and summary only; slides have no text of their own
+  de.md, en.md        title, summary and the article (type [lesson, slides])
+  media/              the article's figures, rendered from the deck
   slides/
     index.html        the deck: the one .html file in the folder, named after
                       the deck's title in newer decks (cutting-the-lifi-project.html)
@@ -609,6 +619,20 @@ run after the build, renders the figures of the deck `why-ten` with stagekit's
 `tools/figures.py` in the light palette, once per language, and copies each
 into the `media/` folder of the lesson that uses it as `<name>.<lang>.svg`; a
 change to a drawing in `deck.js` thus reaches the lesson by running it again.
+
+**Slides to a concept carry its article** (Nicolas, 2026-11-02). Such an item
+has the types `[lesson, slides]`, and its `de.md` and `en.md` hold, below
+title and summary, the article on the concept, which the page shows after the
+deck. `problem-decomposition` is the first. The article shows only figures
+exported from its own deck, never drawings or pictures made apart from it:
+`slides/figures.js` names the figures (`window.figures`), the deck's
+`deck.js` writes its labels in both languages with `T(en, de)`, and
+`scripts/deck-figures.mjs <id>`, run after the build, renders them with
+stagekit's `tools/figures.py` in the light palette into `media/` as
+`<name>.de.svg` and `<name>.en.svg`. Like every picture on a page, they are
+16:9: `figures.js` keeps the full width of a drawing and centres it in a frame
+of nine sixteenths of that width, so figures.py reports the space above and
+below as empty, which here is intended.
 
 ## 9a. Projects
 

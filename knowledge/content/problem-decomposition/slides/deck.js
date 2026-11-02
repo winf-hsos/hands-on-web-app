@@ -6,8 +6,12 @@
  * Punchlines als <div class="punch"> auf der Folie, nie in der Zeichnung.
  * Jede Funktion gibt ihr SVG zurueck und schreibt es nur, wenn es die Folie
  * gibt: so kann tools/figures.py dieselben Zeichnungen fuer die Website
- * rendern (siehe figures.js). */
+ * rendern (siehe figures.js). Die Folien sind englisch; `window.deckLang = "de"`
+ * (gesetzt von scripts/deck-figures.mjs beim Rendern) liefert die deutschen
+ * Beschriftungen fuer den Artikel. */
 "use strict";
+
+const T = (en, de) => (window.deckLang === "de" ? de : en);
 
 const d = window.draw;
 const $ = (id) => document.getElementById(id);
@@ -64,8 +68,8 @@ function tree(root, leaves, opts = {}) {
 
 // --- die party: das kennt ihr schon -----------------------------------------
 window.drawParty = function (slide, step) {
-  const leaves = ["drinks", "food", "music", "guests", "cleanup"].map((t) => ({ text: t }));
-  const svg = tree("party, saturday, 30 guests", leaves, { show: step >= 1, rootSize: 48 });
+  const leaves = T(["drinks", "food", "music", "guests", "cleanup"], ["Getränke", "Essen", "Musik", "Gäste", "Aufräumen"]).map((t) => ({ text: t }));
+  const svg = tree(T("party, saturday, 30 guests", "Party, Samstag, 30 Gäste"), leaves, { show: step >= 1, rootSize: 48 });
   if ($("fig-party")) $("fig-party").innerHTML = svg;
   return svg;
 };
@@ -73,15 +77,16 @@ window.drawParty = function (slide, step) {
 /* --- halbieren: der suchbereich schrumpft mit jeder frage --------------------
  * Eine Zeile je Frage; alle Zeilen stehen von Anfang an, nur die Balken
  * kommen dazu. Die gesuchte 73 markiert eine rote Senkrechte. */
-const HALVE = [
-  { lo: 1, hi: 100, q: "1 to 100" },
-  { lo: 51, hi: 100, q: "bigger than 50?  yes" },
-  { lo: 51, hi: 75, q: "bigger than 75?  no" },
-  { lo: 64, hi: 75, q: "bigger than 63?  yes" },
-  { lo: 70, hi: 75, q: "bigger than 69?  yes" },
-  { lo: 73, hi: 75, q: "bigger than 72?  yes" },
-  { lo: 73, hi: 74, q: "bigger than 74?  no" },
-  { lo: 73, hi: 73, q: "is it 73?  yes" },
+// eine Funktion, damit die Beschriftung die Sprache beim Zeichnen nimmt
+const halveRows = () => [
+  { lo: 1, hi: 100, q: T("1 to 100", "1 bis 100") },
+  { lo: 51, hi: 100, q: T("bigger than 50?  yes", "größer als 50?  ja") },
+  { lo: 51, hi: 75, q: T("bigger than 75?  no", "größer als 75?  nein") },
+  { lo: 64, hi: 75, q: T("bigger than 63?  yes", "größer als 63?  ja") },
+  { lo: 70, hi: 75, q: T("bigger than 69?  yes", "größer als 69?  ja") },
+  { lo: 73, hi: 75, q: T("bigger than 72?  yes", "größer als 72?  ja") },
+  { lo: 73, hi: 74, q: T("bigger than 74?  no", "größer als 74?  nein") },
+  { lo: 73, hi: 73, q: T("is it 73?  yes", "ist es 73?  ja") },
 ];
 window.drawHalve = function (slide, step) {
   const c = d.colors();
@@ -89,6 +94,7 @@ window.drawHalve = function (slide, step) {
   const x0 = 200, x1 = 1180, target = 73;
   const at = (v) => x0 + ((v - 1) / 100) * (x1 - x0);
   const rowH = 66, y0 = 40, barH = 30;
+  const HALVE = halveRows();
   HALVE.forEach((row, i) => {
     const y = y0 + i * rowH;
     if (i > step) return;                       // Zeile erscheint mit ihrem Schritt
@@ -110,7 +116,7 @@ window.drawHalve = function (slide, step) {
 };
 
 /* --- fehlersuche: in der mitte der kette testen ------------------------------ */
-function chain(parts, y, title, items, testAfter, dim, mark = "test here") {
+function chain(parts, y, title, items, testAfter, dim, mark = T("test here", "hier testen")) {
   const c = d.colors();
   const n = items.length, boxW = 250, gap = 60, total = n * boxW + (n - 1) * gap;
   const x0 = (W - total) / 2;
@@ -134,11 +140,13 @@ function chain(parts, y, title, items, testAfter, dim, mark = "test here") {
 }
 window.drawDebug = function (slide, step) {
   const parts = [];
-  chain(parts, 110, "wifi dead at home", ["laptop", "wifi", "router", "provider", "internet"],
+  chain(parts, 110, T("wifi dead at home", "WLAN zu Hause tot"), T(["laptop", "wifi", "router", "provider", "internet"], ["Laptop", "WLAN", "Router", "Anbieter", "Internet"]),
         step >= 1 ? 2 : null, step >= 1);
   if (step >= 2) {
     // Kastenbreite 250: laengstes Wort "read file", 9 x 32 x 0,6 = 173 + 40 Rand
-    chain(parts, 400, "wrong total in a program", ["read file", "parse", "add up", "round", "print"], 2, true, "print it here");
+    chain(parts, 400, T("wrong total in a program", "falsche Summe in einem Programm"),
+          T(["read file", "parse", "add up", "round", "print"], ["Datei lesen", "zerlegen", "addieren", "runden", "ausgeben"]),
+          2, true, T("print it here", "hier ausgeben"));
   }
   const svg = d.svg(W, 520, ...parts);
   if ($("fig-debug")) $("fig-debug").innerHTML = svg;
@@ -151,11 +159,11 @@ function drawStairs() {
   const parts = [];
   // Kastenbreite 260: laengste Zeile "send it to", 10 x 32 x 0,6 = 192 + 40 Rand
   const steps = [
-    { t: "print a\nmessage" },
-    { t: "send it to\nyourself" },
-    { t: "send it to\nanother\ncomputer" },
-    { t: "two people\nchatting" },
-    { t: "a group\nchat" },
+    { t: T("print a\nmessage", "Nachricht\nausgeben") },
+    { t: T("send it to\nyourself", "an dich\nselbst\nschicken") },
+    { t: T("send it to\nanother\ncomputer", "an einen\nanderen\nRechner") },
+    { t: T("two people\nchatting", "zwei\nMenschen\nchatten") },
+    { t: T("a group\nchat", "ein\nGruppenchat") },
   ];
   const boxW = 260, gap = 60, x0 = 100, base = 560;
   steps.forEach((s, i) => {
@@ -165,7 +173,7 @@ function drawStairs() {
       border: here ? c.blue : c.light, color: here ? c.bg : c.light, fill: here ? c.blue : c.bg,
     }));
   });
-  parts.push(d.label(x0 + boxW / 2, base - 130 - 30, "you are here", { size: 32, color: c.blue, anchor: "middle" }));
+  parts.push(d.label(x0 + boxW / 2, base - 130 - 30, T("you are here", "hier stehst du"), { size: 32, color: c.blue, anchor: "middle" }));
   const svg = d.svg(W, base + 20, ...parts);
   if ($("fig-stairs")) $("fig-stairs").innerHTML = svg;
   return svg;
@@ -198,21 +206,24 @@ function twoBoxes(left, right, step, opts = {}) {
 }
 window.drawExam = function (slide, step) {
   // rechts: laengste Zeile 18 Zeichen x 48 x 0,6 = 518 + 40 Rand, passt in 700
-  const svg = twoBoxes("i need to learn maths.", "i can solve an old\nexam in 90 minutes.", step);
+  const svg = twoBoxes(T("i need to learn maths.", "Ich muss Mathe lernen."),
+    T("i can solve an old\nexam in 90 minutes.", "Ich löse eine alte\nKlausur in 90 Minuten."), step);
   if ($("fig-exam")) $("fig-exam").innerHTML = svg;
   return svg;
 };
 window.drawProject = function (slide, step) {
   // rechts drei Zeilen: laengste 19 Zeichen x 48 x 0,6 = 547 + 40; Hoehe 3 x 62 = 187 von 250
-  const svg = twoBoxes("the app works.", "a wrong password\nshows an error,\n10 times out of 10.", step);
+  const svg = twoBoxes(T("the app works.", "Die App funktioniert."),
+    T("a wrong password\nshows an error,\n10 times out of 10.", "Ein falsches Passwort\nzeigt einen Fehler,\nzehnmal von zehn."), step);
   if ($("fig-project")) $("fig-project").innerHTML = svg;
   return svg;
 };
 window.drawMachine = function (slide, step) {
   // rechts: laengste Zeile 31 Zeichen x 32 x 0,6 = 595 + 40, passt in 700
-  const svg = twoBoxes("build me a\nchat app.",
-    "write a function that puts\nthe time in front of a message.\ntest: \"hi\" at 9:05\ngives \"09:05 hi\".", step,
-    { leftHead: "one big wish", rightHead: "one small piece, with its test", size: 32, mono: true });
+  const svg = twoBoxes(T("build me a\nchat app.", "Bau mir eine\nChat-App."),
+    T("write a function that puts\nthe time in front of a message.\ntest: \"hi\" at 9:05\ngives \"09:05 hi\".",
+      "Schreib eine Funktion, die\nder Nachricht die Uhrzeit\nvoranstellt. Test: \"hi\"\num 9:05 ergibt \"09:05 hi\"."), step,
+    { leftHead: T("one big wish", "Ein großer Wunsch"), rightHead: T("one small piece, with its test", "Ein kleines Stück mit seinem Test"), size: 32, mono: true });
   if ($("fig-machine")) $("fig-machine").innerHTML = svg;
   return svg;
 };
@@ -228,11 +239,11 @@ function drawAgree() {
 
   // links: eine gemeinsame Kante, jeder weiss, was seins ist
   const lx = 110;
-  parts.push(card(lx, y, boxW, boxH, "you:\nstarters", { border: c.light, color: c.light }));
-  parts.push(card(lx + boxW, y, boxW, boxH, "me:\ndessert", { border: c.light, color: c.light }));
+  parts.push(card(lx, y, boxW, boxH, T("you:\nstarters", "du:\nVorspeise"), { border: c.light, color: c.light }));
+  parts.push(card(lx + boxW, y, boxW, boxH, T("me:\ndessert", "ich:\nNachtisch"), { border: c.light, color: c.light }));
   parts.push(d.line(lx + boxW, y, lx + boxW, y + boxH, { color: c.green, width: 3, dashed: true }));
   parts.push(tick(lx + boxW, y + boxH + 80));
-  parts.push(d.label(lx + boxW, y + boxH + 150, "works: the border is clear", { size: 32, color: c.gray, anchor: "middle" }));
+  parts.push(d.label(lx + boxW, y + boxH + 150, T("works: the border is clear", "klappt: die Grenze ist klar"), { size: 32, color: c.gray, anchor: "middle" }));
 
   // rechts: zwei Kaesten, die sich ueberlappen; der Ueberschnitt ist die Aussage
   const rx = 940, rw = 380, ov = 180;
@@ -243,12 +254,12 @@ function drawAgree() {
   parts.push(`<rect x="${bx}" y="${y}" width="${ov}" height="${boxH}" fill="${c.red}" opacity="0.16"/>`);
   parts.push(d.line(bx, y, bx, y + boxH, { color: c.red, width: 3 }));
   parts.push(d.line(bx + ov, y, bx + ov, y + boxH, { color: c.red, width: 3 }));
-  parts.push(d.label(rx + (rw - ov) / 2, y + boxH / 2 - 6, "you:\nthe food", { size: 32, color: c.light, anchor: "middle", lineHeight: 1.3 }));
-  parts.push(d.label(bx + ov + (rw - ov) / 2, y + boxH / 2 - 6, "me:\nthe food", { size: 32, color: c.light, anchor: "middle", lineHeight: 1.3 }));
+  parts.push(d.label(rx + (rw - ov) / 2, y + boxH / 2 - 6, T("you:\nthe food", "du:\ndas Essen"), { size: 32, color: c.light, anchor: "middle", lineHeight: 1.3 }));
+  parts.push(d.label(bx + ov + (rw - ov) / 2, y + boxH / 2 - 6, T("me:\nthe food", "ich:\ndas Essen"), { size: 32, color: c.light, anchor: "middle", lineHeight: 1.3 }));
   parts.push(d.label(bx + ov / 2, y + boxH / 2 + 12, "?", { size: 48, color: c.red, anchor: "middle" }));
   const rc = bx + ov / 2;
   parts.push(cross(rc, y + boxH + 80));
-  parts.push(d.label(rc, y + boxH + 150, "chaos: who buys the bread?", { size: 32, color: c.gray, anchor: "middle" }));
+  parts.push(d.label(rc, y + boxH + 150, T("chaos: who buys the bread?", "Chaos: Wer kauft das Brot?"), { size: 32, color: c.gray, anchor: "middle" }));
 
   const svg = d.svg(W, y + boxH + 190, ...parts);
   if ($("fig-agree")) $("fig-agree").innerHTML = svg;

@@ -3,15 +3,14 @@
 // what is not needed to choose or to read sits in a disclosure.
 import { html, raw, json } from '../build/html.mjs';
 import { t, count, formatDate, backLabels } from '../build/i18n.mjs';
-import { itemRow, progressBar, more, facts, icons, typeIcon, viewSwitch, draftTag, editable } from './parts.mjs';
+import { itemRow, progressBar, more, facts, icons, typeIcon, typeLabel, viewSwitch, draftTag, editable } from './parts.mjs';
+import { typesOf, hasType } from '../build/types.mjs';
 import { iconSvg, iconShapes } from '../build/icons.mjs';
 import { deckFile, deckPdf } from '../build/deck.mjs';
 import { datasetInfo, loadingCode } from '../build/dataset.mjs';
 import { highlight } from '../client/highlight.js';
 import { areasOf } from '../build/site.mjs';
 import { figureFile } from '../build/figures.mjs';
-
-const typeLabel = (site, item, lang) => site.vocabulary.types[item.lead.type][lang];
 
 // --- start page -------------------------------------------------------------
 
@@ -146,7 +145,9 @@ export function finder(site, lang, { areas = false } = {}) {
             areas: areas && areasOf(item),
             data: {
               id: item.id,
-              type: item.lead.type,
+              // grouped under its first type, found under each
+              type: typesOf(item.lead)[0],
+              types: typesOf(item.lead).join(' '),
               topics: item.lead.topics.join(' '),
               topic: item.lead.topics[0],
               level: item.lead.level,
@@ -243,7 +244,7 @@ export function item(site, doc, lang) {
   const { before, after, other } = site.relations(doc, lang);
   const inPaths = site.paths.filter((p) => site.pathSteps(p).some((s) => s.id === doc.id));
   const link = (target) => html`<a href="${site.url(target, lang)}">${site.localize(target, lang).title}</a>`;
-  const isQuiz = lead.type === 'quiz';
+  const isQuiz = hasType(lead, 'quiz');
   const v = site.vocabulary;
   const body = site.body(doc, lang);
   const toc = tocBlock(body, lang);
@@ -270,8 +271,8 @@ export function item(site, doc, lang) {
         ${text.stale && html`<p class="notice">${t(lang, 'stale_translation')}</p>`}
         ${objectivesBlock(site, text, lang)}
         ${scriptBlock(site, doc, lang)}
-        ${lead.type === 'slides' && slidesBlock(site, doc, lang)}
-        ${lead.type === 'dataset' && datasetBlock(doc, lang)}
+        ${hasType(lead, 'slides') && slidesBlock(site, doc, lang)}
+        ${hasType(lead, 'dataset') && datasetBlock(doc, lang)}
         <div class="prose" lang="${text.lang}" ${isQuiz && quizLabels(lang)}>
           ${raw(body)}
         </div>
@@ -731,7 +732,7 @@ function mapData(site, lang) {
     items: site.listed.map((i) => ({
       id: i.id,
       title: site.localize(i, lang).title,
-      icon: iconShapes(site.vocabulary.types[i.lead.type].icon),
+      icon: iconShapes(site.vocabulary.types[typesOf(i.lead)[0]].icon),
       topics: i.lead.topics,
       url: site.url(i, lang),
     })),

@@ -2861,6 +2861,11 @@ details.callout[open] > summary::before {
   border-radius: 0.75rem;
 }
 
+/* a figure from a deck is 16:9 already and keeps every edge of its drawing */
+.photo img[src$='.svg'] {
+  object-fit: contain;
+}
+
 .photo figcaption {
   margin-top: 0.4rem;
   color: var(--quiet);

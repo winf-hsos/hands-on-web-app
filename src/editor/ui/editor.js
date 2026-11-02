@@ -170,7 +170,7 @@ const leadData = () => work.files[work.lead].data;
 
 function renderDoc() {
   const d = leadData();
-  const kindLabel = work.section === 'content' ? state.vocabulary.types[d.type]?.de : SECTIONS.find(([s]) => s === work.section)[1].replace(/e$/, '');
+  const kindLabel = work.section === 'content' ? [d.type].flat().map((k) => state.vocabulary.types[k]?.de).join(' · ') : SECTIONS.find(([s]) => s === work.section)[1].replace(/e$/, '');
   $('#doc').innerHTML = `
     <div class="ed-head">
       <div style="flex:1 1 20rem">
@@ -229,12 +229,13 @@ function renderShared() {
   const levels = Object.entries(v.levels).map(([k, l]) => [k, `${k} – ${l.de}`]);
   const html = [];
   if (work.section === 'content') {
-    html.push(field('Typ', select('type', Object.entries(v.types).map(([k, l]) => [k, l.de]), d.type)));
+    // one type or several, such as Lektion and Folien; the first one ticked is the one shown
+    html.push(field('Typ', multi('type', Object.entries(v.types).map(([k, l]) => [k, l.de]), [d.type].flat()), { wide: true }));
     html.push(field('Niveau', select('level', levels, d.level)));
     html.push(field('Dauer in Minuten', input('duration', d.duration, 'number')));
     html.push(field('Themen', multi('topics', Object.entries(v.topics).map(([k, l]) => [k, l.de]), d.topics), { wide: true }));
     html.push(field('Module', multi('modules', Object.entries(v.modules).map(([k, l]) => [k, l.de]), d.modules ?? []), { wide: true }));
-    for (const key of TYPE_FIELDS[d.type] ?? []) {
+    for (const key of TYPE_FIELDS[[d.type].flat()[0]] ?? []) {
       const value = key === 'authors' ? (d.authors ?? []).join(', ') : d[key];
       html.push(field(FIELD_LABEL[key], input(key, value, NUMBER_FIELDS.has(key) ? 'number' : 'text')));
     }
@@ -303,6 +304,15 @@ function sharedInput(e) {
   const multiBox = t.closest('[data-multi]');
   if (multiBox) {
     const values = [...multiBox.querySelectorAll('input:checked')].map((i) => i.value);
+    if (multiBox.dataset.multi === 'type') {
+      // the types keep the order they were ticked in, and an item keeps at least one
+      if (!values.length) return renderShared();
+      const kept = [d.type].flat().filter((k) => values.includes(k));
+      const types = [...kept, ...values.filter((k) => !kept.includes(k))];
+      d.type = types.length === 1 ? types[0] : types;
+      renderShared();
+      return changed();
+    }
     if (values.length || multiBox.dataset.multi === 'topics') d[multiBox.dataset.multi] = values;
     else delete d[multiBox.dataset.multi];
     return changed();
@@ -436,7 +446,7 @@ function renderLang() {
           <button type="button" data-insert="NOTE">Hinweis</button>
           <button type="button" data-insert="TIP">Tipp</button>
           <button type="button" data-insert="WARNING">Achtung</button>
-          ${leadData().type === 'quiz' ? '<button type="button" data-insert="question">Frage</button>' : ''}
+          ${[leadData().type].flat().includes('quiz') ? '<button type="button" data-insert="question">Frage</button>' : ''}
           ${work.section === 'projects' ? '<button type="button" data-insert="phase">Phase</button>' : ''}
         </div>
         <textarea class="ed-body" id="body" spellcheck="true" lang="${lang}">${esc(file.body.replace(/^\n+/, ''))}</textarea>
@@ -473,7 +483,7 @@ const schedulePreview = () => {
 async function preview() {
   const file = work.files[lang];
   if (!file || !$('#preview')) return;
-  const result = await api('POST', '/api/preview', { markdown: file.body, lang, quiz: leadData().type === 'quiz' });
+  const result = await api('POST', '/api/preview', { markdown: file.body, lang, quiz: [leadData().type].flat().includes('quiz') });
   // The preview is rendered by the site's own Markdown pipeline, which drops raw HTML.
   $('#preview').innerHTML = result.html ?? '';
 }

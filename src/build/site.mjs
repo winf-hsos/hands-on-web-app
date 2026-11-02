@@ -6,6 +6,7 @@ import { renderMarkdown } from './markdown.mjs';
 import { stepsOf, pathSteps, courseSteps } from './validate.mjs';
 import { splitProject } from './project.mjs';
 import { exerciseScript } from './exercise-script.mjs';
+import { hasType } from './types.mjs';
 
 // Courses are called modules on the site (Nicolas, 2026-11-01) and live under
 // /modules/; the knowledge base keeps `courses`, since `module:` already names
@@ -47,7 +48,7 @@ export function createSite({ vocabulary, sections, hidden = new Map() }, area, b
 
   /** An exercise as a script with comments to download (build/exercise-script.mjs), or null. */
   const script = (doc, lang) => {
-    if (doc.lead.type !== 'exercise') return null;
+    if (!hasType(doc.lead, 'exercise')) return null;
     const text = localize(doc, lang);
     const titleOf = (id) => {
       const target = byId.get(id) ?? hidden.get(id);
@@ -75,7 +76,7 @@ export function createSite({ vocabulary, sections, hidden = new Map() }, area, b
     const text = localize(doc, lang);
     const key = `${doc.section}/${doc.id}/${text.lang}/${lang}`;
     // on the site with drafts the blocks carry their place in the source, for the editor
-    if (!rendered.has(key)) rendered.set(key, markdown(text.file.body, lang, text.lang, doc.lead.type === 'quiz', base !== ''));
+    if (!rendered.has(key)) rendered.set(key, markdown(text.file.body, lang, text.lang, hasType(doc.lead, 'quiz'), base !== ''));
     return rendered.get(key);
   }
 

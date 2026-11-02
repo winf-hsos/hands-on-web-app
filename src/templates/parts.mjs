@@ -2,6 +2,7 @@
 import { html, raw } from '../build/html.mjs';
 import { t } from '../build/i18n.mjs';
 import { iconSvg } from '../build/icons.mjs';
+import { typesOf } from '../build/types.mjs';
 
 const svg = (body, size = 20) =>
   raw(
@@ -31,8 +32,11 @@ export const mark = raw(
   '<svg class="mark" width="26" height="14" viewBox="0 0 26 14" aria-hidden="true"><rect x="0.5" y="0.5" width="11" height="13" rx="2.5" fill="currentColor"/><rect x="14.5" y="0.5" width="11" height="13" rx="2.5" fill="none" stroke="currentColor"/></svg>',
 );
 
-/** The icon of an item's type. */
-export const typeIcon = (site, item) => raw(iconSvg(site.vocabulary.types[item.lead.type].icon));
+/** The icon of an item's first type. */
+export const typeIcon = (site, item) => raw(iconSvg(site.vocabulary.types[typesOf(item.lead)[0]].icon));
+
+/** The names of an item's types, "Lektion · Folien" for two. */
+export const typeLabel = (site, item, lang) => typesOf(item.lead).map((type) => site.vocabulary.types[type][lang]).join(' · ');
 
 /** "Draft" beside a title, only on the site with drafts. */
 export const draftTag = (site, doc, lang) => site.drafts && doc.lead.status === 'draft' && html`<span class="draft-tag">${t(lang, 'draft')}</span>`;
@@ -51,7 +55,7 @@ export function itemRow(site, item, lang, { optional = false, summary = true, to
       <span class="row-head">
         <span class="row-title" style="view-transition-name: t-${item.id}" lang="${text.lang}">${text.title}</span>
         <span class="row-meta">
-          <span>${site.vocabulary.types[lead.type][lang]}</span>
+          <span>${typeLabel(site, item, lang)}</span>
           ${lead.duration && html`<span>${lead.duration} ${t(lang, 'minutes')}</span>`}
           ${optional && html`<span class="row-optional">${t(lang, 'optional')}</span>`}
           ${draftTag(site, item, lang)}

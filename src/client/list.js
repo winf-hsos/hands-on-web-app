@@ -63,7 +63,7 @@ function apply({ animate = true } = {}) {
   const visible = rows.filter((row) => {
     const d = row.dataset;
     if (ranked && !score.has(d.id)) return false;
-    if (value('type') && d.type !== value('type')) return false;
+    if (value('type') && !d.types.split(' ').includes(value('type'))) return false;
     if (value('topic') && !d.topics.split(' ').includes(value('topic'))) return false;
     if (value('level') && d.level !== value('level')) return false;
     if (value('path') && !d.paths.split(' ').includes(value('path'))) return false;

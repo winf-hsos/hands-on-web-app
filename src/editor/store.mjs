@@ -144,7 +144,7 @@ export function createStore(root) {
           section: doc.section,
           id: doc.id,
           lead: lead?.lang,
-          kind: lead?.data.type ?? lead?.data.kind,
+          kind: [lead?.data.type].flat()[0] ?? lead?.data.kind, // the first of several types
           code: lead?.data.code,
           status: lead?.data.status,
           area: areaOf(lead?.data),

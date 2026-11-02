@@ -11,6 +11,7 @@ import { validate } from '../src/build/validate.mjs';
 import { createSite } from '../src/build/site.mjs';
 import { t } from '../src/build/i18n.mjs';
 import { isUnpublished } from '../src/build/deck.mjs';
+import { typesOf, hasType } from '../src/build/types.mjs';
 import { figureFile, FIGURE_FILE } from '../src/build/figures.mjs';
 import { rCompletions } from '../src/build/r-completions.mjs';
 import { iconSvg } from '../src/build/icons.mjs';
@@ -98,8 +99,8 @@ function clientIndex(site, lang) {
         url: site.url(i, lang),
         title: text.title,
         summary: text.summary,
-        meta: `${v.types[i.lead.type][lang]}, ${i.lead.duration} ${t(lang, 'minutes')}`,
-        icon: iconSvg(v.types[i.lead.type].icon),
+        meta: `${typesOf(i.lead).map((type) => v.types[type][lang]).join(' · ')}, ${i.lead.duration} ${t(lang, 'minutes')}`,
+        icon: iconSvg(v.types[typesOf(i.lead)[0]].icon),
         body: plain(text.file.body),
       };
     }),
@@ -203,7 +204,7 @@ function render(knowledge) {
   // Slide decks as they are, next to the stagekit runtime they expect two
   // folders up: /decks/<id>/index.html loads ../../stagekit/stagekit.js.
   cpSync(join(ROOT, 'vendor/stagekit'), join(DIST, 'stagekit'), { recursive: true, filter: (source) => !source.endsWith('.md') });
-  for (const item of knowledge.sections.content.filter((i) => i.lead.type === 'slides')) {
+  for (const item of knowledge.sections.content.filter((i) => hasType(i.lead, 'slides'))) {
     const from = join(item.dir, 'slides');
     cpSync(from, join(DIST, 'decks', item.id), {
       recursive: true,

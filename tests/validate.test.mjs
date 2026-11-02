@@ -40,6 +40,13 @@ test('an unknown type lists the known ones', () => {
   assert.match(errors[0], /type: "experimnt" is not a known type \(lesson, /);
 });
 
+test('an item may have several types, each of them known, and a slides type wants its deck', () => {
+  const unknown = check(({ find }) => (lead(find('content', 'command-line-navigating')).type = ['lesson', 'experimnt']));
+  assert.match(unknown.errors[0], /type: "experimnt" is not a known type/);
+  const { errors } = check(({ find }) => (lead(find('content', 'command-line-files')).type = ['lesson', 'slides']));
+  assert.deepEqual(errors, ['content/command-line-files/slides: missing; a slides item keeps its stagekit deck in slides/']);
+});
+
 test('an unknown field is an error, so typos in field names do not go unnoticed', () => {
   const { errors } = check(({ find }) => (lead(find('content', 'command-line-navigating')).duratoin = 5));
   assert.deepEqual(errors, ['content/command-line-navigating/de.md: unknown field duratoin']);
