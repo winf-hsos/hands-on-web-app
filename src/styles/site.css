@@ -881,7 +881,13 @@ select {
   tab-size: 4;
 }
 
+/* Code keeps its lines: a long one scrolls sideways instead of breaking
+   (Nicolas, 2026-11-02). Program output still wraps. */
 .prose pre.code {
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow-x: auto;
+  scrollbar-width: thin;
   margin: 1.25rem 0;
   background: var(--paper-2);
   border-radius: 0.75rem;
@@ -1009,6 +1015,20 @@ select {
   margin: 0;
   border-radius: 0;
   background: none;
+  overflow: visible;
+}
+
+/* The highlighted code and the textarea over it lie on one sheet as wide as
+   the longest line, and that sheet scrolls sideways under the copy button. */
+.runner-scroll {
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.runner-sheet {
+  position: relative;
+  width: max-content;
+  min-width: 100%;
 }
 
 .runner-input {
@@ -1026,8 +1046,8 @@ select {
   color: transparent;
   caret-color: var(--ink);
   font: 400 0.92rem/1.55 var(--mono);
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+  white-space: pre;
+  overflow-wrap: normal;
   tab-size: 4;
 }
 

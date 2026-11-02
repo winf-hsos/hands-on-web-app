@@ -107,7 +107,9 @@ function setup(box) {
   editor.setAttribute('autocapitalize', 'off');
   editor.setAttribute('autocomplete', 'off');
   editor.setAttribute('aria-label', lang === 'r' ? L.editor_r : L.editor);
-  const code = el('div', { className: 'runner-code' }, el('pre', { className: 'code' }, shown), editor);
+  editor.setAttribute('wrap', 'off');
+  const sheet = el('div', { className: 'runner-sheet' }, el('pre', { className: 'code' }, shown), editor);
+  const code = el('div', { className: 'runner-code' }, el('div', { className: 'runner-scroll' }, sheet));
   const run = el('button', { type: 'button', className: 'button runner-run' });
   const reset = el('button', { type: 'button', className: 'button button-quiet runner-reset', textContent: L.reset, hidden: true });
   const status = el('span', { className: 'runner-status', role: 'status' });
@@ -136,6 +138,23 @@ function setup(box) {
   editor.addEventListener('blur', refit);
   new MutationObserver(() => (output.scrollTop = output.scrollHeight)).observe(output, { childList: true, subtree: true, characterData: true });
   addCopyButton(code, () => editor.value);
+  // Long lines scroll sideways, and the caret is kept in sight: the width of
+  // its line up to the caret, measured in the editor's font.
+  const scroller = code.firstChild;
+  const ruler = document.createElement('canvas').getContext('2d');
+  const reveal = () =>
+    requestAnimationFrame(() => {
+      const style = getComputedStyle(editor);
+      ruler.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+      const before = editor.value.slice(0, editor.selectionEnd);
+      const line = before.slice(before.lastIndexOf('\n') + 1).replace(/\t/g, '    ');
+      const x = parseFloat(style.paddingLeft) + ruler.measureText(line).width;
+      const room = parseFloat(style.paddingRight) * 2;
+      if (x > scroller.scrollLeft + scroller.clientWidth - room) scroller.scrollLeft = x - scroller.clientWidth + room;
+      // back to the very start, when the caret fits there
+      else if (x < scroller.scrollLeft + room) scroller.scrollLeft = x < scroller.clientWidth - room ? 0 : x - room;
+    });
+  document.addEventListener('selectionchange', () => document.activeElement === editor && reveal());
   if (lang === 'r') attachCompletion(editor, L.complete, findR, loadR);
   // Python: the names of all Python editors on the page count in each of them
   else
