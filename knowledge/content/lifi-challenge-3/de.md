@@ -14,6 +14,7 @@ objectives:
 level: 1
 topics: [transferring-information, solving-problems]
 modules: [dup]
+project: lifi
 status: draft
 updated: 2026-11-02
 ---

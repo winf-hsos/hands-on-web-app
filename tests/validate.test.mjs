@@ -116,16 +116,31 @@ test('project phases and challenges must match the headings in every language', 
 
 test('items linked in a project must exist', () => {
   const { errors } = check(({ find }) => {
-    lead(find('projects', 'lifi')).phases[0].items = ['nowhere'];
+    lead(find('projects', 'lifi')).phases[2].items = ['nowhere'];
   });
-  assert.deepEqual(errors, ['projects/lifi start: unknown item "nowhere"']);
+  assert.deepEqual(errors, ['projects/lifi word: unknown item "nowhere"']);
 });
 
 test('the challenge of a phase must be a challenge item', () => {
   const { errors } = check(({ find }) => {
-    lead(find('projects', 'lifi')).phases[0].challenge = 'first-light';
+    lead(find('projects', 'lifi')).phases[2].challenge = 'first-light';
   });
-  assert.deepEqual(errors, ['projects/lifi start: challenge first-light has type slides, not challenge']);
+  assert.deepEqual(errors.sort(), [
+    'content/lifi-challenge-2: belongs to project lifi, which does not link it',
+    'projects/lifi word: challenge first-light has type slides, not challenge',
+  ]);
+});
+
+test('an item of one project must be linked by it', () => {
+  const { errors } = check(({ find }) => {
+    lead(find('content', 'first-light')).project = 'lifi';
+    lead(find('content', 'morse-code')).project = 'monty-hall';
+    lead(find('content', 'problem-decomposition')).project = 'nowhere';
+  });
+  assert.deepEqual(errors.sort(), [
+    'content/morse-code: belongs to project monty-hall, which does not link it',
+    'content/problem-decomposition: unknown project "nowhere"',
+  ]);
 });
 
 test('every item but a challenge states its duration', () => {

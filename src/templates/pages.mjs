@@ -45,7 +45,7 @@ export function home(site, lang) {
               <span class="way-text">${t(lang, 'course_code_text')}</span></a></li>
           </ul>
         </div>
-        ${site.items.length > 0 ? mapFigure(site, lang, 'hero-map') : html`<p class="hero-empty">${t(lang, 'area_empty')}</p>`}
+        ${site.listed.length > 0 ? mapFigure(site, lang, 'hero-map') : html`<p class="hero-empty">${t(lang, 'area_empty')}</p>`}
       </section>
       ${samples.length > 0 &&
       html`<section class="section">
@@ -77,16 +77,16 @@ export function items(site, lang) {
  */
 export function finder(site, lang, { areas = false } = {}) {
   const { vocabulary } = site;
-  const used = (key) => new Set(site.items.flatMap((i) => [i.lead[key]].flat()));
+  const used = (key) => new Set(site.listed.flatMap((i) => [i.lead[key]].flat()));
   const types = Object.entries(vocabulary.types).filter(([key]) => used('type').has(key));
   const topics = Object.entries(vocabulary.topics).filter(([key]) => used('topics').has(key));
-  const sorted = site.items
+  const sorted = site.listed
     .slice()
     .sort((a, b) => site.localize(a, lang).title.localeCompare(site.localize(b, lang).title, lang));
   // Where each item is linked, for the path and project filters.
-  const pathsOf = new Map(site.items.map((i) => [i.id, []]));
+  const pathsOf = new Map(site.listed.map((i) => [i.id, []]));
   for (const path of site.paths) for (const s of site.pathSteps(path)) pathsOf.get(s.id)?.push(path.id);
-  const projectsOf = new Map(site.items.map((i) => [i.id, [...new Set(site.inProjects(i.id, lang).map((r) => r.project.id))]]));
+  const projectsOf = new Map(site.listed.map((i) => [i.id, [...new Set(site.inProjects(i.id, lang).map((r) => r.project.id))]]));
   const linked = (docs, of) => docs.filter((d) => [...of.values()].some((ids) => ids.includes(d.id)));
   const choices = (docs) => [['', t(lang, 'all')], ...docs.map((d) => [d.id, site.localize(d, lang).title])];
   const select = (name, label, options, { hidden = false } = {}) =>
@@ -214,7 +214,8 @@ export function item(site, doc, lang) {
     path: site.url(doc, lang),
     title: text.title,
     description: text.summary,
-    back: 'items',
+    // an item of one project is not in the list of items
+    back: doc.lead.project ? 'projects' : 'items',
     scripts: [isQuiz && 'quiz', ...scriptsFor(body)].filter(Boolean),
     // the item's own drawings, next to its page (docs/figures.md)
     figures: body.includes('data-figure') && `figures.js?v=${figureFile(doc)?.hash}`,
@@ -689,12 +690,12 @@ export function project(site, doc, lang) {
 
 /** Topics with their number of items, and the items with their topics (client/map.js). */
 function mapData(site, lang) {
-  const inTopic = (key) => site.items.filter((i) => i.lead.topics.includes(key));
+  const inTopic = (key) => site.listed.filter((i) => i.lead.topics.includes(key));
   return {
     topics: Object.entries(site.vocabulary.topics)
       .filter(([key]) => inTopic(key).length > 0)
       .map(([key, v]) => ({ id: key, title: v[lang], count: inTopic(key).length, url: `${site.link(lang, 'items')}?topic=${key}` })),
-    items: site.items.map((i) => ({
+    items: site.listed.map((i) => ({
       id: i.id,
       title: site.localize(i, lang).title,
       icon: iconShapes(site.vocabulary.types[i.lead.type].icon),
@@ -711,7 +712,7 @@ const mapFigure = (site, lang, className) =>
   </figure>`;
 
 export function map(site, lang) {
-  const topics = Object.entries(site.vocabulary.topics).filter(([key]) => site.items.some((i) => i.lead.topics.includes(key)));
+  const topics = Object.entries(site.vocabulary.topics).filter(([key]) => site.listed.some((i) => i.lead.topics.includes(key)));
   return {
     path: site.link(lang, 'map'),
     title: t(lang, 'nav_map'),
@@ -726,8 +727,8 @@ export function map(site, lang) {
         <label class="chip"><input type="radio" name="topic" value="" checked><span>${t(lang, 'map_all')}</span></label>
         ${topics.map(([key, label]) => html`<label class="chip"><input type="radio" name="topic" value="${key}"><span>${label[lang]}</span></label>`)}
       </fieldset>
-      ${site.items.length > 0 ? mapFigure(site, lang, 'map-full') : html`<p class="empty">${t(lang, 'area_empty')}</p>`}
-      <noscript><ul>${site.items.map((i) => html`<li><a href="${site.url(i, lang)}">${site.localize(i, lang).title}</a></li>`)}</ul></noscript>
+      ${site.listed.length > 0 ? mapFigure(site, lang, 'map-full') : html`<p class="empty">${t(lang, 'area_empty')}</p>`}
+      <noscript><ul>${site.listed.map((i) => html`<li><a href="${site.url(i, lang)}">${site.localize(i, lang).title}</a></li>`)}</ul></noscript>
     `,
   };
 }

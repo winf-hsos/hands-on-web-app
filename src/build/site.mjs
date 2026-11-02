@@ -145,6 +145,9 @@ export function createSite({ vocabulary, sections, hidden = new Map() }, area, b
     link,
     home: sections.pages.find((p) => p.lead.area === area),
     items: sections.content.filter(inArea),
+    // the content shown in the list of all items and on the map; an item that
+    // belongs to one project (`project:`) is found there and in search only
+    listed: sections.content.filter((d) => inArea(d) && !d.lead.project),
     paths: sections.paths.filter(inArea),
     courses: sections.courses.filter(inArea),
     projects: sections.projects.filter(inArea),

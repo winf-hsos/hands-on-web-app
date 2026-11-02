@@ -125,6 +125,7 @@ relations:                         # optional, see section 5
   requires: [number-systems]
   see_also: [binary-numbers]
 access: public                     # optional, public (default) or code, see open decision 7
+project: lifi                      # optional, the one project this item belongs to, see section 9a
 status: draft                      # required, draft, published or archived
 updated: 2026-10-21                # required, date of the last substantive change
 ---
@@ -633,6 +634,16 @@ Introduction …
 ## Was ihr braucht
 An ordinary section …
 ```
+
+**Content of one project** (Nicolas, 2026-11-02). An item that only makes
+sense inside one project, such as its challenges, its device, its software or
+its milestones, names that project in `project:`. It then stays out of the
+list of all items and off the map, is still found by search, and its page
+leads back to the projects. The build checks that the project exists and
+links the item, since otherwise nothing would lead to it. The LiFi project
+holds such items at the start of phase 0: the device (`lifi-device`), the
+software (`lifi-software`) and the milestones (`lifi-milestones`, how a
+challenge is accepted and what each one produces).
 
 A challenge item has the usual fields of an item but no `duration`, since it
 runs over weeks; its page shows the project and phase it belongs to. The build

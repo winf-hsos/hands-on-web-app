@@ -158,6 +158,7 @@ function shapes(vocabulary) {
           file: text,
           areas: inAreas,
           objectives,
+          project: id,
         },
       },
       translation: { required: translation.required, optional: { objectives } },
@@ -279,6 +280,7 @@ export function referencesOf(doc) {
     if (phase.challenge) add(phase.challenge, phase.id);
     for (const part of [phase, ...(phase.challenges ?? [])]) for (const i of part.items ?? []) add(i, part.id);
   }
+  if (lead.project) add(lead.project, 'project');
   if (lead.featured_path) add(lead.featured_path, 'featured_path');
   for (const s of lead.samples ?? []) add(s, 'samples');
   for (const file of Object.values(doc.files)) {
@@ -436,6 +438,17 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
         errors.push(`${file.path}: headings with {#id} do not match phases and challenges in the front matter (front matter: ${expected}; text: ${found})`);
       for (const orphan of text.orphans) errors.push(`${file.path}: challenge {#${orphan}} stands before any phase`);
     }
+  }
+  // An item of one project is missing from the list of all items, so that
+  // project must exist and link it, or nothing leads to it.
+  for (const item of content.filter((d) => d.lead.project)) {
+    const project = projects.find((p) => p.id === item.lead.project);
+    if (!project) {
+      errors.push(`content/${item.id}: unknown project "${item.lead.project}"`);
+      continue;
+    }
+    const linked = [...(project.lead.items ?? []), ...project.lead.phases.flatMap((p) => [p.challenge, ...(p.items ?? []), ...(p.challenges ?? []).flatMap((c) => c.items ?? [])])];
+    if (!linked.includes(item.id)) errors.push(`content/${item.id}: belongs to project ${project.id}, which does not link it`);
   }
   for (const page of pages) {
     if (page.lead.featured_path && !pathIds.has(page.lead.featured_path))
