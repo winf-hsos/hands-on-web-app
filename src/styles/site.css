@@ -681,6 +681,87 @@ select {
   margin-bottom: 2rem;
 }
 
+/* The table of contents of a long item stands in the left margin and travels
+   along while reading; it needs a window wide enough for a margin (Nicolas,
+   2026-11-02). Its rail runs the height of the article, the list sticks. */
+/* a section reached from the table of contents keeps a little air above */
+.prose :is(h2, h3)[id] {
+  scroll-margin-top: 1.5rem;
+}
+
+.toc {
+  display: none;
+}
+
+@media (min-width: 80rem) {
+  .item {
+    position: relative;
+  }
+
+  .toc {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: calc(100% + 3rem);
+    width: 13rem;
+  }
+
+  .toc-inner {
+    position: sticky;
+    top: 2rem;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+}
+
+.toc-title {
+  margin: 0 0 0.6rem;
+  color: var(--quiet);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.toc ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-left: 2px solid var(--rule);
+}
+
+.toc a {
+  display: block;
+  margin-left: -2px;
+  padding: 0.3rem 0 0.3rem 0.85rem;
+  border-left: 2px solid transparent;
+  color: var(--quiet);
+  font-size: 0.85rem;
+  line-height: 1.35;
+  text-decoration: none;
+  transition:
+    color 0.2s var(--ease),
+    border-color 0.2s var(--ease);
+}
+
+.toc .toc-3 a {
+  padding-left: 1.7rem;
+  font-size: 0.8rem;
+}
+
+.toc a:hover {
+  color: var(--ink);
+}
+
+.toc a[aria-current] {
+  border-left-color: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 700;
+}
+
 .kicker {
   display: flex;
   align-items: center;

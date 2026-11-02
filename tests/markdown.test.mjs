@@ -42,6 +42,14 @@ test('photos with a title become figures with captions, side by side', () => {
   assert.doesNotMatch(render('![Vorn](media/a.jpg)\n'), /photo-row/);
 });
 
+test('top-level sections get ids from their text, quiz questions do not', () => {
+  const html = render('## Größe und Maß\n\ntext\n\n### Größe und Maß\n\n> ## inside\n\n## Phase {#own}\n');
+  assert.match(html, /<h2 id="groesse-und-mass">/);
+  assert.match(html, /<h3 id="groesse-und-mass-2">/);
+  assert.doesNotMatch(html, /id="inside"|id="phase/);
+  assert.doesNotMatch(renderMarkdown('## Frage\n\n- [x] a\n- [ ] b\n', { lang: 'de', quiz: true, resolve: () => null }), /<h2 id=/);
+});
+
 test('the highlighter knows keywords, builtins, strings, numbers, comments and defined names', () => {
   const kinds = tokenize('def area(w):  # size\n    return print("x", 4.5)')
     .filter((t) => t.type)

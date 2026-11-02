@@ -209,6 +209,11 @@ The body is plain Markdown with a few conventions:
   backticks work the same way (``title: Die Pipe `|>` ``), and the tab title
   and the description drop them.
 - **Headings start at `##`.** The title comes from the front matter.
+- **Sections** are `##` headings, subsections `###`. Each gets an id from its
+  text (`## Die LED` → `#die-led`), so that it can be linked. An item with
+  three or more sections shows a table of contents in the left margin on
+  wide screens, which travels along and marks the section being read
+  (Nicolas, 2026-11-02); quizzes have none.
 - **Links to other items** are written as `[[place-value-systems]]` or with
   their own text as `[[place-value-systems|the lesson on place values]]`. The build
   turns them into links in the current language, and the validator checks them.

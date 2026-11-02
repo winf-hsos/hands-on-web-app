@@ -202,6 +202,27 @@ const scriptsFor = (body) =>
     body.includes('data-fillable') && 'tables',
   ].filter(Boolean);
 
+/** The sections of a long text beside it, from the ids its headings got in
+    build/remark-knowledge.mjs; only for three or more sections (Nicolas,
+    2026-11-02). client/toc.js marks the one being read. */
+function tocBlock(body, lang) {
+  const heads = [...body.matchAll(/<h([23])\b[^>]*\sid="([^"]+)"[^>]*>([\s\S]*?)<\/h\1>/g)].map(([, level, id, inner]) => ({
+    level,
+    id,
+    label: inner.replace(/<[^>]+>/g, ''),
+  }));
+  if (heads.filter((h) => h.level === '2').length < 3) return '';
+  return html`<nav class="toc" aria-label="${t(lang, 'on_this_page')}">
+    <div class="toc-inner">
+      <p class="toc-title">${t(lang, 'on_this_page')}</p>
+      <ol>
+        <li><a href="#" data-toc-start>${t(lang, 'toc_start')}</a></li>
+        ${heads.map((h) => html`<li class="toc-${h.level}"><a href="#${h.id}">${raw(h.label)}</a></li>`)}
+      </ol>
+    </div>
+  </nav>`;
+}
+
 export function item(site, doc, lang) {
   const text = site.localize(doc, lang);
   const lead = doc.lead;
@@ -211,17 +232,19 @@ export function item(site, doc, lang) {
   const isQuiz = lead.type === 'quiz';
   const v = site.vocabulary;
   const body = site.body(doc, lang);
+  const toc = tocBlock(body, lang);
   return {
     path: site.url(doc, lang),
     title: text.title,
     description: text.summary,
     // an item of one project is not in the list of items
     back: doc.lead.project ? 'projects' : 'items',
-    scripts: [isQuiz && 'quiz', ...scriptsFor(body)].filter(Boolean),
+    scripts: [isQuiz && 'quiz', toc && 'toc', ...scriptsFor(body)].filter(Boolean),
     // the item's own drawings, next to its page (docs/figures.md)
     figures: body.includes('data-figure') && `figures.js?v=${figureFile(doc)?.hash}`,
     content: html`
       <article class="page item" data-item-page="${doc.id}">
+        ${toc}
         <header class="page-head">
           <p class="kicker"${editable(site, 'kicker')}>${typeIcon(site, doc)}<span>${typeLabel(site, doc, lang)}</span>${lead.duration && html`<span>${lead.duration} ${t(lang, 'minutes')}</span>`}</p>
           <h1 style="view-transition-name: t-${doc.id}" lang="${text.lang}"${editable(site, 'title')}>${text.title}</h1>

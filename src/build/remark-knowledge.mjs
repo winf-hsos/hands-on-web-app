@@ -64,6 +64,7 @@ export function remarkKnowledge({ lang, quiz: isQuiz = false, resolve, sourceMap
     models(tree);
     photos(tree);
     if (isQuiz) quiz(tree);
+    else headingIds(tree);
     if (sourceMap) markSources(tree);
   };
 }
@@ -336,6 +337,32 @@ function quiz(tree) {
     current.children.push(node);
   }
   tree.children = out;
+}
+
+// Top-level ## and ### headings get an id from their text, so that the table
+// of contents beside a long item can point to them and a section can be
+// linked: "Das Messprotokoll und das Cockpit" becomes
+// #das-messprotokoll-und-das-cockpit. Headings with their own {#id} keep it.
+function headingIds(tree) {
+  const used = new Set();
+  const text = (node) => node.value ?? (node.children ?? []).map(text).join('');
+  for (const node of tree.children) {
+    if (node.type !== 'heading' || node.depth < 2 || node.depth > 3 || /\{#[\w-]+\}\s*$/.test(lastText(node)?.value ?? '')) continue;
+    const base =
+      text(node)
+        .toLowerCase()
+        .replace(/ä/g, 'ae')
+        .replace(/ö/g, 'oe')
+        .replace(/ü/g, 'ue')
+        .replace(/ß/g, 'ss')
+        .normalize('NFKD')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '') || 'section';
+    let id = base;
+    for (let n = 2; used.has(id); n++) id = `${base}-${n}`;
+    used.add(id);
+    node.data = { ...node.data, hProperties: { ...node.data?.hProperties, id } };
+  }
 }
 
 function lastText(node) {
