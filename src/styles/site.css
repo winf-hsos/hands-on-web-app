@@ -1979,6 +1979,9 @@ details.callout[open] > summary::before {
   border-bottom: 2px solid var(--quiet);
   transform: rotate(-45deg);
   transition: transform 0.25s var(--ease);
+  /* turned down, the arrow reaches about 2px past its box on the left, which
+     the clipped content of an open section would cut off */
+  margin-left: 0.15rem;
   margin-right: 0.25rem;
 }
 
