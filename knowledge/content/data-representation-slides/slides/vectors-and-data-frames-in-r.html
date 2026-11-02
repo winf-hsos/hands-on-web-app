@@ -18,7 +18,6 @@
     .slide .code.verb-code { position: absolute; left: var(--margin); top: 180px; }
     .figure.below { top: 300px; bottom: calc(var(--margin) * 0.9); }
     .slide.has-punch .figure.below { bottom: calc(var(--margin) * 2.1); }
-    .figure.under-code { top: 470px; }
     /* the opening photo with its sentence on the left: photo at 64 % height, starts at x 691,
        but the case itself only from about x 1000, so the text may run to 888 */
     .slide img.photo.side { height: 64%; top: 18%; }
@@ -43,14 +42,14 @@
 <body>
 <div class="deck" data-title="vectors and data frames in <span class='keep-case'>R</span>"
      data-subtitle="prof. dr. nicolas meseth"
-     data-parts='["from a value to a table", "vectors", "data frames"]'
+     data-parts='["from a value to a table", "vectors", "data frames and tibbles"]'
     >
 
   <section class="slide title">
     <aside class="notes">This input is about how R holds data. The message to take home is one sentence: a data frame is a list of equally long vectors, and every vector holds values of one type. Everything else in this deck unfolds that sentence.</aside>
   </section>
   <section class="slide agenda">
-    <aside class="notes">Three parts: from a single value to a table, then vectors in detail, then data frames, the tables of R.</aside>
+    <aside class="notes">Three parts: from a single value to a table, then vectors in detail, then data frames and tibbles, the tables of R.</aside>
   </section>
 
   <!-- opening photo, before the first part -->
@@ -217,9 +216,9 @@ levels(decision_factor)    <span class="gr"># "stay" "switch"</span></div>
     <aside class="notes">That is all a vector is. Everything we did, comparing, counting, picking, works because the values share one type and because position i belongs to the same round, the same person, the same observation in every vector.</aside>
   </section>
 
-  <!-- ===== part 3: data frames ===== -->
-  <section class="slide part" data-part="data frames" data-subtitle="vectors side by side">
-    <aside class="notes">Now the vectors come together in a table, and the table takes over the promise we had to keep by hand: same length, same order.</aside>
+  <!-- ===== part 3: data frames and tibbles ===== -->
+  <section class="slide part" data-part="data frames and tibbles" data-subtitle="vectors side by side">
+    <aside class="notes">Now the vectors come together in a table, and the table takes over the promise we had to keep by hand: same length, same order. We need the data frame as an idea, not as a set of operations; we work with the tibble, the table of the tidyverse.</aside>
   </section>
 
   <section class="slide has-punch">
@@ -230,52 +229,12 @@ levels(decision_factor)    <span class="gr"># "stay" "switch"</span></div>
     <aside class="notes">The four vectors, each in the colour of its type. First key: data.frame() puts them side by side, their names become the header, and R numbers the rows. Second key: one row is one game, and one column is one vector. This is the central sentence of the session, and it is how both books describe the data frame: a list of equally long vectors. The table guarantees what we had to promise ourselves before: all columns have the same length, and row 4 is round 4 in every column. And because every column is a vector, every column has one type, but different columns may have different ones.</aside>
   </section>
 
-
-  <section class="slide">
-    <h2>100 games from a file</h2>
-    <div class="content">
-      <div class="stack">
-        <div class="code">monty_hall &lt;- <span class="hl">read.csv</span>("lets_make_a_deal.csv")
-<span class="hl">str</span>(monty_hall)</div>
-        <div class="console">'data.frame':  100 obs. of  5 variables:
- $ contestant       : <span class="t-chr">chr</span>  "Charles" "Patricia" "Karen" "Jessica" ...
- $ prize_door       : <span class="t-int">int</span>  3 1 3 3 1 1 3 2 3 3 ...
- $ contestant_choice: <span class="t-int">int</span>  3 3 3 1 3 3 1 3 1 2 ...
- $ monty_opens      : <span class="t-int">int</span>  2 2 1 2 2 2 2 1 2 1 ...
- $ decision         : <span class="t-chr">chr</span>  "stay" "stay" "stay" "stay" ...</div>
-        <div class="sidenote">str() shows every column with its type and its first values, and it is the first thing to run on new data.</div>
-      </div>
-    </div>
-    <aside class="notes">The project's data set holds 100 games, one per row, with the name of the contestant as a fifth column. read.csv() reads the file into a data frame, and str(), for structure, shows what came in: 100 observations of 5 variables, and for every column its type and first values. The doors arrived as int, integers, because the file holds whole numbers; the names and decisions as chr, character. Run str() on every new data set before anything else: a column with the wrong type shows up here first.</aside>
-  </section>
-
   <section class="slide has-punch">
-    <h2>a vector or a table?</h2>
-    <div class="figure" id="fig-access"></div>
-    <div class="punch">$ takes the vector out of the table, single brackets keep a smaller table.</div>
-    <aside class="notes">The first six rows of the data. First key: monty_hall$decision takes the column out as a vector, without its name, the same kind of thing as the vectors in part 2. Second key: monty_hall["decision"] with single brackets keeps a table, with one column and its header. Both look almost the same on screen, but they are different things: a function like mean() wants the vector, a function like head() works on the table. When an error says something about a "list" or a "data.frame", this is usually the reason.</aside>
-  </section>
-
-  <section class="slide">
-    <h2>rows and columns</h2>
-    <div class="content">
-      <div class="stack">
-        <div class="code"><div>monty_hall<span class="hl">[1, ]</span>     <span class="gr"># the first row</span></div><div data-step="1">monty_hall<span class="hl">[, 2]</span>     <span class="gr"># the second column, a vector</span></div><div data-step="2">monty_hall<span class="hl">[1:10, c("prize_door", "decision")]</span></div><div data-step="3"><span class="hl">nrow</span>(monty_hall)     <span class="gr"># 100</span></div><div data-step="3"><span class="hl">ncol</span>(monty_hall)     <span class="gr"># 5</span></div></div>
-        <div class="sidenote">[rows, columns]: an empty place means all of them.</div>
-      </div>
-    </div>
-    <aside class="notes">A data frame has two directions, so square brackets take two places, rows first, then columns. Line by line: the first row with all columns; all rows of the second column, which comes out as a vector; the first ten rows of two columns named in c(), which stays a table; and nrow() and ncol() count rows and columns. The comma is the part people forget: without it R reads a single number as a column.</aside>
-  </section>
-
-  <section class="slide">
-    <h2>a new column from the others</h2>
-    <div class="code small verb-code">monty_hall<span class="hl">$won</span> &lt;-
-  (monty_hall$decision == "stay" &amp;
-     monty_hall$prize_door == monty_hall$contestant_choice) |
-  (monty_hall$decision == "switch" &amp;
-     monty_hall$prize_door != monty_hall$contestant_choice)</div>
-    <div class="figure under-code" id="fig-won"></div>
-    <aside class="notes">Whether a game was won is not in the file, but it follows from three columns: whoever stays wins if the first pick was the prize door, and whoever switches wins if it was not. The code compares whole columns at once, combines the comparisons with and and or, and assigns the result to a new column with $. A column is a vector, so everything from part 2 works on it. The rule is long, and with dplyr it becomes much shorter; here it shows that a new column is nothing but a vector computed from other vectors.</aside>
+    <h2>tidy data</h2>
+    <div class="figure" id="fig-tidy"></div>
+    <div class="footnote">after <span class="keep-case">Wickham, Çetinkaya-Rundel &amp; Grolemund</span>: <a href="https://r4ds.hadley.nz/data-tidy.html" target="_blank" rel="noopener"><span class="keep-case">R for Data Science</span>, chapter "data tidying"</a></div>
+    <div class="punch">when a table is tidy, every column is a vector of one variable, and the tools of <span class="keep-case">R</span> fit it.</div>
+    <aside class="notes">R for Data Science calls a table tidy when three rules hold: each variable is a column, each observation is a row, and each value is a cell. Our game table is tidy: one row per game, one column per fact. Data from the wild often is not, for example with one column per year or two facts in one cell, and then it has to be reshaped first. The reward for tidy data is that every column is a vector, and every tool from this deck and from dplyr fits it.</aside>
   </section>
 
   <section class="slide has-punch">
@@ -283,52 +242,64 @@ levels(decision_factor)    <span class="gr"># "stay" "switch"</span></div>
     <div class="content">
       <div class="consoles">
         <div>
-          <div class="label">monty_hall</div>
-          <div class="console tiny"><span class="faded">86       Linda          2                 1           3     stay FALSE
-87      Robert          3                 3           2     stay  TRUE
-88     Barbara          1                 3           2     stay FALSE</span>
-89       Karen          2                 2           1     stay  TRUE
-90       Sarah          1                 3           2   switch  TRUE
-91      Joseph          1                 1           3     stay  TRUE
-92     Richard          1                 2           3   switch  TRUE
-93     Charles          1                 1           3     stay  TRUE
-94       Susan          3                 1           2     stay FALSE
-95    Patricia          1                 3           2     stay FALSE
-96     Richard          1                 2           3     stay FALSE
-97    Patricia          1                 3           2   switch  TRUE
-98       Susan          3                 3           1     stay  TRUE
-99     Jessica          1                 2           3     stay FALSE
-100   Patricia          1                 1           3     stay  TRUE</div>
+          <div class="label"><span class="hl">read.csv</span>("lets_make_a_deal.csv")</div>
+          <div class="console tiny"><span class="faded">86       Linda          2                 1           3     stay
+87      Robert          3                 3           2     stay
+88     Barbara          1                 3           2     stay</span>
+89       Karen          2                 2           1     stay
+90       Sarah          1                 3           2   switch
+91      Joseph          1                 1           3     stay
+92     Richard          1                 2           3   switch
+93     Charles          1                 1           3     stay
+94       Susan          3                 1           2     stay
+95    Patricia          1                 3           2     stay
+96     Richard          1                 2           3     stay
+97    Patricia          1                 3           2   switch
+98       Susan          3                 3           1     stay
+99     Jessica          1                 2           3     stay
+100   Patricia          1                 1           3     stay</div>
         </div>
         <div>
-          <div class="label"><span class="hl">as_tibble</span>(monty_hall)</div>
-          <div class="console tiny"># A tibble: 100 × 6
-   contestant prize_door contestant_choice monty_opens decision won
-   <span class="t-chr">&lt;chr&gt;</span>           <span class="t-int">&lt;int&gt;</span>             <span class="t-int">&lt;int&gt;</span>       <span class="t-int">&lt;int&gt;</span> <span class="t-chr">&lt;chr&gt;</span>    <span class="t-lgl">&lt;lgl&gt;</span>
- 1 Charles             3                 3           2 stay     TRUE
- 2 Patricia            1                 3           2 stay     FALSE
- 3 Karen               3                 3           1 stay     TRUE
- 4 Jessica             3                 1           2 stay     FALSE
- 5 Joseph              1                 3           2 stay     FALSE
- 6 Robert              1                 3           2 stay     FALSE
- 7 John                3                 1           2 stay     FALSE
- 8 Richard             2                 3           1 switch   TRUE
- 9 Michael             3                 1           2 stay     FALSE
-10 Elizabeth           3                 2           1 switch   TRUE
+          <div class="label"><span class="hl">read_csv</span>("lets_make_a_deal.csv")</div>
+          <div class="console tiny"># A tibble: 100 × 5
+   contestant prize_door contestant_choice monty_opens decision
+   <span class="t-chr">&lt;chr&gt;</span>           <span class="t-dbl">&lt;dbl&gt;</span>             <span class="t-dbl">&lt;dbl&gt;</span>       <span class="t-dbl">&lt;dbl&gt;</span> <span class="t-chr">&lt;chr&gt;</span>
+ 1 Charles             3                 3           2 stay
+ 2 Patricia            1                 3           2 stay
+ 3 Karen               3                 3           1 stay
+ 4 Jessica             3                 1           2 stay
+ 5 Joseph              1                 3           2 stay
+ 6 Robert              1                 3           2 stay
+ 7 John                3                 1           2 stay
+ 8 Richard             2                 3           1 switch
+ 9 Michael             3                 1           2 stay
+10 Elizabeth           3                 2           1 switch
 # ℹ 90 more rows</div>
         </div>
       </div>
     </div>
     <div class="punch">a tibble is a data frame with better manners: it shows the types and does not flood the console.</div>
-    <aside class="notes">On the left what you see after typing the name of a data frame: all 100 rows rush through the console, and what remains on screen is the end, while the header has long scrolled away. On the right the same data as a tibble, the data frame of the tidyverse: it says how many rows and columns there are, shows the type of every column under its name, and prints only the first ten rows. R for Data Science works with tibbles throughout, and every tidyverse function returns one. For everything in this deck a tibble behaves like a data frame; it prints more helpfully, keeps a table a table when you select one column with single brackets, and never turns text into factors behind your back.</aside>
+    <aside class="notes">The project's 100 games, read twice. On the left with read.csv() from base R, which gives a data frame: typing its name prints all 100 rows, they rush through the console, and what remains on screen is the end, while the header has long scrolled away. On the right with read_csv() from the tidyverse, which gives a tibble, the data frame of the tidyverse: it says how many rows and columns there are, shows the type of every column under its name, and prints only the first ten rows. A tibble is still a list of equally long vectors, so everything from part 2 holds for its columns. R for Data Science works with tibbles throughout, every tidyverse function returns one, and from here on we do too.</aside>
   </section>
 
-  <section class="slide has-punch">
-    <h2>tidy data</h2>
-    <div class="figure" id="fig-tidy"></div>
-    <div class="footnote">after <span class="keep-case">Wickham, Çetinkaya-Rundel &amp; Grolemund</span>: <a href="https://r4ds.hadley.nz/data-tidy.html" target="_blank" rel="noopener"><span class="keep-case">R for Data Science</span>, chapter "data tidying"</a></div>
-    <div class="punch">when a table is tidy, every column is a vector of one variable, and the tools of <span class="keep-case">R</span> fit it.</div>
-    <aside class="notes">R for Data Science calls a table tidy when three rules hold: each variable is a column, each observation is a row, and each value is a cell. Our game table is tidy: one row per game, one column per fact. Data from the wild often is not, for example with one column per year or two facts in one cell, and then it has to be reshaped first. The reward for tidy data is that every column is a vector, and every tool from this deck and from dplyr fits it.</aside>
+  <section class="slide">
+    <h2>100 games as a tibble</h2>
+    <div class="content">
+      <div class="stack">
+        <div class="code"><span class="hl">library</span>(tidyverse)
+monty_hall &lt;- read_csv("lets_make_a_deal.csv")
+<span class="hl">glimpse</span>(monty_hall)</div>
+        <div class="console">Rows: 100
+Columns: 5
+$ contestant        <span class="t-chr">&lt;chr&gt;</span> "Charles", "Patricia", "Karen", "Jessica", "…
+$ prize_door        <span class="t-dbl">&lt;dbl&gt;</span> 3, 1, 3, 3, 1, 1, 3, 2, 3, 3, 3, 3, 1, 3, 2,…
+$ contestant_choice <span class="t-dbl">&lt;dbl&gt;</span> 3, 3, 3, 1, 3, 3, 1, 3, 1, 2, 3, 2, 1, 3, 1,…
+$ monty_opens       <span class="t-dbl">&lt;dbl&gt;</span> 2, 2, 1, 2, 2, 2, 2, 1, 2, 1, 2, 1, 2, 2, 3,…
+$ decision          <span class="t-chr">&lt;chr&gt;</span> "stay", "stay", "stay", "stay", "stay", "sta…</div>
+        <div class="sidenote">glimpse() turns the table on its side and shows every column with its type and first values; it is the first thing to run on new data.</div>
+      </div>
+    </div>
+    <aside class="notes">This is how the project works with the data from now on. library(tidyverse) loads the packages, read_csv() reads the file as a tibble, and glimpse() shows what came in: 100 rows and 5 columns, and for every column, now as a line, its type and first values. read_csv() reads the doors as dbl, numbers with decimals, because it does not guess that the file holds only whole numbers; the names and decisions as chr, text. Run glimpse() on every new data set before anything else: a column with the wrong type shows up here first. Selecting, filtering and computing new columns come with dplyr in the project.</aside>
   </section>
 
   <section class="slide">
@@ -344,7 +315,7 @@ levels(decision_factor)    <span class="gr"># "stay" "switch"</span></div>
 </div>
 <script src="../../stagekit/draw.js?v=0.4.0-62b883"></script>
 <script src="../../stagekit/anim.js?v=0.4.0-62b883"></script>
-<script src="deck.js?v=1"></script>
+<script src="deck.js?v=2"></script>
 <script src="../../stagekit/stagekit.js?v=0.4.0-62b883"></script>
 </body>
 </html>

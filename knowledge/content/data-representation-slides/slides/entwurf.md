@@ -15,6 +15,16 @@ Hands-on Data Science (`style.toml`, double jetzt orange), hinter Tür 1 steht
 eine erzeugte Ziege statt des Worts, das Beispiel hat fünf statt zehn Runden,
 und beide Live-Abfragen sind gestrichen (jetzt 29 Folien, 48 Frames).
 
+Auf Nicolas' Wunsch (2026-11-03) heißt Teil 3 jetzt „data frames and
+tibbles“: Der Data Frame wird nur noch als Begriff gebraucht (Folie 21 und
+„tidy data“, die jetzt direkt darauf folgt), die Folien 23 bis 26 mit
+`str()`, `$`, `[Zeilen, Spalten]` und der neuen Spalte `won` sind entfallen.
+Am Ende steht der Tibble: „data frame and tibble“ zeigt `read.csv()` neben
+`read_csv()`, und eine neue Folie „100 games as a tibble“ liest die Spiele
+mit dem Tidyverse ein und zeigt sie mit `glimpse()`, so wie das Projekt ab
+Phase 3 arbeitet (jetzt 26 Folien, 40 Frames). Die Folien unten zeigen den
+Stand vor dieser Änderung.
+
 **Verortung:** Folien-Inhalt auf Hands-on Data Science
 (`knowledge/content/data-representation-slides/`), Kennung und Titel
 „Vektoren und Data Frames“ / „Vectors and data frames“. Er gehört zum

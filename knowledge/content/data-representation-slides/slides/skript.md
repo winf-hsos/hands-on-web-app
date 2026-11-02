@@ -155,7 +155,10 @@ combines levels.
 **A vector in one sentence (frame 32).** A vector is a row of values of one
 type, and position i belongs to observation i.
 
-## Part 3: data frames
+## Part 3: data frames and tibbles
+
+The data frame is needed here as an idea, not as a set of operations; the
+work itself happens with the tibble, the table of the tidyverse.
 
 **Vectors become a table (frames 34 to 36).**
 `games <- data.frame(prize_door, contestant_choice, monty_opens, decision)`
@@ -165,65 +168,39 @@ a list of equally long vectors, and every vector holds values of one type:
 all columns have the same length, row 4 is round 4 in every column, and
 different columns may have different types.
 
-**100 games from a file (frame 37).** The project's data set holds 100 games
-with the name of the contestant as a fifth column:
-
-```r
-monty_hall <- read.csv("lets_make_a_deal.csv")
-str(monty_hall)
-```
-
-`str()` shows 100 observations of 5 variables, and for every column its type
-and first values: the doors came in as `int`, the names and decisions as
-`chr`. It is the first thing to run on new data, because a column with the
-wrong type shows up here first.
-
-**A vector or a table? (frames 38 to 40).** `monty_hall$decision` takes the
-column out as a vector, without its name. `monty_hall["decision"]` with single
-brackets keeps a table with one column and its header. Both look almost the
-same on screen, but `mean()` wants the vector and `head()` works on the
-table; an error about a "list" or a "data.frame" usually comes from mixing
-them up.
-
-**Rows and columns (frames 41 to 44).** A data frame has two directions, so
-square brackets take two places, rows first, then columns, and an empty place
-means all of them: `monty_hall[1, ]` is the first row, `monty_hall[, 2]` the
-second column as a vector, `monty_hall[1:10, c("prize_door", "decision")]`
-the first ten rows of two columns, and `nrow()` and `ncol()` count rows (100)
-and columns (5).
-
-**A new column from the others (frame 45).**
-
-```r
-monty_hall$won <-
-  (monty_hall$decision == "stay" &
-     monty_hall$prize_door == monty_hall$contestant_choice) |
-  (monty_hall$decision == "switch" &
-     monty_hall$prize_door != monty_hall$contestant_choice)
-```
-
-Whether a game was won is not in the file, but it follows from three columns:
-whoever stays wins if the first pick was the prize door, and whoever switches
-wins if it was not. A column is a vector, so everything from part 2 works on
-it. With dplyr the rule becomes much shorter.
-
-**Data frame and tibble (frame 46).** Typing the name of a data frame prints
-all 100 rows, and what remains on screen is the end, with the header long
-gone. A tibble, the data frame of the tidyverse (`as_tibble(monty_hall)`),
-says how many rows and columns there are, shows the type of every column and
-prints only the first ten rows. *R for Data Science* uses tibbles throughout.
-For everything in this deck a tibble behaves like a data frame; it prints
-more helpfully, keeps a table a table when one column is selected with single
-brackets, and never turns text into factors.
-
-**Tidy data (frame 47).** After *R for Data Science*, chapter "Data tidying":
+**Tidy data (frame 37).** After *R for Data Science*, chapter "Data tidying":
 a table is tidy when each variable is a column, each observation is a row and
 each value is a cell. The game table is tidy, one row per game and one column
 per fact. Data from the wild often is not, for example with one column per
 year or two facts in one cell, and then it has to be reshaped first. The
 reward is that every column is a vector and every tool fits it.
 
-**Closing (frame 48).** A data frame is a list of equally long vectors, and
+**Data frame and tibble (frame 38).** The project's 100 games, read twice.
+`read.csv("lets_make_a_deal.csv")` from base R gives a data frame, and typing
+its name prints all 100 rows, so what remains on screen is the end, with the
+header long gone. `read_csv("lets_make_a_deal.csv")` from the tidyverse gives
+a tibble, the data frame of the tidyverse: it says how many rows and columns
+there are, shows the type of every column and prints only the first ten rows.
+A tibble is still a list of equally long vectors, so everything from part 2
+holds for its columns. *R for Data Science* uses tibbles throughout, and so
+does the project.
+
+**100 games as a tibble (frame 39).**
+
+```r
+library(tidyverse)
+monty_hall <- read_csv("lets_make_a_deal.csv")
+glimpse(monty_hall)
+```
+
+`glimpse()` turns the table on its side and shows 100 rows and 5 columns, and
+for every column its type and first values: `read_csv()` reads the doors as
+`dbl`, because it does not guess that the file holds only whole numbers, and
+the names and decisions as `chr`. It is the first thing to run on new data,
+because a column with the wrong type shows up here first. Selecting,
+filtering and computing new columns come with dplyr in the project.
+
+**Closing (frame 40).** A data frame is a list of equally long vectors, and
 every vector holds values of one type. The picture to remember is the type
 case: compartments in columns, each column one kind of thing, all columns
 equally long. To read on: *Hands-On Programming with R*, chapter
