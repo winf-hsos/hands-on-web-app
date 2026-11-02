@@ -174,6 +174,7 @@ Type-specific fields:
 | `person` | `born`, and `died` where it applies, as years |
 | `slides` | a stagekit deck in the folder `slides/` (one `.html` file, optionally `export/<deck>.pdf`); `deck_lang` if the slides are in one language only; `recordings` later, as `{ title, url, slide }` with YouTube links per part. The subtitle of the title slide is the author's name only, `data-subtitle="prof. dr. nicolas meseth"`, without the area, module or anything else (Nicolas, 2026-11-01) |
 | `dataset` | `file`, the name of a CSV in `media/datasets/`; `authors`, `year`, `license` where known. The page offers the file for download with its rows, columns and size, measured when building, and the lines that load it in R and in Python; the body describes the data. Only a dataset has a `file` |
+| `video` | `url`, a YouTube link, and `start`, the second to begin at. The page shows the video in a frame, but loads nothing from YouTube until the learner presses play; then the player comes from youtube-nocookie.com (Nicolas, 2026-11-02) |
 | `quiz` | none; the questions are in the body, see section 7 |
 | `challenge` | no `duration`; the task of one phase of a project, see section 9a |
 | `info` | none; a page that tells what to know or set up, such as the software for a project, without introducing a concept. A concept is a `lesson` (Nicolas, 2026-11-02) |

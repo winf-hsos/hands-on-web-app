@@ -19,6 +19,7 @@ types:
   person:     { de: Person,          en: Person,     icon: user-round }
   slides:     { de: Folien,          en: Slides,     icon: presentation }
   dataset:    { de: Datensatz,       en: Data set,   icon: table }
+  video:      { de: Video,           en: Video,      icon: circle-play }
   challenge:  { de: Challenge,       en: Challenge,  icon: trophy }
 
 # Each relation is stored at A and points to B; `inverse` is how B shows it.

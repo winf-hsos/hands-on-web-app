@@ -11,7 +11,7 @@ modules: [ea]
 areas: [ds]
 phases:
   - id: play
-    items: [monty-hall-game]
+    items: [geh-aufs-ganze, monty-hall-game]
     challenges:
       - id: challenge-1
   - id: vectors
@@ -64,8 +64,8 @@ beliebig oft durchführt.
 
 Wie sich das Spiel anfühlt, zeigt ein Ausschnitt aus der Sendung „Geh aufs
 Ganze“ von 1994, der deutschen Fassung von „Let's Make a Deal“:
-[das Video auf YouTube](https://www.youtube.com/watch?v=hXlsPGlAqbM&t=109s).
-Dort heißt der Moderator Jörg Draeger, das Prinzip ist dasselbe.
+[[geh-aufs-ganze|Geh aufs Ganze: das Spiel im Fernsehen]]. Dort heißt der
+Moderator Jörg Draeger, das Prinzip ist dasselbe.
 
 Selbst spielen könnt ihr im [[monty-hall-game|Drei-Türen-Spiel]]. Es
 schreibt jede Runde als R-Code mit, den ihr in der nächsten Phase braucht, und

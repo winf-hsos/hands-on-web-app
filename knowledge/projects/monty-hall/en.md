@@ -28,8 +28,8 @@ often as you like.
 
 What the game feels like is shown in a clip from "Geh aufs Ganze" from 1994,
 the German version of "Let's Make a Deal":
-[the video on YouTube](https://www.youtube.com/watch?v=hXlsPGlAqbM&t=109s).
-The host there is Jörg Draeger; the principle is the same.
+[[geh-aufs-ganze|Geh aufs Ganze: the game on television]]. The host there is
+Jörg Draeger; the principle is the same.
 
 You can play yourselves in [[monty-hall-game|the game with three doors]].
 It records every round as R code, which you need in the next phase, and keeps

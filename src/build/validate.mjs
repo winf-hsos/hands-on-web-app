@@ -9,6 +9,7 @@ import { splitProject } from './project.mjs';
 import { deckFile } from './deck.mjs';
 import { typesOf, hasType } from './types.mjs';
 import { datasetInfo } from './dataset.mjs';
+import { youtubeId } from './youtube.mjs';
 import { figureFile, figureRefs, figureRules, FIGURE_FILE } from './figures.mjs';
 import { shellScenario } from './remark-knowledge.mjs';
 import { scenarioProblems } from '../client/shell-model.js';
@@ -156,6 +157,7 @@ function shapes(vocabulary) {
           died: int(1000, 2100),
           deck_lang: oneOf(['de', 'en'], 'language'),
           recordings: list(recording, 1),
+          start: int(0, 86400),
           file: text,
           areas: inAreas,
           objectives,
@@ -535,6 +537,17 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
     }
     const info = datasetInfo(item.dir, item.lead.file);
     if (info.error) errors.push(`${where}: file: ${info.error}`);
+  }
+
+  // Videos: `url` is a YouTube link, and `start`, the second to begin at,
+  // belongs to a video only.
+  for (const item of content) {
+    const where = `content/${item.id}`;
+    if (!hasType(item.lead, 'video')) {
+      if (item.lead.start !== undefined) errors.push(`${where}: start: only a video has a start`);
+      continue;
+    }
+    if (!youtubeId(item.lead.url)) errors.push(`${where}: url: expected a YouTube link (https://www.youtube.com/watch?v=… or https://youtu.be/…)`);
   }
 
   // Drawings (docs/figures.md): every figure:name in a text is registered in

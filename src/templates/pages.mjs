@@ -8,6 +8,7 @@ import { typesOf, hasType } from '../build/types.mjs';
 import { iconSvg, iconShapes } from '../build/icons.mjs';
 import { deckFile, deckPdf } from '../build/deck.mjs';
 import { datasetInfo, loadingCode } from '../build/dataset.mjs';
+import { youtubeId } from '../build/youtube.mjs';
 import { highlight } from '../client/highlight.js';
 import { areasOf } from '../build/site.mjs';
 import { phaseItems } from '../build/validate.mjs';
@@ -265,7 +266,7 @@ export function item(site, doc, lang) {
     title: text.title,
     description: text.summary,
     // an item of one project is not in the list of items
-    scripts: [isQuiz && 'quiz', toc && 'toc', ...scriptsFor(body)].filter(Boolean),
+    scripts: [isQuiz && 'quiz', toc && 'toc', hasType(lead, 'video') && 'video', ...scriptsFor(body)].filter(Boolean),
     // the item's own drawings, next to its page (docs/figures.md)
     figures: body.includes('data-figure') && `figures.js?v=${figureFile(doc)?.hash}`,
     content: html`
@@ -284,12 +285,13 @@ export function item(site, doc, lang) {
         ${scriptBlock(site, doc, lang)}
         ${hasType(lead, 'slides') && slidesBlock(site, doc, lang)}
         ${hasType(lead, 'dataset') && datasetBlock(doc, lang)}
+        ${hasType(lead, 'video') && videoBlock(site, doc, lang)}
         <div class="prose" lang="${text.lang}" ${isQuiz && quizLabels(lang)}>
           ${raw(body)}
         </div>
-        ${(lead.url || lead.buy) &&
+        ${((lead.url && !hasType(lead, 'video')) || lead.buy) &&
         html`<p class="links">
-          ${lead.url && html`<a class="button button-quiet" href="${lead.url}" rel="noopener">${new URL(lead.url).host.replace(/^www\./, '')}</a>`}
+          ${lead.url && !hasType(lead, 'video') && html`<a class="button button-quiet" href="${lead.url}" rel="noopener">${new URL(lead.url).host.replace(/^www\./, '')}</a>`}
           ${lead.buy && html`<a class="button button-quiet" href="${lead.buy}" rel="noopener">${t(lang, 'buy_at')} ${new URL(lead.buy).host.replace(/^www\./, '')}</a>`}
         </p>`}
         <div class="finish">
@@ -373,6 +375,29 @@ function datasetBlock(doc, lang) {
           <pre class="code"><code class="language-${l}">${raw(highlight(code[l], l))}</code></pre>`,
       )}
     </section>`;
+}
+
+/**
+ * A YouTube video. Nothing is loaded from YouTube until the learner asks for
+ * it: the page shows a frame with a play button and a note, and only the click
+ * puts the player in (client/video.js), from youtube-nocookie.com and at the
+ * second given in `start`.
+ */
+function videoBlock(site, doc, lang) {
+  const { url, start } = doc.lead;
+  const id = youtubeId(url);
+  const watch = `https://www.youtube.com/watch?v=${id}${start ? `&t=${start}s` : ''}`;
+  const embed = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0${start ? `&start=${start}` : ''}`;
+  return html`<figure class="video">
+      <div class="video-frame" data-video="${embed}" data-video-title="${site.localize(doc, lang).title}">
+        <button type="button" class="video-play">${raw(iconSvg('circle-play'))}<span>${t(lang, 'video_play')}</span></button>
+        <p class="video-note">${t(lang, 'video_note')}</p>
+      </div>
+      <figcaption class="deck-actions">
+        <a class="button button-quiet" href="${watch}" target="_blank" rel="noopener">${t(lang, 'video_youtube')}</a>
+        ${start > 0 && html`<span class="muted">${t(lang, 'video_from')} ${Math.floor(start / 60)}:${String(start % 60).padStart(2, '0')}</span>`}
+      </figcaption>
+    </figure>`;
 }
 
 /** A stagekit deck embedded in the page, with full screen, a window of its own and the PDF. */
