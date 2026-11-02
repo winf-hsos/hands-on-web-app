@@ -24,7 +24,7 @@ every team runs the same test and the results are comparable.
 | Challenge | What you implement |
 |---|---|
 | 0 | six small tasks, one script each, from `task_1_light_on.py` to `task_6_human_receiver.py` |
-| 1 | `ALPHABET_SIZE`, `calibrate_sender()`, `calibrate_receiver()`, `send_symbol(index)`, `receive_symbol()` |
+| 1 | `SYMBOL_COLORS` in `agreement.py`, `calibrate()` and `send_symbol(index)` in `sender.py`, `calibrate()` and `receive_symbol()` in `receiver.py` |
 | 2 | `send_text(text)`, `receive_text(n_chars)` |
 | 3 | `send_message(text)`, `receive_message()` |
 | 4 | `send_bits(bits)`, `receive_bits()` |

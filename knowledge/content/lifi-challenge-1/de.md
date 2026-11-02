@@ -71,17 +71,22 @@ ergiebigste Quelle: Fragt ihr den Assistenten, warum die Röhre nicht hilft,
 schlägt er mattschwarze Innenwände, Blenden und engere Öffnungen vor, alles
 plausibel und nichts davon geprüft, bis ihr es gemessen habt.
 
-**Was ihr in der Vorlage ausfüllt:** Alles kommt in `device.py`, und das
-Testskript fragt genau fünf Dinge ab, nicht mehr. Wie ihr sie innen baut, ist
-eure Sache, und eigene Funktionen dürft ihr beliebig ergänzen.
+**Was ihr in der Vorlage ausfüllt:** In dieser Challenge sendet ein Gerät nur
+und das andere empfängt nur, deshalb hat jede Seite ihre eigene Datei, und eine
+dritte hält fest, worauf sich beide einigen müssen. Das Testskript ruft genau
+vier Funktionen auf, nicht mehr. Wie ihr sie innen baut, ist eure Sache, und
+eigene Funktionen dürft ihr beliebig ergänzen.
 
-| | Was |
+| Datei | Was hineinkommt |
 |---|---|
-| `ALPHABET_SIZE` | wie viele Symbole ihr verwendet, nummeriert von 0 bis `ALPHABET_SIZE - 1` |
-| `calibrate_sender()` | spielt euer Alphabet einmal durch |
-| `calibrate_receiver()` | misst dabei mit und merkt sich für jedes Symbol einen Referenzwert |
-| `send_symbol(index)` | zeigt ein Symbol und kehrt erst zurück, wenn der Empfänger genug Zeit zum Messen hatte |
-| `receive_symbol()` | misst und gibt zurück, welches Symbol es war |
+| `agreement.py` | `SYMBOL_COLORS`, euer Alphabet, eine Farbe je Zeile; die erste Zeile ist Symbol 0. `ALPHABET_SIZE` zählt die Zeilen selbst und wird nie von Hand geändert |
+| `sender.py` | `calibrate()` spielt euer Alphabet einmal durch, `send_symbol(index)` zeigt ein Symbol und kehrt erst zurück, wenn der Empfänger genug Zeit zum Messen hatte |
+| `receiver.py` | `calibrate()` misst dabei mit und legt für jedes Symbol einen Referenzwert in `REFERENCES` ab, `receive_symbol()` misst und gibt zurück, welches Symbol es war |
+
+Was auf beiden Seiten gleich sein muss, gehört in `agreement.py` und nicht
+doppelt in die beiden anderen Dateien, denn so können sich Sender und Empfänger
+darin nie widersprechen. LED und Sensor kommen in dieser Datei nicht vor, sie
+hält nur Vereinbarungen fest.
 
 Der Empfänger kann nicht ausrechnen, welches Symbol angekommen ist, er muss
 vorher lernen, wie eure Symbole in diesem Aufbau aussehen, und vergleicht dann
@@ -90,26 +95,42 @@ Kalibrieren müssen beide Seiten im selben Takt laufen, sonst ordnet der
 Empfänger seine Messwerte den falschen Symbolen zu, und kalibriert wird vor
 jedem Durchgang neu, auch am Testtisch.
 
-**Selbsttest und Abnahme sind dasselbe Skript.** Ihr startet es auf beiden
-Rechnern, jeder in seiner Rolle, mit `python run_test.py sender` und
-`python run_test.py receiver`. Beide Seiten schreiben ein Protokoll
+**Selbsttest und Abnahme sind dasselbe Skript.** Ihr startet es zweimal, jedes
+in seiner Rolle, mit `python run_test.py sender` und
+`python run_test.py receiver`; es lädt dabei nur die Datei seiner Rolle. Beide Seiten schreiben ein Protokoll
 (`sent.txt` und `received.txt`); legt beide in einen Ordner und vergleicht sie
 mit `python compare.py`. Für schnelle Versuche zwischendurch genügen weniger
 Durchgänge (`--runs 10`). Weil bei der Abnahme genau dieses Skript läuft, könnt
 ihr den Wertungslauf vorher so oft proben, wie ihr wollt, und am Testtisch
-passiert nichts Neues. Bewährt hat sich, mit `ALPHABET_SIZE = 2` anzufangen,
-also aus und weiß, und nach 50 fehlerfreien Durchgängen auf 4 und dann auf 8 zu
-gehen; die letzte Größe ohne Fehler ist euer Ergebnis. Verwechselt `compare.py`
+passiert nichts Neues. Bewährt hat sich, mit den beiden Farben anzufangen, die
+schon in `SYMBOL_COLORS` stehen, also aus und weiß, und nach 50 fehlerfreien
+Durchgängen auf 4 zu gehen, indem ihr das `#` vor den nächsten beiden Farben
+entfernt, und dann auf 8; die letzte Größe ohne Fehler ist euer Ergebnis. Verwechselt `compare.py`
 jedes Mal dieselben zwei Symbole, liegen sie zu dicht beieinander, sieht es
 zufällig aus, sind eher Timing oder Kalibrierung schuld.
+
+**Beide Geräte an einem Laptop:** Ihr könnt auch beide Geräte eures Teams an
+denselben Laptop anschließen und Sender und Empfänger in zwei Terminals
+nebeneinander starten; dann landen beide Protokolle im selben Ordner, und
+`compare.py` läuft sofort. Dafür muss das Modul wissen, welches Gerät welches
+ist: Oben in `sender.py` und `receiver.py` steht die Zeile
+`# use_device("put the UID here")`. Entfernt in beiden Dateien das `#` und
+tragt die UID des Master Bricks des jeweiligen Geräts ein, die des sendenden in
+`sender.py` und die des empfangenden in `receiver.py`. Kennt ihr die UIDs
+nicht, startet zuerst ohne; die Fehlermeldung nennt beide, und der Brick Viewer
+zeigt, welche zu welcher Box gehört. Mit nur einem angeschlossenen Gerät bleibt
+die Zeile, wie sie ist. Eines wird dabei schwieriger: Die Eingabetaste lässt
+sich nicht in beiden Terminals im selben Moment drücken, zwischen dem ersten
+und dem zweiten Druck liegt leicht eine Sekunde, und eure Kalibrierung muss das
+aushalten.
 
 **Bei der Abnahme** baut ihr am Testtisch euren Aufbau auf, kalibriert, und es
 werden 20 zufällige Symbole übertragen. Ein einziger Fehler gilt für diese
 Alphabetgröße als nicht bestanden; acht sicher erkannte Zustände sind also mehr
 wert als sechzehn mit gelegentlicher Verwechslung. Als Live-Änderung erweitert
-ihr euer Alphabet, etwa auf bis zu zwölf Symbole, und lasst den Test erneut
-laufen; dafür müsst ihr die Stellen in eurem Code finden, die von der Größe des
-Alphabets abhängen.
+ihr euer Alphabet, etwa auf bis zu zwölf Symbole, mit weiteren Farben in
+`SYMBOL_COLORS`, und lasst den Test erneut laufen; dafür müsst ihr die Stellen
+in eurem Code finden, die von der Größe des Alphabets abhängen.
 
 **Typische Stolpersteine:** feste Schwellenwerte statt einer Kalibrierung vor
 jedem Durchgang („über 500 im Rotkanal heißt Rot“ klappt am Dienstag und
