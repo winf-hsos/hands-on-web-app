@@ -134,7 +134,7 @@ test('the challenge of a phase must be a challenge item', () => {
   });
   assert.deepEqual(errors.sort(), [
     'content/lifi-challenge-2: belongs to project lifi, which does not link it',
-    'projects/lifi word: challenge first-light has type slides, not challenge',
+    'projects/lifi word: challenge first-light has type exercise, slides, not challenge',
   ]);
 });
 

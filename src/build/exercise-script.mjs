@@ -28,13 +28,15 @@ const LABELS = {
   },
 };
 
-/** The language of an exercise's own code boxes (python or r), or null. */
+/** The language of an exercise's own code boxes (python or r), or null. Only
+    boxes that run on the page count: an exercise whose code is all `static`
+    is written in files on the learner's computer and gets no script. */
 export function scriptLanguage(body) {
   let quoted = false;
   for (const line of body.split('\n')) {
     quoted = line.startsWith('>');
-    const fence = !quoted && line.match(/^```(\w+)/);
-    if (fence && LANGUAGES[fence[1]]) return fence[1];
+    const fence = !quoted && line.match(/^```(\w+)(\s+static)?/);
+    if (fence && !fence[2] && LANGUAGES[fence[1]]) return fence[1];
   }
   return null;
 }

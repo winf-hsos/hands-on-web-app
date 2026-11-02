@@ -244,7 +244,9 @@ The body is plain Markdown with a few conventions:
   column (Nicolas, 2026-11-02), so a photo in another format is cut to 16:9
   before it goes into `media/`, with what matters in the middle. A drawing
   (`.svg`) fills the column too but keeps its own height, so a wide flat one
-  does not stand in empty space.
+  does not stand in empty space. Every picture, photo or drawing, with or
+  without a caption, sits in the frame of the page's own drawings: a thin
+  line, room inside and round corners (Nicolas, 2026-11-02).
 - **3D models** are STL files in `media/`:
   `![What it shows](model:media/case.stl "Caption")`. The page shows them in
   a small viewer of its own (`src/client/model.js`, plain WebGL, loaded only
@@ -467,7 +469,16 @@ hints and extension become comments, headings become sections (`# Aufgabe ----`
 in R), the code of the boxes becomes code, and the solution stays on the page.
 Lines of setup that several boxes begin with appear once. An R script starts
 by loading what the boxes get in the browser: dplyr, ggplot2 where it draws,
-and every data set it names, read from the site.
+and every data set it names, read from the site. Only boxes that run on the
+page count: an exercise whose code is all `static` gets no script.
+
+**Slides with tasks to do along** are an exercise first (Nicolas, 2026-11-02):
+`type: [exercise, slides]`, and the tasks the learners do along with the
+deck stand below it as text, step by step with hints and solutions as
+callouts, so they can be read and continued without the deck. `first-light`
+is the first. Its learners write the code into files on their own computer
+and run it in the terminal, so its blocks are `static` and the page offers
+no script.
 
 ## 8. Learning paths
 

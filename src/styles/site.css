@@ -2925,6 +2925,16 @@ details.callout[open] > summary::before {
   height: auto;
   aspect-ratio: 16 / 9;
   object-fit: cover;
+}
+
+/* Every picture on a page sits in the frame of a drawing (.drawing-canvas),
+   a thin line with room inside and round corners (Nicolas, 2026-11-02). */
+.photo img,
+.prose p > img:only-child {
+  display: block;
+  padding: 0.75rem;
+  background: var(--paper);
+  border: 1px solid var(--rule);
   border-radius: 0.75rem;
 }
 
@@ -2932,7 +2942,6 @@ details.callout[open] > summary::before {
    space (Nicolas, 2026-11-02); the margin keeps it apart from the text */
 .photo img[src$='.svg'] {
   aspect-ratio: auto;
-  border-radius: 0;
   margin: 1rem 0 0.25rem;
 }
 
@@ -4470,18 +4479,15 @@ details.callout[open] > summary::before {
 }
 
 /* Figures from the decks are drawn for a light page (stagekit figures.py
-   --theme light); on a dark page they keep a light ground of their own. */
+   --theme light); on a dark page they keep a light ground of their own
+   inside their frame. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) .prose img[src$='.svg'] {
     background: #fff;
-    border-radius: 0.5rem;
-    padding: 0.5rem;
   }
 }
 :root[data-theme='dark'] .prose img[src$='.svg'] {
   background: #fff;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
 }
 
 /* --- drawings on content pages (docs/figures.md) --------------------------

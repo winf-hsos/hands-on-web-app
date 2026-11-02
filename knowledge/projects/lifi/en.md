@@ -1,5 +1,5 @@
 ---
-title: "LiFi: sending data with light"
+title: "The LiFi-Project"
 summary: >-
   In pairs you build a link made of light from a coloured LED and a colour
   sensor, and in five challenges you get it to transmit a whole file without
