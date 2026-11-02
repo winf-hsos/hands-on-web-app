@@ -442,6 +442,12 @@ where it was made. Question ids for progress are derived from the position
 (`q1`, `q2`, …); if questions are reordered later, an explicit id can be added
 as `## Frage {#q-positions}`.
 
+On the page the options are lettered A, B, C … in the order written, in a
+circle for one answer and a square for several (Nicolas, 2026-11-02), and
+pressing a letter chooses that option of the question on show, as a click does
+(`client/quiz.js`). The letters come from the page, not from the Markdown, so
+reordering the options needs no other change.
+
 This form is deliberately independent of the existing question pools, as the
 concept requires. `scripts/convert-questions.mjs <pool-folder> <de|en> [id …]`
 turns questions of a pool in the format of the skill multiple-choice-pruefung

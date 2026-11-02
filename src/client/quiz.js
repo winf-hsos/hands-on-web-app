@@ -4,7 +4,9 @@
 // the feedback appears right there. A quiz counts as done once
 // every question was answered correctly at least once. With more than one
 // question, the quiz shows one question at a time, with Back and Next, a bar
-// with one segment per question, and a short result at the end.
+// with one segment per question, and a short result at the end. The
+// options are lettered A, B, C … (site.css), and pressing a letter chooses
+// that option of the question on show, as a click does.
 import { load, update, today } from './progress.js';
 import { focusable } from './focus.js';
 
@@ -17,6 +19,7 @@ const questions = [...document.querySelectorAll('.quiz-question')];
 const stepper = questions.length > 1;
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const fill = (text, n, m) => text.replace('{n}', n).replace('{m}', m);
+const letter = (i) => String.fromCharCode(65 + i);
 
 /** Per question: { evaluate(), reset() }. */
 const control = new Map();
@@ -74,9 +77,10 @@ for (const question of questions) {
     changed(question);
   }
 
-  for (const option of options) {
+  options.forEach((option, i) => {
     option.tabIndex = 0;
     option.setAttribute('role', multiple ? 'checkbox' : 'radio');
+    option.setAttribute('aria-keyshortcuts', letter(i));
     option.setAttribute('aria-checked', 'false');
     const toggle = () => {
       if (checked()) return;
@@ -92,11 +96,31 @@ for (const question of questions) {
         toggle();
       }
     });
-  }
+  });
 
   check.addEventListener('click', () => (checked() ? reset() : evaluate()));
   control.set(question, { evaluate, reset });
 }
+
+// --- letters -------------------------------------------------------------------
+
+// Listened for before focus mode's F (focus.js), so that a sixth option F
+// still answers; a letter without an option is left to the rest of the page.
+document.addEventListener(
+  'keydown',
+  (e) => {
+    if (e.ctrlKey || e.metaKey || e.altKey || e.repeat || !/^[a-z]$/i.test(e.key)) return;
+    if (e.target.closest?.('input, textarea, select, [contenteditable], dialog')) return;
+    const question = questions.find((q) => !q.hidden);
+    const option = question?.querySelectorAll('.quiz-option')[e.key.toUpperCase().charCodeAt(0) - 65];
+    if (!option) return;
+    e.preventDefault();
+    e.stopPropagation();
+    option.click();
+    option.focus({ preventScroll: true });
+  },
+  true,
+);
 
 // --- focus ---------------------------------------------------------------------
 
