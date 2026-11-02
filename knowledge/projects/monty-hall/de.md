@@ -11,8 +11,7 @@ modules: [ea]
 areas: [ds]
 phases:
   - id: play
-    challenge: monty-hall-challenge-1
-    items: [geh-aufs-ganze, monty-hall-challenge-1, monty-hall-game, what-should-we-measure, types-of-variables-slides]
+    items: [geh-aufs-ganze, monty-hall-in-the-classroom, monty-hall-game, what-should-we-measure, types-of-variables-slides]
   - id: vectors
     challenge: monty-hall-challenge-2
     items: [data-representation-slides, r-vectors, r-comparisons]
