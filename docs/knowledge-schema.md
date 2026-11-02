@@ -225,9 +225,11 @@ The body is plain Markdown with a few conventions:
   slide deck can reuse it. Rules and parts in `docs/figures.md`.
 - **Callouts** use the blockquote form known from GitHub:
   `> [!TIP]`, `> [!NOTE]`, `> [!WARNING]`. They render as boxes and remain
-  readable as plain text. `> [!WARNING]` and `> [!CAUTION]` are not red,
-  which marks errors, but carry a warning sign and a title in capitals
-  ("ACHTUNG", "VORSICHT"). `> [!HINT]` and `> [!SOLUTION]` render folded, so
+  readable as plain text. Every callout's title stands in capitals after an
+  icon of its kind (Nicolas, 2026-11-02): "HINWEIS" (info), "TIPP" (light
+  bulb), "WICHTIG" (circle), "ACHTUNG" (warning sign), "VORSICHT" (octagon),
+  "TIPP ANZEIGEN" (light bulb), "LÖSUNG ANZEIGEN" (tick). Warnings are not
+  red, which marks errors. `> [!HINT]` and `> [!SOLUTION]` render folded, so
   that a learner opens them only when needed; several hints in one text are
   numbered.
 - **Python code** in a ` ```python ` block becomes a small editor on the page

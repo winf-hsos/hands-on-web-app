@@ -16,12 +16,18 @@ test('a python block becomes a runnable box, a static one only shows the code', 
 
 test('hints and solutions fold away, and several hints are numbered', () => {
   const html = render('> [!HINT]\n> eins\n\n> [!HINT]\n> zwei\n\n> [!SOLUTION]\n> drei\n');
-  assert.deepEqual(html.match(/<summary[^>]*>[^<]*<\/summary>/g), [
-    '<summary class="callout-title">Tipp 1 anzeigen</summary>',
-    '<summary class="callout-title">Tipp 2 anzeigen</summary>',
-    '<summary class="callout-title">Lösung anzeigen</summary>',
+  assert.deepEqual(html.match(/<\/svg>[^<]*<\/summary>/g), [
+    '</svg>TIPP 1 ANZEIGEN</summary>',
+    '</svg>TIPP 2 ANZEIGEN</summary>',
+    '</svg>LÖSUNG ANZEIGEN</summary>',
   ]);
-  assert.match(render('> [!HINT]\n> one\n', 'en'), /<summary class="callout-title">Show a hint<\/summary>/);
+  assert.match(render('> [!HINT]\n> one\n', 'en'), /<\/svg>SHOW A HINT<\/summary>/);
+});
+
+test('every callout title stands in capitals after an icon of its kind', () => {
+  const html = render('> [!NOTE]\n> a\n\n> [!TIP]\n> b\n\n> [!IMPORTANT]\n> c\n\n> [!WARNING]\n> d\n\n> [!CAUTION]\n> e\n');
+  assert.deepEqual(html.match(/<\/svg>[^<]*<\/p>/g), ['</svg>HINWEIS</p>', '</svg>TIPP</p>', '</svg>WICHTIG</p>', '</svg>ACHTUNG</p>', '</svg>VORSICHT</p>']);
+  assert.equal((html.match(/<p class="callout-title"><svg class="callout-icon"[^>]*aria-hidden="true">/g) ?? []).length, 5);
 });
 
 test('the highlighter knows keywords, builtins, strings, numbers, comments and defined names', () => {

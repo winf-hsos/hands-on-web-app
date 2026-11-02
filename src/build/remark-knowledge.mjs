@@ -7,17 +7,47 @@
 import { visit, SKIP } from 'unist-util-visit';
 import yaml from 'js-yaml';
 import { tokenize } from '../client/highlight.js';
+import { iconShapes } from './icons.mjs';
 
 const CALLOUT = /^\[!(NOTE|TIP|WARNING|IMPORTANT|CAUTION|HINT|SOLUTION)\]\s*/;
 const FOLDED = new Set(['HINT', 'SOLUTION']);
 const WIKI = /\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g;
-// Warnings stand in capitals with a warning sign (site.css), not in red (Nicolas, 2026-10-30).
+// Every callout title stands in capitals after an icon of its kind (Nicolas,
+// 2026-11-02), as warnings did first; warnings are not red (2026-10-30).
 const CALLOUT_TITLES = {
-  de: { NOTE: 'Hinweis', TIP: 'Tipp', WARNING: 'ACHTUNG', IMPORTANT: 'Wichtig', CAUTION: 'VORSICHT', HINT: 'Tipp anzeigen', SOLUTION: 'Lösung anzeigen' },
-  en: { NOTE: 'Note', TIP: 'Tip', WARNING: 'WARNING', IMPORTANT: 'Important', CAUTION: 'CAUTION', HINT: 'Show a hint', SOLUTION: 'Show the solution' },
+  de: { NOTE: 'HINWEIS', TIP: 'TIPP', WARNING: 'ACHTUNG', IMPORTANT: 'WICHTIG', CAUTION: 'VORSICHT', HINT: 'TIPP ANZEIGEN', SOLUTION: 'LÖSUNG ANZEIGEN' },
+  en: { NOTE: 'NOTE', TIP: 'TIP', WARNING: 'WARNING', IMPORTANT: 'IMPORTANT', CAUTION: 'CAUTION', HINT: 'SHOW A HINT', SOLUTION: 'SHOW THE SOLUTION' },
+};
+// Lucide icons (ISC license) by kind.
+const CALLOUT_ICONS = {
+  NOTE: 'info',
+  TIP: 'lightbulb',
+  WARNING: 'triangle-alert',
+  IMPORTANT: 'circle-alert',
+  CAUTION: 'octagon-alert',
+  HINT: 'lightbulb',
+  SOLUTION: 'circle-check-big',
 };
 // With several hints in one text they are numbered, since each builds on the one before.
-const NUMBERED_HINT = { de: (n) => `Tipp ${n} anzeigen`, en: (n) => `Show hint ${n}` };
+const NUMBERED_HINT = { de: (n) => `TIPP ${n} ANZEIGEN`, en: (n) => `SHOW HINT ${n}` };
+
+/** An icon as an element of the HTML tree, since the Markdown here may hold no raw HTML. */
+function iconNode(name) {
+  const shapes = [...iconShapes(name).matchAll(/<(\w+)([^>]*?)\/?>/g)].map(([, tagName, attributes]) => ({
+    type: 'element',
+    tagName,
+    properties: Object.fromEntries([...attributes.matchAll(/([\w-]+)="([^"]*)"/g)].map(([, key, value]) => [key, value])),
+    children: [],
+  }));
+  return {
+    type: 'calloutIcon',
+    data: {
+      hName: 'svg',
+      hProperties: { className: ['callout-icon'], viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round', ariaHidden: 'true' },
+      hChildren: shapes,
+    },
+  };
+}
 const TABLE_LABELS = {
   de: { clear: 'Eingaben löschen', confirm: 'Alle Eingaben in dieser Tabelle löschen?' },
   en: { clear: 'Clear entries', confirm: 'Clear all entries in this table?' },
@@ -95,7 +125,7 @@ function callouts(tree, lang) {
     node.children.unshift({
       type: 'paragraph',
       data: { hName: folded ? 'summary' : 'p', hProperties: { className: ['callout-title'] } },
-      children: [title],
+      children: [iconNode(CALLOUT_ICONS[kind]), title],
     });
   });
   if (hints.length > 1) hints.forEach((title, i) => (title.value = NUMBERED_HINT[lang](i + 1)));
