@@ -448,7 +448,11 @@ On the page the options are lettered A, B, C … in the order written, in a
 circle for one answer and a square for several (Nicolas, 2026-11-02), and
 pressing a letter chooses that option of the question on show, as a click does
 (`client/quiz.js`). The letters come from the page, not from the Markdown, so
-reordering the options needs no other change.
+reordering the options needs no other change. The arrow keys move one question
+back or on, and Enter moves on as well (Nicolas, 2026-11-02); on a
+multiple-choice question with something chosen, Enter checks the answer first,
+so that it is never skipped. A focused button or link keeps its own Enter, and
+on an option Space chooses it.
 
 This form is deliberately independent of the existing question pools, as the
 concept requires. `scripts/convert-questions.mjs <pool-folder> <de|en> [id …]`

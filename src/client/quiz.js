@@ -6,7 +6,9 @@
 // question, the quiz shows one question at a time, with Back and Next, a bar
 // with one segment per question, and a short result at the end. The
 // options are lettered A, B, C … (site.css), and pressing a letter chooses
-// that option of the question on show, as a click does.
+// that option of the question on show, as a click does. The arrow keys move
+// like Back and Next, and Enter moves on as well, unless a multiple-choice
+// question waits to be checked.
 import { load, update, today } from './progress.js';
 import { focusable } from './focus.js';
 
@@ -90,8 +92,9 @@ for (const question of questions) {
       else evaluate();
     };
     option.addEventListener('click', toggle);
+    // Space, as for any radio button or checkbox; Enter moves on (below)
     option.addEventListener('keydown', (e) => {
-      if (e.key === ' ' || e.key === 'Enter') {
+      if (e.key === ' ') {
         e.preventDefault();
         toggle();
       }
@@ -99,7 +102,8 @@ for (const question of questions) {
   });
 
   check.addEventListener('click', () => (checked() ? reset() : evaluate()));
-  control.set(question, { evaluate, reset });
+  const waiting = () => multiple && !checked() && selected();
+  control.set(question, { evaluate, reset, waiting });
 }
 
 // --- letters -------------------------------------------------------------------
@@ -121,6 +125,27 @@ document.addEventListener(
   },
   true,
 );
+
+// --- arrows and Enter ----------------------------------------------------------
+
+// Set by the stepper below: moves by one question, true if it could.
+let move = () => false;
+
+// A focused button or link keeps its own Enter, and a multiple-choice question
+// with something chosen is checked first, so that Enter never skips an answer.
+document.addEventListener('keydown', (e) => {
+  if (e.ctrlKey || e.metaKey || e.altKey || e.shiftKey || e.repeat) return;
+  if (!['Enter', 'ArrowLeft', 'ArrowRight'].includes(e.key)) return;
+  if (e.target.closest?.('input, textarea, select, [contenteditable], dialog')) return;
+  if (e.key === 'Enter' && e.target.closest?.('button, a, summary')) return;
+  const question = questions.find((q) => !q.hidden);
+  let acted;
+  if (e.key === 'Enter' && question && control.get(question).waiting()) {
+    control.get(question).evaluate();
+    acted = true;
+  } else acted = move(e.key === 'ArrowLeft' ? -1 : 1);
+  if (acted) e.preventDefault();
+});
 
 // --- focus ---------------------------------------------------------------------
 
@@ -248,6 +273,14 @@ if (stepper) {
   }
 
   for (const q of questions) q.querySelector('h2').tabIndex = -1;
+  back.setAttribute('aria-keyshortcuts', 'ArrowLeft');
+  next.setAttribute('aria-keyshortcuts', 'ArrowRight Enter');
+  move = (by) => {
+    const to = current + by;
+    if (to < 0 || to > n) return false;
+    show(to);
+    return true;
+  };
   back.addEventListener('click', () => show(current - 1));
   next.addEventListener('click', () => show(current + 1));
   restart.addEventListener('click', () => {
