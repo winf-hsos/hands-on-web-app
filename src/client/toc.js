@@ -1,20 +1,19 @@
 // The table of contents beside a long item marks the section being read: the
-// last heading that has passed a line a third down the window, or the start
-// while none has. At the end of the page the last section counts, even when
-// it is too short to reach that line.
+// last heading that has passed a line near the top of the window, or the
+// start while none has. At the end of the page the last section counts, even
+// when it is too short to reach that line. A section reached through the
+// list, or through the address, stays marked until the reader scrolls on,
+// even when the next heading follows close below it or the page cannot
+// scroll that far.
 const nav = document.querySelector('.toc');
 const links = [...nav.querySelectorAll('a')];
 const list = nav.querySelector('.toc-inner');
 const heads = links.map((a) => (a.hasAttribute('data-toc-start') ? null : document.getElementById(decodeURIComponent(a.hash.slice(1)))));
 
 let current = -1;
-function mark() {
-  const line = innerHeight / 3;
-  let index = 0;
-  heads.forEach((head, i) => {
-    if (head && head.getBoundingClientRect().top <= line) index = i;
-  });
-  if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) index = links.length - 1;
+let pinned = links.findIndex((a) => !a.hasAttribute('data-toc-start') && a.hash === location.hash);
+
+function show(index) {
   if (index === current) return;
   current = index;
   links.forEach((a, i) => (i === index ? a.setAttribute('aria-current', 'location') : a.removeAttribute('aria-current')));
@@ -23,6 +22,17 @@ function mark() {
   if (a.offsetTop < list.scrollTop || a.offsetTop + a.offsetHeight > list.scrollTop + list.clientHeight) {
     list.scrollTop = a.offsetTop - list.clientHeight / 3;
   }
+}
+
+function mark() {
+  if (pinned >= 0) return show(pinned);
+  const line = Math.min(innerHeight / 4, 160);
+  let index = 0;
+  heads.forEach((head, i) => {
+    if (head && head.getBoundingClientRect().top <= line) index = i;
+  });
+  if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) index = links.length - 1;
+  show(index);
 }
 
 let pending = false;
@@ -37,6 +47,24 @@ const schedule = () => {
 addEventListener('scroll', schedule, { passive: true });
 addEventListener('resize', schedule);
 mark();
+
+// The jump itself scrolls the page; only the reader's own scrolling, by
+// wheel, touch or keys, lets the marker follow the page again.
+const release = () => {
+  if (pinned < 0) return;
+  pinned = -1;
+  schedule();
+};
+addEventListener('wheel', release, { passive: true });
+addEventListener('touchmove', release, { passive: true });
+addEventListener('keydown', (e) => ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(e.key) && release());
+
+links.forEach((a, i) =>
+  a.addEventListener('click', () => {
+    pinned = i;
+    show(i);
+  }),
+);
 
 // the start is the top of the page, without a "#" left in the address
 nav.querySelector('[data-toc-start]').addEventListener('click', (event) => {
