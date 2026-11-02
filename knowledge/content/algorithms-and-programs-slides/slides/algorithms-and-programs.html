@@ -8,11 +8,11 @@
   <style>
     /* deck-specific layout only, colours and sizes come from the theme */
     .lines .n { display: inline-block; width: 1.6em; color: var(--gray); font-family: var(--mono); }
-    /* the loop slide: the code needs 835 + 80 px for its widest line and the
-       copy button, the drawing beside it is exactly as wide as its viewBox */
-    .two.loop { grid-template-columns: minmax(0, 1fr) 680px; align-items: start; }
-    .two.loop .code { width: fit-content; }   /* copy button beside the code, not in the gap */
-    .two.loop .drawing svg { display: block; width: 100%; height: auto; }
+    /* the loop slide: the code stands exactly as on the slide before, ending
+       with its copy button at 1266 of 1920; the drawing sits right of it,
+       centred in height and exactly as wide as its viewBox */
+    .loop-drawing { position: absolute; right: 0; top: 50%; width: 460px; transform: translateY(-50%); }
+    .loop-drawing svg { display: block; width: 100%; height: auto; }
   </style>
 </head>
 <body>
@@ -215,23 +215,16 @@ colors = [(255, 0, 0), (0, 255, 0),
 
   <section class="slide has-punch">
     <h2>the loop you write, and what actually happens</h2>
-    <div class="two loop">
-      <div>
-        <div class="header">the loop you write</div>
-        <div class="code">import time
+    <div class="content">
+      <div class="code">import time
 from lifi_hardware import led
-colors = [(255, 0, 0),
-          (0, 255, 0),
-          (0, 0, 255),
-          (255, 255, 0)]
-for r, g, b in colors:
+
+colors = [(255, 0, 0), (0, 255, 0),
+          (0, 0, 255), (255, 255, 0)]
+<span class="hl">for r, g, b in colors:</span>
     led.set_color(r, g, b)
     time.sleep(1)</div>
-      </div>
-      <div>
-        <div class="header">what actually happens</div>
-        <div class="drawing" id="fig-loop"></div>
-      </div>
+      <div class="drawing loop-drawing" id="fig-loop"></div>
     </div>
     <div class="punch" data-step="4">the same two lines run four times, with one value and one second per pass.</div>
     <aside class="notes">Links, was ihr schreibt, rechts, was daraus wird. Ein Tastendruck startet die Schleife, und die vier Durchläufe folgen von selbst aufeinander, jeder mit dem nächsten Wert aus der Liste und jeder eine Sekunde lang, zusammen vier Sekunden.</aside>

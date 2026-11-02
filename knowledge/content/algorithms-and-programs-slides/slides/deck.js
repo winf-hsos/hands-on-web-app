@@ -1,7 +1,7 @@
 // Drawings and animations of "algorithms and programs".
 // Every figure is 1680 units wide, the width of a figure on the 1920 canvas,
-// so text sizes come out as written (20, 32, 48, 80); the loop drawing is 680
-// wide and sits in a column exactly that wide. Figures without an animation
+// so text sizes come out as written (20, 32, 48, 80); the loop drawing is 460
+// wide and sits beside the code in a box exactly that wide. Figures without an animation
 // are redrawn per build-up step (data-on-show, data-on-step); animated ones
 // are drawn once when the deck loads.
 //
@@ -309,35 +309,37 @@ drawTimelines("fig-order", {
 });
 
 /* --- the loop, unrolled in time ---------------------------------------------------
- * 680 wide, the width of its column. Four passes of one second each on a time
- * axis from 50 to 650, 150 per second; a pass is a bar 144 wide in the colour
- * the LED shows, with its number above and its values below (the widest,
- * "255, 255, 0", is 11 x 12 = 132). The passes follow each other on their
- * own once started (auto), one second each as on the device. No marker for
- * "now": one of the colours is yellow. Forward only, like time. */
+ * 460 wide, the width of its box beside the code, which stands exactly as on
+ * the slide before. Time runs downwards on an axis at x 64 from 20 to 500, 120
+ * per second, with its seconds left of it, ending at 44. A pass is a bar from
+ * 70 to 150 in the colour the LED shows, with its number and its values right
+ * of it from 180 (the widest, "255, 255, 0", is 11 x 12 = 132). The passes
+ * follow each other on their own once started (auto), one second each as on
+ * the device. No marker for "now": one of the colours is yellow. Forward
+ * only, like time. */
 (function () {
   if (!$("fig-loop")) return;
   const c = d.colors();
-  const tx = (t) => 50 + t * 150;
+  const ty = (t) => 20 + t * 120;
   const passes = [
     { color: c.red, values: "255, 0, 0" },
     { color: c.green, values: "0, 255, 0" },
     { color: c.blue, values: "0, 0, 255" },
     { color: c.yellow, values: "255, 255, 0" },
   ];
-  const parts = [d.line(tx(0), 250, tx(4), 250, { color: c.dark, width: 2 })];
+  const parts = [d.line(64, ty(0), 64, ty(4), { color: c.dark, width: 2 })];
   for (let t = 0; t <= 4; t += 1) {
-    parts.push(d.line(tx(t), 250, tx(t), 260, { color: c.gray, width: 2 }));
-    parts.push(d.label(tx(t), 0, t + " s", { size: 20, color: c.gray, anchor: "middle", mono: true, centerY: 285 }));
+    parts.push(d.line(54, ty(t), 64, ty(t), { color: c.gray, width: 2 }));
+    parts.push(d.label(44, 0, t + " s", { size: 20, color: c.gray, anchor: "end", mono: true, centerY: ty(t) }));
   }
   passes.forEach((p, k) => {
-    const mid = tx(k + 0.5);
-    parts.push(d.g("n" + k, d.label(mid, 0, "pass " + (k + 1), { size: 20, color: c.gray, anchor: "middle", mono: true, centerY: 70 })));
-    parts.push(d.g("p" + k, bar(tx(k) + 3, tx(k + 1) - 3, 140, 80, p.color)));
-    parts.push(d.g("v" + k, d.label(mid, 0, p.values, { size: 20, color: c.light, anchor: "middle", mono: true, centerY: 210 })));
+    const mid = ty(k + 0.5);
+    parts.push(d.g("n" + k, d.label(180, 0, "pass " + (k + 1), { size: 20, color: c.gray, mono: true, centerY: mid - 16 })));
+    parts.push(d.g("p" + k, `<line x1="110" y1="${ty(k) + 3}" x2="110" y2="${ty(k + 1) - 3}" stroke="${p.color}" stroke-width="80"/>`));
+    parts.push(d.g("v" + k, d.label(180, 0, p.values, { size: 20, color: c.light, mono: true, centerY: mid + 16 })));
   });
-  parts.push(d.g("sum", d.label(340, 0, "four passes, four seconds", { size: 32, color: c.gray, anchor: "middle", centerY: 350 })));
-  $("fig-loop").innerHTML = d.svg(680, 400, ...parts);
+  parts.push(d.g("sum", d.label(4, 0, "four passes, four seconds", { size: 32, color: c.gray, centerY: 560 })));
+  $("fig-loop").innerHTML = d.svg(460, 600, ...parts);
 
   const a = d.anim("fig-loop", { auto: true, gap: 150 });
   passes.forEach((_, k) => {
