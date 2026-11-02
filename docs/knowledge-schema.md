@@ -664,7 +664,7 @@ leads back to the projects. The build checks that the project exists and
 links the item, since otherwise nothing would lead to it. The LiFi project
 holds such items at the start of phase 0: the device (`lifi-device`), the
 software (`lifi-software`), the course module that talks to the device
-(`lifi-hardware`) and the challenges (`lifi-challenges`, how a challenge is
+(`lifi-hardware`), the team cockpit that shows the link live (`lifi-cockpit`) and the challenges (`lifi-challenges`, how a challenge is
 accepted and what each one produces).
 
 A challenge item has the usual fields of an item but no `duration`, since it

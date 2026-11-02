@@ -12,7 +12,7 @@ items: [petzold-code, visual-studio-code]
 phases:
   - id: start
     challenge: lifi-challenge-0
-    items: [lifi-device, lifi-software, lifi-hardware, lifi-challenges, first-light, problem-decomposition, cutting-the-lifi-project, input-processing-output-slides, input-processing-output, input-processing-output-quiz, algorithms-and-programs-slides, algorithms-and-programs, algorithms-and-programs-quiz]
+    items: [lifi-device, lifi-software, lifi-hardware, lifi-cockpit, lifi-challenges, first-light, problem-decomposition, cutting-the-lifi-project, input-processing-output-slides, input-processing-output, input-processing-output-quiz, algorithms-and-programs-slides, algorithms-and-programs, algorithms-and-programs-quiz]
   - id: alphabet
     challenge: lifi-challenge-1
     items:

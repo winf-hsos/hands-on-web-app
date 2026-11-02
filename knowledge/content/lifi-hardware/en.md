@@ -224,7 +224,8 @@ That lets you see your own link live in the browser, in the
 [team cockpit](https://lifi.hsos.uber.space/cockpit): at the top what your LED
 sends, below it what your sensor measures, on a shared time axis. When the two
 do not fit together, you are looking at your fault. The cockpit is your most
-important tool for finding faults on the link.
+important tool for finding faults on the link; how to read and use it is in
+[[lifi-cockpit]].
 
 > [!IMPORTANT]
 > Full transparency applies: what is uploaded is exactly what is in your local

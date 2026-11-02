@@ -230,7 +230,8 @@ seht ihr eure eigene Strecke live im Browser, im
 [Team-Cockpit](https://lifi.hsos.uber.space/cockpit): oben, was eure LED
 sendet, darunter, was euer Sensor misst, auf einer gemeinsamen Zeitachse.
 Passen die beiden nicht zusammen, seht ihr euren Fehler vor euch. Das Cockpit
-ist euer wichtigstes Werkzeug, um Fehler auf der Strecke zu finden.
+ist euer wichtigstes Werkzeug, um Fehler auf der Strecke zu finden; wie ihr es
+lest und bedient, steht in [[lifi-cockpit]].
 
 > [!IMPORTANT]
 > Es gilt volle Transparenz: Hochgeladen wird genau das, was in eurer lokalen
