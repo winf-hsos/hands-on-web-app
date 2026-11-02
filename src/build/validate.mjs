@@ -589,7 +589,7 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
       else if (file.data.based_on && file.data.based_on < doc.lead.updated)
         warnings.push(`${file.path}: translation is older than its lead file`);
       // an info page introduces no concept, so it need not say what is learnt
-      if (file && doc.section === 'content' && !file.data.objectives && !hasType(doc.lead, 'info')) warnings.push(`${file.path}: no objectives (what you learn)`);
+      if (file && doc.section === 'content' && !file.data.objectives && !hasType(doc.lead, 'info') && !hasType(doc.lead, 'quiz')) warnings.push(`${file.path}: no objectives (what you learn)`);
     }
   }
   // A demo page says above the demonstrator what it is for and how to use it,

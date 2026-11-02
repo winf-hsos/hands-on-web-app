@@ -193,7 +193,8 @@ const quizLabels = (lang) =>
 
 /** What a learner takes away from an item: a sentence and the goals (Nicolas, 2026-11-01).
     It is a guide to the content rather than part of it, so it sits in a box of its
-    own, folded until asked for and outside the table of contents (Nicolas, 2026-11-02). */
+    own, folded until asked for and outside the table of contents (Nicolas, 2026-11-02).
+    A quiz shows none: its questions say what it checks (Nicolas, 2026-11-02). */
 function objectivesBlock(site, text, lang) {
   const o = text.data.objectives;
   return (
@@ -279,7 +280,7 @@ export function item(site, doc, lang) {
         </header>
         ${text.missing && html`<p class="notice">${t(lang, 'missing_translation')}</p>`}
         ${text.stale && html`<p class="notice">${t(lang, 'stale_translation')}</p>`}
-        ${objectivesBlock(site, text, lang)}
+        ${!hasType(lead, 'quiz') && objectivesBlock(site, text, lang)}
         ${scriptBlock(site, doc, lang)}
         ${hasType(lead, 'slides') && slidesBlock(site, doc, lang)}
         ${hasType(lead, 'dataset') && datasetBlock(doc, lang)}

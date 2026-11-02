@@ -150,7 +150,9 @@ contents, because it guides into the content rather than belonging to it
 text itself therefore starts without a heading such as "Worum es geht"; the
 first paragraphs are the way into the topic. An item without `objectives` is a
 warning, not an error, so that a new draft can be saved first; an item of type
-`info` may leave them out without a warning.
+`info` may leave them out without a warning. A quiz never shows the box,
+since its questions already say what it checks (Nicolas, 2026-11-02), and it
+needs no `objectives`.
 
 **Several types** (Nicolas, 2026-11-02). An item may have more than one
 type, written as a list: `type: [lesson, slides]`. The item is found under
