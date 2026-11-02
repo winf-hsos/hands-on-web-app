@@ -18,6 +18,7 @@ sections:
     items: [exploratory-data-analysis-slides, analytic-questions, leek-peng-what-is-the-question]
   - path: getting-started-with-r
   - path: data-transformation-with-r
+  - project: monty-hall
 status: published
 updated: 2026-11-02
 ---
