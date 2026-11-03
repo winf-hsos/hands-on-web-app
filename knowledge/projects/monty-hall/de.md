@@ -1,7 +1,7 @@
 ---
 kind: project
 code: 1663
-title: The Monty Hall Problem
+title: Das Monty-Hall-Problem
 summary: >-
   Wechseln oder bleiben? An einem berühmten Ratespiel lernt ihr, ein
   Experiment als Daten festzuhalten, es in R nachzubauen und so oft zu
