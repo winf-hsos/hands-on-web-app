@@ -162,7 +162,9 @@ print(round(worth(1 / 2), 2))
 print(round(worth(1 / 32), 2))
 ```
 
-Ein ganzes Bit bekommt nur die Frage, die das Feld wirklich in zwei Hälften
+Von Hand gerechnet ergibt die halbierende Frage ½ · 1 + ½ · 1 = 1 Bit und die
+Frage nach dem Pik-Ass 1/32 · 5 + 31/32 · 0,05 ≈ 0,16 + 0,05 ≈ 0,2 Bit. Ein
+ganzes Bit bekommt nur die Frage, die das Feld wirklich in zwei Hälften
 teilt, und deshalb gewinnt das Halbieren im Durchschnitt: Es holt aus jeder
 Antwort den größten sicheren Gewinn, und die schiefe Frage lohnt sich erst ganz
 am Ende, wenn nur noch zwei Möglichkeiten übrig sind. Die zweite Zeile zeigt
@@ -232,7 +234,8 @@ einzelnen Punkt, das t einen einzelnen Strich, und ein seltener Buchstabe wie
 das q braucht vier Zeichen, `− − · −`.
 
 Die Ungleichbehandlung lohnt sich, weil sie die durchschnittliche Nachricht
-verkürzt: Was oft vorkommt, soll wenig kosten. Ein seltenes Symbol trägt mehr
+verkürzt: Was oft vorkommt, soll wenig kosten, und nach demselben Grundsatz
+verkleinern Kompressionsverfahren bis heute Dateien. Ein seltenes Symbol trägt mehr
 Information als ein häufiges, also darf es auch mehr Platz einnehmen. Codes
 mit ungleich langen Codewörtern haben allerdings ihren eigenen Preis, denn der
 Empfänger muss herausfinden, wo ein Codewort endet; der Morsecode verwendet
@@ -278,3 +281,15 @@ bedeutet, und wie viel es bedeutet, könnt ihr zählen.
   einzelnen Punkt.
 - Mehr Farben rücken enger zusammen, deshalb legt nur eine Messreihe die Größe
   des eigenen Alphabets fest.
+
+## Zum Weiterlesen
+
+Claude E. Shannon: „A Mathematical Theory of Communication“. *Bell System
+Technical Journal* 27, 1948. Der Aufsatz, aus dem das Bit, die Unsicherheit
+als Logarithmus und die Grenze jeder Kompression stammen; die ersten Seiten
+kommen mit wenig Mathematik aus, und wie es dazu kam, erzählt
+[[claude-shannon]].
+
+James Gleick: *The Information: A History, a Theory, a Flood*. Pantheon, 2011.
+Eine Geschichte der Information von den Trommelsprachen Afrikas über den
+Telegrafen bis zu Shannon, gut lesbar und ohne Formeln.

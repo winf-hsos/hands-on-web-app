@@ -168,7 +168,9 @@ print(round(worth(1 / 2), 2))
 print(round(worth(1 / 32), 2))
 ```
 
-A whole bit goes only to the question that really splits the field in
+Worked out by hand, the halving question gives ½ · 1 + ½ · 1 = 1 bit and the
+question about the ace of spades 1/32 · 5 + 31/32 · 0.05 ≈ 0.16 + 0.05 ≈ 0.2
+bits. A whole bit goes only to the question that really splits the field in
 half, which is why halving wins on average: it takes the largest guaranteed
 gain out of every answer, and the lopsided question pays off only at the very
 end, when just two possibilities are left. The second row also shows that a
@@ -235,7 +237,8 @@ in English, e, gets the shortest code, a single dot, t gets a single dash, and
 a rare letter such as q takes four signals, `− − · −`.
 
 The unequal treatment pays off because it shortens the average message: what
-occurs often should cost little. A rare symbol carries more information than a
+occurs often should cost little, and compression methods still shrink files
+on the same principle today. A rare symbol carries more information than a
 common one, so it may also take up more room. Codes of unequal length have a
 price of their own, though, since the receiver has to find out where one code
 word ends; Morse code uses pauses for that, and a prefix-free code gets by
@@ -278,3 +281,14 @@ means, and how much it means, you can count.
   single dot.
 - More colours move closer together, so only a measurement series settles the
   size of your own alphabet.
+
+## Further reading
+
+Claude E. Shannon: "A Mathematical Theory of Communication". *Bell System
+Technical Journal* 27, 1948. The paper the bit, uncertainty as a logarithm and
+the limit of every compression come from; its first pages get by with little
+mathematics, and [[claude-shannon]] tells how it came about.
+
+James Gleick: *The Information: A History, a Theory, a Flood*. Pantheon, 2011.
+A history of information from the talking drums of Africa through the
+telegraph to Shannon, easy to read and free of formulas.
