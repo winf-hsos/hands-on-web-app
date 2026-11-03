@@ -1,11 +1,11 @@
 ---
 title: "Challenge 0: The spark"
 summary: >-
-  Every device runs on its own laptop: the LED shows a colour from your code, and the sensor keeps reporting what it sees.
+  Every device runs on its own laptop: the LED shines in a colour your program sets, and the sensor keeps reporting what it sees.
 objectives:
   intro: "With this challenge you get your device running and can then:"
   goals:
-    - "make the LED shine in a chosen colour from your own code"
+    - "make the LED shine in a chosen colour from a program of your own"
     - "read and interpret the four values of the sensor"
     - "measure a brightness threshold yourself instead of guessing it"
     - "name, as a human receiver, what makes a transmission fail"
@@ -14,10 +14,10 @@ translation_of: de
 based_on: 2026-11-03
 ---
 
-Before you transmit anything, each device has to run on your own computer: the
-LED shows a colour you choose in code, and the sensor reports what it sees.
+Before you can transmit anything, each device has to run on your own computer: the
+LED shines in a colour you choose in your program, and the sensor reports what it sees.
 
-**Goal:** On each device the LED shows a colour from your code, and the sensor
+**Goal:** On each device the LED shines in a colour your program sets, and the sensor
 keeps printing its four readings. Each person gets their own device running on
 their own laptop, and at the end you switch the LED of one device and watch the
 numbers of the sensor opposite change.

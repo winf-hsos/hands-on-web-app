@@ -3,11 +3,11 @@ type: challenge
 code: 8649
 title: "Challenge 0: Der Funke"
 summary: >-
-  Jedes Gerät läuft am eigenen Laptop: Die LED zeigt eine Farbe aus eurem Code, und der Sensor meldet fortlaufend, was er sieht.
+  Jedes Gerät läuft am eigenen Laptop: Die LED leuchtet in einer Farbe, die euer Programm festlegt, und der Sensor meldet fortlaufend, was er sieht.
 objectives:
   intro: "Mit dieser Challenge bringst du dein Gerät zum Laufen und kannst danach:"
   goals:
-    - "die LED aus eigenem Code in einer gewählten Farbe leuchten lassen"
+    - "die LED aus einem eigenen Programm in einer gewählten Farbe leuchten lassen"
     - "die vier Messwerte des Sensors auslesen und deuten"
     - "einen Schwellenwert für die Helligkeit selbst messen statt raten"
     - "als menschlicher Empfänger benennen, woran eine Übertragung scheitert"
@@ -20,12 +20,12 @@ status: published
 updated: 2026-11-03
 ---
 
-Bevor ihr irgendetwas überträgt, muss jedes Gerät auf eurem eigenen Rechner
-laufen: die LED leuchtet in einer Farbe, die ihr im Code wählt, und der Sensor
-meldet, was er sieht.
+Bevor ihr etwas übertragen könnt, muss jedes Gerät an eurem eigenen Rechner
+laufen: Die LED leuchtet in einer Farbe, die ihr in eurem Programm wählt, und
+der Sensor meldet, was er sieht.
 
-**Ziel:** Auf jedem Gerät zeigt die LED eine Farbe aus eurem Code, und der
-Sensor gibt fortlaufend seine vier Messwerte aus. Jede Person bringt dabei ihr
+**Ziel:** Auf jedem Gerät leuchtet die LED in einer Farbe, die euer Programm
+festlegt, und der Sensor gibt fortlaufend seine vier Messwerte aus. Jede Person bringt dabei ihr
 eigenes Gerät an ihrem eigenen Laptop zum Laufen, und am Ende schaltet ihr die
 LED des einen Geräts um und seht, wie sich die Zahlen des Sensors gegenüber
 ändern.
