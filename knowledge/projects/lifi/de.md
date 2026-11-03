@@ -20,6 +20,8 @@ phases:
       - measurement-and-experiments-quiz
       - analog-and-digital
       - analog-and-digital-quiz
+      - photo-digitiser
+      - audio-digitiser
       - symbols-and-information
       - symbols-and-information-quiz
       - perfect-reception-perfect-nonsense
@@ -44,7 +46,7 @@ phases:
     challenge: lifi-challenge-4
     items: [byte, hexadecimal, binary-prefixes, logic-gates]
 status: published
-updated: 2026-11-02
+updated: 2026-11-03
 ---
 
 Jede Person im Team bekommt ein kleines Gerät mit einer RGB-LED und einem
