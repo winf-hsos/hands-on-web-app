@@ -16,7 +16,7 @@ topics: [transferring-information, representing-information]
 modules: [dup]
 project: lifi
 status: published
-updated: 2026-11-02
+updated: 2026-11-03
 ---
 
 Jetzt geht es um die Strecke selbst. Ein Sensor misst nie zweimal genau
@@ -93,7 +93,7 @@ vorher lernen, wie eure Symbole in diesem Aufbau aussehen, und vergleicht dann
 jeden neuen Messwert mit den Referenzen. Daraus folgt zweierlei: Beim
 Kalibrieren müssen beide Seiten im selben Takt laufen, sonst ordnet der
 Empfänger seine Messwerte den falschen Symbolen zu, und kalibriert wird vor
-jedem Durchgang neu, auch am Testtisch.
+jedem Durchgang neu, auch bei der Abnahme.
 
 **Selbsttest und Abnahme sind dasselbe Skript.** Ihr startet es zweimal, jedes
 in seiner Rolle, mit `python run_test.py sender` und
@@ -101,7 +101,7 @@ in seiner Rolle, mit `python run_test.py sender` und
 (`sent.txt` und `received.txt`); legt beide in einen Ordner und vergleicht sie
 mit `python compare.py`. Für schnelle Versuche zwischendurch genügen weniger
 Durchgänge (`--runs 10`). Weil bei der Abnahme genau dieses Skript läuft, könnt
-ihr den Wertungslauf vorher so oft proben, wie ihr wollt, und am Testtisch
+ihr den Wertungslauf vorher so oft proben, wie ihr wollt, und bei der Abnahme
 passiert nichts Neues. Bewährt hat sich, mit den beiden Farben anzufangen, die
 schon in `SYMBOL_COLORS` stehen, also aus und weiß, und nach 50 fehlerfreien
 Durchgängen auf 4 zu gehen, indem ihr das `#` vor den nächsten beiden Farben
@@ -124,13 +124,14 @@ sich nicht in beiden Terminals im selben Moment drücken, zwischen dem ersten
 und dem zweiten Druck liegt leicht eine Sekunde, und eure Kalibrierung muss das
 aushalten.
 
-**Bei der Abnahme** baut ihr am Testtisch euren Aufbau auf, kalibriert, und es
-werden 20 zufällige Symbole übertragen. Ein einziger Fehler gilt für diese
-Alphabetgröße als nicht bestanden; acht sicher erkannte Zustände sind also mehr
-wert als sechzehn mit gelegentlicher Verwechslung. Als Live-Änderung erweitert
-ihr euer Alphabet, etwa auf bis zu zwölf Symbole, mit weiteren Farben in
-`SYMBOL_COLORS`, und lasst den Test erneut laufen; dafür müsst ihr die Stellen
-in eurem Code finden, die von der Größe des Alphabets abhängen.
+**Bei der Abnahme** lasst ihr den Test am eigenen Platz laufen, kalibriert,
+und es werden 20 zufällige Symbole übertragen; Nicolas geht durch die Reihen,
+sieht sich euren Aufbau an und prüft euer Ergebnis. Ein einziger Fehler gilt
+für diese Alphabetgröße als nicht bestanden, und acht sicher erkannte Zustände
+sind deshalb mehr wert als sechzehn mit gelegentlicher Verwechslung. Eine
+Live-Änderung gibt es in Challenge 1 nicht: Der Durchgang mit 20 zufälligen
+Symbolen ist die ganze Abnahme, und es zählt das größte Alphabet, das ohne
+Fehler läuft.
 
 **Typische Stolpersteine:** feste Schwellenwerte statt einer Kalibrierung vor
 jedem Durchgang („über 500 im Rotkanal heißt Rot“ klappt am Dienstag und

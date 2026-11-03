@@ -10,7 +10,7 @@ objectives:
     - "calculate the number of codewords from the number of colours and places"
     - "trace confusions in the log back to their cause"
 translation_of: de
-based_on: 2026-11-02
+based_on: 2026-11-03
 ---
 
 Now it is about the link itself. A sensor never measures exactly the same
@@ -87,7 +87,7 @@ The receiver cannot calculate which symbol has arrived; it first has to learn
 what your symbols look like in this setup and then compares every new reading
 with the references. Two things follow: during calibration both sides have to
 run in the same rhythm, otherwise the receiver assigns its readings to the
-wrong symbols, and you calibrate again before every run, at the test table too.
+wrong symbols, and you calibrate again before every run, at the acceptance test too.
 
 **Self-test and acceptance test are the same script.** You start it twice,
 each in its role, with `python run_test.py sender` and
@@ -96,7 +96,7 @@ each in its role, with `python run_test.py sender` and
 `python compare.py`. For quick tries in between, fewer runs are enough
 (`--runs 10`). Because exactly this script runs at the acceptance test, you can
 rehearse the scored run as often as you like, and nothing new happens at the
-test table. A good approach is to start with the two colours already in
+acceptance test. A good approach is to start with the two colours already in
 `SYMBOL_COLORS`, just off and white, and after 50 runs without a mistake go up
 to 4 by removing the `#` in front of the next two colours, then to 8; the last
 size without mistakes is your result. If `compare.py` shows the same two
@@ -117,13 +117,13 @@ One thing gets harder: you cannot press Enter in both terminals at the same
 moment, there is easily a second between the first and the second press, and
 your calibration has to cope with that.
 
-**At the acceptance test** you set up your optics at the test table, calibrate,
-and 20 random symbols are sent. A single mistake counts as a fail for that
-alphabet size, so eight states recognised reliably are worth more than sixteen
-with an occasional mix-up. As the live change you extend your alphabet, for
-example to up to twelve symbols with more colours in `SYMBOL_COLORS`, and run
-the test again; for that you have to find the places in your code that depend
-on the size of the alphabet.
+**At the acceptance test** you run the test at your own place, calibrate, and
+20 random symbols are sent; Nicolas comes round, looks at your setup and checks
+your result. A single mistake counts as a fail for that alphabet size, so eight
+states recognised reliably are worth more than sixteen with an occasional
+mix-up. There is no live change in Challenge 1: the run with 20 random symbols
+is the whole acceptance, and the largest alphabet that runs without a mistake
+counts.
 
 **Typical pitfalls:** fixed thresholds instead of calibrating before every run
 ("above 500 in the red channel means red" works on Tuesday and fails on
