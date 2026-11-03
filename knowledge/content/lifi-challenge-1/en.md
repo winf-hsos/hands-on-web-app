@@ -42,21 +42,12 @@ receiver says which one it was. Timing does not matter yet, because in this
 challenge the test script sets the pace: it shows a colour, waits until the
 receiver has measured, and then takes the next one.
 
-**You count three times,** and all three numbers belong in your notes:
-
-1. **By eye:** before you write a line of code, you count how many colours you
-   can reliably tell apart yourselves when you see them one at a time, not side
-   by side. In some respects your eye beats the sensor by far, in others it
-   clearly loses, and one reason matters for the rest of the challenge: your
-   vision recalibrates itself all the time when the light in the room changes,
-   while the sensor simply reports different numbers.
-2. **Without aids:** bare LED, bare sensor, the boxes touching wall to wall.
-3. **With your setup:** you build your light channel, a tube, a shade or
-   whatever you come up with, and measure again.
-
-The third, better result counts. Without the second, though, you cannot know
-whether your setup made any difference at all, which is exactly why this
-control measurement belongs to it. What you may build is described in [[lifi-device]].
+**Four tasks:** first you count by eye, then you teach your receiver in
+`alphabet.py` to learn your colours and recognise them, and finally you grow
+the alphabet, first without and then with your setup. This gives the three
+numbers that belong in your notes. Each task has hints to unfold. There is no
+sample solution for this challenge; instead, the end of the page shows an
+example together with the reasons why it is not a good solution.
 
 **The three results of this challenge** (see [[lifi-challenges]])
 are therefore the measurement logs without and with aids, a photo of your
@@ -85,20 +76,6 @@ add as many functions of your own as you like.
 the receiving one. Both, and `run_test`, come from the course module from
 version 0.5.0 on ([[lifi-hardware]]).
 
-**Why you calibrate:** the receiver cannot calculate which symbol has arrived.
-Its readings depend on distance, room light and the particular part, and the
-same colour never gives exactly the same numbers twice. So it first has to
-learn what your symbols look like in this setup. Before every run, `run_test`
-therefore shows your whole alphabet once, takes a few readings of each colour
-and hands them to your `calibrate(readings)`: `readings[0]` is the list of
-readings taken while colour 0 was showing, `readings[1]` those of colour 1,
-and so on, and every reading has the four channels `r`, `g`, `b` and `c`. What
-you keep from them, an average, a range or a rule, is your decision. During
-the test, `receive_symbol()` then compares every new reading with what you
-kept and picks the most similar colour. Calibration happens again before every
-run, at the acceptance test too, because after being carried around and under
-different light old values no longer fit.
-
 ## Running the test
 
 ```text
@@ -126,15 +103,79 @@ last line to
 `run_test(send_symbol, receive_symbol, calibrate, symbols=len(COLORS), runs=5)`.
 Only runs with 20 attempts count.
 
-**A good approach** is to start with the two colours already in `COLORS`, just
-off and white. When 20 attempts get through without a mistake, go up to 4 by
-removing the `#` in front of the next two colours, then to 8. At some point
-mistakes appear, and the last size without mistakes is your result. It does
-not pay to gamble high, because eight states recognised reliably are worth
-more than sixteen with an occasional mix-up. When there are mistakes, the
-result shows you what they look like: if the same two colours are mixed up
-every time, they are too close together; if it looks random, the calibration
-is the more likely culprit.
+## Task 1: Count by eye
+
+Before you write a line of code, you count how many colours you can reliably
+tell apart yourselves when you see them one at a time, not side by side. In
+some respects your eye beats the sensor by far, in others it clearly loses,
+and one reason matters for the rest of the challenge: your vision recalibrates
+itself all the time when the light in the room changes, while the sensor
+simply reports different numbers.
+
+**File:** none; the number goes into your notes.
+
+> [!HINT]
+> One of you lets the LED show colours one at a time and in random order, for example with `task_3_color_cycle.py` from challenge 0, and the other names each colour without being able to compare it with another. Start with a few clearly different colours and add more similar ones step by step.
+
+## Task 2: Calibrate
+
+The receiver cannot calculate which symbol has arrived.
+Its readings depend on distance, room light and the particular part, and the
+same colour never gives exactly the same numbers twice. So it first has to
+learn what your symbols look like in this setup. Before every run, `run_test`
+therefore shows your whole alphabet once, takes a few readings of each colour
+and hands them to your `calibrate(readings)`: `readings[0]` is the list of
+readings taken while colour 0 was showing, `readings[1]` those of colour 1,
+and so on, and every reading has the four channels `r`, `g`, `b` and `c`. What
+you keep from them, an average, a range or a rule, is your decision. During
+the test, `receive_symbol()` then compares every new reading with what you
+kept and picks the most similar colour. Calibration happens again before every
+run, at the acceptance test too, because after being carried around and under
+different light old values no longer fit.
+
+**File:** `alphabet.py`, the function `calibrate(readings)`
+
+> [!HINT]
+> The template keeps only the first reading of each colour. An average over all readings of a colour is calmer, because the small fluctuations of the sensor even out.
+
+> [!HINT]
+> `readings[index]` is a list of readings, and `sum(reading.r for reading in readings[index]) / len(readings[index])` is the average of the red channel for this colour. The same goes for `g`, `b` and `c`, and you store all four together in `REFERENCES[index]`.
+
+## Task 3: Recognise
+
+`receive_symbol()` measures once and returns the number of the colour whose
+reference from the calibration is most similar to the reading. So far the
+template always returns 0, so it only passes as long as every colour sent
+happens to be colour 0.
+
+**File:** `alphabet.py`, the function `receive_symbol()`
+
+> [!HINT]
+> What "similar" means is up to you. An obvious choice is how far the reading lies from the reference of a colour on all four channels together; the colour with the smallest distance wins.
+
+> [!HINT]
+> Do not decide by which channel is largest. That works for red, green and blue in a quiet room and fails for everything else; why is explained below in the section on the example.
+
+## Task 4: Grow the alphabet
+
+Now you measure how many colours your link tells apart in 20 attempts without
+a single mistake, and you do it twice: first without aids, with a bare LED, a
+bare sensor and the boxes touching wall to wall, and then with your setup, a
+tube, a shade or whatever you come up with.
+
+The result with your setup counts. Without the measurement without aids,
+though, you cannot know whether your setup made any difference at all, which is exactly why this
+control measurement belongs to it. What you may build is described in [[lifi-device]].
+
+**File:** `alphabet.py`, the list `COLORS`
+
+> [!HINT]
+> Start with the two colours already in `COLORS`, just off and white. When 20 attempts get through without a mistake, go up to 4 by removing the `#` in front of the next two colours, then to 8. The last size without mistakes is your result, and it does not pay to gamble high, because eight states recognised reliably are worth more than sixteen with an occasional mix-up.
+
+> [!HINT]
+> When there are mistakes, the result shows you what they look like. If the same two colours are mixed up every time, they are too close together, and you replace one of them; if it looks random, the calibration is the more likely culprit.
+
+## The acceptance test
 
 **At the acceptance test** you run the test at your own place, with the boxes
 of sender and receiver touching wall to wall. Nicolas comes round, looks at

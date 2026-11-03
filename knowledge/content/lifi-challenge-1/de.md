@@ -49,21 +49,13 @@ Rolle, denn den Takt gibt in dieser Challenge das Testskript vor: Es zeigt
 eine Farbe, wartet, bis der Empfänger gemessen hat, und nimmt dann die
 nächste.
 
-**Dreimal gezählt** wird, und alle drei Zahlen gehören in eure Notizen:
-
-1. **Mit bloßem Auge:** Bevor ihr eine Zeile Code schreibt, zählt ihr, wie
-   viele Farben ihr selbst sicher unterscheidet, wenn ihr sie einzeln seht und
-   nicht nebeneinander. In manchem schlägt euer Auge den Sensor deutlich, in
-   anderem verliert es klar, und ein Grund dafür zählt für den Rest der
-   Challenge: Euer Sehen kalibriert sich ständig neu, wenn sich das Licht im
-   Raum ändert, der Sensor dagegen meldet einfach andere Zahlen.
-2. **Ohne Hilfsmittel:** nackte LED, nackter Sensor, Gehäuse Wand an Wand.
-3. **Mit eurem Aufbau:** Ihr baut euren Lichtkanal, eine Röhre, eine Blende
-   oder was euch einfällt, und messt erneut.
-
-Es zählt das dritte, bessere Ergebnis. Ohne das zweite wisst ihr aber nicht, ob
-euer Aufbau überhaupt etwas gebracht hat, und genau darum gehört diese
-Kontrollmessung dazu. Was ihr bauen dürft, steht unter [[lifi-device]].
+**Vier Aufgaben:** Zuerst zählt ihr mit bloßem Auge, dann bringt ihr eurem
+Empfänger in `alphabet.py` bei, eure Farben zu lernen und wiederzuerkennen,
+und zuletzt vergrößert ihr das Alphabet, erst ohne und dann mit eurem Aufbau.
+So entstehen die drei Zahlen, die in eure Notizen gehören. Zu jeder Aufgabe
+gibt es Tipps zum Aufklappen. Eine Musterlösung gibt es für diese Challenge
+nicht; am Ende der Seite steht stattdessen ein Beispiel mit der Erklärung,
+warum es keine gute Lösung ist.
 
 **Die drei Ergebnisse dieser Challenge** (siehe [[lifi-challenges]]) sind damit die Messprotokolle ohne und mit Hilfsmitteln, als
 Beschreibung eurer Lösung ein Foto des Aufbaus mit einem Satz, warum ihr ihn so
@@ -90,21 +82,6 @@ Funktionen dürft ihr beliebig ergänzen.
 `sender.led` ist die LED des sendenden Geräts, `receiver.sensor` der Sensor
 des empfangenden. Beides und `run_test` kommen aus dem Kursmodul ab Version
 0.5.0 ([[lifi-hardware]]).
-
-**Warum ihr kalibriert:** Der Empfänger kann nicht ausrechnen, welches Symbol
-angekommen ist. Seine Messwerte hängen von Abstand, Raumlicht und dem
-einzelnen Bauteil ab, und dieselbe Farbe ergibt nie zweimal genau dieselben
-Zahlen. Er muss also erst lernen, wie eure Symbole in diesem Aufbau aussehen.
-Vor jedem Durchgang zeigt `run_test` deshalb euer ganzes Alphabet einmal,
-nimmt von jeder Farbe ein paar Messwerte auf und übergibt sie eurem
-`calibrate(readings)`: `readings[0]` ist die Liste der Messwerte, während
-Farbe 0 leuchtete, `readings[1]` die von Farbe 1 und so weiter, und jeder
-Messwert hat die vier Kanäle `r`, `g`, `b` und `c`. Was ihr davon behaltet,
-einen Mittelwert, einen Bereich oder eine Regel, entscheidet ihr. Im Test
-vergleicht `receive_symbol()` dann jeden neuen Messwert damit und wählt die
-ähnlichste Farbe. Kalibriert wird vor jedem Durchgang neu, auch bei der
-Abnahme, denn nach dem Tragen und unter anderem Licht passen alte Werte nicht
-mehr.
 
 ## Den Test starten
 
@@ -133,15 +110,79 @@ Versuche, dafür ändert ihr die letzte Zeile in
 `run_test(send_symbol, receive_symbol, calibrate, symbols=len(COLORS), runs=5)`.
 Gewertet werden nur Durchgänge mit 20 Versuchen.
 
-**Bewährt hat sich,** mit den beiden Farben anzufangen, die schon in `COLORS`
-stehen, also aus und weiß. Klappen damit 20 Versuche ohne Fehler, geht ihr auf
-4, indem ihr das `#` vor den nächsten beiden Farben entfernt, und dann auf 8.
-Irgendwann tauchen Fehler auf, und die letzte Größe ohne Fehler ist euer
-Ergebnis. Hoch zu pokern lohnt sich nicht, denn acht sicher erkannte Zustände
-sind mehr wert als sechzehn mit gelegentlicher Verwechslung. Bei Fehlern zeigt
-euch das Ergebnis, wie sie aussehen: Werden jedes Mal dieselben zwei Farben
-verwechselt, liegen sie zu dicht beieinander, sieht es zufällig aus, ist eher
-die Kalibrierung schuld.
+## Aufgabe 1: Mit bloßem Auge zählen
+
+Bevor ihr eine Zeile Code schreibt, zählt ihr, wie viele Farben ihr selbst
+sicher unterscheidet, wenn ihr sie einzeln seht und nicht nebeneinander. In
+manchem schlägt euer Auge den Sensor deutlich, in anderem verliert es klar,
+und ein Grund dafür zählt für den Rest der Challenge: Euer Sehen kalibriert
+sich ständig neu, wenn sich das Licht im Raum ändert, der Sensor dagegen
+meldet einfach andere Zahlen.
+
+**Datei:** keine; die Zahl kommt in eure Notizen.
+
+> [!HINT]
+> Eine Person lässt die LED Farben einzeln und in zufälliger Reihenfolge zeigen, etwa mit `task_3_color_cycle.py` aus Challenge 0, und die andere nennt jede Farbe, ohne sie mit einer anderen vergleichen zu können. Fangt mit wenigen, deutlich verschiedenen Farben an und nehmt nach und nach ähnlichere dazu.
+
+## Aufgabe 2: Kalibrieren
+
+Der Empfänger kann nicht ausrechnen, welches Symbol angekommen ist. Seine Messwerte hängen von Abstand, Raumlicht und dem
+einzelnen Bauteil ab, und dieselbe Farbe ergibt nie zweimal genau dieselben
+Zahlen. Er muss also erst lernen, wie eure Symbole in diesem Aufbau aussehen.
+Vor jedem Durchgang zeigt `run_test` deshalb euer ganzes Alphabet einmal,
+nimmt von jeder Farbe ein paar Messwerte auf und übergibt sie eurem
+`calibrate(readings)`: `readings[0]` ist die Liste der Messwerte, während
+Farbe 0 leuchtete, `readings[1]` die von Farbe 1 und so weiter, und jeder
+Messwert hat die vier Kanäle `r`, `g`, `b` und `c`. Was ihr davon behaltet,
+einen Mittelwert, einen Bereich oder eine Regel, entscheidet ihr. Im Test
+vergleicht `receive_symbol()` dann jeden neuen Messwert damit und wählt die
+ähnlichste Farbe. Kalibriert wird vor jedem Durchgang neu, auch bei der
+Abnahme, denn nach dem Tragen und unter anderem Licht passen alte Werte nicht
+mehr.
+
+**Datei:** `alphabet.py`, die Funktion `calibrate(readings)`
+
+> [!HINT]
+> Die Vorlage behält von jeder Farbe nur den ersten Messwert. Ein Mittelwert über alle Messwerte einer Farbe ist ruhiger, weil sich die kleinen Schwankungen des Sensors dabei ausgleichen.
+
+> [!HINT]
+> `readings[index]` ist eine Liste von Messwerten, und `sum(reading.r for reading in readings[index]) / len(readings[index])` ist der Mittelwert des Rotkanals für diese Farbe. Dasselbe gilt für `g`, `b` und `c`, und alle vier zusammen legt ihr in `REFERENCES[index]` ab.
+
+## Aufgabe 3: Erkennen
+
+`receive_symbol()` misst einmal und gibt die Nummer der Farbe zurück, deren
+Referenz aus der Kalibrierung dem Messwert am ähnlichsten ist. Die Vorlage
+gibt bisher immer 0 zurück, besteht also nur, solange jede gesendete Farbe
+zufällig Farbe 0 ist.
+
+**Datei:** `alphabet.py`, die Funktion `receive_symbol()`
+
+> [!HINT]
+> Was „ähnlich“ heißt, legt ihr selbst fest. Naheliegend ist, wie weit der Messwert auf allen vier Kanälen zusammen von der Referenz einer Farbe entfernt liegt; die Farbe mit dem kleinsten Abstand gewinnt.
+
+> [!HINT]
+> Entscheidet nicht danach, welcher Kanal am größten ist. Das klappt für Rot, Grün und Blau in einem ruhigen Raum und versagt bei allem anderen; warum, steht unten im Abschnitt zum Beispiel.
+
+## Aufgabe 4: Das Alphabet vergrößern
+
+Jetzt messt ihr, wie viele Farben eure Strecke in 20 Versuchen ohne einen
+Fehler unterscheidet, und zwar zweimal: zuerst ohne Hilfsmittel, also mit
+nackter LED und nacktem Sensor und den Gehäusen Wand an Wand, und danach mit
+eurem Aufbau, einer Röhre, einer Blende oder was euch einfällt.
+
+Es zählt das Ergebnis mit eurem Aufbau. Ohne die Messung ohne Hilfsmittel wisst
+ihr aber nicht, ob euer Aufbau überhaupt etwas gebracht hat, und genau darum gehört diese
+Kontrollmessung dazu. Was ihr bauen dürft, steht unter [[lifi-device]].
+
+**Datei:** `alphabet.py`, die Liste `COLORS`
+
+> [!HINT]
+> Fangt mit den beiden Farben an, die schon in `COLORS` stehen, also aus und weiß. Klappen damit 20 Versuche ohne Fehler, geht ihr auf 4, indem ihr das `#` vor den nächsten beiden Farben entfernt, und dann auf 8. Die letzte Größe ohne Fehler ist euer Ergebnis, und hoch zu pokern lohnt sich nicht, denn acht sicher erkannte Zustände sind mehr wert als sechzehn mit gelegentlicher Verwechslung.
+
+> [!HINT]
+> Bei Fehlern zeigt euch das Ergebnis, wie sie aussehen. Werden jedes Mal dieselben zwei Farben verwechselt, liegen sie zu dicht beieinander, und ihr ersetzt eine davon; sieht es zufällig aus, ist eher die Kalibrierung schuld.
+
+## Abnahme
 
 **Bei der Abnahme** lasst ihr den Test am eigenen Platz laufen, und die
 Gehäuse von Sender und Empfänger berühren sich dabei mit den Wänden. Nicolas
