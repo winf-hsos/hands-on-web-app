@@ -295,10 +295,10 @@ COLORS = [
 **Bei der Abnahme** lasst ihr den Test am eigenen Platz laufen, und die
 Gehäuse von Sender und Empfänger berühren sich dabei mit den Wänden. Nicolas
 geht durch die Reihen, sieht sich euren Aufbau an und prüft euer Ergebnis. Ein
-einziger Fehler gilt für diese Alphabetgröße als nicht bestanden. Danach kann
-eine Live-Änderung kommen, etwa „Geht auf zwölf Farben und lasst es noch
-einmal laufen“, und dafür müsst ihr die Stellen in eurem Code finden, die von
-der Größe des Alphabets abhängen.
+einziger Fehler gilt für diese Alphabetgröße als nicht bestanden. Eine
+Live-Änderung gibt es in Challenge 1 nicht: Der Durchgang mit 20 zufälligen
+Farben ist die ganze Abnahme, und es zählt das größte Alphabet, das ohne Fehler
+läuft.
 
 ## Ein Beispiel, keine Lösung
 

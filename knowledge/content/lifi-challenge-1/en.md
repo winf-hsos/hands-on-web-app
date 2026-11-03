@@ -288,9 +288,9 @@ COLORS = [
 **At the acceptance test** you run the test at your own place, with the boxes
 of sender and receiver touching wall to wall. Nicolas comes round, looks at
 your setup and checks your result. A single mistake counts as a fail for that
-alphabet size. After that a live change may come, for example "Go up to twelve
-colours and run it again", and for that you have to find the places in your
-code that depend on the size of the alphabet.
+alphabet size. There is no live change in Challenge 1: the run with 20 random
+colours is the whole acceptance, and the largest alphabet that runs without a
+mistake counts.
 
 ## An example, not a solution
 
