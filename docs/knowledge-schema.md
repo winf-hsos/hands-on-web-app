@@ -745,7 +745,12 @@ in time became runnable code with the simulated LED.
 lesson of that id and the deck `measuring-and-experimenting`, whose id went
 away: its three page figures (calibration, decisions, integration) had already
 been redrawn from the deck in the item's `figures.js`, and the lesson now
-follows the deck's four parts.
+follows the deck's four parts. `symbols-and-information` was the sixth, from
+the lesson and the deck `symbols-and-information-slides`: the page's table of
+two mappings now shows the slide's example (team read as meat, on the German
+page gans read as sang), and the bars of what a bigger alphabet buys came to
+the page as a third figure. Every merged item lists the id it replaced under
+`formerly`, so the old address still leads to it.
 
 ## 9a. Projects
 
