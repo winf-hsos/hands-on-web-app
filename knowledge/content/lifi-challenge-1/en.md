@@ -144,6 +144,10 @@ run_test(send_symbol, receive_symbol, calibrate, symbols=len(COLORS))
 
 ## Running the test
 
+A run has two parts, and `run_test` carries out both, one after the other:
+
+![Two rows. At the top calibrating, once before every run: every colour once in order, through send_symbol(index) and light to calibrate(readings). An arrow labelled REFERENCES leads from calibrate down to receive_symbol(). At the bottom testing with 20 tries: the course server hands the random sequence to send_symbol(index), light goes to receive_symbol(), and the recognised number goes back to the course server, which compares; the result appears in the team cockpit. calibrate and receive_symbol have a bright frame, everything else a grey one.](figure:run-test "First calibrate learns your colours, then receive_symbol recognises every colour of the random sequence. The two functions with a bright frame are the ones you write.")
+
 ```text
 python alphabet.py
 ```

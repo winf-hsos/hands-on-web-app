@@ -151,6 +151,10 @@ run_test(send_symbol, receive_symbol, calibrate, symbols=len(COLORS))
 
 ## Den Test starten
 
+Ein Durchgang hat zwei Teile, und `run_test` führt beide nacheinander aus:
+
+![Zwei Reihen. Oben Kalibrieren, einmal vor jedem Durchgang: jede Farbe einmal der Reihe nach, über send_symbol(index) und Licht zu calibrate(readings). Ein Pfeil mit REFERENCES führt von calibrate hinunter zu receive_symbol(). Unten Testen mit 20 Versuchen: Der Kursserver liefert die Zufallsfolge an send_symbol(index), Licht geht zu receive_symbol(), und die erkannte Nummer geht zurück zum Kursserver, der vergleicht; das Ergebnis erscheint im Team-Cockpit. calibrate und receive_symbol sind hell umrandet, alles andere grau.](figure:run-test "Erst lernt calibrate eure Farben, dann erkennt receive_symbol jede Farbe der Zufallsfolge. Hell umrandet sind die beiden Funktionen, die ihr schreibt.")
+
 ```text
 python alphabet.py
 ```
