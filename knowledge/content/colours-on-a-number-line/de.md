@@ -22,7 +22,7 @@ relations:
   requires: [sent-is-not-measured]
   see_also: [measuring-and-experimenting, analog-and-digital-slides, why-two-states]
 status: draft
-updated: 2026-11-01
+updated: 2026-11-03
 ---
 
 Ihr sendet acht Farben über eure Strecke und tragt ein, wo jede auf einer
@@ -150,7 +150,7 @@ for lower, upper in zip(ordered, ordered[1:]):
 
 > [!TIP]
 > Eine Lücke, die kleiner ist als die Breite der beiden Bänder, ist knapp.
-> Fünf Ablesungen zeigen das Band nur ungefähr, und bei 50 Versuchen findet
+> Fünf Ablesungen zeigen das Band nur ungefähr, und bei 20 Versuchen findet
 > ein einzelner Ausreißer genau diese Lücke.
 
 ## Runde 3: mit eurer eigenen Optik
@@ -211,7 +211,7 @@ unter die erste.
 - Zwei Farben, die in `c` fast gleich liegen, können sich in `r`, `g` oder `b`
   deutlich unterscheiden. Was würde das für die Zahl eurer Farben bedeuten?
 - Und die Frage, die bleibt, ist die von Challenge 1: Wie viele Farben behaltet
-  ihr, wenn in 50 Versuchen kein einziger Wert in das Band einer anderen Farbe
+  ihr, wenn in 20 Versuchen kein einziger Wert in das Band einer anderen Farbe
   fallen darf?
 
 Warum mehr Bereiche bei gleichem Rauschen enger werden, zeigen die Folien

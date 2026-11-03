@@ -13,7 +13,7 @@ objectives:
     - "carry out a control measurement without aids and with your own optics, and compare the two results"
     - "pose the question of Challenge 1, how many states your link tells apart without error, from your own measurements"
 translation_of: de
-based_on: 2026-11-01
+based_on: 2026-11-03
 ---
 
 You send eight colours across your link and record where each one lands on a
@@ -140,7 +140,7 @@ for lower, upper in zip(ordered, ordered[1:]):
 
 > [!TIP]
 > A gap smaller than the width of the two bands is tight. Five readings show
-> the band only roughly, and over 50 attempts a single outlier will find
+> the band only roughly, and over 20 attempts a single outlier will find
 > exactly this gap.
 
 ## Round 3: with your own optics
@@ -200,7 +200,7 @@ table and draw a second number line below the first.
 - Two colours that lie almost on top of each other in `c` can differ clearly
   in `r`, `g` or `b`. What would that mean for the number of your colours?
 - And the question that remains is the one of Challenge 1: how many colours
-  do you keep if, over 50 attempts, not a single value may fall into the band
+  do you keep if, over 20 attempts, not a single value may fall into the band
   of another colour?
 
 Why more regions get narrower with the same noise is shown in the slides

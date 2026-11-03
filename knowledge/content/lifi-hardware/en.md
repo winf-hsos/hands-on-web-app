@@ -11,7 +11,7 @@ objectives:
     - "address two devices on one laptop separately"
     - "say what the measurement log records, what of it is uploaded and how you switch that off"
 translation_of: de
-based_on: 2026-11-02
+based_on: 2026-11-03
 ---
 
 In Python, a module is a piece of finished program code that you pull into
@@ -210,6 +210,38 @@ can copy the right one. The same choice works without changing the code
 through the environment variable `LIFI_MASTER`, and with
 `LifiDevice.connect(master="64SK5w")`. This needs version 0.4.0 of the course
 module or newer.
+
+### Sender, receiver and the test for challenge 1
+
+From version 0.5.0 on, the course module knows three more names for
+[[lifi-challenge-1]]: `sender` and `receiver` are the two devices of your team,
+each with `.led` and `.sensor`, and `run_test` runs the test. Your file sets
+its colours and three functions and hands them over in its last line:
+
+```python static
+from lifi_hardware import receiver, run_test, sender
+
+COLORS = [(0, 0, 0), (255, 255, 255)]
+
+def calibrate(readings):        # readings[i]: the readings while colour i showed
+    ...
+
+def send_symbol(index):
+    r, g, b = COLORS[index]
+    sender.led.set_color(r, g, b)
+
+def receive_symbol():
+    r, g, b, c = receiver.sensor.read()
+    return 0                    # the number of the colour you recognised
+
+run_test(send_symbol, receive_symbol, calibrate, symbols=len(COLORS))
+```
+
+Which device sends, the module asks at the start, whether both hang on one
+laptop or each on its own. What was sent and what was received, `run_test`
+notes itself through `note_sent()` and `note_received()` and sends it to the
+course server, which compares; your code does not call these two functions, so
+that the result does not depend on what your script considers sent.
 
 ## The measurement log and the cockpit
 

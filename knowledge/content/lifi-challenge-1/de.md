@@ -3,20 +3,20 @@ type: challenge
 code: 9618
 title: "Challenge 1: Das Alphabet"
 summary: >-
-  Wie viele Farben unterscheidet eure Strecke in 50 Versuchen ohne einen Fehler? Die Antwort ist euer Alphabet für alles Weitere.
+  Wie viele Farben unterscheidet eure Strecke in 20 Versuchen ohne einen Fehler? Die Antwort ist euer Alphabet für alles Weitere.
 objectives:
   intro: "Mit dieser Challenge findest du mit deinem Team das Alphabet eurer Strecke und kannst danach:"
   goals:
     - "Sender und Empfänger vor jedem Durchgang kalibrieren"
     - "mit einer Kontrollmessung zeigen, ob ein Aufbau etwas bringt"
     - "aus der Zahl der Farben und Stellen die Zahl der Codewörter berechnen"
-    - "Verwechslungen im Protokoll auf ihre Ursache zurückführen"
+    - "Verwechslungen im Ergebnis auf ihre Ursache zurückführen"
 level: 1
 topics: [transferring-information, representing-information]
 modules: [dup]
 project: lifi
 status: published
-updated: 2026-11-02
+updated: 2026-11-03
 ---
 
 Jetzt geht es um die Strecke selbst. Ein Sensor misst nie zweimal genau
@@ -33,7 +33,7 @@ geht in beide Richtungen. Mit *k* Farben und *n* Stellen unterscheidet ihr
 *k*ⁿ Codewörter, und wer weiß, wie viele Zeichen er braucht, kann ausrechnen,
 wie viele Stellen das kostet.
 
-**Ziel:** Herausfinden, wie viele Zustände eure Strecke in 50 Versuchen ohne
+**Ziel:** Herausfinden, wie viele Zustände eure Strecke in 20 Versuchen ohne
 einen einzigen Fehler unterscheidet. Das entscheidet über das ganze Projekt:
 Wer vier Zustände sicher unterscheidet, sendet später zwei Bit je Symbol, wer
 sechzehn schafft, sendet vier und überträgt bei gleichem Tempo doppelt so viel.
@@ -45,8 +45,9 @@ Abstand, eurem Raum und dem ab, was ihr dazwischen baut.
 
 **Aufgabe:** Der Sender zeigt eine Farbe aus einem Satz, den ihr selbst
 festlegt, und der Empfänger sagt, welche es war. Timing spielt noch keine
-Rolle: Ein Mensch drückt die Eingabetaste, das Programm misst, und der Name des
-erkannten Zustands erscheint beim Empfänger.
+Rolle, denn den Takt gibt in dieser Challenge das Testskript vor: Es zeigt
+eine Farbe, wartet, bis der Empfänger gemessen hat, und nimmt dann die
+nächste.
 
 **Dreimal gezählt** wird, und alle drei Zahlen gehören in eure Notizen:
 
@@ -56,13 +57,13 @@ erkannten Zustands erscheint beim Empfänger.
    anderem verliert es klar, und ein Grund dafür zählt für den Rest der
    Challenge: Euer Sehen kalibriert sich ständig neu, wenn sich das Licht im
    Raum ändert, der Sensor dagegen meldet einfach andere Zahlen.
-2. **Ohne Hilfsmittel:** nackte LED, nackter Sensor, fester Abstand.
+2. **Ohne Hilfsmittel:** nackte LED, nackter Sensor, Gehäuse Wand an Wand.
 3. **Mit eurem Aufbau:** Ihr baut euren Lichtkanal, eine Röhre, eine Blende
    oder was euch einfällt, und messt erneut.
 
 Es zählt das dritte, bessere Ergebnis. Ohne das zweite wisst ihr aber nicht, ob
-euer Aufbau überhaupt etwas gebracht hat, und genau darum ist diese
-Kontrollmessung Pflicht. Was ihr bauen dürft, steht unter [[lifi-device]].
+euer Aufbau überhaupt etwas gebracht hat, und genau darum gehört diese
+Kontrollmessung dazu. Was ihr bauen dürft, steht unter [[lifi-device]].
 
 **Die drei Ergebnisse dieser Challenge** (siehe [[lifi-challenges]]) sind damit die Messprotokolle ohne und mit Hilfsmitteln, als
 Beschreibung eurer Lösung ein Foto des Aufbaus mit einem Satz, warum ihr ihn so
@@ -71,66 +72,214 @@ ergiebigste Quelle: Fragt ihr den Assistenten, warum die Röhre nicht hilft,
 schlägt er mattschwarze Innenwände, Blenden und engere Öffnungen vor, alles
 plausibel und nichts davon geprüft, bis ihr es gemessen habt.
 
-**Was ihr in der Vorlage ausfüllt:** In dieser Challenge sendet ein Gerät nur
-und das andere empfängt nur, deshalb hat jede Seite ihre eigene Datei, und eine
-dritte hält fest, worauf sich beide einigen müssen. Das Testskript ruft genau
-vier Funktionen auf, nicht mehr. Wie ihr sie innen baut, ist eure Sache, und
-eigene Funktionen dürft ihr beliebig ergänzen.
+## Eine Datei für alles
 
-| Datei | Was hineinkommt |
+Für diese Challenge habt ihr genau eine Datei, `alphabet.py`, ganz gleich, ob
+ihr mit einem Laptop arbeitet oder mit zwei. Das Testskript ruft drei eurer
+Funktionen auf, nicht mehr; wie ihr sie innen baut, ist eure Sache, und eigene
+Funktionen dürft ihr beliebig ergänzen.
+
+| Teil | Was hineinkommt |
 |---|---|
-| `agreement.py` | `SYMBOL_COLORS`, euer Alphabet, eine Farbe je Zeile; die erste Zeile ist Symbol 0. `ALPHABET_SIZE` zählt die Zeilen selbst und wird nie von Hand geändert |
-| `sender.py` | `calibrate()` spielt euer Alphabet einmal durch, `send_symbol(index)` zeigt ein Symbol und kehrt erst zurück, wenn der Empfänger genug Zeit zum Messen hatte |
-| `receiver.py` | `calibrate()` misst dabei mit und legt für jedes Symbol einen Referenzwert in `REFERENCES` ab, `receive_symbol()` misst und gibt zurück, welches Symbol es war |
+| `COLORS` | euer Alphabet, eine Farbe je Zeile; die erste Zeile ist Farbe 0 |
+| `calibrate(readings)` | lernt aus den Messwerten, die der Test übergibt, wie jede Farbe beim Empfänger aussieht |
+| `send_symbol(index)` | zeigt Farbe Nummer `index` auf der LED des Senders; diese Funktion ist schon fertig |
+| `receive_symbol()` | misst und gibt die Nummer der Farbe zurück, die es erkannt hat |
+| `run_test(...)` | die letzte Zeile; sie führt den Test aus, und ihr ändert sie nicht |
 
-Was auf beiden Seiten gleich sein muss, gehört in `agreement.py` und nicht
-doppelt in die beiden anderen Dateien, denn so können sich Sender und Empfänger
-darin nie widersprechen. LED und Sensor kommen in dieser Datei nicht vor, sie
-hält nur Vereinbarungen fest.
+`sender.led` ist die LED des sendenden Geräts, `receiver.sensor` der Sensor
+des empfangenden. Beides und `run_test` kommen aus dem Kursmodul ab Version
+0.5.0 ([[lifi-hardware]]).
 
-Der Empfänger kann nicht ausrechnen, welches Symbol angekommen ist, er muss
-vorher lernen, wie eure Symbole in diesem Aufbau aussehen, und vergleicht dann
-jeden neuen Messwert mit den Referenzen. Daraus folgt zweierlei: Beim
-Kalibrieren müssen beide Seiten im selben Takt laufen, sonst ordnet der
-Empfänger seine Messwerte den falschen Symbolen zu, und kalibriert wird vor
-jedem Durchgang neu, auch am Testtisch.
+**Warum ihr kalibriert:** Der Empfänger kann nicht ausrechnen, welches Symbol
+angekommen ist. Seine Messwerte hängen von Abstand, Raumlicht und dem
+einzelnen Bauteil ab, und dieselbe Farbe ergibt nie zweimal genau dieselben
+Zahlen. Er muss also erst lernen, wie eure Symbole in diesem Aufbau aussehen.
+Vor jedem Durchgang zeigt `run_test` deshalb euer ganzes Alphabet einmal,
+nimmt von jeder Farbe ein paar Messwerte auf und übergibt sie eurem
+`calibrate(readings)`: `readings[0]` ist die Liste der Messwerte, während
+Farbe 0 leuchtete, `readings[1]` die von Farbe 1 und so weiter, und jeder
+Messwert hat die vier Kanäle `r`, `g`, `b` und `c`. Was ihr davon behaltet,
+einen Mittelwert, einen Bereich oder eine Regel, entscheidet ihr. Im Test
+vergleicht `receive_symbol()` dann jeden neuen Messwert damit und wählt die
+ähnlichste Farbe. Kalibriert wird vor jedem Durchgang neu, auch bei der
+Abnahme, denn nach dem Tragen und unter anderem Licht passen alte Werte nicht
+mehr.
 
-**Selbsttest und Abnahme sind dasselbe Skript.** Ihr startet es zweimal, jedes
-in seiner Rolle, mit `python run_test.py sender` und
-`python run_test.py receiver`; es lädt dabei nur die Datei seiner Rolle. Beide Seiten schreiben ein Protokoll
-(`sent.txt` und `received.txt`); legt beide in einen Ordner und vergleicht sie
-mit `python compare.py`. Für schnelle Versuche zwischendurch genügen weniger
-Durchgänge (`--runs 10`). Weil bei der Abnahme genau dieses Skript läuft, könnt
-ihr den Wertungslauf vorher so oft proben, wie ihr wollt, und am Testtisch
-passiert nichts Neues. Bewährt hat sich, mit den beiden Farben anzufangen, die
-schon in `SYMBOL_COLORS` stehen, also aus und weiß, und nach 50 fehlerfreien
-Durchgängen auf 4 zu gehen, indem ihr das `#` vor den nächsten beiden Farben
-entfernt, und dann auf 8; die letzte Größe ohne Fehler ist euer Ergebnis. Verwechselt `compare.py`
-jedes Mal dieselben zwei Symbole, liegen sie zu dicht beieinander, sieht es
-zufällig aus, sind eher Timing oder Kalibrierung schuld.
+## Den Test starten
 
-**Beide Geräte an einem Laptop:** Ihr könnt auch beide Geräte eures Teams an
-denselben Laptop anschließen und Sender und Empfänger in zwei Terminals
-nebeneinander starten; dann landen beide Protokolle im selben Ordner, und
-`compare.py` läuft sofort. Dafür muss das Modul wissen, welches Gerät welches
-ist: Oben in `sender.py` und `receiver.py` steht die Zeile
-`# use_device("put the UID here")`. Entfernt in beiden Dateien das `#` und
-tragt die UID des Master Bricks des jeweiligen Geräts ein, die des sendenden in
-`sender.py` und die des empfangenden in `receiver.py`. Kennt ihr die UIDs
-nicht, startet zuerst ohne; die Fehlermeldung nennt beide, und der Brick Viewer
-zeigt, welche zu welcher Box gehört. Mit nur einem angeschlossenen Gerät bleibt
-die Zeile, wie sie ist. Eines wird dabei schwieriger: Die Eingabetaste lässt
-sich nicht in beiden Terminals im selben Moment drücken, zwischen dem ersten
-und dem zweiten Druck liegt leicht eine Sekunde, und eure Kalibrierung muss das
-aushalten.
+```text
+python alphabet.py
+```
 
-**Bei der Abnahme** baut ihr am Testtisch euren Aufbau auf, kalibriert, und es
-werden 20 zufällige Symbole übertragen. Ein einziger Fehler gilt für diese
-Alphabetgröße als nicht bestanden; acht sicher erkannte Zustände sind also mehr
-wert als sechzehn mit gelegentlicher Verwechslung. Als Live-Änderung erweitert
-ihr euer Alphabet, etwa auf bis zu zwölf Symbole, mit weiteren Farben in
-`SYMBOL_COLORS`, und lasst den Test erneut laufen; dafür müsst ihr die Stellen
-in eurem Code finden, die von der Größe des Alphabets abhängen.
+Auf dem Mac heißt der Befehl `python3`, falls `python` nicht gefunden wird.
+
+**Beide Geräte an einem Laptop:** Das Modul findet beide, lässt die LED des
+einen leuchten und fragt, ob dieses Gerät sendet oder empfängt. Danach läuft
+der Test von selbst: Farbe zeigen, messen, notieren, nächste Farbe.
+
+**Je ein Gerät an zwei Laptops:** Ihr startet dieselbe Datei auf beiden
+Laptops, und jeder fragt, ob er sendet oder empfängt. Der Kursserver bringt die
+beiden über euer Team zusammen und sagt an, wann die nächste Farbe kommt, ihr
+müsst sie also nicht im selben Moment starten. Beide Laptops brauchen dafür
+WLAN.
+
+Jeder Durchgang bekommt eine neue Zufallsfolge vom Kursserver, sodass niemand
+sie vorher kennt. Am Ende zeigen beide Seiten das Ergebnis und jeden Fehler,
+und der Durchgang erscheint in eurem [[lifi-cockpit|Team-Cockpit]]. Ohne
+Server läuft mit beiden Geräten an einem Laptop trotzdem ein Übungsdurchgang,
+der nicht zählt. Für schnelle Versuche zwischendurch genügen weniger
+Versuche, dafür ändert ihr die letzte Zeile in
+`run_test(send_symbol, receive_symbol, calibrate, symbols=len(COLORS), runs=5)`.
+Gewertet werden nur Durchgänge mit 20 Versuchen.
+
+**Bewährt hat sich,** mit den beiden Farben anzufangen, die schon in `COLORS`
+stehen, also aus und weiß. Klappen damit 20 Versuche ohne Fehler, geht ihr auf
+4, indem ihr das `#` vor den nächsten beiden Farben entfernt, und dann auf 8.
+Irgendwann tauchen Fehler auf, und die letzte Größe ohne Fehler ist euer
+Ergebnis. Hoch zu pokern lohnt sich nicht, denn acht sicher erkannte Zustände
+sind mehr wert als sechzehn mit gelegentlicher Verwechslung. Bei Fehlern zeigt
+euch das Ergebnis, wie sie aussehen: Werden jedes Mal dieselben zwei Farben
+verwechselt, liegen sie zu dicht beieinander, sieht es zufällig aus, ist eher
+die Kalibrierung schuld.
+
+**Bei der Abnahme** lasst ihr den Test am eigenen Platz laufen, und die
+Gehäuse von Sender und Empfänger berühren sich dabei mit den Wänden. Nicolas
+geht durch die Reihen, sieht sich euren Aufbau an und prüft euer Ergebnis. Ein
+einziger Fehler gilt für diese Alphabetgröße als nicht bestanden. Danach kann
+eine Live-Änderung kommen, etwa „Geht auf zwölf Farben und lasst es noch
+einmal laufen“, und dafür müsst ihr die Stellen in eurem Code finden, die von
+der Größe des Alphabets abhängen.
+
+## Ein Beispiel, keine Lösung
+
+Eine Musterlösung gibt es für diese Challenge nicht. Hier steht stattdessen
+der Empfänger aus Sitzung 4 in der Form von `alphabet.py`: Er nimmt das
+Raumlicht als Grundwert (Baseline), zieht es von jedem Messwert ab und
+entscheidet nach dem größten der drei Farbkanäle zwischen Rot, Grün und Blau.
+
+```python static file=example.py
+"""
+Challenge 1: an example, not a solution
+=======================================
+
+This is the receiver written live in session 4, brought into the form of
+alphabet.py. It works for red, green and blue in a quiet room, and it shows
+nicely where a first idea breaks. Read the page "Why this is not a good
+solution" before you build on it.
+
+The idea in three steps:
+  1. Baseline: what the sensor measures while the LED is off.
+  2. Subtract the baseline from every new reading, so that what is left
+     is the light of the sending LED.
+  3. Whichever of r, g and b is largest after that decides the colour.
+
+Run it with:  python example.py   (on a Mac: python3)
+"""
+
+from lifi_hardware import receiver, run_test, sender
+
+COLORS = [
+    (0, 0, 0),          # 0: off
+    (255, 0, 0),        # 1: red
+    (0, 255, 0),        # 2: green
+    (0, 0, 255),        # 3: blue
+]
+
+# The room light, measured during calibration while colour 0 (off) showed
+BASELINE = {"r": 0, "g": 0, "b": 0}
+
+
+def calibrate(readings):
+    """Keeps only the baseline: the average of the readings with the LED off."""
+    off = readings[0]
+    BASELINE["r"] = sum(reading.r for reading in off) / len(off)
+    BASELINE["g"] = sum(reading.g for reading in off) / len(off)
+    BASELINE["b"] = sum(reading.b for reading in off) / len(off)
+
+
+def send_symbol(index):
+    r, g, b = COLORS[index]
+    sender.led.set_color(r, g, b)
+
+
+def receive_symbol():
+    r, g, b, c = receiver.sensor.read()
+
+    # Subtract the room light
+    r = r - BASELINE["r"]
+    g = g - BASELINE["g"]
+    b = b - BASELINE["b"]
+
+    # The largest channel decides
+    if r > g and r > b:
+        return 1        # red
+    elif g > r and g > b:
+        return 2        # green
+    else:
+        return 3        # blue
+    # Note what is missing: there is no way to answer 0 (off).
+
+
+run_test(send_symbol, receive_symbol, calibrate, symbols=len(COLORS))
+```
+
+### Warum das keine gute Lösung ist
+
+Das Beispiel funktioniert, und genau das macht es gefährlich. Sendet ihr Rot,
+Grün und Blau in einem ruhigen Raum, erkennt es alle drei. In Sitzung 4 hat es
+genau das vor allen gezeigt, und ein paar Sekunden später ging die LED aus, und
+das Programm sagte „grün“. Hier steht, warum, und was sonst noch wartet.
+
+**Aus hat keine Antwort.** Das Programm kann nur Rot, Grün oder Blau
+zurückgeben, weil die Regel den größten von drei Kanälen wählt, und einen
+größten gibt es immer. Ist die LED aus, bleibt nach dem Abziehen des
+Grundwerts nur Rauschen übrig, auf jedem Kanal ein paar Zähler mehr oder
+weniger. Einer davon ist zufällig der größte und gewinnt; in Sitzung 4 war es
+Grün. Euer Empfänger braucht einen Weg zu sagen „da ist nichts“, also eine
+Regel, die zuerst prüft, wie viel Licht angekommen ist, und erst dann fragt,
+welche Farbe es war.
+
+**Es gibt kein „weiß ich nicht“.** Das ist dasselbe Problem in allgemeiner
+Form: Was auch immer gemessen wird, das Programm nennt mit voller Überzeugung
+eine Farbe. Ein Messwert zwischen zwei Farben, eine Hand im Lichtweg, ein
+Blitz vom Nachbarteam, alles kommt als Rot, Grün oder Blau heraus. Ein
+Empfänger, der sagen kann „das sieht nach keiner meiner Farben aus“, merkt
+wenigstens, dass etwas schiefging.
+
+**Mischfarben sehen aus wie ihr stärkster Teil.** Gelb ist Rot und Grün
+zugleich, Weiß ist alles drei. Die Regel schaut nur, welcher Kanal am größten
+ist, also kommt Gelb als Rot oder Grün heraus, je nachdem, welcher Teil des
+Sensors stärker reagiert, und Weiß als der Kanal, der gerade vorn liegt.
+Sobald euer Alphabet über drei Farben hinauswächst, beschreibt „größter Kanal“
+es nicht mehr. Ihr müsst dann den ganzen Messwert, alle Kanäle zusammen, mit
+dem vergleichen, wie jede Farbe beim Kalibrieren aussah.
+
+**Der Grundwert ist ein Foto eines Augenblicks.** Das Raumlicht wird einmal am
+Anfang gemessen. Schaltet jemand die Deckenbeleuchtung ein, öffnet die
+Jalousie oder beugt sich über den Tisch, stimmt der Grundwert für alles
+Folgende nicht mehr, und jeder Messwert liegt um den Unterschied daneben.
+Deshalb kalibriert der Test vor jedem Durchgang neu, und deshalb lohnt die
+Frage, wie sehr euer eigener Empfänger leidet, wenn sich das Licht mitten im
+Durchgang ändert.
+
+**Euer Gerät ist nicht das Gerät des Nachbarteams.** Die Regel setzt voraus,
+dass rotes Licht den Rotkanal zum größten macht. Das gilt nur, wenn die Filter
+eures Sensors und die Farben eurer LED mitspielen. Ist der Grünkanal eines
+Sensors schwächer, kann grünes Licht den Blaukanal zum größten machen, und die
+Regel versagt bei diesem Gerät, während sie beim Gerät daneben funktioniert.
+Genau dafür gibt es die Kalibrierung: Ihr müsst nichts über eure Bauteile
+annehmen, sondern messt, wie jede Farbe auf eurem Gerät wirklich aussieht, und
+entscheidet danach.
+
+**Was daraus folgt:** Alle fünf Probleme haben dieselbe Ursache, denn das
+Programm entscheidet nach einer festen Regel, die sich jemand ausgedacht hat,
+statt nach den Messwerten der Kalibrierung. Ein besserer Empfänger behält, wie
+jede Farbe beim Kalibrieren aussah, vergleicht einen neuen Messwert mit allen
+davon und behandelt einen Messwert, der zu keiner passt, als Fehler, den er
+bemerkt, statt als Farbe.
+
+## Stolpersteine und mehr
 
 **Typische Stolpersteine:** feste Schwellenwerte statt einer Kalibrierung vor
 jedem Durchgang („über 500 im Rotkanal heißt Rot“ klappt am Dienstag und
