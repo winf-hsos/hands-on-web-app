@@ -290,6 +290,11 @@ The body is plain Markdown with a few conventions:
   fragment that cannot run on its own is marked ` ```python static `, and
   ` ```text ` shows a sample run as it is. Names in code are English in both
   languages; what a program prints follows the language of the text.
+- **Code as a file** (Nicolas, 2026-11-03): a block that is not run can name
+  the file it belongs in, as in ` ```python static file=task_1_light_on.py `.
+  The page then shows the name above the block with a button that saves the
+  code under that name, next to the copy button. Sample solutions use it, so
+  that learners can copy a solution or download it as the file it replaces.
 - **What a learner writes stays** (Nicolas, 2026-11-01): a changed code box
   keeps its code in this browser until its "Zurücksetzen" button, across
   reloads and visits. The entry belongs to the box's original code, so when

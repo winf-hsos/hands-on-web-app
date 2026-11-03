@@ -145,14 +145,18 @@ function callouts(tree, lang) {
 // ```python and ```r blocks are highlighted and become runnable
 // (client/runner.js); ```python static (or ```r static) only shows the code,
 // for fragments that cannot run. Any other block, such as ```text for a
-// sample run, is shown as it is, in the same frame.
+// sample run, is shown as it is, in the same frame. A block that is not run
+// and names a file, as in ```python static file=task_1_light_on.py, shows the
+// name above it with a button that saves the code under it (client/copy.js).
 function runnable(tree) {
   visit(tree, 'code', (node) => {
     if (DEMOS[node.lang]) return;
+    const file = node.meta?.match(/\bfile=([\w.-]+)/)?.[1];
+    const shown = { className: ['code'], ...(file && { dataFile: file }) };
     if (node.lang !== 'python' && node.lang !== 'r') {
       node.type = 'plainCode';
       const code = { type: 'element', tagName: 'code', properties: { className: node.lang ? [`language-${node.lang}`] : [] }, children: [{ type: 'text', value: node.value }] };
-      node.data = { hName: 'pre', hProperties: { className: ['code'] }, hChildren: [code] };
+      node.data = { hName: 'pre', hProperties: shown, hChildren: [code] };
       return;
     }
     const lang = node.lang;
@@ -171,7 +175,7 @@ function runnable(tree) {
     node.type = 'runnableCode';
     node.data = runs
       ? { hName: 'div', hProperties: { className: ['runner'], dataRunner: '', dataLang: lang }, hChildren: [pre] }
-      : { hName: 'pre', hProperties: { className: ['code'] }, hChildren: [code] };
+      : { hName: 'pre', hProperties: shown, hChildren: [code] };
   });
 }
 

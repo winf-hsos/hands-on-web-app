@@ -457,8 +457,8 @@ export const backLabels = {
 
 /** Labels for client/copy.js. */
 export const copyLabels = {
-  de: { copy: 'Code kopieren', copied: 'Kopiert' },
-  en: { copy: 'Copy code', copied: 'Copied' },
+  de: { copy: 'Code kopieren', copied: 'Kopiert', download: 'Herunterladen' },
+  en: { copy: 'Copy code', copied: 'Copied', download: 'Download' },
 };
 
 /** The frame of every demonstrator: shortcuts and full screen (client/demo-frame.js). */

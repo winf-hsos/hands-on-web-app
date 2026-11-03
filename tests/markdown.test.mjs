@@ -14,6 +14,14 @@ test('a python block becomes a runnable box, a static one only shows the code', 
   assert.match(html, /<pre class="code"><code class="language-text">Ausgabe/);
 });
 
+test('a block that is not run can name the file it is saved as', () => {
+  const html = render('```python static file=task_1_light_on.py\nled.off()\n```\n\n```text file=notes.txt\nhi\n```\n\n```python file=run.py\nprint(1)\n```\n');
+  assert.match(html, /<pre class="code" data-file="task_1_light_on\.py"><code class="language-python">/);
+  assert.match(html, /<pre class="code" data-file="notes\.txt"><code class="language-text">hi/);
+  // a runnable box has its own buttons and names no file
+  assert.equal((html.match(/data-file=/g) ?? []).length, 2);
+});
+
 test('hints and solutions fold away, and several hints are numbered', () => {
   const html = render('> [!HINT]\n> eins\n\n> [!HINT]\n> zwei\n\n> [!SOLUTION]\n> drei\n');
   assert.deepEqual(html.match(/<\/svg>[^<]*<\/summary>/g), [
