@@ -20,7 +20,7 @@ topics: [transferring-information]
 modules: [dup]
 relations:
   requires: [sent-is-not-measured]
-  see_also: [measuring-and-experimenting, analog-and-digital-slides, why-two-states]
+  see_also: [measuring-and-experimenting, analog-and-digital, why-two-states]
 status: draft
 updated: 2026-11-01
 ---
@@ -214,8 +214,8 @@ unter die erste.
   ihr, wenn in 50 Versuchen kein einziger Wert in das Band einer anderen Farbe
   fallen darf?
 
-Warum mehr Bereiche bei gleichem Rauschen enger werden, zeigen die Folien
-[[analog-and-digital-slides]], und wie man eine solche Messreihe sauber anlegt, die
+Warum mehr Bereiche bei gleichem Rauschen enger werden, zeigt die Lektion
+[[analog-and-digital]], und wie man eine solche Messreihe sauber anlegt, die
 Folien [[measuring-and-experimenting]]. Dass Rechner aus demselben Grund mit
 nur zwei Zuständen arbeiten, erklärt [[why-two-states]].
 

@@ -19,7 +19,6 @@ phases:
       - measuring-and-experimenting
       - measurement-and-experiments
       - measurement-and-experiments-quiz
-      - analog-and-digital-slides
       - analog-and-digital
       - analog-and-digital-quiz
       - symbols-and-information-slides

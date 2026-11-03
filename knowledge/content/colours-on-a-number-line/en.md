@@ -203,8 +203,8 @@ table and draw a second number line below the first.
   do you keep if, over 50 attempts, not a single value may fall into the band
   of another colour?
 
-Why more regions get narrower with the same noise is shown in the slides
-[[analog-and-digital-slides]], and how to set up such a measurement series properly
+Why more regions get narrower with the same noise is shown in the lesson
+[[analog-and-digital]], and how to set up such a measurement series properly
 in the slides [[measuring-and-experimenting]]. That computers work with only
 two states for the same reason is explained in [[why-two-states]].
 

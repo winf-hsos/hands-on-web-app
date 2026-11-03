@@ -367,6 +367,23 @@ The body is plain Markdown with a few conventions:
   that cannot be one (300, G, ä) is marked and explained, Enter keeps it and
   Escape goes back. It is the first of the LiFi demonstrators to come
   over, rebuilt in the design of the platform rather than embedded.
+  **The photo digitiser** (` ```photo-digitiser `) and **the audio
+  digitiser** (` ```audio-digitiser `), both empty blocks, came over from the
+  LiFi demonstrators the same way (2026-11-03) and show the two cuts of
+  digitising. The photo digitiser puts a photo beside its digital version,
+  with a slider for the resolution (256 × 256 points down to one) and a
+  button per colour depth (24, 16 and 8 bits of colour, 256 greys, the 16
+  EGA colours, four greys, black and white); pointing at a pixel shows its
+  bits and marks its cell on both pictures. The audio digitiser draws a
+  window of 25 ms of a sound with its digital staircase over it, with a
+  slider for the sampling rate (48 kHz down to 250 Hz) and a button per bit
+  depth (16 bits down to 1), and plays the original and the digital version.
+  Under both, the file size is worked out as points (or samples) times bits
+  and turned into the time a light link of 30 bits per second needs for it.
+  Their media lie in `media/photos/` (three photos, AI-generated with
+  gpt-image-2) and `media/audio/` (`voice.wav`, an AI-generated voice from
+  OpenAI TTS, 48 kHz 16-bit mono); the other four sounds are made in code.
+  Both credits stand in a note under the demonstrator.
 - **The folder tree and command line** (Nicolas, 2026-11-02) is placed with a
   ` ```shell-demo ` block that holds its scenario in YAML, so a lesson can
   bring its own tree; it may stand in any text, not only on a demo page:
@@ -686,7 +703,12 @@ title and summary, the article on the concept, which the page shows after the
 deck. `problem-decomposition` was the first, `input-processing-output-slides`
 the second; there the code to run went into an exercise of its own,
 `input-processing-output`, which requires the lesson, so the article shows code
-only as `python static`. The article shows only figures
+only as `python static`. `analog-and-digital` was the third, made on
+2026-11-03 from a lesson and a deck that had been two items: since then
+(Nicolas) a lesson and its slides normally live in one item, **every figure
+of the article also appears in the slides**, and the article may carry small
+runnable code intermissions to try out right away between its explanations.
+The article shows only figures
 exported from its own deck, never drawings or pictures made apart from it:
 `slides/figures.js` names the figures (`window.figures`), the deck's
 `deck.js` writes its labels in both languages with `T(en, de)`, and

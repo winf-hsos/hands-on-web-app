@@ -50,37 +50,44 @@
   <section class="slide">
     <div class="content">
       <div class="statement">digital means finitely many states,<br>and nothing in between counts.</div>
-      <div class="remark">the second half carries the work, because it is what swallows disturbances.</div>
     </div>
-    <aside class="notes">Erst die Beispiele, dann das Wort. Beide Bedingungen tragen: endlich viele Zustände, und dazwischen zählt nichts. An der zweiten hängt alles Weitere, denn weil zwischen den Zuständen nichts zählt, verschwindet dort auch jede Störung.</aside>
+    <aside class="notes">Erst die Beispiele, dann das Wort. Beide Bedingungen tragen: endlich viele Zustände, und dazwischen zählt nichts. Warum die zweite so wichtig ist, zeigt die nächste Folie.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawBetween" data-on-step="drawBetween">
+    <h2>the same disturbance, twice</h2>
+    <div class="figure wide" id="fig-between"></div>
+    <span data-step="1"></span>
+    <div class="punch" data-step="1">a small disturbance changes the value, but not the state.</div>
+    <aside class="notes">Gesendet wird ein Wert, weiß, und unterwegs schiebt eine kleine Störung ihn ein Stück weiter, gelb ist das, was ankommt. Analog zählt jeder Wert, also ist das, was ankommt, schlicht ein anderer Wert und damit falsch. Mit dem Tastendruck dieselbe Störung in der digitalen Welt: Die Linie ist in zwei Bereiche geschnitten, dunkel und hell, und der gestörte Wert liegt immer noch im Bereich hell. Der Zustand stimmt, weil zwischen den Zuständen nichts zählt. Genau das meint die zweite Hälfte der Definition: Störungen, die kleiner sind als der Abstand zur nächsten Grenze, verschwinden einfach.</aside>
   </section>
 
   <section class="slide">
     <h2>the part no program controls</h2>
     <div class="figure wide" id="fig-middle"></div>
-    <aside class="notes">Der Sender macht aus Zahlen Licht, und der Sensor macht aus Licht wieder Zahlen: digital, analog, digital. Die Mitte ist Physik, stufenlos und gestört von Umgebungslicht, Abstand und Rauschen, und kein Programm kontrolliert sie. Wer diese analoge Mitte vergisst, wundert sich später über jede Störung; wer sie ernst nimmt, weiß, warum gemessen werden muss.</aside>
+    <aside class="notes">Der Sender macht aus Zahlen Licht, und der Sensor macht aus Licht wieder Zahlen: digital, analog, digital. Die Mitte ist Physik, stufenlos und gestört, und kein Programm kontrolliert sie. Gestört wird sie vom Umgebungslicht, von Spiegelungen an Tisch und Wänden, vom Abstand und vom Winkel zwischen LED und Sensor, und selbst bei völlig ruhigem Licht schwankt der Messwert, weil der Sensor ein eigenes Rauschen hat. Wer diese analoge Mitte vergisst, wundert sich später über jede Störung; wer sie ernst nimmt, weiß, warum gemessen werden muss.</aside>
   </section>
 
-  <section class="slide">
-    <div class="content">
-      <div class="statement">light is analog:<br>between any two brightnesses lies another.</div>
-      <div class="statement" data-step="1">your program needs states:<br>finitely many, clearly apart.</div>
-    </div>
-    <aside class="notes">Zwischen zwei Helligkeiten liegt immer noch eine dritte, eine kleinste Stufe gibt es nicht. Ein Programm braucht das Gegenteil. Digitalisieren heißt deshalb nichts anderes, als ein stufenloses Signal durch eine endliche Folge von Zahlen darzustellen.</aside>
+  <section class="slide has-punch" data-on-show="drawLight" data-on-step="drawLight">
+    <h2>light has no steps, but your program needs them</h2>
+    <div class="figure wide" id="fig-light"></div>
+    <span data-step="1"></span>
+    <div class="punch" data-step="1">digitising turns the stepless light into a few states.</div>
+    <aside class="notes">Oben das Licht, von dunkel bis hell: Zwischen zwei Helligkeiten liegt immer noch eine dritte, eine kleinste Stufe gibt es nicht. Mit dem Tastendruck das, was ein Programm braucht, nämlich wenige Zustände mit klarem Abstand, hier vier, durchnummeriert von 0 bis 3. Digitalisieren heißt nichts anderes, als aus dem stufenlosen Signal oben die Zustände unten zu machen.</aside>
   </section>
 
   <section class="slide has-punch">
-    <h2>same wobble, more regions</h2>
+    <h2>the same scatter, cut into more regions</h2>
     <div class="figure wide" id="fig-regions"></div>
-    <div class="punch" data-step="2">the wobble stays the same, but more regions leave each one a smaller margin.</div>
-    <aside class="notes">Jede Spalte ist derselbe Wertebereich, und in jeder fallen dieselben sieben Ablesungen mit derselben Schwankung in ihr Band. Bei zwei Bereichen liegt das Band bequem im eigenen Bereich. Mit dem nächsten Tastendruck wird der Bereich in vier Teile geschnitten, und es wird knapp, aber alles bleibt drin. Beim dritten Schnitt in acht Bereiche überragt dasselbe Band die Grenzen, und drei Ablesungen landen im Nachbarbereich. Der Abstand zwischen den Grenzen ist die Sicherheitsreserve, und mehr Bereiche verteilen dieselbe Reserve auf mehr Grenzen. Genau das ist die Frage von Challenge 1: wie viele Zustände eine Strecke in 50 Versuchen ohne einen Fehler unterscheidet.</aside>
+    <div class="punch" data-step="2">the readings scatter as much as before, but with more regions some land in the wrong one.</div>
+    <aside class="notes">Der Sender zeigt immer dieselbe Farbe, und der Sensor misst sie siebenmal; jeder Punkt ist eine dieser Messungen, etwa der Clear-Wert. Die Messwerte sind nie gleich, sie streuen, und das graue Band zeigt, wie weit. Jede Spalte ist der ganze Wertebereich des Sensors, von niedrig bis hoch, und jeder Bereich darin steht für eine Farbe des Alphabets. Bei zwei Bereichen liegt das Band bequem im eigenen Bereich. Mit dem nächsten Tastendruck wird der Wertebereich in vier Bereiche geschnitten, und es wird knapp, aber alles bleibt drin. Beim dritten Schnitt in acht Bereiche überragt dasselbe Band die Grenzen, und drei Messwerte landen im Nachbarbereich, der Empfänger würde dort also eine falsche Farbe melden. Mehr Bereiche heißt schmalere Bereiche, die Streuung bleibt aber gleich. Genau das ist die Frage von Challenge 1: wie viele Farben eine Strecke in 20 Versuchen ohne einen Fehler unterscheidet.</aside>
   </section>
 
   <section class="slide has-punch">
     <h2>what the thrown-away precision buys</h2>
     <div class="figure wide" id="fig-copies"></div>
     <div class="punch" data-step="3">every digital copy is reborn from clean states, so it never inherits the noise.</div>
-    <aside class="notes">Zwei Kopierketten, und jeder Tastendruck macht in beiden eine Generation mehr. Das Band kopiert seine stufenlose Welle mitsamt dem Rauschen der vorigen Kopie und legt eigenes darauf. Die Datei wird bei jeder Kopie abgelesen und aus sauberen Zuständen neu gesetzt. Jede Störung, die kleiner ist als der Abstand zwischen den Zuständen, verschwindet dabei vollständig, und deshalb ist die tausendste Kopie einer Datei immer noch das Original.</aside>
+    <aside class="notes">Zwei Kopierketten, und jeder Tastendruck macht in beiden eine Generation mehr. Jeder Kasten zeigt, was darin gespeichert ist. Oben ein Tonband mit einer Welle: Jede Kopie übernimmt die Welle der vorigen samt ihrem Rauschen und legt eigenes darauf, deshalb wird die Welle von Kasten zu Kasten rauer. Unten eine Datei mit den Bits 0110: Sie wird bei jeder Kopie abgelesen und aus sauberen Zuständen neu gesetzt. Jede Störung, die kleiner ist als der Abstand zwischen den Zuständen, verschwindet dabei vollständig, und deshalb ist die tausendste Kopie einer Datei immer noch das Original.</aside>
   </section>
 
   <!-- ================= part 2 ================= -->
@@ -126,13 +133,12 @@
     <aside class="notes">Das Bild wird mit jedem Schritt gröber, und bei jedem Schritt geht die Frage in den Raum, ob es noch zu erkennen ist. Irgendwo zwischen dem dritten und dem vierten Bild kippt es, und wo genau, darüber sind sich die Leute uneins. Genau diese Uneinigkeit ist der Punkt, denn ein richtiges Maß gibt es nicht, nur eine Abwägung gegen die Übertragungszeit. Wer ein Bild über eine Lichtstrecke schicken will, steht genau vor dieser Frage.</aside>
   </section>
 
-  <section class="slide">
-    <div class="content">
-      <div class="header">the same two cuts, for sound</div>
-      <div class="statement">sampling slices time,<br>and quantization slices loudness.</div>
-      <div class="remark">a <span class="keep-case">CD</span> stores 44,100 samples per second with 16 bits each.</div>
-    </div>
-    <aside class="notes">Die zwei Schnitte sind kein Bildthema, sondern das Verfahren. Beim Ton zerlegt die Abtastrate die Zeit statt der Fläche, und die Bittiefe zerlegt die Lautstärke statt der Helligkeit. Wer die Abtastrate einer Aufnahme herunterdreht, hört, wie eine Stimme blechern wird.</aside>
+  <section class="slide has-punch" data-on-show="drawSound" data-on-step="drawSound">
+    <h2>the same two cuts, for sound</h2>
+    <div class="figure wide" id="fig-sound"></div>
+    <span data-step="1"></span>
+    <div class="punch" data-step="2">sampling slices time, and quantization slices loudness.</div>
+    <aside class="notes">Die zwei Schnitte sind kein Bildthema, sondern das Verfahren, und beim Ton sieht man sie an einer einzigen Kurve. Erst die Schallwelle, stufenlos. Der erste Schnitt misst sie zu zwölf Zeitpunkten, das ist das Abtasten, und beim Ton zerlegt es die Zeit statt der Fläche. Der zweite Schnitt rundet jeden Messwert auf eine von vier Lautstärkestufen, das ist das Quantisieren. Eine CD speichert 44.100 Messungen je Sekunde mit je 16 Bit. Wer die Abtastrate einer Aufnahme herunterdreht, hört, wie eine Stimme blechern wird.</aside>
   </section>
 
   <!-- ================= part 3 ================= -->
@@ -150,8 +156,7 @@ r, g, b, c = sensor.read()
 <span class="hl">if c &gt; 250:</span>
     symbol = "bright"
 else:
-    symbol = "dark"
-print(symbol)</div>
+    symbol = "dark"</div>
     </div>
     <div class="punch">this one line turns thousands of possible readings into just two symbols.</div>
     <aside class="notes">Die blaue Zeile ist die Stelle, an der aus Tausenden möglicher Messwerte zwei Symbole werden. Die Grenze ist keine Naturkonstante, sondern eine Entscheidung, und ab hier gilt sie und nicht die Physik. Wo sie liegt, kommt nicht aus dem Bauch, sondern aus der eigenen Messreihe: erst kalibrieren, dann vergleichen. Der Wert 250 ist nur ein Beispiel.</aside>
@@ -177,7 +182,7 @@ print(symbol)</div>
 </div>
 <script src="../../stagekit/draw.js?v=0.4.0-62b883"></script>
 <script src="../../stagekit/anim.js?v=0.4.0-62b883"></script>
-<script src="deck.js?v=1"></script>
+<script src="deck.js?v=3"></script>
 <script src="../../stagekit/stagekit.js?v=0.4.0-62b883"></script>
 </body>
 </html>
