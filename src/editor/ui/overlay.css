@@ -130,6 +130,20 @@
   cursor: text;
 }
 
+/* the back arrow in the kicker leaves the page: no frame while it is under the
+   pointer, and a larger target, so that a click just beside it still leaves
+   instead of opening type and duration (Nicolas, 2026-11-03) */
+.ed-can-edit:not(.ed-is-editing) [data-field]:has(.back-icon:hover) {
+  outline: none;
+  cursor: auto;
+}
+
+.ed-can-edit .back-icon::before {
+  content: "";
+  position: absolute;
+  inset: -0.5rem -0.7rem -0.5rem -0.5rem;
+}
+
 .ed-inline-active {
   outline: 2px solid var(--accent);
   outline-offset: 4px;

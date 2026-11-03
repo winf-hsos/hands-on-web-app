@@ -362,6 +362,8 @@ export function enableInlineEditing({ doc, vocabulary, items, api, say, session 
     'click',
     (e) => {
       if (session.editing || e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;
+      // the back arrow sits in the line of type and duration, but it is a way out, not a field
+      if (e.target.closest('.back-icon')) return;
       const block = e.target.closest('.prose > [data-src]');
       const field = !block && e.target.closest('[data-field]');
       if (!block && !field) return;

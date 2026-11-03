@@ -361,13 +361,15 @@ function scriptBlock(site, doc, lang) {
   );
 }
 
-/** A quiz to download below it, with the answers, to learn with outside the page (build/quiz-export.mjs). */
+/** A quiz to download below it, with the answers, to learn with outside the page (build/quiz-export.mjs).
+ * One quiet line, not buttons, since the quiz itself is what the page is for (Nicolas, 2026-11-03). */
 function quizFilesBlock(site, doc, lang) {
   const { csv, anki } = site.quizFiles(doc, lang);
-  return html`<p class="script-file quiz-files">
-      <a class="button button-quiet" href="${csv.name}" download="${csv.name}">${icons.download}<span>${t(lang, 'quiz_csv')}</span></a>
-      <a class="button button-quiet" href="${anki.name}" download="${anki.name}">${icons.download}<span>${t(lang, 'quiz_anki')}</span></a>
-      <span class="script-note">${t(lang, 'quiz_files_note')}</span>
+  return html`<p class="quiz-files">
+      ${icons.download}<span>${t(lang, 'quiz_download')}</span>
+      <a href="${csv.name}" download="${csv.name}" title="${t(lang, 'quiz_csv')}">CSV</a>
+      <span aria-hidden="true">·</span>
+      <a href="${anki.name}" download="${anki.name}" title="${t(lang, 'quiz_anki')}">Anki</a>
     </p>`;
 }
 

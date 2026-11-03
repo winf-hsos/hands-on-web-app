@@ -3130,6 +3130,33 @@ details.callout[open] > summary::before {
   margin: 0 0 1.5rem;
 }
 
+.quiz-files {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2rem 0.45rem;
+  margin: 0 0 1.5rem;
+  color: var(--quiet);
+  font-size: 0.85rem;
+}
+
+.quiz-files .icon {
+  width: 14px;
+  height: 14px;
+}
+
+.quiz-files a {
+  color: var(--quiet);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-underline-offset: 0.2em;
+  transition: color 0.2s;
+}
+
+.quiz-files a:hover {
+  color: var(--accent-ink);
+}
+
 .script-note {
   color: var(--quiet);
   font-size: 0.9rem;
