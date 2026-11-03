@@ -1,11 +1,11 @@
 ---
 title: "Quiz: Analog und digital"
 summary: >-
-  Sechzehn Fragen dazu, was etwas digital macht, warum mehr Stufen die Grenzen
+  Fünfzehn Fragen dazu, was etwas digital macht, warum mehr Stufen die Grenzen
   näher rücken lassen, was Digitalisieren kostet und was es einbringt. Jede
   Antwort kommt mit ihrer Begründung.
 objectives:
-  intro: "Mit diesem Quiz prüfst du in sechzehn Fragen, ob du Folgendes kannst:"
+  intro: "Mit diesem Quiz prüfst du in fünfzehn Fragen, ob du Folgendes kannst:"
   goals:
     - "analog und digital an dem einen Merkmal unterscheiden, das zählt: stufenlos oder endlich viele getrennte Zustände"
     - "erklären, warum dasselbe Rauschen zum Problem wird, wenn die Zahl der Bereiche wächst"
@@ -223,16 +223,3 @@ else:
   > Genau: Punkte mal Bits je Punkt ergibt die Dateigröße, und die Rate der Strecke macht daraus Zeit; 256 × 256 Punkte in voller Farbe bräuchten mehr als 14 Stunden. Digitalisieren heißt deshalb abwägen, welches Detail die Zeit wert ist.
 
 > Auf einer langsamen Strecke kostet jedes behaltene Bit Zeit, deshalb sind Auflösung und Farbtiefe eine Abwägung und keine Frage von „so fein wie möglich“.
-
-## Eine Nachricht darf höchstens 2 KiB groß sein, also 16.384 Bit, und ein Teil davon wird für ihren eigenen Kopf und eine Prüfsumme gebraucht. Welche dieser Einstellungen für ein quadratisches Bild passt hinein? {#ad-017}
-
-- [ ] 64 × 64 Punkte mit 8 Bit je Punkt.
-  > 4.096 Punkte mal 8 Bit sind 32.768 Bit, also genau das Doppelte des Budgets. Wer hier landet, hat die Punkte gezählt und die Bits je Punkt vergessen.
-- [ ] 128 × 128 Punkte mit 1 Bit je Punkt.
-  > 16.384 Punkte mal 1 Bit sind 16.384 Bit. Das ist rechnerisch genau das Budget, lässt aber keinen Platz für Kopf und Prüfsumme, die obendrauf kommen.
-- [x] 64 × 64 Punkte mit 2 Bit je Punkt.
-  > 4.096 Punkte mal 2 Bit sind 8.192 Bit, also die Hälfte des Budgets. Es passt mit Luft für den Kopf, und vier Stufen je Punkt reichen, um ein Motiv erkennbar zu halten. Genau so eine Abwägung verlangt das Digitalisieren.
-- [ ] 32 × 32 Punkte mit 24 Bit je Punkt.
-  > 1.024 Punkte mal 24 Bit sind 24.576 Bit und damit über dem Budget. Die volle Farbtiefe ist der teuerste Posten überhaupt, und hier kostet sie mehr, als die kleine Auflösung einspart.
-
-> Multipliziere die Punkte mit den Bits je Punkt und vergleiche mit dem Budget, mit Luft für alles, was die Nachricht sonst noch tragen muss.

@@ -3,11 +3,11 @@ type: quiz
 code: 6866
 title: "Quiz: Analog and digital"
 summary: >-
-  Sixteen questions on what makes something digital, why more levels bring
+  Fifteen questions on what makes something digital, why more levels bring
   the boundaries closer, what digitising costs and what it buys. Every answer
   comes with its reason.
 objectives:
-  intro: "This quiz lets you check in sixteen questions whether you can:"
+  intro: "This quiz lets you check in fifteen questions whether you can:"
   goals:
     - "tell analog from digital by the one criterion that counts: stepless, or finitely many separated states"
     - "explain why the same noise becomes a problem when the number of regions grows"
@@ -231,16 +231,3 @@ else:
   > Exactly: points times bits per point gives the file size, and the rate of the link turns it into time; 256 × 256 points in full colour would take more than 14 hours. Digitising therefore means weighing which detail is worth the time.
 
 > On a slow link every kept bit costs time, so the resolution and the colour depth are a trade-off, not a matter of "as fine as possible".
-
-## A message may be at most 2 KiB, that is 16,384 bits, and part of that is needed for its own header and checksum. Which of these settings for a square picture fits? {#ad-017}
-
-- [ ] 64 × 64 points at 8 bits per point.
-  > 4,096 points times 8 bits is 32,768 bits, exactly twice the budget. Getting here means the points were counted and the bits per point forgotten.
-- [ ] 128 × 128 points at 1 bit per point.
-  > 16,384 points times 1 bit is 16,384 bits. That is exactly the budget on paper, but it leaves no room for header and checksum, which come on top.
-- [x] 64 × 64 points at 2 bits per point.
-  > 4,096 points times 2 bits is 8,192 bits, half the budget. It fits with room for the header, and four levels per point are enough to keep a subject recognisable. That is exactly the kind of trade-off digitising asks for.
-- [ ] 32 × 32 points at 24 bits per point.
-  > 1,024 points times 24 bits is 24,576 bits, over budget. Full colour depth is the most expensive item there is, and here it costs more than the small resolution saves.
-
-> Multiply points by bits per point and compare with the budget, leaving room for whatever else the message has to carry.
