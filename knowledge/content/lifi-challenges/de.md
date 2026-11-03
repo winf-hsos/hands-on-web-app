@@ -17,7 +17,7 @@ topics: [solving-problems]
 modules: [dup]
 project: lifi
 status: published
-updated: 2026-11-03
+updated: 2026-11-04
 ---
 
 ## Vorlagen und Verträge
@@ -32,7 +32,7 @@ Ergebnisse sind vergleichbar.
 | Challenge | Was ihr umsetzt |
 |---|---|
 | 0 | sechs kleine Aufgaben, je ein Skript, von `task_1_light_on.py` bis `task_6_human_receiver.py` |
-| 1 | `COLORS`, `calibrate(readings)`, `send_symbol(index)` und `receive_symbol()` in einer Datei, `alphabet.py` |
+| 1 | `COLORS`, `calibrate(readings)`, `send_symbol(name)` und `receive_symbol()` in einer Datei, `alphabet.py` |
 | 2 | `send_text(text)`, `receive_text(n_chars)` |
 | 3 | `send_message(text)`, `receive_message()` |
 | 4 | `send_bits(bits)`, `receive_bits()` |

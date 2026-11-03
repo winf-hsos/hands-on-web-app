@@ -37,13 +37,13 @@ Sache.
 
 | Teil | Was hineinkommt |
 |---|---|
-| `COLORS` | euer Alphabet, eine Farbe je Zeile; die erste Zeile ist Farbe 0 |
+| `COLORS` | euer Alphabet, eine Farbe je Zeile, jede mit einem Namen wie `"white"` |
 | `calibrate(readings)` | lernt aus den Messwerten, die der Test übergibt, wie jede Farbe beim Empfänger aussieht |
-| `send_symbol(index)` | zeigt Farbe Nummer `index` auf der LED des Senders; schon fertig |
-| `receive_symbol()` | misst und gibt die Nummer der erkannten Farbe zurück |
+| `send_symbol(name)` | zeigt die Farbe mit diesem Namen auf der LED des Senders; schon fertig |
+| `receive_symbol()` | misst und gibt den Namen der erkannten Farbe zurück |
 | `run_test(...)` | die letzte Zeile; sie führt den Test aus, und ihr ändert sie nicht |
 
-`run_test`, `sender` und `receiver` kommen aus dem Kursmodul ab Version 0.5.0
+`run_test`, `sender` und `receiver` kommen aus dem Kursmodul ab Version 0.6.0
 ([[lifi-hardware]]). So sieht die Vorlage aus; wo `TODO` steht, fehlt euer Code:
 
 ```python static file=alphabet.py
@@ -63,58 +63,59 @@ Run it with:  python alphabet.py   (on a Mac: python3)
 
 from lifi_hardware import receiver, run_test, sender
 
-# Your alphabet: one colour per line. Colour number 0 is the first line,
-# number 1 the second, and so on. Start with two. When 20 runs get through
-# without a mistake, remove the # in front of the next two colours.
-COLORS = [
-    (0, 0, 0),          # off
-    (255, 255, 255),    # white
-    # (255, 0, 0),      # red
-    # (0, 0, 255),      # blue
-    # (0, 255, 0),      # green
-    # (255, 255, 0),    # yellow
-    # (0, 255, 255),    # cyan
-    # (255, 0, 255),    # magenta
-]
+# Your alphabet: one colour per line, each with a name. The names are what
+# your functions work with and what the result shows. Start with two. When
+# 20 runs get through without a mistake, remove the # in front of the next
+# two colours.
+COLORS = {
+    "off":     (0, 0, 0),
+    "white":   (255, 255, 255),
+    # "red":     (255, 0, 0),
+    # "blue":    (0, 0, 255),
+    # "green":   (0, 255, 0),
+    # "yellow":  (255, 255, 0),
+    # "cyan":    (0, 255, 255),
+    # "magenta": (255, 0, 255),
+}
 
-# What the receiver learns during calibration, one entry per colour
+# What the receiver learns during calibration, one entry per colour name
 REFERENCES = {}
 
 
 def calibrate(readings):
     """Called once before the test, after every colour has been shown.
 
-    readings[index] is a list of a few readings, each one Reading(r, g, b, c),
-    taken while colour number index was showing.
+    readings[name] is a list of a few readings, each one Reading(r, g, b, c),
+    taken while the colour with that name was showing, so readings["white"].
     """
-    for index in readings:
+    for name in readings:
         # TODO: store something better than the first reading, for example
         #       the average of all readings of this colour
-        REFERENCES[index] = readings[index][0]
+        REFERENCES[name] = readings[name][0]
 
 
-def send_symbol(index):
-    """Shows colour number index on the LED of the sending device."""
-    r, g, b = COLORS[index]
+def send_symbol(name):
+    """Shows the colour with this name on the LED of the sending device."""
+    r, g, b = COLORS[name]
     sender.led.set_color(r, g, b)
 
 
 def receive_symbol():
-    """Measures and returns the number of the colour it recognised."""
+    """Measures and returns the name of the colour it recognised."""
     r, g, b, c = receiver.sensor.read()
-    # TODO: compare this reading with REFERENCES and return the number of
+    # TODO: compare this reading with REFERENCES and return the name of
     #       the colour that is most similar
-    return 0
+    return "off"
 
 
-run_test(send_symbol, receive_symbol, calibrate, symbols=len(COLORS))
+run_test(send_symbol, receive_symbol, calibrate, symbols=COLORS)
 ```
 
 ## Den Test starten
 
 Ein Durchgang hat zwei Teile, und `run_test` führt beide nacheinander aus:
 
-![Zwei Reihen. Oben Kalibrieren, einmal vor jedem Durchgang: jede Farbe einmal der Reihe nach, über send_symbol(index) und Licht zu calibrate(readings). Ein Pfeil mit REFERENCES führt von calibrate hinunter zu receive_symbol(). Unten Testen mit 20 Versuchen: Der Kursserver liefert die Zufallsfolge an send_symbol(index), Licht geht zu receive_symbol(), und die erkannte Nummer geht zurück zum Kursserver, der vergleicht; das Ergebnis erscheint im Team-Cockpit. calibrate und receive_symbol sind hell umrandet, alles andere grau.](figure:run-test "Erst lernt calibrate eure Farben, dann erkennt receive_symbol jede Farbe der Zufallsfolge. Hell umrandet sind die beiden Funktionen, die ihr schreibt.")
+![Zwei Reihen. Oben Kalibrieren, einmal vor jedem Durchgang: jede Farbe einmal der Reihe nach, über send_symbol(name) und Licht zu calibrate(readings). Ein Pfeil mit REFERENCES führt von calibrate hinunter zu receive_symbol(). Unten Testen mit 20 Versuchen: Der Kursserver liefert die Zufallsfolge an send_symbol(name), Licht geht zu receive_symbol(), und der erkannte Name geht zurück zum Kursserver, der vergleicht; das Ergebnis erscheint im Team-Cockpit. calibrate und receive_symbol sind hell umrandet, alles andere grau.](figure:run-test "Erst lernt calibrate eure Farben, dann erkennt receive_symbol jede Farbe der Zufallsfolge. Hell umrandet sind die beiden Funktionen, die ihr schreibt.")
 
 ```text
 python alphabet.py
@@ -126,7 +127,7 @@ der Kursserver bringt sie über euer Team zusammen, und beide brauchen dafür
 WLAN.
 
 Jeder Durchgang bekommt eine neue Zufallsfolge vom Kursserver, und das Ergebnis
-erscheint mit jedem Fehler im Terminal und in eurem
+erscheint mit jedem Fehler, benannt nach euren Farben, im Terminal und in eurem
 [[lifi-cockpit|Team-Cockpit]]. Gewertet werden nur Durchgänge mit 20 Versuchen;
 für schnelle Versuche zwischendurch setzt ihr in der letzten Zeile `runs=5`
 dazu.
@@ -152,50 +153,50 @@ LIFI_SERVER=off python3 alphabet.py
 Dieselbe Farbe ergibt nie zweimal genau dieselben Messwerte, und was der Sensor
 sieht, hängt von Abstand, Raumlicht und Bauteil ab. Vor jedem Durchgang zeigt
 `run_test` deshalb jede Farbe einmal und übergibt die Messwerte an
-`calibrate(readings)`: `readings[0]` ist die Liste der Messwerte von Farbe 0,
-`readings[1]` die von Farbe 1, und jeder Messwert hat die Kanäle `r`, `g`, `b`
+`calibrate(readings)`: `readings["white"]` ist die Liste der Messwerte, während Weiß
+leuchtete, und so für jeden Namen; jeder Messwert hat die Kanäle `r`, `g`, `b`
 und `c`. Was ihr davon in `REFERENCES` behaltet, entscheidet ihr.
 
 **Datei:** `alphabet.py`, die Funktion `calibrate(readings)`; in der Vorlage:
 
 ```python static
-# What the receiver learns during calibration, one entry per colour
+# What the receiver learns during calibration, one entry per colour name
 REFERENCES = {}
 
 
 def calibrate(readings):
     """Called once before the test, after every colour has been shown.
 
-    readings[index] is a list of a few readings, each one Reading(r, g, b, c),
-    taken while colour number index was showing.
+    readings[name] is a list of a few readings, each one Reading(r, g, b, c),
+    taken while the colour with that name was showing, so readings["white"].
     """
-    for index in readings:
+    for name in readings:
         # TODO: store something better than the first reading, for example
         #       the average of all readings of this colour
-        REFERENCES[index] = readings[index][0]
+        REFERENCES[name] = readings[name][0]
 ```
 
 > [!HINT]
 > Die Vorlage behält von jeder Farbe nur den ersten Messwert. Ein Mittelwert über alle Messwerte einer Farbe ist ruhiger, weil sich die kleinen Schwankungen des Sensors dabei ausgleichen.
 
 > [!HINT]
-> `sum(reading.r for reading in readings[index]) / len(readings[index])` ist der Mittelwert des Rotkanals für diese Farbe. Dasselbe gilt für `g`, `b` und `c`, und alle vier zusammen legt ihr in `REFERENCES[index]` ab.
+> `sum(reading.r for reading in readings[name]) / len(readings[name])` ist der Mittelwert des Rotkanals für diese Farbe. Dasselbe gilt für `g`, `b` und `c`, und alle vier zusammen legt ihr in `REFERENCES[name]` ab.
 
 ## Aufgabe 2: Erkennen
 
-`receive_symbol()` misst einmal und gibt die Nummer der Farbe zurück, deren
-Referenz dem Messwert am ähnlichsten ist. Die Vorlage gibt bisher immer 0
-zurück.
+`receive_symbol()` misst einmal und gibt den Namen der Farbe zurück, deren
+Referenz dem Messwert am ähnlichsten ist. Die Vorlage gibt bisher immer
+`"off"` zurück.
 
 **Datei:** `alphabet.py`, die Funktion `receive_symbol()`; in der Vorlage:
 
 ```python static
 def receive_symbol():
-    """Measures and returns the number of the colour it recognised."""
+    """Measures and returns the name of the colour it recognised."""
     r, g, b, c = receiver.sensor.read()
-    # TODO: compare this reading with REFERENCES and return the number of
+    # TODO: compare this reading with REFERENCES and return the name of
     #       the colour that is most similar
-    return 0
+    return "off"
 ```
 
 > [!HINT]
@@ -214,19 +215,20 @@ Ergebnis mit Aufbau; die Messung ohne zeigt, ob er etwas bringt.
 **Datei:** `alphabet.py`, die Liste `COLORS`; in der Vorlage:
 
 ```python static
-# Your alphabet: one colour per line. Colour number 0 is the first line,
-# number 1 the second, and so on. Start with two. When 20 runs get through
-# without a mistake, remove the # in front of the next two colours.
-COLORS = [
-    (0, 0, 0),          # off
-    (255, 255, 255),    # white
-    # (255, 0, 0),      # red
-    # (0, 0, 255),      # blue
-    # (0, 255, 0),      # green
-    # (255, 255, 0),    # yellow
-    # (0, 255, 255),    # cyan
-    # (255, 0, 255),    # magenta
-]
+# Your alphabet: one colour per line, each with a name. The names are what
+# your functions work with and what the result shows. Start with two. When
+# 20 runs get through without a mistake, remove the # in front of the next
+# two colours.
+COLORS = {
+    "off":     (0, 0, 0),
+    "white":   (255, 255, 255),
+    # "red":     (255, 0, 0),
+    # "blue":    (0, 0, 255),
+    # "green":   (0, 255, 0),
+    # "yellow":  (255, 255, 0),
+    # "cyan":    (0, 255, 255),
+    # "magenta": (255, 0, 255),
+}
 ```
 
 > [!HINT]
@@ -269,27 +271,27 @@ Run it with:  python example.py   (on a Mac: python3)
 
 from lifi_hardware import receiver, run_test, sender
 
-COLORS = [
-    (0, 0, 0),          # 0: off
-    (255, 0, 0),        # 1: red
-    (0, 255, 0),        # 2: green
-    (0, 0, 255),        # 3: blue
-]
+COLORS = {
+    "off":   (0, 0, 0),
+    "red":   (255, 0, 0),
+    "green": (0, 255, 0),
+    "blue":  (0, 0, 255),
+}
 
-# The room light, measured during calibration while colour 0 (off) showed
+# The room light, measured during calibration while off showed
 BASELINE = {"r": 0, "g": 0, "b": 0}
 
 
 def calibrate(readings):
     """Keeps only the baseline: the average of the readings with the LED off."""
-    off = readings[0]
+    off = readings["off"]
     BASELINE["r"] = sum(reading.r for reading in off) / len(off)
     BASELINE["g"] = sum(reading.g for reading in off) / len(off)
     BASELINE["b"] = sum(reading.b for reading in off) / len(off)
 
 
-def send_symbol(index):
-    r, g, b = COLORS[index]
+def send_symbol(name):
+    r, g, b = COLORS[name]
     sender.led.set_color(r, g, b)
 
 
@@ -303,15 +305,15 @@ def receive_symbol():
 
     # The largest channel decides
     if r > g and r > b:
-        return 1        # red
+        return "red"
     elif g > r and g > b:
-        return 2        # green
+        return "green"
     else:
-        return 3        # blue
-    # Note what is missing: there is no way to answer 0 (off).
+        return "blue"
+    # Note what is missing: there is no way to answer "off".
 
 
-run_test(send_symbol, receive_symbol, calibrate, symbols=len(COLORS))
+run_test(send_symbol, receive_symbol, calibrate, symbols=COLORS)
 ```
 
 ### Warum das keine gute Lösung ist

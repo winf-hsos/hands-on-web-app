@@ -11,7 +11,7 @@ objectives:
     - "address two devices on one laptop separately"
     - "say what the measurement log records, what of it is uploaded and how you switch that off"
 translation_of: de
-based_on: 2026-11-03
+based_on: 2026-11-04
 ---
 
 In Python, a module is a piece of finished program code that you pull into
@@ -213,7 +213,7 @@ module or newer.
 
 ### Sender, receiver and the test for challenge 1
 
-From version 0.5.0 on, the course module knows three more names for
+From version 0.6.0 on, the course module knows three more names for
 [[lifi-challenge-1]]: `sender` and `receiver` are the two devices of your team,
 each with `.led` and `.sensor`, and `run_test` runs the test. Your file sets
 its colours and three functions and hands them over in its last line:
@@ -221,20 +221,20 @@ its colours and three functions and hands them over in its last line:
 ```python static
 from lifi_hardware import receiver, run_test, sender
 
-COLORS = [(0, 0, 0), (255, 255, 255)]
+COLORS = {"off": (0, 0, 0), "white": (255, 255, 255)}
 
-def calibrate(readings):        # readings[i]: the readings while colour i showed
+def calibrate(readings):        # readings["white"]: the readings while white showed
     ...
 
-def send_symbol(index):
-    r, g, b = COLORS[index]
+def send_symbol(name):
+    r, g, b = COLORS[name]
     sender.led.set_color(r, g, b)
 
 def receive_symbol():
     r, g, b, c = receiver.sensor.read()
-    return 0                    # the number of the colour you recognised
+    return "off"                # the name of the colour you recognised
 
-run_test(send_symbol, receive_symbol, calibrate, symbols=len(COLORS))
+run_test(send_symbol, receive_symbol, calibrate, symbols=COLORS)
 ```
 
 Which device sends, the module asks at the start, whether both hang on one

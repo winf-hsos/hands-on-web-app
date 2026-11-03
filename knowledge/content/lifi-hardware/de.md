@@ -18,7 +18,7 @@ topics: [working-with-the-computer, programming-with-python]
 modules: [dup]
 project: lifi
 status: published
-updated: 2026-11-03
+updated: 2026-11-04
 ---
 
 Ein Modul ist in Python ein Stück fertiger Programmcode, das ihr mit einer
@@ -219,7 +219,7 @@ die Umgebungsvariable `LIFI_MASTER` und mit
 
 ### Sender, Empfänger und der Test für Challenge 1
 
-Ab Version 0.5.0 kennt das Kursmodul für [[lifi-challenge-1]] drei weitere
+Ab Version 0.6.0 kennt das Kursmodul für [[lifi-challenge-1]] drei weitere
 Namen: `sender` und `receiver` sind die beiden Geräte eures Teams, jedes mit
 `.led` und `.sensor`, und `run_test` führt den Test aus. Eure Datei legt ihre
 Farben und drei Funktionen fest und übergibt sie in der letzten Zeile:
@@ -227,20 +227,20 @@ Farben und drei Funktionen fest und übergibt sie in der letzten Zeile:
 ```python static
 from lifi_hardware import receiver, run_test, sender
 
-COLORS = [(0, 0, 0), (255, 255, 255)]
+COLORS = {"off": (0, 0, 0), "white": (255, 255, 255)}
 
-def calibrate(readings):        # readings[i]: die Messwerte, während Farbe i leuchtete
+def calibrate(readings):        # readings["white"]: die Messwerte, während Weiß leuchtete
     ...
 
-def send_symbol(index):
-    r, g, b = COLORS[index]
+def send_symbol(name):
+    r, g, b = COLORS[name]
     sender.led.set_color(r, g, b)
 
 def receive_symbol():
     r, g, b, c = receiver.sensor.read()
-    return 0                    # die Nummer der erkannten Farbe
+    return "off"                # der Name der erkannten Farbe
 
-run_test(send_symbol, receive_symbol, calibrate, symbols=len(COLORS))
+run_test(send_symbol, receive_symbol, calibrate, symbols=COLORS)
 ```
 
 Welches Gerät sendet, fragt das Modul beim Start, ob nun beide an einem Laptop
