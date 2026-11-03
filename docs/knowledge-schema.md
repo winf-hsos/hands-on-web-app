@@ -767,7 +767,9 @@ The text of a challenge is structured by its tasks (Nicolas, 2026-11-03).
 After the introduction (goal, what is new, an overview of the tasks) and any
 setup the tasks share, each task has a section of its own, `## Aufgabe N: …`
 (`## Task N: …`), always in this order: what to do, the file the solution is
-written in (`**Datei:**`, also when there is none), hints as `> [!HINT]`, and
+written in (`**Datei:**`, also when there is none) followed by that file as
+it stands in the template, with its `TODO`s, as a `file=` code block shown
+open (Nicolas, 2026-11-03), hints as `> [!HINT]`, and
 the sample solution as `> [!SOLUTION]` with a `file=` code block, as long as
 one is published. Hints are numbered within their section. The acceptance
 test, pitfalls and anything extra follow after the last task.

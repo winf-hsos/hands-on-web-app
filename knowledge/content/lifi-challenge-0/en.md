@@ -45,8 +45,8 @@ project is made of instructions one after the other, repeated, and under a
 condition. You run each task on its own, for example with
 `python task_3_color_cycle.py` (on a Mac `python3`).
 
-Below, each task has its own section with what to do, the file, a few hints to
-unfold and a sample solution you can copy or download as a file. Open the
+Below, each task has its own section with what to do, the file as it looks in
+your template, a few hints to unfold and a sample solution you can copy or download as a file. Open the
 solution only once your own version runs or you are stuck: reading a finished
 solution is easier than writing one yourself, and only the writing is practice.
 
@@ -54,7 +54,28 @@ solution is easier than writing one yourself, and only the writing is practice.
 
 The LED should shine red for two seconds and then go off again.
 
-**File:** `task_1_light_on.py`
+**File:** `task_1_light_on.py`; this is how it looks in your template:
+
+```python static file=task_1_light_on.py
+# Challenge 0, task 1: Light on
+#
+# You learn: calling a function and handing it values.
+#
+# The LED should shine red for two seconds and then go off.
+#
+# Run it with:  python task_1_light_on.py   (on a Mac: python3)
+
+import time
+
+from lifi_hardware import led
+
+# TODO: set the LED to red
+#       Hint: led.set_color(red, green, blue), each value from 0 to 255
+
+time.sleep(2)
+
+# TODO: switch the LED off again
+```
 
 > [!HINT]
 > `led.set_color(red, green, blue)` sets a colour, and each of the three values lies between 0 and 255. Red therefore means full red, no green and no blue.
@@ -86,7 +107,26 @@ The LED should shine red for two seconds and then go off again.
 The LED should blink five times, half a second on and half a second off each
 time, without you writing the same lines five times.
 
-**File:** `task_2_blink.py`
+**File:** `task_2_blink.py`; this is how it looks in your template:
+
+```python static file=task_2_blink.py
+# Challenge 0, task 2: Blink
+#
+# You learn: a loop, which means doing something several times without
+#            writing it several times.
+#
+# The LED should blink five times: half a second on, half a second off.
+#
+# Run it with:  python task_2_blink.py   (on a Mac: python3)
+
+import time
+
+from lifi_hardware import led
+
+for i in range(5):
+    # TODO: LED on, wait briefly, LED off, wait briefly
+    pass
+```
 
 > [!HINT]
 > The template already contains `for i in range(5):`. Everything indented below it runs five times in a row, and `pass` is only a placeholder that you replace with your code.
@@ -118,7 +158,34 @@ time, without you writing the same lines five times.
 The LED should show all colours from the list `colors` one after the other,
 each for one second. First add at least two colours of your own to the list.
 
-**File:** `task_3_color_cycle.py`
+**File:** `task_3_color_cycle.py`; this is how it looks in your template:
+
+```python static file=task_3_color_cycle.py
+# Challenge 0, task 3: Colour cycle
+#
+# You learn: a list, and how to go through it with a loop.
+#
+# The LED should show all colours from the list one after the other, each for
+# one second. Add at least two colours of your own to the list.
+#
+# Run it with:  python task_3_color_cycle.py   (on a Mac: python3)
+
+import time
+
+from lifi_hardware import led
+
+colors = [
+    (255, 0, 0),      # red
+    (0, 255, 0),      # green
+    (0, 0, 255),      # blue
+    # TODO: add at least two colours of your own
+]
+
+for color in colors:
+    # TODO: set this colour and wait one second
+    #       Hint: the three numbers are together in color
+    pass
+```
 
 > [!HINT]
 > A colour is three numbers in round brackets, such as `(255, 255, 0)` for yellow, which comes from red and green together. Each colour stands on its own line and ends with a comma.
@@ -163,7 +230,36 @@ only one thing between two readings: in room light, with your hand over the
 sensor, with your phone torch from far away and close up. The value `c` is the
 brightness; write it down for each situation, because you need it in task 5.
 
-**File:** `task_4_measure.py`
+**File:** `task_4_measure.py`; this is how it looks in your template:
+
+```python static file=task_4_measure.py
+# Challenge 0, task 4: Measure
+#
+# You learn: a function that gives something back, and how to take several
+#            returned values apart.
+#
+# Every time you press Enter, the program takes one reading; q and Enter
+# stops it. Measure in at least four situations and change only one thing
+# between two readings: room light, the sensor covered with your hand, the
+# torch of your phone from far away, the torch close up. Write down the
+# clear value c for each situation; you need these numbers in task 5.
+#
+# If a value sticks at 65535, the sensor is overloaded: hold the torch
+# further away.
+#
+# Run it with:  python task_4_measure.py   (on a Mac: python3)
+
+from lifi_hardware import sensor
+
+print("Enter = take a reading, q and Enter = stop")
+while True:
+    answer = input()
+    if answer == "q":
+        break
+    # TODO: read the sensor, take the result apart into r, g, b, c
+    #       and print the four values
+    #       Hint: sensor.read() gives back four numbers at once
+```
 
 > [!HINT]
 > `sensor.read()` gives back four numbers at once, and `r, g, b, c = sensor.read()` puts them into four variables, which you print with `print`.
@@ -197,7 +293,38 @@ The program measures all the time: when it is bright, the LED shines green,
 when it is dark, it shines red. It is your first program that makes a
 decision, and it keeps running until you stop it with Ctrl+C.
 
-**File:** `task_5_react.py`
+**File:** `task_5_react.py`; this is how it looks in your template:
+
+```python static file=task_5_react.py
+# Challenge 0, task 5: React
+#
+# You learn: a condition, which means doing something different depending on
+#            the situation.
+#
+# The program measures all the time. When it is bright, the LED shines green.
+# When it is dark, it shines red. Find the right threshold yourself: put it
+# between the clear value with the sensor covered and the one with the torch
+# from your notes of task 4.
+#
+# This is your first program that makes a decision. It keeps running until
+# you stop it with Ctrl+C.
+#
+# Run it with:  python task_5_react.py   (on a Mac: python3)
+
+import time
+
+from lifi_hardware import led, sensor
+
+threshold = 0   # TODO: a value between "covered" and "torch" from task 4
+
+print("Stop with Ctrl+C")
+while True:
+    r, g, b, c = sensor.read()
+
+    # TODO: if c is greater than threshold, LED green, otherwise red
+
+    time.sleep(0.2)
+```
 
 > [!HINT]
 > You find the threshold yourselves, in your notes from task 4: it lies between the value `c` with the sensor covered and the one with the torch. A number from the internet or from the assistant does not fit your room.
@@ -247,7 +374,56 @@ colour twice in a row. Write down what made it fail each time. That list is
 pretty much the list of problems your program will have to solve in the coming
 challenges, and you found it yourselves.
 
-**File:** `task_6_human_receiver.py`
+**File:** `task_6_human_receiver.py`; this is how it looks in your template:
+
+```python static file=task_6_human_receiver.py
+# Challenge 0, task 6: The human as receiver
+#
+# You learn: what a receiver actually has to manage.
+#
+# The program sends a random sequence of colours. One of you watches and
+# writes it down without looking at the screen. Afterwards you compare.
+#
+# Try it several times and change exactly one thing each time:
+#   - send faster
+#   - use more colours
+#   - do not announce when it starts
+#   - send the same colour twice in a row
+#
+# Write down what made it fail each time. This list is exactly the list of
+# problems your program has to solve in the coming weeks.
+#
+# Run it with:  python task_6_human_receiver.py   (on a Mac: python3)
+
+import random
+import time
+
+from lifi_hardware import led
+
+colors = {
+    "red":   (255, 0, 0),
+    "green": (0, 255, 0),
+    "blue":  (0, 0, 255),
+    "white": (255, 255, 255),
+}
+
+names = list(colors.keys())
+sequence = [random.choice(names) for _ in range(10)]
+
+input("Receiver ready? Do not look at the screen. Press Enter. ")
+
+for name in sequence:
+    led.set_color(*colors[name])
+    time.sleep(1.5)          # TODO: make this shorter and see when it breaks
+    led.set_color(0, 0, 0)
+    time.sleep(0.5)
+
+print()
+print("What was sent:")
+print("  " + ", ".join(sequence))
+print()
+print("Compare this with what was written down.")
+```
 
 > [!HINT]
 > In the template, the time a colour stays on is in `time.sleep(1.5)`. Shorten it step by step, for example to 0.5 and then to 0.2 seconds, and watch from when on the person can no longer keep up.

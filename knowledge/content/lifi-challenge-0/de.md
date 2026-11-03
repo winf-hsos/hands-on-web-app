@@ -55,7 +55,7 @@ Aufgabe startet ihr einzeln, etwa mit `python task_3_color_cycle.py` (auf dem
 Mac `python3`).
 
 Unten hat jede Aufgabe ihren eigenen Abschnitt mit der Aufgabenstellung, der
-Datei, ein paar Tipps zum Aufklappen und einer Musterlösung, die ihr kopieren
+Datei, wie sie in eurer Vorlage aussieht, ein paar Tipps zum Aufklappen und einer Musterlösung, die ihr kopieren
 oder als Datei herunterladen könnt. Öffnet die Lösung erst, wenn eure eigene
 Fassung läuft oder ihr festhängt: Eine fertige Lösung zu lesen fällt leichter,
 als selbst eine zu schreiben, und geübt wird nur das Schreiben.
@@ -64,7 +64,28 @@ als selbst eine zu schreiben, und geübt wird nur das Schreiben.
 
 Die LED soll zwei Sekunden lang rot leuchten und dann wieder ausgehen.
 
-**Datei:** `task_1_light_on.py`
+**Datei:** `task_1_light_on.py`; so sieht sie in eurer Vorlage aus:
+
+```python static file=task_1_light_on.py
+# Challenge 0, task 1: Light on
+#
+# You learn: calling a function and handing it values.
+#
+# The LED should shine red for two seconds and then go off.
+#
+# Run it with:  python task_1_light_on.py   (on a Mac: python3)
+
+import time
+
+from lifi_hardware import led
+
+# TODO: set the LED to red
+#       Hint: led.set_color(red, green, blue), each value from 0 to 255
+
+time.sleep(2)
+
+# TODO: switch the LED off again
+```
 
 > [!HINT]
 > `led.set_color(rot, grün, blau)` setzt eine Farbe, und jeder der drei Werte liegt zwischen 0 und 255. Rot heißt also voller Rotanteil, kein Grün und kein Blau.
@@ -96,7 +117,26 @@ Die LED soll zwei Sekunden lang rot leuchten und dann wieder ausgehen.
 Die LED soll fünfmal blinken, jeweils eine halbe Sekunde an und eine halbe
 Sekunde aus, ohne dass ihr dieselben Zeilen fünfmal hinschreibt.
 
-**Datei:** `task_2_blink.py`
+**Datei:** `task_2_blink.py`; so sieht sie in eurer Vorlage aus:
+
+```python static file=task_2_blink.py
+# Challenge 0, task 2: Blink
+#
+# You learn: a loop, which means doing something several times without
+#            writing it several times.
+#
+# The LED should blink five times: half a second on, half a second off.
+#
+# Run it with:  python task_2_blink.py   (on a Mac: python3)
+
+import time
+
+from lifi_hardware import led
+
+for i in range(5):
+    # TODO: LED on, wait briefly, LED off, wait briefly
+    pass
+```
 
 > [!HINT]
 > In der Vorlage steht schon `for i in range(5):`. Alles, was darunter eingerückt steht, läuft fünfmal hintereinander, und `pass` ist nur ein Platzhalter, den ihr durch euren Code ersetzt.
@@ -128,7 +168,34 @@ Sekunde aus, ohne dass ihr dieselben Zeilen fünfmal hinschreibt.
 Die LED soll alle Farben aus der Liste `colors` nacheinander zeigen, jede eine
 Sekunde lang. Ergänzt die Liste vorher um mindestens zwei eigene Farben.
 
-**Datei:** `task_3_color_cycle.py`
+**Datei:** `task_3_color_cycle.py`; so sieht sie in eurer Vorlage aus:
+
+```python static file=task_3_color_cycle.py
+# Challenge 0, task 3: Colour cycle
+#
+# You learn: a list, and how to go through it with a loop.
+#
+# The LED should show all colours from the list one after the other, each for
+# one second. Add at least two colours of your own to the list.
+#
+# Run it with:  python task_3_color_cycle.py   (on a Mac: python3)
+
+import time
+
+from lifi_hardware import led
+
+colors = [
+    (255, 0, 0),      # red
+    (0, 255, 0),      # green
+    (0, 0, 255),      # blue
+    # TODO: add at least two colours of your own
+]
+
+for color in colors:
+    # TODO: set this colour and wait one second
+    #       Hint: the three numbers are together in color
+    pass
+```
 
 > [!HINT]
 > Eine Farbe sind drei Zahlen in runden Klammern, etwa `(255, 255, 0)` für Gelb, das aus Rot und Grün zusammen entsteht. Jede Farbe steht in einer eigenen Zeile und endet mit einem Komma.
@@ -174,7 +241,36 @@ Raumlicht, mit der Hand über dem Sensor, mit der Taschenlampe des Handys von
 weit weg und von nah. Der Wert `c` ist die Helligkeit; schreibt ihn für jede
 Lage auf, denn in Aufgabe 5 braucht ihr ihn.
 
-**Datei:** `task_4_measure.py`
+**Datei:** `task_4_measure.py`; so sieht sie in eurer Vorlage aus:
+
+```python static file=task_4_measure.py
+# Challenge 0, task 4: Measure
+#
+# You learn: a function that gives something back, and how to take several
+#            returned values apart.
+#
+# Every time you press Enter, the program takes one reading; q and Enter
+# stops it. Measure in at least four situations and change only one thing
+# between two readings: room light, the sensor covered with your hand, the
+# torch of your phone from far away, the torch close up. Write down the
+# clear value c for each situation; you need these numbers in task 5.
+#
+# If a value sticks at 65535, the sensor is overloaded: hold the torch
+# further away.
+#
+# Run it with:  python task_4_measure.py   (on a Mac: python3)
+
+from lifi_hardware import sensor
+
+print("Enter = take a reading, q and Enter = stop")
+while True:
+    answer = input()
+    if answer == "q":
+        break
+    # TODO: read the sensor, take the result apart into r, g, b, c
+    #       and print the four values
+    #       Hint: sensor.read() gives back four numbers at once
+```
 
 > [!HINT]
 > `sensor.read()` gibt vier Zahlen auf einmal zurück, und `r, g, b, c = sensor.read()` legt sie in vier Variablen ab, die ihr mit `print` ausgebt.
@@ -208,7 +304,38 @@ Das Programm misst fortlaufend: Ist es hell, leuchtet die LED grün, ist es
 dunkel, leuchtet sie rot. Es ist euer erstes Programm, das eine Entscheidung
 trifft, und es läuft, bis ihr es mit Strg+C beendet.
 
-**Datei:** `task_5_react.py`
+**Datei:** `task_5_react.py`; so sieht sie in eurer Vorlage aus:
+
+```python static file=task_5_react.py
+# Challenge 0, task 5: React
+#
+# You learn: a condition, which means doing something different depending on
+#            the situation.
+#
+# The program measures all the time. When it is bright, the LED shines green.
+# When it is dark, it shines red. Find the right threshold yourself: put it
+# between the clear value with the sensor covered and the one with the torch
+# from your notes of task 4.
+#
+# This is your first program that makes a decision. It keeps running until
+# you stop it with Ctrl+C.
+#
+# Run it with:  python task_5_react.py   (on a Mac: python3)
+
+import time
+
+from lifi_hardware import led, sensor
+
+threshold = 0   # TODO: a value between "covered" and "torch" from task 4
+
+print("Stop with Ctrl+C")
+while True:
+    r, g, b, c = sensor.read()
+
+    # TODO: if c is greater than threshold, LED green, otherwise red
+
+    time.sleep(0.2)
+```
 
 > [!HINT]
 > Den Schwellenwert findet ihr selbst, und zwar in euren Notizen aus Aufgabe 4: Er liegt zwischen dem Wert `c` mit abgedecktem Sensor und dem mit der Taschenlampe. Eine Zahl aus dem Internet oder vom Assistenten passt nicht zu eurem Raum.
@@ -259,7 +386,56 @@ es jedes Mal gescheitert ist. Diese Liste ist ziemlich genau die Liste der
 Probleme, die euer Programm in den nächsten Challenges lösen muss, und ihr habt
 sie selbst gefunden.
 
-**Datei:** `task_6_human_receiver.py`
+**Datei:** `task_6_human_receiver.py`; so sieht sie in eurer Vorlage aus:
+
+```python static file=task_6_human_receiver.py
+# Challenge 0, task 6: The human as receiver
+#
+# You learn: what a receiver actually has to manage.
+#
+# The program sends a random sequence of colours. One of you watches and
+# writes it down without looking at the screen. Afterwards you compare.
+#
+# Try it several times and change exactly one thing each time:
+#   - send faster
+#   - use more colours
+#   - do not announce when it starts
+#   - send the same colour twice in a row
+#
+# Write down what made it fail each time. This list is exactly the list of
+# problems your program has to solve in the coming weeks.
+#
+# Run it with:  python task_6_human_receiver.py   (on a Mac: python3)
+
+import random
+import time
+
+from lifi_hardware import led
+
+colors = {
+    "red":   (255, 0, 0),
+    "green": (0, 255, 0),
+    "blue":  (0, 0, 255),
+    "white": (255, 255, 255),
+}
+
+names = list(colors.keys())
+sequence = [random.choice(names) for _ in range(10)]
+
+input("Receiver ready? Do not look at the screen. Press Enter. ")
+
+for name in sequence:
+    led.set_color(*colors[name])
+    time.sleep(1.5)          # TODO: make this shorter and see when it breaks
+    led.set_color(0, 0, 0)
+    time.sleep(0.5)
+
+print()
+print("What was sent:")
+print("  " + ", ".join(sequence))
+print()
+print("Compare this with what was written down.")
+```
 
 > [!HINT]
 > Die Leuchtdauer steht in der Vorlage in `time.sleep(1.5)`. Verkürzt sie schrittweise, etwa auf 0,5 und dann auf 0,2 Sekunden, und achtet darauf, ab wann die Person nicht mehr mitkommt.
