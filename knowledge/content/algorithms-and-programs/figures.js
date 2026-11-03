@@ -1,5 +1,5 @@
 // Drawings of "From algorithm to program" (docs/figures.md), after the
-// bubble sort slide of the deck algorithms-and-programs-slides.
+// bubble sort slide of the deck in slides/.
 (function () {
   const d = window.draw;
   const p = window.figureParts;

@@ -290,6 +290,17 @@ The body is plain Markdown with a few conventions:
   fragment that cannot run on its own is marked ` ```python static `, and
   ` ```text ` shows a sample run as it is. Names in code are English in both
   languages; what a program prints follows the language of the text.
+- **A simulated LED** (Nicolas, 2026-11-03): a runnable block that imports
+  `lifi_hardware` gets a stand-in for the course module. `led.set_color()`,
+  `led.off()` and `use_device()` work as on the device, and `time.sleep()`
+  moves a clock of the program's own instead of waiting, so the run is done at
+  once; the page then shows the LED and a timeline of its colours below the
+  code and plays it back in real time (`src/client/led-view.js`). When the
+  program ends, the LED goes off, as the course module switches it off on the
+  device, and a loop without end is stopped after 20 seconds. The colours of
+  the timeline are the LED's own, since they stand for light. This is how the
+  animated runs of a deck about the LED become runs that a learner changes
+  (`algorithms-and-programs`).
 - **Code as a file** (Nicolas, 2026-11-03): a block that is not run can name
   the file it belongs in, as in ` ```python static file=task_1_light_on.py `.
   The page then shows the name above the block with a button that saves the
@@ -724,6 +735,11 @@ figures.py then reports no empty edges. figures.py loads no `anim.js`, so an
 animated drawing is a function with a `final` flag that draws the state its
 last segment ends in, and names its parts through a local `g` that falls back
 to plain SVG when `d.g` is missing (`input-processing-output-slides`).
+`algorithms-and-programs` was the fourth, also made on 2026-11-03 from a
+lesson and a deck: its one figure, bubble sort on six bars, is the slide's
+drawing redrawn for the page in the item's `figures.js` (section on drawings
+above), because there it plays pass by pass, and the deck's runs of the LED
+in time became runnable code with the simulated LED.
 
 ## 9a. Projects
 
