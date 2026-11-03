@@ -12,7 +12,9 @@ const PYTHON = {
   token: new RegExp(
     [
       /(?<comment>#[^\n]*)/,
-      /(?<string>[rRbBfFuU]{0,2}(?:"""[\s\S]*?(?:"""|$)|'''[\s\S]*?(?:'''|$)|"(?:\\.|[^"\\\n])*(?:"|$)|'(?:\\.|[^'\\\n])*(?:'|$)))/,
+      // a triple-quoted string runs over lines up to its end or, still being
+      // typed, to the end of the code; `$` would stop it at the first line end
+      /(?<string>[rRbBfFuU]{0,2}(?:"""[\s\S]*?(?:"""|(?![\s\S]))|'''[\s\S]*?(?:'''|(?![\s\S]))|"(?:\\.|[^"\\\n])*(?:"|$)|'(?:\\.|[^'\\\n])*(?:'|$)))/,
       /(?<number>\b\d[\d_]*(?:\.\d+)?(?:[eE][+-]?\d+)?\b)/,
       /(?<name>[A-Za-z_][A-Za-z0-9_]*)/,
     ]

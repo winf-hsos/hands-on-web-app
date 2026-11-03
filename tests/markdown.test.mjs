@@ -65,6 +65,12 @@ test('the highlighter knows keywords, builtins, strings, numbers, comments and d
   assert.deepEqual(kinds, ['keyword:def', 'function:area', 'comment:# size', 'keyword:return', 'builtin:print', 'string:"x"', 'number:4.5']);
 });
 
+test('a docstring is one string over all its lines, also while it is still open', () => {
+  const kinds = (code) => tokenize(code).filter((t) => t.type).map((t) => t.type);
+  assert.deepEqual(kinds('"""\nThis is for\nyou.\n"""\nx = 1'), ['string', 'number']);
+  assert.deepEqual(kinds("'''open\nis not\n"), ['string']);
+});
+
 test('an r block runs too and says which language it is, and a verb-demo block becomes its place', () => {
   const html = render('```r\nsurvey |> nrow()\n```\n\n```r static\nlibrary(dplyr)\n```\n\n```verb-demo\n```\n');
   assert.equal((html.match(/class="runner" data-runner="" data-lang="r"/g) ?? []).length, 1);
