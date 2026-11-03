@@ -1,6 +1,7 @@
 ---
 type: [lesson, slides]
 code: 7942
+formerly: [measuring-and-experimenting]
 title: Measuring and experimenting
 summary: >-
   Why a single reading is not yet evidence: how a claim turns into a test, what

@@ -1,6 +1,7 @@
 ---
 type: [lesson, slides]
 code: 5749
+formerly: [algorithms-and-programs-slides]
 title: Algorithms and programs
 summary: >-
   What a program is: an algorithm written down so completely that a machine

@@ -1,6 +1,7 @@
 ---
 type: [lesson, slides]
 code: 9684
+formerly: [analog-and-digital-slides]
 title: Analog and digital
 summary: >-
   Digital does not mean electronic but finitely many clearly separated
