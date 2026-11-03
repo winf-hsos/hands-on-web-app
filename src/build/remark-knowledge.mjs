@@ -216,6 +216,7 @@ function fillableTables(tree, lang) {
 // ```byte-switchboard eight switches for one byte (client/byte-switchboard.js),
 // ```photo-digitiser a photo cut by resolution and colour depth (client/photo-digitiser.js),
 // ```audio-digitiser a sound cut by sampling rate and bit depth (client/audio-digitiser.js),
+// ```question-game sixteen faces and yes-or-no questions measured in bits (client/question-game.js),
 // ```data-table an empty table to record observations in (client/data-table.js),
 // ```shell-demo the folder tree and command line (client/shell-demo.js), whose
 // block holds its scenario in YAML (tree:, start:), checked by validate.mjs.
@@ -227,6 +228,7 @@ const DEMOS = {
   'byte-switchboard': { className: 'byte-switchboard', dataByteSwitchboard: '' },
   'photo-digitiser': { className: 'photo-digitiser', dataPhotoDigitiser: '' },
   'audio-digitiser': { className: 'audio-digitiser', dataAudioDigitiser: '' },
+  'question-game': { className: 'question-game', dataQuestionGame: '' },
   'shell-demo': { className: 'shell-demo', dataShellDemo: '' },
   'data-table': { className: 'data-table', dataDataTable: '' },
 };

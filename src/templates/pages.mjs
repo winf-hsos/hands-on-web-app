@@ -225,6 +225,7 @@ const scriptsFor = (body) =>
     body.includes('data-byte-switchboard') && 'byte-switchboard',
     body.includes('data-photo-digitiser') && 'photo-digitiser',
     body.includes('data-audio-digitiser') && 'audio-digitiser',
+    body.includes('data-question-game') && 'question-game',
     body.includes('data-shell-demo') && 'shell-demo',
     body.includes('data-data-table') && 'data-table',
     body.includes('data-figure') && 'figures',

@@ -5135,6 +5135,166 @@ details.callout[open] > summary::before {
   }
 }
 
+/* The question game (client/question-game.js): the sixteen faces as buttons,
+   eight in a row and four on a phone, then the questions, the panel that
+   writes out what the last answer gained, the bits collected and the log.
+   It borrows the labels, chips and panel of the digitisers. */
+.question-game {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.75rem;
+}
+
+.qg-faces {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.qg-face {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.2rem 0.2rem 0.15rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.5rem;
+  background: #000;
+  color: #c9d1d9;
+  font: 0.72rem/1.2 var(--mono);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, opacity 0.2s;
+}
+
+.qg-face img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.35rem;
+}
+
+.qg-face:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.qg-face.is-out {
+  opacity: 0.15;
+  filter: grayscale(1);
+  cursor: default;
+}
+
+.qg-face.is-found {
+  border-color: var(--done);
+  box-shadow: 0 0 0 2px var(--done);
+}
+
+.prose .qg-hint {
+  margin: 1rem 0 0.5rem;
+}
+
+.question-game .chip-button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.qg-answer {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.qg-meter {
+  margin-top: 1rem;
+}
+
+.prose .qg-meter p {
+  margin: 0 0 0.35rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.qg-track {
+  height: 0.6rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.qg-fill {
+  width: 0;
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.25s var(--ease);
+}
+
+.prose .qg-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem 1rem;
+  margin: 1rem 0 0;
+}
+
+.qg-stats dt {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--quiet);
+}
+
+.prose .qg-stats dd {
+  margin: 0;
+  font: 650 1.5rem/1.2 var(--mono);
+}
+
+.prose .qg-stats .qg-note {
+  font: 400 0.72rem/1.3 var(--sans);
+  color: var(--quiet);
+}
+
+.prose .qg-log {
+  height: 6.5rem;
+  margin: 1rem 0 0;
+  padding: 0.5rem 0 0;
+  border-top: 1px solid var(--rule);
+  overflow-y: auto;
+  list-style: none;
+  font: 0.8rem/1.5 var(--mono);
+  color: var(--quiet);
+}
+
+.prose .qg-log li {
+  margin: 0;
+  padding: 0;
+}
+
+.prose .qg-log li:first-child {
+  color: var(--ink);
+}
+
+.qg-end {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-top: 1rem;
+}
+
+.prose .qg-end .dg-note {
+  margin: 0;
+}
+
+@media (max-width: 40rem) {
+  .question-game {
+    padding: 0.75rem;
+  }
+
+  .qg-faces {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .prose .qg-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 /* The folder tree and command line (client/shell-demo.js): the tree above,
    with "du bist hier" on the current folder and the way a typed path takes
    in the accent colour, the terminal below. Rows are 30px high and indented
