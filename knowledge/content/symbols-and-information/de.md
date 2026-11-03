@@ -167,7 +167,9 @@ Antwort den größten sicheren Gewinn, und die schiefe Frage lohnt sich erst gan
 am Ende, wenn nur noch zwei Möglichkeiten übrig sind. Die zweite Zeile zeigt
 außerdem, dass eine Frage, deren Ausgang fast sicher ist, kaum Information
 trägt, wie lang ihre Antwort auch sein mag, und genau auf dieser Beobachtung
-beruht die Kompression.
+beruht die Kompression. Im [[question-game]] misst du das an sechzehn
+Gesichtern selbst: Nach jeder Frage steht dort, wie viel Bit die Antwort
+gebracht hat und wie viel die Frage im Mittel wert war.
 
 ## Ein Bit und zwei Formeln
 

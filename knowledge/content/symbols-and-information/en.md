@@ -173,6 +173,9 @@ gain out of every answer, and the lopsided question pays off only at the very
 end, when just two possibilities are left. The second row also shows that a
 question whose outcome is nearly certain carries almost no information,
 however long its answer, and compression rests on exactly that observation.
+In the [[question-game]] you measure this yourself on sixteen faces: after
+every question it shows how many bits the answer gained and what the question
+was worth on average.
 
 ## One bit, and two formulas
 
