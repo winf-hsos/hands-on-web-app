@@ -740,6 +740,11 @@ lesson and a deck: its one figure, bubble sort on six bars, is the slide's
 drawing redrawn for the page in the item's `figures.js` (section on drawings
 above), because there it plays pass by pass, and the deck's runs of the LED
 in time became runnable code with the simulated LED.
+`measurement-and-experiments` was the fifth, made on the same day from the
+lesson of that id and the deck `measuring-and-experimenting`, whose id went
+away: its three page figures (calibration, decisions, integration) had already
+been redrawn from the deck in the item's `figures.js`, and the lesson now
+follows the deck's four parts.
 
 ## 9a. Projects
 
