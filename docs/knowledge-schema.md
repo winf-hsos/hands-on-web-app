@@ -109,6 +109,7 @@ Lead file, all fields:
 ---
 type: lesson                       # required, see vocabulary.yaml; several as [lesson, slides]
 code: 4821                         # required, four digits
+formerly: [code-slides]            # optional: earlier ids, such as a deck merged into this item; their addresses lead here
 title: Ein Code ist eine Vereinbarung       # required
 summary: >-                        # required, one or two sentences, plain text
   Warum dieselben Bits ein Buchstabe, eine Farbe oder ein Ton sein können …

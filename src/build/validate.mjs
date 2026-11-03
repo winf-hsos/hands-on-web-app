@@ -162,6 +162,8 @@ function shapes(vocabulary) {
           areas: inAreas,
           objectives,
           project: id,
+          // earlier ids, such as the deck merged into a lesson; their addresses lead here (scripts/build.mjs)
+          formerly: list(id),
         },
       },
       translation: { required: translation.required, optional: { objectives } },
@@ -460,6 +462,12 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
       if (expected !== found)
         errors.push(`${file.path}: headings with {#id} do not match phases and challenges in the front matter (front matter: ${expected}; text: ${found})`);
       for (const orphan of text.orphans) errors.push(`${file.path}: challenge {#${orphan}} stands before any phase`);
+    }
+  }
+  // an earlier id must not be in use again, or two pages would claim one address
+  for (const [section, docs] of [['content', content], ['courses', courses]]) {
+    for (const doc of docs) {
+      for (const old of doc.lead.formerly ?? []) if (allIds.has(old)) errors.push(`${section}/${doc.id}: formerly "${old}" is still the id of an entry`);
     }
   }
   // An item of one project is missing from the list of all items, so that

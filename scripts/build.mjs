@@ -260,8 +260,8 @@ function renderSite(knowledge, base, { write, asset }) {
       write(page.path, String(layout({ site, lang, asset, pyodide: PYODIDE_BASE, webr: { base: WEBR_BASE, repo: WEBR_REPO_BASE }, total: site.items.length, entrances: entrances[lang], ...page })));
       count += 1;
     };
-    // courses are called modules since 2026-11-01, and a course may have had
-    // other ids before (`formerly`); the old addresses lead to the page
+    // courses are called modules since 2026-11-01, and a course or an item may
+    // have had other ids before (`formerly`); the old addresses lead to the page
     const forward = (from, page) => {
       const to = page.path;
       write(from, `<!doctype html><meta charset="utf-8"><title>${page.title}</title><meta name="robots" content="noindex"><link rel="canonical" href="${to}"><meta http-equiv="refresh" content="0; url=${to}"><a href="${to}">${page.title}</a>`);
@@ -282,7 +282,9 @@ function renderSite(knowledge, base, { write, asset }) {
       for (const doc of site.projects) writePage(lang, pages.project(site, doc, lang));
       writePage(lang, pages.learning(site, lang));
       for (const doc of site.items) {
-        writePage(lang, pages.item(site, doc, lang));
+        const page = pages.item(site, doc, lang);
+        writePage(lang, page);
+        for (const id of doc.lead.formerly ?? []) forward(page.path.replace(/[^/]+\/$/, `${id}/`), page);
         // the item's own images, next to its page, where `media/…` points
         const media = join(doc.dir, 'media');
         if (existsSync(media)) cpSync(media, join(DIST, site.url(doc, lang), 'media'), { recursive: true });

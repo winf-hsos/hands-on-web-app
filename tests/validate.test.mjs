@@ -297,3 +297,9 @@ test('a challenge listed among the items of its phase keeps that place', () => {
   assert.deepEqual(phaseItems({ challenge: 'c1', items: ['v', 'c1', 'x'] }), ['v', 'c1', 'x']);
   assert.deepEqual(phaseItems({ challenge: 'c1', items: ['v', 'x'] }), ['c1', 'v', 'x']);
 });
+
+test('an earlier id of an item leads to it only while no entry uses it again', () => {
+  assert.deepEqual(check(({ find }) => (lead(find('content', 'command-line-navigating')).formerly = ['old-navigating'])).errors, []);
+  const { errors } = check(({ find }) => (lead(find('content', 'command-line-navigating')).formerly = ['command-line-files']));
+  assert.deepEqual(errors, ['content/command-line-navigating: formerly "command-line-files" is still the id of an entry']);
+});
