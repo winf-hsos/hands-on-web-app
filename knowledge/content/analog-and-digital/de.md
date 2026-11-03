@@ -2,9 +2,9 @@
 title: Analog und digital
 summary: >-
   Digital heißt nicht elektronisch, sondern endlich viele, klar getrennte
-  Zustände. Eine kleine Störung ändert deshalb einen Wert, aber keinen
-  Zustand, und dorthin führen zwei Schnitte, deren Preis du in Byte und
-  Minuten zählen kannst.
+  Zustände. Eine kleine Störung ändert deshalb einen Wert, aber keinen Zustand,
+  und dorthin führen zwei Schnitte, deren Preis du in Byte und Minuten zählen
+  kannst.
 objectives:
   intro: "In dieser Lektion erfährst du am Beispiel einer Lichtstrecke, was digital wirklich heißt und was der Weg dorthin kostet, und kannst danach:"
   goals:
@@ -49,17 +49,19 @@ und deshalb bleibt eine kleine Störung ohne Folgen.
 
 ## Dieselbe Störung, zweimal
 
-Wie das aussieht, zeigt dieselbe Störung in zwei Welten. Gesendet wird ein
-Wert, der weiße Punkt, und auf dem Weg verschiebt ihn eine Störung ein Stück,
-sodass der gelbe Punkt ankommt.
+Wie das aussieht, zeigt dieselbe Störung in zwei Welten. Jede hat zwei
+stehende Skalen von 0 bis 400, links die des Senders und rechts die des
+Empfängers, sodass der Weg nach rechts läuft und der Wert nach oben. Gesendet
+wird 300, und unterwegs kommen 23 dazu, sodass beim Empfänger 323 ankommt, der
+gelbe Punkt; die gestrichelte Linie zeigt, wo 300 gewesen wäre.
 
-![Zwei waagrechte Zahlengeraden untereinander, auf beiden ein weißer Punkt gesendet und rechts daneben ein gelber Punkt empfangen. Oben steht analog: jeder Wert zählt, und rot ein anderer Wert. Unten teilt ein senkrechter Strich die Gerade in dunkel und hell, beide Punkte liegen auf der hellen Seite, und grün steht dort noch hell, derselbe Zustand.](media/between.de.svg "Eine kleine Störung ändert den Wert, aber nicht den Zustand.")
+![Zwei Hälften nebeneinander, jede mit zwei senkrechten Skalen, beschriftet gesendet und empfangen. Auf der linken Skala ein Punkt bei 300, auf der rechten ein gelber Punkt bei 323, dazwischen ein Pfeil mit +23 unterwegs und eine gestrichelte Linie auf der Höhe von 300. Links steht analog: jeder Wert zählt, und rot ein anderer Wert. Rechts steht digital: nur der Bereich zählt; eine waagrechte Grenze bei 200 teilt beide Skalen in dunkel unten und hell oben, beide Punkte liegen im Bereich hell, und grün steht dort noch hell, derselbe Zustand.](media/between.de.svg "Eine kleine Störung ändert den Wert, aber nicht den Zustand.")
 
 In einem analogen Signal zählt jeder Wert, der empfangene ist also schlicht
 ein anderer Wert, und die Störung ist Teil des Signals geworden. In einem
-digitalen Signal zählt nur der Bereich: Zwischen dunkel und hell liegt eine
-Grenze, der empfangene Wert liegt noch auf der hellen Seite und bedeutet
-deshalb denselben Zustand. Probier es aus:
+digitalen Signal zählt nur der Bereich: Eine Grenze bei 200 teilt beide
+Skalen in dunkel und hell, 323 liegt genauso im Bereich hell wie 300 und
+bedeutet deshalb denselben Zustand. Probier es aus:
 
 ```python
 sent = 300          # the value the sender means
@@ -274,12 +276,13 @@ Lichtstrecke schicken will, steht genau vor dieser Frage, und am
 Die zwei Schnitte sind kein Bildthema, sondern das Verfahren, und beim Ton
 sieht man sie an einer einzigen Kurve.
 
-![Drei Felder nebeneinander. Links eine glatte Kurve, beschriftet mit die Schallwelle, stufenlos. In der Mitte dieselbe Kurve, blass, mit gestrichelten senkrechten Linien und zwölf Punkten auf der Kurve, beschriftet mit Schnitt 1: Abtasten, 12 Zeitpunkte. Rechts vier waagrechte Stufenlinien, auf die die zwölf Punkte zur nächsten Stufe gerückt sind, beschriftet mit Schnitt 2: Quantisieren, 4 Lautstärkestufen.](media/two-cuts.de.svg "Das Abtasten zerlegt die Zeit, und das Quantisieren zerlegt die Lautstärke.")
+![Drei Felder nebeneinander. Links eine glatte Kurve, beschriftet mit die Schallwelle, stufenlos. In der Mitte dieselbe Kurve, blass, mit gestrichelten senkrechten Linien und zwölf Punkten auf der Kurve, beschriftet mit Schnitt 1: Abtasten, 12 Zeitpunkte. Rechts vier waagrechte Stufenlinien, auf die die zwölf Punkte zur nächsten Stufe gerückt sind, beschriftet mit Schnitt 2: Quantisieren, 4 Amplitudenstufen. In jedem Feld zeigt eine Achse nach rechts, beschriftet Zeit, und eine nach oben, beschriftet Amplitude.](media/two-cuts.de.svg "Das Abtasten zerlegt die Zeit, und das Quantisieren zerlegt die Amplitude.")
 
 Beim Ton zerlegt das Abtasten die Zeit statt der Fläche, und wie oft je
 Sekunde gemessen wird, heißt **Abtastrate**. Das Quantisieren zerlegt die
-Lautstärke statt der Helligkeit, und die Zahl der Stufen heißt hier
-**Bittiefe**. Eine CD speichert 44.100 Messungen je Sekunde mit je 16 Bit.
+**Amplitude** statt der Helligkeit, also wie weit die Luft gerade ausgelenkt
+ist, was das Mikrofon in eine Spannung übersetzt; wie fein es die Stufen
+setzt, heißt hier **Bittiefe**. Eine CD speichert 44.100 Messungen je Sekunde mit je 16 Bit.
 Das Programm macht mit der Welle aus der Zeichnung dasselbe wie ihr rechtes
 Feld:
 
@@ -287,7 +290,7 @@ Feld:
 import math
 
 samples = 12      # cut 1: how many points in time
-levels = 4        # cut 2: how many levels of loudness
+levels = 4        # cut 2: how many amplitude levels
 
 for i in range(samples):
     t = (i + 0.5) / samples

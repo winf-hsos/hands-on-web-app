@@ -18,12 +18,12 @@ objectives:
     - "set a threshold in code that turns a reading into a symbol and justify its value from your own measurement series"
 deck_lang: en
 level: 1
-duration: 20
+duration: 30
 topics: [representing-information, transferring-information]
 modules: [dup]
 relations:
   see_also: [why-two-states, colours-on-a-number-line, sent-is-not-measured, measuring-your-noise]
-status: draft
+status: published
 updated: 2026-11-03
 ---
 
@@ -55,17 +55,19 @@ a small disturbance has no effect.
 
 ## The same disturbance, twice
 
-What that looks like shows the same disturbance in two worlds. A value is
-sent, the white dot, and on its way a disturbance shifts it a little, so that
-the yellow dot arrives.
+What that looks like shows the same disturbance in two worlds. Each has two
+upright scales from 0 to 400, the sender's on the left and the receiver's on
+the right, so that the way runs to the right and the value runs up. The
+sender sends 300, and 23 are added on the way, so 323 arrives at the
+receiver, the yellow dot; the dashed line shows where 300 would have been.
 
-![Two horizontal number lines, one above the other, each with a white dot labelled sent and a yellow dot labelled received just to its right. Above it says analog: every value counts, and in red a different value. Below, a vertical stroke divides the line into dark and bright, both dots lie on the bright side, and in green it says still bright, the same state.](media/between.en.svg "A small disturbance changes the value, but not the state.")
+![Two halves side by side, each with two upright scales labelled sent and received. On the left scale a dot at 300, on the right one a yellow dot at 323, between them an arrow labelled +23 on the way and a dashed line at the height of 300. On the left it says analog: every value counts, and in red a different value. On the right it says digital: only the region counts; a horizontal boundary at 200 divides both scales into dark below and bright above, both dots lie in the bright region, and in green it says still bright, the same state.](media/between.en.svg "A small disturbance changes the value, but not the state.")
 
 In an analog signal every value counts, so the received one is simply a
 different value, and the disturbance has become part of the signal. In a
-digital signal only the region counts: between dark and bright lies a
-boundary, the received value still lies on the bright side and therefore
-means the same state. Try it:
+digital signal only the region counts: a boundary at 200 divides both
+scales into dark and bright, 323 lies in the bright region just like 300 and
+therefore means the same state. Try it:
 
 ```python
 sent = 300          # the value the sender means
@@ -276,11 +278,13 @@ it for yourself.
 The two cuts are not a picture topic but the method, and for sound you can
 see them on a single curve.
 
-![Three panels side by side. On the left a smooth curve, labelled the sound wave, stepless. In the middle the same curve, faint, with dashed vertical lines and twelve dots on the curve, labelled cut 1: sampling, 12 points in time. On the right four horizontal level lines with the twelve dots moved onto the nearest level, labelled cut 2: quantization, 4 levels of loudness.](media/two-cuts.en.svg "Sampling slices time, and quantization slices loudness.")
+![Three panels side by side. On the left a smooth curve, labelled the sound wave, stepless. In the middle the same curve, faint, with dashed vertical lines and twelve dots on the curve, labelled cut 1: sampling, 12 points in time. On the right four horizontal level lines with the twelve dots moved onto the nearest level, labelled cut 2: quantization, 4 amplitude levels. In every panel one axis points to the right, labelled time, and one points up, labelled amplitude.](media/two-cuts.en.svg "Sampling slices time, and quantization slices the amplitude.")
 
 For sound, sampling slices time instead of area, and how often per second it
-measures is the **sampling rate**. Quantising slices loudness instead of
-brightness, and the number of levels is called the **bit depth** here. A CD
+measures is the **sampling rate**. Quantising slices the **amplitude** instead
+of brightness, that is how far the air is pushed out of place, which the
+microphone turns into a voltage; how finely it sets the levels is called the
+**bit depth** here. A CD
 stores 44,100 samples per second with 16 bits each. The program does to the
 wave of the drawing what its right-hand panel shows:
 
@@ -288,7 +292,7 @@ wave of the drawing what its right-hand panel shows:
 import math
 
 samples = 12      # cut 1: how many points in time
-levels = 4        # cut 2: how many levels of loudness
+levels = 4        # cut 2: how many amplitude levels
 
 for i in range(samples):
     t = (i + 0.5) / samples

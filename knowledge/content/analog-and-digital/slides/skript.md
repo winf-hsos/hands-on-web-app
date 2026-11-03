@@ -22,7 +22,7 @@ The scoreboard from the sports hall that you flip by hand is digital, and so are
 
 ### The same disturbance, twice (Frames 7 and 8)
 
-The same disturbance hits two signals. A value is sent, the white dot, and a slightly different one arrives, the yellow dot. In an analog signal every value counts, so the received value is simply a different value, and the disturbance has become part of the signal. In a digital signal only the region counts: there is a boundary between dark and bright, the received value still lies on the bright side, and so it still means the same state. A small disturbance changes the value, but not the state.
+The same disturbance hits two signals. Each world has two upright scales from 0 to 400, the sender's on the left and the receiver's on the right, so that the way from sender to receiver runs across and the value runs up. The sender sends 300, the white dot, and 23 are added on the way, so 323 arrives, the yellow dot; a dashed line marks where 300 would have been. In an analog signal every value counts, so the received value is simply a different value, and the disturbance has become part of the signal. In a digital signal only the region counts: a boundary at 200 cuts both scales into dark and bright, 323 lies in the bright region just like 300, and so it still means the same state. A small disturbance changes the value, but not the state.
 
 ### The part no program controls (Frame 9)
 
@@ -74,7 +74,7 @@ The same photo gets coarser with every frame: 128, 32, 8 and finally 2 points pe
 
 ### The same two cuts for sound (Frames 29 to 31)
 
-The two cuts are not a picture topic but the method, and for sound they can be seen on a single curve. The first frame shows the sound wave, stepless. On the second, the first cut measures it at twelve points in time: that is sampling, and for sound it slices time instead of area. On the third, the second cut rounds every reading to one of four levels of loudness: that is quantization, and for sound it slices loudness instead of brightness. A CD stores 44,100 samples per second with 16 bits each. Turn the sampling rate of a recording down, and a voice soon sounds tinny.
+The two cuts are not a picture topic but the method, and for sound they can be seen on a single curve. The first frame shows the sound wave, stepless. On the second, the first cut measures it at twelve points in time: that is sampling, and for sound it slices time instead of area. On the third, the second cut rounds every reading to one of four amplitude levels: that is quantization, and for sound it slices the amplitude instead of brightness. Every panel has its axes, time to the right and amplitude upwards; the amplitude is how far the air is pushed out of place at that moment, which a microphone turns into a voltage. A CD stores 44,100 samples per second with 16 bits each. Turn the sampling rate of a recording down, and a voice soon sounds tinny.
 
 ## 3. Drawing your own lines
 

@@ -59,7 +59,7 @@
     <div class="figure wide" id="fig-between"></div>
     <span data-step="1"></span>
     <div class="punch" data-step="1">a small disturbance changes the value, but not the state.</div>
-    <aside class="notes">Gesendet wird ein Wert, weiß, und unterwegs schiebt eine kleine Störung ihn ein Stück weiter, gelb ist das, was ankommt. Analog zählt jeder Wert, also ist das, was ankommt, schlicht ein anderer Wert und damit falsch. Mit dem Tastendruck dieselbe Störung in der digitalen Welt: Die Linie ist in zwei Bereiche geschnitten, dunkel und hell, und der gestörte Wert liegt immer noch im Bereich hell. Der Zustand stimmt, weil zwischen den Zuständen nichts zählt. Genau das meint die zweite Hälfte der Definition: Störungen, die kleiner sind als der Abstand zur nächsten Grenze, verschwinden einfach.</aside>
+    <aside class="notes">Links die Skala des Senders, rechts die des Empfängers, beide von 0 bis 400. Gesendet wird 300, weiß, und unterwegs kommen 23 dazu, also kommt 323 an, gelb; die gestrichelte Linie zeigt, wo 300 gewesen wäre. Analog zählt jeder Wert, also ist das, was ankommt, schlicht ein anderer Wert und damit falsch. Mit dem Tastendruck dieselbe Störung in der digitalen Welt: Eine Grenze bei 200 schneidet beide Skalen in dunkel und hell, und 323 liegt genauso im Bereich hell wie 300. Der Zustand stimmt, weil zwischen den Zuständen nichts zählt. Genau das meint die zweite Hälfte der Definition: Störungen, die kleiner sind als der Abstand zur nächsten Grenze, verschwinden einfach.</aside>
   </section>
 
   <section class="slide">
@@ -137,8 +137,8 @@
     <h2>the same two cuts, for sound</h2>
     <div class="figure wide" id="fig-sound"></div>
     <span data-step="1"></span>
-    <div class="punch" data-step="2">sampling slices time, and quantization slices loudness.</div>
-    <aside class="notes">Die zwei Schnitte sind kein Bildthema, sondern das Verfahren, und beim Ton sieht man sie an einer einzigen Kurve. Erst die Schallwelle, stufenlos. Der erste Schnitt misst sie zu zwölf Zeitpunkten, das ist das Abtasten, und beim Ton zerlegt es die Zeit statt der Fläche. Der zweite Schnitt rundet jeden Messwert auf eine von vier Lautstärkestufen, das ist das Quantisieren. Eine CD speichert 44.100 Messungen je Sekunde mit je 16 Bit. Wer die Abtastrate einer Aufnahme herunterdreht, hört, wie eine Stimme blechern wird.</aside>
+    <div class="punch" data-step="2">sampling slices time, and quantization slices the amplitude.</div>
+    <aside class="notes">Die zwei Schnitte sind kein Bildthema, sondern das Verfahren, und beim Ton sieht man sie an einer einzigen Kurve. Erst die Schallwelle, stufenlos. Der erste Schnitt misst sie zu zwölf Zeitpunkten, das ist das Abtasten, und beim Ton zerlegt es die Zeit statt der Fläche. Der zweite Schnitt rundet jeden Messwert auf eine von vier Amplitudenstufen, das ist das Quantisieren. Die Amplitude ist, wie weit die Luft gerade ausgelenkt ist, und das Mikrofon macht daraus eine Spannung; nach oben geht diese Auslenkung, nach rechts die Zeit. Eine CD speichert 44.100 Messungen je Sekunde mit je 16 Bit. Wer die Abtastrate einer Aufnahme herunterdreht, hört, wie eine Stimme blechern wird.</aside>
   </section>
 
   <!-- ================= part 3 ================= -->
@@ -182,7 +182,7 @@ else:
 </div>
 <script src="../../stagekit/draw.js?v=0.4.0-62b883"></script>
 <script src="../../stagekit/anim.js?v=0.4.0-62b883"></script>
-<script src="deck.js?v=3"></script>
+<script src="deck.js?v=4"></script>
 <script src="../../stagekit/stagekit.js?v=0.4.0-62b883"></script>
 </body>
 </html>

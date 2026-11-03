@@ -124,34 +124,52 @@ function drawKinds() {
 }
 
 /* --- the same disturbance, twice ----------------------------------------------
- * One number line per world. Above, every value counts, so the disturbed
- * reading is a different value (red: wrong). Below, the line is cut into two
- * regions, and the same disturbed reading stays in the same region (green: the
- * state is right). The sent value is white, the received one yellow, because
- * it is the one we look at. Step 1 adds the digital line. */
+ * Two worlds side by side, analog on the left, digital on the right (step 1).
+ * Each has two upright scales of the same range, 0 to 400: what was sent and
+ * what was received, with the value as a dot and as a number. The sent value
+ * 300 is white, the received 323 yellow, because it is the one we look at; an
+ * arrow carries the disturbance of +23 from one scale to the other, and a
+ * dashed line at the height of 300 shows how far it moved. In the digital
+ * world a boundary at 200 cuts both scales into dark and bright, and the
+ * received value is still bright. Upright scales, so that the way from sender
+ * to receiver runs left to right and the value runs up: the two never share
+ * an axis. Numbers as in the article's code. */
 
 function between(step = 1) {
   const c = d.colors();
-  const x0 = 60, x1 = 1620, sent = 980, got = 1090;
+  const top = 120, bottom = 480;
+  const vy = (v) => bottom - (v / 400) * (bottom - top);
+  const sent = 300, got = 323, boundary = 200;
   const parts = [];
-  const world = (y, title, verdict, ok, regions) => {
-    parts.push(d.label(x0, y - 80, title, { size: 32, color: c.white }));
-    parts.push(d.line(x0, y, x1, y, { color: c.gray, width: 3 }));
+  const world = (x0, title, verdict, ok, regions) => {
+    const sx = x0 + 240, rx = x0 + 600;
+    parts.push(d.label(x0 + 20, 50, title, { size: 32, color: c.white }));
     if (regions) {
-      parts.push(d.line(700, y - 40, 700, y + 40, { color: c.light, width: 3 }));
-      parts.push(d.label(380, y + 70, T("dark", "dunkel"), { size: 32, color: c.light, anchor: "middle" }));
-      parts.push(d.label(1160, y + 70, T("bright", "hell"), { size: 32, color: c.light, anchor: "middle" }));
+      const by = vy(boundary);
+      parts.push(d.line(sx - 50, by, rx + 50, by, { color: c.light, width: 3 }));
+      // the names of the regions stand between the scales, "bright" below the
+      // arrow and above the boundary, "dark" in the middle of its region
+      parts.push(d.label((sx + rx) / 2, 0, T("bright", "hell"), { size: 32, color: c.light, anchor: "middle", centerY: (vy(sent) + by) / 2 + 6 }));
+      parts.push(d.label((sx + rx) / 2, 0, T("dark", "dunkel"), { size: 32, color: c.light, anchor: "middle", centerY: (by + bottom) / 2 }));
     }
-    parts.push(d.arrow(sent + 16, y - 26, got - 18, y - 26, { color: c.gray, width: 2 }));
-    parts.push(circle(sent, y, 14, c.white));
-    parts.push(circle(got, y, 14, c.yellow));
-    parts.push(d.label(sent, y - 44, T("sent", "gesendet"), { size: 20, color: c.gray, anchor: "end" }));
-    parts.push(d.label(got + 30, y - 44, T("received", "empfangen"), { size: 20, color: c.gray }));
-    parts.push(d.label(1620, y + (regions ? 130 : 70), verdict, { size: 32, color: ok ? c.green : c.red, anchor: "end" }));
+    for (const x of [sx, rx]) parts.push(d.line(x, top, x, bottom, { color: c.gray, width: 3 }));
+    parts.push(d.line(sx, vy(sent), rx, vy(sent), { color: c.dark, width: 2, dashed: true }));
+    parts.push(d.arrow(sx + 24, vy(sent) - 4, rx - 24, vy(got) + 2, { color: c.gray, width: 2 }));
+    parts.push(d.label((sx + rx) / 2, vy(sent) - 36, T("+23 on the way", "+23 unterwegs"), { size: 20, color: c.gray, anchor: "middle" }));
+    parts.push(circle(sx, vy(sent), 14, c.white));
+    parts.push(circle(rx, vy(got), 14, c.yellow));
+    parts.push(d.label(sx - 30, 0, String(sent), { size: 32, color: c.white, mono: true, anchor: "end", centerY: vy(sent) }));
+    parts.push(d.label(rx + 30, 0, String(got), { size: 32, color: c.yellow, mono: true, centerY: vy(got) }));
+    parts.push(d.label(sx, bottom + 40, T("sent", "gesendet"), { size: 20, color: c.gray, anchor: "middle" }));
+    parts.push(d.label(rx, bottom + 40, T("received", "empfangen"), { size: 20, color: c.gray, anchor: "middle" }));
+    parts.push(d.label(x0 + 20, bottom + 110, verdict, { size: 32, color: ok ? c.green : c.red }));
   };
-  world(140, T("analog: every value counts", "analog: jeder Wert zählt"), T("a different value", "ein anderer Wert"), false, false);
-  if (step >= 1) world(450, T("digital: only the region counts", "digital: nur der Bereich zählt"), T("still bright, the same state", "noch hell, derselbe Zustand"), true, true);
-  return d.svg(1680, 600, ...parts);
+  world(20, T("analog: every value counts", "analog: jeder Wert zählt"), T("a different value", "ein anderer Wert"), false, false);
+  if (step >= 1) {
+    parts.push(d.line(840, 20, 840, 600, { color: c.dark, width: 2, dashed: true }));
+    world(860, T("digital: only the region counts", "digital: nur der Bereich zählt"), T("still bright, the same state", "noch hell, derselbe Zustand"), true, true);
+  }
+  return d.svg(1680, 620, ...parts);
 }
 
 window.drawBetween = (_slide, step = 0) => put("fig-between", between(step));
@@ -486,53 +504,63 @@ window.drawExtreme = async function (_slide, step = 0) {
 
 /* --- the same two cuts, for sound ------------------------------------------------
  * One sound wave in three panels: stepless, then measured at twelve points in
- * time, then each value rounded to one of four levels of loudness. Step 0
- * shows the wave, step 1 the first cut, step 2 the second; the caption of the
- * cut just made is yellow (current), on the article's still picture both are
- * white. The faint curve behind the dots is the wave they were taken from. */
+ * time, then each value rounded to one of four amplitude levels. Every panel
+ * has its axes, time to the right and amplitude (how far the air is pushed,
+ * which a microphone turns into a voltage) upwards. Step 0 shows the wave,
+ * step 1 the first cut, step 2 the second; the caption of the cut just made
+ * is yellow (current), on the article's still picture both are white. The
+ * faint curve behind the dots is the wave they were taken from. */
 
 function soundCuts(step = 2, final = true) {
   const c = d.colors();
-  const panelW = 440, top = 30, panelH = 300;
+  const panelW = 440, top = 50, panelH = 300;
+  const bottom = top + panelH;
   const [a, b, q] = [60, 620, 1180];
   const samples = 12, levels = 4;
   const signal = (s) => 0.5 + 0.3 * Math.sin(2 * Math.PI * s * 1.3 + 0.4) + 0.12 * Math.sin(2 * Math.PI * s * 3.1 + 1);
-  const yOf = (v) => top + panelH - 20 - v * (panelH - 40);
+  const yOf = (v) => bottom - 20 - v * (panelH - 40);
   const curve = (x0, color) => {
     const pts = [];
-    for (let i = 0; i <= 200; i += 1) pts.push(`${(x0 + (i / 200) * panelW).toFixed(1)},${yOf(signal(i / 200)).toFixed(1)}`);
+    for (let i = 0; i <= 200; i += 1) pts.push(`${(x0 + 10 + (i / 200) * (panelW - 20)).toFixed(1)},${yOf(signal(i / 200)).toFixed(1)}`);
     return `<polyline points="${pts.join(" ")}" fill="none" stroke="${color}" stroke-width="3"/>`;
   };
-  const sampleX = (x0, i) => x0 + ((i + 0.5) / samples) * panelW;
+  const sampleX = (x0, i) => x0 + 10 + ((i + 0.5) / samples) * (panelW - 20);
   const levelOf = (v) => Math.round(v * (levels - 1)) / (levels - 1);
   const head = (now) => (now && !final ? c.yellow : c.white);
+  // "Amplitude" and "amplitude" are 9 characters, 108 wide at 20, beside the arrow's tip
+  const axes = (x0) => [
+    d.arrow(x0, bottom, x0 + panelW, bottom, { color: c.gray, width: 2 }),
+    d.arrow(x0, bottom, x0, top - 30, { color: c.gray, width: 2 }),
+    d.label(x0 + 14, top - 22, T("amplitude", "Amplitude"), { size: 20, color: c.gray }),
+    d.label(x0 + panelW, bottom + 30, T("time", "Zeit"), { size: 20, color: c.gray, anchor: "end" }),
+  ];
   // the longest caption, "Schnitt 2: Quantisieren", is 23 characters, 442 wide at 32, centred on its panel
   const caption = (x0, text, note, color) => [
-    d.label(x0 + panelW / 2, 0, text, { size: 32, anchor: "middle", color, centerY: 380 }),
-    d.label(x0 + panelW / 2, 0, note, { size: 32, anchor: "middle", color: c.gray, centerY: 425 }),
+    d.label(x0 + panelW / 2, 0, text, { size: 32, anchor: "middle", color, centerY: bottom + 80 }),
+    d.label(x0 + panelW / 2, 0, note, { size: 32, anchor: "middle", color: c.gray, centerY: bottom + 125 }),
   ];
-  const arrow = (x0, x1) => d.arrow(x0 + panelW + 20, top + panelH / 2, x1 - 20, top + panelH / 2, { color: c.gray, width: 3 });
+  const arrow = (x0, x1) => d.arrow(x0 + panelW + 30, top + panelH / 2, x1 - 30, top + panelH / 2, { color: c.gray, width: 3 });
 
-  const parts = [curve(a, c.white), ...caption(a, T("the sound wave", "die Schallwelle"), T("stepless", "stufenlos"), c.white)];
+  const parts = [...axes(a), curve(a, c.white), ...caption(a, T("the sound wave", "die Schallwelle"), T("stepless", "stufenlos"), c.white)];
   if (step >= 1) {
-    parts.push(curve(b, c.dark), arrow(a, b));
+    parts.push(...axes(b), curve(b, c.dark), arrow(a, b));
     for (let i = 0; i < samples; i += 1) {
       const x = sampleX(b, i);
-      parts.push(d.line(x, top, x, top + panelH, { color: c.dark, width: 2, dashed: true }));
+      parts.push(d.line(x, top, x, bottom, { color: c.dark, width: 2, dashed: true }));
       parts.push(circle(x, yOf(signal((i + 0.5) / samples)), 10, c.white));
     }
     parts.push(...caption(b, T("cut 1: sampling", "Schnitt 1: Abtasten"), T("12 points in time", "12 Zeitpunkte"), head(step === 1)));
   }
   if (step >= 2) {
-    parts.push(curve(q, c.dark), arrow(b, q));
+    parts.push(...axes(q), curve(q, c.dark), arrow(b, q));
     for (let k = 0; k < levels; k += 1) {
       const y = yOf(k / (levels - 1));
       parts.push(d.line(q, y, q + panelW, y, { color: c.gray, width: 2 }));
     }
     for (let i = 0; i < samples; i += 1) parts.push(circle(sampleX(q, i), yOf(levelOf(signal((i + 0.5) / samples))), 10, c.white));
-    parts.push(...caption(q, T("cut 2: quantization", "Schnitt 2: Quantisieren"), T("4 levels of loudness", "4 Lautstärkestufen"), head(true)));
+    parts.push(...caption(q, T("cut 2: quantization", "Schnitt 2: Quantisieren"), T("4 amplitude levels", "4 Amplitudenstufen"), head(true)));
   }
-  return d.svg(1680, 460, ...parts);
+  return d.svg(1680, bottom + 150, ...parts);
 }
 
 window.drawSound = (_slide, step = 0) => put("fig-sound", soundCuts(step, false));
