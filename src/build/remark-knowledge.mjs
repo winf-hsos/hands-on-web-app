@@ -214,6 +214,8 @@ function fillableTables(tree, lang) {
 // ```verb-demo becomes the place of the dplyr demonstrator (client/verb-demo.js),
 // ```monty-hall the game with three doors (client/monty-hall.js),
 // ```byte-switchboard eight switches for one byte (client/byte-switchboard.js),
+// ```photo-digitiser a photo cut by resolution and colour depth (client/photo-digitiser.js),
+// ```audio-digitiser a sound cut by sampling rate and bit depth (client/audio-digitiser.js),
 // ```data-table an empty table to record observations in (client/data-table.js),
 // ```shell-demo the folder tree and command line (client/shell-demo.js), whose
 // block holds its scenario in YAML (tree:, start:), checked by validate.mjs.
@@ -223,6 +225,8 @@ const DEMOS = {
   'verb-demo': { className: 'verb-demo', dataVerbDemo: '' },
   'monty-hall': { className: 'monty-hall', dataMontyHall: '' },
   'byte-switchboard': { className: 'byte-switchboard', dataByteSwitchboard: '' },
+  'photo-digitiser': { className: 'photo-digitiser', dataPhotoDigitiser: '' },
+  'audio-digitiser': { className: 'audio-digitiser', dataAudioDigitiser: '' },
   'shell-demo': { className: 'shell-demo', dataShellDemo: '' },
   'data-table': { className: 'data-table', dataDataTable: '' },
 };

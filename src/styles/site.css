@@ -3619,6 +3619,21 @@ details.callout[open] > summary::before {
   margin: 0;
 }
 
+/* A text that changes in a place of a fixed size (demo-frame.js, steady()):
+   all its forms lie in one grid cell, only the live one is seen. */
+.demo-steady {
+  display: grid;
+}
+
+.demo-steady > * {
+  grid-area: 1 / 1;
+  visibility: hidden;
+}
+
+.demo-steady > .demo-steady-live {
+  visibility: visible;
+}
+
 .demo-bar {
   display: flex;
   justify-content: flex-end;
@@ -4690,6 +4705,281 @@ details.callout[open] > summary::before {
   .bs-bit.is-flipped {
     transition: none;
     animation: none;
+  }
+}
+
+/* The photo and the audio digitiser (client/photo-digitiser.js,
+   client/audio-digitiser.js): the same two cuts for a picture and for a
+   sound, built alike. Above, what is digitised; in the middle, the original
+   and its digital version; below, the arithmetic of the file size and the
+   two knobs, one per cut. The texts that change keep their place
+   (demo-frame.js, steady()), so nothing moves while the knobs turn. */
+.photo-digitiser,
+.audio-digitiser {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.75rem;
+}
+
+.dg-label {
+  font-size: 0.8rem;
+  color: var(--quiet);
+}
+
+.dg-choices {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.dg-choices .dg-label {
+  margin-right: 0.25rem;
+}
+
+.dg-calc {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--mono);
+  text-align: center;
+  color: var(--quiet);
+}
+
+.prose .dg-calc p {
+  margin: 0;
+}
+
+.dg-calc .dg-size {
+  font-size: 1.15rem;
+  font-weight: 650;
+  color: var(--ink);
+}
+
+.dg-calc .dg-time {
+  color: var(--ink);
+}
+
+.dg-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem 2rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+}
+
+.dg-knob {
+  display: grid;
+  align-content: start;
+  gap: 0.35rem;
+}
+
+.dg-range {
+  width: 100%;
+  margin: 0.35rem 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.dg-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.prose .dg-reading {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--quiet);
+}
+
+.prose .dg-note {
+  margin: 1rem 0 0;
+  font-size: 0.75rem;
+  color: var(--quiet);
+}
+
+/* the photo: the pictures to choose from as small buttons, then the original
+   and the digital picture side by side, at every width */
+.pd-motif {
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 2px;
+  border: 2px solid var(--rule);
+  border-radius: 0.5rem;
+  background: var(--paper-2);
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.pd-motif img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.3rem;
+  object-fit: cover;
+}
+
+.pd-motif:hover,
+.pd-motif[aria-pressed='true'] {
+  border-color: var(--accent);
+}
+
+.pd-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: end; /* a caption on two lines keeps the pictures level */
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.pd-caption {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.pd-frame {
+  position: relative;
+}
+
+/* the outline as a shadow, so that the canvas is exactly the picture and the
+   cell over it lines up */
+.pd-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: 0.4rem;
+  background: var(--paper-2);
+  box-shadow: 0 0 0 1px var(--rule);
+  cursor: crosshair;
+}
+
+.pd-pixelated {
+  image-rendering: pixelated;
+}
+
+.pd-cell {
+  position: absolute;
+  display: none;
+  box-sizing: border-box;
+  border: 2px solid var(--warn);
+  pointer-events: none;
+}
+
+.pd-cell.is-on {
+  display: block;
+}
+
+/* the value of the pixel pointed at: where, its bits, its numbers; three
+   lines from the start */
+.prose .pd-pixel {
+  margin: 0.75rem 0 0;
+  font: 0.85rem/1.5 var(--mono);
+  text-align: center;
+  color: var(--quiet);
+}
+
+/* the first line is a steady place (a grid), the other two plain lines */
+.pd-pixel > span {
+  min-height: 1.5em;
+}
+
+.pd-pixel > span:not(.demo-steady) {
+  display: block;
+}
+
+.pd-pixel [data-out='where'] {
+  font-family: var(--sans);
+}
+
+.pd-pixel .pd-bits {
+  font-weight: 650;
+  color: var(--accent-ink);
+}
+
+/* the sound: a window of the wave, the analog one quiet, the digital
+   staircase in the accent colour, as in the legend */
+.prose .ad-window {
+  margin: 1rem 0 0.35rem;
+}
+
+.ad-wave {
+  display: block;
+  width: 100%;
+  height: 13rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.5rem;
+  background: var(--paper-2);
+}
+
+.prose .ad-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem 1.5rem;
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+  color: var(--quiet);
+}
+
+.ad-swatch {
+  display: inline-block;
+  width: 1.1rem;
+  height: 3px;
+  margin-right: 0.4rem;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+
+.ad-swatch-analog {
+  background: var(--quiet);
+}
+
+.ad-swatch-digital {
+  background: var(--accent);
+}
+
+.ad-players {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.audio-digitiser .chip-button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+@media (max-width: 40rem) {
+  .photo-digitiser,
+  .audio-digitiser {
+    padding: 0.75rem;
+  }
+
+  .pd-pair {
+    gap: 0.6rem;
+  }
+
+  .ad-wave {
+    height: 10rem;
+  }
+
+  .dg-calc {
+    font-size: 0.75rem;
+  }
+
+  .dg-calc .dg-size {
+    font-size: 0.85rem;
+  }
+
+  .ad-players .button {
+    flex: 1 1 100%;
+    justify-content: center;
   }
 }
 

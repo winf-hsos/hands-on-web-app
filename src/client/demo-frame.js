@@ -41,6 +41,26 @@ export function keys(box, list, handle) {
   });
 }
 
+/**
+ * A text that changes in a place that keeps its size, so that nothing in a
+ * demonstrator moves while it is used: every form the text can take lies
+ * invisibly in the same grid cell (.demo-steady in site.css), so the place is
+ * as large as the largest of them at every width, and only the live one is
+ * seen. Returns the function that shows a text.
+ */
+export function steady(place, forms) {
+  place.classList.add('demo-steady');
+  const span = (text) => Object.assign(document.createElement('span'), { textContent: text });
+  for (const form of new Set(forms)) {
+    const sizer = span(form);
+    sizer.setAttribute('aria-hidden', 'true');
+    place.append(sizer);
+  }
+  const live = place.appendChild(span(''));
+  live.className = 'demo-steady-live';
+  return (text) => (live.textContent = text);
+}
+
 function setup(frame) {
   const stage = frame.lastElementChild;
   frame.tabIndex = -1; // a click anywhere in the frame gives it the focus
