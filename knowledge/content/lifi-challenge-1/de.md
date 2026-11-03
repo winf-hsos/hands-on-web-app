@@ -175,7 +175,26 @@ Jeder Durchgang bekommt eine neue Zufallsfolge vom Kursserver, sodass niemand
 sie vorher kennt. Am Ende zeigen beide Seiten das Ergebnis und jeden Fehler,
 und der Durchgang erscheint in eurem [[lifi-cockpit|Team-Cockpit]]. Ohne
 Server läuft mit beiden Geräten an einem Laptop trotzdem ein Übungsdurchgang,
-der nicht zählt. Für schnelle Versuche zwischendurch genügen weniger
+der nicht zählt.
+
+Wollt ihr bewusst üben, obwohl der Server erreichbar ist, schaltet ihn vor dem
+Start für dieses Terminal ab. Mit zwei Laptops geht das nicht, weil dort der
+Server die beiden im Takt hält. Unter Windows in der PowerShell:
+
+```powershell
+$env:LIFI_SERVER="off"
+python alphabet.py
+```
+
+Die Einstellung gilt dort, bis ihr das Terminal schließt, und für einen
+Durchgang, der zählen soll, öffnet ihr also ein neues. Auf dem Mac schreibt ihr
+sie vor den Befehl, dann gilt sie nur für diesen einen Aufruf:
+
+```bash
+LIFI_SERVER=off python3 alphabet.py
+```
+
+Für schnelle Versuche zwischendurch genügen weniger
 Versuche, dafür ändert ihr die letzte Zeile in
 `run_test(send_symbol, receive_symbol, calibrate, symbols=len(COLORS), runs=5)`.
 Gewertet werden nur Durchgänge mit 20 Versuchen.

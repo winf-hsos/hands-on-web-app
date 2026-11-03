@@ -10,7 +10,7 @@ objectives:
     - "check that Python, Brick Daemon, Brick Viewer and the course module lifi_hardware work together"
     - "use the Brick Viewer to decide whether a fault is in your program or before it"
 translation_of: de
-based_on: 2026-11-02
+based_on: 2026-11-03
 ---
 
 Five programs have to be on your laptop before your first line of code. All of
@@ -239,8 +239,11 @@ yet, but it is proof that everything is talking to everything else.
 During the project new material is added: new templates, new pages, sometimes
 a new version of `lifi_hardware`. When your course says there is something
 new, type `/update-semester` in OpenCode. Your assistant fetches the newest
-version of the course folder. Your folder `my-code` is never touched;
+version of the course folder. Your folder `my-code` is not touched;
 everything else is replaced by the course version, so do not change it.
+There is one exception, when a challenge gets a new form: then the update
+resets its folder in `my-code` once, the old templates go and the
+instructions are replaced, while files with names of your own stay.
 
 ## Alternatives
 

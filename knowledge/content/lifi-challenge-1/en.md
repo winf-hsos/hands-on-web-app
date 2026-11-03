@@ -168,7 +168,26 @@ Every run gets a fresh random sequence from the course server, so nobody knows
 it in advance. At the end both sides show the result and every mistake, and
 the run appears in your [[lifi-cockpit|team cockpit]]. Without the server, a
 run with both devices on one laptop still works as a practice run that does
-not count. For quick tries in between, fewer attempts are enough; change the
+not count.
+
+To practise on purpose even though the server is reachable, switch the server
+off for this terminal before you start. With two laptops this does not work,
+because there the server keeps the two in step. On Windows in PowerShell:
+
+```powershell
+$env:LIFI_SERVER="off"
+python alphabet.py
+```
+
+There the setting holds until you close the terminal, so a run you want to
+count needs a new one. On a Mac you write it in front of the command, and then
+it holds for this one call only:
+
+```bash
+LIFI_SERVER=off python3 alphabet.py
+```
+
+For quick tries in between, fewer attempts are enough; change the
 last line to
 `run_test(send_symbol, receive_symbol, calibrate, symbols=len(COLORS), runs=5)`.
 Only runs with 20 attempts count.

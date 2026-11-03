@@ -17,7 +17,7 @@ topics: [working-with-the-computer, programming-with-python]
 modules: [dup]
 project: lifi
 status: published
-updated: 2026-11-02
+updated: 2026-11-03
 ---
 
 Fünf Programme müssen auf eurem Laptop sein, bevor ihr die erste Zeile Code
@@ -251,7 +251,10 @@ manchmal eine neue Fassung von `lifi_hardware`. Wenn es in eurem Kurs heißt,
 dass es Neues gibt, tippt ihr in OpenCode `/update-semester`. Euer Assistent
 holt dann die neueste Fassung des Kursordners. Euer Ordner `my-code` bleibt
 dabei unberührt; alles andere wird durch die Fassung des Kurses ersetzt, also
-ändert es nicht.
+ändert es nicht. Eine Ausnahme gibt es, wenn eine Challenge eine neue Form
+bekommt: Dann setzt das Update ihren Ordner in `my-code` einmal zurück, die
+alten Vorlagen fallen weg und die Anleitung wird ersetzt, während Dateien mit
+eigenen Namen bleiben.
 
 ## Alternativen
 
