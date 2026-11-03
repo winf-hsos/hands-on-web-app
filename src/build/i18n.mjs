@@ -3,6 +3,8 @@
 const strings = {
   de: {
     skip: 'Zum Inhalt springen',
+    foot_by: 'Inhalte von Nicolas Meseth, Hochschule Osnabrück, unter',
+    foot_rest: ', wo nicht anders angegeben. Du darfst sie teilen und bearbeiten, wenn du die Quelle nennst.',
     nav_items: 'Inhalte',
     nav_paths: 'Lernpfade',
     nav_courses: 'Module',
@@ -162,6 +164,9 @@ const strings = {
     quiz_score: '{n} von {m} richtig',
     quiz_open: '{n} noch offen',
     quiz_restart: 'Nochmal von vorn',
+    quiz_csv: 'Als CSV herunterladen',
+    quiz_anki: 'Für Anki herunterladen',
+    quiz_files_note: 'mit den richtigen Antworten und Erklärungen, zum Lernen mit Karteikarten oder in einer Tabelle',
     map_text: 'Die großen Kreise sind Themen, die kleinen ihre Inhalte. Ein Inhalt, der zu zwei Themen gehört, verbindet sie.',
     map_all: 'Alle Themen',
     of: 'von',
@@ -170,6 +175,8 @@ const strings = {
   },
   en: {
     skip: 'Skip to content',
+    foot_by: 'Content by Nicolas Meseth, Osnabrück University of Applied Sciences, under',
+    foot_rest: ' unless stated otherwise. You may share and adapt it as long as you credit the source.',
     nav_items: 'Content',
     nav_paths: 'Paths',
     nav_courses: 'Modules',
@@ -329,6 +336,9 @@ const strings = {
     quiz_score: '{n} of {m} correct',
     quiz_open: '{n} still open',
     quiz_restart: 'Start again',
+    quiz_csv: 'Download as CSV',
+    quiz_anki: 'Download for Anki',
+    quiz_files_note: 'with the correct answers and explanations, to learn with flashcards or in a spreadsheet',
     map_text: 'The large circles are topics, the small ones their items. An item that belongs to two topics connects them.',
     map_all: 'All topics',
     of: 'of',

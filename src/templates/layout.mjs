@@ -23,6 +23,11 @@ const searchDialog = (lang) => html`<dialog class="search" aria-label="${t(lang,
     <p class="search-hint">${t(lang, 'search_hint')}</p>
   </dialog>`;
 
+/** The licence of the content under every page (Nicolas, 2026-10-23). */
+const footer = (lang) => html`<footer class="site-foot">
+    <p>${t(lang, 'foot_by')} <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.${lang}">CC BY 4.0</a>${t(lang, 'foot_rest')}</p>
+  </footer>`;
+
 export function layout({ site, lang, path, title, description, current, content, scripts = [], figures, asset, pyodide, webr, total = 0, entrances = [] }) {
   const other = lang === 'de' ? 'en' : 'de';
   const otherPath = path.replace(/\/(de|en)\//, `/${other}/`);
@@ -86,6 +91,7 @@ export function layout({ site, lang, path, title, description, current, content,
     </div>
   </header>
   <main id="main">${content}</main>
+  ${footer(lang)}
   ${searchDialog(lang)}
   ${figures && html`<script defer src="${asset('stagekit/draw.js')}"></script>
   <script defer src="${asset('stagekit/anim.js')}"></script>
@@ -142,6 +148,7 @@ export function chooser({ lang, areas, asset, base = '', finder }) {
       ${finder}
     </section>`}
   </main>
+  ${footer(lang)}
   ${searchDialog(lang)}
   <script type="module" src="${asset('client/site.js')}"></script>
   ${finder && html`<script type="module" src="${asset('client/list.js')}"></script>`}

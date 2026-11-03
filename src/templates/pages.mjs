@@ -290,6 +290,7 @@ export function item(site, doc, lang) {
         <div class="prose" lang="${text.lang}" ${isQuiz && quizLabels(lang)}>
           ${raw(body)}
         </div>
+        ${isQuiz && quizFilesBlock(site, doc, lang)}
         ${((lead.url && !hasType(lead, 'video')) || lead.buy) &&
         html`<p class="links">
           ${lead.url && !hasType(lead, 'video') && html`<a class="button button-quiet" href="${lead.url}" rel="noopener">${new URL(lead.url).host.replace(/^www\./, '')}</a>`}
@@ -356,6 +357,16 @@ function scriptBlock(site, doc, lang) {
       <span class="script-note"><code>${script.name}</code> ${t(lang, 'script_note')}</span>
     </p>`
   );
+}
+
+/** A quiz to download below it, with the answers, to learn with outside the page (build/quiz-export.mjs). */
+function quizFilesBlock(site, doc, lang) {
+  const { csv, anki } = site.quizFiles(doc, lang);
+  return html`<p class="script-file quiz-files">
+      <a class="button button-quiet" href="${csv.name}" download="${csv.name}">${icons.download}<span>${t(lang, 'quiz_csv')}</span></a>
+      <a class="button button-quiet" href="${anki.name}" download="${anki.name}">${icons.download}<span>${t(lang, 'quiz_anki')}</span></a>
+      <span class="script-note">${t(lang, 'quiz_files_note')}</span>
+    </p>`;
 }
 
 /** A data set: its file to download, how big it is, and the lines that load it. */

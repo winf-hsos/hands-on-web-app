@@ -42,7 +42,7 @@ export function scriptLanguage(body) {
 }
 
 /** Plain text of a line of Markdown: links as their text, no bold, no heading ids. */
-function plain(text, titleOf) {
+export function plain(text, titleOf) {
   return text
     .replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, '$2')
     .replace(/\[\[([^\]]+)\]\]/g, (_, id) => titleOf(id) ?? id)

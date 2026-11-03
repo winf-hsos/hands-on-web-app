@@ -6,6 +6,7 @@ import { renderMarkdown } from './markdown.mjs';
 import { stepsOf, pathSteps, courseSteps } from './validate.mjs';
 import { splitProject } from './project.mjs';
 import { exerciseScript } from './exercise-script.mjs';
+import { quizAnki, quizCsv } from './quiz-export.mjs';
 import { hasType } from './types.mjs';
 import { inlineCode, plainText } from './html.mjs';
 
@@ -60,6 +61,18 @@ export function createSite({ vocabulary, sections, hidden = new Map() }, area, b
       return target ? localize(target, lang).title : null;
     };
     return exerciseScript({ id: doc.id, title: text.title, body: text.file.body, lang, url: docUrl(doc, lang), titleOf });
+  };
+
+  /** A quiz as a CSV and as cards for Anki to download (build/quiz-export.mjs), or null. */
+  const quizFiles = (doc, lang) => {
+    if (!hasType(doc.lead, 'quiz')) return null;
+    const text = localize(doc, lang);
+    const titleOf = (id) => {
+      const target = byId.get(id) ?? hidden.get(id);
+      return target ? localize(target, lang).title : null;
+    };
+    const source = { id: doc.id, body: text.file.body, lang: text.lang, titleOf };
+    return { csv: quizCsv(source), anki: quizAnki(source) };
   };
 
   /** Markdown written in `textLang`, with links pointing to pages in `lang`. */
@@ -166,6 +179,7 @@ export function createSite({ vocabulary, sections, hidden = new Map() }, area, b
     body,
     markdown,
     script,
+    quizFiles,
     projectText,
     inProjects,
     relations,

@@ -16,6 +16,8 @@ this page is the short version.
   relations, courses and the progress of learners refer to it.
 - Links between items are written `[[id]]` or `[[id|link text]]`.
 - `vocabulary.yaml` defines types, relations, levels, topics and modules.
+- The content is under CC BY 4.0 and addresses the reader as *du*
+  (Nicolas, 2026-10-23); material by others keeps its own licence.
 
 Status: schema approved on 2026-10-21. The five items in `content/`, the path in
 `paths/` and the course in `courses/` are pilot drafts.

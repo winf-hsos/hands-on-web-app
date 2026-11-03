@@ -222,6 +222,11 @@ The body is plain Markdown with a few conventions:
   not in a chain of short sentences for effect. German texts avoid the weak
   verb *tun* ("Fast alles, was du in R tust, tust du mit …") and name what
   happens instead: *bewirken*, *verwenden*, *arbeiten*, *sich kümmern*.
+- **Licence** (Nicolas, 2026-10-23): the content of the site is under
+  [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), as on
+  basiswissen-ki.de, and the footer of every page says so. Material by others,
+  such as a dataset or a quoted source, keeps its own licence, which goes
+  into its `license` field.
 - **Names of functions and packages are code** (Nicolas, 2026-10-30),
   everywhere on the site: in titles, summaries, goals and the body. The build
   does this by itself on every page (`src/build/code-terms.mjs`): a call
@@ -461,6 +466,18 @@ turns questions of a pool in the format of the skill multiple-choice-pruefung
 into this form, with the pool's ids as explicit ids and its reasons as option
 reasons, as a starting point that is then rewritten for the platform. It
 refuses questions that are not public, since those belong to an exam.
+
+Below every quiz the page offers it as two files to learn with elsewhere
+(Nicolas, 2026-11-03), written next to the page by the build
+(`src/build/quiz-export.mjs`): `<id>.csv` with one row per question, each
+option followed by a 0/1 mark for correct and, where the quiz has them, its
+reason, and the explanation last; and `<id>-anki.txt` for Anki's text import,
+one card per question with the question and its options on the front and the
+correct options with their reasons and the explanation on the back. The German
+CSV is separated by semicolons and the English one by commas, as spreadsheets
+in each language expect, and both begin with a byte order mark so that Excel
+reads them as UTF-8. Since only public questions reach the knowledge base, no
+exam question can end up in a download.
 
 ## 7a. Exercises
 

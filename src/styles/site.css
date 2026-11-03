@@ -129,6 +129,26 @@ body {
   }
 }
 
+/* The licence under every page, quiet so that it does not compete with the content. */
+.site-foot {
+  width: 100%;
+  max-width: var(--wide);
+  margin: 0 auto;
+  padding: 1.25rem 1.25rem 2rem;
+  border-top: 1px solid var(--rule);
+  color: var(--quiet);
+  font-size: 0.85rem;
+}
+
+.site-foot p {
+  max-width: var(--measure);
+  margin: 0;
+}
+
+.site-foot a {
+  color: inherit;
+}
+
 main {
   flex: 1;
   width: 100%;

@@ -292,6 +292,8 @@ function renderSite(knowledge, base, { write, asset }) {
         // and an exercise as a script with comments (build/exercise-script.mjs)
         const script = site.script(doc, lang);
         if (script) writeFileSync(join(DIST, site.url(doc, lang), script.name), script.text);
+        // and a quiz as a CSV and as cards for Anki (build/quiz-export.mjs)
+        for (const file of Object.values(site.quizFiles(doc, lang) ?? {})) writeFileSync(join(DIST, site.url(doc, lang), file.name), file.text);
       }
       for (const doc of site.paths) writePage(lang, pages.path(site, doc, lang));
       for (const doc of site.courses) {
