@@ -1296,6 +1296,136 @@ select {
   box-shadow: inset 3px 0 0 var(--warn);
 }
 
+/* the simulated LED of a program that uses lifi_hardware (client/led-view.js):
+   the LED and the time on the left, the timeline beside it; the bars take the
+   LED's own colours, since they stand for light */
+.led-view {
+  padding: 0.9rem 1rem 0.8rem;
+  border-top: 1px solid var(--rule);
+  animation: fade 0.25s var(--ease);
+}
+
+.led-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.led-device {
+  display: grid;
+  justify-items: center;
+  gap: 0.3rem;
+  flex: none;
+  width: 4.2rem;
+}
+
+.led-lamp {
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  transition: box-shadow 0.15s;
+}
+
+.led-lamp.is-on {
+  box-shadow: 0 0 1.1rem 0.15rem color-mix(in srgb, var(--glow) 55%, transparent);
+}
+
+.led-clock,
+.led-axis {
+  font: 400 0.8rem/1 var(--mono);
+  color: var(--quiet);
+  font-variant-numeric: tabular-nums;
+}
+
+.led-timeline {
+  flex: 1;
+  min-width: 0;
+  padding: 0.35rem 0.6rem 0 0.2rem;
+}
+
+.led-track {
+  position: relative;
+  height: 1.9rem;
+  border-radius: 0.3rem;
+  background: var(--paper-2);
+  box-shadow: inset 0 0 0 1px var(--rule);
+}
+
+.led-bars {
+  position: absolute;
+  inset: 0;
+}
+
+.led-bar {
+  position: absolute;
+  top: 0.25rem;
+  bottom: 0.25rem;
+  margin-left: 1px;
+  border-radius: 0.2rem;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 15%, transparent);
+}
+
+/* a colour that lasts no time at all, as when two set_color follow without a pause */
+.led-bar.is-instant {
+  width: 3px;
+  margin-left: 0;
+}
+
+.led-head {
+  position: absolute;
+  top: -0.2rem;
+  bottom: -0.2rem;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--ink);
+  opacity: 0;
+}
+
+.led-view.is-playing .led-head {
+  opacity: 0.7;
+}
+
+.led-axis {
+  position: relative;
+  height: 1.2rem;
+  margin-top: 0.35rem;
+}
+
+.led-axis span {
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.led-axis span:first-child {
+  transform: none;
+}
+
+.led-axis span:last-child {
+  transform: translateX(-100%);
+}
+
+.led-note {
+  margin: 0.5rem 0 0 !important;
+  font-size: 0.92rem;
+  color: var(--quiet);
+}
+
+.led-again {
+  margin-top: 0.5rem;
+  min-height: 2rem;
+  padding: 0 0.9rem;
+  font-size: 0.88rem;
+}
+
+/* .button sets a display of its own, which would override the attribute */
+.led-again[hidden],
+.runner-reset[hidden] {
+  display: none;
+}
+
 /* --- callouts ------------------------------------------------------------------- */
 
 .callout {

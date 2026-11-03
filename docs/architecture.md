@@ -124,7 +124,9 @@ All motion is switched off for people who ask their system for reduced motion.
   rarely allow; instead a program runs with the answers given so far, stops
   when it needs one more, and runs again from the start once the learner has
   typed it. Programs at this level are deterministic, so the learner sees one
-  continuous run. `src/client/highlight.js` highlights Python and R both at
+  continuous run. A program that imports `lifi_hardware` runs against a simulated
+  LED in the same worker: `time.sleep()` moves a clock instead of waiting, and
+  `src/client/led-view.js` plays the recorded colours back in real time. `src/client/highlight.js` highlights Python and R both at
   build time and while editing.
 - **R** runs in the browser with webR (R compiled to WebAssembly), served
   from `/assets/vendor/webr-<version>/` and started on the first click

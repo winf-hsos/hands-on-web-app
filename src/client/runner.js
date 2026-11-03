@@ -9,6 +9,7 @@ import { suggest as suggestPython } from './py-context.js';
 import { highlight } from './highlight.js';
 import { savedOnPage, fingerprint } from './saved.js';
 import { focusable } from './focus.js';
+import { showLed } from './led-view.js';
 
 const { pythonWorker, pyodide, runnerLabels } = document.body.dataset;
 const L = JSON.parse(runnerLabels);
@@ -116,8 +117,10 @@ function setup(box) {
   const output = el('pre', { className: 'runner-output', hidden: true });
   output.setAttribute('aria-live', 'polite');
   const hint = el('p', { className: 'runner-hint', hidden: true });
+  // what the simulated LED did, for a program that uses lifi_hardware (led-view.js)
+  const led = el('div', { className: 'led-view', role: 'group', hidden: true });
   const bar = el('div', { className: 'runner-bar' }, run, reset, status);
-  box.replaceChildren(code, bar, output, hint);
+  box.replaceChildren(code, bar, led, output, hint);
   // Larger, for working on the code together on a projector: the code, the
   // bar and a fixed room for the output fit the screen, and longer output
   // scrolls inside that room. The size follows the code when it is run or
@@ -194,6 +197,8 @@ function setup(box) {
       output.replaceChildren();
       output.hidden = false;
       hint.hidden = true;
+      led.stop?.();
+      led.hidden = true;
     };
     const reply = (message) => {
       if (message.type === 'file') {
@@ -213,6 +218,11 @@ function setup(box) {
         canvas.setAttribute('role', 'img');
         canvas.setAttribute('aria-label', L.plot);
         output.append(canvas);
+        return;
+      }
+      if (message.type === 'led') {
+        clear();
+        showLed(led, message.run, L, document.documentElement.lang);
         return;
       }
       if (message.type === 'output') {
@@ -254,6 +264,9 @@ function setup(box) {
       output.append(el('span', { className: 'out-note' }, `${output.textContent ? '\n' : ''}${L.stopped}`));
     } else if (result === 'failed') {
       output.append(el('span', { className: 'out-err' }, `${lang === 'r' ? L.failed_r : L.failed}\n${message ?? ''}`));
+    } else if (!led.hidden && !output.textContent) {
+      // the LED was the output
+      output.hidden = true;
     } else if (!output.textContent && !output.querySelector('canvas')) {
       output.append(el('span', { className: 'out-note' }, L.no_output));
     }
@@ -270,6 +283,8 @@ function setup(box) {
     savedCode.remove(id);
     output.hidden = true;
     hint.hidden = true;
+    led.stop?.();
+    led.hidden = true;
     editor.focus();
   });
   editor.addEventListener('input', () => {
