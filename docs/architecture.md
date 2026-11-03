@@ -196,6 +196,14 @@ All motion is switched off for people who ask their system for reduced motion.
   width of their columns only. Full screen draws nothing outside the box, so
   the suggestions of a code box (`complete.js`) move into it while it is in
   focus and grow with the code.
+- **Embedded slide decks** (`src/client/deck-frame.js`): the button
+  "Vollbild" puts the deck's iframe into full screen and hands it the
+  keyboard focus, and while a deck fills the screen the page passes every key
+  but Escape on to it, so the arrows turn the slides without a click first.
+  A click anywhere in the middle of a slide turns it too (`stagekit.next()`);
+  stagekit itself turns only at the outer fifths, which suits a presenter.
+  Links, buttons, selected text and the click that closes a code window do
+  not turn.
 
 ## Areas
 
