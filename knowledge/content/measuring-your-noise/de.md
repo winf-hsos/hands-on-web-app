@@ -18,7 +18,6 @@ duration: 45
 topics: [transferring-information]
 modules: [dup]
 relations:
-  requires: [sent-is-not-measured]
   see_also: [signal-and-noise-slides, measurement-and-experiments]
 status: draft
 updated: 2026-11-01

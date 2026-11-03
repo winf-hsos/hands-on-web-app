@@ -21,7 +21,7 @@ duration: 30
 topics: [solving-problems, processing-information]
 modules: [dup]
 relations:
-  see_also: [programming-principles, problem-decomposition, algorithms-and-programs, sent-is-not-measured]
+  see_also: [programming-principles, problem-decomposition, algorithms-and-programs]
 status: published
 updated: 2026-11-02
 ---

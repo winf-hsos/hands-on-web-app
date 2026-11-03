@@ -1,7 +1,7 @@
 ---
 type: [lesson, slides]
 code: 7942
-formerly: [measuring-and-experimenting]
+formerly: [measuring-and-experimenting, sent-is-not-measured]
 title: Measuring and experimenting
 summary: >-
   Why a single reading is not yet evidence: how a claim turns into a test, what
@@ -24,7 +24,7 @@ duration: 30
 topics: [transferring-information]
 modules: [dup]
 relations:
-  see_also: [sent-is-not-measured, believed-and-measured, measuring-your-noise]
+  see_also: [believed-and-measured, measuring-your-noise]
 status: published
 updated: 2026-11-03
 ---
@@ -86,8 +86,7 @@ normal case, and it has a consequence: you do not calculate backwards from the
 readings to what was sent, since a formula that fits today fails at the next
 table or on the next day. Instead you work with the readings of your own
 setup, and the section on calibrating shows how a program decides from them
-which colour arrived. The experiment [[sent-is-not-measured]] lets you see the
-gap between what is sent and what is measured on a real device.
+which colour arrived.
 
 ## Measure the dark first
 

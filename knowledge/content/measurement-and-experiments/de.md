@@ -79,9 +79,7 @@ sondern der Normalfall, und es hat eine Folge: Du rechnest nicht von den
 Messwerten auf das Gesendete zurück, denn eine Formel, die heute passt,
 versagt am nächsten Tisch oder am nächsten Tag. Stattdessen arbeitest du mit
 den Messwerten deines eigenen Aufbaus, und der Abschnitt über das Kalibrieren
-zeigt, wie ein Programm daraus entscheidet, welche Farbe angekommen ist. Im
-Experiment [[sent-is-not-measured]] siehst du den Unterschied zwischen
-gesendet und gemessen an einem echten Gerät.
+zeigt, wie ein Programm daraus entscheidet, welche Farbe angekommen ist.
 
 ## Erst das Dunkel messen
 

@@ -42,7 +42,7 @@ The four numbers `r`, `g`, `b` and `c` are the program's actual input. Only proc
 
 If you set the LED to `r=255, g=0, b=0`, it is easy to expect the same numbers at the sensor. On the slide the light travels across, and the four values count up at the sensor to something like `r=203, g=41, b=57, c=310`. That is not a defect, it is the normal case.
 
-The colour filters overlap. Light gets lost with distance and angle. Room light reaches the sensor as well. A formula that calculates today's readings back exactly to the LED values would already be wrong at the next table or on the next day. We have to learn to work with the readings of our own setup. The experiment [Sent is not measured](../../sent-is-not-measured/de.md) lets you see this on your own device.
+The colour filters overlap. Light gets lost with distance and angle. Room light reaches the sensor as well. A formula that calculates today's readings back exactly to the LED values would already be wrong at the next table or on the next day. We have to learn to work with the readings of our own setup.
 
 ### Measure the dark first (Frames 19 to 22)
 

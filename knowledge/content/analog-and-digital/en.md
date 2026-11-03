@@ -23,7 +23,7 @@ duration: 30
 topics: [representing-information, transferring-information]
 modules: [dup]
 relations:
-  see_also: [why-two-states, sent-is-not-measured, measuring-your-noise]
+  see_also: [why-two-states, measuring-your-noise]
 status: published
 updated: 2026-11-03
 ---

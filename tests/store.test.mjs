@@ -78,7 +78,7 @@ test('a passage changed in place replaces exactly its characters, an empty one g
   try {
     cpSync(ROOT, dir, { recursive: true, filter: (src) => statSync(src).isDirectory() || statSync(src).size < 300_000 });
     const store = createStore(dir);
-    const id = 'sent-is-not-measured';
+    const id = 'believed-and-measured';
     const body = () => store.read('content', id).files.de.body;
     const at = (text) => {
       const start = body().indexOf(text);
