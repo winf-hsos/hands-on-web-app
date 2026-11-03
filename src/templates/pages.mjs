@@ -627,8 +627,7 @@ export function course(site, doc, lang) {
     return section(
       `project:${p.id}`,
       ptext.title,
-      () => html`<p class="course-project-summary" lang="${ptext.lang}">${ptext.summary}</p>
-        ${p.lead.phases.map((phase, i) => html`<details class="fold course-path-part" data-fold="project:${p.id}:${i + 1}"${openIfSingle(p.lead.phases)}>
+      () => html`${p.lead.phases.map((phase, i) => html`<details class="fold course-path-part" data-fold="project:${p.id}:${i + 1}"${openIfSingle(p.lead.phases)}>
           <summary><h3 lang="${ptext.lang}">${phases[i].title}</h3><span class="fold-meta">${count(lang, phaseItems(phase).length, 'results')}</span></summary>
           ${trail(phaseItems(phase))}
         </details>`)}
