@@ -20,7 +20,6 @@ phases:
       - measurement-and-experiments-quiz
       - analog-and-digital
       - analog-and-digital-quiz
-      - symbols-and-information-slides
       - symbols-and-information
       - symbols-and-information-quiz
       - perfect-reception-perfect-nonsense

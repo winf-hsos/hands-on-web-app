@@ -20,7 +20,7 @@ duration: 20
 topics: [representing-information, transferring-information]
 modules: [dup]
 relations:
-  see_also: [symbols-and-information-slides]
+  see_also: [symbols-and-information]
 status: draft
 updated: 2026-11-01
 ---
@@ -162,7 +162,7 @@ print("gelesen: ", received)
   ändert und es der anderen nicht sagt?
 
 Dass ein Symbol ein vereinbarter und unterscheidbarer
-Zustand ist, zeigen die Folien [[symbols-and-information-slides]].
+Zustand ist, zeigt die Lektion [[symbols-and-information]].
 
 > [!NOTE]
 > Mit einer ganzen Gruppe bereitet die Lehrperson zwei Tabellen vor, die

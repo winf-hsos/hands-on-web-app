@@ -19,7 +19,7 @@ duration: 25
 topics: [representing-information, transferring-information]
 modules: [dup]
 relations:
-  see_also: [bit, morse-code, symbols-and-information-slides]
+  see_also: [bit, morse-code, symbols-and-information]
 status: draft
 updated: 2026-11-01
 ---
@@ -159,7 +159,7 @@ Der Morsecode nutzt genau das, was das gezinkte Spiel zeigt: Das „e“, der
 häufigste Buchstabe, bekommt mit einem einzigen Punkt das kürzeste Zeichen,
 seltene Buchstaben wie das „q“ bekommen lange ([[morse-code]]). Was ein Bit
 genau ist, steht beim Begriff [[bit]], und wie viele Bit ein Symbol aus eurem
-eigenen Farbalphabet trägt, zeigen die Folien [[symbols-and-information-slides]].
+eigenen Farbalphabet trägt, zeigt die Lektion [[symbols-and-information]].
 
 > [!NOTE]
 > Mit einer ganzen Gruppe zieht die Lehrperson verdeckt eine Karte, und die

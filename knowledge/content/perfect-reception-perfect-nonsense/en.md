@@ -149,8 +149,8 @@ print("read:", received)
   not tell the other?
 
 That a
-symbol is an agreed and distinguishable state is shown in the slides
-[[symbols-and-information-slides]].
+symbol is an agreed and distinguishable state is shown in the lesson
+[[symbols-and-information]].
 
 > [!NOTE]
 > With a whole group, the lecturer prepares two tables that secretly differ

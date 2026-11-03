@@ -149,7 +149,7 @@ Morse code uses exactly what the loaded game shows: the "e", the most frequent
 letter, gets the shortest sign, a single dot, while rare letters like the "q"
 get long ones ([[morse-code]]). What a bit is exactly is described under the
 term [[bit]], and how many bits a symbol from your own colour alphabet carries
-is shown in the slides [[symbols-and-information-slides]].
+is shown in the lesson [[symbols-and-information]].
 
 > [!NOTE]
 > With a whole group, the lecturer secretly draws a card and the group may

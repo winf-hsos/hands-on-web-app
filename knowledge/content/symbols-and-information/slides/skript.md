@@ -103,14 +103,14 @@ So far all symbols counted as equally likely. In real text they are not, and Mor
 
 ### The catch (Frame 27)
 
-On the left, the payoff: more bits per symbol, so the same file needs fewer symbols and arrives sooner. On the right, the price: the colours move closer together, the noise reaches across the gap, and symbols are read wrong. No formula tells you where the limit lies, so the size of your alphabet is not a matter of taste but the result of a measurement. Challenge 1 of the LiFi project asks exactly this: how many states your link tells apart over 50 attempts without a single error.
+On the left, the payoff: more bits per symbol, so the same file needs fewer symbols and arrives sooner. On the right, the price: the colours move closer together, the noise reaches across the gap, and symbols are read wrong. No formula tells you where the limit lies, so the size of your alphabet is not a matter of taste but the result of a measurement. Challenge 1 of the LiFi project asks exactly this: how many states your link tells apart in 20 random attempts without a single error.
 
 ### Four steps to your alphabet (Frame 28)
 
 1. agree on your alphabet and write it down
 2. measure a profile for every symbol
-3. fill `send_symbol()` and `receive_symbol()`
-4. send 50 symbols and count the errors
+3. teach the receiver to recognise every symbol
+4. send 20 random symbols and count the errors
 
 The first step is the one everyone wants to skip. Whoever keeps the agreement only in their head rebuilds the nonsense slide as soon as two people work in parallel.
 
