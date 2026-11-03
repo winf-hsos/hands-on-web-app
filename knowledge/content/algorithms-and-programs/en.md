@@ -26,7 +26,7 @@ topics: [solving-problems, programming-with-python]
 modules: [dup]
 relations:
   requires: [programming-principles]
-  see_also: [python-first-program, python-while-loops, python-error-messages, card-guessing]
+  see_also: [python-first-program, python-while-loops, python-error-messages]
 status: published
 updated: 2026-11-03
 ---
@@ -312,7 +312,8 @@ difference grows with the size of the problem:
 Being correct is therefore only the minimum, and after that procedures are
 compared by their **cost**: how many steps, how much time or how many
 measurements they need, and above all how that number grows when the problem
-grows. You can try halving for yourself in [[card-guessing]].
+grows. You can try halving for yourself in [[symbols-and-information]],
+where a small program finds your number out of 32.
 
 Bubble sort has a cost as well, and the box below counts it as the number of
 comparisons until the row is sorted. Six values in reverse order take 30

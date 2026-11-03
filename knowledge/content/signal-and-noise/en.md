@@ -20,7 +20,7 @@ topics: [transferring-information]
 modules: [dup]
 relations:
   requires: [measurement-and-experiments]
-  see_also: [signal-and-noise-slides, why-two-states, colours-on-a-number-line, measuring-your-noise]
+  see_also: [signal-and-noise-slides, why-two-states, measuring-your-noise]
 status: draft
 updated: 2026-11-01
 ---

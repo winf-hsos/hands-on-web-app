@@ -21,7 +21,7 @@ modules: [dup]
 relations:
   checks: [symbols-and-information, bit]
 status: draft
-updated: 2026-11-01
+updated: 2026-11-03
 ---
 
 ## What is a symbol in the sense of information theory? {#si-001}
@@ -37,16 +37,16 @@ updated: 2026-11-01
 
 > A symbol needs both: physics makes it distinguishable, and an agreement gives it a meaning.
 
-## What is an alphabet in this sense? {#si-002}
+## Two teams send data with coloured light, and their LED shows four colours they have agreed on. What is the alphabet of their link? {#si-002}
 
-- [ ] The 26 letters from A to Z, with which any text can be written.
-  > That is one alphabet, but only an example. Four colours of a lamp form one just as well, with four symbols instead of 26.
-- [x] The set of all symbols agreed between sender and receiver.
+- [ ] The 26 letters from A to Z that the link is meant to carry.
+  > The letters are what the messages say, but the link itself only sends colours. Its alphabet is what can be seen on the way, four colours here instead of 26 letters.
+- [x] The set of the four colours that both teams have agreed on as symbols.
   > Exactly. How large this set may be is not decided by the agreement alone: the hardware and the surroundings have a say, which makes it a question of measurement.
-- [ ] The order in which the symbols of a message are sent.
+- [ ] The order in which the colours of a message are sent.
   > The order is the message itself. The alphabet is the stock from which it is assembled.
-- [ ] The mapping of symbols to bit sequences, such as which symbol 01 stands for.
-  > That is the code, which builds on the alphabet. The alphabet is only the agreed set of symbols themselves; how to write them in bits is a second step.
+- [ ] The mapping of the colours to bit sequences, such as green standing for 01.
+  > That is the code, which builds on the alphabet. The alphabet is only the agreed set of colours themselves; how to write them in bits is a second step.
 
 > The alphabet is the stock of agreed symbols, and a code then says what each of them stands for.
 

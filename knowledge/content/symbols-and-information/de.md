@@ -87,8 +87,6 @@ Nachricht, sondern ein Versprechen, und wer es ändert, ohne es dem Gegenüber z
 sagen, baut den Unsinn von oben nach. Dasselbe Wörterbuch kann Farben genauso
 gut Bitfolgen zuordnen, `{"red": "00", "green": "01", "blue": "10", "yellow": "11"}`,
 und wie viele Stellen eine solche Folge braucht, ist Thema des nächsten Teils.
-Im Experiment [[perfect-reception-perfect-nonsense]] erlebst du das gebrochene
-Versprechen selbst.
 
 ## Das Ratespiel, gemessen
 
@@ -123,8 +121,7 @@ print(f"Deine Zahl ist {low}, gefunden mit {questions} Fragen.")
 ```
 
 Welche Zahl du auch wählst, das Programm braucht genau fünf Fragen, weil jede
-Antwort die Hälfte des Rests beseitigt. Das Experiment [[card-guessing]] spielt
-dasselbe Spiel mit echten Karten und vergleicht es mit bloßem Raten.
+Antwort die Hälfte des Rests beseitigt.
 
 ## Nicht jede Antwort ist gleich viel wert
 

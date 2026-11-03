@@ -24,9 +24,6 @@ phases:
       - audio-digitiser
       - symbols-and-information
       - symbols-and-information-quiz
-      - perfect-reception-perfect-nonsense
-      - card-guessing
-      - colours-on-a-number-line
       - signal-and-noise-slides
       - signal-and-noise
       - signal-and-noise-quiz

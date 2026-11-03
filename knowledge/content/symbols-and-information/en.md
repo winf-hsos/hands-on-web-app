@@ -23,7 +23,7 @@ topics: [representing-information, transferring-information]
 modules: [dup]
 relations:
   requires: [analog-and-digital]
-  see_also: [perfect-reception-perfect-nonsense, card-guessing, claude-shannon]
+  see_also: [claude-shannon]
 status: draft
 updated: 2026-11-03
 ---
@@ -95,9 +95,7 @@ transmitted; it has to sit on both sides beforehand, which makes it not data
 but a promise, and whoever changes it without telling the partner builds the
 nonsense above. The same dictionary can just as well map colours to bit
 strings, `{"red": "00", "green": "01", "blue": "10", "yellow": "11"}`, and how
-many digits such a string needs is the subject of the next part. The
-experiment [[perfect-reception-perfect-nonsense]] lets you run into the broken
-promise yourself.
+many digits such a string needs is the subject of the next part.
 
 ## The guessing game, measured
 
@@ -130,8 +128,7 @@ print(f"Your number is {low}, found with {questions} questions.")
 ```
 
 Whatever number you choose, the program needs exactly five questions, because
-every answer removes half of what is left. The experiment [[card-guessing]]
-plays the same game with real cards and compares it with guessing.
+every answer removes half of what is left.
 
 ## Not every answer is worth the same
 

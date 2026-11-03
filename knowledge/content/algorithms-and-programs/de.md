@@ -307,8 +307,8 @@ Unterschied wächst mit der Größe des Problems:
 Richtig zu sein ist deshalb nur das Mindeste, und danach vergleicht man
 Verfahren nach ihrem **Aufwand**: wie viele Schritte, wie viel Zeit oder wie
 viele Messungen sie brauchen, und vor allem, wie diese Zahl wächst, wenn das
-Problem wächst. Das Halbieren kannst du in [[card-guessing]] selbst
-ausprobieren.
+Problem wächst. Das Halbieren kannst du in [[symbols-and-information]]
+selbst ausprobieren, wo ein kleines Programm deine Zahl aus 32 errät.
 
 Auch Bubblesort hat einen Aufwand, und das Feld unten zählt ihn als Zahl der
 Vergleiche, bis die Reihe sortiert ist. Sechs Werte in umgekehrter

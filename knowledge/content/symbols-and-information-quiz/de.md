@@ -13,7 +13,7 @@ objectives:
     - "eine halbierende Frage mit einer schiefen über ihren Erwartungswert vergleichen"
     - "ausrechnen, wie viel Zeit ein größeres Alphabet spart, und warum zwei Symbole in Gruppen für jede Nachricht genügen"
 translation_of: en
-based_on: 2026-11-01
+based_on: 2026-11-03
 ---
 
 ## Was ist im Sinn der Informationstheorie ein Symbol? {#si-001}
@@ -29,16 +29,16 @@ based_on: 2026-11-01
 
 > Ein Symbol braucht beides: Die Physik macht es unterscheidbar, und eine Vereinbarung gibt ihm Bedeutung.
 
-## Was ist in diesem Sinn ein Alphabet? {#si-002}
+## Zwei Teams übertragen Daten mit farbigem Licht, und ihre LED zeigt vier vereinbarte Farben. Was ist das Alphabet ihrer Strecke? {#si-002}
 
-- [ ] Die 26 Buchstaben von A bis Z, mit denen sich jeder Text schreiben lässt.
-  > Das ist ein Alphabet, aber nur ein Beispiel. Vier Farben einer Lampe bilden genauso eines, mit vier statt 26 Symbolen.
-- [x] Die Menge aller Symbole, die Sender und Empfänger vereinbart haben.
+- [ ] Die 26 Buchstaben von A bis Z, die über die Strecke gehen sollen.
+  > Die Buchstaben sind der Inhalt der Nachrichten, aber die Strecke selbst sendet nur Farben. Ihr Alphabet ist, was unterwegs zu sehen ist, hier vier Farben statt 26 Buchstaben.
+- [x] Die Menge der vier Farben, die beide Teams als Symbole vereinbart haben.
   > Genau. Wie groß diese Menge sein darf, entscheidet die Vereinbarung allerdings nicht allein: Hardware und Umgebung reden mit, und damit wird es eine Frage der Messung.
-- [ ] Die Reihenfolge, in der die Symbole einer Nachricht gesendet werden.
+- [ ] Die Reihenfolge, in der die Farben einer Nachricht gesendet werden.
   > Die Reihenfolge ist die Nachricht selbst. Das Alphabet ist der Vorrat, aus dem sie zusammengesetzt wird.
-- [ ] Die Zuordnung von Symbolen zu Bitfolgen, etwa welches Symbol 01 bedeutet.
-  > Das ist der Code, der auf dem Alphabet aufbaut. Das Alphabet ist nur die vereinbarte Menge der Symbole selbst; wie man sie in Bits schreibt, ist ein zweiter Schritt.
+- [ ] Die Zuordnung der Farben zu Bitfolgen, etwa dass Grün für 01 steht.
+  > Das ist der Code, der auf dem Alphabet aufbaut. Das Alphabet ist nur die vereinbarte Menge der Farben selbst; wie man sie in Bits schreibt, ist ein zweiter Schritt.
 
 > Das Alphabet ist der Vorrat vereinbarter Symbole, und ein Code sagt danach, wofür jedes davon steht.
 
