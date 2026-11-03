@@ -19,7 +19,7 @@ topics: [representing-information]
 modules: [dup]
 relations:
   example_of: [symbols-and-information]
-status: draft
+status: published
 updated: 2026-11-03
 ---
 
