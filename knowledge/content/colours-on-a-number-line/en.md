@@ -205,7 +205,7 @@ table and draw a second number line below the first.
 
 Why more regions get narrower with the same noise is shown in the lesson
 [[analog-and-digital]], and how to set up such a measurement series properly
-in the slides [[measuring-and-experimenting]]. That computers work with only
+in the lesson [[measurement-and-experiments]]. That computers work with only
 two states for the same reason is explained in [[why-two-states]].
 
 > [!NOTE]

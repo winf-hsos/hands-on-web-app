@@ -21,7 +21,7 @@ duration: 25
 topics: [transferring-information]
 modules: [dup]
 relations:
-  see_also: [measuring-and-experimenting]
+  see_also: [measurement-and-experiments]
 status: draft
 updated: 2026-11-01
 ---

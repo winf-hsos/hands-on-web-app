@@ -87,5 +87,5 @@ Each cell takes the five readings, separated by commas.
   numbers in every light and at every distance?
 
 How you can still decide reliably with numbers like these, and why a single
-reading is never enough for it, is shown in the slides
-[[measuring-and-experimenting]].
+reading is never enough for it, is shown in the lesson
+[[measurement-and-experiments]].

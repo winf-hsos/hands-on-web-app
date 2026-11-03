@@ -131,8 +131,8 @@ step 2 and the second with what the measurement showed, both with numbers.
 Why almost every measure against noise has a price and only a few, among them
 better optics, cost nothing but craft is shown in the slides
 [[signal-and-noise-slides]] and the lesson [[signal-and-noise]]. Why a clean
-measurement series beats a plausible explanation is shown in the slides
-[[measuring-and-experimenting]].
+measurement series beats a plausible explanation is shown in the lesson
+[[measurement-and-experiments]].
 
 > [!NOTE]
 > With a whole group, every team tests a different suggestion, and a list with

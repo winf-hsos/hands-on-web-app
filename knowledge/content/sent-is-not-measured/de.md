@@ -19,7 +19,7 @@ duration: 20
 topics: [transferring-information]
 modules: [dup]
 relations:
-  see_also: [measuring-and-experimenting]
+  see_also: [measurement-and-experiments]
 status: published
 updated: 2026-11-01
 ---
@@ -91,5 +91,5 @@ In jede Zelle kommen die fünf Ablesungen, durch Kommas getrennt.
   Licht und jedem Abstand andere Zahlen liefert?
 
 Wie man mit solchen Zahlen trotzdem sicher entscheidet und warum dafür eine
-einzelne Ablesung nie genügt, zeigen die Folien
-[[measuring-and-experimenting]].
+einzelne Ablesung nie genügt, zeigt die Lektion
+[[measurement-and-experiments]].

@@ -20,7 +20,6 @@ topics: [transferring-information]
 modules: [dup]
 relations:
   checks: [measurement-and-experiments]
-  see_also: [measuring-and-experimenting]
 status: published
 updated: 2026-11-01
 ---

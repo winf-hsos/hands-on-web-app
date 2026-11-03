@@ -1,7 +1,6 @@
-// Drawings of "How a measurement becomes evidence" (docs/figures.md), taken
-// from the deck measuring-and-experimenting and laid out for the width of the
-// text: 1600 units, sizes 32 and 48 only, and as still pictures in their
-// final state.
+// Drawings of "Measuring and experimenting" (docs/figures.md), taken from the
+// item's own deck (slides/deck.js) and laid out for the width of the text:
+// 1600 units, sizes 32 and 48 only, and as still pictures in their final state.
 (function () {
   const d = window.draw;
   const p = window.figureParts;

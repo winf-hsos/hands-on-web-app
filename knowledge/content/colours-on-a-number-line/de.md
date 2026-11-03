@@ -20,7 +20,7 @@ topics: [transferring-information]
 modules: [dup]
 relations:
   requires: [sent-is-not-measured]
-  see_also: [measuring-and-experimenting, analog-and-digital, why-two-states]
+  see_also: [measurement-and-experiments, analog-and-digital, why-two-states]
 status: draft
 updated: 2026-11-01
 ---
@@ -216,7 +216,7 @@ unter die erste.
 
 Warum mehr Bereiche bei gleichem Rauschen enger werden, zeigt die Lektion
 [[analog-and-digital]], und wie man eine solche Messreihe sauber anlegt, die
-Folien [[measuring-and-experimenting]]. Dass Rechner aus demselben Grund mit
+Lektion [[measurement-and-experiments]]. Dass Rechner aus demselben Grund mit
 nur zwei Zuständen arbeiten, erklärt [[why-two-states]].
 
 > [!NOTE]

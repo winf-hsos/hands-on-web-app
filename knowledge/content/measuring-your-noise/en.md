@@ -219,7 +219,7 @@ every measure against noise costs, is shown in the slides
 [[signal-and-noise-slides]], and the lesson [[signal-and-noise]] explains it at
 leisure. How to set up a measurement series properly, with a control reading
 and exactly one changed quantity, is covered in
-[[measuring-and-experimenting]].
+[[measurement-and-experiments]].
 
 > [!NOTE]
 > With a whole group, every team measures its own spread and enters three

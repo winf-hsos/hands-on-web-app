@@ -20,7 +20,7 @@ topics: [transferring-information]
 modules: [dup]
 relations:
   requires: [measuring-your-noise]
-  see_also: [signal-and-noise-slides, measuring-and-experimenting]
+  see_also: [signal-and-noise-slides, measurement-and-experiments]
 status: draft
 updated: 2026-11-01
 ---
@@ -144,8 +144,8 @@ Zahlen.
 Warum fast jede Maßnahme gegen Rauschen einen Preis hat und nur wenige, darunter
 eine bessere Optik, nichts kosten als Bastelzeit, zeigen die Folien
 [[signal-and-noise-slides]] und die Lektion [[signal-and-noise]]. Warum eine
-saubere Messreihe gegen eine plausible Erklärung gewinnt, zeigen die Folien
-[[measuring-and-experimenting]].
+saubere Messreihe gegen eine plausible Erklärung gewinnt, zeigt die Lektion
+[[measurement-and-experiments]].
 
 > [!NOTE]
 > Mit einer ganzen Gruppe prüft jedes Team einen anderen Vorschlag, und an der

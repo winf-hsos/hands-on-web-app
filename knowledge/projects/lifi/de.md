@@ -16,7 +16,6 @@ phases:
     challenge: lifi-challenge-1
     items:
       - sent-is-not-measured
-      - measuring-and-experimenting
       - measurement-and-experiments
       - measurement-and-experiments-quiz
       - analog-and-digital

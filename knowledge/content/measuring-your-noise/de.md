@@ -19,7 +19,7 @@ topics: [transferring-information]
 modules: [dup]
 relations:
   requires: [sent-is-not-measured]
-  see_also: [signal-and-noise-slides, colours-on-a-number-line, measuring-and-experimenting]
+  see_also: [signal-and-noise-slides, colours-on-a-number-line, measurement-and-experiments]
 status: draft
 updated: 2026-11-01
 ---
@@ -230,7 +230,7 @@ Warum über die Größe des Alphabets nichts anderes entscheidet als das
 Verhältnis `d/s` und was jede Maßnahme dagegen kostet, zeigen die Folien
 [[signal-and-noise-slides]], und die Lektion [[signal-and-noise]] erklärt es in
 Ruhe. Wie man eine Messreihe sauber anlegt, mit Kontrollmessung und genau einer
-veränderten Größe, steht in [[measuring-and-experimenting]].
+veränderten Größe, steht in [[measurement-and-experiments]].
 
 > [!NOTE]
 > Mit einer ganzen Gruppe misst jedes Team seine eigene Streuung und trägt drei
