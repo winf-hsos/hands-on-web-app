@@ -24,7 +24,7 @@ modules: [dup]
 relations:
   requires: [analog-and-digital]
   see_also: [claude-shannon]
-status: draft
+status: published
 updated: 2026-11-03
 ---
 

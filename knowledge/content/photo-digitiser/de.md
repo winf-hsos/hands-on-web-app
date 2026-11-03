@@ -20,7 +20,7 @@ modules: [dup]
 relations:
   example_of: [analog-and-digital]
   see_also: [audio-digitiser]
-status: draft
+status: published
 updated: 2026-11-03
 ---
 

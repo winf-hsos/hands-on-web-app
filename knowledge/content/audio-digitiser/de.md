@@ -18,7 +18,7 @@ topics: [representing-information, transferring-information]
 modules: [dup]
 relations:
   example_of: [analog-and-digital]
-status: draft
+status: published
 updated: 2026-11-03
 ---
 

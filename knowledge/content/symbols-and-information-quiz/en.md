@@ -20,7 +20,7 @@ topics: [representing-information, transferring-information]
 modules: [dup]
 relations:
   checks: [symbols-and-information, bit]
-status: draft
+status: published
 updated: 2026-11-03
 ---
 
