@@ -3,11 +3,11 @@ type: quiz
 code: 6866
 title: "Quiz: Analog and digital"
 summary: >-
-  Seventeen questions on what makes something digital, why more levels bring
+  Sixteen questions on what makes something digital, why more levels bring
   the boundaries closer, what digitising costs and what it buys. Every answer
   comes with its reason.
 objectives:
-  intro: "This quiz lets you check in seventeen questions whether you can:"
+  intro: "This quiz lets you check in sixteen questions whether you can:"
   goals:
     - "tell analog from digital by the one criterion that counts: stepless, or finitely many separated states"
     - "explain why the same noise becomes a problem when the number of regions grows"
@@ -20,8 +20,8 @@ topics: [representing-information, transferring-information]
 modules: [dup]
 relations:
   checks: [analog-and-digital]
-status: draft
-updated: 2026-11-01
+status: published
+updated: 2026-11-03
 ---
 
 ## What does it mean for a quantity to be "analog"? {#ad-001}
@@ -90,19 +90,6 @@ updated: 2026-11-01
   > Error detection exists, but it is a separate, additional ingredient that works with redundancy and checksums. The basic robustness comes earlier, from the distance between the states.
 
 > Digital is reliable because it throws precision away: disturbances smaller than the distance between states vanish at every reading.
-
-## A light sensor delivers readings between 100 and 400 for the colours of an alphabet, and each single reading varies by up to ±40 around its true value. What follows for the number of colours? {#ad-006}
-
-- [x] Two colours (regions 150 wide) are safe; with eight colours each region is narrower than the band of the variation, and single readings land in the neighbouring region.
-  > Exactly the calculation that matters: a variation of ±40 needs a band 80 wide, and 300 divided by 8 gives regions only 37.5 wide. Two regions of 150 leave ample reserve. How many in between still work, only a measurement series of the actual setup can tell.
-- [ ] Eight colours are unproblematic, because the number 8 is much smaller than the variation of 40, so there is reserve left.
-  > The two numbers measure different things, a count and a sensor value, so they cannot be compared. What has to be compared is the width of a region with the width of the band.
-- [ ] The variation does not matter because the sensor already delivers numbers; a digital value is right or wrong, not approximate.
-  > The sensor delivering numbers does not shrink the variation: it is already in the light and in the measurement itself. Digital does not mean free of disturbance.
-- [ ] More than two colours are not sensible, because every additional boundary is another source of error and ±40 is too much variation for that.
-  > Too cautious: with three regions each is 100 wide, so the band of 80 still fits with 10 to spare on each side. Only at four regions, 75 wide each, does it no longer fit.
-
-> Compare the width of a region with the width of the band, which is twice the variation: here two and three colours fit, four and more do not.
 
 ## A program reads a brightness value from a sensor and then compares it with a threshold. In terms of digitising, what does the comparison `value > 250` do? {#ad-007}
 

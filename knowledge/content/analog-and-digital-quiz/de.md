@@ -1,11 +1,11 @@
 ---
 title: "Quiz: Analog und digital"
 summary: >-
-  Siebzehn Fragen dazu, was etwas digital macht, warum mehr Stufen die Grenzen
+  Sechzehn Fragen dazu, was etwas digital macht, warum mehr Stufen die Grenzen
   näher rücken lassen, was Digitalisieren kostet und was es einbringt. Jede
   Antwort kommt mit ihrer Begründung.
 objectives:
-  intro: "Mit diesem Quiz prüfst du in siebzehn Fragen, ob du Folgendes kannst:"
+  intro: "Mit diesem Quiz prüfst du in sechzehn Fragen, ob du Folgendes kannst:"
   goals:
     - "analog und digital an dem einen Merkmal unterscheiden, das zählt: stufenlos oder endlich viele getrennte Zustände"
     - "erklären, warum dasselbe Rauschen zum Problem wird, wenn die Zahl der Bereiche wächst"
@@ -13,7 +13,7 @@ objectives:
     - "Abtasten und Quantisieren unterscheiden und ihre Spuren in einem Bild erkennen"
     - "die Größe eines Bildes als Punkte mal Bits je Punkt ausrechnen und beurteilen, was in ein Budget passt"
 translation_of: en
-based_on: 2026-11-01
+based_on: 2026-11-03
 ---
 
 ## Was bedeutet es, wenn eine Größe „analog“ ist? {#ad-001}
@@ -82,19 +82,6 @@ based_on: 2026-11-01
   > Fehlererkennung gibt es, aber sie ist eine eigene, zusätzliche Zutat, die mit Redundanz und Prüfsummen arbeitet. Die Grundrobustheit kommt schon vorher aus dem Abstand zwischen den Zuständen.
 
 > Digital ist zuverlässig, weil es Genauigkeit wegwirft: Störungen, die kleiner sind als der Abstand zwischen den Zuständen, verschwinden bei jedem Ablesen.
-
-## Ein Lichtsensor liefert für die Farben eines Alphabets Werte zwischen 100 und 400, und jede Einzelmessung schwankt um bis zu ±40 um ihren wahren Wert. Was folgt daraus für die Zahl der Farben? {#ad-006}
-
-- [x] Zwei Farben (Bereiche von 150) sind sicher; bei acht Farben ist jeder Bereich schmaler als das Band der Schwankung, und einzelne Messungen landen im Nachbarbereich.
-  > Genau die Rechnung, um die es geht: Eine Schwankung von ±40 braucht ein Band von 80, und 300 geteilt durch 8 ergibt Bereiche von nur 37,5. Zwei Bereiche von 150 lassen üppig Reserve. Wie viele dazwischen noch gehen, sagt nur eine Messreihe am tatsächlichen Aufbau.
-- [ ] Acht Farben sind unproblematisch, denn die Zahl 8 ist viel kleiner als die Schwankung von 40, es bleibt also Reserve.
-  > Die beiden Zahlen messen verschiedene Dinge, eine Anzahl und einen Sensorwert, und lassen sich nicht vergleichen. Vergleichen musst du die Breite eines Bereichs mit der Breite des Bands.
-- [ ] Die Schwankung spielt keine Rolle, weil der Sensor bereits Zahlen liefert; ein digitaler Wert ist richtig oder falsch, nicht ungefähr.
-  > Dass der Sensor Zahlen liefert, macht die Schwankung nicht kleiner: Sie steckt schon im Licht und in der Messung selbst. Digital heißt nicht störungsfrei.
-- [ ] Mehr als zwei Farben sind nicht sinnvoll, weil jede zusätzliche Grenze eine weitere Fehlerquelle ist und ±40 dafür zu viel Schwankung sind.
-  > Zu vorsichtig: Bei drei Bereichen ist jeder 100 breit, das Band von 80 passt also noch hinein, mit 10 Luft auf jeder Seite. Erst bei vier Bereichen von je 75 passt es nicht mehr.
-
-> Vergleiche die Breite eines Bereichs mit der Breite des Bands, also der doppelten Schwankung: Hier passen zwei und drei Farben, vier und mehr nicht.
 
 ## Ein Programm liest einen Helligkeitswert von einem Sensor und vergleicht ihn danach mit einer Schwelle. Was leistet der Vergleich `value > 250` im Sinn des Digitalisierens? {#ad-007}
 
