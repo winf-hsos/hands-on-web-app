@@ -28,8 +28,8 @@ start programs, and the AI assistant, which you work with. If this takes you a
 while, you are not behind; most people before you had never seen a terminal
 either.
 
-**Task:** Six small programs, one file each, that build on each other. Wherever
-the template says `TODO`, your code is missing.
+**Six tasks, one file each:** the programs build on each other, and the files
+are ready in your template; wherever it says `TODO`, your code is missing.
 
 | | File | What you learn |
 |---|---|---|
@@ -43,52 +43,24 @@ the template says `TODO`, your code is missing.
 There are no more building blocks than these: everything you program in the
 project is made of instructions one after the other, repeated, and under a
 condition. You run each task on its own, for example with
-`python task_3_color_cycle.py`; task 5 keeps running until you stop it with
-Ctrl+C.
+`python task_3_color_cycle.py` (on a Mac `python3`).
 
-**You find the threshold yourselves.** In task 4 you take one reading per
-Enter: in room light, with your hand over the sensor, with your phone torch
-from far away and close up. The value `c` is the brightness, and your threshold
-for task 5 goes between "covered" and "torch". If `c` sticks at 65535, the
-sensor is overloaded and you hold the torch further away.
+Below, each task has its own section with what to do, the file, a few hints to
+unfold and a sample solution you can copy or download as a file. Open the
+solution only once your own version runs or you are stuck: reading a finished
+solution is easier than writing one yourself, and only the writing is practice.
 
-**Be the receiver yourself, once:** in task 6 your program sends a sequence of
-colours, and one of you writes it down without looking at the screen; then you
-compare. The first time this works without effort. It gets interesting when you
-change exactly one thing each time: send faster, use more colours, do not
-announce the start, send the same colour twice in a row. Write down what made
-it fail each time. That list is pretty much the list of problems your program
-will have to solve in the coming challenges, and you found it yourselves.
+## Task 1: Light on
 
-**It is done** when the programs run on both devices and you make a small
-change to them while someone watches, such as "make the LED blink twice as
-fast" or "turn the condition in task 5 around". This is not a trap but the
-start of a habit that stays until the end: you can change your own code on the
-spot and know what will happen, even where parts of it were written with the
-assistant. Nothing is measured, there is no ranking and nothing to hand in, but
-without a running device you cannot even begin challenge 1.
+The LED should shine red for two seconds and then go off again.
 
-**Typical pitfalls:** the Brick Daemon is not running; without it your program
-cannot find the hardware, however correct the code is, so check it first, every
-time. On Windows Python is missing from the search path, almost always because
-of the missing tick at "Add python.exe to PATH" during installation, and on a
-Mac the commands are `python3` and `pip3`. If the Brick Viewer does not show
-the device, the problem lies before your code, not in it: cable, port, power.
+**File:** `task_1_light_on.py`
 
-**The numbers do not match:** you send `(255, 0, 60)` to the LED, and the
-sensor reports completely different values. That is correct, not a bug. Why it
-is so and what follows from it is the subject of the next phase; leave the
-question open until then.
+> [!HINT]
+> `led.set_color(red, green, blue)` sets a colour, and each of the three values lies between 0 and 255. Red therefore means full red, no green and no blue.
 
-**For the quick ones:** try different colours and note what the sensor reports
-for each, then change the distance and watch what happens to the numbers. You
-will need these notes in challenge 1 straight away.
-
-## Sample solutions
-
-For each of the six tasks there is a solution you can copy or download as a file. Open it only once your own version runs or you are stuck: reading a finished solution is easier than writing one yourself, and only the writing is practice.
-
-**Task 1:** Calling a function with values: the LED goes red, and after two seconds `led.off()` switches it off.
+> [!HINT]
+> To switch it off there is `led.off()`, which has the same effect as `led.set_color(0, 0, 0)`.
 
 > [!SOLUTION]
 > ```python static file=task_1_light_on.py
@@ -109,7 +81,18 @@ For each of the six tasks there is a solution you can copy or download as a file
 > led.off()                   # the same as led.set_color(0, 0, 0)
 > ```
 
-**Task 2:** A loop: on, wait, off, wait, five times, without writing it five times.
+## Task 2: Blink
+
+The LED should blink five times, half a second on and half a second off each
+time, without you writing the same lines five times.
+
+**File:** `task_2_blink.py`
+
+> [!HINT]
+> The template already contains `for i in range(5):`. Everything indented below it runs five times in a row, and `pass` is only a placeholder that you replace with your code.
+
+> [!HINT]
+> One round is four lines: LED on, wait, LED off, wait. `time.sleep(0.5)` waits half a second.
 
 > [!SOLUTION]
 > ```python static file=task_2_blink.py
@@ -130,7 +113,18 @@ For each of the six tasks there is a solution you can copy or download as a file
 >     time.sleep(0.5)
 > ```
 
-**Task 3:** A list of colours, gone through with a loop, with each colour taken apart into its three numbers.
+## Task 3: Colour cycle
+
+The LED should show all colours from the list `colors` one after the other,
+each for one second. First add at least two colours of your own to the list.
+
+**File:** `task_3_color_cycle.py`
+
+> [!HINT]
+> A colour is three numbers in round brackets, such as `(255, 255, 0)` for yellow, which comes from red and green together. Each colour stands on its own line and ends with a comma.
+
+> [!HINT]
+> Inside the loop, `color` holds one colour with its three numbers at a time. `r, g, b = color` takes them apart into three variables, which you hand to `led.set_color`.
 
 > [!SOLUTION]
 > ```python static file=task_3_color_cycle.py
@@ -161,7 +155,21 @@ For each of the six tasks there is a solution you can copy or download as a file
 > led.off()
 > ```
 
-**Task 4:** A function that gives four values back at once, taken apart into `r, g, b, c` and printed each time you press Enter.
+## Task 4: Measure
+
+Every time you press Enter, the program takes one reading and prints its four
+values; `q` and Enter stop it. Measure in at least four situations and change
+only one thing between two readings: in room light, with your hand over the
+sensor, with your phone torch from far away and close up. The value `c` is the
+brightness; write it down for each situation, because you need it in task 5.
+
+**File:** `task_4_measure.py`
+
+> [!HINT]
+> `sensor.read()` gives back four numbers at once, and `r, g, b, c = sensor.read()` puts them into four variables, which you print with `print`.
+
+> [!HINT]
+> If `c` sticks at 65535, the sensor is overloaded, and you hold the torch further away.
 
 > [!SOLUTION]
 > ```python static file=task_4_measure.py
@@ -183,9 +191,23 @@ For each of the six tasks there is a solution you can copy or download as a file
 >     print("r =", r, " g =", g, " b =", b, " c =", c)
 > ```
 
-**Task 5:** A condition: bright gives green, dark gives red. The threshold is only an example; yours comes from your own readings in task 4.
+## Task 5: React
+
+The program measures all the time: when it is bright, the LED shines green,
+when it is dark, it shines red. It is your first program that makes a
+decision, and it keeps running until you stop it with Ctrl+C.
+
+**File:** `task_5_react.py`
+
+> [!HINT]
+> You find the threshold yourselves, in your notes from task 4: it lies between the value `c` with the sensor covered and the one with the torch. A number from the internet or from the assistant does not fit your room.
+
+> [!HINT]
+> The decision is an `if` with an `else`: if `c` is greater than `threshold`, the LED turns green, otherwise red.
 
 > [!SOLUTION]
+> The threshold 2000 is only an example; yours comes from your own readings in task 4.
+>
 > ```python static file=task_5_react.py
 > # Challenge 0, task 5: React. A sample solution.
 > #
@@ -215,9 +237,27 @@ For each of the six tasks there is a solution you can copy or download as a file
 >     time.sleep(0.2)
 > ```
 
-**Task 6:** This task has no single right answer. This version moves everything worth changing (time on, pause, length, announcement, more colours) to the top as constants, so that each attempt is one changed number.
+## Task 6: The human as receiver
+
+Your program sends a random sequence of colours, and one of you writes it down
+without looking at the screen; then you compare. The first time this works
+without effort. It gets interesting when you change exactly one thing each
+time: send faster, use more colours, do not announce the start, send the same
+colour twice in a row. Write down what made it fail each time. That list is
+pretty much the list of problems your program will have to solve in the coming
+challenges, and you found it yourselves.
+
+**File:** `task_6_human_receiver.py`
+
+> [!HINT]
+> In the template, the time a colour stays on is in `time.sleep(1.5)`. Shorten it step by step, for example to 0.5 and then to 0.2 seconds, and watch from when on the person can no longer keep up.
+
+> [!HINT]
+> Move everything you want to change to the top of the file as variables, such as `ON_TIME = 1.5`. Then each attempt is exactly one changed number, and you keep track of what you have already tried.
 
 > [!SOLUTION]
+> This task has no single right answer. This version moves everything worth changing to the top as constants: time on, pause, length, announcement and more colours.
+>
 > ```python static file=task_6_human_receiver.py
 > # Challenge 0, task 6: The human as receiver. A sample solution.
 > #
@@ -273,6 +313,34 @@ For each of the six tasks there is a solution you can copy or download as a file
 > print()
 > print("Compare this with what was written down.")
 > ```
+
+## The acceptance test
+
+**It is done** when the programs run on both devices and you make a small
+change to them while someone watches, such as "make the LED blink twice as
+fast" or "turn the condition in task 5 around". This is not a trap but the
+start of a habit that stays until the end: you can change your own code on the
+spot and know what will happen, even where parts of it were written with the
+assistant. Nothing is measured, there is no ranking and nothing to hand in, but
+without a running device you cannot even begin challenge 1.
+
+## Pitfalls and more
+
+**Typical pitfalls:** the Brick Daemon is not running; without it your program
+cannot find the hardware, however correct the code is, so check it first, every
+time. On Windows Python is missing from the search path, almost always because
+of the missing tick at "Add python.exe to PATH" during installation, and on a
+Mac the commands are `python3` and `pip3`. If the Brick Viewer does not show
+the device, the problem lies before your code, not in it: cable, port, power.
+
+**The numbers do not match:** you send `(255, 0, 60)` to the LED, and the
+sensor reports completely different values. That is correct, not a bug. Why it
+is so and what follows from it is the subject of the next phase; leave the
+question open until then.
+
+**For the quick ones:** try different colours and note what the sensor reports
+for each, then change the distance and watch what happens to the numbers. You
+will need these notes in challenge 1 straight away.
 
 ## The demo from session 4
 

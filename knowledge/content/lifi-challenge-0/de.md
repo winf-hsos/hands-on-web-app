@@ -36,8 +36,9 @@ Terminal, in dem ihr Programme startet, und der KI-Assistent, mit dem ihr
 arbeitet. Wer dafür länger braucht, ist nicht im Rückstand; die meisten vor
 euch hatten auch noch nie ein Terminal gesehen.
 
-**Aufgabe:** Sechs kleine Programme, je eine Datei, die aufeinander aufbauen.
-Wo in der Vorlage `TODO` steht, fehlt euer Code.
+**Sechs Aufgaben, je eine Datei:** Die Programme bauen aufeinander auf, und
+die Dateien liegen fertig in eurer Vorlage; wo darin `TODO` steht, fehlt euer
+Code.
 
 | | Datei | Was ihr dabei lernt |
 |---|---|---|
@@ -50,55 +51,26 @@ Wo in der Vorlage `TODO` steht, fehlt euer Code.
 
 Mehr Bausteine gibt es nicht: Alles, was ihr im Projekt programmiert, besteht
 aus Anweisungen nacheinander, wiederholt und unter einer Bedingung. Jede
-Aufgabe startet ihr einzeln, etwa mit `python task_3_color_cycle.py`; Aufgabe 5
-läuft, bis ihr sie mit Strg+C beendet.
+Aufgabe startet ihr einzeln, etwa mit `python task_3_color_cycle.py` (auf dem
+Mac `python3`).
 
-**Den Schwellenwert findet ihr selbst.** In Aufgabe 4 nehmt ihr mit jeder
-Eingabetaste einen Messwert auf: bei Raumlicht, mit der Hand über dem Sensor,
-mit der Taschenlampe des Handys von weit weg und von nah. Der Wert `c` ist die
-Helligkeit, und euer Schwellenwert für Aufgabe 5 liegt zwischen „abgedeckt“
-und „Taschenlampe“. Bleibt `c` bei 65535 stehen, ist der Sensor übersteuert,
-und ihr haltet die Lampe weiter weg.
+Unten hat jede Aufgabe ihren eigenen Abschnitt mit der Aufgabenstellung, der
+Datei, ein paar Tipps zum Aufklappen und einer Musterlösung, die ihr kopieren
+oder als Datei herunterladen könnt. Öffnet die Lösung erst, wenn eure eigene
+Fassung läuft oder ihr festhängt: Eine fertige Lösung zu lesen fällt leichter,
+als selbst eine zu schreiben, und geübt wird nur das Schreiben.
 
-**Selbst einmal Empfänger sein:** In Aufgabe 6 sendet euer Programm eine Folge
-von Farben, und eine Person schreibt sie auf, ohne auf den Bildschirm zu
-schauen; danach vergleicht ihr. Beim ersten Mal klappt das mühelos.
-Interessant wird es, wenn ihr jedes Mal genau eine Sache ändert: schneller
-senden, mehr Farben verwenden, den Start nicht ankündigen, dieselbe Farbe
-zweimal hintereinander senden. Schreibt auf, woran es jedes Mal gescheitert
-ist. Diese Liste ist ziemlich genau die Liste der Probleme, die euer Programm
-in den nächsten Challenges lösen muss, und ihr habt sie selbst gefunden.
+## Aufgabe 1: Licht an
 
-**Geschafft ist sie,** wenn die Programme auf beiden Geräten laufen und ihr vor
-Zuschauern eine kleine Änderung daran vornehmt, etwa „lass die LED doppelt so
-schnell blinken“ oder „dreh die Bedingung in Aufgabe 5 um“. Das ist keine
-Falle, sondern der Anfang einer Gewohnheit, die bis zum Schluss bleibt: Euren
-eigenen Code könnt ihr vor Ort ändern und wisst, was dann passiert, auch wenn
-Teile davon mit dem Assistenten entstanden sind. Hier wird nichts gemessen,
-keine Rangliste geführt und nichts abgegeben, aber ohne laufendes Gerät könnt
-ihr Challenge 1 nicht einmal beginnen.
+Die LED soll zwei Sekunden lang rot leuchten und dann wieder ausgehen.
 
-**Typische Stolpersteine:** Der Brick Daemon läuft nicht; ohne ihn findet euer
-Programm die Hardware nicht, so richtig der Code auch ist, also prüft ihn
-jedes Mal zuerst. Unter Windows fehlt Python im Suchpfad, fast immer wegen des
-fehlenden Häkchens bei „Add python.exe to PATH“ während der Installation, und
-auf dem Mac heißen die Befehle `python3` und `pip3`. Zeigt der Brick Viewer das
-Gerät nicht an, liegt das Problem vor eurem Code und nicht darin: Kabel,
-Anschluss, Stromversorgung.
+**Datei:** `task_1_light_on.py`
 
-**Die Zahlen passen nicht:** Ihr schickt der LED `(255, 0, 60)`, und der Sensor
-meldet ganz andere Werte. Das ist richtig und kein Fehler. Warum das so ist und
-was daraus folgt, ist Thema der nächsten Phase; lasst die Frage bis dahin offen.
+> [!HINT]
+> `led.set_color(rot, grün, blau)` setzt eine Farbe, und jeder der drei Werte liegt zwischen 0 und 255. Rot heißt also voller Rotanteil, kein Grün und kein Blau.
 
-**Für Schnelle:** Probiert verschiedene Farben aus und notiert, was der Sensor
-jeweils meldet, dann verändert den Abstand und beobachtet, was mit den Zahlen
-passiert. Diese Notizen braucht ihr in Challenge 1 sofort.
-
-## Musterlösungen
-
-Zu jeder der sechs Aufgaben gibt es eine Lösung, die ihr kopieren oder als Datei herunterladen könnt. Öffnet sie erst, wenn eure eigene Fassung läuft oder ihr festhängt: Eine fertige Lösung zu lesen fällt leichter, als selbst eine zu schreiben, und geübt wird nur das Schreiben.
-
-**Aufgabe 1:** Eine Funktion mit Werten aufrufen: Die LED wird rot, und nach zwei Sekunden schaltet `led.off()` sie aus.
+> [!HINT]
+> Zum Ausschalten gibt es `led.off()`, das dasselbe bewirkt wie `led.set_color(0, 0, 0)`.
 
 > [!SOLUTION]
 > ```python static file=task_1_light_on.py
@@ -119,7 +91,18 @@ Zu jeder der sechs Aufgaben gibt es eine Lösung, die ihr kopieren oder als Date
 > led.off()                   # the same as led.set_color(0, 0, 0)
 > ```
 
-**Aufgabe 2:** Eine Schleife: an, warten, aus, warten, fünfmal hintereinander, ohne es fünfmal hinzuschreiben.
+## Aufgabe 2: Blinken
+
+Die LED soll fünfmal blinken, jeweils eine halbe Sekunde an und eine halbe
+Sekunde aus, ohne dass ihr dieselben Zeilen fünfmal hinschreibt.
+
+**Datei:** `task_2_blink.py`
+
+> [!HINT]
+> In der Vorlage steht schon `for i in range(5):`. Alles, was darunter eingerückt steht, läuft fünfmal hintereinander, und `pass` ist nur ein Platzhalter, den ihr durch euren Code ersetzt.
+
+> [!HINT]
+> Ein Durchgang besteht aus vier Zeilen: LED an, warten, LED aus, warten. `time.sleep(0.5)` wartet eine halbe Sekunde.
 
 > [!SOLUTION]
 > ```python static file=task_2_blink.py
@@ -140,7 +123,18 @@ Zu jeder der sechs Aufgaben gibt es eine Lösung, die ihr kopieren oder als Date
 >     time.sleep(0.5)
 > ```
 
-**Aufgabe 3:** Eine Liste von Farben, die eine Schleife durchläuft und dabei jede Farbe in ihre drei Zahlen zerlegt.
+## Aufgabe 3: Farbwechsel
+
+Die LED soll alle Farben aus der Liste `colors` nacheinander zeigen, jede eine
+Sekunde lang. Ergänzt die Liste vorher um mindestens zwei eigene Farben.
+
+**Datei:** `task_3_color_cycle.py`
+
+> [!HINT]
+> Eine Farbe sind drei Zahlen in runden Klammern, etwa `(255, 255, 0)` für Gelb, das aus Rot und Grün zusammen entsteht. Jede Farbe steht in einer eigenen Zeile und endet mit einem Komma.
+
+> [!HINT]
+> In der Schleife steht in `color` jeweils eine Farbe mit ihren drei Zahlen. `r, g, b = color` zerlegt sie in drei Variablen, die ihr an `led.set_color` übergebt.
 
 > [!SOLUTION]
 > ```python static file=task_3_color_cycle.py
@@ -171,7 +165,22 @@ Zu jeder der sechs Aufgaben gibt es eine Lösung, die ihr kopieren oder als Date
 > led.off()
 > ```
 
-**Aufgabe 4:** Eine Funktion, die vier Werte auf einmal zurückgibt; sie werden in `r, g, b, c` zerlegt und bei jeder Eingabetaste ausgegeben.
+## Aufgabe 4: Messen
+
+Mit jedem Druck auf die Eingabetaste nimmt das Programm einen Messwert auf und
+gibt seine vier Werte aus; `q` und die Eingabetaste beenden es. Messt in
+mindestens vier Lagen und ändert zwischen zwei Messungen nur eine Sache: bei
+Raumlicht, mit der Hand über dem Sensor, mit der Taschenlampe des Handys von
+weit weg und von nah. Der Wert `c` ist die Helligkeit; schreibt ihn für jede
+Lage auf, denn in Aufgabe 5 braucht ihr ihn.
+
+**Datei:** `task_4_measure.py`
+
+> [!HINT]
+> `sensor.read()` gibt vier Zahlen auf einmal zurück, und `r, g, b, c = sensor.read()` legt sie in vier Variablen ab, die ihr mit `print` ausgebt.
+
+> [!HINT]
+> Bleibt `c` bei 65535 stehen, ist der Sensor übersteuert, und ihr haltet die Lampe weiter weg.
 
 > [!SOLUTION]
 > ```python static file=task_4_measure.py
@@ -193,9 +202,23 @@ Zu jeder der sechs Aufgaben gibt es eine Lösung, die ihr kopieren oder als Date
 >     print("r =", r, " g =", g, " b =", b, " c =", c)
 > ```
 
-**Aufgabe 5:** Eine Bedingung: Hell ergibt Grün, dunkel ergibt Rot. Der Schwellenwert ist nur ein Beispiel, euren nehmt ihr aus den eigenen Messungen von Aufgabe 4.
+## Aufgabe 5: Reagieren
+
+Das Programm misst fortlaufend: Ist es hell, leuchtet die LED grün, ist es
+dunkel, leuchtet sie rot. Es ist euer erstes Programm, das eine Entscheidung
+trifft, und es läuft, bis ihr es mit Strg+C beendet.
+
+**Datei:** `task_5_react.py`
+
+> [!HINT]
+> Den Schwellenwert findet ihr selbst, und zwar in euren Notizen aus Aufgabe 4: Er liegt zwischen dem Wert `c` mit abgedecktem Sensor und dem mit der Taschenlampe. Eine Zahl aus dem Internet oder vom Assistenten passt nicht zu eurem Raum.
+
+> [!HINT]
+> Die Entscheidung ist ein `if` mit einem `else`: Ist `c` größer als `threshold`, wird die LED grün, sonst rot.
 
 > [!SOLUTION]
+> Der Schwellenwert 2000 ist nur ein Beispiel; euren nehmt ihr aus den eigenen Messungen von Aufgabe 4.
+>
 > ```python static file=task_5_react.py
 > # Challenge 0, task 5: React. A sample solution.
 > #
@@ -225,9 +248,28 @@ Zu jeder der sechs Aufgaben gibt es eine Lösung, die ihr kopieren oder als Date
 >     time.sleep(0.2)
 > ```
 
-**Aufgabe 6:** Für diese Aufgabe gibt es keine einzig richtige Lösung. Diese Fassung zieht alles, was sich zu ändern lohnt (Leuchtdauer, Pause, Länge, Ankündigung, weitere Farben), als Konstanten nach oben, sodass jeder Versuch genau eine geänderte Zahl ist.
+## Aufgabe 6: Der Mensch als Empfänger
+
+Euer Programm sendet eine zufällige Folge von Farben, und eine Person schreibt
+sie auf, ohne auf den Bildschirm zu schauen; danach vergleicht ihr. Beim
+ersten Mal klappt das mühelos. Interessant wird es, wenn ihr jedes Mal genau
+eine Sache ändert: schneller senden, mehr Farben verwenden, den Start nicht
+ankündigen, dieselbe Farbe zweimal hintereinander senden. Schreibt auf, woran
+es jedes Mal gescheitert ist. Diese Liste ist ziemlich genau die Liste der
+Probleme, die euer Programm in den nächsten Challenges lösen muss, und ihr habt
+sie selbst gefunden.
+
+**Datei:** `task_6_human_receiver.py`
+
+> [!HINT]
+> Die Leuchtdauer steht in der Vorlage in `time.sleep(1.5)`. Verkürzt sie schrittweise, etwa auf 0,5 und dann auf 0,2 Sekunden, und achtet darauf, ab wann die Person nicht mehr mitkommt.
+
+> [!HINT]
+> Zieht alles, was ihr ändern wollt, als Variablen an den Anfang der Datei, etwa `ON_TIME = 1.5`. Dann ist jeder Versuch genau eine geänderte Zahl, und ihr behaltet den Überblick, was ihr schon probiert habt.
 
 > [!SOLUTION]
+> Für diese Aufgabe gibt es keine einzig richtige Lösung. Diese Fassung zieht alles, was sich zu ändern lohnt, als Konstanten an den Anfang: Leuchtdauer, Pause, Länge, Ankündigung und weitere Farben.
+>
 > ```python static file=task_6_human_receiver.py
 > # Challenge 0, task 6: The human as receiver. A sample solution.
 > #
@@ -283,6 +325,35 @@ Zu jeder der sechs Aufgaben gibt es eine Lösung, die ihr kopieren oder als Date
 > print()
 > print("Compare this with what was written down.")
 > ```
+
+## Abnahme
+
+**Geschafft ist sie,** wenn die Programme auf beiden Geräten laufen und ihr vor
+Zuschauern eine kleine Änderung daran vornehmt, etwa „lass die LED doppelt so
+schnell blinken“ oder „dreh die Bedingung in Aufgabe 5 um“. Das ist keine
+Falle, sondern der Anfang einer Gewohnheit, die bis zum Schluss bleibt: Euren
+eigenen Code könnt ihr vor Ort ändern und wisst, was dann passiert, auch wenn
+Teile davon mit dem Assistenten entstanden sind. Hier wird nichts gemessen,
+keine Rangliste geführt und nichts abgegeben, aber ohne laufendes Gerät könnt
+ihr Challenge 1 nicht einmal beginnen.
+
+## Stolpersteine und mehr
+
+**Typische Stolpersteine:** Der Brick Daemon läuft nicht; ohne ihn findet euer
+Programm die Hardware nicht, so richtig der Code auch ist, also prüft ihn
+jedes Mal zuerst. Unter Windows fehlt Python im Suchpfad, fast immer wegen des
+fehlenden Häkchens bei „Add python.exe to PATH“ während der Installation, und
+auf dem Mac heißen die Befehle `python3` und `pip3`. Zeigt der Brick Viewer das
+Gerät nicht an, liegt das Problem vor eurem Code und nicht darin: Kabel,
+Anschluss, Stromversorgung.
+
+**Die Zahlen passen nicht:** Ihr schickt der LED `(255, 0, 60)`, und der Sensor
+meldet ganz andere Werte. Das ist richtig und kein Fehler. Warum das so ist und
+was daraus folgt, ist Thema der nächsten Phase; lasst die Frage bis dahin offen.
+
+**Für Schnelle:** Probiert verschiedene Farben aus und notiert, was der Sensor
+jeweils meldet, dann verändert den Abstand und beobachtet, was mit den Zahlen
+passiert. Diese Notizen braucht ihr in Challenge 1 sofort.
 
 ## Die Demo aus Sitzung 4
 

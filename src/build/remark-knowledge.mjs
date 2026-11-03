@@ -35,7 +35,7 @@ const CALLOUT_ICONS = {
   HINT: 'lightbulb',
   SOLUTION: 'circle-check-big',
 };
-// With several hints in one text they are numbered, since each builds on the one before.
+// With several hints in one section they are numbered, since each builds on the one before.
 const NUMBERED_HINT = { de: (n) => `TIPP ${n} ANZEIGEN`, en: (n) => `SHOW HINT ${n}` };
 
 /** An icon as an element of the HTML tree, since the Markdown here may hold no raw HTML. */
@@ -119,8 +119,13 @@ function wikiLinks(tree, resolve) {
 }
 
 function callouts(tree, lang) {
-  const hints = [];
-  visit(tree, 'blockquote', (node) => {
+  // hints are counted per section, so that each task of a challenge starts at 1
+  const sections = [[]];
+  visit(tree, ['heading', 'blockquote'], (node) => {
+    if (node.type === 'heading') {
+      if (node.depth <= 2) sections.push([]);
+      return;
+    }
     const first = node.children[0];
     const text = first?.type === 'paragraph' ? first.children[0] : undefined;
     const match = text?.type === 'text' ? text.value.match(CALLOUT) : null;
@@ -132,14 +137,16 @@ function callouts(tree, lang) {
     const folded = FOLDED.has(kind);
     node.data = { hName: folded ? 'details' : 'aside', hProperties: { className: ['callout', `callout-${kind.toLowerCase()}`] } };
     const title = { type: 'text', value: CALLOUT_TITLES[lang][kind] };
-    if (kind === 'HINT') hints.push(title);
+    if (kind === 'HINT') sections.at(-1).push(title);
     node.children.unshift({
       type: 'paragraph',
       data: { hName: folded ? 'summary' : 'p', hProperties: { className: ['callout-title'] } },
       children: [iconNode(CALLOUT_ICONS[kind]), title],
     });
   });
-  if (hints.length > 1) hints.forEach((title, i) => (title.value = NUMBERED_HINT[lang](i + 1)));
+  for (const hints of sections) {
+    if (hints.length > 1) hints.forEach((title, i) => (title.value = NUMBERED_HINT[lang](i + 1)));
+  }
 }
 
 // ```python and ```r blocks are highlighted and become runnable

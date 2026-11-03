@@ -32,6 +32,17 @@ test('hints and solutions fold away, and several hints are numbered', () => {
   assert.match(render('> [!HINT]\n> one\n', 'en'), /<\/svg>SHOW A HINT<\/summary>/);
 });
 
+test('hints are numbered within their section, so that each task starts at 1', () => {
+  const html = render('## Aufgabe 1\n\n> [!HINT]\n> a\n\n> [!HINT]\n> b\n\n## Aufgabe 2\n\n> [!HINT]\n> c\n\n## Aufgabe 3\n\n> [!HINT]\n> d\n\n> [!HINT]\n> e\n');
+  assert.deepEqual(html.match(/<\/svg>[^<]*<\/summary>/g), [
+    '</svg>TIPP 1 ANZEIGEN</summary>',
+    '</svg>TIPP 2 ANZEIGEN</summary>',
+    '</svg>TIPP ANZEIGEN</summary>',
+    '</svg>TIPP 1 ANZEIGEN</summary>',
+    '</svg>TIPP 2 ANZEIGEN</summary>',
+  ]);
+});
+
 test('every callout title stands in capitals after an icon of its kind', () => {
   const html = render('> [!NOTE]\n> a\n\n> [!TIP]\n> b\n\n> [!IMPORTANT]\n> c\n\n> [!WARNING]\n> d\n\n> [!CAUTION]\n> e\n');
   assert.deepEqual(html.match(/<\/svg>[^<]*<\/p>/g), ['</svg>HINWEIS</p>', '</svg>TIPP</p>', '</svg>WICHTIG</p>', '</svg>ACHTUNG</p>', '</svg>VORSICHT</p>']);
