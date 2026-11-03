@@ -14,7 +14,7 @@ summary: >-
 sections:
   - project: monty-hall
   - title: { de: "Erkunden und fragen", en: "Exploring and asking" }
-    items: [exploratory-data-analysis-slides, analytic-questions, leek-peng-what-is-the-question]
+    items: [exploratory-data-analysis-slides, analytic-questions, leek-peng-what-is-the-question, milk-survey-compact]
   - path: getting-started-with-r
   - path: data-transformation-with-r
   - path: data-visualisation-with-r
