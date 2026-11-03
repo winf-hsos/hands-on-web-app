@@ -763,6 +763,15 @@ A challenge item has the usual fields of an item but no `duration`, since it
 runs over weeks; its page shows the project and phase it belongs to. The build
 checks that `challenge` names an item of type `challenge`.
 
+The text of a challenge is structured by its tasks (Nicolas, 2026-11-03).
+After the introduction (goal, what is new, an overview of the tasks) and any
+setup the tasks share, each task has a section of its own, `## Aufgabe N: …`
+(`## Task N: …`), always in this order: what to do, the file the solution is
+written in (`**Datei:**`, also when there is none), hints as `> [!HINT]`, and
+the sample solution as `> [!SOLUTION]` with a `file=` code block, as long as
+one is published. Hints are numbered within their section. The acceptance
+test, pitfalls and anything extra follow after the last task.
+
 The older form writes challenges into the project text as `### … {#id}` below
 their phase and lists them under `challenges:` with optional `items`; the page
 shows them folded inside their phase. No project uses it any more since the
