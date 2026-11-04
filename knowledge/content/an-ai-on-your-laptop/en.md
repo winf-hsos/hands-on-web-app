@@ -20,7 +20,7 @@ relations:
   see_also: [open-models, next-token-prediction]
 modules: [aai]
 areas: [ai]
-status: draft
+status: published
 updated: 2026-11-04
 ---
 

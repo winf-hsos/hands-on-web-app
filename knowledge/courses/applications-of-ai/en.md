@@ -14,7 +14,7 @@ sections:
     items: [a-brief-history-of-ai, ai-agents, be-the-agent]
   - title: { de: Sprachmodelle, en: Language models }
     items: [open-models, next-token-prediction]
-status: draft
+status: published
 updated: 2026-11-04
 ---
 
