@@ -4,15 +4,8 @@ summary: >-
   One of sixteen faces is the secret, and you may only ask yes-or-no
   questions: every answer shrinks the crowd, and the game measures by how
   much in bits.
-objectives:
-  intro: "With this demo you measure the information of your own questions, and afterwards you can:"
-  goals:
-    - "work out the information of an answer as I = H₁ − H₂ from the number of faces before and after"
-    - "count before a question how well it splits the faces left, and estimate its expected value from that"
-    - "argue why halving questions find any of the sixteen faces in four questions"
-    - "explain why guessing is mostly the worst question, even though it sometimes hits at once"
 translation_of: de
-based_on: 2026-11-03
+based_on: 2026-11-04
 ---
 
 **Goal:** Experience that an answer brings as much information as it rules

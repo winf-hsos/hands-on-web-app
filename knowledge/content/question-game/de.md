@@ -6,13 +6,6 @@ summary: >-
   Eines von sechzehn Gesichtern ist gesucht, und du darfst nur Ja-Nein-Fragen
   stellen: Jede Antwort verkleinert die Menge, und um wie viel, misst das
   Spiel in Bit.
-objectives:
-  intro: "An diesem Demonstrator misst du die Information deiner eigenen Fragen und kannst danach:"
-  goals:
-    - "die Information einer Antwort als I = H₁ − H₂ aus der Zahl der Gesichter vorher und nachher ausrechnen"
-    - "vor einer Frage abzählen, wie gut sie die übrigen Gesichter teilt, und daraus ihren Erwartungswert abschätzen"
-    - "begründen, warum halbierende Fragen jedes der sechzehn Gesichter in vier Fragen finden"
-    - "erklären, warum Raten meistens die schlechteste Frage ist, auch wenn es manchmal sofort trifft"
 level: 1
 duration: 10
 topics: [representing-information]
@@ -20,7 +13,7 @@ modules: [dup]
 relations:
   example_of: [symbols-and-information]
 status: published
-updated: 2026-11-03
+updated: 2026-11-04
 ---
 
 **Ziel:** Du erlebst, dass eine Antwort so viel Information bringt, wie sie

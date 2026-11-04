@@ -3332,6 +3332,61 @@ details.callout[open] > summary::before {
   margin-top: 0.75rem;
 }
 
+/* Material inside a lesson (build/embed.mjs): a quiz or a demo in a quiet
+   frame, named above with its type and a link to its own page, so that the
+   lesson reads on around it; other material is its row. */
+.embedded {
+  max-width: var(--measure);
+  margin: 0.5rem 0 2rem;
+}
+
+.embedded-quiz,
+.embedded-demo {
+  padding: 1rem 1.25rem 0.25rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.75rem;
+}
+
+.embedded-slides {
+  max-width: none;
+}
+
+.embedded-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.5rem;
+  margin: 0 0 0.75rem;
+  color: var(--quiet);
+  font-size: 0.875rem;
+}
+
+.embedded-head .type-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.embedded-head a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-underline-offset: 0.2em;
+  transition: color 0.2s;
+}
+
+.embedded-head a:hover {
+  color: var(--accent-ink);
+}
+
+.embedded .prose {
+  max-width: none;
+}
+
+.row-material {
+  color: var(--quiet);
+}
+
 /* A video sits in the same frame as a deck; until it is played, the frame
    holds only a play button and the note that YouTube is asked then. */
 .video {

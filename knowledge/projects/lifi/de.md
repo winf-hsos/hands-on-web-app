@@ -22,8 +22,6 @@ phases:
       - photo-digitiser
       - audio-digitiser
       - symbols-and-information
-      - symbols-and-information-quiz
-      - question-game
       - signal-and-noise-slides
       - signal-and-noise
       - signal-and-noise-quiz

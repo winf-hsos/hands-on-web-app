@@ -6,14 +6,6 @@ summary: >-
   Sixteen questions on symbols, alphabets and agreements, on the bit as a
   measure of information, on halving questions and on what a larger alphabet
   buys. Every answer comes with its reason.
-objectives:
-  intro: "This quiz lets you check in sixteen questions whether you can:"
-  goals:
-    - "explain a symbol as an agreed, distinguishable state and tell an alphabet from a code"
-    - "explain why perfect reception can still give nonsense"
-    - "work out with log₂(N) how many bits a symbol carries and how many yes/no questions a choice needs"
-    - "compare a halving question with a lopsided one by its expected value"
-    - "work out what a larger alphabet saves in time and why two symbols in groups are enough for any message"
 level: 1
 duration: 20
 topics: [representing-information, transferring-information]
@@ -21,7 +13,7 @@ modules: [dup]
 relations:
   checks: [symbols-and-information, bit]
 status: published
-updated: 2026-11-03
+updated: 2026-11-04
 ---
 
 ## What is a symbol in the sense of information theory? {#si-001}

@@ -8,6 +8,7 @@ import { splitProject } from './project.mjs';
 import { exerciseScript } from './exercise-script.mjs';
 import { quizAnki, quizCsv } from './quiz-export.mjs';
 import { hasType } from './types.mjs';
+import { splitEmbeds, embedsIn } from './embed.mjs';
 import { inlineCode, plainText } from './html.mjs';
 
 // Courses are called modules on the site (Nicolas, 2026-11-01) and live under
@@ -76,11 +77,12 @@ export function createSite({ vocabulary, sections, hidden = new Map() }, area, b
   };
 
   /** Markdown written in `textLang`, with links pointing to pages in `lang`. */
-  const markdown = (md, lang, textLang = lang, quiz = false, sourceMap = false) =>
+  const markdown = (md, lang, textLang = lang, quiz = false, sourceMap = false, sourceOffset = 0) =>
     renderMarkdown(md, {
       lang: textLang,
       quiz,
       sourceMap,
+      sourceOffset,
       resolve: (id) => {
         const target = byId.get(id);
         if (target) return { url: docUrl(target, lang), title: localize(target, lang).titleSource };
@@ -97,6 +99,43 @@ export function createSite({ vocabulary, sections, hidden = new Map() }, area, b
     if (!rendered.has(key)) rendered.set(key, markdown(text.file.body, lang, text.lang, hasType(doc.lead, 'quiz'), base !== ''));
     return rendered.get(key);
   }
+
+  /**
+   * A text with embedded material (build/embed.mjs) in its parts: { html } for
+   * text, rendered with its place in the source on the site with drafts, and
+   * { embed } for the material, a doc. Material that is a draft on the
+   * published site is left out, as a link to it would be.
+   */
+  function parts(doc, lang) {
+    const text = localize(doc, lang);
+    const key = `parts/${doc.id}/${text.lang}/${lang}`;
+    if (!rendered.has(key)) {
+      const quiz = hasType(doc.lead, 'quiz');
+      rendered.set(
+        key,
+        splitEmbeds(text.file.body)
+          .map((p) => (p.embed ? { embed: byId.get(p.embed) } : { html: markdown(p.md, lang, text.lang, quiz, base !== '', p.offset) }))
+          .filter((p) => p.html !== undefined || p.embed),
+      );
+    }
+    return rendered.get(key);
+  }
+
+  /** The text of embedded material, without places in the source: those would point into another file. */
+  function embedBody(doc, lang) {
+    const text = localize(doc, lang);
+    const key = `embedded/${doc.id}/${text.lang}/${lang}`;
+    if (!rendered.has(key)) rendered.set(key, markdown(text.file.body, lang, text.lang, hasType(doc.lead, 'quiz')));
+    return rendered.get(key);
+  }
+
+  // Which lesson holds which material, from the embed lines of the lead
+  // texts; validate.mjs checks that every translation embeds the same.
+  const embedded = new Map(sections.content.map((d) => [d.id, embedsIn(d.files[d.leadLang].body)]));
+  /** The material a doc embeds, as docs on this site. */
+  const embedsOf = (doc) => (embedded.get(doc.id) ?? []).map((id) => item.get(id)).filter(Boolean);
+  /** The lessons on this site that embed an item. */
+  const lessonsOf = (id) => sections.content.filter((d) => embedded.get(d.id)?.includes(id) && item.has(d.id));
 
   /** Outgoing relations and the computed inverse ones. */
   function relations(doc, lang) {
@@ -177,6 +216,10 @@ export function createSite({ vocabulary, sections, hidden = new Map() }, area, b
     url: docUrl,
     localize,
     body,
+    parts,
+    embedBody,
+    embedsOf,
+    lessonsOf,
     markdown,
     script,
     quizFiles,

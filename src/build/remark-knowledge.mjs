@@ -60,7 +60,7 @@ const TABLE_LABELS = {
   en: { clear: 'Clear entries', confirm: 'Clear all entries in this table?' },
 };
 
-export function remarkKnowledge({ lang, quiz: isQuiz = false, resolve, sourceMap = false }) {
+export function remarkKnowledge({ lang, quiz: isQuiz = false, resolve, sourceMap = false, sourceOffset = 0 }) {
   return (tree) => {
     wikiLinks(tree, resolve);
     callouts(tree, lang);
@@ -72,7 +72,7 @@ export function remarkKnowledge({ lang, quiz: isQuiz = false, resolve, sourceMap
     photos(tree);
     if (isQuiz) quiz(tree);
     else headingIds(tree);
-    if (sourceMap) markSources(tree);
+    if (sourceMap) markSources(tree, sourceOffset);
   };
 }
 
@@ -80,13 +80,14 @@ export function remarkKnowledge({ lang, quiz: isQuiz = false, resolve, sourceMap
 // (character offsets), so that the editor can open exactly that passage when
 // it is clicked on the page (src/editor/ui/inline.js). Only on the site with
 // drafts. A block without a position of its own, a quiz question, spans its
-// children.
-function markSources(tree) {
+// children. A part of a lesson between two embedded items is rendered on its
+// own (build/embed.mjs); `offset` is where it starts in the whole body.
+function markSources(tree, offset = 0) {
   for (const node of tree.children) {
     const start = node.position?.start.offset ?? node.children?.[0]?.position?.start.offset;
     const end = node.position?.end.offset ?? node.children?.at(-1)?.position?.end.offset;
     if (start === undefined || end === undefined) continue;
-    node.data = { ...node.data, hProperties: { ...node.data?.hProperties, dataSrc: `${start}-${end}` } };
+    node.data = { ...node.data, hProperties: { ...node.data?.hProperties, dataSrc: `${start + offset}-${end + offset}` } };
   }
 }
 

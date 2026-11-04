@@ -1,5 +1,5 @@
 // Drawings of "Symbols and information" (docs/figures.md), taken from the
-// item's own deck (slides/deck.js) and laid out for the width of the text:
+// deck symbols-and-information-slides and laid out for the width of the text:
 // 1600 units, sizes 32 and 48 only, and as still pictures in their final state.
 (function () {
   const d = window.draw;

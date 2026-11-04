@@ -4,16 +4,8 @@ summary: >-
   Sechzehn Fragen zu Symbolen, Alphabeten und Vereinbarungen, zum Bit als Maß
   der Information, zu halbierenden Fragen und dazu, was ein größeres Alphabet
   einbringt. Jede Antwort kommt mit ihrer Begründung.
-objectives:
-  intro: "Mit diesem Quiz prüfst du in sechzehn Fragen, ob du Folgendes kannst:"
-  goals:
-    - "ein Symbol als vereinbarten, unterscheidbaren Zustand erklären und ein Alphabet von einem Code unterscheiden"
-    - "erklären, warum auch perfekter Empfang Unsinn ergeben kann"
-    - "mit log₂(N) ausrechnen, wie viele Bit ein Symbol trägt und wie viele Ja-Nein-Fragen eine Auswahl braucht"
-    - "eine halbierende Frage mit einer schiefen über ihren Erwartungswert vergleichen"
-    - "ausrechnen, wie viel Zeit ein größeres Alphabet spart, und warum zwei Symbole in Gruppen für jede Nachricht genügen"
 translation_of: en
-based_on: 2026-11-03
+based_on: 2026-11-04
 ---
 
 ## Was ist im Sinn der Informationstheorie ein Symbol? {#si-001}

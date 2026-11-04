@@ -32,11 +32,17 @@ const page = document.querySelector('[data-item-page]');
 if (page) {
   const id = page.dataset.itemPage;
   update(id, (p) => (p.seen ??= today()));
-  document.querySelector('[data-mark-done]')?.addEventListener('click', () =>
+  const button = document.querySelector('[data-mark-done]');
+  button?.addEventListener('click', () => {
+    let done;
     update(id, (p) => {
       p.done = p.done ? undefined : today();
-    }),
-  );
+      done = !!p.done;
+    });
+    // A lesson marks its material with it, all but its quizzes, which count
+    // by being answered; taking the mark back leaves the material as it is.
+    if (done) for (const other of button.dataset.markAlso?.split(' ').filter(Boolean) ?? []) update(other, (p) => (p.done ??= today()));
+  });
 }
 
 // The green check of a done row in a path, course or list is a button: it

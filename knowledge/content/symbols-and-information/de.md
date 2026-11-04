@@ -14,8 +14,10 @@ objectives:
     - "erklären, warum der Morsecode dem häufigen Buchstaben e den kürzesten Code gibt"
     - "abwägen, warum mehr Farben mehr Bit je Symbol bringen, aber enger zusammenrücken, sodass nur eine Messreihe die Größe des eigenen Alphabets festlegen kann"
 translation_of: en
-based_on: 2026-11-03
+based_on: 2026-11-04
 ---
+
+![Folien: Symbole und Information](item:symbols-and-information-slides)
 
 Nordatlantik, 1942: Funkverkehr würde den Geleitzug verraten, also halten die
 Schiffe Funkstille und sprechen trotzdem miteinander, mit einer Lampe und einer
@@ -167,9 +169,11 @@ Antwort den größten sicheren Gewinn, und die schiefe Frage lohnt sich erst gan
 am Ende, wenn nur noch zwei Möglichkeiten übrig sind. Die zweite Zeile zeigt
 außerdem, dass eine Frage, deren Ausgang fast sicher ist, kaum Information
 trägt, wie lang ihre Antwort auch sein mag, und genau auf dieser Beobachtung
-beruht die Kompression. Im [[question-game]] misst du das an sechzehn
+beruht die Kompression. Im Fragespiel hier misst du das an sechzehn
 Gesichtern selbst: Nach jeder Frage steht dort, wie viel Bit die Antwort
 gebracht hat und wie viel die Frage im Mittel wert war.
+
+![Fragespiel](item:question-game)
 
 ## Ein Bit und zwei Formeln
 
@@ -280,6 +284,8 @@ bedeutet, und wie viel es bedeutet, könnt ihr zählen.
   einzelnen Punkt.
 - Mehr Farben rücken enger zusammen, deshalb legt nur eine Messreihe die Größe
   des eigenen Alphabets fest.
+
+![Quiz: Symbole und Information](item:symbols-and-information-quiz)
 
 ## Zum Weiterlesen
 

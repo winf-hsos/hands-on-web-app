@@ -155,7 +155,8 @@ warning, not an error, so that a new draft can be saved first; an item of type
 since its questions already say what it checks (Nicolas, 2026-11-02), and it
 needs no `objectives`.
 
-**Several types** (Nicolas, 2026-11-02). An item may have more than one
+**Several types** (Nicolas, 2026-11-02; being undone since 2026-11-04, when
+lessons began to embed their slides as items of their own, section 6a). An item may have more than one
 type, written as a list: `type: [lesson, slides]`. The item is found under
 each of them in the list of items, its rows and its page name all of them
 ("Lektion · Folien"), and it takes the icon, the group in the list and the
@@ -455,6 +456,41 @@ The body is plain Markdown with a few conventions:
   rule from the concept that nothing on the site comes from anywhere but the
   knowledge base.
 
+## 6a. Lessons and their material
+
+A lesson holds its material: slides, quizzes, demos and anything else that
+belongs to it, each still an item of its own (Nicolas, 2026-11-04). The lesson
+names a piece where its text talks about it, on a line of its own:
+
+```markdown
+![Fragespiel](item:question-game)
+```
+
+The text in brackets is for whoever reads the Markdown; the page shows the
+material as its type wants it (`src/build/embed.mjs`, `embedBlock` in
+`src/templates/pages.mjs`):
+
+| Type | In the lesson |
+|---|---|
+| `slides` | the player, as on the slides' own page; by convention the first line of the lesson |
+| `quiz` | the quiz to answer right there, counted for the quiz itself |
+| `demo` | the demonstrator with its instructions, without its **Ziel:**/**Goal:** paragraph |
+| anything else | its row, a link to its own page |
+
+These lines are the one place that says which material a lesson holds. From
+them the material's page says "Part of the lesson …", and a lesson's row in a
+list names what it holds ("Folien · Demo · Quiz"). **Only lessons have
+objectives**; experiments, challenges and exercises keep theirs and may also
+stand alone, while other material inside a lesson has none, and validation
+warns when it does. Marking a lesson done marks its material done as well,
+except its quizzes, which count by being answered. Modules, projects and paths
+list the lesson, not its material.
+
+Validation checks that an embedded id exists, is not the lesson itself and not
+another lesson, and that every language embeds the same material in the same
+order. A line inside fenced code, or with text around it, stays text. On the
+published site an embedded draft is left out, as a link to it would be.
+
 ## 7. Quizzes
 
 A quiz is a content item of type `quiz`. Its questions are written in the body,
@@ -709,7 +745,10 @@ run after the build, renders the figures of the deck `why-ten` with stagekit's
 into the `media/` folder of the lesson that uses it as `<name>.<lang>.svg`; a
 change to a drawing in `deck.js` thus reaches the lesson by running it again.
 
-**Slides to a concept carry its article** (Nicolas, 2026-11-02). Such an item
+**Slides to a concept carry its article** (Nicolas, 2026-11-02; replaced on
+2026-11-04 by a lesson that embeds its slides, section 6a, first for
+`symbols-and-information` and its `symbols-and-information-slides`; the items
+below are converted one by one). Such an item
 has the types `[lesson, slides]`, and its `de.md` and `en.md` hold, below
 title and summary, the article on the concept, which the page shows after the
 deck. `problem-decomposition` was the first, `input-processing-output-slides`

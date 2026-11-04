@@ -13,6 +13,7 @@ import { youtubeId } from './youtube.mjs';
 import { figureFile, figureRefs, figureRules, FIGURE_FILE } from './figures.mjs';
 import { shellScenario } from './remark-knowledge.mjs';
 import { scenarioProblems } from '../client/shell-model.js';
+import { embedsIn } from './embed.mjs';
 
 const ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
@@ -290,6 +291,7 @@ export function referencesOf(doc) {
   for (const s of lead.samples ?? []) add(s, 'samples');
   for (const file of Object.values(doc.files)) {
     for (const m of file.body.matchAll(/\[\[([^\]|]+)(?:\|[^\]]+)?\]\]/g)) add(m[1], `${file.lang}.md [[link]]`);
+    for (const id of embedsIn(file.body)) add(id, `${file.lang}.md ![…](item:${id})`);
   }
   return refs;
 }
@@ -496,6 +498,24 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
     }
   }
 
+  // Material embedded in a lesson (build/embed.mjs): an item that exists, not
+  // the lesson itself and not a lesson, and the same in every language.
+  const embedding = new Map();
+  for (const doc of content) {
+    const lead = embedsIn(doc.files[doc.leadLang].body);
+    if (lead.length) embedding.set(doc.id, lead);
+    for (const file of Object.values(doc.files)) {
+      const ids = embedsIn(file.body);
+      for (const id of ids) {
+        if (!items.has(id)) errors.push(`${file.path}: embeds unknown item ![…](item:${id})`);
+        else if (id === doc.id) errors.push(`${file.path}: embeds itself`);
+        else if (hasType(items.get(id).lead, 'lesson')) errors.push(`${file.path}: embeds the lesson "${id}"; a lesson holds material, not other lessons`);
+      }
+      if (file !== doc.files[doc.leadLang] && ids.join(' ') !== lead.join(' '))
+        errors.push(`${file.path}: embeds ${ids.join(', ') || 'nothing'}, its lead file ${lead.join(', ') || 'nothing'}; every language embeds the same material in the same order`);
+    }
+  }
+
   // No cycle in `requires`, otherwise no item of the cycle could be read first.
   const state = new Map();
   const visit = (current, trail) => {
@@ -618,8 +638,13 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
       if (!file) warnings.push(`${doc.section}/${doc.id}: no ${lang} version`);
       else if (file.data.based_on && file.data.based_on < doc.lead.updated)
         warnings.push(`${file.path}: translation is older than its lead file`);
-      // an info page introduces no concept, so it need not say what is learnt
-      if (file && doc.section === 'content' && !file.data.objectives && !hasType(doc.lead, 'info') && !hasType(doc.lead, 'quiz')) warnings.push(`${file.path}: no objectives (what you learn)`);
+      // an info page introduces no concept, so it need not say what is learnt;
+      // material inside a lesson has the lesson's objectives (Nicolas, 2026-11-04)
+      const inLesson = [...embedding.values()].some((ids) => ids.includes(doc.id));
+      if (file && doc.section === 'content' && !file.data.objectives && !inLesson && !['info', 'quiz', 'slides'].some((type) => hasType(doc.lead, type)))
+        warnings.push(`${file.path}: no objectives (what you learn)`);
+      if (file?.data.objectives && inLesson && !['experiment', 'challenge', 'exercise'].some((type) => hasType(doc.lead, type)))
+        warnings.push(`${file.path}: has objectives, but is material of a lesson, whose objectives count`);
     }
   }
   // A demo page says above the demonstrator what it is for and how to use it,

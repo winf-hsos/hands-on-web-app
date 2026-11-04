@@ -38,6 +38,31 @@ export const typeIcon = (site, item) => raw(iconSvg(site.vocabulary.types[typesO
 /** The names of an item's types, "Lektion · Folien" for two. */
 export const typeLabel = (site, item, lang) => typesOf(item.lead).map((type) => site.vocabulary.types[type][lang]).join(' · ');
 
+/**
+ * What a lesson holds, for its row: "Folien · Quiz · 2 Demos", from the
+ * material it embeds (build/embed.mjs), so that a list of lessons still shows
+ * where the slides and the quizzes are.
+ */
+export function materialMarks(site, item, lang) {
+  const counts = new Map();
+  for (const m of site.embedsOf?.(item) ?? []) {
+    const type = typesOf(m.lead)[0];
+    counts.set(type, (counts.get(type) ?? 0) + 1);
+  }
+  if (!counts.size) return '';
+  const label = (type, n) => {
+    if (n === 1) return site.vocabulary.types[type][lang];
+    let many;
+    try {
+      many = t(lang, `material_many_${type}`);
+    } catch {
+      many = site.vocabulary.types[type][lang];
+    }
+    return `${n} ${many}`;
+  };
+  return html`<span class="row-material">${[...counts].map(([type, n]) => label(type, n)).join(' · ')}</span>`;
+}
+
 /** "Draft" beside a title, only on the site with drafts. */
 export const draftTag = (site, doc, lang) => site.drafts && doc.lead.status === 'draft' && html`<span class="draft-tag">${t(lang, 'draft')}</span>`;
 
@@ -56,6 +81,7 @@ export function itemRow(site, item, lang, { optional = false, summary = true, to
         <span class="row-title" style="view-transition-name: t-${item.id}" lang="${text.lang}">${text.titleHtml}</span>
         <span class="row-meta">
           <span>${typeLabel(site, item, lang)}</span>
+          ${materialMarks(site, item, lang)}
           ${lead.duration && html`<span>${lead.duration} ${t(lang, 'minutes')}</span>`}
           ${optional && html`<span class="row-optional">${t(lang, 'optional')}</span>`}
           ${draftTag(site, item, lang)}

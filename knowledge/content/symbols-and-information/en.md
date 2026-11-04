@@ -1,7 +1,6 @@
 ---
-type: [lesson, slides]
+type: lesson
 code: 3134
-formerly: [symbols-and-information-slides]
 title: Symbols and information
 summary: >-
   How distinguishable states become symbols through an agreement, how halving
@@ -16,7 +15,6 @@ objectives:
     - "work out how many bits a symbol from N equally likely colours carries, how this changes the transmission time of a file, and why two symbols in groups are still enough for any message"
     - "explain why Morse code gives the frequent letter e the shortest code"
     - "weigh why more colours bring more bits per symbol but move closer together, so that only a measurement series can settle the size of your own alphabet"
-deck_lang: en
 level: 1
 duration: 25
 topics: [representing-information, transferring-information]
@@ -25,8 +23,10 @@ relations:
   requires: [analog-and-digital]
   see_also: [claude-shannon]
 status: published
-updated: 2026-11-03
+updated: 2026-11-04
 ---
+
+![Slides: Symbols and information](item:symbols-and-information-slides)
 
 North Atlantic, 1942: radio traffic would give the convoy away, so the ships
 keep radio silence and talk to each other anyway, with a lamp and a shutter in
@@ -173,9 +173,11 @@ gain out of every answer, and the lopsided question pays off only at the very
 end, when just two possibilities are left. The second row also shows that a
 question whose outcome is nearly certain carries almost no information,
 however long its answer, and compression rests on exactly that observation.
-In the [[question-game]] you measure this yourself on sixteen faces: after
+In the question game here you measure this yourself on sixteen faces: after
 every question it shows how many bits the answer gained and what the question
 was worth on average.
+
+![Question game](item:question-game)
 
 ## One bit, and two formulas
 
@@ -281,6 +283,8 @@ means, and how much it means, you can count.
   single dot.
 - More colours move closer together, so only a measurement series settles the
   size of your own alphabet.
+
+![Quiz: Symbols and information](item:symbols-and-information-quiz)
 
 ## Further reading
 

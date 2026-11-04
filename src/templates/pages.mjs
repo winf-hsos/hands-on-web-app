@@ -262,15 +262,25 @@ export function item(site, doc, lang) {
   const link = (target) => html`<a href="${site.url(target, lang)}">${site.localize(target, lang).titleHtml}</a>`;
   const isQuiz = hasType(lead, 'quiz');
   const v = site.vocabulary;
-  const body = site.body(doc, lang);
-  const toc = tocBlock(body, lang);
+  // a lesson's own text in parts, with its material between them (build/embed.mjs)
+  const parts = site.parts(doc, lang);
+  const embeds = parts.filter((p) => p.embed).map((p) => p.embed);
+  const own = parts.filter((p) => p.html !== undefined).map((p) => p.html).join('');
+  const content = embeds.length
+    ? parts.map((p) => (p.embed ? embedBlock(site, p.embed, lang) : html`<div class="prose" lang="${text.lang}">${raw(p.html)}</div>`))
+    : html`<div class="prose" lang="${text.lang}" ${isQuiz && quizLabels(lang)}>${raw(own)}</div>`;
+  // everything on the page, for the scripts it needs
+  const body = embeds.length ? String(html`${content}`) : own;
+  const toc = tocBlock(own, lang);
+  const lessons = site.lessonsOf(doc.id);
+  const quizzes = embeds.filter((m) => hasType(m.lead, 'quiz'));
   const back = lead.project ? 'projects' : 'items';
   return {
     path: site.url(doc, lang),
     title: text.title,
     description: text.summary,
     // an item of one project is not in the list of items
-    scripts: [isQuiz && 'quiz', toc && 'toc', hasType(lead, 'video') && 'video', ...scriptsFor(body)].filter(Boolean),
+    scripts: [(isQuiz || quizzes.length > 0) && 'quiz', toc && 'toc', hasType(lead, 'video') && 'video', ...scriptsFor(body)].filter(Boolean),
     // the item's own drawings, next to its page (docs/figures.md)
     figures: body.includes('data-figure') && `figures.js?v=${figureFile(doc)?.hash}`,
     content: html`
@@ -282,6 +292,7 @@ export function item(site, doc, lang) {
           <p class="lead" lang="${text.lang}"${editable(site, 'summary')}>${text.summary}</p>
           ${topicTags(site, lead.topics, lang)}
           ${before.length > 0 && html`<p class="before"${editable(site, 'relations')}>${t(lang, 'before')} ${before.map((b, i) => html`${i > 0 && ', '}${link(b)}`)}</p>`}
+          ${lessons.length > 0 && html`<p class="before in-lessons">${t(lang, lessons.length === 1 ? 'in_lessons' : 'in_lessons_many')} ${lessons.map((l, i) => html`${i > 0 && ', '}${link(l)}`)}</p>`}
         </header>
         ${text.missing && html`<p class="notice">${t(lang, 'missing_translation')}</p>`}
         ${text.stale && html`<p class="notice">${t(lang, 'stale_translation')}</p>`}
@@ -290,9 +301,7 @@ export function item(site, doc, lang) {
         ${hasType(lead, 'slides') && slidesBlock(site, doc, lang)}
         ${hasType(lead, 'dataset') && datasetBlock(doc, lang)}
         ${hasType(lead, 'video') && videoBlock(site, doc, lang)}
-        <div class="prose" lang="${text.lang}" ${isQuiz && quizLabels(lang)}>
-          ${raw(body)}
-        </div>
+        ${content}
         ${isQuiz && quizFilesBlock(site, doc, lang)}
         ${((lead.url && !hasType(lead, 'video')) || lead.buy) &&
         html`<p class="links">
@@ -300,7 +309,7 @@ export function item(site, doc, lang) {
           ${lead.buy && html`<a class="button button-quiet" href="${lead.buy}" rel="noopener">${t(lang, 'buy_at')} ${new URL(lead.buy).host.replace(/^www\./, '')}</a>`}
         </p>`}
         <div class="finish">
-          <button type="button" class="button done-toggle" data-mark-done aria-pressed="false" data-open="${t(lang, 'mark_done')}" data-done="${t(lang, 'marked_done')}">
+          <button type="button" class="button done-toggle" data-mark-done aria-pressed="false" data-open="${t(lang, 'mark_done')}" data-done="${t(lang, 'marked_done')}"${embeds.length > quizzes.length && html` data-mark-also="${embeds.filter((m) => !hasType(m.lead, 'quiz')).map((m) => m.id).join(' ')}"`}>
             ${icons.check}<span>${t(lang, 'mark_done')}</span>
           </button>
           ${backButton(site, lang, back)}
@@ -349,6 +358,39 @@ export function item(site, doc, lang) {
     `,
   };
 }
+
+/**
+ * Material inside a lesson, as its type wants it (Konzept.md, "Lektionen und
+ * Material"): slides as the player, a quiz to answer right there and counted
+ * for the quiz, a demo as the widget without its goal (the lesson says what
+ * it is for), and anything else as its row, a link to its own page. Every
+ * embed but the slides names what it is and links to its own page.
+ */
+function embedBlock(site, doc, lang) {
+  const text = site.localize(doc, lang);
+  const type = typeLabel(site, doc, lang);
+  // a title that begins with its type ("Quiz: …") says it once
+  const named = text.title.toLowerCase().startsWith(`${type.toLowerCase()}:`);
+  const head = html`<p class="embedded-head">
+      ${typeIcon(site, doc)}${!named && html`<span class="embedded-type">${type}</span>`}
+      <a href="${site.url(doc, lang)}" lang="${text.lang}">${text.titleHtml}</a>
+    </p>`;
+  if (hasType(doc.lead, 'slides')) return html`<section class="embedded embedded-slides" data-embedded="${doc.id}">${slidesBlock(site, doc, lang)}</section>`;
+  if (hasType(doc.lead, 'quiz'))
+    return html`<section class="embedded embedded-quiz" data-embedded="${doc.id}">
+        ${head}
+        <div class="prose" lang="${text.lang}" data-quiz-id="${doc.id}" ${quizLabels(lang)}>${raw(site.embedBody(doc, lang))}</div>
+      </section>`;
+  if (hasType(doc.lead, 'demo'))
+    return html`<section class="embedded embedded-demo" data-embedded="${doc.id}">
+        ${head}
+        <div class="prose" lang="${text.lang}">${raw(withoutGoal(site.embedBody(doc, lang)))}</div>
+      </section>`;
+  return html`<ul class="rows embedded embedded-row" data-embedded="${doc.id}">${itemRow(site, doc, lang)}</ul>`;
+}
+
+/** A demo's text without the paragraph that begins "Ziel:" or "Goal:". */
+const withoutGoal = (body) => body.replace(/<p><strong>(?:Ziel|Goal):<\/strong>[\s\S]*?<\/p>\s*/, '');
 
 /** An exercise as a script to download, next to its page (build/exercise-script.mjs). */
 function scriptBlock(site, doc, lang) {
