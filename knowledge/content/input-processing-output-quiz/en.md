@@ -21,7 +21,7 @@ modules: [dup]
 relations:
   checks: [input-processing-output-slides]
 status: published
-updated: 2026-11-01
+updated: 2026-11-04
 ---
 
 ## According to the IPO model, what are the three parts of every piece of a problem that a computer can solve? {#ipo-001}
@@ -71,16 +71,16 @@ updated: 2026-11-01
 
 - [x] The output of `encode()` is the input of the next box.
   > Correct, that is what connecting boxes means: the output of one becomes the input of the next.
-- [x] At the boundary of the light, it must be agreed which colour stands for which character.
-  > Correct: the boundary is an agreement, and without it `decode()` cannot interpret the colours.
+- [x] Sender and receiver must agree beforehand which colour stands for which letter.
+  > Correct: `encode()` turns letters into colours and `decode()` turns colours back into letters, so both need the same table, for example "h" is red. Without it the receiver sees colours but cannot read them.
 - [ ] `decode()` can work independently of what `encode()` does.
-  > Wrong: `decode()` has to reverse exactly the agreement that `encode()` used, so the two are coupled through the boundary.
+  > Wrong: `decode()` has to reverse exactly the agreement that `encode()` used, so the two are coupled through this shared table.
 - [x] The chain shows the order in which the data flow through the system.
   > Correct: boxes in a row show the data flow, from message to message.
 - [ ] The chain shows how the problem is decomposed into subproblems.
   > Wrong: that is what boxes inside boxes show, since an opened box contains smaller ones. Boxes in a row show flow, not hierarchy.
 
-> Boxes in a row show data flow, and they fit together only when every boundary rests on the same agreement.
+> Boxes in a row show data flow, and sender and receiver fit together only when they use the same agreement.
 
 ## Look at this function as an IPO box. What are its input and its output? {#ipo-005}
 

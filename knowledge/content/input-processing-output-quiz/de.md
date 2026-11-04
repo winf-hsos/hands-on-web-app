@@ -14,7 +14,7 @@ objectives:
     - "Datenfluss von Zerlegung unterscheiden und die Ebene eines Kastens passend zur Frage wählen"
     - "sagen, welche der beiden Fragen eines Kastens ein Programm beantwortet"
 translation_of: en
-based_on: 2026-11-01
+based_on: 2026-11-04
 ---
 
 ## Aus welchen drei Teilen besteht nach dem IPO-Modell jedes Teilproblem, das ein Computer lösen kann? {#ipo-001}
@@ -64,16 +64,16 @@ based_on: 2026-11-01
 
 - [x] Die Ausgabe von `encode()` ist die Eingabe des nächsten Kastens.
   > Richtig, genau das heißt, Kästen zu verbinden: Die Ausgabe des einen wird zur Eingabe des nächsten.
-- [x] An der Grenze des Lichts muss vereinbart sein, welche Farbe für welches Zeichen steht.
-  > Richtig: Die Grenze ist eine Vereinbarung, und ohne sie kann `decode()` die Farben nicht deuten.
+- [x] Sender und Empfänger müssen vorher vereinbaren, welche Farbe für welchen Buchstaben steht.
+  > Richtig: `encode()` macht aus Buchstaben Farben und `decode()` aus Farben wieder Buchstaben, also brauchen beide dieselbe Tabelle, etwa „h“ ist Rot. Ohne sie sieht der Empfänger Farben, kann sie aber nicht lesen.
 - [ ] `decode()` kann unabhängig davon arbeiten, was `encode()` macht.
-  > Falsch: `decode()` muss genau die Vereinbarung umkehren, nach der `encode()` kodiert hat; die beiden sind über die Grenze gekoppelt.
+  > Falsch: `decode()` muss genau die Vereinbarung umkehren, nach der `encode()` kodiert hat; die beiden sind über diese gemeinsame Tabelle gekoppelt.
 - [x] Die Kette zeigt, in welcher Reihenfolge die Daten durch das System fließen.
   > Richtig: Kästen in einer Reihe zeigen den Datenfluss, von der Nachricht bis zur Nachricht.
 - [ ] Die Kette zeigt, wie das Problem in Teilprobleme zerlegt ist.
   > Falsch: Das zeigen Kästen in Kästen, denn ein geöffneter Kasten enthält kleinere. Kästen in einer Reihe zeigen den Fluss, nicht die Hierarchie.
 
-> Kästen in einer Reihe zeigen den Datenfluss, und sie passen nur zusammen, wenn jede Grenze auf derselben Vereinbarung beruht.
+> Kästen in einer Reihe zeigen den Datenfluss, und Sender und Empfänger passen nur zusammen, wenn sie dieselbe Vereinbarung nutzen.
 
 ## Betrachte diese Funktion als IPO-Kasten. Was sind ihre Eingabe und ihre Ausgabe? {#ipo-005}
 
