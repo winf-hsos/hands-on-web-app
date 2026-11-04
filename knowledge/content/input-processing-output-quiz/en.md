@@ -77,8 +77,8 @@ updated: 2026-11-04
   > Wrong: `decode()` has to reverse exactly the agreement that `encode()` used, so the two are coupled through this shared table.
 - [x] The chain shows the order in which the data flow through the system.
   > Correct: boxes in a row show the data flow, from message to message.
-- [ ] The chain shows how the problem is decomposed into subproblems.
-  > Wrong: that is what boxes inside boxes show, since an opened box contains smaller ones. Boxes in a row show flow, not hierarchy.
+- [ ] The boxes can be put in any order, as long as every one of them is there.
+  > Wrong: every box needs exactly what the box before it delivers. `decode()` cannot start with the text "hi", it needs the readings of the sensor, so the order is part of the chain.
 
 > Boxes in a row show data flow, and sender and receiver fit together only when they use the same agreement.
 

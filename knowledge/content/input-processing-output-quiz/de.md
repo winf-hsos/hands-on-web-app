@@ -70,8 +70,8 @@ based_on: 2026-11-04
   > Falsch: `decode()` muss genau die Vereinbarung umkehren, nach der `encode()` kodiert hat; die beiden sind über diese gemeinsame Tabelle gekoppelt.
 - [x] Die Kette zeigt, in welcher Reihenfolge die Daten durch das System fließen.
   > Richtig: Kästen in einer Reihe zeigen den Datenfluss, von der Nachricht bis zur Nachricht.
-- [ ] Die Kette zeigt, wie das Problem in Teilprobleme zerlegt ist.
-  > Falsch: Das zeigen Kästen in Kästen, denn ein geöffneter Kasten enthält kleinere. Kästen in einer Reihe zeigen den Fluss, nicht die Hierarchie.
+- [ ] Die Kästen lassen sich in beliebiger Reihenfolge anordnen, solange jeder vorkommt.
+  > Falsch: Jeder Kasten braucht genau das, was der Kasten davor liefert. `decode()` kann nicht mit dem Text „hi“ anfangen, es braucht die Messwerte des Sensors, also gehört die Reihenfolge zur Kette.
 
 > Kästen in einer Reihe zeigen den Datenfluss, und Sender und Empfänger passen nur zusammen, wenn sie dieselbe Vereinbarung nutzen.
 
