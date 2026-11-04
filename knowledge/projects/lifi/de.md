@@ -32,7 +32,7 @@ phases:
       - place-value-systems
       - why-two-states
       - why-ten
-      - lifi-colour-alphabet-quiz
+      - number-systems-quiz
   - id: word
     challenge: lifi-challenge-2
     items: [morse-code]

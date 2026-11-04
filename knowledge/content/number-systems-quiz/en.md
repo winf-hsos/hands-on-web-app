@@ -1,9 +1,10 @@
 ---
 type: quiz
 code: 7154
+formerly: [lifi-colour-alphabet-quiz]
 title: "Quiz: number systems"
 summary: >-
-  Twelve questions on place value, binary and hexadecimal numbers, bits and
+  Fourteen questions on place value, binary and hexadecimal numbers, bits and
   bytes, and the two ladders of units. Every answer comes with its reason.
 objectives:
   intro: "This quiz lets you check in twelve questions whether you can:"
@@ -20,7 +21,7 @@ modules: [dup]
 relations:
   checks: [place-value-systems, binary-numbers, why-two-states, bit, byte, hexadecimal, binary-prefixes]
 status: draft
-updated: 2026-11-01
+updated: 2026-11-04
 ---
 
 ## Why does the digit sequence 123 mean one hundred and twenty-three? {#ns-001}
@@ -88,6 +89,28 @@ updated: 2026-11-01
   > That is 8 + 4 + 2 = 14, one too many. A glance at the last digit is enough to check: it carries the 1, and odd numbers always have a one there.
 - [ ] 1100
   > That is 8 + 4 = 12. The remainder of 1 has been dropped; after the 4 exactly one is left over, and it needs the last place.
+
+## In the LiFi project your team transmits letters as sequences of four colours, say red-blue-green. In what sense have you already built a place value system? {#ns-012}
+
+- [ ] Not at all: a place value system needs digits with numeric values, and colours have no value.
+  > Digits do not have to look like numbers. As soon as each colour stands for a value and position matters, it is a place value system, whatever the digits look like.
+- [x] Four colours are four digits, so base 4: three positions give 4 to the power of 3, that is 64 possibilities, and position determines place value.
+  > Exactly, your colour alphabet is a number system in disguise: red-blue-green and green-blue-red are different code words because position counts. The formula N = kⁿ for the number of code words is the same calculation as asking how many numbers fit into n digits of base k.
+- [ ] Only halfway: position does count, but without a colour for zero the system lacks its most important digit.
+  > Zero is not missing, it just has no special status: which of the four colours stands for 0 is an agreement, exactly as for 1, 2 and 3. Four colours are four fully fledged digits.
+- [ ] Only with exactly two colours would it be a place value system, because computers work with bits internally.
+  > Base 2 is a special case, not a privilege. Place value systems work with any base from 2 upwards, your four colours included.
+
+## Your LiFi alphabet has four colours. You want to tell 26 letters apart and give every letter a fixed number of colour positions. How many positions do you need at least? {#ns-014}
+
+- [ ] Two, because two positions are already 4 times 4.
+  > Two positions give 4² = 16 combinations, and 16 is not enough for 26 letters. The calculation is set up correctly but comes out too small; ten characters are missing.
+- [x] Three, because 4³ is 64 and that is the first count that suffices.
+  > Exactly the place value calculation, read backwards: with k digits and n positions you can represent kⁿ combinations. 4² = 16 is too few, 4³ = 64 is enough, and 38 combinations go unused. That waste is the price of a fixed length.
+- [ ] Five, because 26 letters need five bits, and every colour position is one position.
+  > Five bits is right, but a bit is a position with **two** possibilities. A colour position with four colours carries two bits, so you need only half as many positions, rounded up to three.
+- [ ] Twenty-six, because every letter needs its own position.
+  > That would be the case if a position could only mark one letter. The whole trick of a place value system is that positions **combine**: every extra position multiplies the number of possibilities by four instead of adding one.
 
 ## Why do computers use base 2 and not base 10 right away? {#ns-010}
 
