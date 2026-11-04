@@ -338,9 +338,13 @@ The body is plain Markdown with a few conventions:
 - **R code** in a ` ```r ` block works the same way with webR; ` ```r static `
   only shows it. Each block runs on its own, with dplyr loaded and the data
   sets `survey` (`media/datasets/milk_survey.csv`), `rewe`
-  (`media/datasets/rewe_products.csv`) and `monty_hall`
+  (`media/datasets/rewe_products.csv`), `monty_hall`
   (`media/datasets/lets_make_a_deal.csv`, a plain `data.frame`, since the
-  Monty Hall project teaches base R) ready; a block that names a file, as in
+  Monty Hall project teaches base R), `corpus` and `tokens` (the twenty
+  sentences of the experiment `a-language-model-by-counting`, in
+  `tiny_corpus.csv` one per row and in `tiny_corpus_tokens.csv` one row per
+  word with its sentence and position, because webR has no tidyr to split
+  them) ready; a block that names a file, as in
   `read.csv("lets_make_a_deal.csv")`, finds it in its working directory. A
   block that uses `ggplot()` shows the plot below the code. This holds in
   project phases and challenges as well as in items. A runnable block
@@ -398,6 +402,14 @@ The body is plain Markdown with a few conventions:
   gpt-image-2) and `media/audio/` (`voice.wav`, an AI-generated voice from
   OpenAI TTS, 48 kHz 16-bit mono); the other four sounds are made in code.
   Both credits stand in a note under the demonstrator.
+- **The language model by counting** (` ```next-word `, an empty block,
+  2026-11-04) came over from the web app of the experiment in Problem
+  Solving with AI: the corpus in a text field (from `tiny_corpus.csv`), a
+  button that counts words, pairs and triples, a sentence built by tapping
+  words, and the distribution of the next word for no, one or two words of
+  context as bars with probability and count. "Roll" draws a word and says
+  which random number chose it; a context that never occurred is reported,
+  not guessed.
 - **The folder tree and command line** (Nicolas, 2026-11-02) is placed with a
   ` ```shell-demo ` block that holds its scenario in YAML, so a lesson can
   bring its own tree; it may stand in any text, not only on a demo page:

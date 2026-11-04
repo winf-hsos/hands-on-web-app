@@ -5739,3 +5739,165 @@ details.callout[open] > summary::before {
   color: var(--quiet);
   font-size: 0.95rem;
 }
+
+/* The language model by counting (client/next-word.js): the corpus in a text
+   field with the button that trains, the choice of context, the sentence as
+   words in the code font with its context marked, the line that says what
+   the distribution is based on and what the last roll drew, and the
+   distribution as bars with probability and count. The sentence and the bars
+   have places of a fixed height, so that nothing moves while it grows. */
+.next-word {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.75rem;
+}
+
+.nw-corpus {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.nw-text {
+  width: 100%;
+  min-height: 9.5rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.5rem;
+  background: var(--paper);
+  color: var(--ink);
+  font: 0.85rem/1.45 var(--mono);
+  resize: vertical;
+}
+
+.nw-train {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+.prose .nw-train .dg-reading {
+  flex: 1 1 16rem;
+}
+
+.nw-context {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+}
+
+.nw-sentence {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 0.35rem;
+  height: 4.6rem;
+  margin-top: 0.75rem;
+  padding: 0.5rem;
+  overflow-y: auto;
+  border: 1px solid var(--rule);
+  border-radius: 0.5rem;
+}
+
+.nw-word {
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.4rem;
+  font: 600 0.9rem/1.3 var(--mono);
+}
+
+.nw-word.is-context {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent-ink);
+}
+
+.nw-empty {
+  align-self: center;
+  font-size: 0.85rem;
+  color: var(--quiet);
+}
+
+.nw-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+
+.nw-calc {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.prose .nw-bars {
+  height: 17.5rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.prose .nw-bars li {
+  margin: 0;
+  padding: 0;
+}
+
+.nw-bar {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr) 3rem 3.75rem;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  min-height: 1.75rem;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid transparent;
+  border-radius: 0.4rem;
+  background: none;
+  color: var(--ink);
+  font: 0.85rem/1.2 var(--mono);
+  text-align: left;
+  cursor: pointer;
+}
+
+.nw-bar:hover {
+  border-color: var(--accent);
+}
+
+.nw-label {
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nw-track {
+  height: 0.85rem;
+  border-radius: 0.2rem;
+  background: color-mix(in srgb, var(--rule) 45%, transparent);
+  overflow: hidden;
+}
+
+.nw-fill {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+
+.nw-p,
+.nw-n {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.nw-n {
+  color: var(--quiet);
+}
+
+@media (max-width: 30rem) {
+  .nw-bar {
+    grid-template-columns: 5rem minmax(0, 1fr) 2.75rem 3.25rem;
+    gap: 0.4rem;
+  }
+}

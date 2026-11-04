@@ -217,6 +217,7 @@ function fillableTables(tree, lang) {
 // ```byte-switchboard eight switches for one byte (client/byte-switchboard.js),
 // ```photo-digitiser a photo cut by resolution and colour depth (client/photo-digitiser.js),
 // ```audio-digitiser a sound cut by sampling rate and bit depth (client/audio-digitiser.js),
+// ```next-word a language model by counting, with context of none, one or two words (client/next-word.js),
 // ```question-game sixteen faces and yes-or-no questions measured in bits (client/question-game.js),
 // ```data-table an empty table to record observations in (client/data-table.js),
 // ```shell-demo the folder tree and command line (client/shell-demo.js), whose
@@ -230,6 +231,7 @@ const DEMOS = {
   'photo-digitiser': { className: 'photo-digitiser', dataPhotoDigitiser: '' },
   'audio-digitiser': { className: 'audio-digitiser', dataAudioDigitiser: '' },
   'question-game': { className: 'question-game', dataQuestionGame: '' },
+  'next-word': { className: 'next-word', dataNextWord: '' },
   'shell-demo': { className: 'shell-demo', dataShellDemo: '' },
   'data-table': { className: 'data-table', dataDataTable: '' },
 };
