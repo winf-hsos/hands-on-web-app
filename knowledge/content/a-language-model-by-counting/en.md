@@ -1,14 +1,14 @@
 ---
 type: experiment
 code: 4417
-title: A language model by counting
+title: Predicting the next word by counting
 summary: >-
-  Build a tiny language model from twenty sentences with nothing but counting
-  and dividing, let it predict the next word with no context, one word or two
-  words of context, and let it write sentences of its own by rolling a
-  weighted die.
+  The basic idea behind a language model in a very simplified form: count
+  words and pairs of words in twenty sentences, predict the next word from no,
+  one or two words of context, and write sentences by rolling a weighted
+  die.
 objectives:
-  intro: "In this experiment you train a language model by hand and in R, and afterwards you can:"
+  intro: "In this experiment you work out the basic idea behind a language model in a very simplified form, by hand and in R, and afterwards you can:"
   goals:
     - "explain what a corpus, a token and a vocabulary are and determine corpus size and vocabulary of a small corpus"
     - "compute the probability of a word without context and the conditional probability of the next word after one or two words of context"
@@ -29,11 +29,11 @@ updated: 2026-11-04
 A language model answers one question over and over: given what came before,
 how likely is each possible next word? Real models answer it with a neural
 network trained on trillions of words, but the question itself is simple
-enough to answer with a pencil. In this experiment you build a language model
-from twenty short sentences by counting how often words and pairs of words
-occur, and then you let it write. The model you build is not how ChatGPT
-works inside, while the question it answers and the way it writes, one word
-at a time drawn from a distribution, are exactly the same.
+enough to answer with a pencil. In this experiment you answer it for twenty
+short sentences by counting how often words and pairs of words occur, and then
+you let these counts write. This is a deliberately simplified picture and not
+how ChatGPT works inside, but the question it answers and the way it writes,
+one word at a time drawn from a distribution, are the same.
 
 ## What you need
 
@@ -384,9 +384,9 @@ paste(sentence, collapse = " ")
 
 Write down your own answers first, then discuss them in your group.
 
-1. You built a language model from nothing but counting and dividing. What
-   does it have in common with the model behind ChatGPT, and where do the two
-   differ?
+1. Your counts predict the next word with nothing but counting and dividing.
+   What do they have in common with the model behind ChatGPT, and where do
+   the two differ?
 2. Where does counting break down? Think of a combination of words that never
    occurred in the corpus, and of what a model would need in order to handle
    it anyway.

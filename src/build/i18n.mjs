@@ -1135,7 +1135,7 @@ export const figureLabels = {
   },
 };
 
-/** Labels of the language model by counting (client/next-word.js). */
+/** Labels of the next word by counting (client/next-word.js). */
 export const nextWordLabels = {
   de: {
     corpus: 'Trainingskorpus, ein Satz je Zeile',

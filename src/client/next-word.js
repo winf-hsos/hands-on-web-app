@@ -1,4 +1,4 @@
-// A language model by counting: the corpus of the experiment
+// Predicting the next word by counting: the corpus of the experiment
 // a-language-model-by-counting in a text field, a button that trains (counts
 // every word, every pair and every triple) and a sentence that grows word by
 // word. Below it stands the distribution of the next word for the chosen

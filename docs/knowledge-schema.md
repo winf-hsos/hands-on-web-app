@@ -402,7 +402,7 @@ The body is plain Markdown with a few conventions:
   gpt-image-2) and `media/audio/` (`voice.wav`, an AI-generated voice from
   OpenAI TTS, 48 kHz 16-bit mono); the other four sounds are made in code.
   Both credits stand in a note under the demonstrator.
-- **The language model by counting** (` ```next-word `, an empty block,
+- **The next word by counting** (` ```next-word `, an empty block,
   2026-11-04) came over from the web app of the experiment in Problem
   Solving with AI: the corpus in a text field (from `tiny_corpus.csv`), a
   button that counts words, pairs and triples, a sentence built by tapping
