@@ -4119,6 +4119,8 @@ details.callout[open] > summary::before {
   flex-direction: column;
   padding: 3rem 0 3.5rem;
   overflow: auto;
+  /* room for the scrollbar from the start, so that a tall box does not shift */
+  scrollbar-gutter: stable;
   background: var(--paper);
   color: var(--ink);
 }
@@ -4137,6 +4139,11 @@ details.callout[open] > summary::before {
   margin-top: 0;
 }
 
+/* every heading at one size, whatever its level on the page */
+.code-stage > .stage-context > :is(h1, h2, h3, h4) {
+  font-size: 1.3rem;
+}
+
 .code-stage > .stage-context > :last-child {
   margin-bottom: 1rem;
 }
@@ -4152,14 +4159,6 @@ details.callout[open] > summary::before {
   box-sizing: border-box;
   height: calc(8 * 1.55 * 0.92rem + 1.8rem);
   overflow: auto;
-}
-
-/* a copy of what must fit, to measure the box on the stage */
-.runner.on-stage > .focus-measure {
-  position: absolute;
-  visibility: hidden;
-  display: flow-root;
-  width: 100%;
 }
 
 .stage-nav {

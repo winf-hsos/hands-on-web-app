@@ -208,8 +208,11 @@ All motion is switched off for people who ask their system for reduced motion.
   code boxes do not use `focusable()` but `presentable(box, bar, height)`.
   Their button puts the box on a stage that covers the page (and goes full
   screen where the browser grants it) together with copies of the heading of
-  its section and of the paragraph or list right above it, both scaled with
-  the box like an element in focus. The arrow keys outside the editor, Page
+  its section and of the paragraph or list right above it, in a column of
+  800 px scaled once to the width of the screen, the same for every box and
+  every heading level, so that nothing changes size from box to box or when
+  code runs; what is taller than the screen scrolls, with the scrollbar's
+  room kept from the start (Nicolas, 2026-11-05). The arrow keys outside the editor, Page
   Up and Page Down (as presentation clickers send them) and two small
   buttons in the corner go to the previous or next code box of the page; F
   or Escape leave, and the page is left at the box shown last. The box itself

@@ -122,24 +122,9 @@ function setup(box) {
   const bar = el('div', { className: 'runner-bar' }, run, reset, status);
   box.replaceChildren(code, bar, led, output, hint);
   // Larger, for working on the code together on a projector: presented on a
-  // stage with its heading and paragraph (present.js), the code, the bar and
-  // a fixed room for the output fit the screen, and longer output scrolls
-  // inside that room. The size follows the code when it is run or left, not
-  // with every key.
-  const measure = () => {
-    const probe = el('div', { className: 'focus-measure' }, code.cloneNode(true), bar.cloneNode(true), el('pre', { className: 'runner-output' }));
-    const room = el('p', { className: 'runner-hint' });
-    room.innerHTML = '&nbsp;<br>&nbsp;'; // two lines for a hint after an error
-    probe.append(room);
-    box.append(probe);
-    const height = probe.getBoundingClientRect().height;
-    probe.remove();
-    return height;
-  };
-  const refit = presentable(box, bar, measure);
-  // after the buttons' own handlers below, which change the code
-  for (const button of [run, reset]) button.addEventListener('click', () => queueMicrotask(refit));
-  editor.addEventListener('blur', refit);
+  // stage with its heading and paragraph (present.js), at one size for all
+  // boxes, with a fixed room for the output in which longer output scrolls.
+  presentable(box, bar);
   new MutationObserver(() => (output.scrollTop = output.scrollHeight)).observe(output, { childList: true, subtree: true, characterData: true });
   addCopyButton(code, () => editor.value);
   // Long lines scroll sideways, and the caret is kept in sight: the width of

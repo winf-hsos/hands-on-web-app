@@ -8,9 +8,9 @@
 // leave. The box itself is moved onto the stage and back, so what was typed
 // and run stays with it, and the page is left at the box shown last.
 //
-// Context and box are scaled together, like an element in focus mode
-// (focus.js): to the width of the screen, and so that the box with a fixed
-// room of eight lines for its output fits the height as well.
+// Context and box are scaled together to the width of the screen, with one
+// size for the whole presentation, so that nothing jumps from box to box;
+// the output has a fixed room of eight lines, and what is taller scrolls.
 
 const L = JSON.parse(document.body.dataset.focusLabels ?? '{}');
 const icon = (path) => `<svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${path}</svg>`;
@@ -20,6 +20,7 @@ const PREVIOUS = icon('<path d="M15 6l-6 6 6 6"/>');
 const NEXT = icon('<path d="M9 6l6 6-6 6"/>');
 const MAX_ZOOM = 2.5;
 const MIN_ZOOM = 0.5;
+const COLUMN = 800; // px at page size, the width of heading, paragraph and box
 const native = Boolean(document.fullscreenEnabled && document.documentElement.requestFullscreen);
 const fill = (text, values) => text.replace(/\{(\w+)\}/g, (_, k) => values[k]);
 const typing = (e) => e.target.closest?.('input, textarea, select, [contenteditable]');
@@ -116,7 +117,6 @@ function go(step) {
 
 function open(entry) {
   if (!stage) build();
-  entry.width = entry.box.getBoundingClientRect().width;
   stage.classList.add('is-open');
   document.documentElement.classList.add('has-focus');
   show(entry);
@@ -141,37 +141,25 @@ function close() {
   entry.box.focus({ preventScroll: true });
 }
 
-/** Scales context and box together, so that both fit the width and the box with its output the height. */
+/**
+ * One size for the whole presentation (Nicolas, 2026-11-05): a column of
+ * fixed width, scaled to the width of the screen, the same for every box
+ * and every heading, so that nothing changes size from box to box or when
+ * code runs. What is taller than the screen scrolls.
+ */
 function fit() {
   if (!shown) return;
-  const words = stage.querySelector('.stage-context');
-  const style = getComputedStyle(stage);
-  const room = stage.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
-  let best = { zoom: 0 };
-  for (const w of [shown.width, 800, 960]) {
-    stage.style.setProperty('--focus-width', `${w}px`);
-    stage.style.setProperty('--focus-zoom', '1');
-    const height = words.getBoundingClientRect().height + shown.height() + 24;
-    const zoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, (innerWidth * 0.92) / w, (room * 0.98) / height));
-    if (zoom > best.zoom) best = { zoom, w };
-  }
-  stage.style.setProperty('--focus-width', `${best.w}px`);
-  stage.style.setProperty('--focus-zoom', best.zoom.toFixed(3));
+  stage.style.setProperty('--focus-width', `${COLUMN}px`);
+  stage.style.setProperty('--focus-zoom', Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, (innerWidth * 0.92) / COLUMN)).toFixed(3));
 }
 
-/**
- * Gives a code box its button for presenting, placed into `bar`; `height()`
- * measures the box with a fixed room for its output. Returns a function that
- * fits the stage again, for when the code has changed.
- */
-export function presentable(box, bar, height) {
+/** Gives a code box its button for presenting, placed into `bar`. */
+export function presentable(box, bar) {
   const button = Object.assign(document.createElement('button'), { type: 'button', className: 'focus-toggle' });
   bar.append(button);
   if (box.tabIndex < 0 && !box.hasAttribute('tabindex')) box.tabIndex = -1;
   const entry = {
     box,
-    height,
-    width: 0,
     holder: Object.assign(document.createElement('div'), { className: 'stage-holder' }),
     label() {
       const on = shown === entry;
@@ -190,5 +178,4 @@ export function presentable(box, bar, height) {
     e.preventDefault();
   });
   entry.label();
-  return () => queueMicrotask(fit);
 }
