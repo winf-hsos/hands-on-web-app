@@ -521,8 +521,8 @@ export const demoFrameLabels = {
 
 /** Focus mode of code boxes, result tables and quizzes (client/focus.js). */
 export const focusLabels = {
-  de: { enter: 'Fokus', leave: 'Fokus beenden' },
-  en: { enter: 'Focus', leave: 'Leave focus' },
+  de: { enter: 'Fokus', leave: 'Fokus beenden', present: 'Präsentieren', leavePresent: 'Präsentation beenden', previous: 'Vorheriger Codeblock', next: 'Nächster Codeblock', position: '{n} / {total}' },
+  en: { enter: 'Focus', leave: 'Leave focus', present: 'Present', leavePresent: 'Leave presentation', previous: 'Previous code box', next: 'Next code box', position: '{n} / {total}' },
 };
 
 /** Labels of the dplyr demonstrator (client/verb-demo.js). */

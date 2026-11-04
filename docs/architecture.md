@@ -200,6 +200,16 @@ All motion is switched off for people who ask their system for reduced motion.
   width of their columns only. Full screen draws nothing outside the box, so
   the suggestions of a code box (`complete.js`) move into it while it is in
   focus and grow with the code.
+- **Presenting code boxes** (`src/client/present.js`, Nicolas, 2026-11-04):
+  code boxes do not use `focusable()` but `presentable(box, bar, height)`.
+  Their button puts the box on a stage that covers the page (and goes full
+  screen where the browser grants it) together with copies of the heading of
+  its section and of the paragraph or list right above it, both scaled with
+  the box like an element in focus. The arrow keys outside the editor, Page
+  Up and Page Down (as presentation clickers send them) and two small
+  buttons in the corner go to the previous or next code box of the page; F
+  or Escape leave, and the page is left at the box shown last. The box itself
+  is moved onto the stage and back, so what was typed and run stays with it.
 - **Embedded slide decks** (`src/client/deck-frame.js`): the button
   "Vollbild" puts the deck's iframe into full screen and hands it the
   keyboard focus, and while a deck fills the screen the page passes every key

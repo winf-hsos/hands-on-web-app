@@ -1,5 +1,6 @@
-// Focus mode for code boxes, result tables and quizzes (runner.js,
-// tables.js, quiz.js): one button shows the element alone on the screen,
+// Focus mode for result tables and quizzes (tables.js, quiz.js); code boxes
+// are presented on a stage with their heading instead (present.js). One
+// button shows the element alone on the screen,
 // enlarged to the width of the screen, so that a class can read it on a
 // projector and work on it together (Nicolas, 2026-11-01).
 //

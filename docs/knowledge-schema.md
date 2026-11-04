@@ -319,7 +319,19 @@ The body is plain Markdown with a few conventions:
   with empty cells where the values go. The entries are kept in this browser
   like the code, and a button below the table clears them after asking.
   Enter moves to the cell below.
-- **Code boxes, result tables and quizzes have a focus mode** for presenting
+- **Code boxes can be presented one after another** (Nicolas, 2026-11-04):
+  the button in the bar of a code box shows it in full screen with the
+  heading of its section and the paragraph right above it, and the arrow
+  keys, Page Up and Page Down go to the previous and the next code box of the
+  page, so a page with code becomes an interactive presentation in class.
+  **Write every code box that suits a presentation with this in mind:** the
+  section it stands in has a short, telling heading, and right above the box
+  stands one paragraph (or a short task list) that says what the code shows
+  or what to try, so that heading, paragraph and code make sense on their own
+  on the projector. Two code boxes in a row need a sentence between them,
+  which the rule on one printing command per box asks for anyway.
+- **Result tables and quizzes have a focus mode** (code boxes have the
+  presentation above, which fits them the same way) for presenting
   and working on them together in class (Nicolas, 2026-11-01). A button
   „Fokus“ (`F` while the element has the focus, `Esc` leaves) shows the
   element alone in full screen, its parts keeping the width they had on the

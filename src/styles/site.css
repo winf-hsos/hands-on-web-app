@@ -4096,12 +4096,86 @@ details.callout[open] > summary::before {
   zoom: 1;
 }
 
-/* In focus, the output of a code box has a fixed room of eight lines, which
-   counts when the box is fitted; longer output scrolls inside it. */
-.runner.in-focus .runner-output {
+/* The stage of a presentation of code boxes (client/present.js): the heading
+   and the paragraph above a code box and the box itself, scaled together like
+   an element in focus, with small buttons to the previous and the next box in
+   the corner. Not shown until a box is presented; it covers the page as a
+   layer, and full screen, where the browser grants it, comes on top. */
+.code-stage {
+  display: none;
+}
+
+.code-stage.is-open {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  padding: 3rem 0 3.5rem;
+  overflow: auto;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.code-stage > .stage-context,
+.code-stage > .stage-box {
+  flex: none;
+  box-sizing: border-box;
+  width: var(--focus-width);
+  max-width: none;
+  margin-inline: auto;
+  zoom: var(--focus-zoom, 1);
+}
+
+.code-stage > .stage-context > :first-child {
+  margin-top: 0;
+}
+
+.code-stage > .stage-context > :last-child {
+  margin-bottom: 1rem;
+}
+
+.code-stage .runner {
+  position: relative;
+  margin: 0;
+}
+
+/* On the stage, the output of a code box has a fixed room of eight lines,
+   which counts when the box is fitted; longer output scrolls inside it. */
+.runner.on-stage .runner-output {
   box-sizing: border-box;
   height: calc(8 * 1.55 * 0.92rem + 1.8rem);
   overflow: auto;
+}
+
+/* a copy of what must fit, to measure the box on the stage */
+.runner.on-stage > .focus-measure {
+  position: absolute;
+  visibility: hidden;
+  display: flow-root;
+  width: 100%;
+}
+
+.stage-nav {
+  position: fixed;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font: 0.8rem/1 var(--mono);
+  color: var(--quiet);
+}
+
+.stage-nav .focus-toggle:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.stage-position {
+  min-width: 3.5rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
 }
 
 /* without the Fullscreen API: a layer over the page */

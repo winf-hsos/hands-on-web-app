@@ -8,7 +8,7 @@ import { findR, loadR } from './r-complete.js';
 import { suggest as suggestPython } from './py-context.js';
 import { highlight } from './highlight.js';
 import { savedOnPage, fingerprint } from './saved.js';
-import { focusable } from './focus.js';
+import { presentable } from './present.js';
 import { showLed } from './led-view.js';
 
 const { pythonWorker, pyodide, runnerLabels } = document.body.dataset;
@@ -121,10 +121,11 @@ function setup(box) {
   const led = el('div', { className: 'led-view', role: 'group', hidden: true });
   const bar = el('div', { className: 'runner-bar' }, run, reset, status);
   box.replaceChildren(code, bar, led, output, hint);
-  // Larger, for working on the code together on a projector: the code, the
-  // bar and a fixed room for the output fit the screen, and longer output
-  // scrolls inside that room. The size follows the code when it is run or
-  // left, not with every key.
+  // Larger, for working on the code together on a projector: presented on a
+  // stage with its heading and paragraph (present.js), the code, the bar and
+  // a fixed room for the output fit the screen, and longer output scrolls
+  // inside that room. The size follows the code when it is run or left, not
+  // with every key.
   const measure = () => {
     const probe = el('div', { className: 'focus-measure' }, code.cloneNode(true), bar.cloneNode(true), el('pre', { className: 'runner-output' }));
     const room = el('p', { className: 'runner-hint' });
@@ -135,7 +136,7 @@ function setup(box) {
     probe.remove();
     return height;
   };
-  const refit = focusable(box, bar, { height: measure, widths: [800, 960] });
+  const refit = presentable(box, bar, measure);
   // after the buttons' own handlers below, which change the code
   for (const button of [run, reset]) button.addEventListener('click', () => queueMicrotask(refit));
   editor.addEventListener('blur', refit);

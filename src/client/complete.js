@@ -70,12 +70,13 @@ export function attachCompletion(editor, labels, find, prepare = () => {}) {
         return li;
       }),
     );
-    // In focus mode only the box is shown (in full screen nothing else is
-    // drawn), so the list goes into it and takes on the zoom of the code.
-    const home = editor.closest('.in-focus') ?? document.body;
+    // In focus mode and on the stage of a presentation (present.js) only the
+    // box is shown (in full screen nothing else is drawn), so the list goes
+    // into it and takes on the zoom of the code.
+    const home = editor.closest('.in-focus, .on-stage') ?? document.body;
     if (list.parentElement !== home) home.append(list);
     list.hidden = false;
-    const zoom = parseFloat(getComputedStyle(list).zoom) || 1;
+    const zoom = list.currentCSSZoom ?? (parseFloat(getComputedStyle(list).zoom) || 1);
     const at = caret(editor, mirror);
     // a zoomed element's left and top are zoomed as well
     list.style.left = `${Math.max(8, Math.min(at.left, innerWidth - list.offsetWidth * zoom - 8)) / zoom}px`;
