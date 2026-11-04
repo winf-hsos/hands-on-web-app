@@ -4064,6 +4064,12 @@ details.callout[open] > summary::before {
   zoom: var(--focus-zoom, 1);
 }
 
+/* the header row of a quiz keeps the size of the first fit (client/focus.js) */
+.focusable.in-focus > .quiz-bar {
+  width: var(--steady-width, var(--focus-width));
+  zoom: var(--steady-zoom, var(--focus-zoom, 1));
+}
+
 /* a table only as wide as its columns, in the middle */
 .table-box.in-focus > table {
   width: max-content;

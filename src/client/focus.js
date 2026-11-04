@@ -33,10 +33,13 @@ const typing = (e) => e.target.closest?.('input, textarea, select, [contentedita
  * fill the screen, by default the box itself; `height()`, if given, the height
  * at the page's size of what must fit on the screen as well, laid out at the
  * current `--focus-width`. `widths` are further column widths to try then, of
- * which the one that comes out largest wins. Returns a function that fits
+ * which the one that comes out largest wins. `steady()`, if given, returns a
+ * header row that keeps the size and width of the first fit while the rest is
+ * fitted again (the bar of a quiz, whose buttons must not move from question
+ * to question); `height()` then leaves it out. Returns a function that fits
  * again, for when what `height()` measures has changed.
  */
-export function focusable(box, bar, { width = () => box.getBoundingClientRect().width, height, widths = [] } = {}) {
+export function focusable(box, bar, { width = () => box.getBoundingClientRect().width, height, widths = [], steady = () => null } = {}) {
   const button = Object.assign(document.createElement('button'), { type: 'button', className: 'focus-toggle' });
   bar.append(button);
   box.classList.add('focusable');
@@ -61,15 +64,31 @@ export function focusable(box, bar, { width = () => box.getBoundingClientRect().
     }
     const style = getComputedStyle(box);
     const room = box.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
-    let best = { zoom: 0 };
-    for (const w of [Number(box.dataset.focusFits), ...widths]) {
-      box.style.setProperty('--focus-width', `${w}px`);
-      // a little to spare, for rounding at the larger size
-      const zoom = Math.max(MIN_ZOOM, Math.min(across(w), (room * 0.98) / height()));
-      if (zoom > best.zoom) best = { zoom, w };
+    const header = steady();
+    // the header's height at page size and the trial width, while it is not yet held
+    const headerAt = () => (header && !held() ? header.getBoundingClientRect().height : 0);
+    const held = () => box.style.getPropertyValue('--steady-zoom') !== '';
+    const best = (space, extra) => {
+      let top = { zoom: 0 };
+      for (const w of [Number(box.dataset.focusFits), ...widths]) {
+        box.style.setProperty('--focus-width', `${w}px`);
+        box.style.setProperty('--focus-zoom', '1');
+        // a little to spare, for rounding at the larger size
+        const zoom = Math.max(MIN_ZOOM, Math.min(across(w), (space * 0.98) / (height() + extra())));
+        if (zoom > top.zoom) top = { zoom, w };
+      }
+      return top;
+    };
+    if (header && !held()) {
+      // the first fit, with the header, decides its size for as long as the focus lasts
+      const first = best(room, headerAt);
+      box.style.setProperty('--steady-width', `${first.w}px`);
+      box.style.setProperty('--steady-zoom', first.zoom.toFixed(3));
     }
-    box.style.setProperty('--focus-width', `${best.w}px`);
-    box.style.setProperty('--focus-zoom', best.zoom.toFixed(3));
+    const space = header ? room - header.getBoundingClientRect().height - parseFloat(getComputedStyle(header).marginBottom) * (parseFloat(box.style.getPropertyValue('--steady-zoom')) || 1) : room;
+    const fitted = best(space, () => 0);
+    box.style.setProperty('--focus-width', `${fitted.w}px`);
+    box.style.setProperty('--focus-zoom', fitted.zoom.toFixed(3));
   }
 
   function enter() {
@@ -98,7 +117,7 @@ export function focusable(box, bar, { width = () => box.getBoundingClientRect().
     const on = isFocused(box);
     box.classList.toggle('in-focus', on);
     if (on) fit();
-    else ['--focus-zoom', '--focus-width'].forEach((p) => box.style.removeProperty(p));
+    else ['--focus-zoom', '--focus-width', '--steady-zoom', '--steady-width'].forEach((p) => box.style.removeProperty(p));
     label();
     if (!box.contains(document.activeElement)) box.focus({ preventScroll: true });
     if (!on) box.scrollIntoView({ block: 'nearest' });
@@ -113,7 +132,12 @@ export function focusable(box, bar, { width = () => box.getBoundingClientRect().
     else return;
     e.preventDefault();
   });
-  addEventListener('resize', fit);
+  addEventListener('resize', () => {
+    // a new screen size decides the header's size anew
+    box.style.removeProperty('--steady-zoom');
+    box.style.removeProperty('--steady-width');
+    fit();
+  });
   label();
   return fit;
 }

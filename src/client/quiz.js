@@ -150,7 +150,7 @@ function setup(prose) {
     function measure() {
       const probe = document.createElement('div');
       probe.className = 'focus-measure';
-      for (const part of stage.children) if (part !== tools && !part.hidden) probe.append(part.cloneNode(true));
+      for (const part of stage.children) if (part !== tools && !part.hidden && !part.classList.contains('quiz-bar')) probe.append(part.cloneNode(true));
       probe.querySelectorAll('.quiz-explanation, .quiz-actions button').forEach((el) => el.removeAttribute('hidden'));
       for (const options of probe.querySelectorAll('.quiz-options')) {
         const all = [...options.querySelectorAll('.quiz-option')];
@@ -167,7 +167,9 @@ function setup(prose) {
       return height;
     }
     // on a wide screen, longer lines leave fewer of them and so larger text
-    refit = focusable(stage, tools, { height: measure, widths: [800, 960] });
+    // the bar with Back, the position and Next keeps its size and place
+    // from question to question; only the question is fitted anew
+    refit = focusable(stage, tools, { height: measure, widths: [800, 960], steady: () => stage.querySelector(':scope > .quiz-bar') });
   }
 
   // --- one question at a time ----------------------------------------------------

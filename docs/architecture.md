@@ -196,7 +196,11 @@ All motion is switched off for people who ask their system for reduced motion.
   of a demonstrator (`demo-frame.js`), it scales code boxes and tables by
   width only; a quiz passes `height()`, which measures its question fully
   opened, and a code box one that measures its code with a fixed room for
-  the output, so both fit the screen in both directions. Tables scale by the
+  the output, so both fit the screen in both directions. A quiz also passes
+  `steady()`, its bar with Back, the position and Next, which keeps the size
+  and width of the first fit for as long as the focus lasts, so that its
+  buttons do not move from question to question; only the question below it
+  is fitted anew (Nicolas, 2026-11-05). Tables scale by the
   width of their columns only. Full screen draws nothing outside the box, so
   the suggestions of a code box (`complete.js`) move into it while it is in
   focus and grow with the code.
