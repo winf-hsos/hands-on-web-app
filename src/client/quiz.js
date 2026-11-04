@@ -194,9 +194,16 @@ function setup(prose) {
       return step;
     });
     // Back and Next sit in the header with the position and the bar, so they
-    // stay in one place however long a question and its answers are.
-    const back = el('button', { type: 'button', className: 'button button-quiet quiz-back', textContent: `← ${L.back}` });
+    // stay in one place however long a question and its answers are. In
+    // focus mode they shrink to thin arrows in one row with a thin bar
+    // (Nicolas, 2026-11-05); their words stay for screen readers and as a
+    // tooltip.
+    const arrow = (d) => `<svg class="quiz-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
+    const back = el('button', { type: 'button', className: 'button button-quiet quiz-back', title: L.back });
+    back.innerHTML = `<span class="quiz-label">← ${L.back}</span>${arrow('M15 6l-6 6 6 6')}`;
     const next = el('button', { type: 'button', className: 'button quiz-next' });
+    next.innerHTML = `<span class="quiz-label"></span>${arrow('M9 6l6 6-6 6')}`;
+    const nextLabel = next.querySelector('.quiz-label');
     // the focus symbol joins them at the end of the row
     const bar = el('div', { className: 'quiz-bar' }, back, position, next, tools, el('div', { className: 'quiz-steps' }, ...steps));
     const score = el('p', { className: 'quiz-score' });
@@ -221,7 +228,8 @@ function setup(prose) {
       position.textContent = current < n ? fill(L.position, current + 1, n) : '\u00a0';
       back.disabled = current === 0;
       next.hidden = current === n;
-      next.textContent = current === n - 1 ? L.finish : `${L.next} →`;
+      nextLabel.textContent = current === n - 1 ? L.finish : `${L.next} →`;
+      next.title = current === n - 1 ? L.finish : L.next;
     }
 
     function show(index, { focus = true } = {}) {

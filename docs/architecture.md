@@ -200,7 +200,10 @@ All motion is switched off for people who ask their system for reduced motion.
   `steady()`, its bar with Back, the position and Next, which keeps the size
   and width of the first fit for as long as the focus lasts, so that its
   buttons do not move from question to question; only the question below it
-  is fitted anew (Nicolas, 2026-11-05). Tables scale by the
+  is fitted anew (Nicolas, 2026-11-05). In focus the bar also saves room:
+  Back and Next become thin arrows without a frame, in one row with a bar of
+  thin segments and the position; their words stay for screen readers and
+  as tooltips. Tables scale by the
   width of their columns only. Full screen draws nothing outside the box, so
   the suggestions of a code box (`complete.js`) move into it while it is in
   focus and grow with the code.

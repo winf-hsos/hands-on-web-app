@@ -2612,6 +2612,79 @@ details.callout[open] > summary::before {
   pointer-events: none;
 }
 
+/* the arrows that stand for Back and Next in focus mode */
+.quiz-arrow {
+  display: none;
+}
+
+/* In focus mode the bar saves room (Nicolas, 2026-11-05): Back and Next are
+   thin arrows without a frame, in one row with a thin bar of segments and
+   the position, followed by the focus symbol. */
+.in-focus > .quiz-bar {
+  grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+  grid-template-areas: 'back steps position next tools';
+  gap: 0.6rem;
+  margin: 0 0 1.25rem;
+}
+
+.in-focus > .quiz-bar .quiz-back {
+  grid-area: back;
+}
+
+.in-focus > .quiz-bar .quiz-next {
+  grid-area: next;
+}
+
+.in-focus > .quiz-bar .quiz-position {
+  grid-area: position;
+  font-size: 0.8rem;
+}
+
+.in-focus > .quiz-bar .quiz-steps {
+  grid-area: steps;
+  gap: 4px;
+}
+
+.in-focus > .quiz-bar .quiz-tools {
+  grid-area: tools;
+  margin: 0;
+}
+
+.in-focus > .quiz-bar .quiz-step {
+  height: 3px;
+}
+
+.in-focus > .quiz-bar .button {
+  min-width: 0;
+  min-height: 0;
+  width: 1.9rem;
+  height: 1.9rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 0.4rem;
+  background: none;
+  box-shadow: none;
+  color: var(--quiet);
+}
+
+.in-focus > .quiz-bar .button:hover {
+  border-color: var(--rule);
+  color: var(--accent-ink);
+}
+
+.in-focus > .quiz-bar .quiz-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.in-focus > .quiz-bar .quiz-arrow {
+  display: block;
+}
+
 .quiz-result h2 {
   font-size: 1.15rem;
   margin: 0 0 0.5rem;
