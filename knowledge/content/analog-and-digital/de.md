@@ -15,8 +15,10 @@ objectives:
     - "die Größe eines Bildes als Punkte mal Bits je Punkt abschätzen und in eine Übertragungszeit umrechnen"
     - "eine Schwelle im Code setzen, die aus einem Messwert ein Symbol macht, und ihren Wert aus der eigenen Messreihe begründen"
 translation_of: en
-based_on: 2026-11-03
+based_on: 2026-11-04
 ---
+
+![Folien: Analog und digital](item:analog-and-digital-slides)
 
 Stell dir die Abfahrtstafel eines Bahnhofs vor, aus der Zeit vor den Chips:
 Die Fallblattanzeige klappert, bis jeder Buchstabe an seinem Platz ist.
@@ -269,7 +271,9 @@ passiert, darüber werden Menschen streiten, und genau diese Uneinigkeit ist
 der Punkt: Eine richtige Menge gibt es nicht, nur eine Abwägung gegen die
 Übertragungszeit, die jemand bewusst treffen muss. Wer ein Bild über eine
 Lichtstrecke schicken will, steht genau vor dieser Frage, und am
-[[photo-digitiser]] kannst du sie für dich beantworten.
+Foto-Digitalisierer hier kannst du sie für dich beantworten.
+
+![Foto-Digitalisierer](item:photo-digitiser)
 
 ## Dieselben zwei Schnitte beim Ton
 
@@ -301,8 +305,10 @@ for i in range(samples):
 
 Setz `levels` auf `2`, und von der Welle bleibt nur noch laut und leise; setz
 `samples` auf `4`, und von ihrem Verlauf bleibt fast nichts. Wie das klingt,
-hörst du am [[audio-digitiser]]: Wer die Abtastrate einer Aufnahme
+hörst du am Audio-Digitalisierer hier: Wer die Abtastrate einer Aufnahme
 herunterdreht, hört, wie eine Stimme blechern wird.
+
+![Audio-Digitalisierer](item:audio-digitiser)
 
 ## Wo dein Alphabet entsteht
 
@@ -357,3 +363,5 @@ gemessen hat.
   Punkt.
 - Eine Schwelle oder eine Einteilung in Bereiche ist eine Entscheidung, und sie
   gehört dorthin, wo eine Messreihe sie hinlegt.
+
+![Quiz: Analog und digital](item:analog-and-digital-quiz)

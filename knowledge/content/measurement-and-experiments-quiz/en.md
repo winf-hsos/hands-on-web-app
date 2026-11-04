@@ -6,14 +6,6 @@ summary: >-
   Twelve questions on what a sensor really returns, why readings scatter,
   what a control reading and the integration time are for, and what makes a
   measurement series evidence. Every answer comes with its reason.
-objectives:
-  intro: "This quiz lets you check in twelve questions whether you can:"
-  goals:
-    - "explain why only a measurement on the setup itself decides how it behaves, and not an explanation or a suggestion"
-    - "explain why a colour sensor returns four values that never match what was sent, and why you calibrate instead of calculating back"
-    - "explain what a control reading with the LED switched off and a shorter integration time do to the readings"
-    - "name what makes a measurement series and what belongs in its record"
-    - "tell a lucky streak from a reliable result by the number of repetitions"
 level: 1
 duration: 15
 topics: [transferring-information]
@@ -21,7 +13,7 @@ modules: [dup]
 relations:
   checks: [measurement-and-experiments]
 status: published
-updated: 2026-11-01
+updated: 2026-11-04
 ---
 
 ## An AI assistant suggests doubling a sensor's integration time, "then the readings will get better". Why is this advice not enough? {#me-001}

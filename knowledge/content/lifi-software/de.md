@@ -4,20 +4,13 @@ code: 2165
 title: "Benötigte Software im LiFi-Projekt"
 summary: >-
   Die fünf Programme, die vor der ersten Zeile Code auf eurem Laptop sein müssen, wozu jedes da ist, und wie ihr sie installiert: das erste von Hand, den Rest mit eurem KI-Assistenten.
-objectives:
-  intro: "Hier richtest du deinen Laptop für das LiFi-Projekt ein und kannst danach:"
-  goals:
-    - "sagen, welches der fünf Programme wofür da ist"
-    - "OpenCode installieren und den Kursordner so einrichten, dass dein Assistent übernehmen kann"
-    - "prüfen, ob Python, Brick Daemon, Brick Viewer und das Kursmodul lifi_hardware zusammenspielen"
-    - "mit dem Brick Viewer entscheiden, ob ein Fehler in deinem Programm liegt oder davor"
 level: 1
 duration: 20
 topics: [working-with-the-computer, programming-with-python]
 modules: [dup]
 project: lifi
 status: published
-updated: 2026-11-03
+updated: 2026-11-04
 ---
 
 Fünf Programme müssen auf eurem Laptop sein, bevor ihr die erste Zeile Code
@@ -37,7 +30,7 @@ Dazu kommt das Kursmodul `lifi_hardware`, über das eure Programme mit eurem
 Gerät sprechen. Es ist mit einem einzigen Befehl installiert und bringt die
 Bibliothek von Tinkerforge mit; was es kann, steht in [[lifi-hardware]]. Einen
 Überblick über den ganzen Aufbau, vom Gerät bis zur grünen LED, geben die
-Folien [[first-light]].
+Folien [[first-light-slides]].
 
 ## Was jedes Programm macht
 

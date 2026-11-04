@@ -5,14 +5,6 @@ summary: >-
   mitbringt, was ein Sensor wirklich liefert, Ketten und Ebenen von Kästen und
   die zwei Fragen, die jeder Kasten stellt. Jede Antwort kommt mit ihrer
   Begründung.
-objectives:
-  intro: "Mit diesem Quiz prüfst du in dreizehn Fragen, ob du Folgendes kannst:"
-  goals:
-    - "Eingabe, Verarbeitung und Ausgabe eines Kastens benennen und einen echten Test von bloßer Beschäftigung unterscheiden"
-    - "erklären, warum ein Computer Zahlen statt einer Farbe bekommt und was zur Eingabe eines Kastens gehört"
-    - "erklären, was an den Grenzen von Kästen in einer Kette übereinstimmen muss und wie du einen Fehler eingrenzt"
-    - "Datenfluss von Zerlegung unterscheiden und die Ebene eines Kastens passend zur Frage wählen"
-    - "sagen, welche der beiden Fragen eines Kastens ein Programm beantwortet"
 translation_of: en
 based_on: 2026-11-04
 ---

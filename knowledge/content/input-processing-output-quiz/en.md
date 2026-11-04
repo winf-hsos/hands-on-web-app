@@ -6,20 +6,12 @@ summary: >-
   Thirteen questions on the IPO box: its three parts, the test it brings
   along, what a sensor really delivers, chains and levels of boxes, and the
   two questions every box raises. Every answer comes with its reason.
-objectives:
-  intro: "This quiz lets you check in thirteen questions whether you can:"
-  goals:
-    - "name input, processing and output of a box and tell a real test from mere activity"
-    - "explain why a computer receives numbers rather than a colour, and what belongs to the input of a box"
-    - "explain what must agree at the boundaries of boxes in a chain and how you narrow down a fault"
-    - "tell data flow from decomposition and choose the level of a box to fit the question"
-    - "say which of the two questions of a box a program answers"
 level: 1
 duration: 15
 topics: [solving-problems, processing-information]
 modules: [dup]
 relations:
-  checks: [input-processing-output-slides]
+  checks: [input-processing-output]
 status: published
 updated: 2026-11-04
 ---

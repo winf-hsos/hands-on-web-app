@@ -4,16 +4,8 @@ summary: >-
   Zwölf Fragen dazu, was ein Sensor wirklich liefert, warum Messwerte streuen,
   wozu Kontrollmessung und Integrationszeit dienen und was eine Messreihe zum
   Beleg macht. Jede Antwort kommt mit ihrer Begründung.
-objectives:
-  intro: "Mit diesem Quiz prüfst du in zwölf Fragen, ob du Folgendes kannst:"
-  goals:
-    - "begründen, warum nur eine Messung am Aufbau selbst entscheidet, wie er sich verhält, und keine Erklärung und kein Vorschlag"
-    - "erklären, warum ein Farbsensor vier Werte liefert, die nie dem Gesendeten entsprechen, und warum du kalibrierst, statt zurückzurechnen"
-    - "erklären, was eine Kontrollmessung bei ausgeschalteter LED und eine kürzere Integrationszeit mit den Messwerten machen"
-    - "benennen, was eine Messreihe ausmacht und was in ihr Protokoll gehört"
-    - "eine Glückssträhne an der Zahl der Wiederholungen von einem belastbaren Ergebnis unterscheiden"
 translation_of: en
-based_on: 2026-11-01
+based_on: 2026-11-04
 ---
 
 ## Ein KI-Assistent schlägt vor, die Integrationszeit eines Sensors zu verdoppeln, „dann werden die Werte besser“. Warum genügt diese Auskunft nicht? {#me-001}

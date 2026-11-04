@@ -13,8 +13,10 @@ objectives:
     - "aus dem nutzbaren Bereich und der Streuung berechnen, wie viele Zeichen in eine Strecke passen"
     - "die Wege, das Verhältnis zu verbessern, danach ordnen, was sie an Bits pro Zeichen oder Zeichen pro Sekunde kosten"
 translation_of: en
-based_on: 2026-11-01
+based_on: 2026-11-04
 ---
+
+![Folien: Signal und Rauschen](item:signal-and-noise-slides)
 
 Ein Leuchtturm im Nebel ist ein seltsamer Anblick. Die Lampe brennt genauso
 hell wie in einer klaren Nacht, und trotzdem erstirbt der Strahl nach wenigen
@@ -246,3 +248,5 @@ der Kanal selbst.
 - Fast jede Verbesserung kostet Bits pro Zeichen oder Zeichen pro Sekunde,
   außer das Licht auszurichten, Umgebungslicht abzuschirmen und die Geometrie
   festzulegen.
+
+![Quiz: Signal und Rauschen](item:signal-and-noise-quiz)

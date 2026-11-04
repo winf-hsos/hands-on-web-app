@@ -11,26 +11,18 @@ modules: [dup]
 phases:
   - id: start
     challenge: lifi-challenge-0
-    items: [lifi-device, lifi-software, lifi-hardware, lifi-cockpit, lifi-challenges, first-light, problem-decomposition, cutting-the-lifi-project, input-processing-output-slides, input-processing-output, input-processing-output-quiz, algorithms-and-programs, algorithms-and-programs-quiz]
+    items: [lifi-equipment, first-light, problem-decomposition, input-processing-output, algorithms-and-programs]
   - id: alphabet
     challenge: lifi-challenge-1
     items:
       - measurement-and-experiments
-      - measurement-and-experiments-quiz
       - analog-and-digital
-      - analog-and-digital-quiz
-      - photo-digitiser
-      - audio-digitiser
       - symbols-and-information
-      - signal-and-noise-slides
       - signal-and-noise
-      - signal-and-noise-quiz
       - measuring-your-noise
       - believed-and-measured
       - place-value-systems
       - why-two-states
-      - why-ten
-      - number-systems-quiz
   - id: word
     challenge: lifi-challenge-2
     items: [morse-code]
@@ -41,7 +33,7 @@ phases:
     challenge: lifi-challenge-4
     items: [byte, hexadecimal, binary-prefixes, logic-gates]
 status: published
-updated: 2026-11-03
+updated: 2026-11-04
 ---
 
 Jede Person im Team bekommt ein kleines Gerät mit einer RGB-LED und einem

@@ -4,13 +4,6 @@ code: 1473
 title: "Challenges im LiFi-Projekt"
 summary: >-
   Welchen Vertrag jede Challenge festlegt, wie sie am Testtisch abgenommen wird und welche drei Ergebnisse ihr aus jeder Challenge mitnehmt.
-objectives:
-  intro: "Hier erfährst du, woran eine Challenge gemessen wird, und kannst danach:"
-  goals:
-    - "erklären, was der Vertrag einer Challenge festlegt und was er dir freilässt"
-    - "beschreiben, wie eine Abnahme am Testtisch abläuft"
-    - "erklären, wozu die Live-Änderung bei jeder Abnahme dient"
-    - "Messprotokoll, Lösungsbeschreibung und Irrtumsprotokoll führen"
 level: 1
 duration: 9
 topics: [solving-problems]

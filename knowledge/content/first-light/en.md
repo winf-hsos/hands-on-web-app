@@ -15,8 +15,10 @@ objectives:
     - "start a Python program in the terminal and read an error message from the bottom up"
     - "build a kitchen timer in five steps with `input()`, `while`, `for`, `def` and `if`/`else`, running it after each step"
 translation_of: de
-based_on: 2026-11-02
+based_on: 2026-11-04
 ---
+
+![Slides: First light](item:first-light-slides)
 
 Below the slides are the tasks you work through in the workshop, to read
 again and to carry on with at home. You write your program in VS Code and run

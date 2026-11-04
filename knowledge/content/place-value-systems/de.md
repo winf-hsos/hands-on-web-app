@@ -13,8 +13,10 @@ objectives:
     - "begründen, warum jede Basis die Ziffer 0 braucht und eine Ziffernfolge ohne Angabe ihrer Basis mehrdeutig ist"
     - "mit kⁿ berechnen, wie viele Stellen ein Code aus k Zeichen, etwa vier Farben, für 26 Buchstaben braucht"
 translation_of: en
-based_on: 2026-11-01
+based_on: 2026-11-04
 ---
+
+![Folien: Warum zehn?](item:why-ten)
 
 Dass `123` einhundertdreiundzwanzig bedeutet, ist eine Vereinbarung und kein
 Naturgesetz. Jede Stelle der Zahl trägt eine Zehnerpotenz, die Ziffer sagt,
@@ -98,3 +100,5 @@ Die Zehn war nie etwas Besonderes, sie ist die Zahl der Finger an zwei Händen.
 Was zählt, ist die Bauanleitung aus Ziffer mal Stellenwert, und sie führt
 geradewegs zu [[binary-numbers|den Binärzahlen]], mit denen ein Rechner
 arbeitet.
+
+![Quiz: Zahlensysteme](item:number-systems-quiz)

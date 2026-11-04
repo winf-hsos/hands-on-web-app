@@ -2,14 +2,6 @@
 title: "The course module `lifi_hardware`"
 summary: >-
   What the Python module lifi_hardware takes off your hands and what it deliberately leaves visible, how you address LED and sensor with it, and what its measurement log records.
-objectives:
-  intro: "Here you get to know the course module you address the LiFi device with, and can then:"
-  goals:
-    - "explain what the course module hides from you and which two settings it deliberately leaves visible"
-    - "set a colour, fetch a reading and adjust the sensor with led and sensor"
-    - "explain why the sensor delivers a new value at most once per integration time"
-    - "address two devices on one laptop separately"
-    - "say what the measurement log records, what of it is uploaded and how you switch that off"
 translation_of: de
 based_on: 2026-11-04
 ---

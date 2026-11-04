@@ -2,16 +2,8 @@
 title: "The team cockpit"
 summary: >-
   The cockpit shows your light link live in the browser, at the top what your LED sends and below it what your sensor measures, and it is your most important tool for finding faults.
-objectives:
-  intro: "Here you get to know the team cockpit and can then:"
-  goals:
-    - "open the cockpit for your team and say where its data comes from"
-    - "read the status line, the sender band and the sensor curves"
-    - "move through the timeline, from a few seconds of signal to an overview of days"
-    - "jump straight to the crashes of your program and see what was sent and measured just before"
-    - "check in order why no data arrives"
 translation_of: de
-based_on: 2026-11-02
+based_on: 2026-11-04
 ---
 
 The team cockpit shows your light link live in the browser: at the top what

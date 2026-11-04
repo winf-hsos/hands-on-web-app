@@ -3,15 +3,8 @@ title: Audio digitiser
 summary: >-
   The same two cuts for a sound: you choose the sampling rate and the bit
   depth, see the staircase over the wave and hear what gets lost on the way.
-objectives:
-  intro: "With this demo you digitise a sound yourself, and afterwards you can:"
-  goals:
-    - "hear and see what a sampling rate that is too low and a bit depth that is too small do to a sound"
-    - "recognise sampling rate and bit depth as the same two cuts that are called resolution and colour depth for a picture"
-    - "find from the bit depth the number of levels a measurement is rounded to"
-    - "work out the size of a recording as duration times samples per second times bits per sample"
 translation_of: de
-based_on: 2026-11-03
+based_on: 2026-11-04
 ---
 
 **Goal:** Hear what the two cuts of digitising make of a sound. The sampling

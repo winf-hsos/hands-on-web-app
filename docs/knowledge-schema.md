@@ -155,8 +155,9 @@ warning, not an error, so that a new draft can be saved first; an item of type
 since its questions already say what it checks (Nicolas, 2026-11-02), and it
 needs no `objectives`.
 
-**Several types** (Nicolas, 2026-11-02; being undone since 2026-11-04, when
-lessons began to embed their slides as items of their own, section 6a). An item may have more than one
+**Several types** (Nicolas, 2026-11-02; undone on 2026-11-04, when lessons
+began to embed their slides as items of their own, section 6a: no item has
+two types any more, but the build still accepts a list). An item may have more than one
 type, written as a list: `type: [lesson, slides]`. The item is found under
 each of them in the list of items, its rows and its page name all of them
 ("Lektion · Folien"), and it takes the icon, the group in the list and the
@@ -486,6 +487,10 @@ warns when it does. Marking a lesson done marks its material done as well,
 except its quizzes, which count by being answered. Modules, projects and paths
 list the lesson, not its material.
 
+A lesson that only gathers info pages, such as `lifi-equipment` ("Eure
+Ausrüstung"), has no objectives either. An item of a project counts as linked
+by it when a lesson the project lists embeds it.
+
 Validation checks that an embedded id exists, is not the lesson itself and not
 another lesson, and that every language embeds the same material in the same
 order. A line inside fenced code, or with text around it, stays text. On the
@@ -746,9 +751,11 @@ into the `media/` folder of the lesson that uses it as `<name>.<lang>.svg`; a
 change to a drawing in `deck.js` thus reaches the lesson by running it again.
 
 **Slides to a concept carry its article** (Nicolas, 2026-11-02; replaced on
-2026-11-04 by a lesson that embeds its slides, section 6a, first for
-`symbols-and-information` and its `symbols-and-information-slides`; the items
-below are converted one by one). Such an item
+2026-11-04 by a lesson that embeds its slides, section 6a. Every item named
+below has its deck in an item `…-slides` again; `input-processing-output` is
+now the lesson, its exercise `input-processing-output-exercise`, and
+`first-light` an exercise that embeds its slides. What follows is the
+history). Such an item
 has the types `[lesson, slides]`, and its `de.md` and `en.md` hold, below
 title and summary, the article on the concept, which the page shows after the
 deck. `problem-decomposition` was the first, `input-processing-output-slides`

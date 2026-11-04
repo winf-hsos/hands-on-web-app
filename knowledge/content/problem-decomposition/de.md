@@ -1,5 +1,5 @@
 ---
-type: [lesson, slides]
+type: lesson
 code: 1889
 title: Probleme zerlegen
 summary: >-
@@ -14,14 +14,15 @@ objectives:
     - "ein Problem zuerst in einer kleineren Fassung lösen und es von dort aus Schritt für Schritt erweitern"
     - "ein Teilstück so formulieren, dass ein eingebauter Test mit Ja oder Nein sagt, ob es fertig ist"
     - "Zuständigkeiten mit klaren Grenzen aufteilen und einem KI-Assistenten kleine Aufträge geben, die ihren Test mitbringen"
-deck_lang: en
 level: 1
 duration: 25
 topics: [solving-problems]
 modules: [dup]
 status: published
-updated: 2026-11-02
+updated: 2026-11-04
 ---
+
+![Folien: Probleme zerlegen](item:problem-decomposition-slides)
 
 „Bau eine Chat-App“ löst niemand in einem Stück. Das sagt nichts über dich
 aus, es ist der Normalzustand jedes interessanten Problems: Große Probleme
@@ -119,7 +120,13 @@ zehn Sekunden nachprüfen kannst, ohne dem Assistenten glauben zu müssen.
 
 Du schneidest das Problem, der Assistent löst die Stücke, und du prüfst jedes
 davon. Was ein geschnittenes Stück braucht, sobald ein Rechner es lösen soll,
-zeigt [[input-processing-output-slides]].
+zeigt [[input-processing-output]].
+
+Wie das LiFi-Projekt in seine Challenges geschnitten ist und wie ihr im Team,
+bei der Fehlersuche und mit dem Assistenten weiter zerlegt, zeigen die Folien
+zum Projekt.
+
+![Folien: Das LiFi-Projekt zerlegen](item:cutting-the-lifi-project)
 
 ## Zum Weiterlesen
 

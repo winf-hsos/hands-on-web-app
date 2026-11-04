@@ -6,13 +6,6 @@ summary: >-
   Ein Foto wird zu Zahlen: Du wählst, wie viele Punkte und wie viele Farben es
   behält, siehst das Bild dabei gröber werden und zahlst jeden Punkt und jede
   Farbe in Bit.
-objectives:
-  intro: "An diesem Demonstrator digitalisierst du ein Foto selbst und kannst danach:"
-  goals:
-    - "an Klötzchen erkennen, dass das Abtasten zu grob war, und an harten Flecken, dass das Quantisieren zu grob war"
-    - "die Größe eines Bildes als Punkte mal Bit je Punkt ausrechnen und in eine Übertragungszeit umrechnen"
-    - "zu einem Bildpunkt angeben, mit welchen Bits ihn eine gewählte Farbtiefe speichert"
-    - "abwägen, wie viel Auflösung und Farbtiefe ein Bild braucht, damit es noch zeigt, was es zeigen soll"
 level: 1
 duration: 10
 topics: [representing-information, transferring-information]
@@ -21,7 +14,7 @@ relations:
   example_of: [analog-and-digital]
   see_also: [audio-digitiser]
 status: published
-updated: 2026-11-03
+updated: 2026-11-04
 ---
 
 **Ziel:** Du siehst, was die zwei Schnitte des Digitalisierens aus einem Foto

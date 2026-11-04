@@ -1,7 +1,7 @@
 ---
-type: [lesson, slides]
+type: lesson
 code: 7942
-formerly: [measuring-and-experimenting, sent-is-not-measured]
+formerly: [sent-is-not-measured]
 title: Measuring and experimenting
 summary: >-
   Why a single reading is not yet evidence: how a claim turns into a test, what
@@ -18,7 +18,6 @@ objectives:
     - "plan a controlled measurement series with an expectation written down beforehand, a control reading with the LED off, exactly one changed quantity and enough repetitions"
     - "work out why five hits in a row can be luck while fifty cannot"
     - "calibrate by recording reference readings of known colours and assign a new reading to the nearest cloud"
-deck_lang: en
 level: 1
 duration: 30
 topics: [transferring-information]
@@ -26,8 +25,10 @@ modules: [dup]
 relations:
   see_also: [believed-and-measured, measuring-your-noise]
 status: published
-updated: 2026-11-03
+updated: 2026-11-04
 ---
+
+![Slides: Measuring and experimenting](item:measurement-and-experiments-slides)
 
 For two thousand years people believed Aristotle that heavy bodies fall faster
 than light ones, because it sounded plausible. As the story goes, Galileo
@@ -337,3 +338,5 @@ you do not know it.
   quantity, enough repetitions and a record of every value.
 - Five hits in a row can be luck while fifty cannot, and a clean series
   outweighs any suggestion, however well it is argued.
+
+![Quiz: Measuring and experimenting](item:measurement-and-experiments-quiz)

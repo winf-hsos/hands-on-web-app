@@ -4,14 +4,6 @@ code: 5274
 title: "Das Kursmodul `lifi_hardware`"
 summary: >-
   Was das Python-Modul lifi_hardware euch abnimmt und was es bewusst sichtbar lässt, wie ihr LED und Sensor damit ansprecht, und was sein Messprotokoll festhält.
-objectives:
-  intro: "Hier lernst du das Kursmodul kennen, mit dem du das LiFi-Gerät ansprichst, und kannst danach:"
-  goals:
-    - "erklären, was das Kursmodul vor dir verbirgt und welche zwei Einstellungen es bewusst sichtbar lässt"
-    - "mit led und sensor eine Farbe setzen, eine Messung holen und den Sensor einstellen"
-    - "erklären, warum der Sensor höchstens einmal je Integrationszeit einen neuen Wert liefert"
-    - "zwei Geräte an einem Laptop getrennt ansprechen"
-    - "sagen, was das Messprotokoll festhält, was davon hochgeladen wird und wie du das abschaltest"
 level: 1
 duration: 12
 topics: [working-with-the-computer, programming-with-python]

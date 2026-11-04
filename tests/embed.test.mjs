@@ -65,3 +65,13 @@ test('a lesson page shows its material in place, and the material names its less
   const material = String(itemPage(site, site.item.get('question-game'), 'de').content);
   assert.match(material, /class="before in-lessons">Teil der Lektion <a href="\/cs\/de\/items\/symbols-and-information\/">/);
 });
+
+test('a lesson that only gathers info pages needs no objectives, and its pages count as linked by the project', () => {
+  const { errors, warnings } = check();
+  assert.deepEqual(errors, []);
+  assert.ok(!warnings.some((w) => w.startsWith('content/lifi-equipment/')), warnings.filter((w) => w.includes('lifi-equipment')).join('\n'));
+  const unlinked = check((find) => {
+    for (const file of Object.values(find('lifi-equipment').files)) file.body = file.body.replace('![Das LiFi-Gerät](item:lifi-device)\n', '').replace('![The LiFi device](item:lifi-device)\n', '');
+  });
+  assert.ok(unlinked.errors.includes('content/lifi-device: belongs to project lifi, which does not link it'));
+});

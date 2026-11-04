@@ -5,16 +5,8 @@ summary: >-
   Streuung, der Zahl der Zeichen, die in eine Strecke passen, und dem Preis
   jedes Weges, dieses Verhältnis zu verbessern. Jede Antwort kommt mit ihrer
   Begründung.
-objectives:
-  intro: "Mit diesem Quiz prüfst du in vierzehn Fragen, ob du Folgendes kannst:"
-  goals:
-    - "erklären, warum jede Messung streut und warum ein Mittelwert allein ein Zeichen nicht beschreibt"
-    - "erklären, was längere Messfenster und Mitteln in Software bringen und was sie kosten"
-    - "begründen, wann zwei Zeichen sicher unterscheidbar sind und warum das Verhältnis von Abstand zu Streuung entscheidet"
-    - "aus dem nutzbaren Bereich und der Streuung berechnen, wie viele Zeichen hineinpassen"
-    - "Einstellungen, Vorschläge und Kalibrierungen danach beurteilen, ob sie an der Strecke selbst gemessen wurden"
 translation_of: en
-based_on: 2026-11-01
+based_on: 2026-11-04
 ---
 
 ## Du misst zehnmal hintereinander dieselbe Farbe, ohne irgendetwas zu verändern, und bekommst zehn leicht verschiedene Zahlen. Was bedeutet das? {#sn-001}

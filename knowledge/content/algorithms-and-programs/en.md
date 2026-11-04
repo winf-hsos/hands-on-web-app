@@ -1,7 +1,6 @@
 ---
-type: [lesson, slides]
+type: lesson
 code: 5749
-formerly: [algorithms-and-programs-slides]
 title: Algorithms and programs
 summary: >-
   What a program is: an algorithm written down so completely that a machine
@@ -19,7 +18,6 @@ objectives:
     - "compare two correct procedures by their cost and say how that cost grows with the size of the problem"
     - "read a Python error message and find the file, the line and the cause in it"
     - "ask an AI assistant so that you understand the code, and change code you have taken over yourself"
-deck_lang: en
 level: 1
 duration: 30
 topics: [solving-problems, programming-with-python]
@@ -28,8 +26,10 @@ relations:
   requires: [programming-principles]
   see_also: [python-first-program, python-while-loops, python-error-messages]
 status: published
-updated: 2026-11-03
+updated: 2026-11-04
 ---
+
+![Slides: Algorithms and programs](item:algorithms-and-programs-slides)
 
 Around 1900, many living rooms had a piano that played by itself. The keys
 moved while the stool stayed empty, and the music came from a roll of paper
@@ -403,3 +403,5 @@ cannot change a piece of code, you have not taken it over but only copied it.
   cost and by how it grows with the size of the problem.
 - An error message names the file, the line and the cause, and it is
   information, not a verdict.
+
+![Quiz: Algorithms and programs](item:algorithms-and-programs-quiz)

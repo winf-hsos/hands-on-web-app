@@ -2,13 +2,6 @@
 title: "Challenges in the LiFi project"
 summary: >-
   Which contract every challenge fixes, how it is accepted at the test table, and which three results you take away from every challenge.
-objectives:
-  intro: "Here you find out what a challenge is measured by and can then:"
-  goals:
-    - "explain what the contract of a challenge fixes and what it leaves to you"
-    - "describe how an acceptance at the test table works"
-    - "explain what the live change at every acceptance is for"
-    - "keep a measurement log, a description of your solution and a log of mistakes"
 translation_of: de
 based_on: 2026-11-04
 ---

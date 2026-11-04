@@ -2,16 +2,8 @@
 title: "The LiFi device"
 summary: >-
   What your device is made of, what the LED and the colour sensor can do, what you may build around them, and how the case is printed and assembled.
-objectives:
-  intro: "Here you get to know the device of the LiFi project and can then:"
-  goals:
-    - "name the three parts of the device and what each does"
-    - "explain what the four channels of the colour sensor measure and why its numbers are not the ones you sent"
-    - "weigh the sensor's integration time against its gain"
-    - "say which optics you may build yourselves and which you may not"
-    - "address two devices on one laptop separately"
 translation_of: de
-based_on: 2026-11-02
+based_on: 2026-11-04
 ---
 
 Your device is three parts in a 3D-printed case:

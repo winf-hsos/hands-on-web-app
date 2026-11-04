@@ -5,16 +5,8 @@ summary: >-
   hinzufügt, zur Reihenfolge von Anweisungen, zu Schleifen, die enden oder
   nicht, und zum Aufwand eines Verfahrens. Jede Antwort kommt mit ihrer
   Begründung.
-objectives:
-  intro: "Mit diesem Quiz prüfst du in vierzehn Fragen, ob du Folgendes kannst:"
-  goals:
-    - "einen Algorithmus von einem Programm unterscheiden und erklären, warum ein Programm vollständig sein muss"
-    - "Zeile für Zeile vorhersagen, was ein kurzes Programm bewirkt, und warum Pausen und Reihenfolge das Ergebnis ändern"
-    - "die Bausteine eines Programms benennen und in einer Fehlermeldung Datei, Zeile und Ursache finden"
-    - "sagen, ob und warum eine Schleife endet, auch die Abbruchbedingung von Bubblesort"
-    - "zwei richtige Verfahren nach ihrem Aufwand vergleichen"
 translation_of: en
-based_on: 2026-11-01
+based_on: 2026-11-04
 ---
 
 Mehrere Fragen zeigen kurze Programme, die eine farbige Lampe schalten:

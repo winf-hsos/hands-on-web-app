@@ -292,7 +292,7 @@ export function item(site, doc, lang) {
           <p class="lead" lang="${text.lang}"${editable(site, 'summary')}>${text.summary}</p>
           ${topicTags(site, lead.topics, lang)}
           ${before.length > 0 && html`<p class="before"${editable(site, 'relations')}>${t(lang, 'before')} ${before.map((b, i) => html`${i > 0 && ', '}${link(b)}`)}</p>`}
-          ${lessons.length > 0 && html`<p class="before in-lessons">${t(lang, lessons.length === 1 ? 'in_lessons' : 'in_lessons_many')} ${lessons.map((l, i) => html`${i > 0 && ', '}${link(l)}`)}</p>`}
+          ${lessons.length > 0 && html`<p class="before in-lessons">${t(lang, lessons.length > 1 ? 'in_lessons_many' : hasType(lessons[0].lead, 'lesson') ? 'in_lessons' : 'in_exercise')} ${lessons.map((l, i) => html`${i > 0 && ', '}${link(l)}`)}</p>`}
         </header>
         ${text.missing && html`<p class="notice">${t(lang, 'missing_translation')}</p>`}
         ${text.stale && html`<p class="notice">${t(lang, 'stale_translation')}</p>`}

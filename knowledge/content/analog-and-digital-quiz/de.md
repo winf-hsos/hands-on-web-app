@@ -4,16 +4,8 @@ summary: >-
   Fünfzehn Fragen dazu, was etwas digital macht, warum mehr Stufen die Grenzen
   näher rücken lassen, was Digitalisieren kostet und was es einbringt. Jede
   Antwort kommt mit ihrer Begründung.
-objectives:
-  intro: "Mit diesem Quiz prüfst du in fünfzehn Fragen, ob du Folgendes kannst:"
-  goals:
-    - "analog und digital an dem einen Merkmal unterscheiden, das zählt: stufenlos oder endlich viele getrennte Zustände"
-    - "erklären, warum dasselbe Rauschen zum Problem wird, wenn die Zahl der Bereiche wächst"
-    - "sagen, wo eine Strecke, die Daten mit Licht überträgt, von digital zu analog und zurück wechselt"
-    - "Abtasten und Quantisieren unterscheiden und ihre Spuren in einem Bild erkennen"
-    - "die Größe eines Bildes als Punkte mal Bits je Punkt ausrechnen und beurteilen, was in ein Budget passt"
 translation_of: en
-based_on: 2026-11-03
+based_on: 2026-11-04
 ---
 
 ## Was bedeutet es, wenn eine Größe „analog“ ist? {#ad-001}

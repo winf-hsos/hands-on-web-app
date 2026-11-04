@@ -5,13 +5,6 @@ title: Audio-Digitalisierer
 summary: >-
   Dieselben zwei Schnitte für einen Klang: Du wählst Abtastrate und Bittiefe,
   siehst die Treppe über der Welle und hörst, was dabei verloren geht.
-objectives:
-  intro: "An diesem Demonstrator digitalisierst du einen Klang selbst und kannst danach:"
-  goals:
-    - "hören und sehen, was eine zu kleine Abtastrate und was eine zu kleine Bittiefe an einem Klang verändert"
-    - "Abtastrate und Bittiefe als dieselben zwei Schnitte erkennen, die bei einem Bild Auflösung und Farbtiefe heißen"
-    - "aus der Bittiefe die Zahl der Stufen bestimmen, auf die eine Messung gerundet wird"
-    - "die Größe einer Aufnahme als Dauer mal Messungen je Sekunde mal Bit je Messung ausrechnen"
 level: 1
 duration: 10
 topics: [representing-information, transferring-information]
@@ -19,7 +12,7 @@ modules: [dup]
 relations:
   example_of: [analog-and-digital]
 status: published
-updated: 2026-11-03
+updated: 2026-11-04
 ---
 
 **Ziel:** Du hörst, was die zwei Schnitte des Digitalisierens aus einem Klang

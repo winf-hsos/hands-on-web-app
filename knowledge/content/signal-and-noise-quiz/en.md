@@ -6,14 +6,6 @@ summary: >-
   Fourteen questions on noise, averaging, the ratio of distance to spread,
   how many symbols fit into a link and what each way of improving the ratio
   costs. Every answer comes with its reason.
-objectives:
-  intro: "This quiz lets you check in fourteen questions whether you can:"
-  goals:
-    - "explain why every measurement scatters and why a mean alone does not describe a symbol"
-    - "explain what longer measurement windows and averaging in software gain and what they cost"
-    - "explain when two symbols are safely distinguishable and why the ratio of distance to spread decides"
-    - "calculate from the usable range and the spread how many symbols fit"
-    - "judge settings, suggestions and calibrations by whether they were measured on the link itself"
 level: 1
 duration: 20
 topics: [transferring-information]
@@ -22,7 +14,7 @@ relations:
   checks: [signal-and-noise]
   see_also: [signal-and-noise-slides]
 status: draft
-updated: 2026-11-01
+updated: 2026-11-04
 ---
 
 ## You measure the same colour ten times in a row without changing anything, and get ten slightly different numbers. What does that mean? {#sn-001}

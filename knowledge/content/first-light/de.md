@@ -1,5 +1,5 @@
 ---
-type: [exercise, slides]
+type: exercise
 code: 5309
 title: "First Light: Gerät, Assistent und erstes Programm"
 summary: >-
@@ -16,7 +16,6 @@ objectives:
     - "erklären, was das Kontextfenster ist und warum eine neue Aufgabe eine neue Sitzung bekommt"
     - "ein Python-Programm im Terminal starten und eine Fehlermeldung von unten nach oben lesen"
     - "einen Küchenwecker in fünf Schritten mit `input()`, `while`, `for`, `def` und `if`/`else` aufbauen und nach jedem Schritt ausführen"
-deck_lang: en
 level: 1
 duration: 45
 topics: [working-with-the-computer, programming-with-python]
@@ -24,8 +23,10 @@ modules: [dup]
 relations:
   see_also: [problem-decomposition, visual-studio-code]
 status: published
-updated: 2026-11-02
+updated: 2026-11-04
 ---
+
+![Folien: First Light](item:first-light-slides)
 
 Unter den Folien stehen die Aufgaben, die du in der Werkstatt mitmachst, zum
 Nachlesen und zum Weitermachen zu Hause. Du schreibst dein Programm in

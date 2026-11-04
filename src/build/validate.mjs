@@ -480,7 +480,10 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
       errors.push(`content/${item.id}: unknown project "${item.lead.project}"`);
       continue;
     }
-    const linked = project.lead.phases.flatMap((p) => [p.challenge, ...(p.items ?? []), ...(p.challenges ?? []).flatMap((c) => c.items ?? [])]);
+    const listed = project.lead.phases.flatMap((p) => [p.challenge, ...(p.items ?? []), ...(p.challenges ?? []).flatMap((c) => c.items ?? [])]);
+    // material counts as linked when a listed lesson embeds it
+    const embedded = (id) => (items.has(id) ? embedsIn(items.get(id).files[items.get(id).leadLang].body) : []);
+    const linked = [...listed, ...listed.flatMap(embedded)];
     if (!linked.includes(item.id)) errors.push(`content/${item.id}: belongs to project ${project.id}, which does not link it`);
   }
   for (const page of pages) {
@@ -639,9 +642,13 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
       else if (file.data.based_on && file.data.based_on < doc.lead.updated)
         warnings.push(`${file.path}: translation is older than its lead file`);
       // an info page introduces no concept, so it need not say what is learnt;
-      // material inside a lesson has the lesson's objectives (Nicolas, 2026-11-04)
+      // material inside a lesson has the lesson's objectives, and a lesson that
+      // only gathers info pages, such as "Eure Ausrüstung", has none of its own
+      // (Nicolas, 2026-11-04)
       const inLesson = [...embedding.values()].some((ids) => ids.includes(doc.id));
-      if (file && doc.section === 'content' && !file.data.objectives && !inLesson && !['info', 'quiz', 'slides'].some((type) => hasType(doc.lead, type)))
+      const embeds = embedding.get(doc.id) ?? [];
+      const infoOnly = embeds.length > 0 && embeds.every((id) => items.has(id) && hasType(items.get(id).lead, 'info'));
+      if (file && doc.section === 'content' && !file.data.objectives && !inLesson && !infoOnly && !['info', 'quiz', 'slides'].some((type) => hasType(doc.lead, type)))
         warnings.push(`${file.path}: no objectives (what you learn)`);
       if (file?.data.objectives && inLesson && !['experiment', 'challenge', 'exercise'].some((type) => hasType(doc.lead, type)))
         warnings.push(`${file.path}: has objectives, but is material of a lesson, whose objectives count`);

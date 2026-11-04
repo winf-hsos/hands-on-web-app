@@ -16,8 +16,10 @@ objectives:
     - "begründen, warum fünf Treffer in Folge Glück sein können, fünfzig aber nicht"
     - "durch Kalibrieren Referenzwerte bekannter Farben aufnehmen und eine neue Ablesung der nächstgelegenen Wolke zuordnen"
 translation_of: en
-based_on: 2026-11-03
+based_on: 2026-11-04
 ---
+
+![Folien: Messen und Experimentieren](item:measurement-and-experiments-slides)
 
 Zweitausend Jahre lang glaubte man Aristoteles, dass schwere Körper schneller
 fallen als leichte, weil es plausibel klang. Der Legende nach ließ Galilei zwei
@@ -340,3 +342,5 @@ gemessen hast, weißt du nicht.
   Größe, genügend Wiederholungen und ein Protokoll aller Werte.
 - Fünf Treffer in Folge können Glück sein, fünfzig nicht, und eine saubere
   Messreihe wiegt schwerer als jeder noch so gut begründete Vorschlag.
+
+![Quiz: Messen und Experimentieren](item:measurement-and-experiments-quiz)

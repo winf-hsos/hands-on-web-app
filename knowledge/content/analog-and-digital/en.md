@@ -1,7 +1,6 @@
 ---
-type: [lesson, slides]
+type: lesson
 code: 9684
-formerly: [analog-and-digital-slides]
 title: Analog and digital
 summary: >-
   Digital does not mean electronic but finitely many clearly separated
@@ -17,7 +16,6 @@ objectives:
     - "tell sampling from quantising and recognise from blocks or hard patches which of the two cuts was too coarse"
     - "estimate the size of a picture as points times bits per point and turn it into a transmission time"
     - "set a threshold in code that turns a reading into a symbol and justify its value from your own measurement series"
-deck_lang: en
 level: 1
 duration: 30
 topics: [representing-information, transferring-information]
@@ -25,8 +23,10 @@ modules: [dup]
 relations:
   see_also: [why-two-states, measuring-your-noise]
 status: published
-updated: 2026-11-03
+updated: 2026-11-04
 ---
+
+![Slides: Analog and digital](item:analog-and-digital-slides)
 
 Picture the departures board of a railway station before the age of chips:
 the split-flap display clatters until every letter has fallen into place.
@@ -271,8 +271,10 @@ somewhere in between it stops showing what it showed. People will disagree
 about where exactly that happens, and that disagreement is the point: there is
 no correct amount, only a trade-off against the transmission time that
 someone has to make on purpose. Whoever wants to send a picture over a light
-link faces exactly this question, and the [[photo-digitiser]] lets you answer
-it for yourself.
+link faces exactly this question, and the photo digitiser here lets you
+answer it for yourself.
+
+![Photo digitiser](item:photo-digitiser)
 
 ## The same two cuts for sound
 
@@ -304,8 +306,10 @@ for i in range(samples):
 
 Set `levels` to `2`, and only loud and quiet remain of the wave; set
 `samples` to `4`, and almost nothing remains of its course. The
-[[audio-digitiser]] lets you hear what that sounds like: turn the sampling
+audio digitiser here lets you hear what that sounds like: turn the sampling
 rate of a recording down, and a voice soon sounds tinny.
+
+![Audio digitiser](item:audio-digitiser)
 
 ## Where your alphabet is born
 
@@ -358,3 +362,5 @@ whoever has measured it.
   point.
 - A threshold or a set of regions is a decision, and it belongs where a
   measurement series puts it.
+
+![Quiz: Analog and digital](item:analog-and-digital-quiz)

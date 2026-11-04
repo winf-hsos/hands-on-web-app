@@ -3,14 +3,6 @@ title: "Quiz: Zahlensysteme"
 summary: >-
   Vierzehn Fragen zu Stellenwert, Binär- und Hexadezimalzahlen, Bit und Byte und
   den beiden Leitern der Einheiten. Jede Antwort kommt mit ihrer Begründung.
-objectives:
-  intro: "Mit diesem Quiz prüfst du in zwölf Fragen, ob du Folgendes kannst:"
-  goals:
-    - "Zahlen zur Basis 10, 8, 2 und 16 nach der Regel Ziffer mal Stellenwert lesen"
-    - "binär zählen und eine Zahl wie 13 ins Binärsystem übertragen"
-    - "begründen, warum die Zehn nur Anatomie ist und Rechner zur Basis 2 arbeiten"
-    - "Bit und Byte erklären und zeigen, warum ein Byte in genau zwei Hexziffern passt"
-    - "erklären, warum eine Festplatte mit 1 TB nur 931 GB anzeigt"
 translation_of: en
 based_on: 2026-11-04
 ---

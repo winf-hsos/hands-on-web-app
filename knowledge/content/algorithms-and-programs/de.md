@@ -17,8 +17,10 @@ objectives:
     - "eine Fehlermeldung von Python lesen und darin Datei, Zeile und Ursache finden"
     - "einen KI-Assistenten so fragen, dass du den Code verstehst, und übernommenen Code selbst ändern"
 translation_of: en
-based_on: 2026-11-03
+based_on: 2026-11-04
 ---
+
+![Folien: Algorithmen und Programme](item:algorithms-and-programs-slides)
 
 Um 1900 stand in vielen Wohnzimmern ein Klavier, das von selbst spielte. Die
 Tasten bewegten sich, während der Hocker leer blieb, und die Musik kam von
@@ -401,3 +403,5 @@ nur kopiert.
   Aufwand und danach, wie er mit der Größe des Problems wächst.
 - Eine Fehlermeldung nennt Datei, Zeile und Ursache, und sie ist eine
   Auskunft, kein Urteil.
+
+![Quiz: Algorithmen und Programme](item:algorithms-and-programs-quiz)

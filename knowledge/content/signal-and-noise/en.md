@@ -20,10 +20,12 @@ topics: [transferring-information]
 modules: [dup]
 relations:
   requires: [measurement-and-experiments]
-  see_also: [signal-and-noise-slides, why-two-states, measuring-your-noise]
+  see_also: [why-two-states, measuring-your-noise]
 status: draft
-updated: 2026-11-01
+updated: 2026-11-04
 ---
+
+![Slides: Signal and noise](item:signal-and-noise-slides)
 
 A lighthouse in fog is a strange sight. The lamp burns exactly as brightly as
 on a clear night, and yet the beam dies after a few metres, because nothing
@@ -243,3 +245,5 @@ the channel itself is the only authority.
   one band, which is twice the spread.
 - Nearly every improvement costs bits per symbol or symbols per second, except
   aiming the light, blocking ambient light and fixing the geometry.
+
+![Quiz: Signal and noise](item:signal-and-noise-quiz)

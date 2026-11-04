@@ -6,14 +6,6 @@ summary: >-
   Fourteen questions on what makes an algorithm, what a program adds to it,
   the order of instructions, loops that end or do not, and the cost of a
   procedure. Every answer comes with its reason.
-objectives:
-  intro: "This quiz lets you check in fourteen questions whether you can:"
-  goals:
-    - "tell an algorithm from a program and explain why a program has to be complete"
-    - "predict line by line what a short program does and why waits and order change the result"
-    - "name the building blocks of a program and read an error message for file, line and cause"
-    - "say whether and why a loop ends, including the termination condition of bubble sort"
-    - "compare two correct procedures by their cost"
 level: 1
 duration: 15
 topics: [solving-problems, processing-information]
@@ -21,7 +13,7 @@ modules: [dup]
 relations:
   checks: [algorithms-and-programs]
 status: published
-updated: 2026-11-01
+updated: 2026-11-04
 ---
 
 Several questions show short programs that switch a coloured lamp:

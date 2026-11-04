@@ -4,21 +4,13 @@ code: 2724
 title: "Das LiFi-Gerät"
 summary: >-
   Woraus euer Gerät besteht, was LED und Farbsensor können, was ihr selbst dazubauen dürft, und wie das Gehäuse gedruckt und zusammengebaut wird.
-objectives:
-  intro: "Hier lernst du das Gerät des LiFi-Projekts kennen und kannst danach:"
-  goals:
-    - "die drei Bauteile des Geräts und ihre Aufgaben nennen"
-    - "erklären, was die vier Kanäle des Farbsensors messen und warum seine Zahlen nicht die gesendeten sind"
-    - "Integrationszeit und Verstärkung des Sensors gegeneinander abwägen"
-    - "sagen, was ihr an Optik selbst bauen dürft und was nicht"
-    - "zwei Geräte an einem Laptop getrennt ansprechen"
 level: 1
 duration: 15
 topics: [transferring-information, working-with-the-computer]
 modules: [dup]
 project: lifi
 status: published
-updated: 2026-11-02
+updated: 2026-11-04
 ---
 
 Euer Gerät besteht aus drei Teilen in einem Gehäuse aus dem 3D-Drucker:

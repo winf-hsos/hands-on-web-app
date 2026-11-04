@@ -134,7 +134,7 @@ test('the challenge of a phase must be a challenge item', () => {
   });
   assert.deepEqual(errors.sort(), [
     'content/lifi-challenge-2: belongs to project lifi, which does not link it',
-    'projects/lifi word: challenge first-light has type exercise, slides, not challenge',
+    'projects/lifi word: challenge first-light has type exercise, not challenge',
   ]);
 });
 
@@ -180,10 +180,10 @@ test('archived content may point to anything', () => {
 
 test('a slides item needs its deck and every file the deck loads', () => {
   const { errors } = check(({ find }) => {
-    const item = find('content', 'problem-decomposition');
+    const item = find('content', 'problem-decomposition-slides');
     item.dir = item.dir.replace('problem-decomposition', 'no-such-folder');
   });
-  assert.deepEqual(errors, ['content/problem-decomposition/slides: missing; a slides item keeps its stagekit deck in slides/']);
+  assert.deepEqual(errors, ['content/problem-decomposition-slides/slides: missing; a slides item keeps its stagekit deck in slides/']);
 });
 
 test('a dataset names a CSV that exists, and nothing else has a file', () => {

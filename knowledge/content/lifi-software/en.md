@@ -2,15 +2,8 @@
 title: "Required software in the LiFi project"
 summary: >-
   The five programs that have to be on your laptop before your first line of code, what each one is for, and how you install them: the first by hand, the rest with your AI assistant.
-objectives:
-  intro: "Here you set up your laptop for the LiFi project and can then:"
-  goals:
-    - "say which of the five programs is there for what"
-    - "install OpenCode and set up the course folder so that your assistant can take over"
-    - "check that Python, Brick Daemon, Brick Viewer and the course module lifi_hardware work together"
-    - "use the Brick Viewer to decide whether a fault is in your program or before it"
 translation_of: de
-based_on: 2026-11-03
+based_on: 2026-11-04
 ---
 
 Five programs have to be on your laptop before your first line of code. All of
@@ -28,7 +21,7 @@ the first one by hand; your AI assistant helps you with the other four.
 On top of these comes the course module `lifi_hardware`, which is how your
 programs talk to your device. It is installed with a single command and brings
 the Tinkerforge library with it; what it can do is in [[lifi-hardware]]. The
-slides [[first-light]] show the whole setup at a glance, from your device to
+slides [[first-light-slides]] show the whole setup at a glance, from your device to
 the green LED.
 
 ## What each program does

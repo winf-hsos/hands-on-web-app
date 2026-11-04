@@ -4,21 +4,13 @@ code: 5033
 title: "Das Team-Cockpit"
 summary: >-
   Das Cockpit zeigt eure Lichtstrecke live im Browser, oben was eure LED sendet und darunter was euer Sensor misst, und es ist euer wichtigstes Werkzeug, um Fehler zu finden.
-objectives:
-  intro: "Hier lernst du das Team-Cockpit kennen und kannst danach:"
-  goals:
-    - "das Cockpit für dein Team öffnen und sagen, woher seine Daten kommen"
-    - "Statuszeile, Senderband und Sensorkurven lesen"
-    - "dich in der Zeitleiste bewegen, vom Signal weniger Sekunden bis zur Übersicht über Tage"
-    - "Abstürze deines Programms gezielt anspringen und sehen, was kurz davor gesendet und gemessen wurde"
-    - "der Reihe nach prüfen, warum keine Daten ankommen"
 level: 1
 duration: 8
 topics: [working-with-the-computer, transferring-information]
 modules: [dup]
 project: lifi
 status: published
-updated: 2026-11-02
+updated: 2026-11-04
 ---
 
 Das Team-Cockpit zeigt eure Lichtstrecke live im Browser: oben, was eure LED

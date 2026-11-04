@@ -20,8 +20,10 @@ modules: [dup]
 relations:
   see_also: [petzold-code, ifrah-universal-history-of-numbers]
 status: draft
-updated: 2026-11-01
+updated: 2026-11-04
 ---
+
+![Slides: Why ten?](item:why-ten)
 
 That `123` means one hundred and twenty-three is an agreement, not a law of
 nature. Every place in the number carries a power of ten, the digit says how
@@ -102,3 +104,5 @@ positions give 64, which is.
 Ten was never special: it is the number of fingers on two hands, and nothing
 else. The recipe of digit times place value is what counts, and it carries
 straight on to [[binary-numbers|the binary numbers]] a computer works with.
+
+![Quiz: Number systems](item:number-systems-quiz)

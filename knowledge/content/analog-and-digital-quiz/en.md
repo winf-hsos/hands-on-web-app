@@ -6,14 +6,6 @@ summary: >-
   Fifteen questions on what makes something digital, why more levels bring
   the boundaries closer, what digitising costs and what it buys. Every answer
   comes with its reason.
-objectives:
-  intro: "This quiz lets you check in fifteen questions whether you can:"
-  goals:
-    - "tell analog from digital by the one criterion that counts: stepless, or finitely many separated states"
-    - "explain why the same noise becomes a problem when the number of regions grows"
-    - "say where a link that sends data with light turns from digital to analog and back"
-    - "tell sampling from quantising and recognise their traces in a picture"
-    - "work out the size of a picture as points times bits per point and judge what fits into a budget"
 level: 1
 duration: 20
 topics: [representing-information, transferring-information]
@@ -21,7 +13,7 @@ modules: [dup]
 relations:
   checks: [analog-and-digital]
 status: published
-updated: 2026-11-03
+updated: 2026-11-04
 ---
 
 ## What does it mean for a quantity to be "analog"? {#ad-001}

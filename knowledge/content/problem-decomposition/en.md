@@ -12,8 +12,10 @@ objectives:
     - "phrase a piece so that a built-in test says yes or no to whether it is done"
     - "split responsibilities along clear borders and give an AI assistant small jobs that bring their own test"
 translation_of: de
-based_on: 2026-11-02
+based_on: 2026-11-04
 ---
+
+![Slides: Cutting problems](item:problem-decomposition-slides)
 
 "Build a chat app" cannot be solved in one piece, by anyone. That says nothing
 about you; it is the normal state of every interesting problem. Big problems
@@ -107,7 +109,13 @@ answer in ten seconds without having to believe the assistant.
 
 You cut the problem, the assistant solves the pieces, and you check each one.
 What a cut piece needs once a computer is supposed to solve it is shown in
-[[input-processing-output-slides]].
+[[input-processing-output]].
+
+How the LiFi project is cut into its challenges, and how you keep cutting in
+the team, when hunting for faults and with the assistant, is shown in the
+slides on the project.
+
+![Slides: Cutting the LiFi project](item:cutting-the-lifi-project)
 
 ## Further reading
 
