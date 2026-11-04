@@ -3988,8 +3988,27 @@ details.callout[open] > summary::before {
    the width they have on the page and are enlarged to the width of the
    screen, and what does not fit scrolls. It starts at the top, so that
    nothing moves when an explanation or an output opens below. */
+/* The button is a small, quiet symbol in the header row of what it shows,
+   like the tools of a demonstrator (.demo-tool). */
 .focus-toggle {
-  gap: 0.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 0.4rem;
+  background: none;
+  color: var(--quiet);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.focus-toggle:hover,
+.focus-toggle:focus-visible {
+  border-color: var(--rule);
+  color: var(--accent-ink);
 }
 
 .runner-bar .focus-toggle {
@@ -3999,6 +4018,7 @@ details.callout[open] > summary::before {
 .table-tools,
 .quiz-tools {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
   gap: 0.5rem;
 }
@@ -4007,11 +4027,20 @@ details.callout[open] > summary::before {
   margin: -0.5rem 0 1.25rem;
 }
 
-.table-tools .button,
-.quiz-tools .button {
+.table-tools .button {
   min-height: 2rem;
   padding: 0 0.8rem;
   font-size: 0.85rem;
+}
+
+/* in a quiz of several questions, the symbol ends the row of Back, the
+   position and Next */
+.quiz-bar:has(> .quiz-tools) {
+  grid-template-columns: auto 1fr auto auto;
+}
+
+.quiz-bar > .quiz-tools {
+  margin-left: -0.25rem;
 }
 
 .focusable.in-focus {

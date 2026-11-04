@@ -129,9 +129,10 @@ function setup(prose) {
   // with every reason and the explanation open, so that nothing has to scroll
   // and nothing changes size when the answer is checked.
   let refit;
+  let tools;
   if (questions.length) {
     const stage = Object.assign(document.createElement('div'), { className: 'quiz-stage' });
-    const tools = Object.assign(document.createElement('div'), { className: 'quiz-tools' });
+    tools = Object.assign(document.createElement('div'), { className: 'quiz-tools' });
     const last = questions.at(-1);
     questions[0].before(stage);
     let node = stage.nextSibling;
@@ -194,7 +195,8 @@ function setup(prose) {
     // stay in one place however long a question and its answers are.
     const back = el('button', { type: 'button', className: 'button button-quiet quiz-back', textContent: `← ${L.back}` });
     const next = el('button', { type: 'button', className: 'button quiz-next' });
-    const bar = el('div', { className: 'quiz-bar' }, back, position, next, el('div', { className: 'quiz-steps' }, ...steps));
+    // the focus symbol joins them at the end of the row
+    const bar = el('div', { className: 'quiz-bar' }, back, position, next, tools, el('div', { className: 'quiz-steps' }, ...steps));
     const score = el('p', { className: 'quiz-score' });
     const restart = el('button', { type: 'button', className: 'button quiz-restart', textContent: L.restart });
     const result = el('section', { className: 'quiz-result', hidden: true }, el('h2', { textContent: L.result, tabIndex: -1 }), score, restart);

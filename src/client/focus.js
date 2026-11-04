@@ -9,6 +9,9 @@
 // measured with everything its question can open, and a code box with a
 // fixed room for its output (Nicolas, 2026-11-02), so that nothing changes
 // size while a question is answered or a program runs.
+// The button is a small symbol in the element's header row, named only in its
+// tooltip, so that it does not compete with the element's own buttons
+// (Nicolas, 2026-11-04).
 // F switches focus while the element has the focus, Escape leaves. Where the
 // browser has no full screen for elements, the same view opens as a layer
 // over the page.
@@ -33,15 +36,16 @@ const typing = (e) => e.target.closest?.('input, textarea, select, [contentedita
  * again, for when what `height()` measures has changed.
  */
 export function focusable(box, bar, { width = () => box.getBoundingClientRect().width, height, widths = [] } = {}) {
-  const button = Object.assign(document.createElement('button'), { type: 'button', className: 'button button-quiet focus-toggle' });
+  const button = Object.assign(document.createElement('button'), { type: 'button', className: 'focus-toggle' });
   bar.append(button);
   box.classList.add('focusable');
   if (box.tabIndex < 0 && !box.hasAttribute('tabindex')) box.tabIndex = -1;
 
   function label() {
     const on = isFocused(box);
-    button.innerHTML = `${on ? LEAVE : ENTER}<span>${on ? L.leave : L.enter}</span>`;
+    button.innerHTML = on ? LEAVE : ENTER;
     button.title = `${on ? L.leave : L.enter} (F)`;
+    button.setAttribute('aria-label', on ? L.leave : L.enter);
     button.setAttribute('aria-pressed', String(on));
   }
 

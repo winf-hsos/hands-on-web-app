@@ -552,7 +552,9 @@ correct options with their reasons and the explanation on the back. The German
 CSV is separated by semicolons and the English one by commas, as spreadsheets
 in each language expect, and both begin with a byte order mark so that Excel
 reads them as UTF-8. Since only public questions reach the knowledge base, no
-exam question can end up in a download.
+exam question can end up in a download. A quiz embedded in a lesson shows the
+same line, with links to the files on the quiz's own page (Nicolas,
+2026-11-04).
 
 ## 7a. Exercises
 

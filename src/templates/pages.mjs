@@ -380,6 +380,7 @@ function embedBlock(site, doc, lang) {
     return html`<section class="embedded embedded-quiz" data-embedded="${doc.id}">
         ${head}
         <div class="prose" lang="${text.lang}" data-quiz-id="${doc.id}" ${quizLabels(lang)}>${raw(site.embedBody(doc, lang))}</div>
+        ${quizFilesBlock(site, doc, lang, site.url(doc, lang))}
       </section>`;
   if (hasType(doc.lead, 'demo'))
     return html`<section class="embedded embedded-demo" data-embedded="${doc.id}">
@@ -405,14 +406,15 @@ function scriptBlock(site, doc, lang) {
 }
 
 /** A quiz to download below it, with the answers, to learn with outside the page (build/quiz-export.mjs).
+ * Below a quiz embedded in a lesson as well, with `base` the quiz's own page, where the files lie.
  * One quiet line, not buttons, since the quiz itself is what the page is for (Nicolas, 2026-11-03). */
-function quizFilesBlock(site, doc, lang) {
+function quizFilesBlock(site, doc, lang, base = '') {
   const { csv, anki } = site.quizFiles(doc, lang);
   return html`<p class="quiz-files">
       ${icons.download}<span>${t(lang, 'quiz_download')}</span>
-      <a href="${csv.name}" download="${csv.name}" title="${t(lang, 'quiz_csv')}">CSV</a>
+      <a href="${base}${csv.name}" download="${csv.name}" title="${t(lang, 'quiz_csv')}">CSV</a>
       <span aria-hidden="true">·</span>
-      <a href="${anki.name}" download="${anki.name}" title="${t(lang, 'quiz_anki')}">Anki</a>
+      <a href="${base}${anki.name}" download="${anki.name}" title="${t(lang, 'quiz_anki')}">Anki</a>
     </p>`;
 }
 

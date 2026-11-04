@@ -104,8 +104,9 @@ function setup(frame) {
 
   function label() {
     const on = isFull(frame);
-    full.innerHTML = `${on ? LEAVE : ENTER}<span>${on ? L.leave : L.enter}</span>`;
+    full.innerHTML = on ? LEAVE : ENTER;
     full.title = `${on ? L.leave : L.enter} (F)`;
+    full.setAttribute('aria-label', on ? L.leave : L.enter);
     full.setAttribute('aria-pressed', String(on));
   }
 

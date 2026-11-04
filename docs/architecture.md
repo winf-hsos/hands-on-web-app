@@ -188,7 +188,11 @@ All motion is switched off for people who ask their system for reduced motion.
   not part of the progress link, which would grow with every line of code.
 - **Focus mode** (`src/client/focus.js`): `focusable(box, bar)` gives a code
   box, a result table or the questions of a quiz a button that shows them
-  alone and enlarged in full screen, for a projector. Unlike the full screen
+  alone and enlarged in full screen, for a projector. The button is a small
+  symbol without text in the element's header row, named in its tooltip
+  (Nicolas, 2026-11-04): in the bar of a code box, below a table, and in a
+  quiz of several questions at the end of the row with Back, the position
+  and Next. Unlike the full screen
   of a demonstrator (`demo-frame.js`), it scales code boxes and tables by
   width only; a quiz passes `height()`, which measures its question fully
   opened, and a code box one that measures its code with a fixed room for
