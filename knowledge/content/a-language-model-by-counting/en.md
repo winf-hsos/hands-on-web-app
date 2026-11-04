@@ -22,7 +22,7 @@ relations:
   see_also: [next-token-prediction, the-bitter-lesson]
 modules: [aai]
 areas: [ai]
-status: draft
+status: published
 updated: 2026-11-04
 ---
 
