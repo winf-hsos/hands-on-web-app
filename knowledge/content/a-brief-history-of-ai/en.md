@@ -204,4 +204,4 @@ Which of these questions do you most want answered? Write it on a card and pin i
 ## Further reading
 
 - Alan M. Turing: [Computing Machinery and Intelligence](https://doi.org/10.1093/mind/LIX.236.433), *Mind* 59 (1950), 433–460.
-- Rich Sutton: [The Bitter Lesson](http://www.incompleteideas.net/IncIdeas/BitterLesson.html), 2019.
+- Rich Sutton: [[the-bitter-lesson]], 2019, with Ethan Mollick's music video about it.

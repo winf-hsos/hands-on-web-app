@@ -13,7 +13,7 @@ sections:
   - title: { de: KI-Agenten, en: AI agents }
     items: [a-brief-history-of-ai, ai-agents, be-the-agent]
   - title: { de: Sprachmodelle, en: Language models }
-    items: [open-models, next-token-prediction]
+    items: [open-models, next-token-prediction, the-bitter-lesson]
 status: published
 updated: 2026-11-04
 ---

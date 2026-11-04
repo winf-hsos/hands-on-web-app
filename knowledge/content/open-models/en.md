@@ -69,4 +69,4 @@ A model on your own computer keeps your data with you, works offline and costs n
 - [LM Studio](https://lmstudio.ai): the free program used in the experiment, with a catalogue of open models and their sizes.
 - Google: [Gemma 3](https://lmstudio.ai/models/gemma-3) in the LM Studio catalogue, with all sizes from 270 million to 27 billion parameters.
 - Tim Dettmers and Luke Zettlemoyer: [The case for 4-bit precision: k-bit Inference Scaling Laws](https://arxiv.org/abs/2212.09720), ICML 2023.
-- Rich Sutton: [The Bitter Lesson](http://www.incompleteideas.net/IncIdeas/BitterLesson.html), 2019, on why models keep growing.
+- Rich Sutton: [[the-bitter-lesson]], 2019, on why models keep growing.

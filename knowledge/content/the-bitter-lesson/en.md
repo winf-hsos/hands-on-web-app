@@ -24,7 +24,7 @@ relations:
   see_also: [a-brief-history-of-ai, open-models]
 modules: [aai]
 areas: [ai]
-status: draft
+status: published
 updated: 2026-11-04
 ---
 
