@@ -1,0 +1,46 @@
+# Designwerte der KI-Lehrinhalte fuer stagekit (C:\code\stagekit).
+# Uebernommen aus dem Praxisprojekt am 2026-09-23; seit dem 2026-10-01 ist die
+# Leitfarbe Pink #FF2D8A wie auf der Webseite (Wunsch von Nicolas). Die Rolle
+# heisst in stagekit weiter "blue" (Leitfarbe, Verweise), der Wert ist Pink.
+# Rot ist dafuer zu einem klaren Rot gerueckt, damit "Hingucker" und Kreuz sich
+# vom Pink unterscheiden.
+
+[colors]
+background = "000000"   # Folienhintergrund, echtes Schwarz
+white = "FFFFFF"        # Aussagen, alles Wichtige
+gray_light = "B6BEC6"   # Zweitwichtiges, gut lesbar
+gray = "7D868F"         # Ueberschriften, Nebentext, Fussnoten
+gray_dark = "4A5259"    # zurueckgenommen
+blue = "FF2D8A"         # Leitfarbe Pink (Rolle "blue"): Verweise, Hervorhebung
+green = "4ADE80"        # Haken, zweite Betonung
+yellow = "FFD23F"       # das, worum es gerade geht; aktuell
+red = "FF3B30"          # Hingucker, sparsam; klares Rot, vom Pink abgesetzt
+
+[colors.light]
+background = "FFFFFF"
+white = "1F2933"
+gray_light = "4A5259"
+gray = "7D868F"
+gray_dark = "C5CCD3"
+blue = "94004A"         # Pink, abgedunkelt fuer hellen Grund
+green = "006996"
+yellow = "FF2D8A"
+red = "D70015"
+
+[fonts]
+text = "Arial"
+code = "Roboto Mono"
+
+[sizes]
+large = 40
+normal = 24
+small = 16
+tiny = 10
+
+[stagekit]
+language = "en"    # Material ist englisch; Folientext klein, auch alle Beispiele
+margin = 120
+
+# Pinkreihe fuer die Kapitelfarben, im Deck als data-part-colors zu setzen.
+# Abstufungen von #FF2D8A, von hell nach dunkel:
+#   FF96C4  FF62A7  FF2D8A  D92675  B32061
