@@ -13,7 +13,7 @@ objectives:
     - "switch on the developer mode under Settings → Developer, so that the settings of a model appear"
     - "find temperature, response length and context overflow under Settings, and top k, top p and min p under Sampling"
     - "set the context length of a model and find its file on your disk"
-url: https://lmstudio.ai
+url: https://lmstudio.ai/developers
 license: proprietary, free for use at home and at work
 level: 1
 duration: 10
@@ -39,8 +39,12 @@ may look slightly different.
 
 ## Setting up
 
-1. **Install LM Studio** from [lmstudio.ai](https://lmstudio.ai). A laptop
-   with 8 GB of memory is enough for the small models of the experiment.
+1. **Install LM Studio** from its
+   [page for developers](https://lmstudio.ai/developers). A laptop with 8 GB
+   of memory is enough for the small models of the experiment. The main page
+   lmstudio.ai offers *Bionic* first, an agent of the same maker for
+   documents, code and computer control, which is a different program; the
+   one you need is called LM Studio.
 2. **Download a model** under *Model Search* in the bar on the left: search
    for its name, such as `google/gemma-3-1b`, and start the download. Models
    are large files, so download them at home and not in the lecture room.

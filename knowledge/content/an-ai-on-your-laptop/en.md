@@ -34,7 +34,7 @@ questions.
 ## What you need
 
 - A laptop with at least 8 GB of memory, charged, and
-  [LM Studio](https://lmstudio.ai) installed (free, for Windows, macOS and
+  [LM Studio](https://lmstudio.ai/developers) installed (free, for Windows, macOS and
   Linux); how to set it up is described in [[lm-studio|the page on LM Studio]].
 - Two models from the same family, downloaded before the session, not in the
   room: Gemma 3 1B (`google/gemma-3-1b`, about 0.75 GB) and Gemma 3 4B
