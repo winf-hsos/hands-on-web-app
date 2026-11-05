@@ -239,6 +239,31 @@ dictionary.
 > `money` (0.45) and `river` (0.50), because a single token has nobody to
 > look at; only the other tokens of a sentence tell it which bank is meant.
 
+### Where the numbers come from
+
+Nobody chose the 384 directions of this model; they were learned in two
+stages. In the first, a model reads huge amounts of text, in which single
+words are hidden, and has to guess them from their neighbours. To guess well,
+it has to give similar numbers to words that can stand in the same places:
+"puppy" where "dog" could stand, "cold" where "hot" could stand. This is the
+old idea behind every embedding, in the words of the linguist John Rupert
+Firth from 1957: "you shall know a word by the company it keeps". It is not
+about words that stand next to each other, since dog and cat rarely do, but
+about words that have the same neighbours, which is also why hot and cold
+came out close in Step 2. In [[a-language-model-by-counting]] cow and sheep
+had similar rows in the tables of counts for the same reason. The model on
+this page learned this stage from a larger model that had been trained in
+this way.
+
+Words in similar places are not yet texts with similar meaning, so the second
+stage trained on whole texts: more than a billion pairs of texts that belong
+together, such as a question and its answer, two questions that ask the same
+thing, or the title and the abstract of a paper. Each time, the numbers of the
+two texts of a pair were moved closer together and those of texts picked at
+random further apart, until a search by meaning worked. What a single one of
+the 384 directions means is written nowhere, and most of them mean nothing a
+person could name.
+
 ## Step 4: the model's map
 
 Now the model reads the 24 cards, the way the drawing shows, and turns each of
@@ -289,6 +314,9 @@ He forgot his password and was locked out of his account.
 > 384 directions on two. Where the map and the similarity values in the search below disagree,
 > believe the values: they are computed from all 384 numbers.
 
+15. Look at the two directions of your own sheet. Would the model have chosen
+    them, and could you name two of its directions on its map?
+
 ## Step 5: search by meaning
 
 Type a query into the search next to the map. The model turns the query into
@@ -297,15 +325,15 @@ similar to those of the query; on the map the query appears as a star. Below
 the list you see what a classic search for the same words would have found.
 The values are similarities as in Step 2, now between the query and each card.
 
-15. Search for `I can't get home tonight`. Which card comes first, and what
+16. Search for `I can't get home tonight`. Which card comes first, and what
    would a keyword search have found?
-16. For three groups on your sheet, find a query that brings one of their cards
+17. For three groups on your sheet, find a query that brings one of their cards
    to the top without using any word of that card. Then compete with another
    group: who finds the query for which a keyword search and the search by
    meaning disagree most?
-17. Search for `money`, `river` and `snake`. Does the model keep the two bank
+18. Search for `money`, `river` and `snake`. Does the model keep the two bank
    cards and the two python cards apart?
-18. Search for `a pet that purrs` and for `Ich bin krank`. What did you expect,
+19. Search for `a pet that purrs` and for `Ich bin krank`. What did you expect,
     and what happened?
 
 > [!SOLUTION]
@@ -322,23 +350,6 @@ The values are similarities as in Step 2, now between the query and each card.
 > krank` finds nothing at all, with every value below 0.1: this model has
 > learned from English texts only, it cuts the German words into English
 > pieces, as you saw in Step 3, and it knows only what it has read.
-
-### Where the numbers come from
-
-Nobody chose the 384 directions of this model. It was trained on more than a
-billion pairs of texts that belong together, such as a question and its
-answer, two questions that ask the same thing, or the title and the abstract
-of a paper. Training moved the numbers of texts that belong together closer
-and the numbers of texts picked at random further apart, again and again,
-until the map emerged. What a single direction means is written nowhere, and
-most of them mean nothing a person could name. The idea behind it is old: in
-1957 the linguist John Rupert Firth wrote that "you shall know a word by the
-company it keeps", and in [[a-language-model-by-counting]] cow and sheep had
-similar rows in the tables of counts for the same reason, because they stand
-in similar places.
-
-19. Look at the two directions of your own sheet. Would the model have chosen
-    them, and could you name two of its directions on its map?
 
 ## Step 6: what the map does not know
 

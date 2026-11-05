@@ -265,14 +265,17 @@ export function item(site, doc, lang) {
   const inPaths = site.paths.filter((p) => site.pathSteps(p).some((s) => s.id === doc.id));
   const link = (target) => html`<a href="${site.url(target, lang)}">${site.localize(target, lang).titleHtml}</a>`;
   const isQuiz = hasType(lead, 'quiz');
+  // in an experiment the numbered lists are the tasks, set off from the text
+  // around them (site.css, "Tasks in an experiment")
+  const prose = hasType(lead, 'experiment') ? 'prose has-tasks' : 'prose';
   const v = site.vocabulary;
   // a lesson's own text in parts, with its material between them (build/embed.mjs)
   const parts = site.parts(doc, lang);
   const embeds = parts.filter((p) => p.embed).map((p) => p.embed);
   const own = parts.filter((p) => p.html !== undefined).map((p) => p.html).join('');
   const content = embeds.length
-    ? parts.map((p) => (p.embed ? embedBlock(site, p.embed, lang) : html`<div class="prose" lang="${text.lang}">${raw(p.html)}</div>`))
-    : html`<div class="prose" lang="${text.lang}" ${isQuiz && quizLabels(lang)}>${raw(own)}</div>`;
+    ? parts.map((p) => (p.embed ? embedBlock(site, p.embed, lang) : html`<div class="${prose}" lang="${text.lang}">${raw(p.html)}</div>`))
+    : html`<div class="${prose}" lang="${text.lang}" ${isQuiz && quizLabels(lang)}>${raw(own)}</div>`;
   // everything on the page, for the scripts it needs
   const body = embeds.length ? String(html`${content}`) : own;
   const toc = tocBlock(own, lang);

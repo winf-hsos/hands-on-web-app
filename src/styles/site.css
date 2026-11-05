@@ -869,6 +869,28 @@ select {
   margin-top: 0.25rem;
 }
 
+/* Tasks in an experiment (Nicolas, 2026-11-05: they got lost in the text
+   around them). Every numbered list at the top level of an experiment is a
+   group of tasks: a quiet band in the colour of the area with a line on its
+   left, and the numbers in that colour, so that the eye finds the next task
+   while scrolling without the page turning loud. */
+.prose.has-tasks > ol {
+  margin: 1.25rem 0 1.5rem;
+  padding: 0.7rem 1rem 0.7rem 2.75rem;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 0.5rem 0.5rem 0;
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+}
+
+.prose.has-tasks > ol > li::marker {
+  color: var(--accent-ink);
+  font-weight: 700;
+}
+
+.prose.has-tasks > ol > li + li {
+  margin-top: 0.5rem;
+}
+
 .prose table {
   border-collapse: collapse;
   margin: 1.25rem 0;
