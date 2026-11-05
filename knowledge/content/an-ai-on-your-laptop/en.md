@@ -21,7 +21,7 @@ relations:
 modules: [aai]
 areas: [ai]
 status: published
-updated: 2026-11-04
+updated: 2026-11-05
 ---
 
 A language model is a file full of numbers that runs on your own laptop
@@ -35,7 +35,7 @@ questions.
 
 - A laptop with at least 8 GB of memory, charged, and
   [LM Studio](https://lmstudio.ai) installed (free, for Windows, macOS and
-  Linux).
+  Linux); how to set it up is described in [[lm-studio|the page on LM Studio]].
 - Two models from the same family, downloaded before the session, not in the
   room: Gemma 3 1B (`google/gemma-3-1b`, about 0.75 GB) and Gemma 3 4B
   (`google/gemma-3-4b`, about 2.4 GB).
@@ -52,8 +52,8 @@ Work in pairs and write your observations on the notes sheet.
 
 1. Turn off wi-fi, load Gemma 3 1B in LM Studio and ask it what nitrogen
    fertiliser does for a wheat plant, in two sentences.
-2. Find the model file (LM Studio → My Models → show in folder) and note its
-   size and its name.
+2. Find the model file (LM Studio → Library → the menu … next to the model →
+   Open in File Explorer) and note its size and its name.
 3. Ask both models, Gemma 3 1B and then Gemma 3 4B, the same three questions
    and note the tokens per second shown below each answer:
    - A field of 4.5 ha needs 140 kg of nitrogen per ha. How much is that in
@@ -67,8 +67,10 @@ Work in pairs and write your observations on the notes sheet.
 Each extension changes one thing, so that you can compare the result with the
 basic experiment.
 
-1. **Turn the dials:** load Gemma 4 E2B (`google/gemma-4-e2b`), switch LM
-   Studio to developer mode to see all settings, then ask the same question
+1. **Turn the dials:** load Gemma 4 E2B (`google/gemma-4-e2b`) and switch LM
+   Studio to developer mode under Settings → Developer, as shown in
+   [[lm-studio|the page on LM Studio]]; if the panel on the right shows no temperature, the
+   developer mode is still off. Then ask the same question
    three times at temperature 0 and three times at temperature 1, set top k to
    0, top p to 1 and min p to 0 and raise the temperature step by step until
    the answer falls apart, limit the length of the answer to 20 tokens (Limit

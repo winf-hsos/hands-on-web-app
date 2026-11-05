@@ -22,7 +22,7 @@ relations:
 modules: [aai]
 areas: [ai]
 status: published
-updated: 2026-11-04
+updated: 2026-11-05
 ---
 
 ![Slides: Next-token prediction](item:next-token-prediction-slides)
@@ -78,7 +78,7 @@ An example shows why this matters. In *The tractor did not fit through the gate 
 
 ## Try it in LM Studio
 
-All of this can be observed in LM Studio. Switch to the developer mode to see all settings, and then:
+All of this can be observed in LM Studio. First switch on the developer mode under Settings → Developer, as shown in [[lm-studio|the page on LM Studio]]: without it, the panel on the right shows neither the temperature nor top k and top p. Then:
 
 - ask the same question three times with temperature 0, and three times with temperature 1;
 - set top k to 0, top p to 1 and min p to 0, so that nothing is cut off, and raise the temperature step by step until the answer falls apart;
