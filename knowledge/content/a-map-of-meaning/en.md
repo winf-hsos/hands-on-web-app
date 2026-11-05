@@ -163,14 +163,49 @@ itself.
 
 ### Arithmetic with meaning
 
-Because the numbers are directions, you can compute with them. The table
-`word_vectors` holds the 384 numbers the same model gives 48 single words,
-one row per number, among them king, queen, man, woman, cities, countries and
-a few verbs. This box takes the numbers of king, subtracts those of man, adds
-those of woman, and then lists the words whose numbers are most similar to
-the result, leaving out the three words it started with. How the similarity
-is computed from the numbers you will see in Step 7; here it is enough that
-the box computes it.
+Because the numbers are directions, you can compute with them. Type three
+words below, king, man and woman for a start: the model turns each of them
+into its 384 numbers, the calculation subtracts the numbers of man from those
+of king and adds those of woman, position by position, and the list shows the
+words whose numbers are most similar to the result. A click on a sign turns a
+minus into a plus and back. The result is searched among a fixed list of
+about 400 English words, leaving out the words you typed.
+
+```word-arithmetic
+media/arithmetic-words.json
+```
+
+9. Compute `paris − france + germany`, `puppy − dog + cat` and
+   `walked − walk + swim`. Which direction does the subtraction remove in
+   each case, and what does the addition put in?
+10. Try the way back, `queen − woman + man`, and find a calculation that
+    fails. How close do the values of the first words come to each other
+    when it fails?
+
+> [!SOLUTION]
+> King − man + woman gives queen (0.85), Paris − France + Germany gives
+> Berlin (0.79) and puppy − dog + cat gives kitten (0.87). The subtraction
+> removes one direction, being a man, being French or being a dog, and keeps
+> the rest: royal, a capital, a young animal. The addition puts a new
+> direction in its place, and the same works for doctor − hospital + school,
+> which gives teacher (0.82). Nobody taught the model these directions; they
+> formed because such words are used in similar ways. Walked − walk + swim
+> gives swimming (0.91) just before swam (0.88): the model has picked up
+> "swim", but the past only weakly. The way back works less well, since
+> queen − woman + man gives lord (0.79) and brother (0.75) before king
+> (0.74), and mother − woman + man gives son and brother before father. When
+> a calculation fails, several words lie almost equally close to its
+> result. The directions are there, but they are blurred. Values above 1 are
+> possible, because the result of the calculation is no longer an arrow of
+> length 1.
+
+### The same in R
+
+The table `word_vectors` holds the 384 numbers the same model gives 48 of
+these words, one row per number. This box computes king − man + woman and
+lists the words whose numbers are most similar to the result, leaving out the
+three words it started with. How the similarity is computed from the numbers
+you will see in Step 7.
 
 ```r
 word <- function(w) word_vectors |> filter(word == w) |> pull(value)
@@ -183,33 +218,13 @@ word_vectors |>
   arrange(desc(similarity))
 ```
 
-9. Change the box to `paris - france + germany`, `puppy - dog + cat` and
-   `walked - walk + swim`. Which direction does the subtraction remove in
-   each case, and what does the addition put in?
-10. Try the way back, `queen - woman + man`, and find one more calculation
-    that fails.
-
-> [!SOLUTION]
-> King − man + woman gives queen (0.85), Paris − France + Germany gives
-> Berlin (0.79), puppy − dog + cat gives kitten (0.87) and walked − walk + swim
-> gives swam (0.88). The subtraction removes one direction, being a man,
-> being French, being a dog or the present, and keeps the rest: royal, a
-> capital, a young animal, a past. The addition puts a new direction in its
-> place. Nobody taught the model these directions; they formed because such
-> words are used in similar ways. The way back works less well: queen −
-> woman + man gives brother just before king (0.75 against 0.74), and mother
-> − woman + man gives son instead of father. The directions are there, but
-> they are blurred, and with 48 words to choose from it is easy to hit a
-> neighbour. Values above 1 are possible, because the result of the
-> calculation is no longer an arrow of length 1.
-
 ## Step 3: from tokens to a text
 
 A word has its list of numbers, but a sentence is more than a list of words.
 The drawing shows, in a simplified way, how the model gets from the numbers of
 its tokens to the numbers of a whole text.
 
-![From top to bottom: the tokens of "The bank raised its rates" with the two markers, each with its own list of numbers, then lines from every token to every other one, the lists changed by their neighbours, and at the bottom one list for the whole text, the average of all of them.](figure:tokens-to-text "Simplified: each list has 384 numbers, of which eight are drawn, and the adjusting happens in six rounds.")
+![From top to bottom: the tokens of "The bank raised its rates" with the two markers, each with its own list of numbers, then lines from every token to every other one, the lists changed by their neighbours, and at the bottom one list for the whole text, the average of all of them.](figure:tokens-to-text "Simplified: each list has 384 numbers, of which eight are drawn, and the adjusting is the attention of a transformer, in six layers.")
 
 - **Cutting:** the tokenizer cuts the text into tokens and adds `[CLS]` and
   `[SEP]`.

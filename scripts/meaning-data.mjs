@@ -3,6 +3,8 @@
 //   knowledge/media/datasets/meaning_vectors.csv   their 384 numbers: card, dim, value
 //   knowledge/media/datasets/word_vectors.csv      single words for the arithmetic: word, dim, value
 //   knowledge/content/a-map-of-meaning/media/meaning-cards.pdf   the cards to print and cut
+//   knowledge/content/a-map-of-meaning/media/arithmetic-words.json   the words the
+//       word-arithmetic demonstrator searches, with their numbers in 8 bits
 // The numbers come from the same model the meaning-map demonstrator runs in
 // the browser (scripts/fetch-embedding-model.mjs), so that R and the map agree.
 // Needs the model in vendor/models/ and Typst on the path.
@@ -47,7 +49,49 @@ export const CARDS = [
   'He forgot his password and was locked out of his account.',
 ];
 
-// Single words for arithmetic with meaning (king − man + woman).
+// The words the word-arithmetic demonstrator (client/word-arithmetic.js)
+// searches for the result of a calculation: everyday English in groups that
+// make calculations work, people and their counterparts, countries with
+// their capitals, languages and people, animals with their young, adjectives
+// with their comparatives, verbs with their past, and enough else that a
+// failed calculation lands somewhere sensible. The numbers are stored as
+// 8-bit integers with one scale per word, which changes a similarity by less
+// than 0.01 and keeps the file small.
+const VOCABULARY = `
+man woman boy girl king queen prince princess father mother son daughter brother sister uncle aunt
+husband wife grandfather grandmother nephew niece actor actress waiter waitress hero heroine emperor
+empress duke duchess lord lady gentleman monk nun male female boyfriend girlfriend bride groom
+france paris french germany berlin german italy rome italian spain madrid spanish england london english
+japan tokyo japanese china beijing chinese russia moscow russian greece athens greek portugal lisbon
+portuguese egypt cairo egyptian canada ottawa canadian austria vienna austrian poland warsaw polish
+sweden stockholm swedish norway oslo norwegian netherlands amsterdam dutch ireland dublin irish turkey
+ankara turkish india delhi indian brazil brazilian mexico mexican australia canberra australian
+dog puppy cat kitten cow calf horse foal sheep lamb pig piglet goat duck duckling chicken chick hen
+rooster bear cub lion lioness tiger wolf fox deer frog tadpole butterfly caterpillar fish bird eagle owl
+mouse rat rabbit snake whale dolphin shark bee ant spider elephant monkey
+big bigger biggest small smaller smallest good better best bad worse worst tall taller tallest short
+shorter long longer fast faster fastest slow slower strong stronger weak weaker old older young younger
+high higher low lower hot hotter cold colder warm warmer easy easier hard harder happy happier rich
+richer poor poorer
+walk walked walking swim swam swimming run ran running go went going eat ate eating drink drank sing
+sang see saw write wrote read speak spoke take took give gave come came fly flew sleep slept think
+thought buy bought teach taught drive drove fall fell
+car cars house houses child children mice foot feet tooth teeth city cities
+doctor hospital nurse teacher school student university pilot plane airport chef kitchen restaurant
+farmer farm baker bakery judge court lawyer police soldier army painter brush writer book pen
+programmer computer musician guitar piano
+bread butter cheese milk coffee tea beer wine water juice pizza pasta rice soup salad apple banana
+orange grape lemon sugar salt pepper cake chocolate
+sad angry calm love hate fear joy beautiful ugly clever stupid kind cruel
+sun moon star rain snow wind cloud storm summer winter spring autumn day night morning evening sea
+river lake mountain forest desert island
+phone laptop internet email keyboard screen software app
+red blue green yellow black white
+football tennis golf ball goal team
+monday sunday january december week month year
+`.trim().split(/\s+/);
+
+// Single words for arithmetic with meaning in R (king − man + woman).
 const WORDS = 'king queen man woman boy girl prince princess father mother son daughter brother sister uncle aunt husband wife paris france berlin germany rome italy madrid spain london england tokyo japan big bigger small smaller good better bad worse walk walked swim swam dog puppy cat kitten cow calf'.split(' ');
 
 env.localModelPath = join(ROOT, 'vendor/models/');
@@ -61,10 +105,26 @@ const cards = [];
 for (const text of CARDS) cards.push(await embed(text));
 const words = [];
 for (const word of WORDS) words.push(await embed(word));
+const vocabulary = [];
+for (const word of VOCABULARY) vocabulary.push(await embed(word));
 
 writeFileSync(join(DATASETS, 'meaning_cards.csv'), ['card,text', ...CARDS.map((t, i) => `${i + 1},${quote(t)}`)].join('\n') + '\n');
 writeFileSync(join(DATASETS, 'meaning_vectors.csv'), ['card,dim,value', ...cards.flatMap((v, i) => v.map((x, d) => `${i + 1},${d + 1},${round(x)}`))].join('\n') + '\n');
 writeFileSync(join(DATASETS, 'word_vectors.csv'), ['word,dim,value', ...words.flatMap((v, i) => v.map((x, d) => `${WORDS[i]},${d + 1},${round(x)}`))].join('\n') + '\n');
+
+// the vocabulary of the demonstrator: per word a scale and 384 integers
+const scales = vocabulary.map((v) => Math.max(...v.map(Math.abs)) / 127);
+const packed = Int8Array.from(vocabulary.flatMap((v, i) => v.map((x) => Math.round(x / scales[i]))));
+writeFileSync(
+  join(MEDIA, 'arithmetic-words.json'),
+  JSON.stringify({
+    model: MODEL,
+    dims: vocabulary[0].length,
+    words: VOCABULARY,
+    scales: scales.map((x) => Number(x.toPrecision(6))),
+    vectors: Buffer.from(packed.buffer).toString('base64'),
+  }) + '\n',
+);
 
 // a check of the analogies the experiment asks for, printed for the author
 const dot = (a, b) => a.reduce((s, x, i) => s + x * b[i], 0);
@@ -98,4 +158,4 @@ ${entries}
 );
 execFileSync('typst', ['compile', typ, join(MEDIA, 'meaning-cards.pdf')], { stdio: 'inherit' });
 unlinkSync(typ);
-console.log(`${CARDS.length} cards, ${WORDS.length} words, ${cards[0].length} numbers each`);
+console.log(`${CARDS.length} cards, ${WORDS.length} words, ${VOCABULARY.length} words for the demonstrator, ${cards[0].length} numbers each`);

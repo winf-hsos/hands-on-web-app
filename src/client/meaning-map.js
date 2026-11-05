@@ -14,75 +14,23 @@
 // An empty block is the map without cards: only the comparison and the
 // tokens, for single words before the experiment goes on to whole texts.
 //
-// The model (all-MiniLM-L6-v2, 8 bits, about 23 MB) and transformers.js come
-// from the site itself (scripts/fetch-embedding-model.mjs, scripts/build.mjs)
-// and are loaded only on a click; nothing typed leaves the browser.
+// The model and the shared calculations come from client/embedding.js; the
+// model is loaded only on a click, and nothing typed leaves the browser.
 //
 // Written with ```meaning-map in Markdown, one text per line in the block
 // (remark-knowledge.mjs passes them as data-meaning-map); the labels and the
 // places of the runtime and the model come from <body>.
 import { keys, steady } from './demo-frame.js';
+import { embedder, megabytes, components, dot, format, fill, svgEl } from './embedding.js';
 
 const L = JSON.parse(document.body.dataset.meaningMapLabels ?? '{}');
-const { embedder: BASE, models: MODELS } = document.body.dataset;
-const MODEL = 'Xenova/all-MiniLM-L6-v2';
 const SHOWN = 5; // results in the list
 const LINES = 3; // lines from the query to its nearest cards
 const DIGITS = 10; // numbers of the query shown
-const fill = (text, values) => text.replace(/\{(\w+)\}/g, (_, k) => values[k]);
-const dot = (a, b) => a.reduce((s, x, i) => s + x * b[i], 0);
-const format = (x) => (x < 0 ? '−' : '') + Math.abs(x).toFixed(2);
 
 // words too common to count as a keyword match
 const STOP = new Set('a an the and or but of to in on at by for from with as is are was were be been has have had do does did not no it its this that these those i you he she we they my your his her our their me him us them so up out off all every still again when than then there here into over very just'.split(' '));
 const words = (text) => new Set(text.toLowerCase().match(/[\p{L}\p{N}']+/gu)?.filter((w) => w.length > 1 && !STOP.has(w)) ?? []);
-
-let loading = null;
-/** The embedding and the tokens of a text, loaded once for all maps of the page. */
-function embedder(progress) {
-  loading ??= (async () => {
-    const { pipeline, env } = await import(`${BASE}transformers.min.js`);
-    env.allowRemoteModels = false;
-    env.allowLocalModels = true;
-    env.localModelPath = MODELS;
-    env.backends.onnx.wasm.wasmPaths = BASE;
-    env.backends.onnx.wasm.numThreads = 1;
-    const extract = await pipeline('feature-extraction', MODEL, { dtype: 'q8', device: 'wasm', progress_callback: progress });
-    return {
-      embed: async (text) => Array.from((await extract(text, { pooling: 'mean', normalize: true })).data),
-      tokens: (text) => ['[CLS]', ...extract.tokenizer.tokenize(text), '[SEP]'],
-    };
-  })();
-  return loading;
-}
-
-/** The first two principal components of the vectors, by power iteration. */
-function components(vectors) {
-  const d = vectors[0].length;
-  const mean = Array(d).fill(0);
-  for (const v of vectors) v.forEach((x, k) => (mean[k] += x / vectors.length));
-  const centred = vectors.map((v) => v.map((x, k) => x - mean[k]));
-  const found = [];
-  for (let c = 0; c < 2; c++) {
-    let axis = Array.from({ length: d }, (_, k) => Math.sin(k * 7 + c * 3 + 1));
-    for (let step = 0; step < 200; step++) {
-      const scores = centred.map((v) => dot(v, axis));
-      let next = Array(d).fill(0);
-      centred.forEach((v, i) => v.forEach((x, k) => (next[k] += x * scores[i])));
-      for (const other of found) {
-        const q = dot(next, other);
-        next = next.map((x, k) => x - q * other[k]);
-      }
-      const norm = Math.hypot(...next) || 1;
-      axis = next.map((x) => x / norm);
-    }
-    // the same picture on every computer: the card furthest out lies on the positive side
-    const scores = centred.map((v) => dot(v, axis));
-    const far = scores.reduce((best, s) => (Math.abs(s) > Math.abs(best) ? s : best), 0);
-    found.push(far < 0 ? axis.map((x) => -x) : axis);
-  }
-  return (v) => found.map((axis) => dot(v.map((x, k) => x - mean[k]), axis));
-}
 
 /**
  * The dots pushed apart where they would cover each other, so that every
@@ -169,12 +117,6 @@ function setup(box) {
   let place = null;
   let points = [];
 
-  const svgEl = (name, attributes) => {
-    const el = document.createElementNS('http://www.w3.org/2000/svg', name);
-    for (const [k, v] of Object.entries(attributes)) el.setAttribute(k, v);
-    return el;
-  };
-
   /** The tokens of a text as small chips after a short label. */
   function chips(place, label, text) {
     const list = tokens(text);
@@ -218,14 +160,8 @@ function setup(box) {
 
   async function load() {
     $('[data-load]').disabled = true;
-    const files = new Map();
     try {
-      ({ embed, tokens } = await embedder((p) => {
-        if (p.status !== 'progress' || !p.total) return;
-        files.set(p.file, [p.loaded, p.total]);
-        const [done, total] = [...files.values()].reduce((s, [a, b]) => [s[0] + a, s[1] + b], [0, 0]);
-        show.status(fill(L.loading, { done: Math.round(done / 1e6), total: Math.round(total / 1e6) }));
-      }));
+      ({ embed, tokens } = await embedder(megabytes((done, total) => show.status(fill(L.loading, { done, total })))));
       show.status(fill(L.placing, { n: texts.length }));
       vectors = [];
       for (const text of texts) vectors.push(await embed(text));

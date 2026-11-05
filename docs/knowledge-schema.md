@@ -454,6 +454,14 @@ The body is plain Markdown with a few conventions:
   compared. Under the query and the two texts stand the tokens the model cuts
   them into. An empty block has no map and no search, only the comparison
   with its tokens, for single words before the step to whole texts.
+- **Arithmetic with meaning** (` ```word-arithmetic `, 2026-11-05) takes
+  three words and two signs in text fields, king − man + woman, turns them
+  into numbers with the same model, adds and subtracts them and lists the
+  nearest words of a fixed list, leaving out the typed ones, beside a sketch
+  of the calculation (a parallelogram for one minus and two plus, not to
+  scale). Its block names the file with the list relative to the page,
+  `media/arithmetic-words.json`, which `scripts/meaning-data.mjs` writes: the
+  words and their 384 numbers in 8 bits with one scale per word.
 - **A gallery of pictures** (` ```gallery `, Nicolas, 2026-11-05, first for
   the cards of Be the Agent) holds its pictures in YAML, in groups with an
   optional title, and optionally a file that downloads all of them at once:

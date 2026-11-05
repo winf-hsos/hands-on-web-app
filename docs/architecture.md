@@ -145,10 +145,13 @@ All motion is switched off for people who ask their system for reduced motion.
   model all-MiniLM-L6-v2 (8 bits, about 23 MB) from `/assets/vendor/models/`,
   which `npm run fetch-embedding-model` fetches once from Hugging Face into
   `vendor/models/` (not in git, cached in the publish workflow). Only the map
-  of meaning (` ```meaning-map `, `src/client/meaning-map.js`) loads them, on
-  a click, about 50 MB the first time; nothing typed leaves the browser.
-  `scripts/meaning-data.mjs` writes the cards, their numbers for R and the
-  printable cards with the same model.
+  of meaning (` ```meaning-map `, `src/client/meaning-map.js`) and the
+  arithmetic with words (` ```word-arithmetic `,
+  `src/client/word-arithmetic.js`) load them, on a click, about 50 MB the
+  first time and once for both through `src/client/embedding.js`; nothing
+  typed leaves the browser. `scripts/meaning-data.mjs` writes the cards,
+  their numbers for R, the printable cards and the words the arithmetic
+  searches with the same model.
 - **The dplyr demonstrator** (` ```verb-demo `, `src/client/verb-demo.js`)
   computes the verbs itself in JavaScript on six rows of the survey and
   animates the change; it needs no R.

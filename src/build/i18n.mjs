@@ -1336,6 +1336,50 @@ export const wordGuessLabels = {
   },
 };
 
+// Arithmetic with meaning (client/word-arithmetic.js).
+export const wordArithmeticLabels = {
+  de: {
+    intro: 'Rechnet mit den Zahlen von Wörtern: Das Modell macht aus jedem Wort 384 Zahlen, die Rechnung zieht sie Stelle für Stelle ab und zählt sie dazu, und die Liste zeigt die Wörter, deren Zahlen dem Ergebnis am nächsten liegen. Das Modell ist dasselbe wie oben und kommt aus dem Speicher des Browsers, wenn es schon geladen ist.',
+    load: 'Modell laden',
+    ready: 'Noch nicht geladen',
+    loading: 'Lade das Modell: {done} von {total} MB',
+    failed: 'Das Modell ließ sich nicht laden. Ein neuer Versuch hilft oft.',
+    first: 'Erstes Wort',
+    second: 'Zweites Wort',
+    third: 'Drittes Wort',
+    optional: 'optional',
+    toggle: 'Zwischen Minus und Plus wechseln',
+    compute: 'Rechnen',
+    nearest: 'Am nächsten am Ergebnis',
+    note: 'Gesucht unter {n} englischen Wörtern, ohne die eingegebenen.',
+    plot: 'Skizze der Rechnung',
+    caption: 'Eine Skizze der Rechnung, nicht maßstäblich. Mit einem Minus und zwei Plus sind die beiden farbigen Pfeile derselbe Pfeil, vom abgezogenen zum ersten addierten Wort, und die vier Ecken bilden ein Parallelogramm; der Stern ist das Ergebnis, mit dem Wort, das ihm am nächsten liegt.',
+    star: 'Das Ergebnis der Rechnung',
+    keyLoad: 'Modell laden',
+    keyWords: 'In das erste Wort springen',
+  },
+  en: {
+    intro: 'Compute with the numbers of words: the model turns every word into 384 numbers, the calculation subtracts and adds them position by position, and the list shows the words whose numbers lie nearest to the result. It is the same model as above and comes from the browser’s storage if it has been loaded already.',
+    load: 'Load the model',
+    ready: 'Not loaded yet',
+    loading: 'Loading the model: {done} of {total} MB',
+    failed: 'The model could not be loaded. Trying again often helps.',
+    first: 'First word',
+    second: 'Second word',
+    third: 'Third word',
+    optional: 'optional',
+    toggle: 'Switch between minus and plus',
+    compute: 'Compute',
+    nearest: 'Nearest to the result',
+    note: 'Searched among {n} English words, leaving out the ones you typed.',
+    plot: 'A sketch of the calculation',
+    caption: 'A sketch of the calculation, not to scale. With one minus and two plus, the two coloured arrows are the same arrow, from the subtracted word to the first added one, and the four corners form a parallelogram; the star is the result, with the word that lies nearest to it.',
+    star: 'The result of the calculation',
+    keyLoad: 'Load the model',
+    keyWords: 'Jump to the first word',
+  },
+};
+
 // The map of meaning (client/meaning-map.js).
 export const meaningMapLabels = {
   de: {
