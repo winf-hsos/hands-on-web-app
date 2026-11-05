@@ -61,13 +61,13 @@ test('relations, path steps, course items and links must point to existing ids',
   const { errors } = check(({ find }) => {
     lead(find('content', 'command-line-navigating')).relations.requires = ['nowhere'];
     lead(find('paths', 'the-command-line')).steps.push('nowhere-path');
-    lead(find('courses', 'digitalisation-and-programming')).sections.push({ title: { de: 'A', en: 'A' }, items: ['nowhere-course'] });
+    lead(find('courses', 'digitization-and-programming')).sections.push({ title: { de: 'A', en: 'A' }, items: ['nowhere-course'] });
     find('content', 'command-line-navigating').files.de.body += '\n[[nowhere-link]]\n';
   });
   assert.deepEqual(errors.sort(), [
     'content/command-line-navigating relations.requires: unknown item "nowhere"',
     'content/command-line-navigating/de.md: link to unknown id [[nowhere-link]]',
-    'courses/digitalisation-and-programming sections[4]: unknown item "nowhere-course"',
+    'courses/digitization-and-programming sections[4]: unknown item "nowhere-course"',
     'paths/the-command-line steps: unknown item "nowhere-path"',
   ]);
 });
@@ -224,23 +224,23 @@ test('a section of a path needs a title in both languages', () => {
 });
 
 test('course sections have no release dates', () => {
-  const { errors } = check(({ find }) => (lead(find('courses', 'digitalisation-and-programming')).sections.push({ title: { de: 'A', en: 'A' }, items: ['command-line'], available_from: new Date('2026-11-16') })));
-  assert.deepEqual(errors, ['courses/digitalisation-and-programming/de.md: sections: unknown field available_from (allowed: title, items, or path or project alone)']);
+  const { errors } = check(({ find }) => (lead(find('courses', 'digitization-and-programming')).sections.push({ title: { de: 'A', en: 'A' }, items: ['command-line'], available_from: new Date('2026-11-16') })));
+  assert.deepEqual(errors, ['courses/digitization-and-programming/de.md: sections: unknown field available_from (allowed: title, items, or path or project alone)']);
 });
 
 test('a course section can be a learning path, which must exist', () => {
-  const { errors } = check(({ find }) => (lead(find('courses', 'digitalisation-and-programming')).sections[0].path = 'python-for-nobody'));
-  assert.deepEqual(errors, ['courses/digitalisation-and-programming sections[1]: unknown path "python-for-nobody"']);
+  const { errors } = check(({ find }) => (lead(find('courses', 'digitization-and-programming')).sections[0].path = 'python-for-nobody'));
+  assert.deepEqual(errors, ['courses/digitization-and-programming sections[1]: unknown path "python-for-nobody"']);
 });
 
 test('a course section can be a project, which must exist', () => {
-  const { errors } = check(({ find }) => (lead(find('courses', 'digitalisation-and-programming')).sections[2].project = 'lifi-nowhere'));
-  assert.deepEqual(errors, ['courses/digitalisation-and-programming sections[3]: unknown project "lifi-nowhere"']);
+  const { errors } = check(({ find }) => (lead(find('courses', 'digitization-and-programming')).sections[2].project = 'lifi-nowhere'));
+  assert.deepEqual(errors, ['courses/digitization-and-programming sections[3]: unknown project "lifi-nowhere"']);
 });
 
 test('a course names a known institution, and its logo must exist', () => {
-  const unknown = check(({ find }) => (lead(find('courses', 'digitalisation-and-programming')).institution = 'uni-nowhere'));
-  assert.match(unknown.errors[0], /^courses\/digitalisation-and-programming\/de\.md: institution: "uni-nowhere" is not a known institution/);
+  const unknown = check(({ find }) => (lead(find('courses', 'digitization-and-programming')).institution = 'uni-nowhere'));
+  assert.match(unknown.errors[0], /^courses\/digitization-and-programming\/de\.md: institution: "uni-nowhere" is not a known institution/);
   const noLogo = check(({ vocabulary }) => (vocabulary.institutions['hs-osnabrueck'].logo = 'missing.svg'));
   assert.deepEqual(noLogo.errors, ['vocabulary.yaml: institution hs-osnabrueck: logo missing.svg is not in knowledge/media/']);
 });

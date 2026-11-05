@@ -1,5 +1,5 @@
 ---
-title: Digitalisation and Programming
+title: Digitization and Programming
 summary: >-
   Programming with Python from the basic ideas on, plus the command line
   and the LiFi project, in which you send data with

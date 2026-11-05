@@ -32,7 +32,7 @@ knowledge/
       de.md
       en.md
   courses/
-    digitalisation-and-programming/   curated collections per module, without a semester
+    digitization-and-programming/      curated collections per module, without a semester
       de.md
       en.md
   projects/
@@ -1018,7 +1018,7 @@ by URL or title, and contains only what the browser observed:
     "code-as-agreement": { "seen": "2026-10-28", "done": "2026-10-28" },
     "code-systems-quiz": { "seen": "2026-10-28", "quiz": { "q1": 1, "q2": 0, "q3": 1 } }
   },
-  "courses": ["digitalisation-and-programming"]
+  "courses": ["digitization-and-programming"]
 }
 ```
 

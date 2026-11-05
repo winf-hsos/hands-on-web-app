@@ -26,7 +26,7 @@ programmers.
 At first VS Code is a lean text editor. What it knows about a programming
 language comes from **extensions**: with the Python extension it colours your
 code, suggests names as you type, marks errors before you run the program and
-runs it at the push of a button. In the module Digitalisation and Programming
+runs it at the push of a button. In the module Digitization and Programming
 and in the [[lifi|LiFi project]] you write your programs in VS Code.
 
 ## Setting up
