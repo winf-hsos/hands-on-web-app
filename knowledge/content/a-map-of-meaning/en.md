@@ -21,7 +21,7 @@ relations:
   see_also: [next-token-prediction, a-language-model-by-counting]
 modules: [aai]
 areas: [ai]
-status: draft
+status: published
 updated: 2026-11-05
 ---
 
