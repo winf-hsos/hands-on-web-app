@@ -104,8 +104,12 @@ test('a byte-switchboard block becomes the place of the eight switches', () => {
   assert.match(render('```byte-switchboard\n```\n'), /<div class="byte-switchboard" data-byte-switchboard=""><\/div>/);
 });
 
+test('a word-guess block passes its sentences, one per line, to the guessing game', () => {
+  assert.match(render('```word-guess\nthe hen sleeps in the barn\n\nthe sheep is white\n```\n'), /data-word-guess="\[[^"]*the hen sleeps in the barn[^"]*,[^"]*the sheep is white[^"]*\]"/);
+});
+
 test('every demonstrator sits in a frame that gets the full-screen button', () => {
-  for (const name of ['verb-demo', 'monty-hall', 'byte-switchboard', 'photo-digitiser', 'audio-digitiser', 'question-game', 'next-word', 'data-table']) {
+  for (const name of ['verb-demo', 'monty-hall', 'byte-switchboard', 'photo-digitiser', 'audio-digitiser', 'question-game', 'next-word', 'word-guess', 'data-table']) {
     assert.match(render('```' + name + '\n```\n'), new RegExp(`<div class="demo" data-demo=""><div class="${name}" data-${name}=""></div></div>`));
   }
 });

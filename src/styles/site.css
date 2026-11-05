@@ -5933,10 +5933,32 @@ details.callout[open] > summary::before {
   flex: 1 1 16rem;
 }
 
-.nw-context {
+.nw-settings {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 1.5rem;
   margin-top: 1rem;
   padding-top: 1rem;
   border-top: 1px solid var(--rule);
+}
+
+.nw-temperature {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nw-temperature input {
+  width: 9rem;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.nw-temperature output {
+  font: 600 0.9rem/1 var(--mono);
+  font-variant-numeric: tabular-nums;
 }
 
 .nw-sentence {
@@ -5957,6 +5979,12 @@ details.callout[open] > summary::before {
   border: 1px solid var(--rule);
   border-radius: 0.4rem;
   font: 600 0.9rem/1.3 var(--mono);
+}
+
+.nw-word.is-mark {
+  border-style: dashed;
+  font-weight: 400;
+  color: var(--quiet);
 }
 
 .nw-word.is-context {
@@ -6047,9 +6075,187 @@ details.callout[open] > summary::before {
   color: var(--quiet);
 }
 
+.prose .nw-more {
+  padding: 0.2rem 0.4rem;
+  font-size: 0.8rem;
+  color: var(--quiet);
+}
+
+/* The bag of the context: one card per occurrence, a fixed place, so that
+   bags of different sizes and the lines about temperature take the same
+   room; a bag larger than its place scrolls, on a phone, to the drawn card.
+   While a card is drawn, a few light up and the drawn one stays. */
+.nw-bag {
+  display: grid;
+  grid-template-rows: auto 4.2rem;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+}
+
+.prose .nw-bag-caption {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--quiet);
+}
+
+.nw-cards {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 0.2rem;
+  overflow-y: auto;
+}
+
+.nw-card {
+  padding: 0.05rem 0.35rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.25rem;
+  font: 0.75rem/1.3 var(--mono);
+  transition: background-color 60ms, border-color 60ms;
+}
+
+.nw-card.is-drawn {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--paper);
+}
+
+.nw-verdict {
+  display: grid;
+  gap: 0.2rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--rule);
+}
+
+.prose .nw-verdict p {
+  margin: 0;
+}
+
+.prose .nw-verdict p:first-child {
+  font-weight: 600;
+}
+
+.nw-size {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.nw-size summary {
+  cursor: pointer;
+  color: var(--quiet);
+}
+
+.prose .nw-size table {
+  margin: 0.6rem 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.prose .nw-size td:not(:first-child),
+.prose .nw-size th:not(:first-child) {
+  text-align: right;
+}
+
+.prose .nw-size p {
+  margin: 0.4rem 0 0;
+}
+
 @media (max-width: 30rem) {
   .nw-bar {
     grid-template-columns: 5rem minmax(0, 1fr) 2.75rem 3.25rem;
     gap: 0.4rem;
   }
+}
+
+/* Guessing the next word (client/word-guess.js): the score above, the
+   sentence as words in the code font with a mark under each for you and the
+   model (green where the guess was right), the field for the guess and the
+   lines that say what the word was and what both guessed. The sentence has
+   a place of a fixed height, so that nothing moves while it grows. */
+.word-guess {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.75rem;
+}
+
+.wg-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.4rem 1rem;
+}
+
+.prose .wg-head p {
+  margin: 0;
+}
+
+.prose .wg-score {
+  font: 650 1rem/1.3 var(--mono);
+}
+
+.wg-sentence {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 0.5rem 0.4rem;
+  height: 5.6rem;
+  margin-top: 0.75rem;
+  padding: 0.5rem;
+  overflow-y: auto;
+  border: 1px solid var(--rule);
+  border-radius: 0.5rem;
+}
+
+.wg-word {
+  display: grid;
+  justify-items: center;
+  gap: 0.15rem;
+}
+
+.wg-marks {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.wg-mark {
+  padding: 0 0.25rem;
+  border-radius: 0.2rem;
+  font: 0.65rem/1.4 var(--mono);
+  color: var(--quiet);
+  text-decoration: line-through;
+}
+
+.wg-mark.is-hit {
+  background: color-mix(in srgb, var(--green) 24%, transparent);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.wg-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.wg-form .dg-label {
+  flex-basis: 100%;
+}
+
+.wg-input {
+  flex: 1 1 12rem;
+  min-width: 0;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.5rem;
+  background: var(--paper);
+  color: var(--ink);
+  font: 600 1rem/1.3 var(--mono);
+}
+
+.wg-input:disabled {
+  opacity: 0.5;
 }

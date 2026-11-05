@@ -218,6 +218,7 @@ function fillableTables(tree, lang) {
 // ```photo-digitiser a photo cut by resolution and colour depth (client/photo-digitiser.js),
 // ```audio-digitiser a sound cut by sampling rate and bit depth (client/audio-digitiser.js),
 // ```next-word a language model by counting, with context of none, one or two words (client/next-word.js),
+// ```word-guess people against the counting model, guessing the next word of the sentences in its block (client/word-guess.js),
 // ```question-game sixteen faces and yes-or-no questions measured in bits (client/question-game.js),
 // ```data-table an empty table to record observations in (client/data-table.js),
 // ```shell-demo the folder tree and command line (client/shell-demo.js), whose
@@ -232,6 +233,7 @@ const DEMOS = {
   'audio-digitiser': { className: 'audio-digitiser', dataAudioDigitiser: '' },
   'question-game': { className: 'question-game', dataQuestionGame: '' },
   'next-word': { className: 'next-word', dataNextWord: '' },
+  'word-guess': { className: 'word-guess', dataWordGuess: '' },
   'shell-demo': { className: 'shell-demo', dataShellDemo: '' },
   'data-table': { className: 'data-table', dataDataTable: '' },
 };
@@ -250,7 +252,12 @@ function demos(tree) {
     const demo = DEMOS[node.lang];
     if (!demo) return;
     node.type = 'demo';
-    const data = node.lang === 'shell-demo' ? { dataShellDemo: JSON.stringify(shellScenario(node.value) ?? {}) } : {};
+    const data =
+      node.lang === 'shell-demo'
+        ? { dataShellDemo: JSON.stringify(shellScenario(node.value) ?? {}) }
+        : node.lang === 'word-guess' && node.value.trim()
+          ? { dataWordGuess: JSON.stringify(node.value.split('\n').map((line) => line.trim()).filter(Boolean)) }
+          : {};
     const place = { type: 'element', tagName: 'div', properties: { ...demo, ...data, className: [demo.className] }, children: [] };
     node.data = { hName: 'div', hProperties: { className: ['demo'], dataDemo: '' }, hChildren: [place] };
   });

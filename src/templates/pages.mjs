@@ -227,6 +227,7 @@ const scriptsFor = (body) =>
     body.includes('data-audio-digitiser') && 'audio-digitiser',
     body.includes('data-question-game') && 'question-game',
     body.includes('data-next-word') && 'next-word',
+    body.includes('data-word-guess') && 'word-guess',
     body.includes('data-shell-demo') && 'shell-demo',
     body.includes('data-data-table') && 'data-table',
     body.includes('data-figure') && 'figures',

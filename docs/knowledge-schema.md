@@ -352,11 +352,12 @@ The body is plain Markdown with a few conventions:
   sets `survey` (`media/datasets/milk_survey.csv`), `rewe`
   (`media/datasets/rewe_products.csv`), `monty_hall`
   (`media/datasets/lets_make_a_deal.csv`, a plain `data.frame`, since the
-  Monty Hall project teaches base R), `corpus` and `tokens` (the twenty
+  Monty Hall project teaches base R), `corpus` and `tokens` (the 22 farm
   sentences of the experiment `a-language-model-by-counting`, in
-  `tiny_corpus.csv` one per row and in `tiny_corpus_tokens.csv` one row per
-  word with its sentence and position, because webR has no tidyr to split
-  them) ready; a block that names a file, as in
+  `farm_corpus.csv` one per row and in `farm_corpus_tokens.csv` one row per
+  token with its sentence and position, `<s>` at position 0 and `</s>` at
+  the end of each sentence, because webR has no tidyr to split them; both
+  written by `scripts/counting-corpus.py`) ready; a block that names a file, as in
   `read.csv("lets_make_a_deal.csv")`, finds it in its working directory. A
   block that uses `ggplot()` shows the plot below the code. This holds in
   project phases and challenges as well as in items. A runnable block
@@ -415,13 +416,25 @@ The body is plain Markdown with a few conventions:
   OpenAI TTS, 48 kHz 16-bit mono); the other four sounds are made in code.
   Both credits stand in a note under the demonstrator.
 - **The next word by counting** (` ```next-word `, an empty block,
-  2026-11-04) came over from the web app of the experiment in Problem
-  Solving with AI: the corpus in a text field (from `tiny_corpus.csv`), a
-  button that counts words, pairs and triples, a sentence built by tapping
-  words, and the distribution of the next word for no, one or two words of
-  context as bars with probability and count. "Roll" draws a word and says
-  which random number chose it; a context that never occurred is reported,
-  not guessed.
+  2026-11-04, extended 2026-11-05) came over from the web app of the
+  experiment in Problem Solving with AI: a choice of corpus (the farm of
+  `farm_corpus.csv` or Alice in Wonderland from
+  `alice_in_wonderland.txt`) in a text field, a button that counts words,
+  pairs and triples with `<s>` and `</s>` around each sentence, a sentence
+  built by tapping words, and the distribution of the next word for no, one
+  or two words of context as bars with probability and count. "Roll" draws a
+  word and says which random number chose it; at temperature 1 it draws a
+  card from the bag of the context, shown card by card up to 60 cards. A
+  temperature slider (0 to 2) raises each probability to the power of 1/T,
+  "To the end" rolls until `</s>` or 25 words, a finished sentence is marked
+  as copied from the corpus or new with a tally per context, and a folded
+  table gives the possible and filled cells of the model's tables. A context
+  that never occurred is reported, not guessed.
+- **Guessing the next word** (` ```word-guess `, 2026-11-05) holds one
+  sentence per line in its block. People type a guess for each next word,
+  then the counting model of the farm corpus shows its own (the most
+  frequent word after the last two words, else after the last one) and the
+  word is revealed, with a score for both over all sentences.
 - **The folder tree and command line** (Nicolas, 2026-11-02) is placed with a
   ` ```shell-demo ` block that holds its scenario in YAML, so a lesson can
   bring its own tree; it may stand in any text, not only on a demo page:
