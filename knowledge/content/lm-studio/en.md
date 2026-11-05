@@ -42,7 +42,7 @@ may look slightly different.
 1. **Install LM Studio** from its
    [page for developers](https://lmstudio.ai/developers). A laptop with 8 GB
    of memory is enough for the small models of the experiment. The main page
-   lmstudio.ai offers *Bionic* first, an agent of the same maker for
+   lmstudio.ai offers [[lm-studio-bionic|Bionic]] first, an agent of the same maker for
    documents, code and computer control, which is a different program; the
    one you need is called LM Studio.
 2. **Download a model** under *Model Search* in the bar on the left: search
