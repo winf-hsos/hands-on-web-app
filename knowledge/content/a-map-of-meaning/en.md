@@ -117,11 +117,14 @@ a list of numbers. These lists are embeddings, and they are where the map
 begins. The model below is small and it is not a chatbot, but it starts in
 the same way, with a table that holds a list of 384 numbers for each of the
 30,522 tokens it knows. Load it and compare two words. Under the similarity
-you see the tokens the model reads, together with the two markers `[CLS]` and
-`[SEP]` it puts at the start and the end of every text, as the counting model
-in [[a-language-model-by-counting]] did with `<s>` and `</s>`. A single word
-is mostly one token, so the numbers you compare are essentially those of that
-token, after the processing that Step 3 describes.
+you see the tokens the model reads. The first and the last are not words but
+markers that the model puts around every text, `[CLS]` (short for
+classification) at the start and `[SEP]` (short for separator) at the end, as
+the counting model in [[a-language-model-by-counting]] did with `<s>` and
+`</s>`; they get numbers of their own and count in the average of Step 3 like
+every other token. A single word is mostly one token, so the numbers you
+compare are essentially those of that token, after the processing that Step 3
+describes.
 
 ```meaning-map
 ```
