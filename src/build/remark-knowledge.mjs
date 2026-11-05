@@ -38,21 +38,21 @@ const CALLOUT_ICONS = {
 // With several hints in one section they are numbered, since each builds on the one before.
 const NUMBERED_HINT = { de: (n) => `TIPP ${n} ANZEIGEN`, en: (n) => `SHOW HINT ${n}` };
 
-/** An icon as an element of the HTML tree, since the Markdown here may hold no raw HTML. */
-function iconNode(name) {
-  const shapes = [...iconShapes(name).matchAll(/<(\w+)([^>]*?)\/?>/g)].map(([, tagName, attributes]) => ({
+/** The shapes of an icon as elements of the HTML tree. */
+const iconShapeNodes = (name) =>
+  [...iconShapes(name).matchAll(/<(\w+)([^>]*?)\/?>/g)].map(([, tagName, attributes]) => ({
     type: 'element',
     tagName,
     properties: Object.fromEntries([...attributes.matchAll(/([\w-]+)="([^"]*)"/g)].map(([, key, value]) => [key, value])),
     children: [],
   }));
+const ICON_PROPERTIES = { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round', ariaHidden: 'true' };
+
+/** An icon as an element of the HTML tree, since the Markdown here may hold no raw HTML. */
+function iconNode(name) {
   return {
     type: 'calloutIcon',
-    data: {
-      hName: 'svg',
-      hProperties: { className: ['callout-icon'], viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round', ariaHidden: 'true' },
-      hChildren: shapes,
-    },
+    data: { hName: 'svg', hProperties: { className: ['callout-icon'], ...ICON_PROPERTIES }, hChildren: iconShapeNodes(name) },
   };
 }
 const TABLE_LABELS = {
@@ -60,10 +60,96 @@ const TABLE_LABELS = {
   en: { clear: 'Clear entries', confirm: 'Clear all entries in this table?' },
 };
 
+// ```gallery holds a set of pictures in YAML, shown as a grid of small
+// pictures in groups, each opening large in a view with arrows
+// (client/gallery.js), and optionally a link that downloads all of them as
+// one file, written for the cards of Be the Agent (Nicolas, 2026-11-05):
+//
+//   download: media/be-the-agent-cards.pdf
+//   groups:
+//     - title: Role cards
+//       images:
+//         - { src: media/cards/card-06.svg, alt: Role card Model }
+//
+// A group without a title is fine; validate.mjs checks that every file exists.
+const GALLERY_LABELS = {
+  de: { download: 'Alle als PDF herunterladen', open: '{alt}, groß ansehen', previous: 'Vorheriges Bild', next: 'Nächstes Bild', close: 'Schließen', position: '{n} / {total}' },
+  en: { download: 'Download all as PDF', open: '{alt}, view large', previous: 'Previous picture', next: 'Next picture', close: 'Close', position: '{n} / {total}' },
+};
+
+/** The content of a ```gallery block, or null when it is not YAML. */
+export function galleryOf(text) {
+  try {
+    const value = yaml.load(text);
+    return value && typeof value === 'object' && !Array.isArray(value) ? value : null;
+  } catch {
+    return null;
+  }
+}
+
+/** What is wrong with the content of a ```gallery block, as messages. */
+export function galleryProblems(gallery) {
+  if (!gallery) return ['the block is not YAML with groups:'];
+  const problems = [];
+  const extra = Object.keys(gallery).find((k) => !['download', 'groups'].includes(k));
+  if (extra) problems.push(`unknown field ${extra} (allowed: download, groups)`);
+  if (gallery.download !== undefined && typeof gallery.download !== 'string') problems.push('download: expected the path of a file in media/');
+  if (!Array.isArray(gallery.groups) || !gallery.groups.length) return [...problems, 'groups: expected a list of groups, each with images'];
+  gallery.groups.forEach((group, g) => {
+    if (group?.title !== undefined && typeof group.title !== 'string') problems.push(`groups[${g + 1}].title: expected a text`);
+    if (!Array.isArray(group?.images) || !group.images.length) return problems.push(`groups[${g + 1}].images: expected a list of { src, alt }`);
+    group.images.forEach((image, i) => {
+      if (typeof image?.src !== 'string' || typeof image?.alt !== 'string' || !image.alt.trim()) problems.push(`groups[${g + 1}].images[${i + 1}]: expected { src, alt } with a description`);
+    });
+  });
+  return problems;
+}
+
+/** The files a ```gallery block names: its pictures and its download. */
+export const galleryFiles = (gallery) => [gallery?.download, ...(gallery?.groups ?? []).flatMap((g) => (g?.images ?? []).map((i) => i?.src))].filter((f) => typeof f === 'string');
+
+function galleries(tree, lang) {
+  const L = GALLERY_LABELS[lang] ?? GALLERY_LABELS.en;
+  const el = (tagName, properties, children = []) => ({ type: 'element', tagName, properties, children });
+  const text = (value) => ({ type: 'text', value });
+  visit(tree, 'code', (node) => {
+    if (node.lang !== 'gallery') return;
+    const gallery = galleryOf(node.value) ?? {};
+    const groups = (gallery.groups ?? []).map((group) =>
+      el(
+        'div',
+        { className: ['gallery-group'] },
+        [
+          group.title && el('p', { className: ['gallery-title'] }, [text(group.title)]),
+          el(
+            'ul',
+            { className: ['gallery-grid'] },
+            (group.images ?? []).map((image) =>
+              el('li', {}, [
+                el('a', { className: ['gallery-item'], href: image.src, ariaLabel: L.open.replace('{alt}', image.alt) }, [
+                  el('img', { src: image.src, alt: image.alt, loading: 'lazy', decoding: 'async' }),
+                ]),
+              ]),
+            ),
+          ),
+        ].filter(Boolean),
+      ),
+    );
+    const download =
+      gallery.download &&
+      el('p', { className: ['gallery-bar'] }, [
+        el('a', { className: ['gallery-download'], href: gallery.download, download: '' }, [el('svg', { className: ['icon'], width: '16', height: '16', ...ICON_PROPERTIES }, iconShapeNodes('download')), text(L.download)]),
+      ]);
+    node.type = 'gallery';
+    node.data = { hName: 'figure', hProperties: { className: ['gallery'], dataGallery: JSON.stringify(L) }, hChildren: [download, ...groups].filter(Boolean) };
+  });
+}
+
 export function remarkKnowledge({ lang, quiz: isQuiz = false, resolve, sourceMap = false, sourceOffset = 0 }) {
   return (tree) => {
     wikiLinks(tree, resolve);
     callouts(tree, lang);
+    galleries(tree, lang); // before runnable, which turns every other code block into code
     runnable(tree);
     fillableTables(tree, lang);
     demos(tree);

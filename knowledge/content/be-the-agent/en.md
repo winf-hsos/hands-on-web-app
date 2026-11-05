@@ -54,6 +54,51 @@ real fertilisation.
 
 ![The Observer's sheet: a table with the columns round, card, tool, what it said and note, and a box for the counts at the end](media/be-the-agent-observer.svg "The Observer's sheet, one per group and task.")
 
+### The cards
+
+Pink cards belong to the Model: the system card, the three tasks and the
+blank cards it writes on. The dark role cards go one to each player, and the
+grey cards are the material of the tools, which the Model never sees. Click a
+card to read it large.
+
+```gallery
+download: media/be-the-agent-cards.pdf
+groups:
+  - title: The Model's cards
+    images:
+      - { src: media/cards/card-02.svg, alt: System card }
+      - { src: media/cards/card-03.svg, alt: Task 1 }
+      - { src: media/cards/card-04.svg, alt: Task 2 }
+      - { src: media/cards/card-05.svg, alt: Task 3 }
+      - { src: media/cards/card-25.svg, alt: Blank THINK card }
+      - { src: media/cards/card-26.svg, alt: Blank TOOL card }
+      - { src: media/cards/card-28.svg, alt: Blank ANSWER card }
+  - title: Role cards
+    images:
+      - { src: media/cards/card-06.svg, alt: Role card Model }
+      - { src: media/cards/card-07.svg, alt: Role card Harness }
+      - { src: media/cards/card-09.svg, alt: Role card Search }
+      - { src: media/cards/card-10.svg, alt: Role card Web }
+      - { src: media/cards/card-11.svg, alt: Role card Files }
+      - { src: media/cards/card-12.svg, alt: Role card Calculator }
+      - { src: media/cards/card-08.svg, alt: Role card Observer }
+  - title: The tools' material
+    images:
+      - { src: media/cards/card-13.svg, alt: Search index }
+      - { src: media/cards/card-14.svg, alt: File fields }
+      - { src: media/cards/card-15.svg, alt: File soil_tests }
+      - { src: media/cards/card-16.svg, alt: File stock }
+      - { src: media/cards/card-17.svg, alt: File weather }
+      - { src: media/cards/card-24.svg, alt: Blank card for a new file }
+      - { src: media/cards/card-18.svg, alt: "Web page: nitrogen requirement" }
+      - { src: media/cards/card-19.svg, alt: "Web page: recommendations 2009" }
+      - { src: media/cards/card-20.svg, alt: "Web page: splitting nitrogen" }
+      - { src: media/cards/card-21.svg, alt: "Web page: when fertiliser may be spread" }
+      - { src: media/cards/card-22.svg, alt: "Web page: calcium ammonium nitrate" }
+      - { src: media/cards/card-23.svg, alt: "Web page: winter wheat varieties" }
+      - { src: media/cards/card-27.svg, alt: Blank RESULT card }
+```
+
 ## Steps
 
 1. Hand out the role cards; the Model's stack starts with the system card and

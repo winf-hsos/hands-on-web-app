@@ -230,6 +230,7 @@ const scriptsFor = (body) =>
     body.includes('data-word-guess') && 'word-guess',
     body.includes('data-shell-demo') && 'shell-demo',
     body.includes('data-data-table') && 'data-table',
+    body.includes('data-gallery') && 'gallery',
     body.includes('data-figure') && 'figures',
     body.includes('data-model') && 'model',
     body.includes('data-fillable') && 'tables',
@@ -702,7 +703,7 @@ export function course(site, doc, lang) {
         ${doc.lead.sections.map((s, i) =>
           s.path ? pathSection(site.path.get(s.path))
           : s.project ? projectSection(site.project.get(s.project))
-          : section(`course:${doc.id}:${i + 1}`, s.title[lang], () => trail(s.items)))}
+          : section(`course:${doc.id}:${i + 1}`, s.title[lang], () => (s.items.length ? trail(s.items) : html`<p class="empty">${t(lang, 'section_empty')}</p>`)))}
         ${more(t(lang, 'about_course'), html`<div class="prose" lang="${text.lang}">${raw(site.body(doc, lang))}</div>`)}
       </article>
     `,

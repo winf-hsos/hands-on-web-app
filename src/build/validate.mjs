@@ -11,7 +11,7 @@ import { typesOf, hasType } from './types.mjs';
 import { datasetInfo } from './dataset.mjs';
 import { youtubeId } from './youtube.mjs';
 import { figureFile, figureRefs, figureRules, FIGURE_FILE } from './figures.mjs';
-import { shellScenario } from './remark-knowledge.mjs';
+import { shellScenario, galleryOf, galleryProblems, galleryFiles } from './remark-knowledge.mjs';
 import { scenarioProblems } from '../client/shell-model.js';
 import { embedsIn } from './embed.mjs';
 
@@ -102,6 +102,8 @@ function shapes(vocabulary) {
     }
     const extra = Object.keys(v).find((k) => !['title', 'items'].includes(k));
     if (extra) return `unknown field ${extra} (allowed: title, items, or path or project alone)`;
+    // `items: []` announces a section whose content is still being written
+    if (Array.isArray(v.items) && v.items.length === 0) return (label(v.title) && `title: ${label(v.title)}`) ?? null;
     return (label(v.title) && `title: ${label(v.title)}`) ?? (list(step, 1)(v.items) && `items: ${list(step, 1)(v.items)}`) ?? null;
   };
   // A part of a learning path: a heading in both languages and its steps.
@@ -669,6 +671,19 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
         const scenario = shellScenario(text);
         const problems = scenario === null ? ['the scenario is not valid YAML'] : scenarioProblems(scenario);
         for (const problem of problems) errors.push(`${file.path}: shell-demo: ${problem}`);
+      }
+    }
+  }
+  // A gallery of pictures (client/gallery.js): its YAML and every file it names.
+  for (const item of content) {
+    for (const file of Object.values(item.files)) {
+      for (const [, text] of file.body.matchAll(/^```gallery[ \t]*\r?\n([\s\S]*?)^```[ \t]*$/gm)) {
+        const gallery = galleryOf(text);
+        for (const problem of galleryProblems(gallery)) errors.push(`${file.path}: gallery: ${problem}`);
+        for (const ref of galleryFiles(gallery)) {
+          if (!ref.startsWith('media/')) errors.push(`${file.path}: gallery: ${ref} is not a file in media/`);
+          else if (!existsSync(join(item.dir, ref))) errors.push(`${file.path}: gallery: ${ref} does not exist`);
+        }
       }
     }
   }

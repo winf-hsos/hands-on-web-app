@@ -38,8 +38,9 @@ export function withoutDrafts(knowledge) {
     if (l.kind === 'course') {
       l.sections = (l.sections ?? [])
         .filter((s) => (!s.path || keep(s.path)) && (!s.project || keep(s.project)))
-        .map((s) => (s.path || s.project ? s : { ...s, items: steps(s.items) }))
-        .filter((s) => s.path || s.project || s.items.length);
+        // a section left without items by drafts goes; one announced with `items: []` stays
+        .filter((s) => s.path || s.project || !s.items.length || steps(s.items).length)
+        .map((s) => (s.path || s.project ? s : { ...s, items: steps(s.items) }));
     }
     if (l.kind !== 'course' && l.items) l.items = l.items.filter(keep);
     if (l.phases) {

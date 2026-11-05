@@ -236,7 +236,10 @@ One app and one knowledge base serve several **areas** (decision of Nicolas,
 under `/ds/`. Each area is a part of the site of its own, with its start page,
 lists, map, search index and "My learning", and its own accent colour (blue
 for computer science, pink for data science), set on `<html data-area>` in
-`site.css`. The build makes one site model per area (`createSite(knowledge,
+`site.css`. The icon in the browser tab takes the same colour
+(`public/favicon.svg` for computer science, `favicon-ai.svg` and
+`favicon-ds.svg` for the others, chosen in `layout.mjs`; Nicolas,
+2026-11-05). The build makes one site model per area (`createSite(knowledge,
 area)`): lookups cover the whole knowledge base, lists only the area, and a
 link to a doc that belongs to another area leads into that area. `/de/` and
 `/en/` are the entrance with one card per area and below them the content

@@ -14,6 +14,10 @@ sections:
     items: [a-brief-history-of-ai, ai-agents, be-the-agent]
   - title: { de: Sprachmodelle, en: Language models }
     items: [open-models, a-language-model-by-counting, next-token-prediction, the-bitter-lesson]
+  - title: { de: Wie Maschinen lernen, en: How machines learn }
+    items: []
+  - title: { de: Anwendungen und Folgen, en: Applications and consequences }
+    items: []
 status: published
 updated: 2026-11-04
 ---

@@ -52,7 +52,7 @@ export function layout({ site, lang, path, title, description, current, content,
   <title>${full}</title>
   ${description && html`<meta name="description" content="${plainText(description)}">`}
   <link rel="alternate" hreflang="${other}" href="${otherPath}">
-  <link rel="icon" href="${asset('favicon.svg')}" type="image/svg+xml">
+  <link rel="icon" href="${asset(['ai', 'ds'].includes(site.area) ? `favicon-${site.area}.svg` : 'favicon.svg')}" type="image/svg+xml">
   <link rel="preload" href="${asset('fonts/sans.woff2')}" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="${asset('site.css')}">
   <script>try{const d=document.documentElement.dataset,m=localStorage.getItem('hocs-theme'),u=new URLSearchParams(location.search).get('view'),v=['list','cards'].includes(u)?u:localStorage.getItem('hocs-view');if(m)d.theme=m;if(v)d.view=v}catch{}</script>

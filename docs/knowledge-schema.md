@@ -435,6 +435,26 @@ The body is plain Markdown with a few conventions:
   then the counting model of the farm corpus shows its own (the most
   frequent word after the last two words, else after the last one) and the
   word is revealed, with a score for both over all sentences.
+- **A gallery of pictures** (` ```gallery `, Nicolas, 2026-11-05, first for
+  the cards of Be the Agent) holds its pictures in YAML, in groups with an
+  optional title, and optionally a file that downloads all of them at once:
+
+  ````markdown
+  ```gallery
+  download: media/be-the-agent-cards.pdf
+  groups:
+    - title: Role cards
+      images:
+        - { src: media/cards/card-06.svg, alt: Role card Model }
+  ```
+  ````
+
+  The page shows the pictures small in a grid, each a link to its file; a
+  click opens it large in a view over the page with its description and
+  arrows to the others of the gallery (`client/gallery.js`). `validate.mjs`
+  checks the YAML and that every file exists in the item's `media/`. The
+  cards of Be the Agent are the single-card SVGs of the Typst source in the
+  Artificial Intelligence folder (`typst compile --input layout=einzeln`).
 - **The folder tree and command line** (Nicolas, 2026-11-02) is placed with a
   ` ```shell-demo ` block that holds its scenario in YAML, so a lesson can
   bring its own tree; it may stand in any text, not only on a demo page:
@@ -732,7 +752,11 @@ project page; it adds no steps to the progress of the course. Section
 titles are short labels and therefore written in both languages inline; the
 rule is that short labels in a structure may be bilingual in place, while
 prose belongs in the language files. Sections have no release dates:
-everything in a course is available from the start.
+everything in a course is available from the start. A section that is
+planned but not written yet is announced with `items: []` (Nicolas,
+2026-11-05): it appears with its title and the note that its content is
+being written, also on the published site, while a section whose items are
+all still drafts stays hidden there.
 
 A course may have a `subtitle`, a short line under its title (in the lead and
 in each translation), for example where it belongs in a larger module. Its

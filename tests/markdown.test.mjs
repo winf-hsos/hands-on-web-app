@@ -108,6 +108,14 @@ test('a word-guess block passes its sentences, one per line, to the guessing gam
   assert.match(render('```word-guess\nthe hen sleeps in the barn\n\nthe sheep is white\n```\n'), /data-word-guess="\[[^"]*the hen sleeps in the barn[^"]*,[^"]*the sheep is white[^"]*\]"/);
 });
 
+test('a gallery block becomes small pictures in groups that link to their files, with the download above', () => {
+  const html = render('```gallery\ndownload: media/cards.pdf\ngroups:\n  - title: Role cards\n    images:\n      - { src: media/cards/a.svg, alt: Role card Model }\n```\n');
+  assert.match(html, /<figure class="gallery" data-gallery="[^"]+">/);
+  assert.match(html, /<a class="gallery-download" href="media\/cards.pdf" download>/);
+  assert.match(html, /<p class="gallery-title">Role cards<\/p>/);
+  assert.match(html, /<a class="gallery-item" href="media\/cards\/a.svg"[^>]*><img src="media\/cards\/a.svg" alt="Role card Model" loading="lazy"/);
+});
+
 test('every demonstrator sits in a frame that gets the full-screen button', () => {
   for (const name of ['verb-demo', 'monty-hall', 'byte-switchboard', 'photo-digitiser', 'audio-digitiser', 'question-game', 'next-word', 'word-guess', 'data-table']) {
     assert.match(render('```' + name + '\n```\n'), new RegExp(`<div class="demo" data-demo=""><div class="${name}" data-${name}=""></div></div>`));

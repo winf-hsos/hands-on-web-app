@@ -31,7 +31,10 @@ const modules = (name) => join(ROOT, 'node_modules', name);
 // stylesheet refers to them; everything else gets a content hash in its URL.
 const ASSETS = {
   'site.css': join(ROOT, 'src/styles/site.css'),
+  // the icon in the tab takes the colour of the area (Nicolas, 2026-11-05)
   'favicon.svg': join(ROOT, 'public/favicon.svg'),
+  'favicon-ai.svg': join(ROOT, 'public/favicon-ai.svg'),
+  'favicon-ds.svg': join(ROOT, 'public/favicon-ds.svg'),
   'vendor/minisearch.js': modules('minisearch/dist/es/index.js'),
   'vendor/qrcode.mjs': modules('qrcode-generator/dist/qrcode.mjs'),
   'fonts/sans.woff2': modules('@fontsource-variable/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-wght-normal.woff2'),
