@@ -20,7 +20,7 @@ level: 1
 duration: 90
 topics: [language-models]
 relations:
-  see_also: [next-token-prediction, a-language-model-by-counting]
+  see_also: [next-token-prediction]
 modules: [aai]
 areas: [ai]
 status: published
@@ -119,10 +119,9 @@ the same way, with a table that holds a list of 384 numbers for each of the
 30,522 tokens it knows. Load it and compare two words. Under the similarity
 you see the tokens the model reads. The first and the last are not words but
 markers that the model puts around every text, `[CLS]` (short for
-classification) at the start and `[SEP]` (short for separator) at the end, as
-the counting model in [[a-language-model-by-counting]] did with `<s>` and
-`</s>`; they get numbers of their own and count in the average of Step 3 like
-every other token. A single word is mostly one token, so the numbers you
+classification) at the start and `[SEP]` (short for separator) at the end.
+They get numbers of their own and count in the average of Step 3 like every
+other token. A single word is mostly one token, so the numbers you
 compare are essentially those of that token, after the processing that Step 3
 describes.
 
@@ -131,25 +130,36 @@ describes.
 
 The **similarity** of two words is one number between −1 and 1. Think of the
 384 numbers as an arrow from the centre of the map: 1 means that two arrows
-point in exactly the same direction, and 0 that they have nothing to do with
-each other. For this model, values from about 0.3 already mean that two words
-or texts are clearly related, so what counts is the order of the values, not
-the value itself.
+point in exactly the same direction, 0 that they have nothing to do with each
+other, and −1 that they point in opposite directions. This model hardly ever
+goes below 0: `I love this film.` and `Please restart your router.`, two texts
+with nothing in common, get −0.06. Single words that have nothing in common
+still reach about 0.2 to 0.3, `puppy` and `invoice` for instance 0.22, while
+for whole texts values from about 0.3 already mean that they are clearly
+related. What counts is therefore the order of the values, not the value
+itself.
 
 6. Compare `dog` with `puppy`, with `cat` and with `car`. Put the three in
    order before you press the button.
-7. Compare `hot` with `cold` and with `warm`. Is the opposite far away?
+7. Compare `hot` with `cold` and with `warm`, and `warm` with `cold`. Is the
+   opposite far away?
 8. Find the pair of different words with the highest similarity you can, and
-   a pair of words that look alike but get a low one.
+   a pair of words that look alike but get a low one. Then try to find a pair
+   of words with a negative similarity.
 
 > [!SOLUTION]
 > `dog` and `puppy` reach 0.81, `dog` and `cat` 0.66 and `dog` and `car`
 > 0.48: the closer the meaning, the closer the arrows, while the letters do
 > not matter, since car looks more like cat than puppy does. `hot` and `cold`
-> reach 0.53, not much less than `hot` and `warm` with 0.68, because
-> opposites are used in the same places: both describe the weather, a drink
-> or an oven. The map knows what a word is about, much less which way it
-> points.
+> reach 0.53, not much less than `hot` and `warm` with 0.68, and `warm` and
+> `cold` even reach 0.72, because opposites are used in the same places: they
+> describe the weather, a drink or an oven. The map knows what a word is
+> about, much less which way it points. A negative pair is almost impossible
+> to find: among more than a million pairs of single words we compared, fewer
+> than three in ten thousand came out below 0, and the lowest, `pool` and
+> `angular`, reached only −0.09. All words share a large part of their
+> direction, simply because they are single words of English, and opposite
+> meaning does not mean opposite direction.
 
 ### Arithmetic with meaning
 
@@ -253,8 +263,7 @@ old idea behind every embedding, in the words of the linguist John Rupert
 Firth from 1957: "you shall know a word by the company it keeps". It is not
 about words that stand next to each other, since dog and cat rarely do, but
 about words that have the same neighbours, which is also why hot and cold
-came out close in Step 2. In [[a-language-model-by-counting]] cow and sheep
-had similar rows in the tables of counts for the same reason. The model on
+came out close in Step 2. The model on
 this page learned this stage from a larger model that had been trained in
 this way.
 
