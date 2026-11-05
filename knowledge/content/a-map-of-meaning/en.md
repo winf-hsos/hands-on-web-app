@@ -40,6 +40,11 @@ become the numbers of a whole text, and finally look at the map a real model
 draws from the same cards, search it and find out what it knows and what it
 does not.
 
+The slides follow the experiment step by step and explain each idea at the
+place where you meet it.
+
+![Slides: A map of meaning](item:a-map-of-meaning-slides)
+
 ## What you need
 
 - The [24 cards](media/meaning-cards.pdf), printed on one A4 sheet and cut
