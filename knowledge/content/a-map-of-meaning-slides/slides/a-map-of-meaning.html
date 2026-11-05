@@ -11,6 +11,8 @@
     .values .label { color: var(--gray-light); }
     .values .value { font-size: var(--normal); color: var(--yellow); }
     .lines.spaced > div { margin-bottom: 36px; }
+    /* the note that names the model behind every value, as quiet as possible */
+    .footnote.model, .footnote.model a { color: var(--gray-dark); text-decoration: none; }
     /* the opening photo is smaller than the slide, so its upper, lower and left
        edges fade into the black instead of showing the edge of the table */
     .photo.fade {
@@ -48,22 +50,23 @@
   <section class="slide">
     <h2>close in meaning, close on the map</h2>
     <div class="figure" id="fig-sheet"></div>
-    <aside class="notes">So sehen die meisten Bögen am Ende aus. Die beiden Karten mit „bank“ (3 und 20) und die beiden mit „python“ (8 und 12) liegen weit auseinander, weil ihr den Rest des Satzes lest. Für euch heißt nah: nah in der Bedeutung, nicht in den Buchstaben. Merkt euch die pinken Karten, sie kommen wieder.</aside>
+    <aside class="notes">So sehen die meisten Bögen am Ende aus: Jede Karte liegt dort, wo sie hinpasst, und daraus entstehen Klumpen, manche dicht, manche locker, und einzelne Karten liegen dazwischen, etwa die abgelehnte Karte an der Kasse zwischen Reisen und Geld. Feste Gruppen gibt es nicht, nur Nähe. Die beiden Karten mit „bank“ (3 und 20) und die beiden mit „python“ (8 und 12) liegen weit auseinander, weil ihr den Rest des Satzes lest. Für euch heißt nah: nah in der Bedeutung, nicht in den Buchstaben. Statt ihrer Nummern zeigt die Folie nur ihr gemeinsames Wort, „bank“ in Pink und „python“ in Gelb; welche Karte welche ist, verrät sie nicht. Merkt euch diese vier Karten, sie kommen wieder.</aside>
   </section>
 
   <section class="slide" data-on-show="showAxes" data-on-step="showAxes">
     <h2>a place is a list of numbers</h2>
     <div class="figure" id="fig-axes"></div>
-    <span data-step="1"></span><span data-step="2"></span>
-    <aside class="notes">Jeder Ort auf eurem Blatt lässt sich als zwei Zahlen aufschreiben: so weit nach rechts, so weit nach oben. Zwei Zahlen reichen aber nicht, um alles auseinander zu halten, was sich unterscheidet; zwei Karten können auf dem Blatt an derselben Stelle liegen. Jede weitere Zahl ist eine weitere Richtung, in der sich Texte unterscheiden können.</aside>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span>
+    <aside class="notes">Dasselbe Blatt, nur mit zwei Achsen darüber. Jeder Ort lässt sich jetzt als zwei Zahlen aufschreiben: Karte 24, das Passwort, liegt bei (2, 1). Zweiter Klick: Karte 18, das WLAN in der Mensa, liegt bei (6, 3); erst nach rechts ablesen, dann nach oben. Dritter Klick: Zwei Zahlen reichen aber nicht, um alles auseinander zu halten, was sich unterscheidet; auf dem Blatt müssen Karten oft näher zusammenrücken, als sie es verdienen. Jede weitere Zahl ist eine weitere Richtung, in der sich Texte unterscheiden können.</aside>
   </section>
 
   <section class="slide">
     <h2>key idea</h2>
     <div class="content">
       <div class="statement">an <span class="b">embedding</span> is a list of numbers that says where something lies on a map of meaning.</div>
-      <div class="sidenote" style="margin-top: 60px">your sheet: 2 numbers per card · the model: 384 numbers per token and per text</div>
+      <div class="sidenote" style="margin-top: 60px">your sheet: 2 numbers per card · the model*: 384 numbers per token and per text</div>
     </div>
+    <div class="footnote model keep-case">* all-MiniLM-L6-v2 · <a href="https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2" target="_blank" rel="noopener">huggingface.co/sentence-transformers/all-MiniLM-L6-v2</a></div>
     <aside class="notes">Das ist schon die ganze Idee. Der Rest des Experiments zeigt, woher die Zahlen kommen und was man mit ihnen anfangen kann.</aside>
   </section>
 
@@ -80,12 +83,14 @@
     <h2>similarity is the angle between two arrows</h2>
     <div class="figure" id="fig-angle"></div>
     <span data-step="1"></span>
+    <div class="footnote model keep-case" data-step="1">* all-MiniLM-L6-v2 · <a href="https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2" target="_blank" rel="noopener">huggingface.co/sentence-transformers/all-MiniLM-L6-v2</a></div>
     <aside class="notes">Stellt euch die 384 Zahlen als Pfeil vom Mittelpunkt der Karte aus vor. Ähnlich heißt: Die Pfeile zeigen in dieselbe Richtung, dann ist der Wert 1; stehen sie im rechten Winkel, ist er 0, zeigen sie entgegengesetzt, −1. Negativ wird es bei diesem Modell praktisch nie, auch nicht bei Gegensätzen: Unter 1,3 Millionen Wortpaaren liegt das niedrigste bei −0,09.</aside>
   </section>
 
   <section class="slide" data-on-show="showPairs" data-on-step="showPairs">
-    <h2>measured with the model</h2>
+    <h2>measured with the model*</h2>
     <div class="figure" id="fig-pairs"></div>
+    <div class="footnote model keep-case">* all-MiniLM-L6-v2 · <a href="https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2" target="_blank" rel="noopener">huggingface.co/sentence-transformers/all-MiniLM-L6-v2</a></div>
     <span data-step="1"></span>
     <aside class="notes">Erst die Gruppen schätzen lassen, dann zeigen. Die Gegensätze liegen nah beieinander, weil sie an denselben Stellen im Text stehen: beim Wetter, beim Getränk, beim Ofen. Die Karte weiß, worum es geht, aber kaum, in welche Richtung. Und selbst Wörter, die nichts gemeinsam haben, kommen noch auf 0,2.</aside>
   </section>
@@ -103,51 +108,43 @@
     <h2>the same works elsewhere</h2>
     <div class="content" style="top: 150px">
       <div class="calc">
-        <div class="mono keep-case">paris − france + germany</div><div class="gr">→</div><div class="y">berlin 0.79</div>
-        <div class="mono keep-case">puppy − dog + cat</div><div class="gr">→</div><div class="y">kitten 0.87</div>
-        <div class="mono keep-case">doctor − hospital + school</div><div class="gr">→</div><div class="y">teacher 0.82</div>
-        <div class="mono keep-case">walked − walk + swim</div><div class="gr">→</div><div><span class="y">swimming 0.91</span><span class="gr small">&nbsp;&nbsp;swam 0.88</span></div>
+        <div class="mono keep-case">paris − france + germany</div><div class="gr" data-step="1">→</div><div class="y" data-step="1">berlin 0.79</div>
+        <div class="mono keep-case">puppy − dog + cat</div><div class="gr" data-step="2">→</div><div class="y" data-step="2">kitten 0.87</div>
+        <div class="mono keep-case">doctor − hospital + school</div><div class="gr" data-step="3">→</div><div class="y" data-step="3">teacher 0.82</div>
+        <div class="mono keep-case">walked − walk + swim</div><div class="gr" data-step="4">→</div><div data-step="4"><span class="y">swimming 0.91</span><span class="gr small">&nbsp;&nbsp;swam 0.88</span></div>
       </div>
     </div>
-    <aside class="notes">Hauptstadt, Jungtier, Arbeitsort: Niemand hat dem Modell diese Richtungen beigebracht, sie sind entstanden, weil solche Wörter ähnlich verwendet werden. Bei der Vergangenheit hat es „swim“ gut erwischt, die Vergangenheit nur schwach: swimming liegt knapp vor swam.</aside>
+    <aside class="notes">Je Zeile erst raten lassen, dann mit einem Klick die Antwort zeigen. Hauptstadt, Jungtier, Arbeitsort: Niemand hat dem Modell diese Richtungen beigebracht, sie sind entstanden, weil solche Wörter ähnlich verwendet werden. Bei der Vergangenheit hat es „swim“ gut erwischt, die Vergangenheit nur schwach: swimming liegt knapp vor swam.</aside>
   </section>
 
   <section class="slide">
-    <h2>the way back is blurred</h2>
+    <h2>not always perfect</h2>
     <div class="figure" id="fig-back"></div>
-    <aside class="notes">Die Richtungen sind da, aber unscharf. Zurückgerechnet landet king erst auf Platz drei, hinter lord und brother. Wenn eine Rechnung nicht klappt, liegen mehrere Wörter fast gleich nah am Ergebnis.</aside>
+    <aside class="notes">Die Richtungen sind da, aber unscharf, und nicht jede Rechnung geht auf. Ein Beispiel: Zurückgerechnet landet king erst auf Platz drei, hinter lord und brother. Wenn eine Rechnung nicht klappt, liegen mehrere Wörter fast gleich nah am Ergebnis.</aside>
   </section>
 
   <!-- ==================== 4 · from tokens to a text ==================== -->
   <section class="slide part" data-part="from tokens to a text"></section>
 
   <section class="slide">
-    <h2>what the model reads</h2>
+    <h2>what the model* reads</h2>
     <div class="figure" id="fig-tokens"></div>
-    <aside class="notes">Das Modell schreibt alles klein und schneidet den Text in Tokens. [CLS] und [SEP] sind keine Wörter, sondern Marken für Anfang und Ende, mit eigenen Zahlen. Ein seltenes Wort wird in Stücke geschnitten, die allein wenig bedeuten; deshalb kommen „unbelievably“ und „incredibly“ nur auf 0,35, und ein englisches Modell versteht Deutsch kaum.</aside>
+    <div class="footnote model keep-case">* all-MiniLM-L6-v2 · <a href="https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2" target="_blank" rel="noopener">huggingface.co/sentence-transformers/all-MiniLM-L6-v2</a></div>
+    <aside class="notes">Das Modell schreibt alles klein und schneidet den Text in Tokens. [CLS] und [SEP] sind keine Wörter, sondern Marken für Anfang und Ende, mit eigenen Zahlen. Ein seltenes Wort wird in Stücke geschnitten, die allein wenig bedeuten; deshalb kommen „unbelievably“ und „incredibly“ nur auf 0,35, und ein englisches Modell versteht Deutsch kaum. Die zwei Rauten vor einem Stück heißen: Es hängt ohne Leerzeichen am Stück davor, ist also kein Wortanfang. So lässt sich jedes Wort aus seinen Stücken wieder zusammensetzen.</aside>
   </section>
 
   <section class="slide" data-on-show="showText" data-on-step="showText">
     <h2>four steps from tokens to one list</h2>
     <div class="figure" id="fig-text"></div>
     <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span>
-    <aside class="notes">Schneiden, nachschlagen, anpassen, mitteln. Schneiden: der Satz wird zu Tokens. Nachschlagen: Jedes Token holt seine Zeile aus der Tabelle, zusammen mit ein paar Zahlen für seine Position. Anpassen: Das ist die Attention eines Transformers; in jeder der sechs Schichten schaut jedes Token auf alle anderen und nimmt etwas von denen auf, die für es zählen, in beide Richtungen. Mitteln: Am Ende wird über alle Tokens gemittelt und auf Länge 1 gebracht, das ist der Text.</aside>
+    <aside class="notes">Schneiden, nachschlagen, anpassen, mitteln. Schneiden: der Satz wird zu Tokens. Nachschlagen: Jedes Token holt seine Zeile aus der Tabelle, zusammen mit ein paar Zahlen für seine Position. Anpassen: Das ist die Attention eines Transformers. Der Transformer hat sechs Schichten, angedeutet durch den Stapel hinter jedem Token; in jeder Schicht schaut jedes Token auf alle anderen und nimmt etwas von denen auf, die für es zählen, in beide Richtungen, und die nächste Schicht arbeitet mit dem Ergebnis weiter. Mitteln: Am Ende wird über alle Tokens gemittelt und auf Länge 1 gebracht, das ist der Text.</aside>
   </section>
 
   <section class="slide">
     <h2>the same token, two meanings</h2>
-    <div class="content" style="top: 150px">
-      <div class="lines spaced">
-        <div>the <span class="b">bank</span> raised its interest rates.</div>
-        <div>we watched the ducks from the <span class="b">bank</span> of the river.</div>
-      </div>
-      <div class="values">
-        <div class="label">“bank” in these two sentences</div><div class="value">0.76</div>
-        <div class="label">“bank” in two sentences about money</div><div class="value">0.88</div>
-      </div>
-      <div class="sidenote" style="margin-top: 50px">the numbers of the token after the six layers of the model</div>
-    </div>
-    <aside class="notes">Beide starten mit derselben Zeile der Tabelle und landen an verschiedenen Orten, weil sie sich an ihren Satz angepasst haben. Deshalb sind diese Embeddings mehr als ein Wörterbuch.</aside>
+    <div class="figure" id="fig-bank"></div>
+    <div class="footnote model keep-case">* all-MiniLM-L6-v2 · <a href="https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2" target="_blank" rel="noopener">huggingface.co/sentence-transformers/all-MiniLM-L6-v2</a></div>
+    <aside class="notes">Verglichen werden nicht die Sätze, sondern nur das Token „bank“. Alle drei starten mit derselben Zeile der Tabelle, also denselben 384 Zahlen. Nach den sechs Schichten hat jedes „bank“ eine eigene Liste mit 384 Zahlen, die Leiste rechts daneben. Jeder Wert ist die Kosinus-Ähnlichkeit zwischen zwei solchen Listen, der des ersten „bank“ und der der jeweiligen Zeile. Die Bank am Fluss landet bei 0,76 zur Bank mit den Zinsen, die Bank im zweiten Geldsatz bei 0,88, weil sich das Token an seinen Satz angepasst hat. Deshalb sind diese Embeddings mehr als ein Wörterbuch.</aside>
   </section>
 
   <section class="slide">
@@ -159,7 +156,7 @@
   <section class="slide">
     <h2>the idea behind it</h2>
     <div class="content">
-      <div class="statement">you shall know a word by the company it keeps.</div>
+      <div class="statement">“you shall know a word by the company it keeps.”</div>
       <div class="sidenote keep-case" style="margin-top: 60px">John Rupert Firth, 1957</div>
     </div>
     <aside class="notes">Es geht nicht um Wörter, die nebeneinander stehen, denn Hund und Katze stehen selten nebeneinander, sondern um Wörter mit denselben Nachbarn.</aside>
@@ -171,14 +168,19 @@
   <section class="slide">
     <h2>384 directions, drawn on two</h2>
     <div class="figure" id="fig-shadow"></div>
-    <aside class="notes">384 Richtungen kann niemand zeichnen. Die Karte zeigt ihren Schatten auf den zwei Richtungen, in denen sich die Karten am meisten unterscheiden. Was im Schatten nah liegt, liegt meist auch in den 384 Zahlen nah, aber nicht immer, wie die beiden pinken Punkte; im Zweifel gelten die Werte.</aside>
+    <aside class="notes">384 Richtungen kann niemand zeichnen. Die Karte zeigt ihren Schatten auf den zwei Richtungen, in denen sich die Karten am meisten unterscheiden. Was im Schatten nah liegt, liegt meist auch in den 384 Zahlen nah, aber nicht immer, wie die beiden pinken Punkte; im Zweifel gelten die Werte. Die Hauptkomponentenanalyse dient nur dem Bild: Das Modell, die Suche und jede Ähnlichkeit rechnen weiter mit allen 384 Zahlen.</aside>
   </section>
 
-  <section class="slide" data-on-show="showSearch" data-on-step="showSearch">
+  <section class="slide">
     <h2>search by meaning</h2>
     <div class="figure" id="fig-search"></div>
-    <span data-step="1"></span>
-    <aside class="notes">Die Suche findet Karte 1, obwohl kein Wort gleich ist, und danach die verspätete Landung in Lissabon. Und die pinken Karten aus Teil 1 trennt sie, obwohl sie auf der Karte des Modells nah beieinander liegen: Im Satz haben „bank“ und „python“ ihre Zahlen angepasst.</aside>
+    <aside class="notes">Die Suche findet Karte 1 mit 0,31, obwohl kein Wort gleich ist, und danach die verspätete Landung in Lissabon mit 0,26. Eine Suche nach Stichwörtern findet nichts.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>one word as the question</h2>
+    <div class="figure" id="fig-words"></div>
+    <aside class="notes">Die Bank- und Python-Karten aus Teil 1 trennt die Suche, obwohl beide dasselbe Wort enthalten: „river“ findet die Bank am Fluss, „snake“ die Python, die ein Kaninchen frisst. Im Satz haben „bank“ und „python“ ihre Zahlen angepasst.</aside>
   </section>
 
   <section class="slide">
@@ -214,20 +216,35 @@
     <h2>similarity is one sum</h2>
     <div class="figure" id="fig-sum"></div>
     <span data-step="1"></span><span data-step="2"></span>
-    <aside class="notes">Die ersten sechs der 384 Zahlen von Karte 1 und Karte 7, so wie das Modell sie liefert. Weil jeder Pfeil die Länge 1 hat, ist die Ähnlichkeit einfach die Summe der 384 Produkte, hier 0,32. Eine Suche nach Bedeutung rechnet genau das, nur für Millionen Texte.</aside>
+    <aside class="notes">Die ersten sechs der 384 Zahlen von Karte 1 und Karte 7, so wie das Modell sie liefert. Das Maß ist die Kosinus-Ähnlichkeit, der Kosinus des Winkels zwischen den beiden Pfeilen. Weil jeder Pfeil die Länge 1 hat, ist sie einfach die Summe der 384 Produkte, hier 0,32. Eine Suche nach Bedeutung rechnet genau das, nur für Millionen Texte.</aside>
+  </section>
+
+  <section class="slide" data-on-show="showNext" data-on-step="showNext">
+    <h2>how a language model picks the next token</h2>
+    <div class="figure" id="fig-next"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <aside class="notes">Das ist der eigentliche Grund für dieses Experiment. Ein Sprachmodell wie GPT liest die Tokens bis hierher und rechnet durch seine Schichten. Am Ende steht an der letzten Stelle eine Liste von Zahlen: der Ort auf seiner Karte, an dem das nächste Token liegen sollte. Erster Klick: Diese Liste wird mit jeder Zeile einer Token-Tabelle verglichen, mit derselben Summe von Produkten wie eben; bei GPT-2 ist es sogar dieselbe Tabelle wie am Eingang, neuere Modelle haben eine zweite derselben Art. Aus den Ähnlichkeiten werden Wahrscheinlichkeiten. Zweiter Klick: Das Modell nimmt eines der nächstgelegenen Tokens, meist das ähnlichste, mit etwas Zufall auch ein anderes, hängt es an und beginnt von vorn. Die Balken sind eine Skizze, keine Messung.</aside>
   </section>
 
   <section class="slide">
-    <h2>what real systems do with it</h2>
+    <h2>key idea</h2>
+    <div class="content">
+      <div class="statement">a language model predicts where the next token should lie on its map and takes a token that lies <span class="b">close to that place</span>.</div>
+    </div>
+    <aside class="notes">Deshalb lohnt es sich, Embeddings zu verstehen: Ein Sprachmodell schreibt, indem es Token für Token einen Ort auf seiner Karte vorhersagt und nachschlägt, welches Token dort liegt.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>what else real systems do with it</h2>
     <div class="figure" id="fig-rag"></div>
-    <aside class="notes">Chatbots, die aus euren Dokumenten antworten, machen die Frage erst zu Zahlen, suchen die ähnlichsten Absätze und geben sie dem Sprachmodell mit. Das heißt Retrieval-Augmented Generation. Und in jedem Sprachmodell wird jedes Token als Erstes durch eine solche Zahlenliste ersetzt.</aside>
+    <aside class="notes">Chatbots, die aus euren Dokumenten antworten, machen die Frage erst zu Zahlen, suchen die ähnlichsten Absätze und geben sie dem Sprachmodell mit. Das heißt Retrieval-Augmented Generation. Dazu kommen Suche, Empfehlungen und das Erkennen doppelter Fragen.</aside>
   </section>
 
 </div>
 <!-- order matters: deck.js before stagekit.js -->
 <script src="../../stagekit/draw.js?v=0.7.0-156254"></script>
 <script src="../../stagekit/anim.js?v=0.7.0-156254"></script>
-<script src="deck.js?v=20261105b"></script>
+<script src="deck.js?v=20261105j"></script>
 <script src="../../stagekit/stagekit.js?v=0.7.0-156254"></script>
 </body>
 </html>
