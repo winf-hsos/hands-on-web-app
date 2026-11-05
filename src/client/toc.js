@@ -5,10 +5,21 @@
 // list, or through the address, stays marked until the reader scrolls on,
 // even when the next heading follows close below it or the page cannot
 // scroll that far.
+//
+// Only the top-level sections are listed; the subsections of the section
+// being read unfold below it and fold away again once the reader moves on to
+// the next section (Nicolas, 2026-11-05). Without this script all of them
+// stay visible.
 const nav = document.querySelector('.toc');
 const links = [...nav.querySelectorAll('a')];
 const list = nav.querySelector('.toc-inner');
 const heads = links.map((a) => (a.hasAttribute('data-toc-start') ? null : document.getElementById(decodeURIComponent(a.hash.slice(1)))));
+// the top-level section each entry belongs to: its own index for a section,
+// the index of the section above it for a subsection
+const items = links.map((a) => a.parentElement);
+let parent = 0;
+const sectionOf = items.map((li, i) => (li.classList.contains('toc-3') ? parent : (parent = i)));
+nav.classList.add('is-folding');
 
 let current = -1;
 let pinned = links.findIndex((a) => !a.hasAttribute('data-toc-start') && a.hash === location.hash);
@@ -17,6 +28,7 @@ function show(index) {
   if (index === current) return;
   current = index;
   links.forEach((a, i) => (i === index ? a.setAttribute('aria-current', 'location') : a.removeAttribute('aria-current')));
+  items.forEach((li, i) => li.classList.toggle('is-open', li.classList.contains('toc-3') && sectionOf[i] === sectionOf[index]));
   // a long list scrolls itself, so that the marked entry stays in sight
   const a = links[index];
   if (a.offsetTop < list.scrollTop || a.offsetTop + a.offsetHeight > list.scrollTop + list.clientHeight) {

@@ -776,6 +776,44 @@ select {
   color: var(--ink);
 }
 
+/* Subsections fold away unless their section is the one being read
+   (client/toc.js sets .is-folding and marks the open ones); the height
+   follows from a grid row that grows from 0fr to 1fr, with no minimum, so
+   that the padding of a folded entry leaves no gap. */
+.toc.is-folding .toc-3 {
+  display: grid;
+  grid-template-rows: minmax(0, 0fr);
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    grid-template-rows 0.25s var(--ease),
+    opacity 0.2s var(--ease),
+    visibility 0s linear 0.25s;
+}
+
+.toc.is-folding .toc-3 > a {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.toc.is-folding .toc-3.is-open {
+  grid-template-rows: minmax(0, 1fr);
+  opacity: 1;
+  visibility: visible;
+  transition:
+    grid-template-rows 0.25s var(--ease),
+    opacity 0.2s var(--ease) 0.05s,
+    visibility 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toc.is-folding .toc-3,
+  .toc.is-folding .toc-3.is-open {
+    transition: none;
+  }
+}
+
 .toc a[aria-current] {
   border-left-color: var(--accent);
   color: var(--accent-ink);
