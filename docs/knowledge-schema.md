@@ -357,7 +357,11 @@ The body is plain Markdown with a few conventions:
   `farm_corpus.csv` one per row and in `farm_corpus_tokens.csv` one row per
   token with its sentence and position, `<s>` at position 0 and `</s>` at
   the end of each sentence, because webR has no tidyr to split them; both
-  written by `scripts/counting-corpus.py`) ready; a block that names a file, as in
+  written by `scripts/counting-corpus.py`), and `cards`, `vectors` and
+  `word_vectors` (the 24 cards of the experiment `a-map-of-meaning` and the
+  384 numbers of every card and of 48 single words, one row per number, in
+  `meaning_cards.csv`, `meaning_vectors.csv` and `word_vectors.csv`, written
+  by `scripts/meaning-data.mjs`) ready; a block that names a file, as in
   `read.csv("lets_make_a_deal.csv")`, finds it in its working directory. A
   block that uses `ggplot()` shows the plot below the code. This holds in
   project phases and challenges as well as in items. A runnable block
@@ -435,6 +439,14 @@ The body is plain Markdown with a few conventions:
   then the counting model of the farm corpus shows its own (the most
   frequent word after the last two words, else after the last one) and the
   word is revealed, with a score for both over all sentences.
+- **A map of meaning** (` ```meaning-map `, 2026-11-05) holds one text per
+  line in its block, numbered in that order like the printed cards. A click
+  loads a small embedding model into the browser (all-MiniLM-L6-v2, served
+  by the site itself), which turns every text into 384 numbers and draws the
+  texts as dots on the shadow of those numbers on two (principal
+  components). A search ranks the texts by similarity to a query and says
+  what a keyword search would have found, and two texts of one's own can be
+  compared.
 - **A gallery of pictures** (` ```gallery `, Nicolas, 2026-11-05, first for
   the cards of Be the Agent) holds its pictures in YAML, in groups with an
   optional title, and optionally a file that downloads all of them at once:

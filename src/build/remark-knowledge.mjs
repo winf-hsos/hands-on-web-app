@@ -305,6 +305,7 @@ function fillableTables(tree, lang) {
 // ```audio-digitiser a sound cut by sampling rate and bit depth (client/audio-digitiser.js),
 // ```next-word a language model by counting, with context of none, one or two words (client/next-word.js),
 // ```word-guess people against the counting model, guessing the next word of the sentences in its block (client/word-guess.js),
+// ```meaning-map a small embedding model in the browser, its texts one per line in the block, on a map with a search by meaning (client/meaning-map.js),
 // ```question-game sixteen faces and yes-or-no questions measured in bits (client/question-game.js),
 // ```data-table an empty table to record observations in (client/data-table.js),
 // ```shell-demo the folder tree and command line (client/shell-demo.js), whose
@@ -320,6 +321,7 @@ const DEMOS = {
   'question-game': { className: 'question-game', dataQuestionGame: '' },
   'next-word': { className: 'next-word', dataNextWord: '' },
   'word-guess': { className: 'word-guess', dataWordGuess: '' },
+  'meaning-map': { className: 'meaning-map', dataMeaningMap: '' },
   'shell-demo': { className: 'shell-demo', dataShellDemo: '' },
   'data-table': { className: 'data-table', dataDataTable: '' },
 };
@@ -343,7 +345,9 @@ function demos(tree) {
         ? { dataShellDemo: JSON.stringify(shellScenario(node.value) ?? {}) }
         : node.lang === 'word-guess' && node.value.trim()
           ? { dataWordGuess: JSON.stringify(node.value.split('\n').map((line) => line.trim()).filter(Boolean)) }
-          : {};
+          : node.lang === 'meaning-map' && node.value.trim()
+            ? { dataMeaningMap: JSON.stringify(node.value.split('\n').map((line) => line.trim()).filter(Boolean)) }
+            : {};
     const place = { type: 'element', tagName: 'div', properties: { ...demo, ...data, className: [demo.className] }, children: [] };
     node.data = { hName: 'div', hProperties: { className: ['demo'], dataDemo: '' }, hChildren: [place] };
   });

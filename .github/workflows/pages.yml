@@ -37,6 +37,12 @@ jobs:
           path: vendor/webr-repo
           key: webr-repo-${{ hashFiles('scripts/fetch-r-packages.mjs', 'package-lock.json') }}
       - run: test -d vendor/webr-repo || npm run fetch-r-packages
+      # the embedding model of the meaning map is not in git either (scripts/fetch-embedding-model.mjs)
+      - uses: actions/cache@v4
+        with:
+          path: vendor/models
+          key: models-${{ hashFiles('scripts/fetch-embedding-model.mjs') }}
+      - run: npm run fetch-embedding-model
       - run: npm test
       - run: npm run build
       - uses: actions/upload-pages-artifact@v4

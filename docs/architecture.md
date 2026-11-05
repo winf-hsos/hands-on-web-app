@@ -140,6 +140,15 @@ All motion is switched off for people who ask their system for reduced motion.
   table from `knowledge/media/datasets/` (the list is `DATASETS` in
   `r-engine.js`), and a block that draws loads ggplot2, whose plots come back
   as images. Stop ends webR, the next Run starts it again.
+- **Embeddings** run in the browser with transformers.js and its ONNX
+  runtime, served from `/assets/vendor/transformers-<version>/`, and the
+  model all-MiniLM-L6-v2 (8 bits, about 23 MB) from `/assets/vendor/models/`,
+  which `npm run fetch-embedding-model` fetches once from Hugging Face into
+  `vendor/models/` (not in git, cached in the publish workflow). Only the map
+  of meaning (` ```meaning-map `, `src/client/meaning-map.js`) loads them, on
+  a click, about 50 MB the first time; nothing typed leaves the browser.
+  `scripts/meaning-data.mjs` writes the cards, their numbers for R and the
+  printable cards with the same model.
 - **The dplyr demonstrator** (` ```verb-demo `, `src/client/verb-demo.js`)
   computes the verbs itself in JavaScript on six rows of the survey and
   animates the change; it needs no R.

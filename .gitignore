@@ -9,3 +9,6 @@ knowledge/content/*/slides/export/*
 
 # R packages for webR, fetched by npm run fetch-r-packages
 vendor/webr-repo/
+
+# the embedding model for the meaning map, fetched by npm run fetch-embedding-model
+vendor/models/

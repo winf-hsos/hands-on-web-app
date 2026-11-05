@@ -61,6 +61,16 @@ const WEBR_SKIP = /^(repl|tests|webR)$|\.(map|cjs|d\.ts)$/;
 const WEBR_REPO = join(ROOT, 'vendor/webr-repo');
 const WEBR_REPO_BASE = '/assets/vendor/webr-repo/';
 
+// Text embeddings in the browser (client/meaning-map.js): transformers.js
+// with the ONNX runtime it is built for, in a folder named after its version,
+// and the model fetched once by `npm run fetch-embedding-model` into
+// vendor/models/.
+const TRANSFORMERS = modules('@huggingface/transformers');
+const ORT = join(modules('onnxruntime-web'), 'dist');
+const EMBEDDER_BASE = `/assets/vendor/transformers-${JSON.parse(readFileSync(join(TRANSFORMERS, 'package.json'), 'utf8')).version}/`;
+const MODELS = join(ROOT, 'vendor/models');
+const MODELS_BASE = '/assets/vendor/models/';
+
 /** Hard links instead of copies where the file system allows: webR is large, and the preview rebuilds often. */
 function linkTree(from, to, skip = () => false) {
   mkdirSync(to, { recursive: true });
@@ -202,6 +212,11 @@ function render(knowledge) {
   linkTree(WEBR, join(DIST, WEBR_BASE), (name) => WEBR_SKIP.test(name));
   if (existsSync(WEBR_REPO)) linkTree(WEBR_REPO, join(DIST, WEBR_REPO_BASE));
   else console.warn('R packages missing: run `npm run fetch-r-packages` so that R blocks can load dplyr.');
+  mkdirSync(join(DIST, EMBEDDER_BASE), { recursive: true });
+  copyFileSync(join(TRANSFORMERS, 'dist/transformers.min.js'), join(DIST, EMBEDDER_BASE, 'transformers.min.js'));
+  for (const file of ['ort-wasm-simd-threaded.asyncify.mjs', 'ort-wasm-simd-threaded.asyncify.wasm']) linkTree(ORT, join(DIST, EMBEDDER_BASE), (name) => name !== file);
+  if (existsSync(MODELS)) linkTree(MODELS, join(DIST, MODELS_BASE));
+  else console.warn('Embedding model missing: run `npm run fetch-embedding-model` so that the meaning map can load it.');
   // shared media of the knowledge base (logos, data sets), under /media/
   cpSync(join(ROOT, 'knowledge/media'), join(DIST, 'media'), { recursive: true });
   // Slide decks as they are, next to the stagekit runtime they expect two
@@ -260,7 +275,7 @@ function renderSite(knowledge, base, { write, asset }) {
   for (const area of areas) {
     const site = createSite(knowledge, area, base);
     const writePage = (lang, page) => {
-      write(page.path, String(layout({ site, lang, asset, pyodide: PYODIDE_BASE, webr: { base: WEBR_BASE, repo: WEBR_REPO_BASE }, total: site.items.length, entrances: entrances[lang], ...page })));
+      write(page.path, String(layout({ site, lang, asset, pyodide: PYODIDE_BASE, webr: { base: WEBR_BASE, repo: WEBR_REPO_BASE }, embedder: { base: EMBEDDER_BASE, models: MODELS_BASE }, total: site.items.length, entrances: entrances[lang], ...page })));
       count += 1;
     };
     // courses are called modules since 2026-11-01, and a course or an item may

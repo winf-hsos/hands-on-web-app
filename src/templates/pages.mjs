@@ -228,6 +228,7 @@ const scriptsFor = (body) =>
     body.includes('data-question-game') && 'question-game',
     body.includes('data-next-word') && 'next-word',
     body.includes('data-word-guess') && 'word-guess',
+    body.includes('data-meaning-map') && 'meaning-map',
     body.includes('data-shell-demo') && 'shell-demo',
     body.includes('data-data-table') && 'data-table',
     body.includes('data-gallery') && 'gallery',

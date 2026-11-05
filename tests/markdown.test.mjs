@@ -108,6 +108,10 @@ test('a word-guess block passes its sentences, one per line, to the guessing gam
   assert.match(render('```word-guess\nthe hen sleeps in the barn\n\nthe sheep is white\n```\n'), /data-word-guess="\[[^"]*the hen sleeps in the barn[^"]*,[^"]*the sheep is white[^"]*\]"/);
 });
 
+test('a meaning-map block passes its texts, one per line, to the map of meaning', () => {
+  assert.match(render('```meaning-map\nThe bank raised its interest rates.\n\nA python swallowed a whole rabbit.\n```\n'), /data-meaning-map="\[[^"]*The bank raised its interest rates\.[^"]*,[^"]*A python swallowed a whole rabbit\.[^"]*\]"/);
+});
+
 test('a gallery block becomes small pictures in groups that link to their files, with the download above', () => {
   const html = render('```gallery\ndownload: media/cards.pdf\ngroups:\n  - title: Role cards\n    images:\n      - { src: media/cards/a.svg, alt: Role card Model }\n```\n');
   assert.match(html, /<figure class="gallery" data-gallery="[^"]+">/);
@@ -117,7 +121,7 @@ test('a gallery block becomes small pictures in groups that link to their files,
 });
 
 test('every demonstrator sits in a frame that gets the full-screen button', () => {
-  for (const name of ['verb-demo', 'monty-hall', 'byte-switchboard', 'photo-digitiser', 'audio-digitiser', 'question-game', 'next-word', 'word-guess', 'data-table']) {
+  for (const name of ['verb-demo', 'monty-hall', 'byte-switchboard', 'photo-digitiser', 'audio-digitiser', 'question-game', 'next-word', 'word-guess', 'meaning-map', 'data-table']) {
     assert.match(render('```' + name + '\n```\n'), new RegExp(`<div class="demo" data-demo=""><div class="${name}" data-${name}=""></div></div>`));
   }
 });
