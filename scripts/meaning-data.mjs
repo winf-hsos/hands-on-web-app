@@ -1,7 +1,7 @@
 // Writes what the experiment "A map of meaning" needs besides its text:
 //   knowledge/media/datasets/meaning_cards.csv     the 24 cards: card, text
 //   knowledge/media/datasets/meaning_vectors.csv   their 384 numbers: card, dim, value
-//   knowledge/media/datasets/word_vectors.csv      single words for the extension: word, dim, value
+//   knowledge/media/datasets/word_vectors.csv      single words for the arithmetic: word, dim, value
 //   knowledge/content/a-map-of-meaning/media/meaning-cards.pdf   the cards to print and cut
 // The numbers come from the same model the meaning-map demonstrator runs in
 // the browser (scripts/fetch-embedding-model.mjs), so that R and the map agree.
@@ -66,7 +66,7 @@ writeFileSync(join(DATASETS, 'meaning_cards.csv'), ['card,text', ...CARDS.map((t
 writeFileSync(join(DATASETS, 'meaning_vectors.csv'), ['card,dim,value', ...cards.flatMap((v, i) => v.map((x, d) => `${i + 1},${d + 1},${round(x)}`))].join('\n') + '\n');
 writeFileSync(join(DATASETS, 'word_vectors.csv'), ['word,dim,value', ...words.flatMap((v, i) => v.map((x, d) => `${WORDS[i]},${d + 1},${round(x)}`))].join('\n') + '\n');
 
-// a check of the analogies the extension asks for, printed for the author
+// a check of the analogies the experiment asks for, printed for the author
 const dot = (a, b) => a.reduce((s, x, i) => s + x * b[i], 0);
 const vec = (w) => words[WORDS.indexOf(w)];
 for (const [a, b, c] of [['king', 'man', 'woman'], ['paris', 'france', 'germany'], ['father', 'man', 'woman'], ['bigger', 'big', 'small'], ['puppy', 'dog', 'cat'], ['walked', 'walk', 'swim']]) {

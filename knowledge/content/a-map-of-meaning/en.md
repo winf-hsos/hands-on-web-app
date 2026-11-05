@@ -7,9 +7,11 @@ summary: >-
   its place on a map where texts of similar meaning lie close together, and
   this lets a computer search for meaning instead of words.
 objectives:
-  intro: "In this experiment you draw a map of meaning by hand, compare it with the one a real model draws from the same cards and search it, and afterwards you can:"
+  intro: "In this experiment you draw a map of meaning by hand, look at the numbers a real model gives single words and whole texts, compare its map with yours and search it, and afterwards you can:"
   goals:
-    - "explain what an embedding is: a text turned into a list of numbers that marks its place on a map of meaning"
+    - "explain what an embedding is: a token or a text turned into a list of numbers that marks its place on a map of meaning"
+    - "describe how a model gets from the numbers of its tokens to the numbers of a whole text, and why the same word gets different numbers in different sentences"
+    - "compute with meaning, as in king − man + woman, and say why this works"
     - "read the similarity of two texts as closeness on that map and as one number"
     - "search a collection by meaning and explain why it finds texts that share no word with the query"
     - "show with examples what such a map captures, the topic of a text, and what it misses, such as negation, word order and truth"
@@ -32,9 +34,11 @@ a chatbot finds the right paragraph in a manual of three hundred pages. Behind
 all three lies the same idea: a model turns every text into a list of numbers,
 called an **embedding**, and these numbers mark the place of the text on a map
 on which texts of similar meaning lie close together. In this experiment you
-first draw such a map yourselves with paper cards, then you look at the map a
-real model draws from the same cards, and finally you search it and find out
-what it knows and what it does not.
+first draw such a map yourselves with paper cards. Then you start where a
+language model starts, with the numbers of single tokens, follow how they
+become the numbers of a whole text, and finally look at the map a real model
+draws from the same cards, search it and find out what it knows and what it
+does not.
 
 ## What you need
 
@@ -99,16 +103,147 @@ it lies and how far up.
 > for the next pair a fourth. Every further number is another direction in
 > which texts can differ.
 
-This is all an embedding is: a list of numbers that says where a text lies on
-a map of meaning. Your map has two numbers per card because a sheet of paper
-has two directions. The model you meet next uses 384 numbers for every text,
-so its map has 384 directions, which nobody can draw, but the idea is the
-same: similar meaning, close places.
+This is all an embedding is: a list of numbers that says where something lies
+on a map of meaning. Your map has two numbers per card because a sheet of
+paper has two directions. The model you meet next uses 384 numbers for every
+token and every text, so its map has 384 directions, which nobody can draw,
+but the idea is the same: similar meaning, close places.
 
-## Step 2: the model's map
+## Step 2: every token gets numbers
 
-Load the model below. It reads the same 24 cards and turns each of them into
-384 numbers, which takes a few seconds. Because 384 directions cannot be drawn,
+In [[next-token-prediction]] you saw that a language model does not read
+words but tokens, and that the first thing it does is replace every token by
+a list of numbers. These lists are embeddings, and they are where the map
+begins. The model below is small and it is not a chatbot, but it starts in
+the same way, with a table that holds a list of 384 numbers for each of the
+30,522 tokens it knows. Load it and compare two words. Under the similarity
+you see the tokens the model reads, together with the two markers `[CLS]` and
+`[SEP]` it puts at the start and the end of every text, as the counting model
+in [[a-language-model-by-counting]] did with `<s>` and `</s>`. A single word
+is mostly one token, so the numbers you compare are essentially those of that
+token, after the processing that Step 3 describes.
+
+```meaning-map
+```
+
+The **similarity** of two words is one number between −1 and 1. Think of the
+384 numbers as an arrow from the centre of the map: 1 means that two arrows
+point in exactly the same direction, and 0 that they have nothing to do with
+each other. For this model, values from about 0.3 already mean that two words
+or texts are clearly related, so what counts is the order of the values, not
+the value itself.
+
+6. Compare `dog` with `puppy`, with `cat` and with `car`. Put the three in
+   order before you press the button.
+7. Compare `hot` with `cold` and with `warm`. Is the opposite far away?
+8. Find the pair of different words with the highest similarity you can, and
+   a pair of words that look alike but get a low one.
+
+> [!SOLUTION]
+> `dog` and `puppy` reach 0.81, `dog` and `cat` 0.66 and `dog` and `car`
+> 0.48: the closer the meaning, the closer the arrows, while the letters do
+> not matter, since car looks more like cat than puppy does. `hot` and `cold`
+> reach 0.53, not much less than `hot` and `warm` with 0.68, because
+> opposites are used in the same places: both describe the weather, a drink
+> or an oven. The map knows what a word is about, much less which way it
+> points.
+
+### Arithmetic with meaning
+
+Because the numbers are directions, you can compute with them. The table
+`word_vectors` holds the 384 numbers the same model gives 48 single words,
+one row per number, among them king, queen, man, woman, cities, countries and
+a few verbs. This box takes the numbers of king, subtracts those of man, adds
+those of woman, and then lists the words whose numbers are most similar to
+the result, leaving out the three words it started with. How the similarity
+is computed from the numbers you will see in Step 7; here it is enough that
+the box computes it.
+
+```r
+word <- function(w) word_vectors |> filter(word == w) |> pull(value)
+target <- word("king") - word("man") + word("woman")
+
+word_vectors |>
+  filter(!word %in% c("king", "man", "woman")) |>
+  group_by(word) |>
+  summarize(similarity = sum(value * target)) |>
+  arrange(desc(similarity))
+```
+
+9. Change the box to `paris - france + germany`, `puppy - dog + cat` and
+   `walked - walk + swim`. Which direction does the subtraction remove in
+   each case, and what does the addition put in?
+10. Try the way back, `queen - woman + man`, and find one more calculation
+    that fails.
+
+> [!SOLUTION]
+> King − man + woman gives queen (0.85), Paris − France + Germany gives
+> Berlin (0.79), puppy − dog + cat gives kitten (0.87) and walked − walk + swim
+> gives swam (0.88). The subtraction removes one direction, being a man,
+> being French, being a dog or the present, and keeps the rest: royal, a
+> capital, a young animal, a past. The addition puts a new direction in its
+> place. Nobody taught the model these directions; they formed because such
+> words are used in similar ways. The way back works less well: queen −
+> woman + man gives brother just before king (0.75 against 0.74), and mother
+> − woman + man gives son instead of father. The directions are there, but
+> they are blurred, and with 48 words to choose from it is easy to hit a
+> neighbour. Values above 1 are possible, because the result of the
+> calculation is no longer an arrow of length 1.
+
+## Step 3: from tokens to a text
+
+A word has its list of numbers, but a sentence is more than a list of words.
+The drawing shows, in a simplified way, how the model gets from the numbers of
+its tokens to the numbers of a whole text.
+
+![From top to bottom: the tokens of "The bank raised its rates" with the two markers, each with its own list of numbers, then lines from every token to every other one, the lists changed by their neighbours, and at the bottom one list for the whole text, the average of all of them.](figure:tokens-to-text "Simplified: each list has 384 numbers, of which eight are drawn, and the adjusting happens in six rounds.")
+
+- **Cutting:** the tokenizer cuts the text into tokens and adds `[CLS]` and
+  `[SEP]`.
+- **Looking up:** every token gets its list of 384 numbers from the table,
+  the same entry wherever the token stands, together with a few numbers that
+  mark its position in the text.
+- **Adjusting:** in six rounds, every token looks at all the others and
+  changes its numbers towards those that matter for it. This is the attention
+  of [[next-token-prediction]], and it is why "bank" ends up with different
+  numbers after "river" than after "interest rates".
+- **Averaging:** the model takes the average of all lists, position by
+  position, and scales the result so that its arrow has the length 1. This
+  one list of 384 numbers is the embedding of the text.
+
+Measured with this model, the token "bank" in "The bank raised its interest
+rates." and in "We watched the ducks from the bank of the river." starts from
+the same entry in the table and ends with a similarity of 0.76, while in two
+sentences about money it ends at 0.88. The same word gets different numbers in
+different sentences, which is what makes these embeddings more than a
+dictionary.
+
+11. Compare `unbelievably` with `incredibly` in the demonstrator of Step 2,
+    and look at the tokens. What do you notice, and how could the cutting
+    explain the similarity?
+12. Look at the tokens of `Python` and of `ChatGPT`, and of the German
+    sentence `Ich bin krank`. What does the model make of a word it has not
+    seen often?
+13. Compare `bank` with `money` and with `river`. Why can a single word not
+    decide this, while a sentence can?
+
+> [!SOLUTION]
+> `incredibly` is one token, while `unbelievably` is cut into five pieces,
+> `un ##bel ##ie ##va ##bly`, where `##` marks a piece that continues a word.
+> Their similarity is only 0.35, because the model has to build the meaning
+> from pieces that mean little on their own. `Python` becomes `python`,
+> because this model ignores capitals, `ChatGPT` becomes `chat ##gp ##t`,
+> since the word is newer than the model, and `Ich bin krank` becomes
+> `ich bin k ##rank`: an English model knows few German words and cuts them
+> into pieces that mean something else in English. Alone, `bank` lies between
+> `money` (0.45) and `river` (0.50), because a single token has nobody to
+> look at; only the other tokens of a sentence tell it which bank is meant.
+
+## Step 4: the model's map
+
+Now the model reads the 24 cards, the way the drawing shows, and turns each of
+them into 384 numbers, which takes a few seconds; if you loaded it in Step 2,
+it is already there. Because 384 directions cannot be drawn,
 the map shows their shadow on two: the two directions in which the cards
 differ most, a method called principal component analysis. Point at a dot to
 read its card.
@@ -140,41 +275,37 @@ This soup needs a little more salt.
 He forgot his password and was locked out of his account.
 ```
 
-6. Compare the model's map with your sheet. Which of your groups did the
+14. Compare the model's map with your sheet. Which of your groups did the
    model form as well, and where does it disagree with you?
 
 > [!SOLUTION]
 > The four travel cards (1, 7, 13, 19) lie together on the model's map as on
 > most sheets, joined by the declined card at the checkout (card 9). The two
 > bank cards and the two python cards lie close to each other, unlike on your
-> sheet, because the shared word pulls them together. Elsewhere the shadow
+> sheet, because the shared word pulls them together: the average of Step 3
+> still contains the numbers of "bank" and "python", even after they have
+> adjusted to their sentences. Elsewhere the shadow
 > mixes cards that are apart in the 384 numbers, which is the price of drawing
 > 384 directions on two. Where the map and the similarity values in the search below disagree,
 > believe the values: they are computed from all 384 numbers.
 
-## Step 3: search by meaning
+## Step 5: search by meaning
 
 Type a query into the search next to the map. The model turns the query into
 384 numbers as well, and the search lists the cards whose numbers are most
 similar to those of the query; on the map the query appears as a star. Below
 the list you see what a classic search for the same words would have found.
+The values are similarities as in Step 2, now between the query and each card.
 
-The **similarity** of two texts is one number between −1 and 1. Think of the
-384 numbers of a text as an arrow from the centre of the map: 1 means that two
-arrows point in exactly the same direction, and 0 that they have nothing to do
-with each other. For this model, values from about 0.3 already mean that two
-texts are clearly related; what counts is the order of the cards, not the
-value itself.
-
-7. Search for `I can't get home tonight`. Which card comes first, and what
+15. Search for `I can't get home tonight`. Which card comes first, and what
    would a keyword search have found?
-8. For three groups on your sheet, find a query that brings one of their cards
+16. For three groups on your sheet, find a query that brings one of their cards
    to the top without using any word of that card. Then compete with another
    group: who finds the query for which a keyword search and the search by
    meaning disagree most?
-9. Search for `money`, `river` and `snake`. Does the model keep the two bank
+17. Search for `money`, `river` and `snake`. Does the model keep the two bank
    cards and the two python cards apart?
-10. Search for `a pet that purrs` and for `Ich bin krank`. What did you expect,
+18. Search for `a pet that purrs` and for `Ich bin krank`. What did you expect,
     and what happened?
 
 > [!SOLUTION]
@@ -183,13 +314,14 @@ value itself.
 > because no card contains one of its words. The bank and python cards lie
 > close together on the map, because the shared word pulls them towards each
 > other, yet the search keeps them apart: `river` finds card 20 with 0.49 and
-> card 3 only with 0.20, `snake` card 8 with 0.46 and card 12 with 0.24. The
-> numbers of a word depend on the sentence around it, and this is what makes
-> these embeddings of whole texts more than a dictionary. `a pet that purrs`
+> card 3 only with 0.20, `snake` card 8 with 0.46 and card 12 with 0.24,
+> because in Step 3 "bank" and "python" took on the numbers of their
+> sentences. `a pet that purrs`
 > finds the python (0.44) and the dog (0.40) but not the cat, so the model
 > knows that pets are animals but apparently not which animal purrs. `Ich bin
 > krank` finds nothing at all, with every value below 0.1: this model has
-> learned from English texts only, and it knows only what it has read.
+> learned from English texts only, it cuts the German words into English
+> pieces, as you saw in Step 3, and it knows only what it has read.
 
 ### Where the numbers come from
 
@@ -205,20 +337,20 @@ company it keeps", and in [[a-language-model-by-counting]] cow and sheep had
 similar rows in the tables of counts for the same reason, because they stand
 in similar places.
 
-11. Look at the two directions of your own sheet. Would the model have chosen
+19. Look at the two directions of your own sheet. Would the model have chosen
     them, and could you name two of its directions on its map?
 
-## Step 4: what the map does not know
+## Step 6: what the map does not know
 
-In the demonstrator of Step 2, below the map and the search, you can compare
+In the demonstrator of Step 4, below the map and the search, you can compare
 two texts of your own and get their similarity.
 
-12. Compare `I love this film.` with `I do not love this film.`, and then with
+20. Compare `I love this film.` with `I do not love this film.`, and then with
     `What a wonderful movie!`. Which pair is more similar, and does it surprise
     you?
-13. Compare `The dog bit the man.` with `The man bit the dog.`, and
+21. Compare `The dog bit the man.` with `The man bit the dog.`, and
     `Vaccines cause autism.` with `Vaccines do not cause autism.`.
-14. Find two texts that mean the same and stay below 0.3, and two texts that
+22. Find two texts that mean the same and stay below 0.3, and two texts that
     mean the opposite and get above 0.8.
 
 > [!SOLUTION]
@@ -227,12 +359,15 @@ two texts of your own and get their similarity.
 > about?", and both of the first sentences are about loving this film, which
 > one small word does not change. The dog and the man reach 0.97, and the two
 > sentences about vaccines 0.86: who did what to whom, and whether a claim is
-> true, hardly moves a text on the map. A search by meaning therefore finds
+> true, hardly moves a text on the map. The average of Step 3 explains part of
+> this, because the dog and the man have the same tokens in a different
+> order, and an average does not care about order; the adjusting in six rounds
+> keeps only a little of it. A search by meaning therefore finds
 > texts on the right topic, including those that claim the opposite, and a
 > chatbot that looks up its answers this way needs more than the map to tell
 > true from false.
 
-## Step 5: inside the numbers
+## Step 7: inside the numbers
 
 In R you can look at the 384 numbers of every card yourself, computed by the
 same model as on the map, and see that the search is nothing but one sum.
@@ -257,7 +392,7 @@ vectors |>
   head(10)
 ```
 
-15. Can you see from these numbers that card 1 is about a train?
+23. Can you see from these numbers that card 1 is about a train?
 
 > [!SOLUTION]
 > No, and nobody can. A single number means nothing on its own; the numbers
@@ -277,7 +412,7 @@ seven <- vectors |> filter(card == 7)
 sum(one$value * seven$value)
 ```
 
-16. Compute the similarity of card 1 with card 19 and with card 5. What do
+24. Compute the similarity of card 1 with card 19 and with card 5. What do
     the three values tell you?
 
 > [!SOLUTION]
@@ -305,7 +440,7 @@ vectors |>
   left_join(cards, by = "card")
 ```
 
-17. Which cards are nearest to card 3, and which are nearest to card 20?
+25. Which cards are nearest to card 3, and which are nearest to card 20?
     Change the box to find out.
 
 > [!SOLUTION]
@@ -314,7 +449,8 @@ vectors |>
 > river bank (card 20, 0.30), then the declined card (card 9, 0.16). Nearest
 > to card 20 are the python with the rabbit (0.31), which shares the animals,
 > and card 3 (0.30), which shares the word. Compared card by card, the shared
-> word still counts for a lot in such a small model.
+> word still counts for a lot in such a small model. The arithmetic of Step 2
+> used the same sum, with the result of the calculation in place of a card.
 
 ## What real systems do with it
 
@@ -328,34 +464,10 @@ generation. Recommendations, the detection of duplicate questions and the
 sorting of feedback into topics all work with the same maps. And inside every
 language model, the first thing that happens to each token is that it is
 replaced by a list of numbers like these, with everything after that working
-on numbers, as [[next-token-prediction]] describes.
+on numbers, as [[next-token-prediction]] describes and as you saw in Steps 2
+and 3.
 
 ## Extensions
-
-### Arithmetic with meaning
-
-The table `word_vectors` holds the numbers of 48 single words from the same
-model, among them king, queen, man, woman, cities, countries and a few verbs.
-Because the numbers are directions, you can compute with them: take king,
-subtract man, add woman, and look for the word whose numbers are most similar
-to the result, leaving out the three words you started with.
-
-```r
-word <- function(w) word_vectors |> filter(word == w) |> pull(value)
-target <- word("king") - word("man") + word("woman")
-
-word_vectors |>
-  filter(!word %in% c("king", "man", "woman")) |>
-  group_by(word) |>
-  summarize(similarity = sum(value * target)) |>
-  arrange(desc(similarity))
-```
-
-Then try `paris - france + germany`, `puppy - dog + cat` and
-`walked - walk + swim`, and find one that fails. Which direction did the
-subtraction remove in each case, and what did the addition put in?
-
-### More to try
 
 1. **Your sheet against the model:** measure with a ruler which three cards
    lie nearest to card 1 on your sheet, and compare them with the three

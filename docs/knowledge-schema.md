@@ -446,7 +446,9 @@ The body is plain Markdown with a few conventions:
   texts as dots on the shadow of those numbers on two (principal
   components). A search ranks the texts by similarity to a query and says
   what a keyword search would have found, and two texts of one's own can be
-  compared.
+  compared. Under the query and the two texts stand the tokens the model cuts
+  them into. An empty block has no map and no search, only the comparison
+  with its tokens, for single words before the step to whole texts.
 - **A gallery of pictures** (` ```gallery `, Nicolas, 2026-11-05, first for
   the cards of Be the Agent) holds its pictures in YAML, in groups with an
   optional title, and optionally a file that downloads all of them at once:
