@@ -755,7 +755,7 @@ prose belongs in the language files. Sections have no release dates:
 everything in a course is available from the start. A section that is
 planned but not written yet is announced with `items: []` (Nicolas,
 2026-11-05): it appears with its title and the note that its content is
-being written, also on the published site, while a section whose items are
+coming soon, also on the published site, while a section whose items are
 all still drafts stays hidden there.
 
 A course may have a `subtitle`, a short line under its title (in the lead and

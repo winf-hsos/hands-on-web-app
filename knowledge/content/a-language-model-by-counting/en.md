@@ -1,13 +1,11 @@
 ---
 type: experiment
 code: 4417
-title: Predicting the next word by counting
+title: Word distributions
 summary: >-
-  The basic idea behind a language model in a very simplified form: guess the
-  next word yourself, then count which words follow which in 22 sentences
-  about a farm, let the counts write by drawing word cards from bags, and
-  find out where counting fails, from false sentences that sound right to a
-  table that no computer could hold.
+  Counting which word follows which in 22 sentences gives a probability
+  distribution of the next word, and drawing from it one word at a time
+  writes new text.
 objectives:
   intro: "In this experiment you work out the basic idea behind a language model in a very simplified form, with word cards, by hand and in R, and afterwards you can:"
   goals:
@@ -89,7 +87,35 @@ the farmer is tired
 
 Every language model starts with training data, a collection of text it
 learns from, called the **corpus**. Ours has 22 sentences, so that you can
-read all of it:
+read all of it, and it can be downloaded as
+[farm_corpus.csv](/media/datasets/farm_corpus.csv):
+
+| # | Sentence |
+|---|---|
+| 1 | the cow gives milk |
+| 2 | the sheep gives wool |
+| 3 | the hen lays eggs |
+| 4 | the bee makes honey |
+| 5 | the cow eats grass |
+| 6 | the sheep eats grass |
+| 7 | the hen eats grain |
+| 8 | the cow sleeps in the barn |
+| 9 | the sheep sleeps in the field |
+| 10 | the hen lays eggs in the nest |
+| 11 | the bee makes honey in the hive |
+| 12 | the bee lives in the hive |
+| 13 | the farmer milks the cow |
+| 14 | the farmer feeds the hen |
+| 15 | the farmer sells the milk |
+| 16 | the farmer sells the eggs |
+| 17 | the milk is white |
+| 18 | the honey is sweet |
+| 19 | the grass is green |
+| 20 | the wool is soft |
+| 21 | the cow is big |
+| 22 | the bee is small |
+
+In R the same sentences are the table `corpus`:
 
 ```r
 corpus
@@ -517,9 +543,8 @@ hundreds of dimensions, an **embedding**, in which similar tokens lie close
 together, so that what it learned about cows can carry over to a dog it has
 rarely seen. Its context is not two words but thousands of tokens, and its
 parameters are not counts but numbers adjusted during training until its
-predictions on trillions of tokens are as good as possible. How a model
-writes token by token and what the transformer adds is explained in
-[[next-token-prediction]].
+predictions on trillions of tokens are as good as possible, as
+[[next-token-prediction]] describes.
 
 ## Extensions
 

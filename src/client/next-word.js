@@ -1,4 +1,4 @@
-// Predicting the next word by counting: a corpus in a text field, a button
+// Word distributions, predicting the next word by counting: a corpus in a text field, a button
 // that counts (every word, every pair and every triple, with <s> before and
 // </s> after each sentence) and a sentence that grows word by word. Below it
 // stands the distribution of the next word for the chosen context, none, one
