@@ -20,7 +20,6 @@ phases:
       - symbols-and-information
       - signal-and-noise
       - measuring-your-noise
-      - believed-and-measured
       - place-value-systems
   - id: word
     challenge: lifi-challenge-2

@@ -313,9 +313,7 @@ widerlegt ablegst, prüfst du deine eigene Reihe: Wurde nur eine Größe
 verändert, gab es genug Wiederholungen, gab es eine Kontrollmessung? War die
 Reihe sauber, gewinnt sie, denn der Assistent kennt Sensoren dieser Art, aber
 nicht deinen Aufbau. Der Fall kommt dann mit Vorschlag, Messung und Ergebnis
-in ein Irrtumsprotokoll, damit das Gelernte nicht verloren geht. Das
-Experiment [[believed-and-measured]] führt eine solche Prüfung an einem
-echten Gerät durch.
+in ein Irrtumsprotokoll, damit das Gelernte nicht verloren geht.
 
 Jede Behauptung über einen Aufbau ist deshalb eine Einladung zu einem
 Experiment, in dem nicht die schönste Erklärung gewinnt, sondern die sauberste

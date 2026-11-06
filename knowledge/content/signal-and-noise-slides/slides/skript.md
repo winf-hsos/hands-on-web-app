@@ -50,4 +50,4 @@ Three tools are the exception, and they are the reason self-built optics are all
 
 ## Further reading
 
-The experiment [[measuring-your-noise]] measures everything this deck talks about on your own link: the spread of one colour, the ratio `d/s` and how many symbols fit. [[believed-and-measured]] turns one suggestion of the assistant into a prediction and a measurement. How to measure honestly, with a control reading and one variable at a time, is covered by the deck [[measuring-and-experimenting]].
+The experiment [[measuring-your-noise]] measures everything this deck talks about on your own link: the spread of one colour, the ratio `d/s` and how many symbols fit. How to measure honestly, with a control reading and one variable at a time, is covered by the deck [[measuring-and-experimenting]].

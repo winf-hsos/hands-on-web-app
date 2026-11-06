@@ -78,7 +78,7 @@ test('a passage changed in place replaces exactly its characters, an empty one g
   try {
     cpSync(ROOT, dir, { recursive: true, filter: (src) => statSync(src).isDirectory() || statSync(src).size < 300_000 });
     const store = createStore(dir);
-    const id = 'believed-and-measured';
+    const id = 'measuring-your-noise';
     const body = () => store.read('content', id).files.de.body;
     const at = (text) => {
       const start = body().indexOf(text);
@@ -91,7 +91,10 @@ test('a passage changed in place replaces exactly its characters, an empty one g
 
     const before = body();
     assert.equal(store.patch('content', id, 'de', { body: { ...at('## Was ihr dazu braucht'), text: '' } }).ok, true);
-    assert.ok(!body().includes('Was ihr dazu braucht') && !/\n{3}/.test(body().replace(/\r/g, '')));
+    // the Python code in the body has blank-line pairs of its own, so count them instead of forbidding them
+    const gaps = (text) => (text.replace(/\r/g, '').match(/\n{3}/g) || []).length;
+    assert.ok(!body().includes('Was ihr dazu braucht'));
+    assert.equal(gaps(body()), gaps(before));
     assert.equal(body().length < before.length, true);
 
     const stale = store.patch('content', id, 'de', { body: { start: 0, end: 4, expected: 'nope', text: 'x' } });

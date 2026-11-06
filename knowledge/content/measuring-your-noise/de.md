@@ -20,7 +20,7 @@ modules: [dup]
 relations:
   see_also: [signal-and-noise-slides, measurement-and-experiments]
 status: draft
-updated: 2026-11-01
+updated: 2026-11-06
 ---
 
 Ihr messt eine einzige Farbe immer wieder, ohne etwas zu verändern, und seht,
@@ -43,10 +43,10 @@ Sensor des anderen, und ihr könnt beide aus Python ansprechen.
 
 ## Aufbau
 
-Stellt die beiden Geräte so auf, wie ihr sie in Challenge 1 benutzt habt, und
-verändert während des ganzen Experiments nichts mehr daran: nicht den Abstand,
-nicht die Optik und nicht das Licht im Raum. Notiert den Abstand und ob das
-Deckenlicht an ist.
+- Stellt die beiden Geräte so auf, wie ihr sie in Challenge 1 benutzt habt.
+- Verändert während des ganzen Experiments nichts mehr daran: nicht den
+  Abstand, nicht die Optik und nicht das Licht im Raum.
+- Notiert den Abstand und ob das Deckenlicht an ist.
 
 Mit zwei Laptops läuft das Sendeprogramm am einen und das Empfangsprogramm am
 anderen. Hängen beide Geräte an einem Laptop, startet ihr die beiden Programme
@@ -55,10 +55,13 @@ tragt die Kennung des jeweiligen Master Bricks aus dem Brick Viewer ein.
 
 ## Vorher: eure Erwartung
 
-Schreibt auf, bevor ihr messt: Wie weit werden zehn Ablesungen derselben Farbe
-im Clear-Kanal `c` auseinanderliegen, und um wie viel ruhiger wird der
-Mittelwert, wenn ihr jeweils zehn Ablesungen zusammenfasst, zehnmal so ruhig
-oder weniger?
+Schreibt eure Antworten auf, bevor ihr messt; nach dem ersten Schritt
+vergleicht ihr sie mit euren Zahlen.
+
+1. Wie weit werden zehn Ablesungen derselben Farbe im Clear-Kanal `c`
+   auseinanderliegen, vom kleinsten bis zum größten Wert?
+2. Um wie viel ruhiger wird der Mittelwert, wenn ihr jeweils zehn Ablesungen
+   zusammenfasst: zehnmal so ruhig oder weniger?
 
 ## Die Programme
 
@@ -128,12 +131,14 @@ while True:
               f"{seconds:.1f} s je Wert")
 ```
 
-## Runde 1: zehn Ablesungen einer Farbe
+## Schritt 1: zehn Ablesungen einer Farbe
 
-Lasst Farbe A leuchten, startet die Messung und tragt für jedes Fenster die
-zehn Werte, ihren Mittelwert und die Streuung `s` in die erste Tabelle ein. Die
-Zeile für das Fenster 1 sind eure zehn Ablesungen derselben Farbe, in denen
-sich nichts verändert hat außer den Zahlen.
+- Lasst Farbe A leuchten und startet das Empfangsprogramm.
+- Tragt für jedes Fenster die zehn Werte, ihren Mittelwert, die Streuung `s`
+  und die Sekunden je Wert in die Tabelle ein.
+
+Die Zeile für das Fenster 1 sind eure zehn Ablesungen derselben Farbe, in
+denen sich nichts verändert hat außer den Zahlen.
 
 | Fenster | zehn Werte | Mittelwert | Streuung s | Sekunden je Wert |
 |---|---|---|---|---|
@@ -162,13 +167,31 @@ print(f"Mittelwert {mean:.1f}, Streuung s {s:.1f}")
 > weniger als `3 · s`. Eine Farbe belegt deshalb ein Band von etwa `6 · s`
 > Breite, `3 · s` nach unten und `3 · s` nach oben.
 
-## Runde 2: die Nachbarfarbe und das Verhältnis d/s
+3. Wie weit liegen eure zehn Ablesungen im Fenster 1 auseinander, und wie
+   groß ist ihre Streuung `s`? Wie nah lag eure Erwartung aus Aufgabe 1?
+4. Auf welchen Bruchteil ist die Streuung vom Fenster 1 zum Fenster 10
+   geschrumpft, und was hat das an Sekunden je Wert gekostet?
 
-Lasst jetzt Farbe B leuchten und messt genauso. Rechnet dann für jedes Fenster
-den Abstand `d` zwischen den beiden Mittelwerten aus, nehmt die größere der
-beiden Streuungen als `s` und teilt `d` durch `s`. Die beiden Bänder berühren
-sich nicht, solange `d` größer ist als `6 · s`, also solange `d/s` über 6
-liegt.
+> [!SOLUTION]
+> Wer mehrere Ablesungen mittelt, verkleinert die Streuung ungefähr um die
+> Wurzel aus ihrer Zahl: beim Fenster 3 auf knapp 0,6, beim Fenster 5 auf
+> knapp 0,45 und beim Fenster 10 auf etwa 0,32, also auf ein Drittel und nicht
+> auf ein Zehntel. Die Antwort auf Aufgabe 2 lautet deshalb „weniger“. Dafür
+> dauert jeder Wert so viel länger, wie er Ablesungen enthält: Mit 0,2 Sekunden
+> Pause braucht ein Wert im Fenster 10 rund zwei Sekunden statt einer
+> Fünftelsekunde. Schrumpft eure Streuung deutlich weniger, wandert vermutlich
+> etwas langsam mit, etwa das Licht im Raum, und eine solche Drift lässt sich
+> durch Mitteln nicht wegmitteln.
+
+## Schritt 2: die Nachbarfarbe und das Verhältnis d/s
+
+- Lasst jetzt Farbe B leuchten und messt genauso.
+- Rechnet für jedes Fenster den Abstand `d` zwischen den beiden Mittelwerten
+  aus.
+- Nehmt die größere der beiden Streuungen als `s` und teilt `d` durch `s`.
+
+Die beiden Bänder berühren sich nicht, solange `d` größer ist als `6 · s`,
+also solange `d/s` über 6 liegt.
 
 | Fenster | Mittelwert A | Mittelwert B | Abstand d | größeres s | d/s | Bänder getrennt? |
 |---|---|---|---|---|---|---|
@@ -177,11 +200,26 @@ liegt.
 | 5 | | | | | | |
 | 10 | | | | | | |
 
-## Runde 3: wie viele Symbole passen?
+5. Ab welchem Fenster sind die Bänder eurer beiden Farben getrennt?
+6. Was hieße es für euer Tempo, dieses Fenster immer zu benutzen?
 
-Messt zum Schluss den Boden, die LED aus, und die Decke, die LED weiß, und
-nehmt dabei das Fenster, das ihr für eure Übertragung verwenden würdet. Der
-Bereich ist die Decke minus der Boden, ein Band ist `6 · s` breit, und der
+> [!SOLUTION]
+> Das Mitteln verschiebt die Mittelwerte kaum, der Abstand `d` bleibt also
+> über alle Fenster ungefähr gleich, und nur `s` schrumpft. Deshalb wächst
+> `d/s` mit der Wurzel aus dem Fenster: Ein Paar mit `d/s` = 3 im Fenster 1
+> kommt im Fenster 5 auf etwa 6,7 und ist dort getrennt. Jedes Symbol braucht
+> dann aber fünf Ablesungen statt einer, und eure Strecke überträgt nur noch
+> ein Fünftel so viele Symbole pro Sekunde. Liegt `d/s` schon im Fenster 1
+> unter 2, reicht selbst das Fenster 10 kaum, und es lohnt sich eher, zwei
+> Farben zu wählen, die weiter auseinanderliegen.
+
+## Schritt 3: wie viele Symbole passen?
+
+- Messt den Boden: die LED aus.
+- Messt die Decke: die LED weiß.
+- Nehmt für beide das Fenster, das ihr für eure Übertragung verwenden würdet.
+
+Der Bereich ist die Decke minus der Boden, ein Band ist `6 · s` breit, und der
 Bereich geteilt durch die Breite eines Bandes sagt, wie viele Symbole
 hineinpassen, wenn ihr sie gleichmäßig verteilt.
 
@@ -206,24 +244,32 @@ print(f"Bereich {ceiling - floor}, Band {band:.0f} breit, Platz für {symbols} S
 | Symbole, die hineinpassen | |
 | euer Alphabet aus Challenge 1 | |
 
-## Auswerten
+7. Wie viele Symbole passen nach eurer Rechnung hinein, und wie viele habt
+   ihr in Challenge 1 tatsächlich erreicht?
+8. Liegt die Rechnung über eurem Alphabet, sucht den Grund: Was nimmt die
+   Rechnung an, das an eurer Strecke nicht stimmt?
+9. Die Rechnung kennt nur den Kanal `c`, also nur die Helligkeit. Was
+   bedeutet das für die Zahl der Symbole, die eure Strecke tragen kann?
 
-- Wie weit lagen eure zehn Ablesungen einer Farbe auseinander, und wie nah war
-  eure Erwartung daran?
-- Um wie viel ist die Streuung vom Fenster 1 zum Fenster 10 kleiner geworden?
-  Wenn ihr mehrere Ablesungen mittelt, schrumpft die Streuung ungefähr mit der
-  Wurzel aus ihrer Zahl, beim Fenster 10 also etwa auf ein Drittel. Passt das
-  zu euren Zahlen, und was hat dieses Drittel an Sekunden je Wert gekostet?
-- Ab welchem Fenster waren die Bänder eurer beiden Farben getrennt, und was
-  hieße es für euer Tempo, dieses Fenster immer zu benutzen?
-- Wie viele Symbole passen nach eurer Rechnung hinein, und wie viele habt ihr
-  in Challenge 1 tatsächlich erreicht? Liegt die Rechnung darüber, sucht den
-  Grund: Liegen eure Farben ungleichmäßig, streuen helle Farben stärker als
-  dunkle, oder hat sich das Licht zwischen Kalibrieren und Messen verändert?
-- Die Rechnung kennt nur den Kanal `c`, also nur die Helligkeit. Zwei Farben,
-  die in `c` fast gleich liegen, können sich in `r`, `g` oder `b` deutlich
-  unterscheiden. Was bedeutet das für die Zahl der Symbole, die eure Strecke
-  tragen kann?
+> [!SOLUTION]
+> Die Rechnung nimmt an, dass eure Farben gleichmäßig zwischen Boden und Decke
+> verteilt liegen, dass alle gleich stark streuen und dass das Licht zwischen
+> Kalibrieren und Messen gleich bleibt. Meist stimmt mindestens eines davon
+> nicht: Farben liegen in `c` gedrängt, helle Farben streuen stärker als
+> dunkle, oder das Licht hat sich verändert. Umgekehrt können zwei Farben, die
+> in `c` fast gleich liegen, sich in `r`, `g` oder `b` deutlich unterscheiden.
+> Vergleicht euer Empfänger alle drei Farbkanäle, kann die Strecke deshalb
+> mehr Symbole tragen, als die Rechnung mit `c` allein ergibt.
+
+## Auswertung
+
+- Welche Maßnahme würdet ihr als Nächstes ausprobieren, um `d/s` zu
+  vergrößern: einen kürzeren Abstand, eine Abschirmung gegen das Raumlicht,
+  Farben, die weiter auseinanderliegen, oder ein längeres Fenster? Was kostet
+  jede davon?
+- Würdet ihr lieber viele Symbole mit einem langen Fenster senden oder wenige
+  mit einem kurzen, wenn ihr in derselben Zeit möglichst viel übertragen
+  wollt?
 
 Warum über die Größe des Alphabets nichts anderes entscheidet als das
 Verhältnis `d/s` und was jede Maßnahme dagegen kostet, zeigen die Folien

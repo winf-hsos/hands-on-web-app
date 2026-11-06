@@ -23,7 +23,7 @@ duration: 30
 topics: [transferring-information]
 modules: [dup]
 relations:
-  see_also: [believed-and-measured, measuring-your-noise]
+  see_also: [measuring-your-noise]
 status: published
 updated: 2026-11-04
 ---
@@ -311,8 +311,7 @@ own series: was only one quantity changed, were there enough repetitions, was
 there a control reading? If the series was clean, it wins, because the
 assistant knows sensors of this kind but not your setup. The case then goes
 into a log of mistakes with the suggestion, the measurement and the outcome,
-so that what was learned is not lost. The experiment [[believed-and-measured]]
-runs through such a check on a real device.
+so that what was learned is not lost.
 
 Every claim about a setup is therefore an invitation to an experiment, in
 which not the most beautiful explanation wins but the cleanest measurement
