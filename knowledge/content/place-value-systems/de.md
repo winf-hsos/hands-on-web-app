@@ -1,5 +1,5 @@
 ---
-title: "Stellenwert: Was 123 wirklich sagt"
+title: Stellenwertsysteme
 summary: >-
   Warum zehn Ziffern für unendlich viele Zahlen reichen, warum die Zehn selbst
   nur Anatomie ist und wie dieselbe Bauanleitung eine Zahl in jeder Basis
@@ -13,7 +13,7 @@ objectives:
     - "begründen, warum jede Basis die Ziffer 0 braucht und eine Ziffernfolge ohne Angabe ihrer Basis mehrdeutig ist"
     - "mit kⁿ berechnen, wie viele Stellen ein Code aus k Zeichen, etwa vier Farben, für 26 Buchstaben braucht"
 translation_of: en
-based_on: 2026-11-04
+based_on: 2026-11-06
 ---
 
 ![Folien: Zahlensysteme](item:number-systems-slides)

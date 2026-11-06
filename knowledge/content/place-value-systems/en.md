@@ -1,7 +1,7 @@
 ---
 type: lesson
 code: 2045
-title: "Place value: what 123 really says"
+title: Place value systems
 summary: >-
   Why ten digits are enough for infinitely many numbers, why the ten itself
   is only anatomy, and how the same recipe reads a number in any base.
@@ -20,7 +20,7 @@ modules: [dup]
 relations:
   see_also: [petzold-code, ifrah-universal-history-of-numbers]
 status: draft
-updated: 2026-11-04
+updated: 2026-11-06
 ---
 
 ![Slides: Number systems](item:number-systems-slides)
