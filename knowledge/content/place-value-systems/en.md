@@ -23,7 +23,7 @@ status: draft
 updated: 2026-11-04
 ---
 
-![Slides: Why ten?](item:why-ten)
+![Slides: Number systems](item:number-systems-slides)
 
 That `123` means one hundred and twenty-three is an agreement, not a law of
 nature. Every place in the number carries a power of ten, the digit says how

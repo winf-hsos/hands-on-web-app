@@ -5,7 +5,7 @@
  * den Folien, jeweils im Endzustand ihres Aufbaus. Die deutschen Fassungen
  * entstehen aus einer Kopie dieser Datei, die vorn `window.deckLang = "de"`
  * setzt; welche Abbildung in welche Lektion gehoert, steht in
- * scripts/why-ten-figures.mjs.
+ * scripts/number-systems-figures.mjs.
  *
  * Auf der Webseite wird eine Abbildung auf die Spaltenbreite skaliert, und
  * jeder leere Rand macht den Rest kleiner. `zuschnitt` setzt deshalb die

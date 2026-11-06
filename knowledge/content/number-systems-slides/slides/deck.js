@@ -1,4 +1,4 @@
-/* Zeichnungen fuer „why ten?" (Zahlensysteme).
+/* Zeichnungen fuer „number systems" (Zahlensysteme).
  *
  * Jede Funktion gibt ihr SVG zurueck und schreibt es nur dann in ein Element,
  * wenn es das gibt; so laeuft die Datei auch ohne Folien, etwa wenn
@@ -350,8 +350,10 @@ const LICHT = ["#e03131", "#2f9e44", "#1971c2", "#f2b705"];
 window.drawOwnBase = function (_slide, step = 0) {
   const c = d.colors();
   const folge = [0, 3, 1];       // rot, gelb, gruen
-  const w = 190, luecke = 40, x0 = 380, y = 80, h = 190;
-  const parts = [d.label(x0, 0, T("one character, three colour positions", "ein Zeichen, drei Farbstellen"), { size: 20, color: c.gray, centerY: 50 })];
+  // die Farbreihe steht mittig ueber der Rechnung darunter (Mitte 840)
+  const w = 190, luecke = 40, y = 80, h = 190;
+  const x0 = 840 - (3 * w + 2 * luecke) / 2;
+  const parts = [d.label(840, 0, T("one character, three colour positions", "ein Zeichen, drei Farbstellen"), { size: 20, color: c.gray, anchor: "middle", centerY: 50 })];
 
   // ohne Legende kann niemand nachrechnen, welche Farbe welche Ziffer ist
   ["0", "1", "2", "3"].forEach((ziffer, i) => {

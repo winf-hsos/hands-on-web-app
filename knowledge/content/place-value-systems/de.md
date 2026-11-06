@@ -16,7 +16,7 @@ translation_of: en
 based_on: 2026-11-04
 ---
 
-![Folien: Warum zehn?](item:why-ten)
+![Folien: Zahlensysteme](item:number-systems-slides)
 
 Dass `123` einhundertdreiundzwanzig bedeutet, ist eine Vereinbarung und kein
 Naturgesetz. Jede Stelle der Zahl trägt eine Zehnerpotenz, die Ziffer sagt,

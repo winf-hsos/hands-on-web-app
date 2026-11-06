@@ -9,7 +9,8 @@
 // Run after a build, since stagekit's figures.py needs the runtime next to the
 // deck, as in dist/decks/:
 //   npm run build && node scripts/deck-figures.mjs problem-decomposition [--stagekit path]
-// The deck why-ten serves lessons of its own and has scripts/why-ten-figures.mjs.
+// The deck number-systems-slides serves lessons of its own and has
+// scripts/number-systems-figures.mjs.
 import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync, copyFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
