@@ -1,5 +1,5 @@
 ---
-title: Signal, Rauschen und die Größe eines Alphabets
+title: Signal und Rauschen
 summary: >-
   Zwei Strecken mit derselben Hardware tragen einmal sechzehn Zeichen und
   einmal vier. Der Unterschied liegt nicht im Programm, sondern im Verhältnis

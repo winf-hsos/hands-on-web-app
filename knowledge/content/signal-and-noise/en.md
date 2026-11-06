@@ -1,7 +1,7 @@
 ---
 type: lesson
 code: 5380
-title: Signal, noise and the size of an alphabet
+title: Signal and noise
 summary: >-
   Two links with the same hardware carry sixteen symbols in one case and four
   in the other. The difference lies not in the program but in the ratio of the
