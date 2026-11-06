@@ -9,6 +9,10 @@
     .figure.wide { left: 110px; right: 110px; }
     .photo-text.narrow { width: 560px; }
     .content.tight .statement { line-height: 1.14; }
+    .switches figure { margin: 0; text-align: center; }
+    .switches img { display: block; width: 440px; height: 440px; margin: 0 auto; object-fit: cover; }
+    .switches figcaption { margin-top: 24px; font-size: var(--small); }
+    .switches figcaption span { display: block; margin-top: 8px; font-size: var(--tiny); color: var(--gray); }
   </style>
 </head>
 <body>
@@ -61,18 +65,19 @@
     <aside class="notes">Der Delfin hat zwei Flossen, also zwei Ziffern. Erst fragen lassen, wie weit man damit kommt: Die meisten schätzen viel zu wenig. Er kommt genauso weit wie wir, seine Zahlen werden nur länger.</aside>
   </section>
 
-  <section class="slide" data-on-show="drawBinaryCount">
+  <section class="slide" data-on-show="drawBinaryCount" data-on-step="drawBinaryCount">
     <h2>two flippers: counting in binary</h2>
     <div class="figure wide" id="fig-binary-count"></div>
-    <aside class="notes">Basis 2 ist derselbe Trick am Anschlag: nur noch zwei Ziffern, dafür wachsen die Zahlen schnell in die Länge. Gemeinsam bis acht zählen lassen; spätestens bei 100 fällt der Groschen, dass das dieselbe Mechanik ist wie beim Übergang von 9 auf 10.</aside>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span><span data-step="4"></span><span data-step="5"></span><span data-step="6"></span><span data-step="7"></span>
+    <aside class="notes">Basis 2 ist derselbe Trick am Anschlag: nur noch zwei Ziffern, dafür wachsen die Zahlen schnell in die Länge. Jede Zeile erscheint erst auf Klick, das Fragezeichen markiert die nächste: Vor jedem Klick den Saal raten lassen, wie der Delfin die nächste Zahl schreibt. Spätestens bei 100 fällt der Groschen, dass das dieselbe Mechanik ist wie beim Übergang von 9 auf 10; der Satz rechts kommt erst mit der letzten Zeile.</aside>
   </section>
 
   <section class="slide has-punch" data-on-show="drawDolphin" data-on-step="drawDolphin">
     <h2>the dolphin writes 110</h2>
     <div class="figure wide" id="fig-dolphin"></div>
-    <span data-step="1"></span>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span>
     <div class="punch" data-step="1">nothing new: the third time is the same trick.</div>
-    <aside class="notes">Das Schema zum dritten Mal, und jetzt sitzt es: Zweierpotenzen 4, 2, 1, und heraus kommt 6. Wer bis hierher mitgekommen ist, kann jede Basis lesen, ohne eine neue Regel zu lernen.</aside>
+    <aside class="notes">Das Schema zum dritten Mal, und jetzt sitzt es: Zweierpotenzen 4, 2, 1, und heraus kommt 6. Dann erscheint links eine vierte Stelle mit Fragezeichen: Was ist sie wert? Erst raten lassen, mit dem nächsten Klick löst sie sich zur 8 auf, denn jede Stelle ist doppelt so viel wert wie die rechts von ihr. Wer bis hierher mitgekommen ist, kann jede Basis lesen, ohne eine neue Regel zu lernen.</aside>
   </section>
 
   <!-- ================= Teil 2 ================= -->
@@ -89,6 +94,27 @@
     <aside class="notes">Erst die Frage stehen lassen und raten. Die Auflösung ist keine Mathematik, sondern Technik: Zehn Spannungsstufen zu bauen ist möglich, sie nach einem Meter Kabel noch auseinanderzuhalten kaum. Mit zwei Zuständen ist der Abstand am größten. Der Preis dafür sind mehr Stellen, und die sind billig.</aside>
   </section>
 
+  <section class="slide has-punch">
+    <h2>three generations of the same switch</h2>
+    <div class="cols3 switches">
+      <figure>
+        <img src="img/relay.jpg" alt="An electromechanical relay with a copper coil and switching contacts">
+        <figcaption>relay<span>zuse's z3, 1941: about 2,600 of them</span></figcaption>
+      </figure>
+      <figure data-step="1">
+        <img src="img/tube.jpg" alt="A glass vacuum tube with a faintly glowing filament">
+        <figcaption>vacuum tube<span>eniac, 1945: 17,468 of them</span></figcaption>
+      </figure>
+      <figure data-step="2">
+        <img src="img/transistor.jpg" alt="A chip die next to a single transistor with three legs">
+        <figcaption>transistor<span>today: billions on a single chip</span></figcaption>
+      </figure>
+    </div>
+    <div class="punch" data-step="3">a relay clicks, a tube glows and a transistor conducts, yet each of them knows only on and off.</div>
+    <div class="footnote">images: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">Das untermauert die Folie davor mit Geschichte: Jeder Rechner, der je gebaut wurde, besteht aus Schaltern mit zwei Zuständen. Erst das Relais: ein Elektromagnet zieht einen Kontakt an, und es klickt hörbar; Konrad Zuses Z3 von 1941 hatte rund 2.600 davon. Vor dem nächsten Klick fragen, was danach kam. Die Röhre schaltet ohne bewegliche Teile, also tausendmal schneller, und der ENIAC von 1945 hatte 17.468 davon, die ständig durchbrannten. Der Transistor von 1947 ist derselbe Schalter aus Halbleiter, so klein, dass heute Milliarden auf einen Chip passen. Die Technik wechselt dreimal, das Prinzip bleibt: an oder aus.</aside>
+  </section>
+
   <section class="slide has-punch" data-on-show="drawByte" data-on-step="drawByte">
     <h2>eight bits make a byte</h2>
     <div class="figure wide" id="fig-byte"></div>
@@ -100,28 +126,57 @@
   <section class="slide">
     <h2>try it: eight switches, one number</h2>
     <div class="content">
-      <div class="header">the byte switchboard on hands-on computer science, code <span class="keep-case">5470</span></div>
+      <div class="header">the byte switchboard: <a href="https://hands-on-computer-science.de/cs/en/items/byte-switchboard/">hands-on-computer-science.de/cs/en/items/byte-switchboard</a></div>
       <div class="lines">
         <div>which switch changes the number the most?</div>
         <div>how do you set 255, and how do you set 1?</div>
         <div>what happens when you count one step past 255?</div>
       </div>
     </div>
-    <aside class="notes">Den Demonstrator auf der Plattform öffnen: 5470 ins Suchfeld tippen. Acht Schalter, und die Zahl läuft mit. Die drei Fragen an den Saal geben; die letzte führt zum Überlauf, den der Demonstrator mit einem Satz erklärt.</aside>
+    <aside class="notes">Den Demonstrator über den Link öffnen. Acht Schalter, und die Zahl läuft mit. Die drei Fragen an den Saal geben; die letzte führt zum Überlauf, den der Demonstrator mit einem Satz erklärt.</aside>
   </section>
 
   <!-- ================= Teil 3 ================= -->
 
   <section class="slide part" data-part="reading bytes">
-    <aside class="notes">Acht Nullen und Einsen kann kein Mensch auf einen Blick lesen. Dafür gibt es eine Abkürzung.</aside>
+    <aside class="notes">Acht Nullen und Einsen kann kein Mensch auf einen Blick lesen. Dafür gibt es eine Abkürzung, und die begegnet einem überall.</aside>
+  </section>
+
+  <section class="slide" data-on-show="drawHexSeen" data-on-step="drawHexSeen">
+    <h2>you have seen these before</h2>
+    <div class="figure wide" id="fig-hex-seen"></div>
+    <span data-step="1"></span>
+    <aside class="notes">Fünf Zeichenketten aus dem Alltag am Rechner: eine Farbe aus CSS, die Adresse einer Netzwerkkarte, ein Unicode-Zeichen, ein Windows-Fehlercode, der Anfang einer PNG-Datei. Fragen, was sie gemeinsam haben. Die Antwort mit dem Klick: Sie bestehen nur aus 0 bis 9 und A bis F. Es sind Zahlen, geschrieben mit sechzehn Ziffern statt zehn. Wie das geht, wissen wir schon, wir brauchen nur ein Wesen mit sechzehn Fingern.</aside>
+  </section>
+
+  <section class="slide">
+    <img class="photo" src="img/alien.jpg" alt="">
+    <div class="photo-text narrow">and a creature with sixteen fingers?</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-sunburst)</div>
+    <aside class="notes">Vier Hände mit je vier Fingern, das macht sechzehn. Erst nachzählen lassen. Dieses Wesen zählt bis fünfzehn, bevor eine Stelle überläuft, und braucht dafür sechzehn verschiedene Ziffern. Fragen, woher es die nimmt, wenn wir nur zehn haben.</aside>
+  </section>
+
+  <section class="slide" data-on-show="drawHexCount" data-on-step="drawHexCount">
+    <h2>sixteen fingers: counting in hex</h2>
+    <div class="figure wide" id="fig-hex-count"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <aside class="notes">Oben zählen wir von 0 bis 17, unten schreibt das Alien. Bis 9 ist alles gleich, dann das Fragezeichen: Was schreibt es für zehn? Unsere Ziffern sind aufgebraucht, also borgt man sich Buchstaben, A bis F für zehn bis fünfzehn. Dann das nächste Fragezeichen bei sechzehn: Jetzt gehen auch dem Alien die Ziffern aus, und es passiert dasselbe wie bei uns von 9 auf 10 und beim Delfin von 1 auf 10. Die 10 heißt hier sechzehn.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawSixteen" data-on-step="drawSixteen">
+    <h2>the alien writes 123</h2>
+    <div class="figure wide" id="fig-sixteen"></div>
+    <span data-step="1"></span>
+    <div class="punch" data-step="1">the recipe does not care how many fingers you have.</div>
+    <aside class="notes">Zum vierten Mal dasselbe Schema, jetzt mit Sechzehnerpotenzen: 256, 16, 1. Erst rechnen lassen, dann auflösen: 291. Hex ist also kein neues Prinzip, sondern dasselbe Stellenwertsystem mit einer größeren Basis.</aside>
   </section>
 
   <section class="slide has-punch" data-on-show="drawHex" data-on-step="drawHex">
     <h2>hex: four bits at a time</h2>
     <div class="figure wide" id="fig-hex"></div>
     <span data-step="1"></span><span data-step="2"></span>
-    <div class="punch" data-step="2">hex is not a new number world, only a reading aid.</div>
-    <aside class="notes">Kein neues Prinzip, sondern dasselbe Schema zur Basis 16. Der eigentliche Grund ist die Lesbarkeit: Vier Bit haben genau 16 Zustände, also passt eine Hexziffer auf ein Viererpäckchen und ein Byte auf zwei Ziffern. Weil unsere zehn Ziffern nicht reichen, borgt man sich A bis F. Wer die Tabelle einmal gesehen hat, liest jeden Hex-Dump.</aside>
+    <div class="punch" data-step="2">hex is not a new number world, only a reading aid for bytes.</div>
+    <aside class="notes">Warum ausgerechnet sechzehn? Wegen der Lesbarkeit: Vier Bit haben genau 16 Zustände, also passt eine Hexziffer auf ein Viererpäckchen und ein Byte auf zwei Ziffern. Aus 1101 wird D, aus 0010 wird 2. Mit dem letzten Klick dieselben zwei Ziffern nach dem Rezept zurückgerechnet: D2 ist 13 mal 16 plus 2, also 210. Wer das einmal gesehen hat, liest jeden Hex-Dump.</aside>
   </section>
 
   <section class="slide" data-on-show="drawDump" data-on-step="drawDump">
@@ -131,10 +186,23 @@
     <aside class="notes">Die ersten sechzehn Bytes einer PNG-Datei, links hexadezimal, rechts als Zeichen. Erst fragen, was man rechts lesen kann; dann zeigen, dass die ersten Bytes den Dateityp verraten und dass zwischen den lesbaren Stellen genauso viele unlesbare stehen. Beides ist derselbe Stoff: Eine Datei ist nichts als eine Folge von Zahlen.</aside>
   </section>
 
+  <section class="slide">
+    <h2>try it: look inside any file</h2>
+    <div class="content">
+      <div class="header">the hex viewer: <a href="https://hands-on-computer-science.de/cs/en/items/hex-viewer/">hands-on-computer-science.de/cs/en/items/hex-viewer</a></div>
+      <div class="lines">
+        <div>how do a photo, a pdf and a word document begin?</div>
+        <div>where in a text file do you find the line breaks?</div>
+        <div>how many bytes does an umlaut take, and how many an emoji?</div>
+      </div>
+    </div>
+    <aside class="notes">Den Hex-Betrachter über den Link öffnen und eine beliebige Datei vom eigenen Rechner hineinziehen; sie verlässt den Browser nicht. Links stehen die Bytes in Hex, rechts dieselben Bytes als Zeichen. Die drei Fragen an den Saal: Die Anfänge verraten den Dateityp, Zeilenumbrüche sind 0A, und ein ä kostet in UTF-8 zwei Bytes, ein Emoji vier.</aside>
+  </section>
+
   <section class="slide" data-on-show="drawLadders">
     <h2>two ladders of units</h2>
     <div class="figure wide" id="fig-ladders"></div>
-    <aside class="notes">Zwei Leitern nebeneinander: die dezimale mit tausend je Stufe, die binäre mit 1024. Beide heißen im Alltag gleich, und daher kommt der Ärger auf der nächsten Folie. Wer es genau nimmt, sagt Kibibyte zur binären Stufe; im Alltag spricht so fast niemand.</aside>
+    <aside class="notes">Zwei Leitern nebeneinander: die dezimale mit tausend je Stufe, die binäre mit 1024. Als Potenzen geschrieben sieht man den Unterschied sofort: Die dezimale Leiter steigt in Schritten von 10³, die binäre in Schritten von 2¹⁰, und 2¹⁰ ist eben 1024 und nicht 1000. Beide heißen im Alltag gleich, und daher kommt der Ärger auf der nächsten Folie. Wer es genau nimmt, sagt Kibibyte zur binären Stufe; im Alltag spricht so fast niemand.</aside>
   </section>
 
   <section class="slide has-punch" data-on-show="drawDisk" data-on-step="drawDisk">
@@ -169,7 +237,7 @@
 
 </div>
 <script src="../../stagekit/draw.js?v=0.7.0-156254"></script>
-<script src="deck.js?v=1"></script>
+<script src="deck.js?v=2"></script>
 <script src="../../stagekit/stagekit.js?v=0.7.0-156254"></script>
 </body>
 </html>

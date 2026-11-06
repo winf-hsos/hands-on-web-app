@@ -309,6 +309,7 @@ function fillableTables(tree, lang) {
 // ```word-arithmetic king − man + woman with the same model, its block naming the file of words to search (client/word-arithmetic.js),
 // ```question-game sixteen faces and yes-or-no questions measured in bits (client/question-game.js),
 // ```prefix-trap code words of one's own and every reading the receiver could cut from the bits (client/prefix-trap.js),
+// ```hex-viewer a typed text or any file of one's own as a hex dump, with its signature (client/hex-viewer.js),
 // ```data-table an empty table to record observations in (client/data-table.js),
 // ```shell-demo the folder tree and command line (client/shell-demo.js), whose
 // block holds its scenario in YAML (tree:, start:), checked by validate.mjs.
@@ -322,6 +323,7 @@ const DEMOS = {
   'audio-digitiser': { className: 'audio-digitiser', dataAudioDigitiser: '' },
   'question-game': { className: 'question-game', dataQuestionGame: '' },
   'prefix-trap': { className: 'prefix-trap', dataPrefixTrap: '' },
+  'hex-viewer': { className: 'hex-viewer', dataHexViewer: '' },
   'next-word': { className: 'next-word', dataNextWord: '' },
   'word-guess': { className: 'word-guess', dataWordGuess: '' },
   'meaning-map': { className: 'meaning-map', dataMeaningMap: '' },

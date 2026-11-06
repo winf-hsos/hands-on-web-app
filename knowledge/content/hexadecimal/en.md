@@ -19,9 +19,9 @@ topics: [representing-information, storing-information]
 modules: [dup]
 relations:
   requires: [byte]
-  see_also: [place-value-systems]
+  see_also: [place-value-systems, hex-viewer]
 status: draft
-updated: 2026-11-01
+updated: 2026-11-06
 ---
 
 Nobody reads eight zeroes and ones at a glance. Hexadecimal is the shorthand
@@ -36,7 +36,7 @@ four bits, and a whole byte fits into two digits. Since our ten digits do not
 stretch to sixteen values, six letters help out: A stands for 10, B for 11,
 and so on up to F for 15.
 
-![One byte, split into two packets of four bits. Each packet becomes one hex digit, and the sixteen digits borrow six letters because ten are not enough.](media/hex-nibbles.en.svg)
+![One byte, split into two packets of four bits. Each packet becomes one hex digit, and read back with the place value recipe of base 16, D2 is 13 · 16 + 2 = 210.](media/hex-nibbles.en.svg)
 
 A packet of four bits is sometimes called a *nibble*, half a byte. Converting
 between binary and hex therefore needs no arithmetic at all, only the table of
@@ -84,7 +84,12 @@ many unreadable ones, which are the same stuff: a file is nothing but a
 sequence of numbers, and only the program that reads it decides what they
 mean.
 
+Look at the first bytes of a PDF, a JPEG and a text file of your own in the
+hex viewer, and type an umlaut or an emoji to see how many bytes it takes:
+
+![The hex viewer](item:hex-viewer)
+
 > [!TIP]
 > Every programming editor can show a file as a hex dump, and on the command
 > line `xxd` (Linux, macOS) or `Format-Hex` (Windows PowerShell) does the
-> same. Look at the first bytes of a PDF, a JPEG and a text file.
+> same.

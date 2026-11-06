@@ -22,12 +22,16 @@ function feld(x, y, w, h, fill, rx = 6) {
 /* Das Stellenwertschema: oben die Ziffern, darunter ihre Stellenwerte, und im
  * zweiten Schritt die ausgeschriebene Summe. Dreimal dieselbe Zeichnung mit
  * anderer Basis, damit der Trick durch Wiederholung sitzt. */
-function stellenwert(id, ziffern, werte, summe, ergebnis, step, hinweis) {
+function stellenwert(id, ziffern, werte, summe, ergebnis, step, hinweis, naechste = null) {
   const c = d.colors();
-  const n = ziffern.length;
+  // with a next place to guess, the layout keeps a free slot on the left from
+  // the start, so that nothing moves when it appears
+  const plaetze = ziffern.length + (naechste ? 1 : 0);
   const w = 200, luecke = 40, h = 150;
-  const gesamt = n * w + (n - 1) * luecke;
-  const x0 = (1680 - gesamt) / 2;
+  const gesamt = plaetze * w + (plaetze - 1) * luecke;
+  const links = (1680 - gesamt) / 2;
+  const x0 = links + (naechste ? w + luecke : 0);
+  const mitte = x0 + (ziffern.length * w + (ziffern.length - 1) * luecke) / 2;
   const parts = [];
 
   ziffern.forEach((z, i) => {
@@ -38,7 +42,13 @@ function stellenwert(id, ziffern, werte, summe, ergebnis, step, hinweis) {
   });
   parts.push(d.label(x0, 0, hinweis, { size: 20, color: c.gray, centerY: 30 }));
   if (step >= 1) {
-    parts.push(d.formula(840, 0, `${summe} = ${ergebnis}`, { size: 48, color: c.white, anchor: "middle", centerY: 460 }));
+    parts.push(d.formula(mitte, 0, `${summe} = ${ergebnis}`, { size: 48, color: c.white, anchor: "middle", centerY: 460 }));
+  }
+  // the next place: first an empty slot with a question mark, then its value
+  if (naechste && step >= 2) {
+    parts.push(`<rect x="${links + 2}" y="62" width="${w - 4}" height="${h - 4}" rx="6" fill="none" stroke="${c.gray}" stroke-width="4" stroke-dasharray="14 10"/>`);
+    parts.push(d.label(links + w / 2, 0, "×", { size: 32, color: c.gray, anchor: "middle", centerY: 250 }));
+    parts.push(d.label(links + w / 2, 0, step >= 3 ? naechste : "?", { size: 48, color: c.yellow, anchor: "middle", mono: true, centerY: 330 }));
   }
   return put(id, d.svg(1680, 530, ...parts));
 }
@@ -55,15 +65,19 @@ window.drawEight = function (_slide, step = 0) {
 
 window.drawDolphin = function (_slide, step = 0) {
   return stellenwert("fig-dolphin", ["1", "1", "0"], ["4", "2", "1"],
-                     "1·4 + 1·2 + 0·1", "6", step, T("base 2: powers of two", "Basis 2: Zweierpotenzen"));
+                     "1·4 + 1·2 + 0·1", "6", step, T("base 2: powers of two", "Basis 2: Zweierpotenzen"), "8");
 };
 
-/* --- binaer zaehlen ------------------------------------------------------- */
+/* --- binaer zaehlen ------------------------------------------------------- *
+ * One row per step, so that the room can guess the next one; the question
+ * mark stands where the next answer will appear. Without a step (figures.py)
+ * the drawing shows its end state. */
 
-window.drawBinaryCount = function () {
+window.drawBinaryCount = function (_slide, step = 7) {
   const c = d.colors();
   const zeilen = [[0, "0"], [1, "1"], [2, "10"], [3, "11"], [4, "100"],
                   [5, "101"], [6, "110"], [7, "111"], [8, "1000"]];
+  const sichtbar = 2 + step;
   const parts = [
     d.label(420, 60, T("we write", "wir schreiben"), { size: 20, color: c.gray, anchor: "middle" }),
     d.label(760, 60, T("the dolphin writes", "der Delfin schreibt"), { size: 20, color: c.gray, anchor: "middle" }),
@@ -73,11 +87,17 @@ window.drawBinaryCount = function () {
     const y = 140 + i * 56;
     const wechsel = bin.length > (zeilen[i - 1] ? zeilen[i - 1][1].length : 1);
     parts.push(d.label(420, 0, String(dez), { size: 32, color: c.light, anchor: "middle", mono: true, centerY: y }));
-    parts.push(d.label(760, 0, bin, { size: 32, color: wechsel ? c.yellow : c.white, anchor: "middle", mono: true, centerY: y }));
+    if (i < sichtbar) {
+      parts.push(d.label(760, 0, bin, { size: 32, color: wechsel ? c.yellow : c.white, anchor: "middle", mono: true, centerY: y }));
+    } else if (i === sichtbar) {
+      parts.push(d.label(760, 0, "?", { size: 32, color: c.gray, anchor: "middle", mono: true, centerY: y }));
+    }
   });
-  parts.push(d.label(1060, 0, T("a new place opens\nwhen the digits run out,\njust like 9 to 10",
-                                "eine neue Stelle kommt dazu,\nwenn die Ziffern ausgehen,\ngenau wie von 9 auf 10"),
-                     { size: 32, color: c.gray, centerY: 380 }));
+  if (sichtbar >= zeilen.length) {
+    parts.push(d.label(1060, 0, T("a new place opens\nwhen the digits run out,\njust like 9 to 10",
+                                  "eine neue Stelle kommt dazu,\nwenn die Ziffern ausgehen,\ngenau wie von 9 auf 10"),
+                       { size: 32, color: c.gray, centerY: 380 }));
+  }
   return put("fig-binary-count", d.svg(1680, 660, ...parts));
 };
 
@@ -141,7 +161,77 @@ window.drawByte = function (_slide, step = 0) {
   return put("fig-byte", d.svg(1680, 510, ...parts));
 };
 
-/* --- hex ------------------------------------------------------------------- */
+/* --- hex: where it shows up ------------------------------------------------- *
+ * Five places where hex turns up in everyday computing, before it is
+ * explained; the room is asked what these strings have in common. */
+
+window.drawHexSeen = function (_slide, step = 1) {
+  const c = d.colors();
+  const zeilen = [
+    ["#ECAB03", T("a colour on a web page", "eine Farbe auf einer Webseite")],
+    ["3C:22:FB:9A:01:7E", T("the address of a network card", "die Adresse einer Netzwerkkarte")],
+    ["U+00E4", T("the letter ä in Unicode", "der Buchstabe ä in Unicode")],
+    ["0x80070005", T("an error code in Windows", "ein Fehlercode in Windows")],
+    ["89 50 4E 47", T("the first bytes of every PNG file", "die ersten Bytes jeder PNG-Datei")],
+  ];
+  const parts = [];
+  zeilen.forEach(([text, wo], i) => {
+    const y = 60 + i * 96;
+    parts.push(d.label(160, 0, text, { size: 48, color: c.white, mono: true, keepCase: true, centerY: y }));
+    parts.push(d.label(900, 0, wo, { size: 32, color: c.gray, keepCase: true, centerY: y }));
+  });
+  if (step >= 1) {
+    parts.push(d.label(160, 0, T("only the digits 0 to 9 and the letters A to F, and nothing else",
+                                 "nur die Ziffern 0 bis 9 und die Buchstaben A bis F, sonst nichts"),
+                       { size: 32, color: c.white, keepCase: true, centerY: 560 }));
+  }
+  return put("fig-hex-seen", d.svg(1680, 600, ...parts));
+};
+
+/* --- counting with sixteen fingers ------------------------------------------ *
+ * The decimal numbers 0 to 17 in a row, the alien's digits below. First the
+ * familiar ten, then the six letters, then the place that opens after F;
+ * a question mark marks the next thing to guess. */
+
+window.drawHexCount = function (_slide, step = 2) {
+  const c = d.colors();
+  const ziffern = "0123456789ABCDEF".split("").concat(["10", "11"]);
+  const x0 = 290, spalte = 77;
+  const parts = [
+    d.label(0, 0, T("we write", "wir schreiben"), { size: 20, color: c.gray, centerY: 110 }),
+    d.label(0, 0, T("the alien writes", "das Alien schreibt"), { size: 20, color: c.gray, centerY: 200 }),
+    d.line(0, 155, 1680, 155, { color: c.dark, width: 2 }),
+  ];
+  const sichtbar = step >= 2 ? 18 : step >= 1 ? 16 : 10;
+  ziffern.forEach((z, i) => {
+    const x = x0 + i * spalte;
+    parts.push(d.label(x, 0, String(i), { size: 32, color: c.light, anchor: "middle", mono: true, centerY: 110 }));
+    if (i < sichtbar) {
+      const neu = i >= 10;
+      parts.push(d.label(x, 0, z, { size: 32, color: neu ? c.yellow : c.white, anchor: "middle", mono: true, keepCase: true, centerY: 200 }));
+    } else if (i === sichtbar) {
+      parts.push(d.label(x, 0, "?", { size: 32, color: c.gray, anchor: "middle", mono: true, centerY: 200 }));
+    }
+  });
+  if (step >= 1) {
+    parts.push(d.label(0, 0, T("ten digits are not enough, so six letters help out: A is 10, F is 15",
+                               "zehn Ziffern reichen nicht, also helfen sechs Buchstaben aus: A ist 10, F ist 15"),
+                       { size: 32, color: c.gray, keepCase: true, centerY: 300 }));
+  }
+  if (step >= 2) {
+    parts.push(d.label(0, 0, T("after F the digits run out, and a new place opens: 10 means sixteen",
+                               "nach F gehen die Ziffern aus, und eine neue Stelle kommt dazu: 10 heißt sechzehn"),
+                       { size: 32, color: c.gray, keepCase: true, centerY: 370 }));
+  }
+  return put("fig-hex-count", d.svg(1680, 410, ...parts));
+};
+
+window.drawSixteen = function (_slide, step = 1) {
+  return stellenwert("fig-sixteen", ["1", "2", "3"], ["256", "16", "1"],
+                     "1·256 + 2·16 + 3·1", "291", step, T("base 16: powers of sixteen", "Basis 16: Sechzehnerpotenzen"));
+};
+
+/* --- hex: four bits at a time ---------------------------------------------- */
 
 window.drawHex = function (_slide, step = 0) {
   const c = d.colors();
@@ -166,18 +256,10 @@ window.drawHex = function (_slide, step = 0) {
                        { size: 32, color: c.gray, centerY: 330 }));
   }
   if (step >= 2) {
-    // die sechzehn Ziffern
-    const zeichen = "0123456789ABCDEF".split("");
-    zeichen.forEach((z, i) => {
-      const x = 180 + i * 88;
-      parts.push(d.label(x, 0, z, { size: 32, color: i > 9 ? c.yellow : c.light, mono: true, keepCase: true, centerY: 530 }));
-      parts.push(d.label(x, 0, String(i), { size: 20, color: c.gray, mono: true, centerY: 575 }));
-    });
-    parts.push(d.label(180, 0, T("ten digits are not enough, so six letters help out",
-                                 "zehn Ziffern reichen nicht, deshalb helfen sechs Buchstaben aus"),
-                       { size: 20, color: c.gray, centerY: 480 }));
+    // the two hex digits read back with the place value recipe of base 16
+    parts.push(d.formula(840, 0, "D2 = 13·16 + 2·1 = 210", { size: 48, color: c.white, anchor: "middle", centerY: 530 }));
   }
-  return put("fig-hex", d.svg(1680, 620, ...parts));
+  return put("fig-hex", d.svg(1680, 600, ...parts));
 };
 
 /* --- dieselbe Datei, zweimal ------------------------------------------------
@@ -219,15 +301,18 @@ window.drawLadders = function () {
   const stufen = ["byte", "kilobyte", "megabyte", "gigabyte", "terabyte"];
   const dez = ["1", "1 000", "1 000 000", "1 000 000 000", "1 000 000 000 000"];
   const bin = ["1", "1 024", "1 048 576", "1 073 741 824", "1 099 511 627 776"];
+  // the same steps as powers: ten to the 3, 6, 9, 12 against two to the 10, 20, 30, 40
   const parts = [
-    d.label(120, 0, T("decimal: each step × 1000", "dezimal: je Stufe × 1000"), { size: 32, color: c.gray, centerY: 60 }),
-    d.label(980, 0, T("binary: each step × 1024", "binär: je Stufe × 1024"), { size: 32, color: c.yellow, centerY: 60 }),
+    d.label(380, 0, T("decimal: each step × 1000", "dezimal: je Stufe × 1000"), { size: 32, color: c.gray, centerY: 60 }),
+    d.label(1000, 0, T("binary: each step × 1024", "binär: je Stufe × 1024"), { size: 32, color: c.yellow, centerY: 60 }),
     d.line(120, 90, 1600, 90, { color: c.dark, width: 2 }),
   ];
   stufen.forEach((name, i) => {
     const y = 150 + i * 80;
     parts.push(d.label(120, 0, name, { size: 32, color: c.light, centerY: y }));
-    parts.push(d.label(760, 0, dez[i], { size: 32, color: c.light, mono: true, anchor: "end", centerY: y }));
+    parts.push(d.formula(380, 0, `10^{${3 * i}}`, { size: 32, color: c.gray, centerY: y }));
+    parts.push(d.label(900, 0, dez[i], { size: 32, color: c.light, mono: true, anchor: "end", centerY: y }));
+    parts.push(d.formula(1000, 0, `2^{${10 * i}}`, { size: 32, color: c.yellow, centerY: y }));
     parts.push(d.label(1600, 0, bin[i], { size: 32, color: c.yellow, mono: true, anchor: "end", centerY: y }));
   });
   parts.push(d.label(120, 0, T("both are called the same in everyday speech. that is where the trouble starts.",
@@ -294,10 +379,7 @@ window.drawOwnBase = function (_slide, step = 0) {
 
 /* --- Start ---------------------------------------------------------------- */
 
-if ($("fig-binary-count")) {
-  window.drawBinaryCount();
-  window.drawLadders();
-}
+if ($("fig-ladders")) window.drawLadders();
 
 window.deck10 = {
   place: window.drawPlace,
@@ -306,6 +388,9 @@ window.deck10 = {
   dolphin: window.drawDolphin,
   whyTwo: window.drawWhyTwo,
   byte: window.drawByte,
+  hexSeen: window.drawHexSeen,
+  hexCount: window.drawHexCount,
+  sixteen: window.drawSixteen,
   hex: window.drawHex,
   dump: window.drawDump,
   ladders: window.drawLadders,

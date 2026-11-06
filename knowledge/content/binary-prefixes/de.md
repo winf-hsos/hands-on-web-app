@@ -13,7 +13,7 @@ objectives:
     - "abschätzen, wie weit die beiden Leitern auf jeder Stufe auseinanderliegen"
     - "die Einheiten KiB, MiB, GiB und TiB korrekt verwenden und von kB, MB, GB und TB abgrenzen"
 translation_of: en
-based_on: 2026-11-01
+based_on: 2026-11-06
 ---
 
 Auf der Packung steht 1 Terabyte, der Rechner zeigt 931 Gigabyte an, und es
@@ -27,7 +27,7 @@ bei jeder anderen Einheit auch: Kilobyte, Megabyte, Gigabyte, Terabyte. Die bin�
 Zweierpotenzen organisiert ist und 2¹⁰ = 1024 die Zweierpotenz ist, die 1000 am
 nächsten kommt.
 
-![Zwei Leitern nebeneinander. Die Stufen heißen im Alltag gleich, und ihre Werte laufen mit jeder Stufe weiter auseinander.](media/unit-ladders.de.svg)
+![Zwei Leitern nebeneinander, die eine steigt in Zehnerpotenzen, die andere in Zweierpotenzen. Die Stufen heißen im Alltag gleich, und ihre Werte laufen mit jeder Stufe weiter auseinander.](media/unit-ladders.de.svg)
 
 Der Abstand zwischen den Leitern wächst je Stufe um rund 2,4 Prozent: Ein
 binäres Kilobyte ist 2,4 Prozent größer als ein dezimales, ein binäres Megabyte

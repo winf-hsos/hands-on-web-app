@@ -5647,6 +5647,234 @@ details.callout[open] > summary::before {
   }
 }
 
+/* The hex viewer (client/hex-viewer.js): the choice between a typed text and
+   a file, then the dump with the offset, the bytes in hex and the same bytes
+   as characters, sixteen to a row and eight on a phone. The signature of the
+   file type is blue, bytes from 80 up yellow and control characters grey; a
+   selected byte is marked in both columns, together with the other bytes of
+   its character. The dump always has sixteen rows, so the page does not move
+   while paging. */
+.hex-viewer {
+  --hx-high: #b45309;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.75rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .hex-viewer {
+    --hx-high: #f5a623;
+  }
+}
+
+:root[data-theme='dark'] .hex-viewer {
+  --hx-high: #f5a623;
+}
+
+.hex-viewer.is-dragging {
+  border-color: var(--accent);
+  background: var(--paper-2);
+}
+
+.hx-source {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.hx-text {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.35rem;
+  background: var(--paper);
+  color: var(--ink);
+  font: 1rem/1.4 var(--mono);
+  resize: vertical;
+}
+
+.hx-text:focus {
+  outline: 2px solid var(--accent);
+  border-color: var(--accent);
+}
+
+.hx-drop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  min-height: 2.6rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px dashed var(--quiet);
+  border-radius: 0.35rem;
+  color: var(--quiet);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.hx-drop[hidden] {
+  display: none;
+}
+
+.hx-file {
+  max-width: 100%;
+  font: inherit;
+}
+
+.prose .hx-summary,
+.prose .hx-info {
+  margin: 0.75rem 0 0.5rem;
+  font-size: 0.9rem;
+}
+
+.prose .hx-info {
+  min-height: 2.6em;
+  color: var(--quiet);
+}
+
+.hx-dump {
+  display: grid;
+  gap: 0.1rem;
+  padding: 0.6rem 0.75rem;
+  overflow-x: auto;
+  border: 1px solid var(--rule);
+  border-radius: 0.5rem;
+  background: var(--paper-2);
+  font: 0.9rem/1.5 var(--mono);
+}
+
+.hx-dump:focus-visible {
+  outline: 2px solid var(--accent);
+}
+
+.hx-row {
+  display: flex;
+  gap: 1.2ch;
+  white-space: pre;
+}
+
+.hx-off {
+  flex: none;
+  color: var(--quiet);
+}
+
+/* eight bytes to a row, and a smaller type so that both columns fit a phone */
+.hex-viewer.is-narrow .hx-dump {
+  padding: 0.5rem;
+  font-size: 0.78rem;
+}
+
+.hex-viewer.is-narrow .hx-row {
+  gap: 1ch;
+}
+
+.hx-bytes {
+  display: grid;
+  grid-template-columns: repeat(var(--per-row, 16), 2ch);
+  column-gap: 0.6ch;
+  flex: none;
+}
+
+/* a little more room after every eighth byte, as in every hex editor */
+.hx-byte:nth-child(8n):not(:last-child) {
+  margin-right: 0.6ch;
+}
+
+.hx-chars {
+  display: grid;
+  grid-template-columns: repeat(var(--per-row, 16), 1ch);
+  flex: none;
+  padding-left: 0.6ch;
+  border-left: 1px solid var(--rule);
+}
+
+.hx-byte,
+.hx-char {
+  border-radius: 0.2rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+.hx-byte.is-empty,
+.hx-char.is-empty {
+  cursor: default;
+}
+
+.hx-byte.is-ctrl,
+.hx-char.is-ctrl {
+  color: var(--quiet);
+}
+
+.hx-byte.is-high,
+.hx-char.is-high {
+  color: var(--hx-high);
+}
+
+.hx-byte.is-magic,
+.hx-char.is-magic {
+  color: var(--accent-ink);
+  font-weight: 700;
+}
+
+.hx-byte.is-mate,
+.hx-char.is-mate {
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.hx-byte.is-sel,
+.hx-char.is-sel {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+.hx-pager {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--quiet);
+}
+
+.hx-range {
+  text-align: center;
+}
+
+.hx-pager .chip-button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.prose .hx-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.2rem;
+  margin: 0.75rem 0 0;
+}
+
+.hx-key::before {
+  content: '';
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  margin-right: 0.4em;
+  border-radius: 0.15rem;
+  background: currentColor;
+}
+
+.hx-key.is-magic {
+  color: var(--accent-ink);
+}
+
+.hx-key.is-high {
+  color: var(--hx-high);
+}
+
+.hx-key.is-ctrl {
+  color: var(--quiet);
+}
+
 /* The question game (client/question-game.js): the sixteen faces as buttons,
    eight in a row and four on a phone, then the questions, the panel that
    writes out what the last answer gained, the bits collected and the log.

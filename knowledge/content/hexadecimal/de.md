@@ -13,7 +13,7 @@ objectives:
     - "eine Farbangabe wie `#AC8909` in ihre drei Farbkanäle zerlegen"
     - "einen Hex-Dump lesen und eine Datei wie ein PNG-Bild an ihren ersten Bytes erkennen"
 translation_of: en
-based_on: 2026-11-01
+based_on: 2026-11-06
 ---
 
 Acht Nullen und Einsen kann niemand auf einen Blick lesen. Hexadezimal ist die
@@ -28,7 +28,7 @@ aus vier Bit ab, und ein ganzes Byte passt in zwei Ziffern. Weil unsere zehn
 Ziffern nicht für sechzehn Werte reichen, helfen sechs Buchstaben aus: A steht
 für 10, B für 11 und so weiter bis F für 15.
 
-![Ein Byte, geteilt in zwei Päckchen aus vier Bit. Jedes Päckchen wird zu einer Hexziffer, und die sechzehn Ziffern borgen sich sechs Buchstaben, weil zehn nicht reichen.](media/hex-nibbles.de.svg)
+![Ein Byte, geteilt in zwei Päckchen aus vier Bit. Jedes Päckchen wird zu einer Hexziffer, und mit dem Stellenwertrezept der Basis 16 zurückgerechnet ist D2 gleich 13 · 16 + 2 = 210.](media/hex-nibbles.de.svg)
 
 Ein Päckchen aus vier Bit heißt manchmal *Nibble*, ein halbes Byte. Zwischen
 binär und hexadezimal umzurechnen braucht deshalb keine Rechnung, nur die
@@ -78,8 +78,13 @@ unlesbare, die aus demselben Stoff sind: Eine Datei ist nichts als eine Folge
 von Zahlen, und erst das Programm, das sie liest, entscheidet, was sie
 bedeuten.
 
+Sieh dir im Hex-Betrachter die ersten Bytes eines PDFs, eines JPEGs und einer
+Textdatei von deinem Rechner an, und tippe einen Umlaut oder ein Emoji, um zu
+sehen, wie viele Bytes es braucht:
+
+![Der Hex-Betrachter](item:hex-viewer)
+
 > [!TIP]
 > Jeder Programmiereditor kann eine Datei als Hex-Dump zeigen, und auf der
 > Kommandozeile leisten `xxd` (Linux, macOS) oder `Format-Hex` (Windows
-> PowerShell) dasselbe. Sieh dir die ersten Bytes eines PDFs, eines JPEGs und
-> einer Textdatei an.
+> PowerShell) dasselbe.

@@ -20,7 +20,7 @@ modules: [dup]
 relations:
   requires: [byte]
 status: draft
-updated: 2026-11-01
+updated: 2026-11-06
 ---
 
 The box says 1 terabyte, the computer says 931 gigabytes, and not a single
@@ -34,7 +34,7 @@ every other unit: kilobyte, megabyte, gigabyte, terabyte. The binary ladder
 multiplies by 1024, because memory is organised in powers of two and
 2¹⁰ = 1024 is the power of two closest to 1000.
 
-![Two ladders side by side. The steps have the same names in everyday speech, and their values drift further apart with every step.](media/unit-ladders.en.svg)
+![Two ladders side by side, one climbing in powers of ten and one in powers of two. The steps have the same names in everyday speech, and their values drift further apart with every step.](media/unit-ladders.en.svg)
 
 The gap between the ladders grows by about 2.4 percent per step: a binary
 kilobyte is 2.4 percent larger than a decimal one, a binary megabyte 4.9
