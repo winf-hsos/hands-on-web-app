@@ -237,8 +237,10 @@ window.drawHex = function (_slide, step = 0) {
   const c = d.colors();
   const parts = [];
   // ein Byte, in zwei Viererpaeckchen
+  // die acht Kaesten stehen mittig (Mitte 840), wie die Rechnung darunter
   const bits = "11010010";
-  const w = 96, x0 = 180, y = 80, h = 110;
+  const w = 96, y = 80, h = 110;
+  const x0 = 840 - (8 * w + 6 * 12 + 60) / 2;
   bits.split("").forEach((b, i) => {
     const x = x0 + i * (w + 12) + (i >= 4 ? 60 : 0);
     parts.push(d.box(x, y, w, h, b, { size: 48, mono: true, border: b === "1" ? c.yellow : c.dark, color: b === "1" ? c.yellow : c.light }));
@@ -251,15 +253,15 @@ window.drawHex = function (_slide, step = 0) {
     parts.push(d.arrow(x0 + 6 * (w + 12) + 60, 260, x0 + 6 * (w + 12) + 60, 330, { color: c.gray, width: 3 }));
     parts.push(d.label(x0 + 2 * (w + 12), 0, "D", { size: 80, color: c.white, anchor: "middle", mono: true, keepCase: true, centerY: 400 }));
     parts.push(d.label(x0 + 6 * (w + 12) + 60, 0, "2", { size: 80, color: c.white, anchor: "middle", mono: true, centerY: 400 }));
-    parts.push(d.label(1180, 0, T("four bits have 16 states.\nso one hex digit fits a nibble,\nand a byte fits two.",
-                                  "vier Bit haben 16 Zustände.\neine Hexziffer fasst ein Päckchen,\nein Byte passt in zwei."),
-                       { size: 32, color: c.gray, centerY: 330 }));
+    parts.push(d.label(840, 0, T("four bits have 16 states, so one hex digit fits a nibble and a byte fits two.",
+                                 "vier Bit haben 16 Zustände, also passt ein Päckchen in eine Hexziffer und ein Byte in zwei."),
+                       { size: 32, color: c.gray, anchor: "middle", centerY: 500 }));
   }
   if (step >= 2) {
     // the two hex digits read back with the place value recipe of base 16
-    parts.push(d.formula(840, 0, "D2 = 13·16 + 2·1 = 210", { size: 48, color: c.white, anchor: "middle", centerY: 530 }));
+    parts.push(d.formula(840, 0, "D2 = 13·16 + 2·1 = 210", { size: 48, color: c.white, anchor: "middle", centerY: 590 }));
   }
-  return put("fig-hex", d.svg(1680, 600, ...parts));
+  return put("fig-hex", d.svg(1680, 640, ...parts));
 };
 
 /* --- dieselbe Datei, zweimal ------------------------------------------------
