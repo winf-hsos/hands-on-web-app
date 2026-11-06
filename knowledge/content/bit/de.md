@@ -16,7 +16,7 @@ based_on: 2026-11-01
 
 ## Definition
 
-Ein **Bit** ist eine Stelle einer [[binary-numbers|Binärzahl]], die einen von
+Ein **Bit** ist eine Stelle einer [[place-value-systems|Binärzahl]], die einen von
 zwei Werten annehmen kann, geschrieben als 0 und 1. Das Wort ist eine Kurzform
 von *binary digit*, Binärziffer.
 

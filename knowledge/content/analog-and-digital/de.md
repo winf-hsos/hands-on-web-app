@@ -170,7 +170,7 @@ nur die Grenzen sind näher gerückt.
 
 Acht Bereiche wären verlockend, denn jede Messung trüge dann drei
 [[bit|Bit]] statt einem, wie [[symbols-and-information]] erklärt. Das ist
-dasselbe Argument, das erklärt, [[why-two-states|warum Rechner mit zwei
+dasselbe Argument, das erklärt, [[place-value-systems|warum Rechner mit zwei
 Zuständen arbeiten]], hier nur auf einen Sensor statt auf eine Leitung
 angewandt. Die andere Hälfte des Problems steht in [[signal-and-noise]]: Dort
 bleibt die Zahl der Symbole gleich, während stattdessen die Streuung der

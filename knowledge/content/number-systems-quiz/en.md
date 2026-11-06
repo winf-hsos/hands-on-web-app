@@ -11,7 +11,7 @@ duration: 15
 topics: [representing-information]
 modules: [dup]
 relations:
-  checks: [place-value-systems, binary-numbers, why-two-states, bit, byte, hexadecimal, binary-prefixes]
+  checks: [place-value-systems, bit, byte]
 status: draft
 updated: 2026-11-04
 ---

@@ -162,7 +162,7 @@ down so that a computer can carry it out; [[algorithms-and-programs]]
 follows this question. The second asks how what crosses the edges is written
 so that a machine can work with it. The sensor turned visible light into
 four numbers, and other answers turn numbers, letters, pictures and files
-into bits, as [[place-value-systems]] and [[binary-numbers]] show.
+into bits, as [[place-value-systems]] shows.
 
 ![The box processing between input and output. An arrow upwards leads to the question how the box does its work, answered by a program. Arrows downwards lead from input and output to the question how things are written so a machine can work with them, answered by representation.](media/two-questions.en.svg "Every box raises two questions: one about its processing, which a program answers, and one about the representation of what goes in and comes out.")
 

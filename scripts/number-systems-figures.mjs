@@ -1,4 +1,4 @@
-// Renders the figures of the deck number-systems-slides for the lessons on number systems,
+// Renders the figures of the deck number-systems-slides for the lesson on place value systems,
 // in English and German, and puts each into the media/ folder of the item
 // that shows it (`<name>.en.svg`, `<name>.de.svg`). The figures are drawn by
 // the deck's own functions (slides/deck.js, slides/figures.js), so a change
@@ -17,18 +17,22 @@ const STAGEKIT = process.argv[2] ?? 'C:/code/stagekit';
 const DECK = join(ROOT, 'dist/decks/number-systems-slides');
 const CONTENT = join(ROOT, 'knowledge/content');
 
-// which figure belongs to which item
+// which figure belongs to which items
 const PLACES = {
-  'place-value-ten': 'place-value-systems',
-  'place-value-eight': 'place-value-systems',
-  'colours-as-digits': 'place-value-systems',
-  'counting-in-binary': 'binary-numbers',
-  'why-two-states': 'why-two-states',
-  'byte-place-values': 'byte',
-  'hex-nibbles': 'hexadecimal',
-  'hex-dump': 'hexadecimal',
-  'unit-ladders': 'binary-prefixes',
-  'missing-gigabytes': 'binary-prefixes',
+  'place-value-ten': ['place-value-systems'],
+  'place-value-eight': ['place-value-systems'],
+  'counting-in-binary': ['place-value-systems'],
+  'binary-110': ['place-value-systems'],
+  'why-two-states': ['place-value-systems'],
+  'byte-place-values': ['place-value-systems', 'byte'],
+  'hex-seen': ['place-value-systems'],
+  'hex-counting': ['place-value-systems'],
+  'hex-123': ['place-value-systems'],
+  'hex-nibbles': ['place-value-systems'],
+  'hex-dump': ['place-value-systems'],
+  'unit-ladders': ['place-value-systems'],
+  'missing-gigabytes': ['place-value-systems'],
+  'colours-as-digits': ['place-value-systems'],
 };
 
 if (!existsSync(join(DECK, 'number-systems.html'))) {
@@ -56,10 +60,12 @@ for (const [lang, deckDir] of [['en', DECK], ['de', german]]) {
   const out = join(tmp, `svg-${lang}`);
   mkdirSync(out, { recursive: true });
   render(deckDir, out);
-  for (const [name, item] of Object.entries(PLACES)) {
-    const media = join(CONTENT, item, 'media');
-    mkdirSync(media, { recursive: true });
-    copyFileSync(join(out, `${name}.svg`), join(media, `${name}.${lang}.svg`));
+  for (const [name, items] of Object.entries(PLACES)) {
+    for (const item of items) {
+      const media = join(CONTENT, item, 'media');
+      mkdirSync(media, { recursive: true });
+      copyFileSync(join(out, `${name}.svg`), join(media, `${name}.${lang}.svg`));
+    }
   }
 }
 for (const dir of [tmp, german]) rmSync(dir, { recursive: true, force: true });

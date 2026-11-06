@@ -22,7 +22,7 @@ topics: [representing-information]
 modules: [dup]
 relations:
   requires: [place-value-systems, symbols-and-information]
-  see_also: [morse-code, byte, hexadecimal, petzold-code]
+  see_also: [morse-code, byte, place-value-systems, petzold-code]
 status: draft
 updated: 2026-11-06
 ---
@@ -273,7 +273,7 @@ The shares multiply rather than add, because every level of red can be
 combined with every level of green and blue: 256 · 256 · 256 ≈ 16.7 million
 colours, which is 24 bits per pixel. The notation `#ECAB03` is not a
 different system, only a shorter way of writing the same three bytes with two
-places each, as in [[hexadecimal]]. An RGB LED mixes its colour from the same
+places each, as in [[place-value-systems|hexadecimal]]. An RGB LED mixes its colour from the same
 three shares as a pixel on a screen, and a colour sensor measures it back in
 the same three channels.
 

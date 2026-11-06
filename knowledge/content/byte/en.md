@@ -16,8 +16,7 @@ duration: 5
 topics: [representing-information, storing-information]
 modules: [dup]
 relations:
-  requires: [binary-numbers]
-  see_also: [bit, hexadecimal]
+  see_also: [bit, place-value-systems]
 status: draft
 updated: 2026-11-01
 ---
@@ -47,8 +46,8 @@ a character, read as the brightness of a pixel a shade of grey.
 - Colour values in image editing and on web pages run from 0 to 255 per
   channel, because one channel is one byte; `#FF0000` is red with the red
   channel at its maximum.
-- Two [[hexadecimal]] digits describe exactly one byte.
+- Two [[place-value-systems|hexadecimal]] digits describe exactly one byte.
 - File sizes are counted in bytes, and the prefixes kilo, mega and giga have
-  two meanings there, see [[binary-prefixes]].
+  two meanings there, see [[place-value-systems]].
 
 Flip the eight bits yourself in the [[byte-switchboard]].

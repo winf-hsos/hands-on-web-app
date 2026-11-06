@@ -10,7 +10,7 @@ duration: 10
 topics: [representing-information]
 modules: [dup]
 relations:
-  example_of: [hexadecimal]
+  example_of: [place-value-systems]
 status: draft
 updated: 2026-11-06
 ---

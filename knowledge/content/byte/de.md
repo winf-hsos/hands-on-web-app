@@ -39,8 +39,8 @@ acht Bit bedeuten, legt eine Vereinbarung fest. Als Zahl gelesen ist es 0 bis
 - Farbwerte in der Bildbearbeitung und auf Webseiten reichen je Kanal von 0
   bis 255, weil ein Kanal ein Byte ist; `#FF0000` ist Rot mit dem roten Kanal
   am Anschlag.
-- Zwei [[hexadecimal|Hexadezimalziffern]] beschreiben genau ein Byte.
+- Zwei [[place-value-systems|Hexadezimalziffern]] beschreiben genau ein Byte.
 - Dateigrößen werden in Byte gezählt, und die Vorsilben Kilo, Mega und Giga
-  haben dort zwei Bedeutungen, siehe [[binary-prefixes]].
+  haben dort zwei Bedeutungen, siehe [[place-value-systems]].
 
 Die acht Bit selbst umschalten kannst du an der [[byte-switchboard]].

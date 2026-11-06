@@ -22,7 +22,6 @@ phases:
       - measuring-your-noise
       - believed-and-measured
       - place-value-systems
-      - why-two-states
   - id: word
     challenge: lifi-challenge-2
     items: [code-systems, invent-a-code, morse-code]
@@ -31,7 +30,7 @@ phases:
     items: [morse-code]
   - id: packet
     challenge: lifi-challenge-4
-    items: [byte, hexadecimal, binary-prefixes, logic-gates]
+    items: [byte, logic-gates]
 status: published
 updated: 2026-11-04
 ---

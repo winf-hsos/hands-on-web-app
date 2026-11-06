@@ -225,7 +225,7 @@ Am anderen Ende genügen zwei Symbole für jede beliebige Nachricht, sie brauche
 nur mehr Platz. Fünf Blitze mit je zwei Möglichkeiten ergeben 2⁵ = 32
 Kombinationen, genug für ein ganzes Alphabet. Was ein großes Alphabet je
 Symbol leistet, leisten zwei Symbole in der Gruppe, und deshalb kommt jeder
-Rechner mit 0 und 1 aus ([[why-two-states]]): Ein kleines Alphabet ist keine
+Rechner mit 0 und 1 aus ([[place-value-systems]]): Ein kleines Alphabet ist keine
 Sackgasse, sondern nur langsamer.
 
 ## Wenn Symbole nicht gleich wahrscheinlich sind

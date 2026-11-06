@@ -20,7 +20,7 @@ topics: [transferring-information]
 modules: [dup]
 relations:
   requires: [measurement-and-experiments]
-  see_also: [why-two-states, measuring-your-noise]
+  see_also: [place-value-systems, measuring-your-noise]
 status: draft
 updated: 2026-11-04
 ---
@@ -224,7 +224,7 @@ once: more symbols narrow the bands, and faster symbols widen the clouds,
 since a shorter window averages over less light. Both spend the same safety
 margin, of which there is only one. It is the same trade-off between more
 information per symbol and more errors that makes computers work with
-[[why-two-states|two states]].
+[[place-value-systems|two states]].
 
 Everything in this lesson is a property of one particular link, with its room,
 its distance and its ambient light. A link calibrated by the window in

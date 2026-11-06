@@ -180,7 +180,7 @@ kann; dieser Frage folgt [[algorithms-and-programs]]. Die zweite fragt, wie
 das, was die Ränder überquert, aufgeschrieben ist, damit eine Maschine damit
 arbeiten kann. Der Sensor hat sichtbares Licht in vier Zahlen verwandelt,
 und andere Antworten machen aus Zahlen, Buchstaben, Bildern und Dateien
-Bits, wie [[place-value-systems]] und [[binary-numbers]] zeigen.
+Bits, wie [[place-value-systems]] zeigt.
 
 ![Der Kasten Verarbeitung zwischen Eingabe und Ausgabe. Ein Pfeil nach oben führt zur Frage, wie der Kasten arbeitet, mit der Antwort ein Programm. Pfeile nach unten führen von Eingabe und Ausgabe zur Frage, wie aufgeschrieben ist, womit eine Maschine arbeiten kann, mit der Antwort Darstellung.](media/two-questions.de.svg "Jeder Kasten stellt zwei Fragen: die nach seiner Verarbeitung, die ein Programm beantwortet, und die nach der Darstellung dessen, was hinein- und herausgeht.")
 

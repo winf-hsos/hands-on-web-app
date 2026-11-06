@@ -1,6 +1,6 @@
 # Lecture notes: number systems
 
-This text explains the slides "number systems" for reading afterwards. It follows the order of the slides, and the references count frames (every build-up step is a frame of its own), but it can also be read without the slides. The lessons [[place-value-systems]], [[binary-numbers]], [[why-two-states]], [[hexadecimal]] and [[binary-prefixes]] treat the same material in more detail.
+This text explains the slides "number systems" for reading afterwards. It follows the order of the slides, and the references count frames (every build-up step is a frame of its own), but it can also be read without the slides. The lesson [[place-value-systems]] treats the same material in more detail.
 
 One scheme carries the whole deck: the digits at the top, the place values below them, the sum at the bottom. It comes three times, with base 10, base 8 and base 2, and after that twice more, with base 16 and with colours. Once you have seen it, you can read any base without learning a new rule.
 

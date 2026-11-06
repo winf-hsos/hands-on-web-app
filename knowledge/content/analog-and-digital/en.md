@@ -21,7 +21,7 @@ duration: 30
 topics: [representing-information, transferring-information]
 modules: [dup]
 relations:
-  see_also: [why-two-states, measuring-your-noise]
+  see_also: [place-value-systems, measuring-your-noise]
 status: published
 updated: 2026-11-04
 ---
@@ -173,7 +173,7 @@ boundaries came closer.
 
 Eight regions would be worth having, because each reading would then carry
 three [[bit|bits]] instead of one, as [[symbols-and-information]] explains.
-This is the same argument that explains [[why-two-states|why computers work
+This is the same argument that explains [[place-value-systems|why computers work
 with two states]], here applied to a sensor instead of a wire. The other half
 of the problem is in [[signal-and-noise]]: there the number of symbols stays
 put and the spread of the readings is measured instead, and both roads end at

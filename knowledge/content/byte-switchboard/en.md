@@ -18,7 +18,7 @@ topics: [representing-information]
 modules: [dup]
 relations:
   example_of: [byte]
-  see_also: [binary-numbers, hexadecimal]
+  see_also: [place-value-systems]
 status: published
 updated: 2026-11-01
 ---

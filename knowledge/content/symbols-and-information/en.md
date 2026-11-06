@@ -228,7 +228,7 @@ At the other end, two symbols are enough for any message at all; they only
 need more room. Five flashes with two possibilities each give 2⁵ = 32
 combinations, enough for a whole alphabet. What a large alphabet achieves per
 symbol, two symbols achieve in a group, and that is why every computer gets
-by with 0 and 1 ([[why-two-states]]): a small alphabet is not a dead end but
+by with 0 and 1 ([[place-value-systems]]): a small alphabet is not a dead end but
 merely slower.
 
 ## When symbols are not equally likely

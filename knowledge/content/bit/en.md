@@ -16,14 +16,14 @@ duration: 5
 topics: [representing-information]
 modules: [dup]
 relations:
-  see_also: [binary-numbers, byte, claude-shannon]
+  see_also: [place-value-systems, byte, claude-shannon]
 status: draft
 updated: 2026-11-01
 ---
 
 ## Definition
 
-A **bit** is a place in a [[binary-numbers|binary number]], which can hold one
+A **bit** is a place in a [[place-value-systems|binary number]], which can hold one
 of two values, written 0 and 1. The word is short for *binary digit*.
 
 ## Two meanings, one word

@@ -222,7 +222,7 @@ beide zugleich: Mehr Zeichen machen die Bänder schmaler, und schnellere
 Zeichen machen die Wolken breiter, weil ein kürzeres Fenster über weniger
 Licht mittelt. Beide verbrauchen denselben Sicherheitsabstand, und den gibt
 es nur einmal. Es ist dieselbe Abwägung zwischen mehr Information je Zeichen
-und mehr Fehlern, die Rechner mit [[why-two-states|zwei Zuständen]] arbeiten
+und mehr Fehlern, die Rechner mit [[place-value-systems|zwei Zuständen]] arbeiten
 lässt.
 
 Alles in dieser Lektion ist eine Eigenschaft einer bestimmten Strecke, mit

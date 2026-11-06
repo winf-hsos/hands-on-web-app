@@ -13,7 +13,7 @@ duration: 25
 topics: [representing-information]
 modules: [dup]
 relations:
-  see_also: [place-value-systems, binary-numbers, hexadecimal, binary-prefixes, hex-viewer]
+  see_also: [place-value-systems, hex-viewer]
 status: draft
 updated: 2026-11-06
 ---

@@ -266,7 +266,7 @@ Die Anteile werden multipliziert, nicht addiert, weil sich jede Rotstufe mit
 jeder Grün- und Blaustufe kombinieren lässt: 256 · 256 · 256 ≈ 16,7 Millionen
 Farben, also 24 Bit je Bildpunkt. Die Schreibweise `#ECAB03` ist kein anderes
 System, nur eine kürzere Art, dieselben drei Bytes mit je zwei Stellen zu
-schreiben, wie in [[hexadecimal]]. Eine RGB-LED mischt ihre Farbe aus denselben
+schreiben, wie in [[place-value-systems|Hexadezimal]]. Eine RGB-LED mischt ihre Farbe aus denselben
 drei Anteilen wie ein Bildpunkt auf dem Bildschirm, und ein Farbsensor misst
 sie in denselben drei Kanälen zurück.
 
