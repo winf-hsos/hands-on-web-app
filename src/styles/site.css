@@ -5431,6 +5431,222 @@ details.callout[open] > summary::before {
   }
 }
 
+/* The prefix trap (client/prefix-trap.js): the sender with the code words
+   and the word on the left, the bits on the wire in the middle, the receiver
+   with every reading it could cut on the right, and below them the code words
+   that start others. The list of readings keeps room for all it shows, so
+   that nothing below it moves while typing; on a phone the three stand one
+   below the other. */
+.prefix-trap {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.75rem;
+}
+
+.pt-link {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr) minmax(0, 1.3fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.prose .pt-link p {
+  margin: 0;
+}
+
+.pt-side {
+  padding: 0.75rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.5rem;
+  background: var(--paper-2);
+}
+
+.prose .pt-sub {
+  margin: 0.6rem 0 0.35rem;
+  font-size: 0.8rem;
+  color: var(--quiet);
+}
+
+.pt-book {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  gap: 0.4rem 0.5rem;
+  align-items: center;
+}
+
+.pt-ch {
+  font: 1.1rem var(--mono);
+}
+
+.pt-eq {
+  font-family: var(--mono);
+  color: var(--quiet);
+}
+
+.pt-field {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.35rem;
+  background: var(--paper);
+  color: var(--ink);
+  font: 1.05rem var(--mono);
+  letter-spacing: 0.12em;
+}
+
+.pt-field:focus {
+  outline: 2px solid var(--accent);
+  border-color: var(--accent);
+}
+
+.pt-field[aria-invalid='true'] {
+  border-color: var(--error);
+  color: var(--error);
+}
+
+.pt-wire {
+  padding-top: 0.75rem;
+  text-align: center;
+}
+
+.prose .pt-wire .pt-bits {
+  margin-top: 1.4rem;
+  font: 700 1.15rem/1.3 var(--mono);
+  letter-spacing: 0.08em;
+  color: var(--accent-ink);
+  word-break: break-all;
+}
+
+.pt-line {
+  position: relative;
+  margin: 0.6rem 0;
+  border-top: 1px solid var(--quiet);
+}
+
+.pt-line::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  right: -1px;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 9px solid var(--quiet);
+}
+
+.prose .pt-note {
+  font-size: 0.8rem;
+  color: var(--quiet);
+}
+
+.prose .pt-verdict {
+  margin: 0.35rem 0 0.6rem;
+  font-weight: 650;
+  color: var(--error);
+}
+
+.prefix-trap[data-result='one'] .pt-verdict {
+  color: var(--done);
+}
+
+.prose .pt-readings {
+  display: grid;
+  gap: 0.35rem;
+  align-content: start;
+  /* room for the six readings it shows */
+  min-height: calc(6 * 2.1rem + 5 * 0.35rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.prose .pt-readings li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.75rem;
+  align-items: baseline;
+  justify-content: space-between;
+  min-height: 2.1rem;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.35rem;
+  background: var(--paper);
+  font-family: var(--mono);
+}
+
+.prefix-trap[data-result='one'] .pt-readings li {
+  border-color: var(--done);
+}
+
+/* a long reading breaks between code words, never inside one, and the
+   letters then move to a line of their own, aligned to the right */
+.pt-chunk {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.pt-chunk.is-alt {
+  color: var(--quiet);
+}
+
+.pt-chunk + .pt-chunk {
+  margin-left: 0.4em;
+}
+
+.pt-read {
+  margin-left: auto;
+  white-space: nowrap;
+  font-weight: 650;
+  color: var(--accent-ink);
+}
+
+.pt-why {
+  min-height: 3rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--quiet);
+}
+
+.prose .pt-why p,
+.prose .pt-why ul {
+  margin: 0;
+}
+
+.prose .pt-why li {
+  margin: 0.15rem 0;
+  font-family: var(--mono);
+  color: var(--error);
+}
+
+.prose .pt-why .pt-free {
+  color: var(--done);
+}
+
+.pt-end {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.prose .pt-end .dg-note {
+  margin: 0;
+}
+
+@media (max-width: 40rem) {
+  .pt-link {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .prose .pt-wire .pt-bits {
+    margin-top: 0.4rem;
+  }
+}
+
 /* The question game (client/question-game.js): the sixteen faces as buttons,
    eight in a row and four on a phone, then the questions, the panel that
    writes out what the last answer gained, the bits collected and the log.

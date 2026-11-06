@@ -25,7 +25,7 @@ phases:
       - why-two-states
   - id: word
     challenge: lifi-challenge-2
-    items: [morse-code]
+    items: [code-systems, invent-a-code, morse-code]
   - id: protocol
     challenge: lifi-challenge-3
     items: [morse-code]

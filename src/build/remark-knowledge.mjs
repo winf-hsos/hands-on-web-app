@@ -308,6 +308,7 @@ function fillableTables(tree, lang) {
 // ```meaning-map a small embedding model in the browser, its texts one per line in the block, on a map with a search by meaning; empty, it compares single words (client/meaning-map.js),
 // ```word-arithmetic king − man + woman with the same model, its block naming the file of words to search (client/word-arithmetic.js),
 // ```question-game sixteen faces and yes-or-no questions measured in bits (client/question-game.js),
+// ```prefix-trap code words of one's own and every reading the receiver could cut from the bits (client/prefix-trap.js),
 // ```data-table an empty table to record observations in (client/data-table.js),
 // ```shell-demo the folder tree and command line (client/shell-demo.js), whose
 // block holds its scenario in YAML (tree:, start:), checked by validate.mjs.
@@ -320,6 +321,7 @@ const DEMOS = {
   'photo-digitiser': { className: 'photo-digitiser', dataPhotoDigitiser: '' },
   'audio-digitiser': { className: 'audio-digitiser', dataAudioDigitiser: '' },
   'question-game': { className: 'question-game', dataQuestionGame: '' },
+  'prefix-trap': { className: 'prefix-trap', dataPrefixTrap: '' },
   'next-word': { className: 'next-word', dataNextWord: '' },
   'word-guess': { className: 'word-guess', dataWordGuess: '' },
   'meaning-map': { className: 'meaning-map', dataMeaningMap: '' },

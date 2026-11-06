@@ -1,0 +1,43 @@
+# Style of the deck "what the bits mean": the LiFi project's style.toml plus
+# [colors.led], the four colours the LED really sends. They show the subject,
+# not a role, so they stay the same on a light background.
+[colors]
+background = "000000"
+white = "FFFFFF"
+gray_light = "B6BEC6"
+gray = "7D868F"
+gray_dark = "4A5259"
+blue = "009EE3"
+green = "4ADE80"
+yellow = "FFD23F"
+red = "FF4D6D"
+
+[colors.led]
+red = "E03131"
+green = "2F9E44"
+blue = "1971C2"
+yellow = "F2B705"
+
+[colors.light]
+background = "FFFFFF"
+white = "1F2933"
+gray_light = "4A5259"
+gray = "7D868F"
+gray_dark = "C5CCD3"
+blue = "004D6E"
+green = "006996"
+yellow = "009EE3"
+red = "E03131"
+
+[fonts]
+text = "Arial"
+code = "Roboto Mono"
+
+[sizes]
+large = 40
+normal = 24
+small = 16
+tiny = 10
+
+[stagekit]
+language = "en"

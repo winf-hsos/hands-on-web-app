@@ -929,6 +929,60 @@ export const questionGameLabels = {
   },
 };
 
+/** Labels of the prefix trap (client/prefix-trap.js). */
+export const prefixTrapLabels = {
+  de: {
+    sender: 'Sender',
+    receiver: 'Empfänger',
+    wire: 'auf der Leitung',
+    codeWords: 'deine Codewörter',
+    codeWordFor: 'Codewort für {letter}',
+    word: 'das Wort, das du sendest',
+    empty: 'Tippe ein Wort aus a, b, c und d.',
+    bits: '{n} Bits, ohne Lücken dazwischen',
+    missingSent: 'Kein Codewort für {letters}, dafür wird nichts gesendet.',
+    one: 'Eine einzige Lesart, der Empfänger muss nicht raten.',
+    none: 'Keine Lesart: Diese Bits passen zu keinem Wort.',
+    many: '{n} Lesarten. Welche war gemeint?',
+    moreThan: 'Mehr als {n}',
+    more: 'und {n} weitere',
+    trouble: 'Woher der Ärger kommt:',
+    lucky: 'Dieses Wort lässt sich nur auf eine Weise lesen, obwohl ein Codewort der Anfang eines anderen ist. Probier ein anderes Wort, ob das so bleibt:',
+    starts: '{x} ({a}) ist der Anfang von {y} ({b})',
+    same: '{a} und {b} haben dasselbe Codewort {word}',
+    free: 'Kein Codewort ist der Anfang eines anderen, und mehr braucht es nicht.',
+    missing: 'Noch ohne Codewort: {letters}',
+    reset: 'Zurück zum Anfang',
+    hint: 'Probier es: Gib a, b, c und d je zwei Bits, oder sorg dafür, dass kein Codewort ein anderes beginnt.',
+    keyReset: 'zurück zum Anfang',
+  },
+  en: {
+    sender: 'Sender',
+    receiver: 'Receiver',
+    wire: 'on the wire',
+    codeWords: 'your code words',
+    codeWordFor: 'code word for {letter}',
+    word: 'the word you send',
+    empty: 'Type a word made of a, b, c and d.',
+    bits: '{n} bits, no gaps between them',
+    missingSent: 'No code word for {letters}, so nothing is sent for it.',
+    one: 'One reading only, so the receiver need not guess.',
+    none: 'No reading at all: these bits fit no word.',
+    many: '{n} readings. Which one was meant?',
+    moreThan: 'More than {n}',
+    more: 'and {n} more',
+    trouble: 'Where the trouble comes from:',
+    lucky: 'This word can be read in only one way, although one code word is the beginning of another. Try another word to see whether that stays so:',
+    starts: '{x} ({a}) is the beginning of {y} ({b})',
+    same: '{a} and {b} share the code word {word}',
+    free: 'No code word is the beginning of another, and that is all it takes.',
+    missing: 'No code word yet for: {letters}',
+    reset: 'Back to the start',
+    hint: 'Try it: give a, b, c and d two bits each, or make sure no code word starts another one.',
+    keyReset: 'back to the start',
+  },
+};
+
 /** Labels of the table to record observations in (client/data-table.js). */
 export const dataTableLabels = {
   de: {

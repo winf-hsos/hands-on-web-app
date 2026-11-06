@@ -125,7 +125,7 @@ test('a gallery block becomes small pictures in groups that link to their files,
 });
 
 test('every demonstrator sits in a frame that gets the full-screen button', () => {
-  for (const name of ['verb-demo', 'monty-hall', 'byte-switchboard', 'photo-digitiser', 'audio-digitiser', 'question-game', 'next-word', 'word-guess', 'meaning-map', 'word-arithmetic', 'data-table']) {
+  for (const name of ['verb-demo', 'monty-hall', 'byte-switchboard', 'photo-digitiser', 'audio-digitiser', 'question-game', 'prefix-trap', 'next-word', 'word-guess', 'meaning-map', 'word-arithmetic', 'data-table']) {
     assert.match(render('```' + name + '\n```\n'), new RegExp(`<div class="demo" data-demo=""><div class="${name}" data-${name}=""></div></div>`));
   }
 });

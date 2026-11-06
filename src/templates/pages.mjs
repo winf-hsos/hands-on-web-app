@@ -226,6 +226,7 @@ const scriptsFor = (body) =>
     body.includes('data-photo-digitiser') && 'photo-digitiser',
     body.includes('data-audio-digitiser') && 'audio-digitiser',
     body.includes('data-question-game') && 'question-game',
+    body.includes('data-prefix-trap') && 'prefix-trap',
     body.includes('data-next-word') && 'next-word',
     body.includes('data-word-guess') && 'word-guess',
     body.includes('data-meaning-map') && 'meaning-map',
