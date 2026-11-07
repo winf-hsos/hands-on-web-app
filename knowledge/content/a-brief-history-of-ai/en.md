@@ -45,94 +45,77 @@ Plan at least 90 minutes. Step 1 alone takes well over 20, because the agent dow
 
 Before the agent gets involved, the group collects what it already knows.
 
-- Everyone writes down what they know about the history of AI: one card for one milestone, with the year if you know it, in large block letters. Everything counts, from ChatGPT and chess computers to films and the robot lawnmower at home, and there are no wrong cards.
-- The cards go on the pinboard, roughly in order of time.
-- Someone takes a photo of the board.
-
-Then take a short look at `milestones.md`, the list of the earlier group.
-
-1. Which milestones appear in `milestones.md` that are missing on the board, and which cards on the board are missing there?
-2. Which entries in `milestones.md` look doubtful to you? Write them down now; in Step 3 you compare your list with what the agent found.
+1. Write down what you know about the history of AI: one card for one milestone, with the year if you know it, in large block letters. Everything counts, from ChatGPT and chess computers to films and the robot lawnmower at home, and there are no wrong cards.
+2. Pin the cards on the board, roughly in order of time, and take a photo of the board.
+3. Read `milestones.md`, the list of the earlier group, and mark the entries that look doubtful to you. Whether they really contain errors is something the agent finds out in Step 1.
 
 ## Step 1: research
 
-Start the agent in the folder with `milestones.md`, attach the photo of the pinboard, and give it this task:
+4. Start the agent in the folder with `milestones.md`, attach the photo of the pinboard and give it this task:
 
-```text
-We are a group of students learning about artificial intelligence.
-Help us build a knowledge base on the history of AI.
+   ```text
+   We are a group of students learning about artificial intelligence.
+   Help us build a knowledge base on the history of AI.
 
-Inputs:
-- a photo of our pinboard: milestones our group knows
-- milestones.md: AI milestones that an earlier group collected
+   Inputs:
+   - a photo of our pinboard: milestones our group knows
+   - milestones.md: AI milestones that an earlier group collected
 
-Tasks:
-- find reliable sources for every milestone, and research further
-  important milestones yourself
-- download every source and save it
-- read each source and extract the key facts:
-  what? who? where? when? — and so what?
-- store them in a structured knowledge base as Markdown, one file per
-  milestone, with its source and its origin: the earlier group, our group,
-  or agent
-- write all errors you find in milestones.md to an Excel list
-- pinboard cards you cannot verify go to a list "still to check"
+   Tasks:
+   - find reliable sources for every milestone, and research further
+     important milestones yourself
+   - download every source and save it
+   - read each source and extract the key facts:
+     what? who? where? when? — and so what?
+   - store them in a structured knowledge base as Markdown, one file per
+     milestone, with its source and its origin: the earlier group, our group,
+     or agent
+   - write all errors you find in milestones.md to an Excel list
+   - pinboard cards you cannot verify go to a list "still to check"
 
-First read everything and show me your plan. Wait for my go.
-```
+   First read everything and show me your plan. Wait for my go.
+   ```
 
-The agent first reads the file, looks at the photo and answers with a plan.
-
-- Read the plan before you say "go": it tells you which files and folders the agent is going to create and how it wants to proceed.
-- While it works, watch how it goes about the task; nothing in the prompt says how the work is to be split up.
-- When it has finished, open one of the files in the knowledge base.
-
-3. Which files and folders does the plan announce, and in which order does the agent want to work?
-4. Does the agent hand the sources to several sub-agents that work in parallel? What would speak for that, and what against?
-5. Which of the five questions, what, who, where, when and so what, does your file of the knowledge base answer, and where does its source come from?
-
-> [!SOLUTION]
-> A typical plan first reads the photo and `milestones.md`, then searches and downloads a source for every milestone, and only then writes one Markdown file per milestone, the error list and the list "still to check". Whether it uses sub-agents is the agent's own decision: many independent sources can be read in parallel, which saves a lot of time, while every sub-agent has to be told what format its file should have, so that the knowledge base does not end up in five different styles.
+5. Read the plan the agent answers with: it tells you which files and folders the agent is going to create and how it wants to proceed. Ask for changes where something is unclear, then say "go".
+6. Watch how the agent goes about the work while it runs. Nothing in the prompt says how the work is to be split up, so see whether it hands the sources to several sub-agents that work in parallel.
+7. When the agent has finished, open one file of the knowledge base and see what a milestone looks like.
 
 ## Step 2: build
 
-A knowledge base is thorough, but nobody wants to browse it, so the agent now turns it into something to explore:
+A knowledge base is thorough, but nobody wants to browse it, so the agent now turns it into something to explore.
 
-```text
-Now build a visually compelling, interactive web app "A Brief History
-of AI" for our group. It guides visitors through the history of AI
-on a timeline.
+8. Give the agent this task:
 
-- use only the knowledge base — no new facts
-- every entry shows what, who, where, when and so what,
-  and links to its source
-- show where each entry came from: the earlier group, our group, agent
-- a static site (HTML, CSS, JavaScript, no build step), in English
-- must work on phones and on the projector; do not include the photo
+   ```text
+   Now build a visually compelling, interactive web app "A Brief History
+   of AI" for our group. It guides visitors through the history of AI
+   on a timeline.
 
-Show me your plan first. Wait for my go.
-```
+   - use only the knowledge base — no new facts
+   - every entry shows what, who, where, when and so what,
+     and links to its source
+   - show where each entry came from: the earlier group, our group, agent
+   - a static site (HTML, CSS, JavaScript, no build step), in English
+   - must work on phones and on the projector; do not include the photo
 
-While the agent builds, it creates files, opens the app in a browser, looks at what it has made and improves it.
+   Show me your plan first. Wait for my go.
+   ```
 
-- Pass wishes from the room straight to the agent while it builds.
-- If there is time to wait, Hannah Fry's talk [Why AI agents are either the best or worst thing we've ever built](https://www.youtube.com/watch?v=WnzR5aOElvw) fits the moment.
+9. Read the plan and say "go".
+10. Pass wishes from the room straight to the agent while it builds.
 
-6. How does the agent find out whether its app works, without anyone telling it?
-
-> [!SOLUTION]
-> It looks at its own work: it starts the app, opens it in a browser, takes screenshots or reads the page, and compares what it sees with what was asked for. When something is missing or broken, it changes the code and looks again. This is the loop of every agent, think, act, observe, applied to its own result, and the lesson [[ai-agents]] describes it.
+While the agent builds, it creates files, opens the app in a browser, looks at what it has made and improves it. If there is time to wait, Hannah Fry's talk [Why AI agents are either the best or worst thing we've ever built](https://www.youtube.com/watch?v=WnzR5aOElvw) fits the moment.
 
 ## Step 3: check the result
 
-Let the agent start the app and click through it before anything else is added.
+Before anything else is added, the group checks what the agent has built.
 
-7. Which errors did the agent find in the earlier group's list? Open the Excel list and compare it with your list from task 2.
-8. Which of the cards from the pinboard made it, and which are "still to check"?
-9. What did the agent add on its own?
-10. Click a source: does it say what the app says?
+11. Ask the agent to start the app, and click through the timeline.
+12. Open the Excel list with the errors the agent found in `milestones.md`, and compare it with the entries you marked.
+13. Look for your pinboard cards in the app and in the list "still to check".
+14. Pick three entries, click their sources and check whether each source says what the app says.
 
-Task 10 matters most. Asking the agent whether it is sure gives you an answer that sounds certain either way, while the source either says it or it does not.
+The last check matters most. Asking the agent whether it is sure gives you an answer that sounds certain either way, while the source either says it or it does not.
 
 > [!SOLUTION]
 > The [sample file](media/milestones.md) contains six errors:
@@ -146,77 +129,79 @@ Task 10 matters most. Asking the agent whether it is sure gives you an answer th
 
 ## Step 4: quiz
 
-Whoever has clicked through the timeline should be able to test what they learned, so the agent adds a quiz:
+Whoever has clicked through the timeline should be able to test what they learned, so the agent adds a quiz.
 
-```text
-Add a quiz to the app, so visitors can test what they learned
-about the history of AI.
+15. Give the agent this task:
 
-- 50 interesting questions, based only on the knowledge base
-- 4 answer options per question, exactly one of them correct
-- the wrong options must be plausible, not silly
-- after each answer: right or wrong, the correct answer,
-  and a link to the matching entry on the timeline
-- questions in random order, a score at the end
-- same design as the timeline; must work on phones
+    ```text
+    Add a quiz to the app, so visitors can test what they learned
+    about the history of AI.
 
-Show me three example questions first. Wait for my go.
-```
+    - 50 interesting questions, based only on the knowledge base
+    - 4 answer options per question, exactly one of them correct
+    - the wrong options must be plausible, not silly
+    - after each answer: right or wrong, the correct answer,
+      and a link to the matching entry on the timeline
+    - questions in random order, a score at the end
+    - same design as the timeline; must work on phones
 
-11. Judge the three example questions before you say "go": are they too easy, or do they ask about something that is not in the knowledge base?
-12. Play ten questions of the finished quiz. Which wrong option almost fooled you, and what made it plausible?
+    Show me three example questions first. Wait for my go.
+    ```
 
-> [!SOLUTION]
-> The correct answers come from the knowledge base, while the wrong ones are made up by the model, and being plausibly wrong is a skill of its own. Good wrong options are true facts in the wrong place: a real researcher of the same decade, a real system of a neighbouring year, a real place nearby. Silly options give the answer away, and options that are wrong only by a technicality make the quiz unfair.
+16. Judge the three example questions before you say "go": are they too easy, or do they ask about something that is not in the knowledge base? Ask for better ones if needed, then say "go".
+17. Play ten questions of the finished quiz.
+
+The correct answers come from the knowledge base, while the wrong ones are made up by the model, and being plausibly wrong is a skill of its own.
 
 ## Bonus: guided mode
 
-If there is time left and an API key at hand, a narrator can tell the story while the timeline follows:
+If there is time left and an API key at hand, a narrator can tell the story while the timeline follows.
 
-```text
-Add a guided mode to the app: a narrator tells the history of AI,
-and the app follows along.
+18. Give the agent this task:
 
-- write an engaging story from the milestones, based only on the knowledge base
-- choose a fitting narrator voice from the OpenAI text-to-speech API;
-  the API key is in the environment variable OPENAI_API_KEY
-- create the audio in advance — the app itself never calls the API
-- while the narrator speaks, the app opens the matching milestone
-  on the timeline by itself, no clicks needed
-- the user can pause, skip and leave the guided mode at any time
-- say in the app that the voice is AI-generated
-- never write the API key into the app or into any file
+    ```text
+    Add a guided mode to the app: a narrator tells the history of AI,
+    and the app follows along.
 
-Show me the outline of the story and the voice you chose first.
-Wait for my go.
-```
+    - write an engaging story from the milestones, based only on the knowledge base
+    - choose a fitting narrator voice from the OpenAI text-to-speech API;
+      the API key is in the environment variable OPENAI_API_KEY
+    - create the audio in advance — the app itself never calls the API
+    - while the narrator speaks, the app opens the matching milestone
+      on the timeline by itself, no clicks needed
+    - the user can pause, skip and leave the guided mode at any time
+    - say in the app that the voice is AI-generated
+    - never write the API key into the app or into any file
+
+    Show me the outline of the story and the voice you chose first.
+    Wait for my go.
+    ```
+
+19. Check the outline of the story and the voice the agent chose, say "go", and listen to the first two minutes of the finished guided mode.
 
 > [!WARNING]
 > Set the key as an environment variable before the agent starts, never type it into the conversation, and never let the agent show the variable while a projector is on. Because the agent creates the audio in advance, the finished app needs no key and can be public.
 
-13. Listen to two minutes of the guided mode. Does the narrator say anything that is not on the timeline?
-
 ## Publish
 
-The last step puts the app on the web:
+The last step puts the app on the web.
 
-```text
-Create a public GitHub repository "brief-history-of-ai" and publish
-the app with GitHub Pages. Give me the URL.
+20. Give the agent this task:
 
-Publish only the app, its audio and the knowledge base — not the
-downloaded sources, not the Excel list, not the photo.
+    ```text
+    Create a public GitHub repository "brief-history-of-ai" and publish
+    the app with GitHub Pages. Give me the URL.
 
-Then make a QR code for the URL and open it in the browser,
-so everybody in the room can scan it.
-```
+    Publish only the app, its audio and the knowledge base — not the
+    downloaded sources, not the Excel list, not the photo.
 
-After a minute or two the page is online, and everyone in the room can open it on their phone.
+    Then make a QR code for the URL and open it in the browser,
+    so everybody in the room can scan it.
+    ```
 
-14. The prompt leaves out three things: the downloaded sources, the Excel list and the photo. Why should each of them stay out of a public repository?
+21. Scan the QR code and open the page on your phone.
 
-> [!SOLUTION]
-> The downloaded sources are other people's texts, which you may read but not publish again; the app links to them instead. The photo shows the group's handwriting and may show faces, so it is personal data. The Excel list is a working document about another group's mistakes, which helps nobody outside the room.
+The downloaded sources stay out of the repository because they are other people's texts, and the photo stays out because it shows the group's handwriting. After a minute or two the page is online, and everyone in the room can open it on their phone.
 
 ## Evaluation
 
@@ -234,9 +219,17 @@ Looking back, every step the agent took is a topic of its own in AI:
 | split the work among sub-agents | multi-agent systems |
 | published to the web on its own | autonomy, safety, responsibility |
 
-- Which of these questions do you most want answered? Write it on a card and pin it next to the timeline, because the photo of those cards shows where to look next.
+- Which errors in `milestones.md` did the agent find that you had not marked, and which of your doubts did it not confirm?
+- Which of your pinboard cards made it into the app, which are "still to check", and what did the agent add on its own?
+- Did the agent split the work among sub-agents? What speaks for that, and what against?
+- How did the agent find out whether its app works, without anyone telling it?
+- Which wrong option in the quiz almost fooled you, and what made it plausible?
 - Where in the experiment did a person have to decide, and what would have happened if the agent had decided alone?
 - How much of the result would you sign with your own name, and what would you check first before doing so?
+- Which of the questions in the table do you most want answered? Write it on a card and pin it next to the timeline, because the photo of those cards shows where to look next.
+
+> [!SOLUTION]
+> Many independent sources can be read in parallel, so sub-agents save a lot of time; the price is that every one of them has to be told what format its file should have, or the knowledge base ends up in several styles. The agent checks its app the way it does everything else: it starts the app, opens it in a browser, looks at the page, compares it with what was asked for and changes the code where something is missing. This is the loop of every agent, think, act, observe, which the lesson [[ai-agents]] describes. Good wrong options in a quiz are true facts in the wrong place, such as a real researcher of the same decade or a real system of a neighbouring year, while silly options give the answer away.
 
 ![Quiz: A brief history of AI](item:a-brief-history-of-ai-quiz)
 
