@@ -13,7 +13,7 @@ sections:
   - title: { de: KI-Agenten, en: AI agents }
     items: [a-brief-history-of-ai, ai-agents, be-the-agent]
   - title: { de: Sprachmodelle, en: Language models }
-    items: [open-models, next-token-prediction, a-map-of-meaning, a-language-model-by-counting, the-bitter-lesson]
+    items: [open-models, next-token-prediction, a-map-of-meaning, a-language-model-by-counting, the-bitter-lesson, reasoning]
   - title: { de: Wie Maschinen lernen, en: How machines learn }
     items: []
   - title: { de: Anwendungen und Folgen, en: Applications and consequences }
