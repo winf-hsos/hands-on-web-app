@@ -282,7 +282,7 @@ window.drawDark = function (_slide, step = 0) {
   a.step(a.show("brackets", { dur: 400 }));
 })();
 
-/* ===================== part 2: what decides your alphabet ===================== */
+/* ===================== part 2: distance against spread ===================== */
 
 /* --- the same signal, averaged over growing windows ---------------------------------
  * One raw signal of 288 readings (seed 20260907, as in the original figure);
@@ -350,10 +350,17 @@ window.drawDark = function (_slide, step = 0) {
  * that nothing moves between the two slides (Nicolas, 2026-11-08); only the
  * texts change there: d and s get their meaning, d/s appears on the left, and
  * the verdict line becomes the definition of "safely distinguishable".
- * Cloud base 430, peak 220 high; d bracket at 110; the s bracket at 510 spans
- * the whole cloud of symbol b. "distance between the symbols" (28 x 19.2 =
- * 538) runs from 870 to 1408, "spread of the readings" (22 x 19.2 = 422) from
- * 1150 to 1572; "d/s" at 80 mono is 144 wide around x 180, left of cloud a. */
+ * Cloud base 430, peak 220 high; d bracket at 110. A cloud reaches three
+ * standard deviations to either side (cloud() draws a bell to t = 3), so the
+ * s bracket at 510 spans one standard deviation, a third of the half-width,
+ * from the mean of symbol b; the clouds stop touching at d/s = 6 (half-width
+ * 280), and the final scene has d/s = 560 / 66.7, about 8.
+ * On the ratio slide "distance between the means" (26 x 19.2 = 499) runs from
+ * 870 to 1369, "spread: one standard deviation" (30 x 19.2 = 576) is centred
+ * at 1153 on 560; "d/s" at 80 mono is 144 wide around x 180, left of cloud a,
+ * "also called d′" (14 x 19.2 = 269) is centred under it. The bottom line
+ * first says what d/s counts, then from which value the clouds stay apart
+ * (73 x 19.2 = 1402, centred at 840). */
 const CLOUDS = { base: 430, peak: 220, ma: 560, mb: 1120, boundary: 840, widths: [520, 467, 413, 360, 307, 253, 200] };
 
 function cloudScene(w, c) {
@@ -363,9 +370,13 @@ function cloudScene(w, c) {
     g.push(cloud(ma, w, peak, base, c.red, 0.9, (boundary - ma) / w, 1));
     g.push(cloud(mb, w, peak, base, c.red, 0.9, -1, (boundary - mb) / w));
   }
-  g.push(d.line(mb - w, 510, mb + w, 510, { color: c.yellow, width: 3 }),
-    d.line(mb - w, 502, mb - w, 518, { color: c.yellow, width: 3 }),
-    d.line(mb + w, 502, mb + w, 518, { color: c.yellow, width: 3 }));
+  // s is one standard deviation, a third of the half-width: the bracket runs
+  // from the mean of symbol b to the right, and its letter follows its end
+  const sd = w / 3;
+  g.push(d.line(mb, 510, mb + sd, 510, { color: c.yellow, width: 3 }),
+    d.line(mb, 502, mb, 518, { color: c.yellow, width: 3 }),
+    d.line(mb + sd, 502, mb + sd, 518, { color: c.yellow, width: 3 }),
+    d.label(mb + sd + 14, 0, "s", { size: 32, mono: true, color: c.yellow, centerY: 510 }));
   return g;
 }
 
@@ -381,7 +392,6 @@ function cloudFrame(c) {
     d.label(boundary, 0, "d", { size: 32, mono: true, color: c.yellow, anchor: "middle", centerY: 75 }),
     d.label(ma, 0, "symbol a", { size: 32, color: c.gray, anchor: "middle", centerY: 470 }),
     d.label(mb, 0, "symbol b", { size: 32, color: c.gray, anchor: "middle", centerY: 470 }),
-    d.label(mb, 0, "s", { size: 32, mono: true, color: c.yellow, anchor: "middle", centerY: 550 }),
   ];
 }
 
@@ -405,18 +415,22 @@ const goodLine = (c) => d.label(CLOUDS.boundary, 0, "every reading lands on its 
 (function () {
   if (!$("fig-ratio")) return;
   const c = d.colors();
-  const { widths, boundary, mb } = CLOUDS;
+  const { widths, boundary } = CLOUDS;
+  const line = (text) => d.label(boundary, 0, text, { size: 32, color: c.white, anchor: "middle", centerY: 615 });
   const parts = [...cloudFrame(c), ...cloudScene(widths[widths.length - 1], c),
     d.g("good", goodLine(c)),
-    d.g("def", d.label(boundary, 0, "safely distinguishable: a gap between the clouds, not a touch", { size: 32, color: c.white, anchor: "middle", centerY: 615 })),
+    d.g("count", line("d/s counts how many spreads fit between the two means")),
+    d.g("apart", line("above 6 the clouds stay apart, since each reaches about 3 s either side")),
     d.g("legend",
-      d.label(boundary + 30, 0, "distance between the symbols", { size: 32, color: c.gray, centerY: 75 }),
-      d.label(mb + 30, 0, "spread of the readings", { size: 32, color: c.gray, centerY: 550 }),
-      d.formula(180, 0, "d/s", { size: 80, color: c.yellow, anchor: "middle", centerY: 290 }),
-      d.label(180, 0, "the ratio", { size: 32, color: c.gray, anchor: "middle", centerY: 370 }))];
+      d.label(boundary + 30, 0, "distance between the means", { size: 32, color: c.gray, centerY: 75 }),
+      d.label(1153, 0, "spread: one standard deviation", { size: 32, color: c.gray, anchor: "middle", centerY: 560 }),
+      d.formula(180, 0, "d/s", { size: 80, color: c.yellow, anchor: "middle", centerY: 290 })),
+    d.g("ratio", d.label(180, 0, "the ratio", { size: 32, color: c.gray, anchor: "middle", centerY: 370 })),
+    d.g("name", d.label(180, 0, "also called d′", { size: 32, color: c.gray, anchor: "middle", centerY: 370 }))];
   $("fig-ratio").innerHTML = d.svg(1680, 650, ...parts);
   const a = d.anim("fig-ratio", { back: "play" });
-  a.step(a.swap("good", "def", { dur: 400 }), a.show("legend", { dur: 400 }));
+  a.step(a.swap("good", "count", { dur: 400 }), a.show("legend", { dur: 400 }), a.show("ratio", { dur: 400 }));
+  a.step(a.swap("count", "apart", { dur: 400 }), a.swap("ratio", "name", { dur: 400 }));
 })();
 
 /* --- how many symbols fit? ------------------------------------------------------------
@@ -505,63 +519,87 @@ const goodLine = (c) => d.label(CLOUDS.boundary, 0, "every reading lands on its 
 })();
 
 /* --- eight symbols, two window lengths ------------------------------------------------
- * What the Distinguishability Lab lets you play with, as a drawing: an alphabet
- * of eight symbols, 30 symbols sent, each read once. The short window has a
- * spread of 0.42 band widths, the window four times as long half of it (the
- * mean of four readings scatters half as much). Seed 21 gives six wrong
- * readings in the short window and none in the long one; the counts on the
- * right are computed from the data, not typed. Tracks 1000 x 200 at y 70 and
- * 370, eight bands of 25; a gray dash marks the level sent, the dot the
- * reading, red where it falls into another band. Results from x 1290:
- * "40 symbols/s" is 12 x 19.2 = 230 wide. The readings arrive in time, so
- * this runs forward only. */
+ * What the distinguishability lab lets you play with, as a drawing: an
+ * alphabet of eight symbols on the same time axis twice, 0.8 seconds each.
+ * Every reading is a bar as wide as its window, at the height it was read; a
+ * thin gray line in the same window marks the level sent. The short window
+ * (25 ms) fits 32 readings and has a spread of 0.42 band widths, the window
+ * four times as long (100 ms) fits 8, scattering half as much (the mean of
+ * four readings). So the difference shows without the counts: many narrow
+ * bars that stray, some into another band and red, against few wide bars that
+ * sit on their levels (Nicolas, 2026-11-08: the earlier dots looked the same
+ * in both tracks). Seed 36 gives six wrong readings in the short window and
+ * none in the long one; the counts are computed from the data. Tracks
+ * 1100 x 230 at x 160, y 60 and 360, eight bands of 28.75; counts from x 1300
+ * ("6 of 32 wrong" is 13 x 19.2 = 250 wide). The long window's levels sent
+ * stand from the start and its readings arrive in time, so this runs forward
+ * only. */
 (function () {
   if (!$("fig-lab")) return;
   const c = d.colors();
-  const { random, gauss } = randomSource(21);
-  const sent = [], noise = [];
-  for (let i = 0; i < 30; i += 1) { sent.push(Math.floor(random() * 8)); noise.push(gauss()); }
+  const { random, gauss } = randomSource(36);
+  const x = 160, w = 1100, h = 230, band = h / 8, gap = 6;
   const tracks = [
-    { y: 70, name: "short window", spread: 0.42, rate: "40 symbols/s" },
-    { y: 370, name: "window four times as long", spread: 0.21, rate: "10 symbols/s" },
+    { y: 60, name: "short window, 25 ms", n: 32, spread: 0.42, rate: "40 symbols/s" },
+    { y: 360, name: "window four times as long, 100 ms", n: 8, spread: 0.21, rate: "10 symbols/s" },
   ];
-  const x = 250, w = 1000, h = 200, band = 25;
-  const dotX = (i) => x + 35 + i * (w - 70) / 29;
+  for (const t of tracks) {
+    t.readings = Array.from({ length: t.n }, () => {
+      const sent = Math.floor(random() * 8);
+      return { sent, value: sent + t.spread * gauss() };
+    });
+  }
   const parts = [];
   tracks.forEach((t, k) => {
     const levelY = (v) => t.y + h - (v + 0.5) * band;
-    parts.push(d.label(x, 0, t.name, { size: 32, color: c.gray, centerY: t.y - 32 }));
+    const slot = w / t.n;
+    parts.push(d.label(x, 0, t.name, { size: 32, color: c.gray, centerY: t.y - 30 }));
     for (let b = 0; b < 8; b += 2) parts.push(`<rect x="${x + 2}" y="${t.y + h - (b + 1) * band}" width="${w - 4}" height="${band}" fill="${c.dark}" fill-opacity="0.45"/>`);
     parts.push(d.box(x, t.y, w, h, "", { border: c.dark, fill: "none", rounded: false }));
     let wrong = 0;
-    sent.forEach((s, i) => {
-      parts.push(d.line(dotX(i) - 12, levelY(s), dotX(i) + 12, levelY(s), { color: c.gray, width: 3 }));
-      const v = s + t.spread * noise[i];
-      const bad = Math.min(7, Math.max(0, Math.round(v))) !== s;
+    t.readings.forEach(({ sent, value }, i) => {
+      const x0 = x + i * slot + gap / 2, x1 = x + (i + 1) * slot - gap / 2;
+      parts.push(d.line(x0, levelY(sent), x1, levelY(sent), { color: c.gray, width: 2 }));
+      const bad = Math.min(7, Math.max(0, Math.round(value))) !== sent;
       if (bad) wrong += 1;
-      const y = Math.min(t.y + h - 8, Math.max(t.y + 8, levelY(v)));
-      parts.push(d.g(`p${k}-${i}`, circle(dotX(i), y, 7, bad ? c.red : c.white)));
+      const y = Math.min(t.y + h - 6, Math.max(t.y + 6, levelY(value)));
+      parts.push(d.g(`p${k}-${i}`, d.line(x0, y, x1, y, { color: bad ? c.red : c.white, width: 6 })));
     });
     parts.push(d.g("r" + k,
-      d.label(1290, 0, `${wrong} of 30 wrong`, { size: 32, color: wrong ? c.red : c.green, centerY: t.y + 70 }),
-      d.label(1290, 0, t.rate, { size: 32, color: c.gray, centerY: t.y + 130 })));
+      d.label(1300, 0, `${wrong} of ${t.n} wrong`, { size: 32, color: wrong ? c.red : c.green, centerY: t.y + 80 }),
+      d.label(1300, 0, t.rate, { size: 32, color: c.gray, centerY: t.y + 150 })));
   });
-  parts.push(d.label(840, 0, "a dot outside the band of its symbol is read as another symbol", { size: 32, color: c.gray, anchor: "middle", centerY: 625 }));
+  parts.push(d.label(840, 0, "the same 0.8 s in both tracks; each bar is one reading, red in a wrong band", { size: 32, color: c.gray, anchor: "middle", centerY: 630 }));
   $("fig-lab").innerHTML = d.svg(1680, 650, ...parts);
   const a = d.anim("fig-lab");
-  // the short window stands from the start, so the first frame is not two
-  // empty tracks (Nicolas, 2026-11-08); the long window's readings arrive
-  a.step(a.seq(...sent.map((__, i) => a.show(`p1-${i}`, { dur: 75 }))), a.show("r1", { dur: 400 }));
+  a.step(a.seq(...tracks[1].readings.map((__, i) => a.show(`p1-${i}`, { dur: 250 }))), a.show("r1", { dur: 400 }));
 })();
 
 /* --- the toolbox, with price tags ---------------------------------------------------------
- * Two columns of boxes 760 x 110, 130 apart from y 95; the tool in 32 at the
- * box's upper line (centre y + 38), its price in 20 below (centre y + 80):
- * text from y + 22 to y + 90, 22 above and 20 below. "longer integration
- * time" at 32 is 23 x 19.2 = 442 wide from x + 30. Three tools cost only
- * craft and are framed yellow. */
+ * On top, the two clouds of the ratio slide in small, so that d and s are in
+ * view again (Nicolas, 2026-11-08): means at 640 and 1040, half-width 150
+ * (three standard deviations), base 120, 72 high; the d bracket at 22 is cut
+ * in the middle for its letter, the s bracket at 140 spans one standard
+ * deviation (50) from the mean of b. Below, two columns of boxes 760 x 100,
+ * 108 apart from y 228, the heads at 48 centred at 196; the tool in 32 at the
+ * box's upper line (centre y + 36), its price in 20 below (centre y + 76):
+ * text from y + 20 to y + 86. "longer integration time" at 32 is 23 x 19.2 =
+ * 442 wide from x + 30. Three tools cost only craft and are framed yellow;
+ * "fix distance and angle" means LED and sensor held in place, so that no
+ * reading changes because something moved. */
 function drawToolbox() {
   const c = d.colors();
+  const ma = 640, mb = 1040, half = 150, base = 120, peak = 72;
+  const tick = (xx, y) => d.line(xx, y - 8, xx, y + 8, { color: c.yellow, width: 3 });
+  const parts = [
+    d.line(440, base, 1240, base, { color: c.dark, width: 2 }),
+    cloud(ma, half, peak, base, c.light), cloud(mb, half, peak, base, c.light),
+    d.line(ma, 22, 820, 22, { color: c.yellow, width: 3 }), d.line(860, 22, mb, 22, { color: c.yellow, width: 3 }),
+    tick(ma, 22), tick(mb, 22),
+    d.label(840, 0, "d", { size: 32, mono: true, color: c.yellow, anchor: "middle", centerY: 22 }),
+    d.line(mb, 140, mb + half / 3, 140, { color: c.yellow, width: 3 }), tick(mb, 140), tick(mb + half / 3, 140),
+    d.label(mb + half / 3 + 14, 0, "s", { size: 32, mono: true, color: c.yellow, centerY: 138 }),
+  ];
   const columns = [
     ["bigger d", [
       ["pick colours further apart", "fewer symbols fit into the range", false],
@@ -572,22 +610,19 @@ function drawToolbox() {
       ["longer integration time", "fewer symbols per second", false],
       ["average several readings", "fewer symbols per second", false],
       ["block ambient light", "only craft", true],
-      ["fix the geometry", "only craft", true],
+      ["fix distance and angle", "only craft", true],
     ]],
   ];
-  const parts = [];
   columns.forEach(([head, rows], k) => {
     const x = 40 + k * 840;
-    parts.push(d.label(x + 380, 0, head, { size: 48, mono: true, color: c.yellow, anchor: "middle", centerY: 45 }));
+    parts.push(d.label(x + 380, 0, head, { size: 48, mono: true, color: c.yellow, anchor: "middle", centerY: 196 }));
     rows.forEach(([tool, price, free], i) => {
-      const y = 95 + i * 130;
-      parts.push(d.box(x, y, 760, 110, "", { border: free ? c.yellow : c.dark, rx: 6 }));
-      parts.push(d.label(x + 30, 0, tool, { size: 32, color: c.white, centerY: y + 38 }));
-      parts.push(d.label(x + 30, 0, price, { size: 20, color: free ? c.yellow : c.gray, centerY: y + 80 }));
+      const y = 228 + i * 108;
+      parts.push(d.box(x, y, 760, 100, "", { border: free ? c.yellow : c.dark, rx: 6 }));
+      parts.push(d.label(x + 30, 0, tool, { size: 32, color: c.white, centerY: y + 36 }));
+      parts.push(d.label(x + 30, 0, price, { size: 20, color: free ? c.yellow : c.gray, centerY: y + 76 }));
     });
   });
-  parts.push(d.label(840, 0, "everything else is paid for in bits per symbol or symbols per second",
-    { size: 32, color: c.gray, anchor: "middle", centerY: 630 }));
   $("fig-toolbox").innerHTML = d.svg(1680, 660, ...parts);
 }
 
@@ -698,7 +733,9 @@ window.drawSeries = function (_slide, step = 0) {
 
 window.drawLuck = function (_slide, step = 0) {
   const c = d.colors();
-  const parts = [d.label(425, 570, "guessing succeeds about once in 32 attempts", { size: 32, color: c.gray, anchor: "middle" })];
+  const parts = [
+    d.label(840, 0, "two colours: a guess is right half the time, like a coin flip", { size: 32, color: c.white, anchor: "middle", centerY: 40 }),
+    d.label(425, 570, "guessing succeeds about once in 32 attempts", { size: 32, color: c.gray, anchor: "middle" })];
   if (step >= 2) {
     parts.push(d.verdict(120, 100, 610, 390, "5 / 5", false, { size: 80, mono: true, color: c.light }));
     parts.push(d.verdict(950, 100, 610, 390, "50 / 50", true, { size: 80, mono: true, color: c.white }));
@@ -726,21 +763,17 @@ window.drawAssistant = function (_slide, step = 0) {
     parts.push(d.verdict(80, 120, 700, 230, suggestion, null, { size: 32, border: c.dark, color: c.light }));
     parts.push(d.verdict(925, 120, 675, 230, series, null, { size: 32, border: c.light, color: c.white, mono: true }));
   }
+  // The three checks under the series box, spread with equal gaps over its
+  // width (925 to 1600): measured at 20, the labels are 129, 185 and 152
+  // wide, so the four gaps are (675 - 466) / 4 = 52 and the centres fall at
+  // 1042, 1251 and 1472 (Nicolas, 2026-11-08: they sat unevenly before).
   if (step >= 1) {
-    ["one variable", "enough repetitions", "control reading"].forEach((t, i) => {
-      parts.push(d.label(960 + i * 215, 420, `✓ ${t}`, { size: 20, color: c.gray }));
+    [["one variable", 1042], ["enough repetitions", 1251], ["control reading", 1472]].forEach(([t, x]) => {
+      parts.push(d.label(x, 420, `✓ ${t}`, { size: 20, color: c.gray, anchor: "middle" }));
     });
   }
-  if (step >= 2) parts.push(d.label(1260, 475, "ground truth for your setup", { size: 32, color: c.green, anchor: "middle" }));
-  if (step >= 3) {
-    const y = 585, xs = [300, 735, 1170], names = ["suggestion", "measurement", "outcome"];
-    parts.push(d.arrow(500, y, 625, y, { color: c.gray, width: 3 }));
-    parts.push(d.arrow(935, y, 1060, y, { color: c.gray, width: 3 }));
-    names.forEach((name, i) => parts.push(d.box(xs[i], y - 55, 200, 110, name, { size: 20, border: c.dark, mono: true })));
-    parts.push(d.label(190, y - 12, "log of", { size: 32, color: c.yellow, anchor: "end", mono: true }));
-    parts.push(d.label(190, y + 26, "mistakes", { size: 32, color: c.yellow, anchor: "end", mono: true }));
-  }
-  return put("fig-assistant", d.svg(1680, 670, ...parts));
+  if (step >= 2) parts.push(d.label(1262, 475, "ground truth for your setup", { size: 32, color: c.green, anchor: "middle" }));
+  return put("fig-assistant", d.svg(1680, 500, ...parts));
 };
 
 if ($("fig-toolbox")) drawToolbox();

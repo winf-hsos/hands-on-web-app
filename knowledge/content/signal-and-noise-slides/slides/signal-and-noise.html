@@ -17,7 +17,7 @@
 <div class="deck"
      data-title="signal and noise"
      data-subtitle="prof. dr. nicolas meseth"
-     data-parts='["what the numbers say", "what decides your alphabet", "build evidence"]'>
+     data-parts='["what the numbers say", "distance against spread", "build evidence"]'>
 
   <section class="slide title">
     <aside class="notes">Wie viele Symbole eine Strecke trägt, entscheidet nicht der Code, sondern das Verhältnis aus dem Abstand zwischen den Symbolen und der Streuung der Messwerte. Jede Maßnahme, die dieses Verhältnis verbessert, hat einen Preis, und ob sie wirkt, zeigt erst eine saubere Messreihe am eigenen Aufbau.</aside>
@@ -92,9 +92,9 @@
     <aside class="notes">Die Antwort auf die Frage vom Anfang, früh gesetzt und danach belegt: Wie viele Farben ein Alphabet haben kann, entscheidet die Streuung der Messwerte. Der Code muss sie sinnvoll einbeziehen, etwa beim Kalibrieren und beim Entscheiden, aber er kann aus einer Strecke nicht mehr Farben herausholen, als ihre Streuung zulässt. Rauschen ist kein Defekt und kein Programmierfehler, sondern eine Eigenschaft jeder Messung. Wer es kleiner bekommt, bringt mehr Farben unter.</aside>
   </section>
 
-  <!-- ================= part 2: what decides your alphabet ================= -->
+  <!-- ================= part 2: distance against spread ================= -->
 
-  <section class="slide part" data-part="what decides your alphabet">
+  <section class="slide part" data-part="distance against spread">
     <aside class="notes">Jetzt der Mechanismus dahinter, und was jede Gegenmaßnahme kostet.</aside>
   </section>
 
@@ -128,8 +128,8 @@
   <section class="slide has-punch">
     <h2>the ratio is what counts</h2>
     <div class="figure" id="fig-ratio"></div>
-    <div class="punch" data-step="1">your alphabet size measures nothing but this ratio.</div>
-    <aside class="notes">Die Wolken bleiben genau so stehen wie auf der Folie davor; nur die Texte wechseln. Das ist die zentrale Größe dieses Foliensatzes: der Abstand d zwischen zwei Symbolen geteilt durch die Streuung s der Messwerte. Die Alphabetgröße misst nichts anderes als diesen Quotienten, und deshalb erklärt er, warum die Antworten der Teams auf die Frage vom Anfang auseinandergehen. Daraus folgt, was „sicher unterscheidbar" heißt, und das ist strenger, als die meisten zuerst annehmen: nicht, dass die Mittelwerte verschieden sind, sondern dass sich die Wolken nicht berühren, auch an ihren Rändern nicht. Ein einziger Ausreißer in fünfzig Versuchen kostet eine Alphabetstufe.</aside>
+    <div class="punch" data-step="2">your alphabet size measures nothing but this ratio.</div>
+    <aside class="notes">Die Wolken bleiben genau so stehen wie auf der Folie davor; nur die Texte wechseln. Das ist die zentrale Größe dieses Foliensatzes: der Abstand d zwischen den Mittelwerten zweier Symbole geteilt durch die Streuung s der Messwerte, gemessen als Standardabweichung. d/s sagt, wie viele Streuungen zwischen die beiden Mittelwerte passen. Eine Wolke reicht etwa drei Standardabweichungen nach jeder Seite, zwei Nachbarn brauchen also d/s über 6, damit sich ihre Wolken nicht berühren; hier sind es rund 8. Einen Namen hat die Größe auch: In der Signalentdeckungstheorie heißt der Abstand der Mittelwerte geteilt durch die Standardabweichung d′ (d-Strich, englisch d-prime), in der Nachrichtentechnik ist er eng verwandt mit dem Signal-Rausch-Verhältnis. Die Alphabetgröße misst nichts anderes als diesen Quotienten, und deshalb erklärt er, warum die Antworten der Teams auf die Frage vom Anfang auseinandergehen. Daraus folgt, was „sicher unterscheidbar" heißt, und das ist strenger, als die meisten zuerst annehmen: nicht, dass die Mittelwerte verschieden sind, sondern dass sich die Wolken nicht berühren, auch an ihren Rändern nicht. Ein einziger Ausreißer in fünfzig Versuchen kostet eine Alphabetstufe.</aside>
   </section>
 
   <section class="slide has-punch">
@@ -150,7 +150,7 @@
     <div class="figure" id="fig-lab"></div>
     <div class="punch" data-step="2">a longer window removes the errors, but it also cuts the symbols per second.</div>
     <div class="footnote">simulated readings; the trade-off is the one your own link shows</div>
-    <aside class="notes">Alles zusammen an einem Alphabet aus acht Symbolen; das kurze Fenster steht schon, beim langen kommen die Messungen nacheinander herein. Die grauen Striche sind die gesendeten Pegel, die Punkte die Messungen. Mit dem kurzen Fenster fallen sechs von dreißig Messungen in ein fremdes Band und werden rot, dafür kommen vierzig Symbole je Sekunde durch. Mit dem viermal so langen Fenster streuen die Messungen halb so weit, keine landet daneben, und es sind nur noch zehn Symbole je Sekunde. Mehr Symbole machen die Bänder schmaler, schnellere Symbole die Wolken breiter, und beide verbrauchen denselben Sicherheitsabstand. Die Zahlen sind simuliert, die Struktur ist echt. Dieselben Regler, Zahl der Zeichen, Länge des Fensters und eine Störung, lassen sich im Unterscheidbarkeits-Labor auf der nächsten Folie frei verstellen; die eigenen Zahlen kommen aber nur von der eigenen Strecke.</aside>
+    <aside class="notes">Alles zusammen an einem Alphabet aus acht Symbolen, zweimal dieselben 0,8 Sekunden. Jeder Balken ist eine Messung und so breit wie ihr Fenster, der dünne graue Strich darin ist der gesendete Pegel. Oben das kurze Fenster mit 25 ms: 32 schmale Balken, die streuen, und sechs davon landen im Band eines anderen Zeichens und werden rot; dafür kommen vierzig Zeichen je Sekunde durch. Unten das viermal so lange Fenster: In derselben Zeit passen nur acht Messungen hinein, sie kommen nacheinander herein, streuen halb so weit und liegen alle auf ihrem Pegel, also zehn Zeichen je Sekunde ohne Fehler. Mehr Zeichen machen die Bänder schmaler, schnellere Zeichen die Wolken breiter, und beide verbrauchen denselben Sicherheitsabstand. Die Zahlen sind simuliert, die Struktur ist echt. Dieselben Regler lassen sich im Unterscheidbarkeits-Labor auf der nächsten Folie frei verstellen; die eigenen Zahlen kommen aber nur von der eigenen Strecke.</aside>
   </section>
 
   <section class="slide">
@@ -170,7 +170,7 @@
     <h2>the toolbox, with price tags</h2>
     <div class="figure" id="fig-toolbox"></div>
     <div class="punch">three of them cost nothing but craft, which is why self-built optics are allowed.</div>
-    <aside class="notes">Links vergrößert man den Abstand, rechts verkleinert man die Streuung. Fast alles kostet entweder Bits je Symbol oder Symbole je Sekunde, und Mitteln im Programm ist dasselbe Geschäft wie eine längere Integrationszeit im Sensor. Die drei gelb umrandeten Werkzeuge kosten nur Bastelzeit: Licht bündeln, Fremdlicht abschirmen, Geometrie festlegen. Genau deshalb ist im LiFi-Projekt der optische Selbstbau erlaubt, passiv und für höchstens zehn Euro. Ob ein Werkzeug an der eigenen Strecke wirkt, zeigt aber erst eine Messreihe, und darum geht es im dritten Teil.</aside>
+    <aside class="notes">Oben noch einmal die beiden Wolken von vorhin in klein, damit d und s vor Augen sind. Links vergrößert man den Abstand, rechts verkleinert man die Streuung. Fast alles kostet entweder Bits je Symbol oder Symbole je Sekunde, und Mitteln im Programm ist dasselbe Geschäft wie eine längere Integrationszeit im Sensor. Die drei gelb umrandeten Werkzeuge kosten nur Bastelzeit: Licht bündeln, Fremdlicht abschirmen sowie Abstand und Winkel festlegen, also LED und Sensor in einer Halterung fixieren, damit sich keine Messung ändert, nur weil jemand an den Tisch stößt oder ein Kabel zieht. Genau deshalb ist im LiFi-Projekt der optische Selbstbau erlaubt, passiv und für höchstens zehn Euro. Ob ein Werkzeug an der eigenen Strecke wirkt, zeigt aber erst eine Messreihe, und darum geht es im dritten Teil.</aside>
   </section>
 
   <!-- ================= part 3: build evidence ================= -->
@@ -211,17 +211,17 @@
   </section>
 
   <section class="slide" data-on-show="drawLuck" data-on-step="drawLuck">
-    <h2>luck or skill?</h2>
+    <h2>a coin flip: luck or skill?</h2>
     <div class="figure" id="fig-luck"></div>
     <span data-step="1"></span><span data-step="2"></span>
-    <aside class="notes">Bei zwei Farben trifft Raten jede zweite Entscheidung. In einem Raum mit vielen Teams gelingen fünf Treffer in Folge irgendwo schnell. Fünfzig Treffer in Folge sind durch Zufall praktisch ausgeschlossen, und darum braucht ein belastbarer Nachweis lange Serien.</aside>
+    <aside class="notes">Bei zwei Farben ist jede Entscheidung ein Münzwurf, wenn man rät: Sie stimmt in der Hälfte der Fälle. In einem Raum mit vielen Teams gelingen fünf Treffer in Folge irgendwo schnell. Fünfzig Treffer in Folge sind durch Zufall praktisch ausgeschlossen, und darum braucht ein belastbarer Nachweis lange Serien.</aside>
   </section>
 
   <section class="slide" data-on-show="drawAssistant" data-on-step="drawAssistant">
     <h2>when the assistant and the data disagree</h2>
     <div class="figure wide" id="fig-assistant"></div>
-    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span>
-    <aside class="notes">Der Assistent kennt Sensoren dieser Art, aber nicht den eigenen Aufbau. Hier schlug er mehr Verstärkung vor, und die Messreihe zeigt, dass die Erkennung fällt, weil die Streuung mitwächst. Widerspricht eine saubere Messreihe seinem Vorschlag, gewinnt die Messreihe. Vorher verdient auch sie eine kurze Qualitätsprüfung. Dann wird der Widerspruch dokumentiert, mit Vorschlag, Messung und Ergebnis, und so wird aus dem Irrtum etwas Gelerntes. Kein Sprachmodell hat Zugang zu einer Messung an der eigenen Strecke, und deshalb kann dort auch keines entscheiden.</aside>
+    <span data-step="1"></span><span data-step="2"></span>
+    <aside class="notes">Der Assistent kennt Sensoren dieser Art, aber nicht den eigenen Aufbau. Hier schlug er mehr Verstärkung vor, und die Messreihe zeigt, dass die Erkennung fällt, weil die Streuung mitwächst. Widerspricht eine saubere Messreihe seinem Vorschlag, gewinnt die Messreihe. Vorher verdient auch sie eine kurze Qualitätsprüfung. Den Widerspruch hält man mit Vorschlag, Messung und Ergebnis im Protokoll fest, und so wird aus dem Irrtum etwas Gelerntes. Kein Sprachmodell hat Zugang zu einer Messung an der eigenen Strecke, und deshalb kann dort auch keines entscheiden.</aside>
   </section>
 
   <section class="slide">
