@@ -259,11 +259,10 @@ print(f"range {ceiling - floor}, band {band:.0f} wide, room for {symbols} symbol
   one if you want to transmit as much as possible in the same time?
 
 Why nothing but the ratio `d/s` decides the size of the alphabet, and what
-every measure against noise costs, is shown in the slides
-[[signal-and-noise-slides]], and the lesson [[signal-and-noise]] explains it at
-leisure. How to set up a measurement series properly, with a control reading
-and exactly one changed quantity, is covered in
-[[measurement-and-experiments]].
+every measure against noise costs, is explained in the lesson
+[[signal-and-noise]] with its slides, which also shows how to set up a
+measurement series properly, with a control reading and exactly one changed
+quantity.
 
 > [!NOTE]
 > With a whole group, every team measures its own spread and enters three

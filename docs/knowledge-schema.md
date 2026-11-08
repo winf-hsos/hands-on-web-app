@@ -887,6 +887,11 @@ two mappings now shows the slide's example (team read as meat, on the German
 page gans read as sang), and the bars of what a bigger alphabet buys came to
 the page as a third figure. Every merged item lists the id it replaced under
 `formerly`, so the old address still leads to it.
+On 2026-11-08 `measurement-and-experiments` went on into `signal-and-noise`
+(Nicolas): the two lessons told the scatter of readings and the price of
+averaging twice, so lesson, deck and quiz each became one, under the ids of
+`signal-and-noise`, which list the former ids under `formerly`. The deck
+`signal-and-noise.html` takes its drawings from both earlier decks.
 
 ## 9a. Projects
 

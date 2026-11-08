@@ -337,7 +337,7 @@ das Programm noch einmal laufen: Die Werte 398 und 388, die eindeutig zu hell
 gehören, zählen plötzlich als dunkel. Wohin eine Schwelle gehört, ist deshalb
 keine Gefühlssache, sondern eine Frage der Messreihe: Erst misst du, was hell
 und dunkel wirklich liefern, dann legst du die Schwelle dazwischen
-([[measurement-and-experiments]]).
+([[signal-and-noise]]).
 
 Mit mehr Farben gilt dasselbe für jede Grenze. Zwei Farben sind sicher, und
 acht sind schnell, und irgendwo dazwischen liegt euer Alphabet. Wo genau,

@@ -337,7 +337,7 @@ the decision counts, not the physics. Set it to 400 and run the program
 again: the readings 398 and 388, which clearly belong to bright, suddenly
 count as dark. Where a threshold belongs is therefore not a matter of feel but
 of a measurement series: first measure what bright and dark really deliver,
-then put the threshold between them ([[measurement-and-experiments]]).
+then put the threshold between them ([[signal-and-noise]]).
 
 With more colours the same holds for every boundary. Two colours are safe,
 and eight are fast, and somewhere in between sits your alphabet. Only your

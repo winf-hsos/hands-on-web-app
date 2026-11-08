@@ -1,8 +1,8 @@
-// Drawings of "Signal, noise and the size of an alphabet" (docs/figures.md),
-// taken from the deck signal-and-noise-slides and laid out for the width of
-// the text: 1600 units, sizes 32 and 48 only, and as still pictures in their
-// final state. All noise comes from generators with a fixed seed, so a
-// drawing looks the same on every visit.
+// Drawings of "Signal and noise" (docs/figures.md), taken from the deck
+// signal-and-noise-slides and laid out for the width of the text: 1600
+// units, sizes 32 and 48 only, and as still pictures in their final state.
+// All noise comes from generators with a fixed seed, so a drawing looks the
+// same on every visit.
 (function () {
   const d = window.draw;
   const p = window.figureParts;
@@ -159,6 +159,48 @@
         parts.push(d.formula(x + 220, 0, sum, { size: 48, anchor: 'middle', centerY: 600 }));
       });
       return d.svg(1600, 640, ...parts);
+    },
+  });
+
+  // Calibrate, then classify. The red and blue dots stand for real colours,
+  // so their labels are gray; yellow marks the distance that wins, since it
+  // is none of the colours shown. Axes from (230, 560) to x 1400 and y 80;
+  // the centres of the clouds are the means of the six references each.
+  const dot = (x, y, r, fill) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${fill}"/>`;
+  const RED = [[188, 50], [195, 62], [198, 58], [200, 55], [205, 70], [210, 48]];
+  const BLUE = [[30, 195], [35, 210], [40, 215], [45, 220], [50, 205], [55, 198]];
+  const NEW = [170, 80];
+
+  figure('calibration', {
+    draw(lang) {
+      const t = p.say(lang);
+      const c = d.colors();
+      const x0 = 230, y0 = 560, xMax = 1400, yTop = 80;
+      const px = (r) => x0 + (r / 255) * (xMax - x0);
+      const py = (b) => y0 - (b / 255) * (y0 - yTop);
+      const mean = (pts, k) => pts.reduce((s, q) => s + q[k], 0) / pts.length;
+      const red = [mean(RED, 0), mean(RED, 1)], blue = [mean(BLUE, 0), mean(BLUE, 1)];
+      const nx = px(NEW[0]), ny = py(NEW[1]);
+      return d.svg(
+        1600,
+        620,
+        d.line(nx, ny, px(blue[0]), py(blue[1]), { color: c.dark, width: 3, dashed: true }),
+        d.line(nx, ny, px(red[0]), py(red[1]), { color: c.yellow, width: 4, dashed: true }),
+        d.arrow(x0, y0, xMax + 45, y0, { color: c.light, width: 3 }),
+        d.arrow(x0, y0, x0, yTop - 40, { color: c.light, width: 3 }),
+        d.label(xMax + 70, 0, 'r', { size: 48, mono: true, keepCase: true, centerY: y0 }),
+        d.label(x0 - 25, 0, 'b', { size: 48, mono: true, keepCase: true, anchor: 'end', centerY: yTop - 30 }),
+        // "g bleibt hier etwa gleich" is 25 characters at 32, about 480, ending at 1560
+        d.label(1560, 0, t('g bleibt hier etwa gleich', 'g stays roughly the same here'), { size: 32, color: c.gray, anchor: 'end', centerY: 110 }),
+        ...RED.map(([r, b]) => dot(px(r), py(b), 13, c.red)),
+        ...BLUE.map(([r, b]) => dot(px(r), py(b), 13, c.blue)),
+        d.label(px(red[0]), 0, t('Rot-Referenzen', 'red references'), { size: 32, color: c.gray, anchor: 'middle', centerY: 515 }),
+        d.label(560, 0, t('Blau-Referenzen', 'blue references'), { size: 32, color: c.gray, centerY: 175 }),
+        dot(nx, ny, 16, c.red),
+        // "neu: r=170 b=80" is 15 characters of code type at 32, about 300, below the dot
+        d.label(nx - 30, 0, t('neu: r=170 b=80', 'new: r=170 b=80'), { size: 32, mono: true, keepCase: true, anchor: 'end', centerY: ny + 45 }),
+        d.label(1060, 0, t('die nächste Wolke gewinnt', 'the nearest cloud wins'), { size: 32, color: c.yellow, centerY: 330 }),
+      );
     },
   });
 })();

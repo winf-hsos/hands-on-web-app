@@ -15,7 +15,6 @@ phases:
   - id: alphabet
     challenge: lifi-challenge-1
     items:
-      - measurement-and-experiments
       - analog-and-digital
       - symbols-and-information
       - signal-and-noise

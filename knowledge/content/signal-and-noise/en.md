@@ -1,53 +1,88 @@
 ---
 type: lesson
 code: 5380
+formerly: [measurement-and-experiments, sent-is-not-measured]
 title: Signal and noise
 summary: >-
   Two links with the same hardware carry sixteen symbols in one case and four
-  in the other. The difference lies not in the program but in the ratio of the
-  distance between two symbols to the spread of the readings around each.
+  in the other. This lesson shows what a sensor really returns, why the ratio
+  of the distance between two symbols to the spread of the readings decides the
+  size of an alphabet, and how a clean measurement series shows whether an
+  improvement worked.
 objectives:
-  intro: "This lesson shows you why the spread of the readings decides how many symbols a link can carry, and afterwards you can:"
+  intro: "Using a colour sensor that reads the light of an LED, this lesson shows you why the spread of the readings decides how many symbols a link can carry, and afterwards you can:"
   goals:
+    - "explain why the sensor returns four numbers `r`, `g`, `b` and `c` instead of a colour, why they differ from what was sent, and why every series starts with a control reading in the dark"
     - "describe a series of readings by its mean and its spread with `statistics.mean()` and `statistics.stdev()`"
-    - "explain why averaging over longer windows calms the values and what that costs in readings per second"
-    - "explain why two symbols are only safely distinguishable when their clouds do not overlap, and why the ratio of distance to spread is what counts"
-    - "calculate from the usable range and the spread how many symbols fit into a link"
-    - "rank the ways of improving the ratio by what they cost in bits per symbol or symbols per second"
+    - "explain why averaging over longer windows or a longer integration time calms the values and what that costs in readings per second"
+    - "argue why two symbols are only safely distinguishable when their clouds do not overlap, and calculate from the usable range and the spread how many symbols fit"
+    - "calibrate with reference readings of known colours and assign a new reading to the nearest cloud"
+    - "rank the ways of improving the ratio of distance to spread by what they cost in bits per symbol or symbols per second"
+    - "plan a measurement series with a prediction written down beforehand, exactly one changed quantity and enough repetitions, and explain why five hits in a row can be luck while fifty cannot"
 level: 1
-duration: 25
+duration: 40
 topics: [transferring-information]
 modules: [dup]
 relations:
-  requires: [measurement-and-experiments]
-  see_also: [place-value-systems, measuring-your-noise]
+  requires: [symbols-and-information]
+  see_also: [analog-and-digital, measuring-your-noise]
 status: draft
-updated: 2026-11-04
+updated: 2026-11-08
 ---
 
 ![Slides: Signal and noise](item:signal-and-noise-slides)
 
-A lighthouse in fog is a strange sight. The lamp burns exactly as brightly as
-on a clear night, and yet the beam dies after a few metres, because nothing
-has happened to the signal but a great deal has happened to everything around
-it.
-
-The same holds for a link that carries data as light from an LED to a colour
-sensor. Two groups with the same LED, the same sensor and the same room can
-end up with alphabets of sixteen and of four colours, and the quality of their
+Two groups with the same LED, the same colour sensor and the same room can end
+up with alphabets of sixteen and of four colours, and the quality of their
 programs does not explain the gap. What explains it is how much the readings
-scatter, and this lesson shows how to measure that and how to calculate with
-it.
+scatter. This lesson starts with what a sensor really returns, works out from
+the scatter how many symbols a link can carry, and ends with the question of
+how you find out whether an improvement really helped. The examples use a
+colour sensor that reads the light of an LED, and any other sensor behaves the
+same way in principle.
+
+## What a sensor returns
+
+A colour sensor does not return a colour but four numbers: the shares of red,
+green and blue, measured behind colour filters and written `r`, `g` and `b`,
+and a fourth value `c` for *clear*, measured without a filter. Because clear
+sees all the incoming light, it is the most sensitive channel and the most
+useful one when you only need to tell bright from dark. In the pattern of
+input, processing and output, these four numbers are the input of the
+receiving program, and only the processing turns them into a name such as
+`"red"`.
+
+None of these numbers matches what the LED was given. Set the LED to pure red,
+`(255, 0, 0)`, and the sensor measures something like `r=203, g=41, b=57` and
+`c=310`, because the colour filters overlap, distance and angle swallow light,
+and the room light is always measured as well. That is not a defect but the
+normal case, and it has a consequence: you do not calculate backwards from the
+readings to what was sent, since a formula that fits today fails at the next
+table or on the next day. Instead you work with the readings of your own
+setup, and the section on calibrating shows how a program decides from them
+which colour arrived.
+
+## Measure the dark first
+
+Before you measure a colour, you measure the dark, because a sensor never
+reads zero: some room light always arrives. Every measurement series therefore
+starts with a **control reading** with the LED switched off. Every reading
+carries ambient light, the light of the LED and noise at the same time, and
+what the LED adds is the difference between a reading and this ambient level.
+The control reading also tells you when the surroundings change, through
+afternoon sun or the LED of a neighbouring team, because then the dark reading
+moves as well.
 
 ## Ten readings of one colour
 
-Point a sensor at one colour and read it ten times without changing anything,
-and you get ten different numbers, say 214, 211, 218, 209, 216, 213, 220, 207,
-215 and 212. That surprises people, because a computer is the one machine that
-reliably gives the same output for the same input, but the sensor never gets
-the same input twice: the light flickers, the electronics hiss, someone walks
-past. This variation is called **noise**, and every measuring instrument has
-it.
+Point the sensor at one colour and read it ten times without changing
+anything, and you get ten different numbers, say 214, 211, 218, 209, 216, 213,
+220, 207, 215 and 212. That surprises people, because a computer is the one
+machine that reliably gives the same output for the same input, but the sensor
+never gets the same input twice: the light flickers, the electronics hiss,
+someone walks past. This variation is called **noise**, and every measuring
+instrument has it, so ten identical values would be more suspicious than ten
+different ones.
 
 Two numbers describe such a series, the **mean**, which says where the colour
 sits, and the **spread**, which says how far it wanders. Python's module
@@ -67,8 +102,10 @@ The colour sits at 213.5 and wanders between 207 and 220. `statistics.stdev()`
 gives the standard deviation, the usual measure of spread, which is roughly
 the typical distance of a reading from the mean, here 4.0. A single reading
 tells you almost nothing on its own, since 220 could be this colour or a
-neighbouring one having a bad moment, and only the whole series shows where
-the colour sits and how far it strays.
+neighbouring one having a bad moment. Two series can also share their mean and
+scatter very differently, so a record that holds only the mean hides exactly
+the fluctuation that later leads to wrongly recognised symbols, and the spread
+belongs in it as well.
 
 ## Measuring longer makes it calmer
 
@@ -105,6 +142,12 @@ window: four times the window only halves it, because the spread of a mean
 shrinks with the square root of the number of readings it averages. Ten times
 calmer values would therefore cost a hundred times as many readings.
 
+The sensor can do the same averaging itself. Its **integration time** is the
+reading window over which a single value collects light, and a longer one
+gives calmer values but fewer of them per second, exactly like averaging in
+the program. The **gain** is the second knob: it scales the values and the
+noise along with them, and too much of it drives the sensor into saturation.
+
 ## Two symbols, two clouds
 
 Now put two symbols on the same scale. Each of them is not a single value but
@@ -139,8 +182,7 @@ The means lie 37 apart, almost nine times the spread, and between the highest
 reading of `a` and the lowest of `b` there are still 24 units of empty space,
 so these two colours are safely distinguishable. Move `b` closer by adding the
 line `b = [value - 25 for value in b]` below the two lists: the gap becomes
-negative, which means the clouds overlap. Notes on a colour that hold only its
-mean therefore cannot say whether the colour is usable.
+negative, which means the clouds overlap.
 
 ## How many symbols fit?
 
@@ -168,13 +210,58 @@ print((ceiling - floor) // band, "symbols fit")
 Set `spread` to 100, and only 4 symbols fit. The two groups from the beginning
 of this lesson may differ in nothing but this number, and doing the
 calculation before trying out colours saves an afternoon spent on alphabets
-that could never have worked. The experiment [[measuring-your-noise]] takes
-these steps on a real link, from ten readings of one colour to the number of
-symbols that fit.
+that could never have worked. More symbols narrow the bands, and faster
+symbols widen the clouds, because a shorter window averages over less light,
+so both spend the same safety margin, as [[analog-and-digital]] shows from
+the other side. The experiment [[measuring-your-noise]] takes these steps on a
+real link, from ten readings of one colour to the number of symbols that fit.
+
+## Calibrate, then classify
+
+The clouds also tell the receiver which colour arrived. Instead of calculating
+backwards from the four numbers, you **calibrate**, by reading every colour
+you intend to send several times under the conditions of your own setup and
+keeping these readings as references, and then you **classify**, by assigning
+each new reading to the nearest cloud of references:
+
+![A coordinate system with the red share r to the right and the blue share b upwards. Six red reference readings form a cloud at the bottom right, six blue ones a cloud at the top left. A new reading at r 170, b 80 is joined to both clouds by dashed lines; the shorter line, to the red cloud, is highlighted, and the new reading takes the colour red.](figure:calibration "Calibrate, then classify: a new reading belongs to the nearest cloud of references. The green share stays roughly the same here and is left out.")
+
+The program keeps the references from the drawing as pairs `(r, b)`, computes
+the centre of each cloud and compares the distance of the new reading to both
+centres with `math.dist()`:
+
+```python
+import math
+import statistics
+
+# reference readings (r, b) of colours you know, measured beforehand
+red = [(188, 50), (195, 62), (198, 58), (200, 55), (205, 70), (210, 48)]
+blue = [(30, 195), (35, 210), (40, 215), (45, 220), (50, 205), (55, 198)]
+
+def centre(points):
+    r = statistics.mean(p[0] for p in points)
+    b = statistics.mean(p[1] for p in points)
+    return (r, b)
+
+new = (170, 80)
+to_red = math.dist(new, centre(red))
+to_blue = math.dist(new, centre(blue))
+print("distance to red:", round(to_red))
+print("distance to blue:", round(to_blue))
+print("red" if to_red < to_blue else "blue")
+```
+
+The new reading lies 37 units from the centre of the red references and 180
+from that of the blue ones, so it counts as red. Try `new = (120, 130)`, a
+reading almost exactly between the two clouds: the distances then differ by a
+single unit, and a little noise decides which colour comes out. The decision
+rests on your own references, and that is how a colour can be recognised from
+numbers that never match it.
 
 ## The knobs have price tags
 
-There are several ways to improve the ratio, and hardly any of them is free:
+There are several ways to improve the ratio *d*/*s*, and hardly any of them
+is free:
 
 | Way | Effect | Cost |
 |---|---|---|
@@ -186,64 +273,91 @@ There are several ways to improve the ratio, and hardly any of them is free:
 | block ambient light | *s* gets smaller | only craft |
 | fix the geometry | *s* gets smaller | only craft |
 
-Averaging in software is the same bargain as a longer integration time in the
-sensor, only made at a different place. The function `read_stable()` reads
-ten times and returns the mean, and here `read_clear()` stands in for the
-sensor and returns one reading with noise:
+The three ways that cost only craft are the exception: aiming the light,
+shutting out ambient light and fixing the distance with a tube or a stand
+improve the ratio without giving up bits or speed. Everything else is a trade,
+and whether it pays off on your link is a question for a measurement.
 
-```python
-import random
-import statistics
+## Did it really help?
 
-def read_clear():
-    # stands in for the sensor: one reading of a constant light, with noise
-    return random.gauss(500, 20)
+Take the question whether a longer integration time improves recognition. A
+plausible explanation says why it might: longer readings collect more light.
+An AI assistant goes further and attaches an instruction: double the
+integration time, and recognition improves. Both remain claims, however well
+they are argued, and only a measurement on your own setup shows whether the
+effect occurs and how strong it is. An experiment turns such a claim into a
+test in four steps:
 
-def read_stable(n=10):
-    values = [read_clear() for _ in range(n)]
-    return sum(values) / n
+1. a **question**: does a longer window improve recognition?
+2. a **prediction**, written down before measuring: with twice the window,
+   more symbols are recognised correctly
+3. a **measurement** under controlled conditions: 50 symbols with the short
+   window and 50 with the long one
+4. a **comparison** of the result with the prediction: 41 against 47 correct
+   supports the hypothesis, and the opposite result would refute it
 
-random.seed(2)
-single = [read_clear() for _ in range(100)]
-stable = [read_stable() for _ in range(100)]
-print("spread of single readings:", round(statistics.stdev(single), 1))
-print("spread of read_stable():", round(statistics.stdev(stable), 1))
-```
+The order matters, because if you measure first and decide only afterwards
+which result counts as a success, almost any outcome can be read as a fit.
 
-The averaged values scatter about a third as much as single ones, 6.3 instead
-of 21.5, and each of them costs ten readings. That is no argument against
-averaging, but an argument for measuring what it costs instead of assuming it
-is free. The three ways that cost only craft are the exception: aiming the
-light, shutting out ambient light and fixing the distance with a tube or a
-stand improve the ratio without giving up bits or speed.
+## Measuring on purpose
 
-## Both roads lead to the same wall
+A **measurement series** is several readings under equal, recorded
+conditions, in which exactly one quantity is changed on purpose. If one team
+changes the distance and the integration time at once while another changes
+only the distance, both may see their recognition improve, but only the
+second knows what caused it. A series follows a few rules before, during and
+after measuring:
 
-There are two ways to get more out of a link, and people usually want both at
-once: more symbols narrow the bands, and faster symbols widen the clouds,
-since a shorter window averages over less light. Both spend the same safety
-margin, of which there is only one. It is the same trade-off between more
-information per symbol and more errors that makes computers work with
-[[place-value-systems|two states]].
+| When | What you do | Why |
+|---|---|---|
+| before | write down the conditions and the result you expect | without a written expectation, almost any outcome can be read as a success afterwards |
+| during | change exactly one quantity, take a control reading, repeat often enough | only then can a difference be put down to its cause |
+| after | keep every value, compare with the expectation, record the outcome | outliers are often the most interesting information |
+
+Repetitions also protect you against a lucky hit. A receiver that only has to
+tell red from blue is right every second time by pure guessing, so five hits
+in a row happen by chance in one attempt of 32, and in a room full of teams
+such a streak happens somewhere all the time. Fifty hits in a row have a
+chance of one in 2⁵⁰, about one in a million billion, which is why a receiver
+is tested with long series and a repeatable result is worth more than an
+impressive one.
+
+## When the assistant and the measurement disagree
+
+Suppose an AI assistant suggests raising the gain because that would improve
+recognition, and your measurement series shows the recognition rate falling
+from 94 to 82 per cent. Before you treat the suggestion as refuted, check your
+own series: was only one quantity changed, were there enough repetitions, was
+there a control reading? If the series was clean, it wins, because the
+assistant knows sensors of this kind but not your setup. The case then goes
+into a log of mistakes with the suggestion, the measurement and the outcome,
+so that what was learned is not lost.
 
 Everything in this lesson is a property of one particular link, with its room,
-its distance and its ambient light. A link calibrated by the window in
-daylight will not match in a darkened room, because the means and the spread
-change there, so the boundaries have to be measured again where the link is
-used. No amount of reading and no language model has access to that, since
-the channel itself is the only authority.
+its distance and its ambient light, so a link calibrated by the window in
+daylight has to be measured again in a darkened room. No language model has
+access to that, and in the end not the most beautiful explanation wins but
+the cleanest measurement series.
 
 ## Takeaways
 
-- Every measurement scatters, so a series is described by its mean and its
+- A sensor returns numbers, not a colour, and they never match what was sent,
+  so you read them against a control reading in the dark and calibrate with
+  known colours.
+- Every reading scatters, so a series is described by its mean and its
   spread, and a single reading says almost nothing.
-- Averaging over longer windows calms the values, but the spread falls only
-  with the square root of the window, and every averaged value costs readings.
+- Averaging over longer windows or a longer integration time calms the
+  values, but the spread falls only with the square root of the window, and
+  every averaged value costs readings.
 - Two symbols are safely distinguishable when their clouds do not overlap,
   and what counts is the ratio of distance to spread, not the means alone.
 - The number of symbols that fit is the usable range divided by the width of
   one band, which is twice the spread.
+- A new reading belongs to the nearest cloud of references.
 - Nearly every improvement costs bits per symbol or symbols per second, except
   aiming the light, blocking ambient light and fixing the geometry.
+- Whether an improvement helped shows a series with a prediction written down
+  beforehand, exactly one changed quantity and enough repetitions, because
+  five hits in a row can be luck while fifty cannot.
 
 ![Quiz: Signal and noise](item:signal-and-noise-quiz)

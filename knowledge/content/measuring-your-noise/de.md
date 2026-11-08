@@ -18,7 +18,7 @@ duration: 45
 topics: [transferring-information]
 modules: [dup]
 relations:
-  see_also: [signal-and-noise-slides, measurement-and-experiments]
+  see_also: [signal-and-noise]
 status: draft
 updated: 2026-11-06
 ---
@@ -272,10 +272,10 @@ print(f"Bereich {ceiling - floor}, Band {band:.0f} breit, Platz für {symbols} S
   wollt?
 
 Warum über die Größe des Alphabets nichts anderes entscheidet als das
-Verhältnis `d/s` und was jede Maßnahme dagegen kostet, zeigen die Folien
-[[signal-and-noise-slides]], und die Lektion [[signal-and-noise]] erklärt es in
-Ruhe. Wie man eine Messreihe sauber anlegt, mit Kontrollmessung und genau einer
-veränderten Größe, steht in [[measurement-and-experiments]].
+Verhältnis `d/s` und was jede Maßnahme dagegen kostet, erklärt die Lektion
+[[signal-and-noise]] mit ihren Folien, und dort steht auch, wie man eine
+Messreihe sauber anlegt, mit Kontrollmessung und genau einer veränderten
+Größe.
 
 > [!NOTE]
 > Mit einer ganzen Gruppe misst jedes Team seine eigene Streuung und trägt drei
