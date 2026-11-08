@@ -20,7 +20,7 @@ modules: [dup]
 relations:
   see_also: [signal-and-noise]
 status: published
-updated: 2026-11-08
+updated: 2026-11-09
 ---
 
 Ihr messt eine einzige Farbe immer wieder, ohne etwas zu verändern, und seht,
@@ -92,8 +92,15 @@ Das Empfangsprogramm fragt, was gerade leuchtet, und misst dann für jedes
 Fenster zehn Werte: beim Fenster 1 zehn einzelne Ablesungen, beim Fenster 3
 zehn Mittelwerte aus je drei Ablesungen und so weiter. Für jedes Fenster gibt es
 die zehn Werte, ihren Mittelwert und ihre Streuung `s` aus und sagt, wie lange
-die Messung gedauert hat. Ein Durchgang dauert gut eine halbe Minute, und eine
-leere Eingabe beendet das Programm.
+die Messung gedauert hat. Oben im Programm stellt ihr Verstärkung und
+Integrationszeit des Sensors ein, und zwar genau so wie in eurer `alphabet.py`
+aus Challenge 1, damit die Streuung zu eurem Alphabet passt. Der Sensor misst in
+seinem eigenen Takt, eine Messung je Integrationszeit, und `sensor.read()` holt
+die jüngste fertige Messung, ohne zu warten. Wer schneller liest, bekommt
+denselben Wert mehrmals und hält ihn für eine ruhige Strecke; deshalb wartet das
+Programm zwischen zwei Ablesungen etwas länger als eine Integrationszeit. Mit
+154 ms dauert ein Durchgang gut eine halbe Minute, mit 700 ms über zwei Minuten,
+und eine leere Eingabe beendet das Programm.
 
 ```python static
 import statistics
@@ -104,8 +111,17 @@ from lifi_hardware import sensor, use_device
 # only with both devices on one laptop: the UID of the receiving master brick
 # use_device("Xy12Ab")
 
+GAIN = 16                # the same two settings as at the top of your alphabet.py
+INTEGRATION_TIME = 154   # in ms: 2.4, 24, 101, 154 or 700
 WINDOWS = [1, 3, 5, 10]
-PAUSE = 0.2  # seconds between two readings, so that every reading is a new one
+
+sensor.set_gain(GAIN)
+sensor.set_integration_time(INTEGRATION_TIME)
+# the sensor measures once per integration time, and read() returns the newest
+# finished measurement without waiting: so wait a little longer than one
+# integration time between two readings, and two before the first
+PAUSE = INTEGRATION_TIME / 1000 + 0.02
+time.sleep(2 * INTEGRATION_TIME / 1000)
 
 
 def mean_of(n):
@@ -130,8 +146,10 @@ while True:
               f"{seconds:.1f} s je Wert")
 ```
 
-3. Tragt im Sendeprogramm oben eure beiden Farben ein und startet es auf dem
-   sendenden Gerät, das Empfangsprogramm auf dem empfangenden.
+3. Tragt im Sendeprogramm oben eure beiden Farben ein und im Empfangsprogramm
+   `GAIN` und `INTEGRATION_TIME` aus eurer `alphabet.py`, notiert beide Werte
+   und startet das Sendeprogramm auf dem sendenden Gerät, das Empfangsprogramm
+   auf dem empfangenden.
 
 ## Eine Farbe zehnmal ablesen
 
@@ -180,9 +198,10 @@ print(f"Mittelwert {mean:.1f}, Streuung s {s:.1f}")
 > Wurzel aus ihrer Zahl: beim Fenster 3 auf knapp 0,6, beim Fenster 5 auf
 > knapp 0,45 und beim Fenster 10 auf etwa 0,32, also auf ein Drittel und nicht
 > auf ein Zehntel. Die Antwort auf Aufgabe 2 lautet deshalb „weniger“. Dafür
-> dauert jeder Wert so viel länger, wie er Ablesungen enthält: Mit 0,2 Sekunden
-> Pause braucht ein Wert im Fenster 10 rund zwei Sekunden statt einer
-> Fünftelsekunde. Schrumpft eure Streuung deutlich weniger, wandert vermutlich
+> dauert jeder Wert so viel länger, wie er Ablesungen enthält: Mit einer
+> Integrationszeit von 154 ms braucht ein Wert im Fenster 10 rund 1,7 Sekunden
+> statt knapp einer Fünftelsekunde. Das Mitteln im Programm ist damit derselbe
+> Handel wie eine längere Integrationszeit im Sensor. Schrumpft eure Streuung deutlich weniger, wandert vermutlich
 > etwas langsam mit, etwa das Licht im Raum, und eine solche Drift lässt sich
 > durch Mitteln nicht wegmitteln.
 

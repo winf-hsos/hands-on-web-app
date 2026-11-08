@@ -13,7 +13,7 @@ objectives:
     - "calculate the distance `d` and the ratio `d/s` for two neighbouring colours and decide whether their bands touch"
     - "work out from the floor, the ceiling and the width of one band how many symbols fit into your link, and compare that with the alphabet you actually reached"
 translation_of: de
-based_on: 2026-11-08
+based_on: 2026-11-09
 ---
 
 You measure a single colour again and again without changing anything and see
@@ -85,8 +85,15 @@ led.set_color(0, 0, 0)
 The receiving program asks what is shining and then measures ten values for
 each window: for window 1 ten single readings, for window 3 ten means of three
 readings each, and so on. For each window it prints the ten values, their mean
-and their spread `s`, and how long the measurement took. One run takes a
-good half minute, and an empty input ends the program.
+and their spread `s`, and how long the measurement took. At the top of the
+program you set the gain and the integration time of the sensor, exactly as in
+your `alphabet.py` from Challenge 1, so that the spread fits your alphabet. The
+sensor measures at its own pace, one measurement per integration time, and
+`sensor.read()` fetches the newest finished measurement without waiting. Read
+faster and you get the same value several times and take it for a calm link;
+that is why the program waits a little longer than one integration time between
+two readings. With 154 ms one run takes a good half minute, with 700 ms more
+than two minutes, and an empty input ends the program.
 
 ```python static
 import statistics
@@ -97,8 +104,17 @@ from lifi_hardware import sensor, use_device
 # only with both devices on one laptop: the UID of the receiving master brick
 # use_device("Xy12Ab")
 
+GAIN = 16                # the same two settings as at the top of your alphabet.py
+INTEGRATION_TIME = 154   # in ms: 2.4, 24, 101, 154 or 700
 WINDOWS = [1, 3, 5, 10]
-PAUSE = 0.2  # seconds between two readings, so that every reading is a new one
+
+sensor.set_gain(GAIN)
+sensor.set_integration_time(INTEGRATION_TIME)
+# the sensor measures once per integration time, and read() returns the newest
+# finished measurement without waiting: so wait a little longer than one
+# integration time between two readings, and two before the first
+PAUSE = INTEGRATION_TIME / 1000 + 0.02
+time.sleep(2 * INTEGRATION_TIME / 1000)
 
 
 def mean_of(n):
@@ -123,8 +139,10 @@ while True:
               f"{seconds:.1f} s per value")
 ```
 
-3. Enter your two colours at the top of the sending program and start it on
-   the sending device, and the receiving program on the receiving one.
+3. Enter your two colours at the top of the sending program and `GAIN` and
+   `INTEGRATION_TIME` from your `alphabet.py` in the receiving program, write
+   down both values, and start the sending program on the sending device and
+   the receiving program on the receiving one.
 
 ## Ten readings of one colour
 
@@ -173,8 +191,10 @@ print(f"mean {mean:.1f}, spread s {s:.1f}")
 > their number: to just under 0.6 for window 3, just under 0.45 for window 5
 > and about 0.32 for window 10, so to a third and not to a tenth. The answer to
 > task 2 is therefore "less". In return every value takes as much longer as it
-> contains readings: with a pause of 0.2 seconds, a value in window 10 takes
-> about two seconds instead of a fifth of a second. If your spread shrinks
+> contains readings: with an integration time of 154 ms, a value in window 10
+> takes about 1.7 seconds instead of just under a fifth of a second. Averaging
+> in the program is the same bargain as a longer integration time in the
+> sensor. If your spread shrinks
 > clearly less, something probably drifts slowly along, such as the light in
 > the room, and averaging cannot remove such a drift.
 
