@@ -105,6 +105,19 @@
     <aside class="notes">Oben das Rohsignal, wie es beim Sensor ankommt: viel zu unruhig, um in einem einzelnen Augenblick zu entscheiden. Darunter wird dasselbe Signal gemittelt, erst über vier, dann über zwölf, dann über 32 Ablesungen. Die gelbe Linie läuft jedes Mal durch dieselbe Zeitspanne, und ein Mittelwert erscheint, sobald sein Fenster voll ist. Je länger das Fenster, desto näher liegt der Wert am wahren Pegel, und desto weniger Werte kommen in derselben Zeit zustande: rechts zählen sie mit, 72, 24 und 9 Mittelwerte statt 288 Messungen. Die Streuung sinkt dabei nur mit der Wurzel aus der Fensterlänge: Das vierfache Fenster halbiert sie. Dasselbe Geschäft macht der Sensor selbst mit seiner Integrationszeit, dem Ablesefenster, über das er Licht sammelt; die Verstärkung ist der zweite Drehknopf, sie skaliert Signal und Rauschen zugleich und kann den Sensor sättigen.</aside>
   </section>
 
+  <section class="slide">
+    <h2>try it: the noisy sensor</h2>
+    <div class="content">
+      <div class="header">the noisy sensor: <a href="https://hands-on-computer-science.de/cs/en/items/noisy-sensor/">hands-on-computer-science.de/cs/en/items/noisy-sensor</a></div>
+      <div class="lines">
+        <div>send 25 symbols: which lane decides wrongly, and how often?</div>
+        <div>turn the noise up: which lane still gets every symbol right?</div>
+        <div>what does the mean of ten cost in symbols per second?</div>
+      </div>
+    </div>
+    <aside class="notes">Den Demonstrator über den Link öffnen und kurz vorführen: Alle drei Spuren lesen denselben Sensor im selben Moment, die oberste entscheidet aus einer einzelnen Ablesung, die beiden darunter aus dem Mittel von fünf und von zehn. Ein roter Punkt ist eine falsche Entscheidung. Dann selbst probieren lassen: 25 Zeichen senden, das Rauschen hoch- und herunterstellen, die Fehler rechts vergleichen. Die Zahl unter den Fehlern ist der Preis: Mit zehn Ablesungen je Zeichen bleiben von zwanzig Ablesungen je Sekunde nur zwei Zeichen übrig.</aside>
+  </section>
+
   <section class="slide has-punch">
     <h2>two symbols, two clouds</h2>
     <div class="figure" id="fig-two-clouds"></div>
@@ -137,7 +150,20 @@
     <div class="figure" id="fig-lab"></div>
     <div class="punch" data-step="2">a longer window removes the errors, but it also cuts the symbols per second.</div>
     <div class="footnote">simulated readings; the trade-off is the one your own link shows</div>
-    <aside class="notes">Alles zusammen an einem Alphabet aus acht Symbolen; das kurze Fenster steht schon, beim langen kommen die Messungen nacheinander herein. Die grauen Striche sind die gesendeten Pegel, die Punkte die Messungen, die nacheinander hereinkommen. Mit dem kurzen Fenster fallen sechs von dreißig Messungen in ein fremdes Band und werden rot, dafür kommen vierzig Symbole je Sekunde durch. Mit dem viermal so langen Fenster streuen die Messungen halb so weit, keine landet daneben, und es sind nur noch zehn Symbole je Sekunde. Mehr Symbole machen die Bänder schmaler, schnellere Symbole die Wolken breiter, und beide verbrauchen denselben Sicherheitsabstand. Die Zahlen sind simuliert, die Struktur ist echt. Dieselben Regler, Zahl der Symbole, Länge des Fensters und Tempo, lassen sich im Distinguishability Lab des LiFi-Projekts frei verstellen (demos.lifi-project.de/distinguishability-lab); die eigenen Zahlen kommen aber nur von der eigenen Strecke.</aside>
+    <aside class="notes">Alles zusammen an einem Alphabet aus acht Symbolen; das kurze Fenster steht schon, beim langen kommen die Messungen nacheinander herein. Die grauen Striche sind die gesendeten Pegel, die Punkte die Messungen. Mit dem kurzen Fenster fallen sechs von dreißig Messungen in ein fremdes Band und werden rot, dafür kommen vierzig Symbole je Sekunde durch. Mit dem viermal so langen Fenster streuen die Messungen halb so weit, keine landet daneben, und es sind nur noch zehn Symbole je Sekunde. Mehr Symbole machen die Bänder schmaler, schnellere Symbole die Wolken breiter, und beide verbrauchen denselben Sicherheitsabstand. Die Zahlen sind simuliert, die Struktur ist echt. Dieselben Regler, Zahl der Zeichen, Länge des Fensters und eine Störung, lassen sich im Unterscheidbarkeits-Labor auf der nächsten Folie frei verstellen; die eigenen Zahlen kommen aber nur von der eigenen Strecke.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>try it: the distinguishability lab</h2>
+    <div class="content">
+      <div class="header">the distinguishability lab: <a href="https://hands-on-computer-science.de/cs/en/items/distinguishability-lab/">hands-on-computer-science.de/cs/en/items/distinguishability-lab</a></div>
+      <div class="lines">
+        <div>add symbols to the alphabet until the first errors appear</div>
+        <div>lengthen the window until they are gone: what is left of the rate?</div>
+        <div>press disturb: which alphabet survives the stray light?</div>
+      </div>
+    </div>
+    <aside class="notes">Das Labor über den Link öffnen. Die waagerechten Linien sind die Pegel der Zeichen, die dünne Kurve ist das Rohsignal, und am Ende jedes Fensters mittelt der Empfänger zu einem Balken und entscheidet sich für den nächsten Pegel; Fehler werden rot. Drei Aufträge: Erstens dem Alphabet so lange Zeichen geben, bis Fehler auftauchen. Zweitens das Fenster verlängern, bis sie verschwinden, und dabei auf Zeichenrate und Durchsatz achten. Drittens stören und schauen, welches Alphabet die Störung übersteht. Wer will, sucht die Einstellung mit dem größten Durchsatz ohne Fehler. Die Zahlen sind simuliert; die eigenen kommen nur von der eigenen Strecke.</aside>
   </section>
 
   <section class="slide has-punch">

@@ -142,6 +142,13 @@ genau wie das Mitteln im Programm. Die **Verstärkung** ist der zweite Regler:
 Sie skaliert die Werte und mit ihnen das Rauschen, und zu viel davon treibt
 den Sensor in die Sättigung.
 
+Ob sich das Mitteln lohnt, hängt davon ab, wie stark der Sensor rauscht. Im
+Demonstrator unten entscheiden dieselben Ablesungen dreimal, einzeln, über
+fünf und über zehn, und du kannst das Rauschen selbst stärker und schwächer
+stellen.
+
+![Der verrauschte Sensor](item:noisy-sensor)
+
 ## Zwei Zeichen, zwei Wolken
 
 Stell jetzt zwei Zeichen auf dieselbe Skala. Jedes ist kein einzelner Wert,
@@ -214,6 +221,12 @@ verbrauchen beide denselben Sicherheitsabstand, wie [[analog-and-digital]] von
 der anderen Seite zeigt. Das Experiment [[measuring-your-noise]] geht diese
 Schritte an einer echten Strecke, von zehn Ablesungen einer Farbe bis zur Zahl
 der Zeichen, die hineinpassen.
+
+Im Unterscheidbarkeits-Labor unten drehst du an allen diesen Reglern zugleich,
+an der Zahl der Zeichen, an der Länge des Fensters und an einer Störung, und
+siehst, wie Fehlerquote und Durchsatz gegeneinander ziehen.
+
+![Das Unterscheidbarkeits-Labor](item:distinguishability-lab)
 
 ## Erst kalibrieren, dann klassifizieren
 

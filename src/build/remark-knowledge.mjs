@@ -310,6 +310,8 @@ function fillableTables(tree, lang) {
 // ```question-game sixteen faces and yes-or-no questions measured in bits (client/question-game.js),
 // ```prefix-trap code words of one's own and every reading the receiver could cut from the bits (client/prefix-trap.js),
 // ```hex-viewer a typed text or any file of one's own as a hex dump, with its signature (client/hex-viewer.js),
+// ```noisy-sensor the same noisy readings decided alone, over five and over ten (client/noisy-sensor.js),
+// ```distinguishability-lab a noisy channel as an oscilloscope, with alphabet and window as knobs (client/distinguishability-lab.js),
 // ```data-table an empty table to record observations in (client/data-table.js),
 // ```shell-demo the folder tree and command line (client/shell-demo.js), whose
 // block holds its scenario in YAML (tree:, start:), checked by validate.mjs.
@@ -324,6 +326,8 @@ const DEMOS = {
   'question-game': { className: 'question-game', dataQuestionGame: '' },
   'prefix-trap': { className: 'prefix-trap', dataPrefixTrap: '' },
   'hex-viewer': { className: 'hex-viewer', dataHexViewer: '' },
+  'noisy-sensor': { className: 'noisy-sensor', dataNoisySensor: '' },
+  'distinguishability-lab': { className: 'distinguishability-lab', dataDistinguishabilityLab: '' },
   'next-word': { className: 'next-word', dataNextWord: '' },
   'word-guess': { className: 'word-guess', dataWordGuess: '' },
   'meaning-map': { className: 'meaning-map', dataMeaningMap: '' },

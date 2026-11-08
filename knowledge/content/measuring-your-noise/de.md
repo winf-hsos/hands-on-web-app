@@ -20,7 +20,7 @@ modules: [dup]
 relations:
   see_also: [signal-and-noise]
 status: draft
-updated: 2026-11-06
+updated: 2026-11-08
 ---
 
 Ihr messt eine einzige Farbe immer wieder, ohne etwas zu verändern, und seht,
@@ -269,7 +269,8 @@ print(f"Bereich {ceiling - floor}, Band {band:.0f} breit, Platz für {symbols} S
   jede davon?
 - Würdet ihr lieber viele Symbole mit einem langen Fenster senden oder wenige
   mit einem kurzen, wenn ihr in derselben Zeit möglichst viel übertragen
-  wollt?
+  wollt? Im [[distinguishability-lab]] könnt ihr beides ausprobieren, bevor
+  ihr euch für eure eigene Strecke entscheidet.
 
 Warum über die Größe des Alphabets nichts anderes entscheidet als das
 Verhältnis `d/s` und was jede Maßnahme dagegen kostet, erklärt die Lektion

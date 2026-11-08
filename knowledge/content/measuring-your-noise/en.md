@@ -13,7 +13,7 @@ objectives:
     - "calculate the distance `d` and the ratio `d/s` for two neighbouring colours and decide whether their bands touch"
     - "work out from the floor, the ceiling and the width of one band how many symbols fit into your link, and compare that with the alphabet you actually reached"
 translation_of: de
-based_on: 2026-11-06
+based_on: 2026-11-08
 ---
 
 You measure a single colour again and again without changing anything and see
@@ -256,7 +256,9 @@ print(f"range {ceiling - floor}, band {band:.0f} wide, room for {symbols} symbol
   shield against the room light, colours that lie further apart or a longer
   window? What does each of them cost?
 - Would you rather send many symbols with a long window or few with a short
-  one if you want to transmit as much as possible in the same time?
+  one if you want to transmit as much as possible in the same time? In the
+  [[distinguishability-lab]] you can try both before you decide for your own
+  link.
 
 Why nothing but the ratio `d/s` decides the size of the alphabet, and what
 every measure against noise costs, is explained in the lesson

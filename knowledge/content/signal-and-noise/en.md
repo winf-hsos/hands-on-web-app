@@ -148,6 +148,12 @@ gives calmer values but fewer of them per second, exactly like averaging in
 the program. The **gain** is the second knob: it scales the values and the
 noise along with them, and too much of it drives the sensor into saturation.
 
+Whether averaging pays off depends on how noisy the sensor is. In the
+demonstrator below the same readings decide three times, alone, over five and
+over ten, and you can turn the noise up and down yourself.
+
+![The noisy sensor](item:noisy-sensor)
+
 ## Two symbols, two clouds
 
 Now put two symbols on the same scale. Each of them is not a single value but
@@ -215,6 +221,12 @@ symbols widen the clouds, because a shorter window averages over less light,
 so both spend the same safety margin, as [[analog-and-digital]] shows from
 the other side. The experiment [[measuring-your-noise]] takes these steps on a
 real link, from ten readings of one colour to the number of symbols that fit.
+
+In the distinguishability lab below you can turn all of these knobs at once,
+the number of symbols, the length of the window and a disturbance, and watch
+the error rate and the throughput pull against each other.
+
+![The distinguishability lab](item:distinguishability-lab)
 
 ## Calibrate, then classify
 
