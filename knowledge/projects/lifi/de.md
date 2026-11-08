@@ -19,10 +19,9 @@ phases:
       - symbols-and-information
       - signal-and-noise
       - measuring-your-noise
-      - place-value-systems
   - id: word
     challenge: lifi-challenge-2
-    items: [code-systems, invent-a-code, morse-code]
+    items: [place-value-systems, code-systems, invent-a-code, morse-code]
   - id: protocol
     challenge: lifi-challenge-3
     items: [morse-code]
@@ -30,7 +29,7 @@ phases:
     challenge: lifi-challenge-4
     items: [byte, logic-gates]
 status: published
-updated: 2026-11-04
+updated: 2026-11-08
 ---
 
 Jede Person im Team bekommt ein kleines Gerät mit einer RGB-LED und einem

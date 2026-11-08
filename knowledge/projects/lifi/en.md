@@ -5,7 +5,7 @@ summary: >-
   sensor, and in five challenges you get it to transmit a whole file without
   errors.
 translation_of: de
-based_on: 2026-11-04
+based_on: 2026-11-08
 ---
 
 Each person in the team gets a small device with an RGB LED and a colour
