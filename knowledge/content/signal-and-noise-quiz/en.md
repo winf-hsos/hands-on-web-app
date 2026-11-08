@@ -15,7 +15,7 @@ modules: [dup]
 relations:
   checks: [signal-and-noise]
   see_also: [signal-and-noise-slides]
-status: draft
+status: published
 updated: 2026-11-08
 ---
 

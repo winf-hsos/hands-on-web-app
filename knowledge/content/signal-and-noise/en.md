@@ -26,7 +26,7 @@ modules: [dup]
 relations:
   requires: [symbols-and-information]
   see_also: [analog-and-digital, measuring-your-noise]
-status: draft
+status: published
 updated: 2026-11-08
 ---
 
