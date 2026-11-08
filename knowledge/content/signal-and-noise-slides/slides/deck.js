@@ -35,18 +35,6 @@ function noiseLcg(seed) {
   };
 }
 
-/* mulberry32 with Box-Muller, as in the measuring deck. */
-function randomSource(seed) {
-  const random = () => {
-    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
-    let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
-    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-    return ((t ^ t >>> 14) >>> 0) / 4294967296;
-  };
-  const gauss = () => Math.sqrt(-2 * Math.log(1 - random())) * Math.cos(2 * Math.PI * random());
-  return { random, gauss };
-}
-
 /* A cloud of readings as a bell curve, drawn as a filled path. `half` is the
  * half-width of the whole cloud (three standard deviations); `from` and `to`
  * cut out a piece (in multiples of half, -1 to 1), so exactly the part that
@@ -453,22 +441,26 @@ const goodLine = (c) => d.label(CLOUDS.boundary, 0, "every reading lands on its 
  * bands 50 wide (plus or minus 25). The bands stack up from the floor one
  * after the other, which is the calculation done by hand; then the division
  * appears under each column. Range y 90 to 530 (440 for 800 units), columns
- * 440 wide at x 520 and 1120. Left labels end at x 380; "ceiling" at 32 is
- * 134 wide and ends at 260, "840" (58 wide) ends at 380. "800 / 200 = 4" at
- * 48 mono is 13 x 28.8 = 374 wide, inside its column. Forward only. */
+ * 440 wide at x 520 and 1120. The axis at x 300 carries only its two ends,
+ * "840" and "40" ending at 280: the range is not a third mark in its middle,
+ * which read as an axis value of 800 (Nicolas, 2026-11-08), but a column of
+ * its own like the other two, titled "range" and with "840 − 40 = 800" below
+ * (14 x 28.8 = 403, centred at 240, so 38 to 442). "800 / 200 = 4" at 48 mono is 13 x 28.8 =
+ * 374 wide, inside its column. Forward only. */
 (function () {
   if (!$("fig-how-many")) return;
   const c = d.colors();
-  const top = 90, bottom = 530, span = bottom - top, axisX = 400;
+  const top = 90, bottom = 530, span = bottom - top, axisX = 300;
   const parts = [
     d.line(axisX, top, axisX, bottom, { color: c.dark, width: 2 }),
     d.line(axisX - 10, top, axisX + 10, top, { color: c.dark, width: 2 }),
     d.line(axisX - 10, bottom, axisX + 10, bottom, { color: c.dark, width: 2 }),
   ];
-  [["ceiling", "840", top], ["range", "800", (top + bottom) / 2], ["floor", "40", bottom]].forEach(([word, value, y]) => {
-    parts.push(d.label(260, 0, word, { size: 32, color: c.gray, anchor: "end", centerY: y }));
-    parts.push(d.label(380, 0, value, { size: 32, mono: true, color: c.white, anchor: "end", centerY: y }));
+  [["840", top], ["40", bottom]].forEach(([value, y]) => {
+    parts.push(d.label(axisX - 20, 0, value, { size: 32, mono: true, color: c.white, anchor: "end", centerY: y }));
   });
+  parts.push(d.label(240, 0, "range", { size: 32, color: c.gray, anchor: "middle", centerY: 45 }),
+    d.formula(240, 0, "840 − 40 = 800", { size: 48, color: c.white, anchor: "middle", centerY: 600 }));
   const columns = [
     { key: "l", x: 520, n: 4, title: "bands 200 wide", sum: "800 / 200 = 4" },
     { key: "r", x: 1120, n: 16, title: "bands 50 wide", sum: "800 / 50 = 16" },
@@ -530,63 +522,6 @@ const goodLine = (c) => d.label(CLOUDS.boundary, 0, "every reading lands on its 
   a.step(a.par(a.show("to-red", { dur: 600 }), a.show("to-blue", { dur: 600 })));
   a.step(a.par(a.color("to-red", "yellow", { dur: 600 }), a.color("new-dot", "red", { part: "fill", dur: 600 }),
     a.show("wins", { dur: 600 })));
-})();
-
-/* --- eight symbols, two window lengths ------------------------------------------------
- * What the distinguishability lab lets you play with, as a drawing: an
- * alphabet of eight symbols on the same time axis twice, 0.8 seconds each.
- * Every reading is a bar as wide as its window, at the height it was read; a
- * thin gray line in the same window marks the level sent. The short window
- * (25 ms) fits 32 readings and has a spread of 0.42 band widths, the window
- * four times as long (100 ms) fits 8, scattering half as much (the mean of
- * four readings). So the difference shows without the counts: many narrow
- * bars that stray, some into another band and red, against few wide bars that
- * sit on their levels (Nicolas, 2026-11-08: the earlier dots looked the same
- * in both tracks). Seed 36 gives six wrong readings in the short window and
- * none in the long one; the counts are computed from the data. Tracks
- * 1100 x 230 at x 160, y 60 and 360, eight bands of 28.75; counts from x 1300
- * ("6 of 32 wrong" is 13 x 19.2 = 250 wide). The long window's levels sent
- * stand from the start and its readings arrive in time, so this runs forward
- * only. */
-(function () {
-  if (!$("fig-lab")) return;
-  const c = d.colors();
-  const { random, gauss } = randomSource(36);
-  const x = 160, w = 1100, h = 230, band = h / 8, gap = 6;
-  const tracks = [
-    { y: 60, name: "short window, 25 ms", n: 32, spread: 0.42, rate: "40 symbols/s" },
-    { y: 360, name: "window four times as long, 100 ms", n: 8, spread: 0.21, rate: "10 symbols/s" },
-  ];
-  for (const t of tracks) {
-    t.readings = Array.from({ length: t.n }, () => {
-      const sent = Math.floor(random() * 8);
-      return { sent, value: sent + t.spread * gauss() };
-    });
-  }
-  const parts = [];
-  tracks.forEach((t, k) => {
-    const levelY = (v) => t.y + h - (v + 0.5) * band;
-    const slot = w / t.n;
-    parts.push(d.label(x, 0, t.name, { size: 32, color: c.gray, centerY: t.y - 30 }));
-    for (let b = 0; b < 8; b += 2) parts.push(`<rect x="${x + 2}" y="${t.y + h - (b + 1) * band}" width="${w - 4}" height="${band}" fill="${c.dark}" fill-opacity="0.45"/>`);
-    parts.push(d.box(x, t.y, w, h, "", { border: c.dark, fill: "none", rounded: false }));
-    let wrong = 0;
-    t.readings.forEach(({ sent, value }, i) => {
-      const x0 = x + i * slot + gap / 2, x1 = x + (i + 1) * slot - gap / 2;
-      parts.push(d.line(x0, levelY(sent), x1, levelY(sent), { color: c.gray, width: 2 }));
-      const bad = Math.min(7, Math.max(0, Math.round(value))) !== sent;
-      if (bad) wrong += 1;
-      const y = Math.min(t.y + h - 6, Math.max(t.y + 6, levelY(value)));
-      parts.push(d.g(`p${k}-${i}`, d.line(x0, y, x1, y, { color: bad ? c.red : c.white, width: 6 })));
-    });
-    parts.push(d.g("r" + k,
-      d.label(1300, 0, `${wrong} of ${t.n} wrong`, { size: 32, color: wrong ? c.red : c.green, centerY: t.y + 80 }),
-      d.label(1300, 0, t.rate, { size: 32, color: c.gray, centerY: t.y + 150 })));
-  });
-  parts.push(d.label(840, 0, "the same 0.8 s in both tracks; each bar is one reading, red in a wrong band", { size: 32, color: c.gray, anchor: "middle", centerY: 630 }));
-  $("fig-lab").innerHTML = d.svg(1680, 650, ...parts);
-  const a = d.anim("fig-lab");
-  a.step(a.seq(...tracks[1].readings.map((__, i) => a.show(`p1-${i}`, { dur: 250 }))), a.show("r1", { dur: 400 }));
 })();
 
 /* --- the toolbox, with price tags ---------------------------------------------------------

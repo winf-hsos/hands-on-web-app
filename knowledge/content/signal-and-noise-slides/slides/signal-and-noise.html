@@ -145,14 +145,6 @@
     <aside class="notes">Die Wolken sagen dem Empfänger auch, welche Farbe angekommen ist. Kalibrieren heißt, bekannte Farben unter den eigenen Bedingungen wiederholt zu messen; die Messungen bilden Wolken von Referenzen. Klassifizieren heißt, eine neue Messung mit diesen Referenzen zu vergleichen: Die neue Ablesung kommt hinzu, beide Abstände werden gezogen, und der kürzere gewinnt. Wir versuchen nicht, die LED-Werte zurückzurechnen, sondern treffen eine datenbasierte Entscheidung. Das ist die Antwort auf die Frage aus dem ersten Teil, wie man aus Zahlen, die nicht stimmen, trotzdem die gesendete Farbe erkennt.</aside>
   </section>
 
-  <section class="slide has-punch">
-    <h2>eight symbols, two window lengths</h2>
-    <div class="figure" id="fig-lab"></div>
-    <div class="punch" data-step="2">a longer window removes the errors, but it also cuts the symbols per second.</div>
-    <div class="footnote">simulated readings; the trade-off is the one your own link shows</div>
-    <aside class="notes">Alles zusammen an einem Alphabet aus acht Symbolen, zweimal dieselben 0,8 Sekunden. Jeder Balken ist eine Messung und so breit wie ihr Fenster, der dünne graue Strich darin ist der gesendete Pegel. Oben das kurze Fenster mit 25 ms: 32 schmale Balken, die streuen, und sechs davon landen im Band eines anderen Zeichens und werden rot; dafür kommen vierzig Zeichen je Sekunde durch. Unten das viermal so lange Fenster: In derselben Zeit passen nur acht Messungen hinein, sie kommen nacheinander herein, streuen halb so weit und liegen alle auf ihrem Pegel, also zehn Zeichen je Sekunde ohne Fehler. Mehr Zeichen machen die Bänder schmaler, schnellere Zeichen die Wolken breiter, und beide verbrauchen denselben Sicherheitsabstand. Die Zahlen sind simuliert, die Struktur ist echt. Dieselben Regler lassen sich im Unterscheidbarkeits-Labor auf der nächsten Folie frei verstellen; die eigenen Zahlen kommen aber nur von der eigenen Strecke.</aside>
-  </section>
-
   <section class="slide">
     <h2>try it: the distinguishability lab</h2>
     <div class="content">
