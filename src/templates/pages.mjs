@@ -283,7 +283,12 @@ export function item(site, doc, lang) {
     : html`<div class="${prose}" lang="${text.lang}" ${isQuiz && quizLabels(lang)}>${raw(own)}</div>`;
   // everything on the page, for the scripts it needs
   const body = embeds.length ? String(html`${content}`) : own;
-  const toc = tocBlock(own, lang);
+  // the table of contents: the lesson's own headings and, in their place, the
+  // heading of every quiz embedded in it (embedBlock)
+  const tocSource = parts
+    .map((p) => (p.html !== undefined ? p.html : hasType(p.embed.lead, 'quiz') ? `<h2 id="${p.embed.id}">${t(lang, 'quiz_heading')}</h2>` : ''))
+    .join('');
+  const toc = tocBlock(tocSource, lang);
   const lessons = site.lessonsOf(doc.id);
   const quizzes = embeds.filter((m) => hasType(m.lead, 'quiz'));
   const back = lead.project ? 'projects' : 'items';
@@ -388,8 +393,11 @@ function embedBlock(site, doc, lang) {
       <a href="${site.url(doc, lang)}" lang="${text.lang}">${text.titleHtml}</a>
     </p>`;
   if (hasType(doc.lead, 'slides')) return html`<section class="embedded embedded-slides" data-embedded="${doc.id}">${slidesBlock(site, doc, lang)}</section>`;
+  // a quiz in a lesson is a section of its own, with a heading like the
+  // lesson's, so that the table of contents lists it (Nicolas, 2026-11-09)
   if (hasType(doc.lead, 'quiz'))
-    return html`<section class="embedded embedded-quiz" data-embedded="${doc.id}">
+    return html`<div class="prose"><h2 id="${doc.id}">${t(lang, 'quiz_heading')}</h2></div>
+      <section class="embedded embedded-quiz" data-embedded="${doc.id}">
         ${head}
         <div class="prose" lang="${text.lang}" data-quiz-id="${doc.id}" ${quizLabels(lang)}>${raw(site.embedBody(doc, lang))}</div>
         ${quizFilesBlock(site, doc, lang, site.url(doc, lang))}
