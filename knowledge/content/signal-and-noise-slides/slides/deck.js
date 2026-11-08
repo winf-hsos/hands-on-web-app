@@ -341,7 +341,7 @@ window.drawDark = function (_slide, step = 0) {
  * Two symbols at a fixed distance d (560 to 1120, boundary at 840). The clouds
  * start wide (half-width 520, reaching from x 40 to 1640), and the parts that
  * reach across the boundary are red: those readings land on the wrong side.
- * Then the clouds narrow to a half-width of 200, as they do with a longer
+ * Then the clouds narrow to a half-width of 210, as they do with a longer
  * window or shielded light; seven widths cross-fade one into the next, the red
  * parts shrink and vanish below a half-width of 280, and the verdict changes.
  * back: "play", since clouds that widen again tell nothing wrong: faster
@@ -354,14 +354,21 @@ window.drawDark = function (_slide, step = 0) {
  * standard deviations to either side (cloud() draws a bell to t = 3), so the
  * s bracket at 510 spans one standard deviation, a third of the half-width,
  * from the mean of symbol b; the clouds stop touching at d/s = 6 (half-width
- * 280), and the final scene has d/s = 560 / 66.7, about 8.
+ * 280), and the final scene has d/s = 560 / 70 = 8 exactly, so that the last
+ * step of the ratio slide can mark d in steps of s: seven ticks on the d
+ * bracket, and "3 s" under its first and last three steps, which end where
+ * the clouds end (Nicolas, 2026-11-08: the text spoke of 6 and 3 s, the
+ * figure showed neither).
  * On the ratio slide "distance between the means" (26 x 19.2 = 499) runs from
  * 870 to 1369, "spread: one standard deviation" (30 x 19.2 = 576) is centred
  * at 1153 on 560; "d/s" at 80 mono is 144 wide around x 180, left of cloud a,
  * "also called d′" (14 x 19.2 = 269) is centred under it. The bottom line
  * first says what d/s counts, then from which value the clouds stay apart
- * (73 x 19.2 = 1402, centred at 840). */
-const CLOUDS = { base: 430, peak: 220, ma: 560, mb: 1120, boundary: 840, widths: [520, 467, 413, 360, 307, 253, 200] };
+ * (70 x 19.2 = 1344, centred at 840). The "3 s" labels (58 wide) sit at y 145
+ * between the bracket and the cloud tops, clear of "boundary" (773 to 907);
+ * the ticks at 3 s are longer, and a dashed line runs from below "boundary"
+ * down to where each cloud ends, at 770 and 910. */
+const CLOUDS = { base: 430, peak: 220, ma: 560, mb: 1120, boundary: 840, widths: [520, 468, 417, 365, 313, 262, 210] };
 
 function cloudScene(w, c) {
   const { base, peak, ma, mb, boundary } = CLOUDS;
@@ -420,7 +427,14 @@ const goodLine = (c) => d.label(CLOUDS.boundary, 0, "every reading lands on its 
   const parts = [...cloudFrame(c), ...cloudScene(widths[widths.length - 1], c),
     d.g("good", goodLine(c)),
     d.g("count", line("d/s counts how many spreads fit between the two means")),
-    d.g("apart", line("above 6 the clouds stay apart, since each reaches about 3 s either side")),
+    d.g("apart", line("each cloud reaches 3 s, so above d/s = 6 they stay apart; here d/s = 8")),
+    d.g("reach",
+      ...Array.from({ length: 7 }, (_, k) => d.line(CLOUDS.ma + 70 * (k + 1), 103, CLOUDS.ma + 70 * (k + 1), 117, { color: c.yellow, width: 3 })),
+      ...[CLOUDS.ma + 210, CLOUDS.mb - 210].flatMap((x) => [
+        d.line(x, 97, x, 123, { color: c.yellow, width: 3 }),
+        d.line(x, 190, x, CLOUDS.base, { color: c.yellow, width: 2, dashed: true })]),
+      d.label(CLOUDS.ma + 105, 0, "3 s", { size: 32, color: c.yellow, anchor: "middle", centerY: 145 }),
+      d.label(CLOUDS.mb - 105, 0, "3 s", { size: 32, color: c.yellow, anchor: "middle", centerY: 145 })),
     d.g("legend",
       d.label(boundary + 30, 0, "distance between the means", { size: 32, color: c.gray, centerY: 75 }),
       d.label(1153, 0, "spread: one standard deviation", { size: 32, color: c.gray, anchor: "middle", centerY: 560 }),
@@ -430,7 +444,7 @@ const goodLine = (c) => d.label(CLOUDS.boundary, 0, "every reading lands on its 
   $("fig-ratio").innerHTML = d.svg(1680, 650, ...parts);
   const a = d.anim("fig-ratio", { back: "play" });
   a.step(a.swap("good", "count", { dur: 400 }), a.show("legend", { dur: 400 }), a.show("ratio", { dur: 400 }));
-  a.step(a.swap("count", "apart", { dur: 400 }), a.swap("ratio", "name", { dur: 400 }));
+  a.step(a.swap("count", "apart", { dur: 400 }), a.show("reach", { dur: 400 }), a.swap("ratio", "name", { dur: 400 }));
 })();
 
 /* --- how many symbols fit? ------------------------------------------------------------
