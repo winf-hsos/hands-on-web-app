@@ -287,11 +287,15 @@ The body is plain Markdown with a few conventions:
   red, which marks errors. `> [!HINT]` and `> [!SOLUTION]` render folded, so
   that a learner opens them only when needed; several hints in one text are
   numbered.
-- **Tasks in an experiment** are the numbered lists at the top level of its
-  text, counted on through the whole page. They stand on a quiet band in the
-  colour of the area with a line on the left (Nicolas, 2026-11-05: they got
-  lost in the text), so a numbered list in an experiment should be a task;
-  steps of a procedure that are not tasks are written as a bulleted list.
+- **Tasks in an experiment or exercise** are the numbered lists at the top
+  level of its text, counted on through the whole page, so that every task can
+  be referred to by its number ("task 7"); section headings carry no numbers
+  of their own. They stand on a quiet band in the colour of the area with a
+  line on the left (Nicolas, 2026-11-05: they got lost in the text; 2026-11-08:
+  the same for exercises), so a numbered list in an experiment or exercise
+  should be a task; steps of a procedure that are not tasks are written as a
+  bulleted list. A task is something to do; a question that only asks for
+  reflection goes into the evaluation at the end.
 - **Python code** in a ` ```python ` block becomes a small editor on the page
   that runs the code in the browser (Pyodide, Python as WebAssembly, loaded on
   the first click). `input()` is answered in a field below the output. A

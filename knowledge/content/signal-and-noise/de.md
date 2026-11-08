@@ -218,7 +218,7 @@ spart sich einen Nachmittag mit Alphabeten, die nie funktionieren konnten.
 Mehr Zeichen machen die Bänder schmaler, und schnellere Zeichen machen die
 Wolken breiter, weil ein kürzeres Fenster über weniger Licht mittelt, also
 verbrauchen beide denselben Sicherheitsabstand, wie [[analog-and-digital]] von
-der anderen Seite zeigt. Das Experiment [[measuring-your-noise]] geht diese
+der anderen Seite zeigt. Die Übung [[measuring-your-noise]] geht diese
 Schritte an einer echten Strecke, von zehn Ablesungen einer Farbe bis zur Zahl
 der Zeichen, die hineinpassen.
 

@@ -68,4 +68,4 @@ The example: the range runs from 40 to 840, so 800 units. If a colour scatters b
 
 ## Further reading
 
-The lesson [[signal-and-noise]] explains everything in this deck with runnable Python examples. The experiment [[measuring-your-noise]] measures it on your own link: the spread of one colour, the ratio `d/s` and how many symbols fit.
+The lesson [[signal-and-noise]] explains everything in this deck with runnable Python examples. The exercise [[measuring-your-noise]] measures it on your own link: the spread of one colour, the ratio `d/s` and how many symbols fit.

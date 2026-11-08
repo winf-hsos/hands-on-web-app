@@ -219,7 +219,7 @@ calculation before trying out colours saves an afternoon spent on alphabets
 that could never have worked. More symbols narrow the bands, and faster
 symbols widen the clouds, because a shorter window averages over less light,
 so both spend the same safety margin, as [[analog-and-digital]] shows from
-the other side. The experiment [[measuring-your-noise]] takes these steps on a
+the other side. The exercise [[measuring-your-noise]] takes these steps on a
 real link, from ten readings of one colour to the number of symbols that fit.
 
 In the distinguishability lab below you can turn all of these knobs at once,

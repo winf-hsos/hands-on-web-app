@@ -6,7 +6,7 @@ summary: >-
   calculate how many symbols fit between the floor and the ceiling of your
   link.
 objectives:
-  intro: "In this experiment you measure the spread of your own link, and afterwards you can:"
+  intro: "In this exercise you measure the spread of your own link, and afterwards you can:"
   goals:
     - "determine the mean and the spread `s` from ten readings of one colour"
     - "show with your own numbers how averaging over windows of 1, 3, 5 and 10 readings reduces the spread and what it costs in time"
@@ -20,9 +20,10 @@ You measure a single colour again and again without changing anything and see
 how far the numbers wander all the same. From this spread, the distance to the
 neighbouring colour and the range between the darkest and the brightest value
 you finally work out how many symbols your link can carry, and compare that
-with the alphabet you reached in Challenge 1. The experiment assumes that your
+with the alphabet you reached in Challenge 1. The exercise assumes that your
 link already works: the LED of one device shines into the sensor of the other,
-and you can address both from Python.
+and you can address both from Python. The twelve tasks are numbered through
+the whole page.
 
 ## What you need
 
@@ -37,10 +38,10 @@ and you can address both from Python.
 
 ## Setup
 
-- Place the two devices as you used them in Challenge 1.
-- Change nothing about them for the whole experiment: not the distance, not
-  the optics and not the light in the room.
-- Write down the distance and whether the ceiling light is on.
+1. Place the two devices as you used them in Challenge 1 and write down the
+   distance and whether the ceiling light is on. After that, change nothing
+   about them until the end of the exercise: not the distance, not the optics
+   and not the light in the room.
 
 With two laptops, the sending program runs on one and the receiving program on
 the other. If both devices hang on one laptop, start the two programs in two
@@ -49,18 +50,17 @@ enter the UID of the respective master brick from the Brick Viewer.
 
 ## Before: your expectation
 
-Write down your answers before you measure; after the first step you compare
-them with your numbers.
+2. Write down, before you measure, how far apart ten readings of the same
+   colour will lie in the clear channel `c`, from the smallest to the largest
+   value, and how much calmer the mean will become if you combine ten readings
+   each time: ten times calmer or less?
 
-1. How far apart will ten readings of the same colour lie in the clear channel
-   `c`, from the smallest to the largest value?
-2. How much calmer will the mean become if you combine ten readings each time:
-   ten times calmer or less?
+In task 5 you compare your expectation with your numbers.
 
 ## The programs
 
 The sending program shows your two colours one after the other, then black and
-white, each until you press Enter. Enter your own colours at the top.
+white, each until you press Enter.
 
 ```python static
 from lifi_hardware import led, use_device
@@ -123,11 +123,14 @@ while True:
               f"{seconds:.1f} s per value")
 ```
 
-## Step 1: ten readings of one colour
+3. Enter your two colours at the top of the sending program and start it on
+   the sending device, and the receiving program on the receiving one.
 
-- Let colour A shine and start the receiving program.
-- Enter for each window the ten values, their mean, the spread `s` and the
-  seconds per value in the table.
+## Ten readings of one colour
+
+4. Let colour A shine, type its name into the receiving program and enter for
+   each window the ten values, their mean, the spread `s` and the seconds per
+   value in the table.
 
 The row for window 1 holds your ten readings of the same colour, in which
 nothing changed except the numbers.
@@ -159,10 +162,11 @@ print(f"mean {mean:.1f}, spread s {s:.1f}")
 > than `3 · s`. A colour therefore takes up a band about `6 · s` wide, `3 · s`
 > downwards and `3 · s` upwards.
 
-3. How far apart are your ten readings in window 1, and how large is their
-   spread `s`? How close was your expectation from task 1?
-4. To what fraction did the spread shrink from window 1 to window 10, and
-   what did that cost in seconds per value?
+5. Read off in the row for window 1 how far apart your ten readings lie and
+   how large their spread `s` is, and compare both with your expectation from
+   task 2.
+6. Work out to what fraction the spread shrank from window 1 to window 10 and
+   what that cost in seconds per value.
 
 > [!SOLUTION]
 > Averaging several readings reduces the spread roughly by the square root of
@@ -174,11 +178,12 @@ print(f"mean {mean:.1f}, spread s {s:.1f}")
 > clearly less, something probably drifts slowly along, such as the light in
 > the room, and averaging cannot remove such a drift.
 
-## Step 2: the neighbouring colour and the ratio d/s
+## The neighbouring colour and the ratio d/s
 
-- Now let colour B shine and measure in the same way.
-- Work out for each window the distance `d` between the two means.
-- Take the larger of the two spreads as `s` and divide `d` by `s`.
+7. Now let colour B shine and measure in the same way as in task 4.
+8. Work out for each window the distance `d` between the two means, take the
+   larger of the two spreads as `s`, divide `d` by `s` and enter everything in
+   the table.
 
 The two bands do not touch as long as `d` is larger than `6 · s`, that is as
 long as `d/s` stays above 6.
@@ -190,8 +195,9 @@ long as `d/s` stays above 6.
 | 5 | | | | | | |
 | 10 | | | | | | |
 
-5. From which window on are the bands of your two colours apart?
-6. What would it mean for your speed to use this window all the time?
+9. Read off from which window on the bands of your two colours are apart, and
+   write down what it would mean for your speed to use this window all the
+   time.
 
 > [!SOLUTION]
 > Averaging hardly moves the means, so the distance `d` stays roughly the same
@@ -202,11 +208,10 @@ long as `d/s` stays above 6.
 > per second. If `d/s` is below 2 already in window 1, even window 10 is barely
 > enough, and it pays more to choose two colours that lie further apart.
 
-## Step 3: how many symbols fit?
+## How many symbols fit?
 
-- Measure the floor: the LED off.
-- Measure the ceiling: the LED white.
-- Use for both the window you would use for your transmission.
+10. Measure the floor with the LED off and the ceiling with the LED white, both
+    in the window you would use for your transmission.
 
 The range is the ceiling minus the floor, a band is `6 · s` wide, and the range
 divided by the width of one band tells you how many symbols fit if you spread
@@ -223,6 +228,10 @@ symbols = int((ceiling - floor) // band)
 print(f"range {ceiling - floor}, band {band:.0f} wide, room for {symbols} symbols")
 ```
 
+11. Put the floor, the ceiling and the larger spread into the program and enter
+    the result in the table, together with the alphabet you actually reached
+    in Challenge 1.
+
 | | Value |
 |---|---|
 | Window | |
@@ -233,24 +242,21 @@ print(f"range {ceiling - floor}, band {band:.0f} wide, room for {symbols} symbol
 | Symbols that fit | |
 | Your alphabet from Challenge 1 | |
 
-7. How many symbols fit according to your calculation, and how many did you
-   actually reach in Challenge 1?
-8. If the calculation is higher than your alphabet, look for the reason: what
-   does the calculation assume that is not true of your link?
-9. The calculation only knows the channel `c`, that is only the brightness.
-   What does that mean for the number of symbols your link can carry?
+12. Compare the calculation with your alphabet. If it promises more symbols
+    than you reached, write down what the calculation assumes that is not true
+    of your link.
 
 > [!SOLUTION]
 > The calculation assumes that your colours are spread evenly between floor
 > and ceiling, that they all scatter equally and that the light stays the same
 > between calibrating and measuring. Usually at least one of these is not
 > true: colours crowd together in `c`, bright colours scatter more than dark
-> ones, or the light has changed. Conversely, two colours that lie almost at
-> the same place in `c` can differ clearly in `r`, `g` or `b`. If your receiver
-> compares all three colour channels, the link can therefore carry more symbols
-> than the calculation with `c` alone gives.
+> ones, or the light has changed.
 
 ## Evaluation
+
+- The calculation only knows the channel `c`, that is only the brightness.
+  What does that mean for the number of symbols your link can carry?
 
 - Which measure would you try next to increase `d/s`: a shorter distance, a
   shield against the room light, colours that lie further apart or a longer
@@ -259,6 +265,12 @@ print(f"range {ceiling - floor}, band {band:.0f} wide, room for {symbols} symbol
   one if you want to transmit as much as possible in the same time? In the
   [[distinguishability-lab]] you can try both before you decide for your own
   link.
+
+> [!SOLUTION]
+> Two colours that lie almost at the same place in `c` can differ clearly in
+> `r`, `g` or `b`. If your receiver compares all three colour channels, the
+> link can therefore carry more symbols than the calculation with `c` alone
+> gives.
 
 Why nothing but the ratio `d/s` decides the size of the alphabet, and what
 every measure against noise costs, is explained in the lesson

@@ -270,9 +270,9 @@ export function item(site, doc, lang) {
   const inPaths = site.paths.filter((p) => site.pathSteps(p).some((s) => s.id === doc.id));
   const link = (target) => html`<a href="${site.url(target, lang)}">${site.localize(target, lang).titleHtml}</a>`;
   const isQuiz = hasType(lead, 'quiz');
-  // in an experiment the numbered lists are the tasks, set off from the text
-  // around them (site.css, "Tasks in an experiment")
-  const prose = hasType(lead, 'experiment') ? 'prose has-tasks' : 'prose';
+  // in an experiment or an exercise the numbered lists are the tasks, set off
+  // from the text around them (site.css, "Tasks in an experiment or exercise")
+  const prose = ['experiment', 'exercise'].some((type) => hasType(lead, type)) ? 'prose has-tasks' : 'prose';
   const v = site.vocabulary;
   // a lesson's own text in parts, with its material between them (build/embed.mjs)
   const parts = site.parts(doc, lang);
