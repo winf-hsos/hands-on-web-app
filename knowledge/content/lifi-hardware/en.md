@@ -3,7 +3,7 @@ title: "The course module `lifi_hardware`"
 summary: >-
   What the Python module lifi_hardware takes off your hands and what it deliberately leaves visible, how you address LED and sensor with it, and what its measurement log records.
 translation_of: de
-based_on: 2026-11-04
+based_on: 2026-11-08
 ---
 
 In Python, a module is a piece of finished program code that you pull into
@@ -234,6 +234,13 @@ laptop or each on its own. What was sent and what was received, `run_test`
 notes itself through `note_sent()` and `note_received()` and sends it to the
 course server, which compares; your code does not call these two functions, so
 that the result does not depend on what your script considers sent.
+
+From version 0.7.0 on, `run_test` also takes the two settings of the sensor,
+such as `gain=4, integration_time=101`, and uses them to set the sensor of the
+receiving device before the calibration; a laptop that only sends skips them.
+The template of Challenge 1 sets them at the top of the file as `GAIN` and
+`INTEGRATION_TIME`. Without the two, the sensor measures with 16 and 154 ms,
+as after every start.
 
 ## The measurement log and the cockpit
 

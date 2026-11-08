@@ -10,7 +10,7 @@ This page is for looking things up. Why the course module exists, how to
 install it and what its measurement log records is explained in the
 introduction [[lifi-hardware]]; this page says what each function does and,
 above all, how to work when two devices hang on the same laptop. Everything
-refers to version 0.6.0. One line tells you which version you have:
+refers to version 0.7.0. One line tells you which version you have:
 
 ```python static
 import lifi_hardware
@@ -32,7 +32,7 @@ in your own hands and is the way for two devices in one script, and `sender`,
 | `LifiDevice.connect(...)` | connects to one device and returns it as an object with `.led` and `.sensor` |
 | `Reading` | one reading with the four values `r`, `g`, `b` and `c` |
 | `sender`, `receiver` | the two devices in the test of Challenge 1, each with `.led` and `.sensor` |
-| `run_test(...)` | runs the test of Challenge 1 |
+| `run_test(...)` | runs the test of Challenge 1 and sets the receiver's sensor with `gain=` and `integration_time=` (from 0.7.0) |
 
 ## The LED
 
@@ -228,8 +228,11 @@ For the test of [[lifi-challenge-1]] you do not have to write any of this
 yourself. `sender` and `receiver` find the devices by themselves: if both
 hang on the same laptop, the course module lights one LED and asks whether
 this device sends or receives, and then, as in the example above, keeps one
-log per device, `lifi_log_<UID>.jsonl`. What your file for the test looks
-like is in [[lifi-hardware]].
+log per device, `lifi_log_<UID>.jsonl`. The two settings of the sensor are
+not yours to set there with `set_gain()` or `set_integration_time()` either;
+they go into `GAIN` and `INTEGRATION_TIME` at the top of the template, and
+`run_test` applies them to the receiver before the calibration. What your file
+for the test looks like is in [[lifi-challenge-1]].
 
 ## When an error message comes
 

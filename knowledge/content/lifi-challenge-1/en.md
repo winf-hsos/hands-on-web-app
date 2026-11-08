@@ -10,7 +10,7 @@ objectives:
     - "work out from the number of colours how many bits a symbol carries"
     - "trace confusions in the result back to their cause"
 translation_of: de
-based_on: 2026-11-04
+based_on: 2026-11-08
 ---
 
 In this challenge you find out how many colours your link tells apart in 20
@@ -34,10 +34,12 @@ test script calls three of your functions; how you build them is up to you.
 | `calibrate(readings)` | learns what each colour looks like at the receiver, from the readings the test hands over |
 | `send_symbol(name)` | shows the colour with this name on the sending LED; already done |
 | `receive_symbol()` | measures and returns the name of the colour it recognised |
-| `run_test(...)` | the last line; it runs the test, and you do not change it |
+| `GAIN`, `INTEGRATION_TIME` | the two settings of the sensor at the receiver, at the top of the file |
+| `run_test(...)` | the last line; it sets the sensor, runs the test, and you do not change it |
 
-`run_test`, `sender` and `receiver` come from the course module from version
-0.6.0 on ([[lifi-hardware]]). This is the template; wherever it says `TODO`,
+`run_test`, `sender` and `receiver` come from the course module, the two settings
+for `run_test` from version 0.7.0 on ([[lifi-hardware]]); you fetch a newer
+version with the same `pip install` as for installing. This is the template; wherever it says `TODO`,
 your code is missing:
 
 ```python static file=alphabet.py
@@ -72,6 +74,13 @@ COLORS = {
     # "magenta": (255, 0, 255),
 }
 
+# The two settings of the receiving sensor. These are the values it starts
+# with; run_test sets them before the calibration, so change them here and
+# not inside your functions. Gain: 1, 4, 16 or 60. Integration time in
+# milliseconds: 2.4, 24, 101, 154 or 700.
+GAIN = 16
+INTEGRATION_TIME = 154
+
 # What the receiver learns during calibration, one entry per colour name
 REFERENCES = {}
 
@@ -102,7 +111,8 @@ def receive_symbol():
     return "off"
 
 
-run_test(send_symbol, receive_symbol, calibrate, symbols=COLORS)
+run_test(send_symbol, receive_symbol, calibrate, symbols=COLORS,
+         gain=GAIN, integration_time=INTEGRATION_TIME)
 ```
 
 ## Running the test
@@ -122,7 +132,7 @@ server brings them together through your team, and both need WLAN for this.
 Every run gets a fresh random sequence from the course server, and the result
 with every mistake, named after your colours, appears in the terminal and in your
 [[lifi-cockpit|team cockpit]]. Only runs with 20 attempts count; for quick
-tries in between, add `runs=5` to the last line.
+tries in between, add `runs=5` to the call of `run_test` at the end of the file.
 
 Without the server, a run with both devices on one laptop is a practice run
 that does not count. To practise like this even though the server is
@@ -139,6 +149,26 @@ On a Mac it holds for this one call only:
 ```bash
 LIFI_SERVER=off python3 alphabet.py
 ```
+
+## The settings of the sensor
+
+The sensor has two settings, and both change what your readings look like.
+The gain (`GAIN`: 1, 4, 16 or 60) makes weak light visible, but the noise as
+well, and at a high gain bright colours hit the top of the scale, where they
+all look the same. The integration time (`INTEGRATION_TIME`: 2.4, 24, 101, 154
+or 700 milliseconds) sets how long the sensor collects light for one reading;
+longer gives calmer values, but fewer readings per second.
+
+The template starts with 16 and 154, the values the sensor gets every time a
+program starts. Which settings suit your link, only your own runs can show, so
+you change the two lines at the top of the file and compare the results.
+`run_test` sets them on the receiving device before the calibration, so that
+the calibration and the test measure the same way. Inside `calibrate` or
+`receive_symbol` it would be too late, because the calibration readings are
+taken before `calibrate` is called. Every run shows the settings at its start,
+and the team cockpit lists them next to the result. With two laptops, the
+values in the file of the receiving laptop count, and whatever you set in the
+Brick Viewer is lost at the next start of a program.
 
 ## Task 1: Calibrate
 
@@ -337,6 +367,7 @@ them as a mistake.
 - choosing colours that look nice rather than colours the sensor tells apart
   well
 
-**For the quick ones:** try different integration times of the sensor. Longer
+**For the quick ones:** try different integration times of the sensor
+through `INTEGRATION_TIME`. Longer
 measurements are calmer but allow fewer measurements per second, and exactly
 this trade-off decides your throughput in challenge 4.

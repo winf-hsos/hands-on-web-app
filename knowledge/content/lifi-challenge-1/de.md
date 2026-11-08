@@ -16,7 +16,7 @@ topics: [transferring-information, representing-information]
 modules: [dup]
 project: lifi
 status: published
-updated: 2026-11-04
+updated: 2026-11-08
 ---
 
 In dieser Challenge findet ihr heraus, wie viele Farben eure Strecke in 20
@@ -41,10 +41,12 @@ Sache.
 | `calibrate(readings)` | lernt aus den Messwerten, die der Test übergibt, wie jede Farbe beim Empfänger aussieht |
 | `send_symbol(name)` | zeigt die Farbe mit diesem Namen auf der LED des Senders; schon fertig |
 | `receive_symbol()` | misst und gibt den Namen der erkannten Farbe zurück |
-| `run_test(...)` | die letzte Zeile; sie führt den Test aus, und ihr ändert sie nicht |
+| `GAIN`, `INTEGRATION_TIME` | die beiden Einstellungen des Sensors am Empfänger, oben in der Datei |
+| `run_test(...)` | die letzte Zeile; sie stellt den Sensor ein, führt den Test aus, und ihr ändert sie nicht |
 
-`run_test`, `sender` und `receiver` kommen aus dem Kursmodul ab Version 0.6.0
-([[lifi-hardware]]). So sieht die Vorlage aus; wo `TODO` steht, fehlt euer Code:
+`run_test`, `sender` und `receiver` kommen aus dem Kursmodul, die beiden Einstellungen an
+`run_test` ab Version 0.7.0 ([[lifi-hardware]]); ältere Fassungen holt ihr mit
+demselben `pip install` wie bei der Installation neu. So sieht die Vorlage aus; wo `TODO` steht, fehlt euer Code:
 
 ```python static file=alphabet.py
 """
@@ -78,6 +80,13 @@ COLORS = {
     # "magenta": (255, 0, 255),
 }
 
+# The two settings of the receiving sensor. These are the values it starts
+# with; run_test sets them before the calibration, so change them here and
+# not inside your functions. Gain: 1, 4, 16 or 60. Integration time in
+# milliseconds: 2.4, 24, 101, 154 or 700.
+GAIN = 16
+INTEGRATION_TIME = 154
+
 # What the receiver learns during calibration, one entry per colour name
 REFERENCES = {}
 
@@ -108,7 +117,8 @@ def receive_symbol():
     return "off"
 
 
-run_test(send_symbol, receive_symbol, calibrate, symbols=COLORS)
+run_test(send_symbol, receive_symbol, calibrate, symbols=COLORS,
+         gain=GAIN, integration_time=INTEGRATION_TIME)
 ```
 
 ## Den Test starten
@@ -129,8 +139,8 @@ WLAN.
 Jeder Durchgang bekommt eine neue Zufallsfolge vom Kursserver, und das Ergebnis
 erscheint mit jedem Fehler, benannt nach euren Farben, im Terminal und in eurem
 [[lifi-cockpit|Team-Cockpit]]. Gewertet werden nur Durchgänge mit 20 Versuchen;
-für schnelle Versuche zwischendurch setzt ihr in der letzten Zeile `runs=5`
-dazu.
+für schnelle Versuche zwischendurch setzt ihr im Aufruf von `run_test` am Ende
+der Datei `runs=5` dazu.
 
 Ohne Server läuft mit beiden Geräten an einem Laptop ein Übungsdurchgang, der
 nicht zählt. Wollt ihr so üben, obwohl der Server erreichbar ist, schaltet ihr
@@ -147,6 +157,27 @@ Auf dem Mac gilt es nur für den einen Aufruf:
 ```bash
 LIFI_SERVER=off python3 alphabet.py
 ```
+
+## Die Einstellungen des Sensors
+
+Der Sensor hat zwei Einstellungen, und beide verändern, wie eure Messwerte
+aussehen. Die Verstärkung (`GAIN`: 1, 4, 16 oder 60) macht schwaches Licht
+sichtbar, das Rauschen aber auch, und bei hoher Verstärkung stoßen helle Farben
+an den oberen Rand der Skala, wo sie alle gleich aussehen. Die Integrationszeit
+(`INTEGRATION_TIME`: 2.4, 24, 101, 154 oder 700 Millisekunden) legt fest, wie
+lange der Sensor für eine Messung Licht sammelt; länger gibt ruhigere Werte,
+aber weniger Messungen pro Sekunde.
+
+Die Vorlage beginnt mit 16 und 154, den Werten, die der Sensor bei jedem
+Programmstart bekommt. Welche Einstellungen zu eurer Strecke passen, zeigen nur
+eure eigenen Durchgänge, also ändert ihr die beiden Zeilen oben in der Datei und
+vergleicht die Ergebnisse. `run_test` stellt sie am empfangenden Gerät vor der
+Kalibrierung ein, damit Kalibrierung und Test gleich messen. In `calibrate` oder
+`receive_symbol` wäre es zu spät, weil die Messwerte für die Kalibrierung schon
+genommen sind, bevor `calibrate` aufgerufen wird. Jeder Durchgang zeigt die
+Einstellungen zu Beginn an, und das Team-Cockpit nennt sie neben dem Ergebnis.
+Bei zwei Laptops zählen die Werte in der Datei des empfangenden Laptops, und was
+ihr im Brick Viewer einstellt, geht beim nächsten Programmstart verloren.
 
 ## Aufgabe 1: Kalibrieren
 
@@ -346,6 +377,7 @@ Messwert, der zu keiner passt, als Fehler.
 - Farben wählen, die schön aussehen, statt solche, die der Sensor gut
   unterscheidet
 
-**Für Schnelle:** Probiert verschiedene Integrationszeiten des Sensors aus.
+**Für Schnelle:** Probiert über `INTEGRATION_TIME` verschiedene
+Integrationszeiten des Sensors aus.
 Längere Messungen sind ruhiger, erlauben aber weniger Messungen pro Sekunde,
 und genau dieser Tausch entscheidet in Challenge 4 über euren Durchsatz.

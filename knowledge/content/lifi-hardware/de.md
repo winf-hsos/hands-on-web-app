@@ -10,7 +10,7 @@ topics: [working-with-the-computer, programming-with-python]
 modules: [dup]
 project: lifi
 status: published
-updated: 2026-11-04
+updated: 2026-11-08
 ---
 
 Ein Modul ist in Python ein Stück fertiger Programmcode, das ihr mit einer
@@ -241,6 +241,13 @@ notiert `run_test` selbst über `note_sent()` und `note_received()` und schickt
 es an den Kursserver, der vergleicht; euer Code ruft diese beiden Funktionen
 nicht auf, damit das Ergebnis nicht davon abhängt, was euer Skript für
 gesendet hält.
+
+Ab Version 0.7.0 nimmt `run_test` außerdem die beiden Einstellungen des
+Sensors an, etwa `gain=4, integration_time=101`, und stellt damit den Sensor
+des empfangenden Geräts vor der Kalibrierung ein; ein Laptop, der nur sendet,
+übergeht sie. Die Vorlage von Challenge 1 legt sie oben in der Datei als
+`GAIN` und `INTEGRATION_TIME` fest. Ohne die beiden Angaben misst der Sensor
+wie nach jedem Start mit 16 und 154 ms.
 
 ## Das Messprotokoll und das Cockpit
 
