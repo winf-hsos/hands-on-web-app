@@ -296,6 +296,12 @@ The body is plain Markdown with a few conventions:
   should be a task; steps of a procedure that are not tasks are written as a
   bulleted list. A task is something to do; a question that only asks for
   reflection goes into the evaluation at the end.
+- **Experiment or exercise** (Nicolas, 2026-11-08, a first rule): in an
+  experiment nobody knows beforehand exactly what will come out, because the
+  result depends on the learner's own setup, data or model; in an exercise a
+  clear answer is expected, which a solution can show. `measuring-your-noise`
+  is an experiment for this reason: its spread and its `d/s` come from the
+  learner's own link.
 - **Python code** in a ` ```python ` block becomes a small editor on the page
   that runs the code in the browser (Pyodide, Python as WebAssembly, loaded on
   the first click). `input()` is answered in a field below the output. A

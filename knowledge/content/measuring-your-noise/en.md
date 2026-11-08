@@ -6,7 +6,7 @@ summary: >-
   calculate how many symbols fit between the floor and the ceiling of your
   link.
 objectives:
-  intro: "In this exercise you measure the spread of your own link, and afterwards you can:"
+  intro: "In this experiment you measure the spread of your own link, and afterwards you can:"
   goals:
     - "determine the mean and the spread `s` from ten readings of one colour"
     - "show with your own numbers how averaging over windows of 1, 3, 5 and 10 readings reduces the spread and what it costs in time"
@@ -20,7 +20,7 @@ You measure a single colour again and again without changing anything and see
 how far the numbers wander all the same. From this spread, the distance to the
 neighbouring colour and the range between the darkest and the brightest value
 you finally work out how many symbols your link can carry, and compare that
-with the alphabet you reached in Challenge 1. The exercise assumes that your
+with the alphabet you reached in Challenge 1. The experiment assumes that your
 link already works: the LED of one device shines into the sensor of the other,
 and you can address both from Python. The twelve tasks are numbered through
 the whole page.
@@ -40,7 +40,7 @@ the whole page.
 
 1. Place the two devices as you used them in Challenge 1 and write down the
    distance and whether the ceiling light is on. After that, change nothing
-   about them until the end of the exercise: not the distance, not the optics
+   about them until the end of the experiment: not the distance, not the optics
    and not the light in the room.
 
 With two laptops, the sending program runs on one and the receiving program on

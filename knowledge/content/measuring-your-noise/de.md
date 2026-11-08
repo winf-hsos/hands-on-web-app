@@ -1,5 +1,5 @@
 ---
-type: exercise
+type: experiment
 code: 8794
 title: Die eigene Streuung messen
 summary: >-
@@ -7,7 +7,7 @@ summary: >-
   ausrechnen, dann den Abstand zur Nachbarfarbe ins Verhältnis setzen und
   nachrechnen, wie viele Symbole zwischen Boden und Decke eurer Strecke passen.
 objectives:
-  intro: "In dieser Übung misst du die Streuung deiner eigenen Strecke und kannst danach:"
+  intro: "In diesem Experiment misst du die Streuung deiner eigenen Strecke und kannst danach:"
   goals:
     - "aus zehn Ablesungen einer Farbe Mittelwert und Streuung `s` bestimmen"
     - "an euren eigenen Zahlen zeigen, wie das Mitteln über Fenster von 1, 3, 5 und 10 Ablesungen die Streuung verkleinert und was es an Zeit kostet"
@@ -27,7 +27,7 @@ Ihr messt eine einzige Farbe immer wieder, ohne etwas zu verändern, und seht,
 wie weit die Zahlen trotzdem wandern. Aus dieser Streuung, dem Abstand zur
 Nachbarfarbe und dem Bereich zwischen dunkelstem und hellstem Wert rechnet ihr
 am Ende aus, wie viele Symbole eure Strecke tragen kann, und vergleicht das mit
-dem Alphabet, das ihr in Challenge 1 erreicht habt. Die Übung setzt
+dem Alphabet, das ihr in Challenge 1 erreicht habt. Das Experiment setzt
 voraus, dass eure Strecke schon läuft: Die LED des einen Geräts leuchtet in den
 Sensor des anderen, und ihr könnt beide aus Python ansprechen. Die zwölf
 Aufgaben sind über die ganze Seite durchnummeriert.
@@ -46,7 +46,7 @@ Aufgaben sind über die ganze Seite durchnummeriert.
 
 1. Stellt die beiden Geräte so auf, wie ihr sie in Challenge 1 benutzt habt,
    und notiert den Abstand und ob das Deckenlicht an ist. Danach verändert ihr
-   bis zum Ende der Übung nichts mehr daran: nicht den Abstand, nicht die Optik
+   bis zum Ende des Experiments nichts mehr daran: nicht den Abstand, nicht die Optik
    und nicht das Licht im Raum.
 
 Mit zwei Laptops läuft das Sendeprogramm am einen und das Empfangsprogramm am
