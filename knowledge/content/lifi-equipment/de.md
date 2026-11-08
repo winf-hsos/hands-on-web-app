@@ -15,8 +15,8 @@ status: published
 updated: 2026-11-04
 ---
 
-Bevor die erste Lektion beginnt, braucht ihr euer Werkzeug. Die fünf Seiten
-hier sind zum Nachschlagen gedacht: Ihr müsst sie nicht am Stück lesen,
+Bevor die erste Lektion beginnt, braucht ihr euer Werkzeug. Die Seiten hier
+sind zum Nachschlagen gedacht: Ihr müsst sie nicht am Stück lesen,
 sondern kommt zurück, sobald ihr etwas davon braucht.
 
 Woraus das Gerät auf eurem Tisch besteht und was ihr selbst dazubauen dürft,
@@ -35,6 +35,8 @@ Eure Programme sprechen mit LED und Sensor über das Kursmodul
 sichtbar lässt.
 
 ![Das Kursmodul lifi_hardware](item:lifi-hardware)
+
+![lifi_hardware nachschlagen](item:lifi-hardware-reference)
 
 Kommt auf der Strecke nichts an, seht ihr zuerst im Cockpit nach, denn es
 zeigt live, was eure LED sendet und was euer Sensor misst.

@@ -8,7 +8,7 @@ translation_of: de
 based_on: 2026-11-04
 ---
 
-Before the first lesson begins, you need your tools. The five pages here are
+Before the first lesson begins, you need your tools. The pages here are
 meant for looking things up: you do not have to read them in one go, but come
 back as soon as you need one of them.
 
@@ -28,6 +28,8 @@ Your programs talk to the LED and the sensor through the course module
 leaves the measuring visible.
 
 ![The course module lifi_hardware](item:lifi-hardware)
+
+![Looking up lifi_hardware](item:lifi-hardware-reference)
 
 When nothing arrives on the link, look at the cockpit first, because it shows
 live what your LED sends and what your sensor measures.
