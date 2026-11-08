@@ -68,6 +68,13 @@ function bracket(x1, x2, y, colour) {
   return `<path d="M${x1},${y + 15} L${x1},${y} L${x2},${y} L${x2},${y + 15}" fill="none" stroke="${colour}" stroke-width="3"/>`;
 }
 
+/* The symbol for a mean, x with a bar, at 32 in mono: the bar spans the x
+ * (19.2 wide) and sits 14 above the centre line, just over the x-height. */
+function xbar(x, cy, colour) {
+  return d.label(x, 0, "x", { size: 32, mono: true, color: colour, centerY: cy }) +
+    d.line(x + 1, cy - 15, x + 18, cy - 15, { color: colour, width: 3 });
+}
+
 // Bootstrap Icons "exclamation-triangle-fill" 1.11.3 (MIT, (c) The Bootstrap Authors)
 const ICON_WARNING = '<path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>';
 
@@ -175,19 +182,22 @@ window.drawDark = function (_slide, step = 0) {
 };
 
 /* --- ten readings of one colour ---------------------------------------------------
- * The readings arrive one after the other, so they appear in time, and yellow,
- * the colour of "current", moves to the newest. Then the same ten values land
- * on a number line, and the spread becomes visible.
- * The swatch is the theme's red standing for the light of the LED, as in the
- * measuring deck; next to a real colour the labels stay gray and white, and the
- * yellow of "current" is allowed because yellow is not the colour shown.
- * Values: 48 mono, three digits are 86 wide, 120 apart. Number line 440 to
- * 1520 for the values 204 to 223. Forward only: readings do not leave. */
+ * The first reading is there from the start; the other nine arrive one after
+ * the other (Nicolas, 2026-11-08: no yellow "current" on the newest, it read
+ * as a meaning of its own). Then the same ten values land on a number line
+ * with their spread, and last the mean appears as a line with its symbol.
+ * The swatch is the theme's red standing for the light of the LED, so the
+ * labels stay gray and white; the mean is blue as on the other slides that
+ * point to a reference value. Values: 48 mono, three digits are 86 wide, 120
+ * apart. Number line 440 to 1520 for the values 204 to 223; the mean 213.5
+ * sits at x 980, between the tick labels 210 (781) and 215 (1065), so its
+ * line can cross the label row. Forward only: readings do not leave. */
 (function () {
   if (!$("fig-readings")) return;
   const c = d.colors();
   const values = [214, 211, 218, 209, 216, 213, 220, 207, 215, 212];
-  const lo = 204, hi = 223, ax = 440, aw = 1080, ay = 380;
+  const mean = values.reduce((sum, v) => sum + v, 0) / values.length;
+  const lo = 204, hi = 223, ax = 440, aw = 1080, ay = 400;
   const px = (v) => ax + ((v - lo) / (hi - lo)) * aw;
   const parts = [
     rect(120, 70, 200, 200, c.red, 10),
@@ -196,51 +206,81 @@ window.drawDark = function (_slide, step = 0) {
     d.label(440, 0, "what the sensor reports", { size: 32, color: c.gray, centerY: 85 }),
   ];
   values.forEach((v, i) => {
-    parts.push(d.g("v" + i, d.label(440 + i * 120, 0, String(v), { size: 48, mono: true, color: c.yellow, centerY: 170 })));
+    const text = d.label(440 + i * 120, 0, String(v), { size: 48, mono: true, color: c.white, centerY: 170 });
+    parts.push(i === 0 ? text : d.g("v" + i, text));
   });
   const axis = [d.line(ax, ay, ax + aw, ay, { color: c.dark, width: 2 })];
   [205, 210, 215, 220].forEach((v) => {
     axis.push(d.line(px(v), ay - 8, px(v), ay + 8, { color: c.dark, width: 2 }));
-    axis.push(d.label(px(v), 0, String(v), { size: 32, mono: true, color: c.gray, anchor: "middle", centerY: ay - 40 }));
+    axis.push(d.label(px(v), 0, String(v), { size: 32, mono: true, color: c.gray, anchor: "middle", centerY: ay - 45 }));
   });
   parts.push(d.g("axis", ...axis));
   values.forEach((v, i) => parts.push(d.g("p" + i, circle(px(v), ay, 10, c.light))));
   const a0 = px(Math.min(...values)), b0 = px(Math.max(...values));
   parts.push(d.g("spread",
     bracket(a0, b0, ay + 40, c.light),
-    d.label((a0 + b0) / 2, 0, "spread: 207 to 220", { size: 32, color: c.white, anchor: "middle", centerY: ay + 110 })));
+    d.label((a0 + b0) / 2, 0, "spread: 207 to 220", { size: 32, color: c.white, anchor: "middle", centerY: ay + 100 })));
+  const mx = px(mean);
+  parts.push(d.g("mean",
+    d.line(mx, 250, mx, ay + 25, { color: c.blue, width: 4 }),
+    xbar(mx + 20, 262, c.blue),
+    d.label(mx + 54, 0, "= " + mean.toFixed(1), { size: 32, mono: true, color: c.blue, centerY: 262 })));
   $("fig-readings").innerHTML = d.svg(1680, 530, ...parts);
   const a = d.anim("fig-readings");
-  const next = (i) => a.seq(a.par(a.show("v" + i, { dur: 200 }), a.color("v" + (i - 1), "white", { part: "text", dur: 200 })), a.wait(80));
-  a.step(...values.slice(1).map((_, k) => next(k + 1)), a.color("v9", "white", { part: "text", dur: 200 }));
+  a.step(...values.slice(1).map((_, k) => a.seq(a.show("v" + (k + 1), { dur: 200 }), a.wait(80))));
   a.step(a.show("axis", { dur: 400 }), a.seq(...values.map((_, i) => a.show("p" + i, { dur: 120 }))), a.show("spread", { dur: 400 }));
+  a.step(a.show("mean", { dur: 400 }));
 })();
 
-window.drawSpread = function (_slide, step = 0) {
+/* --- five readings, one mean ---------------------------------------------------------
+ * Twenty readings of the same colour in four groups of five. A yellow copy of
+ * each group (yellow: the group being averaged right now) travels down and
+ * meets at the mean of its five, where one white dot stays. The first group
+ * runs slowly, the other three faster; then brackets compare the spread of
+ * the single readings with the spread of the means. Same scale for both rows:
+ * values 205 to 222 on x 420 to 1500. Single readings jitter up and down by 22
+ * so that equal values stay visible; the means do not need it. Forward only:
+ * a mean does not split back into its readings. */
+(function () {
+  if (!$("fig-spread")) return;
   const c = d.colors();
-  const x0 = 210, w = 1250;
-  const top = [0.08, 0.19, 0.25, 0.37, 0.44, 0.52, 0.61, 0.73, 0.82, 0.94];
-  const bottom = [0.39, 0.43, 0.46, 0.48, 0.50, 0.52, 0.55, 0.57, 0.60, 0.62];
+  const groups = [[214, 211, 218, 209, 210], [213, 220, 207, 215, 218],
+    [217, 210, 214, 208, 216], [211, 219, 216, 212, 218]];
+  const lo = 205, hi = 222, ax = 420, aw = 1080, yt = 190, yb = 430;
+  const px = (v) => ax + ((v - lo) / (hi - lo)) * aw;
+  const means = groups.map((g) => g.reduce((sum, v) => sum + v, 0) / g.length);
+  const all = groups.flat();
+  const jitter = (i) => ((i % 3) - 1) * 22;
   const parts = [
-    d.label(x0, 100, "individual readings", { size: 32, color: c.gray }),
-    d.label(x0, 395, "averages of five", { size: 32, color: c.gray }),
-    d.line(x0, 250, x0 + w, 250, { color: c.dark, width: 3 }),
-    d.line(x0, 530, x0 + w, 530, { color: c.dark, width: 3 }),
+    d.label(ax - 40, 0, "single readings", { size: 32, color: c.gray, anchor: "end", centerY: yt }),
+    d.label(ax - 40, 0, "means of five", { size: 32, color: c.gray, anchor: "end", centerY: yb }),
+    d.line(ax, yt, ax + aw, yt, { color: c.dark, width: 2 }),
+    d.line(ax, yb, ax + aw, yb, { color: c.dark, width: 2 }),
   ];
-  top.forEach((p, i) => parts.push(circle(x0 + p * w, 250 + ((i % 3) - 1) * 22, 10, c.light)));
-  bottom.forEach((p, i) => parts.push(circle(x0 + p * w, 530 + ((i % 3) - 1) * 22, 10, c.light)));
-  if (step >= 1) {
-    parts.push(d.arrow(x0 + top[0] * w, 330, x0 + top[top.length - 1] * w, 330, { color: c.gray, width: 3, head: 12 }));
-    parts.push(d.arrow(x0 + top[top.length - 1] * w, 330, x0 + top[0] * w, 330, { color: c.gray, width: 3, head: 12 }));
-    parts.push(d.label(x0 + top[0] * w + 10, 315, "spread", { size: 32, color: c.gray }));
-  }
-  if (step >= 2) {
-    const meanX = x0 + 0.51 * w;
-    parts.push(d.line(meanX, 170, meanX, 590, { color: c.blue, width: 5 }));
-    parts.push(d.label(meanX + 28, 160, "mean", { size: 32, color: c.blue }));
-  }
-  return put("fig-spread", d.svg(1680, 650, ...parts));
-};
+  all.forEach((v, i) => parts.push(circle(px(v), yt + jitter(i), 10, c.light)));
+  groups.forEach((g, k) => {
+    const ghosts = g.map((v, j) => d.g(`gh${k}-${j}`, circle(px(v), yt + jitter(k * 5 + j), 10, c.yellow)));
+    parts.push(d.g("gh" + k, ...ghosts));
+    parts.push(d.g("m" + k, circle(px(means[k]), yb, 12, c.white)));
+  });
+  const t0 = px(Math.min(...all)), t1 = px(Math.max(...all));
+  const m0 = px(Math.min(...means)), m1 = px(Math.max(...means));
+  const fmt = (v) => (Number.isInteger(v) ? String(v) : v.toFixed(1));
+  parts.push(d.g("brackets",
+    bracket(t0, t1, yt + 50, c.light),
+    d.label((t0 + t1) / 2, 0, `${fmt(Math.min(...all))} to ${fmt(Math.max(...all))}`, { size: 32, mono: true, color: c.white, anchor: "middle", centerY: yt + 100 }),
+    bracket(m0, m1, yb + 40, c.light),
+    d.label((m0 + m1) / 2, 0, `${fmt(Math.min(...means))} to ${fmt(Math.max(...means))}`, { size: 32, mono: true, color: c.white, anchor: "middle", centerY: yb + 90 })));
+  $("fig-spread").innerHTML = d.svg(1680, 560, ...parts);
+  const a = d.anim("fig-spread");
+  const merge = (k, slow) => a.seq(
+    a.show("gh" + k, { dur: slow ? 400 : 200 }), a.wait(slow ? 250 : 80),
+    a.par(...groups[k].map((v, j) => a.move(`gh${k}-${j}`, px(means[k]) - px(v), yb - yt - jitter(k * 5 + j), { dur: slow ? 1000 : 550 }))),
+    a.par(a.hide("gh" + k, { dur: 200 }), a.show("m" + k, { dur: 200 })));
+  a.step(merge(0, true));
+  a.step(merge(1, false), merge(2, false), merge(3, false));
+  a.step(a.show("brackets", { dur: 400 }));
+})();
 
 /* ===================== part 2: what decides your alphabet ===================== */
 
@@ -275,7 +315,7 @@ window.drawSpread = function (_slide, step = 0) {
         d.label(x0 + width + 30, 0, "288 readings", { size: 32, color: c.gray, centerY: mid }));
       return;
     }
-    parts.push(d.g("row" + k, ...frame, d.g("n" + k, d.label(x0 + width + 30, 0, "0 readings", { size: 32, color: c.gray, centerY: mid }))));
+    parts.push(d.g("row" + k, ...frame, d.g("n" + k, d.label(x0 + width + 30, 0, "0 means", { size: 32, color: c.gray, centerY: mid }))));
     const count = Math.floor(raw.length / win), bw = width / count;
     for (let i = 0; i < count; i += 1) {
       const piece = raw.slice(i * win, (i + 1) * win);
@@ -291,44 +331,50 @@ window.drawSpread = function (_slide, step = 0) {
     const bars = Array.from({ length: count }, (_, i) => a.seq(a.wait(slot - 10), a.show(`b${k}-${i}`, { dur: 10 })));
     a.step(a.show("row" + k, { dur: 300 }), a.show("now" + k, { dur: 100 }),
       a.par(a.move("now" + k, width, 0, { dur: T, ease: "linear" }),
-        a.count("n" + k, count, { from: 0, dur: T, ease: "linear", suffix: " readings" }),
+        a.count("n" + k, count, { from: 0, dur: T, ease: "linear", suffix: " means" }),
         a.seq(...bars)),
       a.hide("now" + k, { dur: 200 }));
   });
 })();
 
-/* --- two symbols, two clouds, narrowing ------------------------------------------------
+/* --- two symbols, two clouds, and their ratio -----------------------------------------
  * Two symbols at a fixed distance d (560 to 1120, boundary at 840). The clouds
- * start wide (half-width 520, reaching from x 40 to 1640), and the parts that reach across the boundary
- * are red: those readings land on the wrong side. Then the clouds narrow to a
- * half-width of 200, as they do with a longer window or shielded light; seven
- * widths cross-fade one into the next, the red parts shrink and vanish below
- * a half-width of 280, and the verdict changes. back: "play", since clouds
- * that widen again tell nothing wrong: faster readings do exactly that.
+ * start wide (half-width 520, reaching from x 40 to 1640), and the parts that
+ * reach across the boundary are red: those readings land on the wrong side.
+ * Then the clouds narrow to a half-width of 200, as they do with a longer
+ * window or shielded light; seven widths cross-fade one into the next, the red
+ * parts shrink and vanish below a half-width of 280, and the verdict changes.
+ * back: "play", since clouds that widen again tell nothing wrong: faster
+ * readings do exactly that.
+ * The ratio slide that follows draws the same scene at the final width, so
+ * that nothing moves between the two slides (Nicolas, 2026-11-08); only the
+ * texts change there: d and s get their meaning, d/s appears on the left, and
+ * the verdict line becomes the definition of "safely distinguishable".
  * Cloud base 430, peak 220 high; d bracket at 110; the s bracket at 510 spans
- * the whole cloud of symbol b, like the brackets on the ratio slide. */
-(function () {
-  if (!$("fig-two-clouds")) return;
-  const c = d.colors();
-  const base = 430, peak = 220, ma = 560, mb = 1120, boundary = (ma + mb) / 2;
-  const widths = [520, 467, 413, 360, 307, 253, 200];
-  const parts = [
+ * the whole cloud of symbol b. "distance between the symbols" (28 x 19.2 =
+ * 538) runs from 870 to 1408, "spread of the readings" (22 x 19.2 = 422) from
+ * 1150 to 1572; "d/s" at 80 mono is 144 wide around x 180, left of cloud a. */
+const CLOUDS = { base: 430, peak: 220, ma: 560, mb: 1120, boundary: 840, widths: [520, 467, 413, 360, 307, 253, 200] };
+
+function cloudScene(w, c) {
+  const { base, peak, ma, mb, boundary } = CLOUDS;
+  const g = [cloud(ma, w, peak, base, c.light), cloud(mb, w, peak, base, c.light)];
+  if (w > boundary - ma) {
+    g.push(cloud(ma, w, peak, base, c.red, 0.9, (boundary - ma) / w, 1));
+    g.push(cloud(mb, w, peak, base, c.red, 0.9, -1, (boundary - mb) / w));
+  }
+  g.push(d.line(mb - w, 510, mb + w, 510, { color: c.yellow, width: 3 }),
+    d.line(mb - w, 502, mb - w, 518, { color: c.yellow, width: 3 }),
+    d.line(mb + w, 502, mb + w, 518, { color: c.yellow, width: 3 }));
+  return g;
+}
+
+function cloudFrame(c) {
+  const { base, ma, mb, boundary } = CLOUDS;
+  return [
     d.line(30, base, 1650, base, { color: c.dark, width: 2 }),
     d.line(boundary, 185, boundary, base, { color: c.gray, width: 2, dashed: true }),
     d.label(boundary, 0, "boundary", { size: 32, color: c.gray, anchor: "middle", centerY: 160 }),
-  ];
-  widths.forEach((w, j) => {
-    const g = [cloud(ma, w, peak, base, c.light), cloud(mb, w, peak, base, c.light)];
-    if (w > boundary - ma) {
-      g.push(cloud(ma, w, peak, base, c.red, 0.9, (boundary - ma) / w, 1));
-      g.push(cloud(mb, w, peak, base, c.red, 0.9, -1, (boundary - mb) / w));
-    }
-    g.push(d.line(mb - w, 510, mb + w, 510, { color: c.yellow, width: 3 }),
-      d.line(mb - w, 502, mb - w, 518, { color: c.yellow, width: 3 }),
-      d.line(mb + w, 502, mb + w, 518, { color: c.yellow, width: 3 }));
-    parts.push(d.g("w" + j, ...g));
-  });
-  parts.push(
     d.line(ma, 110, mb, 110, { color: c.yellow, width: 3 }),
     d.line(ma, 102, ma, 118, { color: c.yellow, width: 3 }),
     d.line(mb, 102, mb, 118, { color: c.yellow, width: 3 }),
@@ -336,41 +382,42 @@ window.drawSpread = function (_slide, step = 0) {
     d.label(ma, 0, "symbol a", { size: 32, color: c.gray, anchor: "middle", centerY: 470 }),
     d.label(mb, 0, "symbol b", { size: 32, color: c.gray, anchor: "middle", centerY: 470 }),
     d.label(mb, 0, "s", { size: 32, mono: true, color: c.yellow, anchor: "middle", centerY: 550 }),
+  ];
+}
+
+const goodLine = (c) => d.label(CLOUDS.boundary, 0, "every reading lands on its own side", { size: 32, color: c.green, anchor: "middle", centerY: 615 });
+
+(function () {
+  if (!$("fig-two-clouds")) return;
+  const c = d.colors();
+  const { widths, boundary } = CLOUDS;
+  const parts = cloudFrame(c);
+  widths.forEach((w, j) => parts.push(d.g("w" + j, ...cloudScene(w, c))));
+  parts.push(
     d.g("bad", d.label(boundary, 0, "some readings land on the wrong side", { size: 32, color: c.red, anchor: "middle", centerY: 615 })),
-    d.g("good", d.label(boundary, 0, "every reading lands on its own side", { size: 32, color: c.green, anchor: "middle", centerY: 615 })));
+    d.g("good", goodLine(c)));
   $("fig-two-clouds").innerHTML = d.svg(1680, 650, ...parts);
   const a = d.anim("fig-two-clouds", { back: "play" });
   a.step(...widths.slice(1).map((_, j) => a.swap("w" + j, "w" + (j + 1), { dur: 380, ease: "linear" })),
     a.swap("bad", "good", { dur: 300 }));
 })();
 
-/* --- the ratio, and what "safely distinguishable" means ----------------------------- */
-function drawRatio() {
+(function () {
+  if (!$("fig-ratio")) return;
   const c = d.colors();
-  const base = 470, peak = 150, half = 90, ma = 560, mb = 1120;
-  const parts = [
-    d.formula(840, 0, "d/s", { size: 80, color: c.yellow, anchor: "middle", centerY: 75 }),
-    d.label(600, 0, "d", { size: 32, mono: true, color: c.yellow, centerY: 165 }),
-    d.label(680, 0, "distance between two symbols", { size: 32, color: c.light, centerY: 165 }),
-    d.label(600, 0, "s", { size: 32, mono: true, color: c.yellow, centerY: 220 }),
-    d.label(680, 0, "spread of your readings", { size: 32, color: c.light, centerY: 220 }),
-    d.line(200, 275, 1480, 275, { color: c.dark, width: 2 }),
-    d.line(300, base, 1380, base, { color: c.dark, width: 2 }),
-    cloud(ma, half, peak, base, c.light),
-    cloud(mb, half, peak, base, c.light),
-  ];
-  // The full extent of each cloud as a bracket, and the gap between them.
-  // Bracket and letter look as on the slide before: spread is the same
-  // quantity, so it carries the same sign.
-  [ma, mb].forEach((m) => {
-    parts.push(bracket(m - half, m + half, base + 30, c.yellow));
-    parts.push(d.label(m, 0, "s", { size: 32, mono: true, color: c.yellow, anchor: "middle", centerY: base + 80 }));
-  });
-  parts.push(d.line(ma + half, base + 30, mb - half, base + 30, { color: c.dark, width: 2, dashed: true }));
-  parts.push(d.label(840, 0, "a gap between them, not a touch: that is what safely distinguishable means",
-    { size: 32, color: c.gray, anchor: "middle", centerY: 620 }));
-  $("fig-ratio").innerHTML = d.svg(1680, 660, ...parts);
-}
+  const { widths, boundary, mb } = CLOUDS;
+  const parts = [...cloudFrame(c), ...cloudScene(widths[widths.length - 1], c),
+    d.g("good", goodLine(c)),
+    d.g("def", d.label(boundary, 0, "safely distinguishable: a gap between the clouds, not a touch", { size: 32, color: c.white, anchor: "middle", centerY: 615 })),
+    d.g("legend",
+      d.label(boundary + 30, 0, "distance between the symbols", { size: 32, color: c.gray, centerY: 75 }),
+      d.label(mb + 30, 0, "spread of the readings", { size: 32, color: c.gray, centerY: 550 }),
+      d.formula(180, 0, "d/s", { size: 80, color: c.yellow, anchor: "middle", centerY: 290 }),
+      d.label(180, 0, "the ratio", { size: 32, color: c.gray, anchor: "middle", centerY: 370 }))];
+  $("fig-ratio").innerHTML = d.svg(1680, 650, ...parts);
+  const a = d.anim("fig-ratio", { back: "play" });
+  a.step(a.swap("good", "def", { dur: 400 }), a.show("legend", { dur: 400 }));
+})();
 
 /* --- how many symbols fit? ------------------------------------------------------------
  * The usable range of the example, from the floor 40 to the ceiling 840, is
@@ -408,12 +455,12 @@ function drawRatio() {
   });
   $("fig-how-many").innerHTML = d.svg(1680, 650, ...parts);
   const a = d.anim("fig-how-many");
-  columns.forEach(({ key, n }) => {
-    const each = Math.min(450, 2200 / n);
-    a.step(a.show("t" + key, { dur: 300 }),
-      a.seq(...Array.from({ length: n }, (_, i) => a.show(`${key}${i}`, { dur: each }))),
-      a.show("s" + key, { dur: 400 }));
-  });
+  // the left column stands from the start, so the first frame is not an
+  // empty axis (Nicolas, 2026-11-08); the right one builds band by band
+  const { key, n } = columns[1];
+  a.step(a.show("t" + key, { dur: 300 }),
+    a.seq(...Array.from({ length: n }, (_, i) => a.show(`${key}${i}`, { dur: 2200 / n }))),
+    a.show("s" + key, { dur: 400 }));
 })();
 
 /* --- calibrate, then classify ----------------------------------------------------
@@ -502,9 +549,9 @@ function drawRatio() {
   parts.push(d.label(840, 0, "a dot outside the band of its symbol is read as another symbol", { size: 32, color: c.gray, anchor: "middle", centerY: 625 }));
   $("fig-lab").innerHTML = d.svg(1680, 650, ...parts);
   const a = d.anim("fig-lab");
-  tracks.forEach((_, k) => {
-    a.step(a.seq(...sent.map((__, i) => a.show(`p${k}-${i}`, { dur: 75 }))), a.show("r" + k, { dur: 400 }));
-  });
+  // the short window stands from the start, so the first frame is not two
+  // empty tracks (Nicolas, 2026-11-08); the long window's readings arrive
+  a.step(a.seq(...sent.map((__, i) => a.show(`p1-${i}`, { dur: 75 }))), a.show("r1", { dur: 400 }));
 })();
 
 /* --- the toolbox, with price tags ---------------------------------------------------------
@@ -696,5 +743,4 @@ window.drawAssistant = function (_slide, step = 0) {
   return put("fig-assistant", d.svg(1680, 670, ...parts));
 };
 
-if ($("fig-ratio")) drawRatio();
 if ($("fig-toolbox")) drawToolbox();

@@ -11,29 +11,6 @@
     .photo-text.narrow { width: 880px; }
     .content.tight .statement { line-height: 1.12; }
 
-    /* an example table of five teams with the same hardware */
-    table.results {
-      position: absolute;
-      left: var(--margin); right: var(--margin);
-      top: 200px;
-      border-collapse: collapse;
-      font-size: var(--small);
-    }
-    table.results th {
-      text-align: left;
-      font-weight: normal;
-      color: var(--gray);
-      font-size: var(--tiny);
-      padding: 0 28px 14px 0;
-      border-bottom: 2px solid var(--gray-dark);
-    }
-    table.results td {
-      padding: 16px 28px 16px 0;
-      color: var(--white);
-      border-bottom: 1px solid var(--gray-dark);
-    }
-    table.results td.num { font-family: var(--mono); }
-    table.results td.what { color: var(--gray-light); }
   </style>
 </head>
 <body>
@@ -63,23 +40,12 @@
     <aside class="notes">Kurz halten, etwa dreißig Sekunden. Die Lampe brennt unverändert hell, und trotzdem verschluckt der Nebel den Strahl nach wenigen Metern. Nicht das Signal ist schwächer geworden, sondern die Störung stärker. In derselben Lage ist jede LiFi-Strecke: Alle Sender sind gleich hell und alle Sensoren gleich gut, und doch kommen die Teams unterschiedlich weit.</aside>
   </section>
 
-  <section class="slide has-punch">
-    <h2>same hardware, different alphabets</h2>
-    <table class="results">
-      <thead>
-        <tr><th style="width: 18%">team</th><th style="width: 16%">alphabet</th><th style="width: 16%">hit rate</th><th>what they did about noise</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>team a</td><td class="num">16</td><td class="num">98 %</td><td class="what">cardboard tube, fixed distance, mean of 8</td></tr>
-        <tr><td>team b</td><td class="num">8</td><td class="num">96 %</td><td class="what">longer integration time, shielded from the window</td></tr>
-        <tr><td>team c</td><td class="num">8</td><td class="num">91 %</td><td class="what">picked colours further apart</td></tr>
-        <tr><td>team d</td><td class="num">4</td><td class="num">100 %</td><td class="what">nothing, played it safe</td></tr>
-        <tr><td>team e</td><td class="num">4</td><td class="num">82 %</td><td class="what">nothing, and it still failed</td></tr>
-      </tbody>
-    </table>
-    <div class="punch">with the same hardware and task, the alphabets still differ by a factor of four.</div>
-    <div class="footnote">example values; add your own team as a sixth row</div>
-    <aside class="notes">Ein Beispiel für fünf Teams mit derselben LED, demselben Sensor und derselben Aufgabe. Die letzte Spalte ist die wichtigste, denn sie enthält schon die Antwort, bevor jemand sie ausspricht. Wer die eigene Strecke schon misst, ergänzt im Kopf eine sechste Zeile mit dem eigenen Alphabet, der eigenen Trefferquote und den eigenen Maßnahmen. Dann die Frage stellen und stehen lassen: Gleiche Hardware und gleiche Aufgabe, und doch liegt zwischen dem größten und dem kleinsten Alphabet ein Faktor vier. Woher kommt der Unterschied? Um das zu beantworten, schauen wir zuerst, was am Sensor überhaupt ankommt.</aside>
+  <section class="slide">
+    <div class="content tight">
+      <div class="statement">how many colours does<br>your alphabet have?</div>
+      <div class="sidenote">every team works with the same <span class="keep-case">LED</span> and sensor, and yet every team did something different.</div>
+    </div>
+    <aside class="notes">Die Frage an alle Teams stellen und die Antworten sammeln, mit dem, was jedes Team gegen das Rauschen unternommen hat. Die Antworten gehen auseinander, obwohl alle dieselbe LED, denselben Sensor und dieselbe Aufgabe haben, und genau das ist die Richtung des Foliensatzes: Jedes Team hat etwas anderes gemacht und ein anderes Ergebnis erzielt. Woher der Unterschied kommt, klären wir, indem wir zuerst schauen, was am Sensor überhaupt ankommt.</aside>
   </section>
 
   <section class="slide has-punch" data-on-show="drawSensor" data-on-step="drawSensor">
@@ -93,7 +59,7 @@
   <section class="slide has-punch">
     <h2>sent is not measured</h2>
     <div class="figure" id="fig-sent-measured"></div>
-    <div class="punch" data-step="1">the numbers differ from what was sent, and that is normal, not a defect.</div>
+    <div class="punch" data-step="2">the numbers differ from what was sent, and that is normal, not a defect.</div>
     <aside class="notes">Erst fragen, welche vier Zahlen ankommen, wenn die LED reines Rot sendet. Dann läuft das Licht hinüber, und am Sensor zählen die vier Werte hoch. Die Farbfilter sind nicht perfekt getrennt, Licht verliert sich auf dem Weg, und das Raumlicht gelangt ebenfalls in den Sensor. Darum entsprechen die Messwerte nicht den LED-Werten. Eine feste Rückrechnungsformel wäre am nächsten Tisch oder am nächsten Tag bereits falsch; wie man stattdessen entscheidet, zeigt das Kalibrieren im zweiten Teil.</aside>
   </section>
 
@@ -107,24 +73,23 @@
   <section class="slide has-punch">
     <h2>ten readings of one colour</h2>
     <div class="figure" id="fig-readings"></div>
-    <div class="punch" data-step="1">nothing changed between the ten readings, and still every number is different.</div>
-    <aside class="notes">Die Grundtatsache, auf der alles Weitere steht. Die LED zeigt zehnmal dieselbe Farbe, niemand verändert etwas, und der Sensor meldet zehn verschiedene Zahlen; sie kommen nacheinander herein, und die jüngste ist jeweils gelb. Beim ersten Wert ruhig nach einer Prognose für den zweiten fragen. Das ist kein defekter Sensor und kein Fehler im Programm. Ein Computer liefert bei gleicher Eingabe dieselbe Ausgabe, aber ein Sensor bekommt nie zweimal dieselbe Eingabe: Das Licht schwankt, die Elektronik rauscht, jemand geht vorbei. Diese Schwankung heißt Rauschen. Im zweiten Schritt fallen die zehn Werte auf eine Zahlengerade, und man sieht, was von ihnen bleibt: eine Spannweite von 207 bis 220.</aside>
+    <div class="punch" data-step="3">nothing changed between the ten readings, and still every number is different.</div>
+    <aside class="notes">Die Grundtatsache, auf der alles Weitere steht. Die LED zeigt zehnmal dieselbe Farbe, niemand verändert etwas, und der Sensor meldet zehn verschiedene Zahlen; sie kommen nacheinander herein. Beim ersten Wert ruhig nach einer Prognose für den zweiten fragen. Das ist kein defekter Sensor und kein Fehler im Programm. Ein Computer liefert bei gleicher Eingabe dieselbe Ausgabe, aber ein Sensor bekommt nie zweimal dieselbe Eingabe: Das Licht schwankt, die Elektronik rauscht, jemand geht vorbei. Diese Schwankung heißt Rauschen. Im zweiten Schritt fallen die zehn Werte auf eine Zahlengerade, und man sieht, was von ihnen bleibt: eine Spannweite von 207 bis 220. Zuletzt kommt der Mittelwert dazu, x quer gleich 213,5: Er beschreibt, wo die Reihe liegt, die Spannweite, wie weit sie wandert, und beides zusammen gehört ins Protokoll.</aside>
   </section>
 
-  <section class="slide has-punch" data-on-show="drawSpread" data-on-step="drawSpread">
-    <h2>a series reveals what one reading hides</h2>
+  <section class="slide has-punch">
+    <h2>five readings, one mean</h2>
     <div class="figure" id="fig-spread"></div>
-    <span data-step="1"></span><span data-step="2"></span>
-    <div class="punch" data-step="2">report the centre and the spread.</div>
-    <aside class="notes">Ein Mittelwert beschreibt die Lage, aber nicht die Zuverlässigkeit. Zwei Reihen können denselben Mittelwert und völlig verschiedene Streuungen haben. Deshalb gehören die Einzelwerte oder mindestens ein Streuungsmaß ins Protokoll, und genau mit diesen beiden Zahlen, Mitte und Streuung, rechnet der zweite Teil.</aside>
+    <div class="punch" data-step="3">a mean of five scatters less than a single reading, but you get one value instead of five.</div>
+    <aside class="notes">Zwanzig Messungen derselben Farbe, oben einzeln. Je fünf werden gelb, wandern nach unten und treffen sich an ihrem Mittelwert, wo ein einziger Punkt stehen bleibt; die erste Gruppe langsam, die anderen drei schneller. Am Ende stehen unten vier Mittelwerte statt zwanzig Messungen, und die Klammern vergleichen: Die einzelnen Messungen reichen von 207 bis 220, die Mittelwerte nur von 212,4 bis 215,2. Mitteln macht die Werte ruhiger, aber aus fünf Messungen wird ein Wert, und genau dieses Geschäft zeigt der zweite Teil an einem ganzen Signal.</aside>
   </section>
 
   <section class="slide">
     <div class="content tight">
-      <div class="statement">it is not the code that decides,<br>it is the scatter.</div>
-      <div class="sidenote">same sensor, same <span class="keep-case">LED</span>, same room: what differs is how far the readings move while nothing else moves.</div>
+      <div class="statement">the scatter decides how many colours<br>your alphabet can have.</div>
+      <div class="sidenote">your code has to take it into account, so measure how far your readings move.</div>
     </div>
-    <aside class="notes">Die Pointe früh setzen und danach belegen. Dass die Qualität des Programms hier fast nichts entscheidet, überrascht die meisten, und genau darum geht es. Rauschen ist kein Defekt und kein Programmierfehler, sondern eine Eigenschaft jeder Messung. Wer es kleiner bekommt, bringt mehr Symbole unter, und das erklärt die ganze Tabelle.</aside>
+    <aside class="notes">Die Antwort auf die Frage vom Anfang, früh gesetzt und danach belegt: Wie viele Farben ein Alphabet haben kann, entscheidet die Streuung der Messwerte. Der Code muss sie sinnvoll einbeziehen, etwa beim Kalibrieren und beim Entscheiden, aber er kann aus einer Strecke nicht mehr Farben herausholen, als ihre Streuung zulässt. Rauschen ist kein Defekt und kein Programmierfehler, sondern eine Eigenschaft jeder Messung. Wer es kleiner bekommt, bringt mehr Farben unter.</aside>
   </section>
 
   <!-- ================= part 2: what decides your alphabet ================= -->
@@ -136,29 +101,29 @@
   <section class="slide has-punch">
     <h2>the same signal, averaged over longer windows</h2>
     <div class="figure" id="fig-windows"></div>
-    <div class="punch" data-step="3">longer windows give calmer values, but fewer of them per second.</div>
-    <aside class="notes">Oben das Rohsignal, wie es beim Sensor ankommt: viel zu unruhig, um in einem einzelnen Augenblick zu entscheiden. Darunter wird dasselbe Signal gemittelt, erst über vier, dann über zwölf, dann über 32 Ablesungen. Die gelbe Linie läuft jedes Mal durch dieselbe Zeitspanne, und ein Mittelwert erscheint, sobald sein Fenster voll ist. Je länger das Fenster, desto näher liegt der Wert am wahren Pegel, und desto weniger Werte kommen in derselben Zeit zustande: rechts zählen sie mit, 72, 24 und 9 statt 288. Die Streuung sinkt dabei nur mit der Wurzel aus der Fensterlänge: Das vierfache Fenster halbiert sie. Dasselbe Geschäft macht der Sensor selbst mit seiner Integrationszeit, dem Ablesefenster, über das er Licht sammelt; die Verstärkung ist der zweite Drehknopf, sie skaliert Signal und Rauschen zugleich und kann den Sensor sättigen.</aside>
+    <div class="punch" data-step="4">longer windows give calmer values, but fewer of them per second.</div>
+    <aside class="notes">Oben das Rohsignal, wie es beim Sensor ankommt: viel zu unruhig, um in einem einzelnen Augenblick zu entscheiden. Darunter wird dasselbe Signal gemittelt, erst über vier, dann über zwölf, dann über 32 Ablesungen. Die gelbe Linie läuft jedes Mal durch dieselbe Zeitspanne, und ein Mittelwert erscheint, sobald sein Fenster voll ist. Je länger das Fenster, desto näher liegt der Wert am wahren Pegel, und desto weniger Werte kommen in derselben Zeit zustande: rechts zählen sie mit, 72, 24 und 9 Mittelwerte statt 288 Messungen. Die Streuung sinkt dabei nur mit der Wurzel aus der Fensterlänge: Das vierfache Fenster halbiert sie. Dasselbe Geschäft macht der Sensor selbst mit seiner Integrationszeit, dem Ablesefenster, über das er Licht sammelt; die Verstärkung ist der zweite Drehknopf, sie skaliert Signal und Rauschen zugleich und kann den Sensor sättigen.</aside>
   </section>
 
   <section class="slide has-punch">
     <h2>two symbols, two clouds</h2>
     <div class="figure" id="fig-two-clouds"></div>
-    <div class="punch" data-step="1">at the same distance, narrower clouds keep every reading on its own side.</div>
+    <div class="punch" data-step="2">at the same distance, narrower clouds keep every reading on its own side.</div>
     <aside class="notes">Jedes Symbol ist kein einzelner Wert, sondern eine Wolke von Werten, und die Breite der Wolke ist das Rauschen von eben. Zuerst sind die Wolken breit: Ein Teil der Messungen reicht über die Grenze, und genau diese roten Messungen ordnet der Empfänger falsch zu. Dann werden die Wolken schmaler, etwa durch ein längeres Messfenster oder abgeschirmtes Licht, und bei gleichem Abstand d landet jede Messung auf ihrer Seite. Wichtig ist, was die Folie nicht sagt: Weder das Rauschen allein noch der Abstand allein entscheidet, sondern das Verhältnis der beiden, und das steht auf der nächsten Folie.</aside>
   </section>
 
   <section class="slide has-punch">
     <h2>the ratio is what counts</h2>
     <div class="figure" id="fig-ratio"></div>
-    <div class="punch">your alphabet size measures nothing but this ratio.</div>
-    <aside class="notes">Das ist die zentrale Größe dieses Foliensatzes: der Abstand d zwischen zwei Symbolen geteilt durch die Streuung s der Messwerte. Die Alphabetgröße misst nichts anderes als diesen Quotienten, und deshalb erklärt er die Tabelle vom Anfang. Daraus folgt, was „sicher unterscheidbar" heißt, und das ist strenger, als die meisten zuerst annehmen: nicht, dass die Mittelwerte verschieden sind, sondern dass sich die Wolken nicht berühren, auch an ihren Rändern nicht. Ein einziger Ausreißer in fünfzig Versuchen kostet eine Alphabetstufe.</aside>
+    <div class="punch" data-step="1">your alphabet size measures nothing but this ratio.</div>
+    <aside class="notes">Die Wolken bleiben genau so stehen wie auf der Folie davor; nur die Texte wechseln. Das ist die zentrale Größe dieses Foliensatzes: der Abstand d zwischen zwei Symbolen geteilt durch die Streuung s der Messwerte. Die Alphabetgröße misst nichts anderes als diesen Quotienten, und deshalb erklärt er, warum die Antworten der Teams auf die Frage vom Anfang auseinandergehen. Daraus folgt, was „sicher unterscheidbar" heißt, und das ist strenger, als die meisten zuerst annehmen: nicht, dass die Mittelwerte verschieden sind, sondern dass sich die Wolken nicht berühren, auch an ihren Rändern nicht. Ein einziger Ausreißer in fünfzig Versuchen kostet eine Alphabetstufe.</aside>
   </section>
 
   <section class="slide has-punch">
     <h2>how many symbols fit?</h2>
     <div class="figure" id="fig-how-many"></div>
     <div class="punch" data-step="2">the range divided by the width of one band gives the size of your alphabet.</div>
-    <aside class="notes">Damit wird die Frage rechenbar, statt geraten zu werden. Man misst den nutzbaren Bereich der Strecke, vom dunkelsten bis zum hellsten Wert, den man sicher erzeugen kann, und die Breite einer Wolke. Im Beispiel reicht der Bereich von 40 bis 840, also 800. Streut eine Farbe um plus minus 100, ist ihr Band 200 breit, und es passen vier Symbole hinein. Streut sie nur um plus minus 25, ist das Band 50 breit, und es passen sechzehn hinein. Sechzehn statt vier, weil die Wolken viermal schmaler sind, und das ist die Antwort auf die Tabelle vom Anfang. Wer das ausrechnet, bevor er Farben durchprobiert, spart sich viele Versuche.</aside>
+    <aside class="notes">Damit wird die Frage rechenbar, statt geraten zu werden. Die linke Spalte steht schon, die rechte baut sich Band für Band auf. Man misst den nutzbaren Bereich der Strecke, vom dunkelsten bis zum hellsten Wert, den man sicher erzeugen kann, und die Breite einer Wolke. Im Beispiel reicht der Bereich von 40 bis 840, also 800. Streut eine Farbe um plus minus 100, ist ihr Band 200 breit, und es passen vier Symbole hinein. Streut sie nur um plus minus 25, ist das Band 50 breit, und es passen sechzehn hinein. Sechzehn statt vier, weil die Wolken viermal schmaler sind, und das ist die Antwort auf die Frage vom Anfang. Wer das ausrechnet, bevor er Farben durchprobiert, spart sich viele Versuche.</aside>
   </section>
 
   <section class="slide">
@@ -172,7 +137,7 @@
     <div class="figure" id="fig-lab"></div>
     <div class="punch" data-step="2">a longer window removes the errors, but it also cuts the symbols per second.</div>
     <div class="footnote">simulated readings; the trade-off is the one your own link shows</div>
-    <aside class="notes">Alles zusammen an einem Alphabet aus acht Symbolen. Die grauen Striche sind die gesendeten Pegel, die Punkte die Messungen, die nacheinander hereinkommen. Mit dem kurzen Fenster fallen sechs von dreißig Messungen in ein fremdes Band und werden rot, dafür kommen vierzig Symbole je Sekunde durch. Mit dem viermal so langen Fenster streuen die Messungen halb so weit, keine landet daneben, und es sind nur noch zehn Symbole je Sekunde. Mehr Symbole machen die Bänder schmaler, schnellere Symbole die Wolken breiter, und beide verbrauchen denselben Sicherheitsabstand. Die Zahlen sind simuliert, die Struktur ist echt. Dieselben Regler, Zahl der Symbole, Länge des Fensters und Tempo, lassen sich im Distinguishability Lab des LiFi-Projekts frei verstellen (demos.lifi-project.de/distinguishability-lab); die eigenen Zahlen kommen aber nur von der eigenen Strecke.</aside>
+    <aside class="notes">Alles zusammen an einem Alphabet aus acht Symbolen; das kurze Fenster steht schon, beim langen kommen die Messungen nacheinander herein. Die grauen Striche sind die gesendeten Pegel, die Punkte die Messungen, die nacheinander hereinkommen. Mit dem kurzen Fenster fallen sechs von dreißig Messungen in ein fremdes Band und werden rot, dafür kommen vierzig Symbole je Sekunde durch. Mit dem viermal so langen Fenster streuen die Messungen halb so weit, keine landet daneben, und es sind nur noch zehn Symbole je Sekunde. Mehr Symbole machen die Bänder schmaler, schnellere Symbole die Wolken breiter, und beide verbrauchen denselben Sicherheitsabstand. Die Zahlen sind simuliert, die Struktur ist echt. Dieselben Regler, Zahl der Symbole, Länge des Fensters und Tempo, lassen sich im Distinguishability Lab des LiFi-Projekts frei verstellen (demos.lifi-project.de/distinguishability-lab); die eigenen Zahlen kommen aber nur von der eigenen Strecke.</aside>
   </section>
 
   <section class="slide has-punch">
@@ -199,7 +164,7 @@
   <section class="slide has-punch">
     <h2>turn a claim into a test</h2>
     <div class="figure wide" id="fig-experiment-loop"></div>
-    <div class="punch" data-step="3">write the expectation before you measure.</div>
+    <div class="punch" data-step="4">write the expectation before you measure.</div>
     <aside class="notes">Jeder Tastendruck führt einen Schritt weiter: Aus der Frage folgt eine Erwartung, dann wird gemessen, mit kurzem und mit langem Fenster je 50 Symbole, dann wird entschieden, ob die Hypothese gestützt oder widerlegt ist. Die Erwartung macht die Behauptung prüfbar. Sie muss vorher feststehen, weil man sonst hinterher fast jedes Ergebnis passend erklären kann. Das Experiment ist kein Ritual, sondern ein Vergleich zwischen einer vorher festgelegten Erwartung und beobachteten Daten.</aside>
   </section>
 
@@ -243,7 +208,7 @@
 </div>
 <script src="../../stagekit/draw.js?v=0.7.0-156254"></script>
 <script src="../../stagekit/anim.js?v=0.7.0-156254"></script>
-<script src="deck.js?v=3"></script>
+<script src="deck.js?v=4"></script>
 <script src="../../stagekit/stagekit.js?v=0.7.0-156254"></script>
 </body>
 </html>
