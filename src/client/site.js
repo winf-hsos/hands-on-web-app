@@ -32,7 +32,7 @@ const page = document.querySelector('[data-item-page]');
 if (page) {
   const id = page.dataset.itemPage;
   update(id, (p) => (p.seen ??= today()));
-  const button = document.querySelector('[data-mark-done]');
+  const button = document.querySelector('button[data-mark-done]');
   button?.addEventListener('click', () => {
     let done;
     update(id, (p) => {
@@ -49,7 +49,7 @@ if (page) {
 // the step done and takes the mark back, without opening it first. The green
 // check of a done row in an unnumbered list offers to take the mark back, in
 // a small popover beside it.
-const { markDone, markedDone, markUndone } = document.body.dataset;
+const { labelMarkDone: markDone, markedDone, markUndone } = document.body.dataset;
 
 function toggleStep(step) {
   const id = step.closest('[data-progress-id]').dataset.progressId;
@@ -135,7 +135,7 @@ function render(progress) {
     el.style.setProperty('--progress', `${ids.length ? (done / ids.length) * 100 : 0}%`);
     el.querySelector('.meter-label').textContent = `${done} ${el.dataset.of} ${ids.length} ${el.dataset.done}`;
   }
-  const button = document.querySelector('[data-mark-done]');
+  const button = document.querySelector('button[data-mark-done]');
   if (button && page) {
     const done = isDone(progress, page.dataset.itemPage);
     button.setAttribute('aria-pressed', String(done));
