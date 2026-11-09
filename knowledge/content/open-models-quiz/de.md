@@ -5,7 +5,7 @@ summary: >-
   Die Fragen stammen aus dem Pool des Moduls und haben das Format seiner
   Klausur.
 translation_of: en
-based_on: 2026-11-04
+based_on: 2026-11-09
 ---
 
 ## Du schaltest das WLAN ab, und das Modell in LM Studio antwortet trotzdem. Was folgt daraus? {#om-001}
@@ -41,7 +41,7 @@ based_on: 2026-11-04
 - [ ] Das größere Modell prüft jede Antwort im Internet, bevor es sie zeigt.
   > Beide Modelle laufen offline; keines prüft etwas im Internet.
 
-## Welche Aussagen über offene Modelle treffen zu? {#om-004}
+## Welche Aussagen über offene Modelle treffen zu? (Mehrere richtige Antworten möglich.) {#om-004}
 
 - [x] Ihre Gewichte lassen sich herunterladen und auf eigener Hardware betreiben.
   > Richtig: Genau das macht ein Modell offen.

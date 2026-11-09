@@ -13,8 +13,9 @@ relations:
   checks: [a-brief-history-of-ai]
 modules: [aai]
 areas: [ai]
+questions: [bh-001, bh-002, bh-003, bh-004, bh-005, bh-006]
 status: published
-updated: 2026-11-04
+updated: 2026-11-09
 ---
 
 ## An agent builds a quiz app on the history of AI with the instruction to use only the knowledge base it created before. What is the main purpose of this instruction? {#bh-001}
@@ -72,7 +73,7 @@ updated: 2026-11-04
 - [ ] A neural network was trained on a computer for the first time.
   > The perceptron was presented in 1958; 1956 stands for the name and the founding of the field.
 
-## An agent is asked to publish an app on the history of AI that it built itself. Its folder also contains the downloaded sources. What does not belong in the publication? {#bh-006}
+## An agent is asked to publish an app on the history of AI that it built itself. Its folder also contains the downloaded sources. What does not belong in the publication? (Several answers may be correct.) {#bh-006}
 
 - [x] the full texts of the downloaded sources
   > Correct: the rights to the texts belong to publishers and authors; what gets published is the link, not the copy.

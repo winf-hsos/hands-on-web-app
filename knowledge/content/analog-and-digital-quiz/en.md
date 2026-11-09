@@ -12,8 +12,9 @@ topics: [representing-information, transferring-information]
 modules: [dup]
 relations:
   checks: [analog-and-digital]
+questions: [ad-001, ad-002, ad-003, ad-004, ad-005, ad-007, ad-008, ad-009, ad-010, ad-011, ad-012, ad-013, ad-014, ad-015, ad-016]
 status: published
-updated: 2026-11-04
+updated: 2026-11-09
 ---
 
 ## What does it mean for a quantity to be "analog"? {#ad-001}
@@ -55,7 +56,7 @@ updated: 2026-11-04
 
 > Not the noise grows but the margin shrinks, because the same range is cut into more and narrower regions.
 
-## Digitising splits a continuous range of values into finitely many regions. Which statements are true? {#ad-004}
+## Digitising splits a continuous range of values into finitely many regions. Which statements are true? (Several answers may be correct.) {#ad-004}
 
 - [x] All values within the same region count as one and the same state afterwards.
   > That is the core: differences within a region are deliberately given up so that the differences between regions count.
@@ -144,7 +145,7 @@ else:
 
 > Digital, analog, digital: the boundaries sit at the LED and in the sensor, and the middle belongs to physics.
 
-## Which of these things work digitally in the sense of this concept, that is, with finitely many clearly separated states? {#ad-011}
+## Which of these things work digitally in the sense of this concept, that is, with finitely many clearly separated states? (Several answers may be correct.) {#ad-011}
 
 - [ ] A continuously variable light dimmer
   > Continuous is the opposite of digital: between two brightness levels there is always a third.

@@ -15,6 +15,7 @@ modules: [dup]
 relations:
   checks: [signal-and-noise]
   see_also: [signal-and-noise-slides]
+questions: [me-005, me-007, me-003, sn-001, sn-008, sn-002, sn-004, sn-009, sn-003, sn-013, sn-005, sn-010, me-010, me-002, me-008, me-009, me-012, sn-014]
 status: published
 updated: 2026-11-08
 ---

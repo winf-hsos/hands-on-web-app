@@ -12,6 +12,7 @@ topics: [solving-problems, processing-information]
 modules: [dup]
 relations:
   checks: [input-processing-output]
+questions: [ipo-001, ipo-002, ipo-003, ipo-004, ipo-005, ipo-006, ipo-007, ipo-008, ipo-009, ipo-010, ipo-011, ipo-012, ipo-013]
 status: published
 updated: 2026-11-04
 ---

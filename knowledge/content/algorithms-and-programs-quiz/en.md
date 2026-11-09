@@ -12,6 +12,7 @@ topics: [solving-problems, processing-information]
 modules: [dup]
 relations:
   checks: [algorithms-and-programs]
+questions: [aa-001, aa-002, aa-003, aa-004, aa-005, aa-006, aa-007, aa-008, aa-009, aa-010, aa-011, aa-012, aa-013, aa-014]
 status: published
 updated: 2026-11-04
 ---

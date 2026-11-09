@@ -13,8 +13,9 @@ relations:
   checks: [open-models]
 modules: [aai]
 areas: [ai]
+questions: [om-001, om-002, om-003, om-004, om-005, om-006]
 status: published
-updated: 2026-11-04
+updated: 2026-11-09
 ---
 
 ## You turn off wi-fi, and the model in LM Studio still answers. What follows from this? {#om-001}
@@ -50,7 +51,7 @@ updated: 2026-11-04
 - [ ] The larger model checks every answer on the internet before showing it.
   > Both models run offline; neither checks anything on the internet.
 
-## Which statements about open models are correct? {#om-004}
+## Which statements about open models are correct? (Several answers may be correct.) {#om-004}
 
 - [x] Their weights can be downloaded and run on your own hardware.
   > Correct: this is exactly what makes a model open.

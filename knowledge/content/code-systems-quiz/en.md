@@ -12,8 +12,9 @@ topics: [representing-information]
 modules: [dup]
 relations:
   checks: [code-systems]
+questions: [cs-001, cs-002, cs-003, cs-004, cs-005, cs-006, cs-007, cs-008, cs-009, cs-010, cs-011, cs-012, cs-013, cs-014, cs-015, cs-016, cs-017, cs-018, cs-019]
 status: draft
-updated: 2026-11-06
+updated: 2026-11-09
 ---
 
 ## What is a code system? {#cs-001}
@@ -71,7 +72,7 @@ updated: 2026-11-06
 - [ ] Introduce a separator for the twelve new characters, because they are not letters.
   > A separator is only needed with code words of different lengths. With fixed length the receiver simply counts, and to it a full stop is just as much a code word as a letter.
 
-## ASCII has 128 characters. So why do Unicode and UTF-8 exist as well? {#cs-006}
+## ASCII has 128 characters. So why do Unicode and UTF-8 exist as well? (Several answers may be correct.) {#cs-006}
 
 - [x] Because 128 characters are nowhere near enough for the world's writing systems.
   > Correct: umlauts, Greek, Cyrillic, Chinese, emoji. Unicode assigns a number to every character, currently over 100,000 of them.
@@ -115,7 +116,7 @@ updated: 2026-11-06
 - [ ] The memory address at which the colour value is stored in RAM; hence the hash sign in front.
   > Addresses are also written in hex, hence the confusion. Here it is the content, not the location.
 
-## The same logo can be stored as a bitmap (one colour per pixel) or as vector graphics (instructions like "circle, centre, radius, colour"). Which statements are true? {#cs-010}
+## The same logo can be stored as a bitmap (one colour per pixel) or as vector graphics (instructions like "circle, centre, radius, colour"). Which statements are true? (Several answers may be correct.) {#cs-010}
 
 - [x] Both are code systems: they describe the same image under different agreements.
   > Correct, and that is the core: there is no single right representation, only different mappings with different strengths.
@@ -144,7 +145,7 @@ def encode(text):
 - [ ] 001001; the order in the dictionary decides.
   > The order inside the dictionary is irrelevant, only the mapping. The text is read left to right: c, a, b.
 
-## Which of the following are code systems in the sense of this concept? {#cs-012}
+## Which of the following are code systems in the sense of this concept? (Several answers may be correct.) {#cs-012}
 
 - [x] A barcode on a package
   > Yes: bar widths stand for digits, following a publicly fixed agreement.

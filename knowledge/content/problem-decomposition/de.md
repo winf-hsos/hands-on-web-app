@@ -128,6 +128,8 @@ zum Projekt.
 
 ![Folien: Das LiFi-Projekt zerlegen](item:cutting-the-lifi-project)
 
+![Quiz: Probleme zerlegen](item:problem-decomposition-quiz)
+
 ## Zum Weiterlesen
 
 George Pólya: *How to Solve It*. Princeton University Press, 1945. Der

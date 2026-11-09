@@ -5,7 +5,7 @@ summary: >-
   ihrer Begründung. Die Fragen stammen aus dem Pool des Moduls und haben das
   Format seiner Klausur.
 translation_of: en
-based_on: 2026-11-04
+based_on: 2026-11-09
 ---
 
 ## Ein Agent baut eine Quiz-App zur Geschichte der KI mit der Vorgabe, nur die zuvor erstellte Wissensbasis zu verwenden. Was ist der wichtigste Zweck dieser Vorgabe? {#bh-001}
@@ -63,7 +63,7 @@ based_on: 2026-11-04
 - [ ] Zum ersten Mal wurde ein neuronales Netz auf einem Rechner trainiert.
   > Das Perzeptron wurde 1958 vorgestellt; 1956 steht für den Namen und die Gründung des Fachs.
 
-## Ein Agent soll eine selbst gebaute App zur Geschichte der KI veröffentlichen. In seinem Ordner liegen auch die heruntergeladenen Quellen. Was gehört nicht in die Veröffentlichung? {#bh-006}
+## Ein Agent soll eine selbst gebaute App zur Geschichte der KI veröffentlichen. In seinem Ordner liegen auch die heruntergeladenen Quellen. Was gehört nicht in die Veröffentlichung? (Mehrere richtige Antworten möglich.) {#bh-006}
 
 - [x] die Volltexte der heruntergeladenen Quellen
   > Richtig: Die Rechte an den Texten liegen bei Verlagen und Autoren; veröffentlicht wird der Link, nicht die Kopie.

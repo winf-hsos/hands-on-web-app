@@ -117,6 +117,8 @@ slides on the project.
 
 ![Slides: Cutting the LiFi project](item:cutting-the-lifi-project)
 
+![Quiz: Cutting problems](item:problem-decomposition-quiz)
+
 ## Further reading
 
 George Pólya: *How to Solve It*. Princeton University Press, 1945. The classic

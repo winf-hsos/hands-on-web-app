@@ -5,7 +5,7 @@ summary: >-
   näher rücken lassen, was Digitalisieren kostet und was es einbringt. Jede
   Antwort kommt mit ihrer Begründung.
 translation_of: en
-based_on: 2026-11-04
+based_on: 2026-11-09
 ---
 
 ## Was bedeutet es, wenn eine Größe „analog“ ist? {#ad-001}
@@ -47,7 +47,7 @@ based_on: 2026-11-04
 
 > Nicht das Rauschen wächst, sondern der Abstand schrumpft, weil derselbe Bereich in mehr und schmalere Bereiche geschnitten wird.
 
-## Beim Digitalisieren wird ein stufenloser Wertebereich in endlich viele Bereiche geteilt. Welche Aussagen treffen zu? {#ad-004}
+## Beim Digitalisieren wird ein stufenloser Wertebereich in endlich viele Bereiche geteilt. Welche Aussagen treffen zu? (Mehrere richtige Antworten möglich.) {#ad-004}
 
 - [x] Alle Werte innerhalb desselben Bereichs gelten danach als ein und derselbe Zustand.
   > Genau das ist der Kern: Die Unterschiede innerhalb eines Bereichs werden bewusst aufgegeben, damit die Unterschiede zwischen den Bereichen zählen.
@@ -136,7 +136,7 @@ else:
 
 > Digital, analog, digital: Die Grenzen liegen an der LED und im Sensor, und die Mitte gehört der Physik.
 
-## Welche dieser Dinge arbeiten im Sinn dieses Konzepts digital, also mit endlich vielen, klar getrennten Zuständen? {#ad-011}
+## Welche dieser Dinge arbeiten im Sinn dieses Konzepts digital, also mit endlich vielen, klar getrennten Zuständen? (Mehrere richtige Antworten möglich.) {#ad-011}
 
 - [ ] Ein stufenloser Lichtdimmer
   > Stufenlos ist das Gegenteil von digital: Zwischen zwei Helligkeiten liegt immer noch eine dritte.

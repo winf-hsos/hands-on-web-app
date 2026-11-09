@@ -12,8 +12,9 @@ topics: [representing-information, transferring-information]
 modules: [dup]
 relations:
   checks: [symbols-and-information, bit]
+questions: [si-001, si-002, si-003, si-004, si-005, si-006, si-007, si-008, si-009, si-010, si-011, si-012, si-013, si-014, si-015, si-016]
 status: published
-updated: 2026-11-04
+updated: 2026-11-09
 ---
 
 ## What is a symbol in the sense of information theory? {#si-001}
@@ -133,7 +134,7 @@ updated: 2026-11-04
 
 > The number of halvings is log₂(16) = 4, and that is also the number of bits.
 
-## Which statements about bits are true? {#si-010}
+## Which statements about bits are true? (Several answers may be correct.) {#si-010}
 
 - [x] One bit distinguishes exactly two possibilities.
   > Exactly, that is the definition: on or off, yes or no, bright or dark.

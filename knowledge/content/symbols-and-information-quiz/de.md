@@ -5,7 +5,7 @@ summary: >-
   der Information, zu halbierenden Fragen und dazu, was ein größeres Alphabet
   einbringt. Jede Antwort kommt mit ihrer Begründung.
 translation_of: en
-based_on: 2026-11-04
+based_on: 2026-11-09
 ---
 
 ## Was ist im Sinn der Informationstheorie ein Symbol? {#si-001}
@@ -125,7 +125,7 @@ based_on: 2026-11-04
 
 > Die Zahl der Halbierungen ist log₂(16) = 4, und das ist zugleich die Zahl der Bits.
 
-## Welche Aussagen über Bits treffen zu? {#si-010}
+## Welche Aussagen über Bits treffen zu? (Mehrere richtige Antworten möglich.) {#si-010}
 
 - [x] Ein Bit unterscheidet genau zwei Möglichkeiten.
   > Genau, das ist die Definition: an oder aus, ja oder nein, hell oder dunkel.

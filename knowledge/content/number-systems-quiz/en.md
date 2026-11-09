@@ -12,6 +12,7 @@ topics: [representing-information]
 modules: [dup]
 relations:
   checks: [place-value-systems, bit, byte]
+questions: [ns-001, ns-002, ns-003, ns-004, ns-005, ns-013, ns-012, ns-014, ns-010, ns-006, ns-007, ns-008, ns-009, ns-011]
 status: draft
 updated: 2026-11-04
 ---

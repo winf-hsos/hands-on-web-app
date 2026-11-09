@@ -13,8 +13,9 @@ relations:
   checks: [ai-agents]
 modules: [aai]
 areas: [ai]
+questions: [ag-001, ag-002, ag-003, ag-004, ag-005, ag-006, ag-007, ag-008, ag-009, ag-010, ag-011, ag-012]
 status: published
-updated: 2026-11-04
+updated: 2026-11-09
 ---
 
 ## You ask a chatbot to fix a script that stops with an error. It suggests a change, you run the script yourself and paste the new error message back. What changes if you give the same task to an agent? {#ag-001}
@@ -50,7 +51,7 @@ updated: 2026-11-04
 - [ ] Build a small web app showing the bookings of the farm machinery, from a short description.
   > When building an app, the next step follows from the last one: read the error, change the code, test again. That is an agent's loop.
 
-## Which of these jobs does the harness do rather than the language model? {#ag-004}
+## Which of these jobs does the harness do rather than the language model? (Several answers may be correct.) {#ag-004}
 
 - [x] carry out the tool calls and return the results
   > Correct: the model only writes the call down; the harness carries it out, as in the game, where the Harness carries every card to the tool.
@@ -96,7 +97,7 @@ updated: 2026-11-04
 - [ ] In the browser, which downloads the model at the start of the session.
   > Claude Code does not run in the browser, and the model is not downloaded. Running a model locally is possible, but it is a separate choice with smaller models.
 
-## Your agent works with your user account, and you have allowed it to run commands without asking. What can it do? {#ag-008}
+## Your agent works with your user account, and you have allowed it to run commands without asking. What can it do? (Several answers may be correct.) {#ag-008}
 
 - [x] delete files in your personal folder
   > Correct: anything your account may do, the agent may do as well, deleting included.

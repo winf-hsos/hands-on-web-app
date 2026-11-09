@@ -5,7 +5,7 @@ summary: >-
   und variabler Länge, zur Präfix-Falle und zu Bytes, die je nach Lesart Text,
   Farbe oder Ton bedeuten. Jede Antwort kommt mit ihrer Begründung.
 translation_of: en
-based_on: 2026-11-06
+based_on: 2026-11-09
 ---
 
 ## Was ist ein Codesystem? {#cs-001}
@@ -63,7 +63,7 @@ based_on: 2026-11-06
 - [ ] Für die zwölf neuen Zeichen ein Trennzeichen einführen, weil sie keine Buchstaben sind.
   > Ein Trennzeichen braucht nur, wer verschieden lange Codewörter benutzt. Bei fester Länge zählt der Empfänger ab, und für ihn ist ein Punkt genauso ein Codewort wie ein Buchstabe.
 
-## ASCII kennt 128 Zeichen. Warum gibt es trotzdem noch Unicode und UTF-8? {#cs-006}
+## ASCII kennt 128 Zeichen. Warum gibt es trotzdem noch Unicode und UTF-8? (Mehrere richtige Antworten möglich.) {#cs-006}
 
 - [x] Weil 128 Zeichen für die Schriften der Welt bei weitem nicht reichen.
   > Richtig: Umlaute, Griechisch, Kyrillisch, Chinesisch, Emoji. Unicode vergibt für jedes Zeichen eine Nummer, aktuell über 100.000 Stück.
@@ -107,7 +107,7 @@ based_on: 2026-11-06
 - [ ] Die Speicheradresse, an der der Farbwert im Arbeitsspeicher abgelegt ist; daher das Raute-Zeichen davor.
   > Adressen schreibt man auch hexadezimal, daher die Verwechslung. Hier ist es aber der Inhalt, nicht der Ort.
 
-## Dasselbe Logo lässt sich als Bitmap (eine Farbe je Bildpunkt) oder als Vektorgrafik (Anweisungen wie „Kreis, Mittelpunkt, Radius, Farbe“) speichern. Welche Aussagen treffen zu? {#cs-010}
+## Dasselbe Logo lässt sich als Bitmap (eine Farbe je Bildpunkt) oder als Vektorgrafik (Anweisungen wie „Kreis, Mittelpunkt, Radius, Farbe“) speichern. Welche Aussagen treffen zu? (Mehrere richtige Antworten möglich.) {#cs-010}
 
 - [x] Beides sind Codesysteme: Sie beschreiben dasselbe Bild nach verschiedenen Vereinbarungen.
   > Richtig, und das ist der Kern: Es gibt nicht die eine richtige Darstellung, sondern verschiedene Zuordnungen mit verschiedenen Stärken.
@@ -136,7 +136,7 @@ def encode(text):
 - [ ] 001001, die Reihenfolge im Wörterbuch entscheidet.
   > Die Reihenfolge im Wörterbuch spielt keine Rolle, nur die Zuordnung. Gelesen wird der Text von links nach rechts: c, a, b.
 
-## Welche der folgenden Dinge sind Codesysteme im Sinn dieses Konzepts? {#cs-012}
+## Welche der folgenden Dinge sind Codesysteme im Sinn dieses Konzepts? (Mehrere richtige Antworten möglich.) {#cs-012}
 
 - [x] Ein Strichcode auf einer Verpackung
   > Ja: Strichbreiten stehen für Ziffern, nach einer öffentlich festgelegten Vereinbarung.

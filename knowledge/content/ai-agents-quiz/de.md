@@ -4,7 +4,7 @@ summary: >-
   Zwölf Fragen zur Lektion KI-Agenten, jede Antwort mit ihrer Begründung. Die
   Fragen stammen aus dem Pool des Moduls und haben das Format seiner Klausur.
 translation_of: en
-based_on: 2026-11-04
+based_on: 2026-11-09
 ---
 
 ## Du bittest einen Chatbot, ein Skript zu reparieren, das mit einem Fehler abbricht. Er schlägt eine Änderung vor, du führst das Skript selbst aus und kopierst die neue Fehlermeldung zurück. Was ändert sich, wenn du dieselbe Aufgabe einem Agenten gibst? {#ag-001}
@@ -40,7 +40,7 @@ based_on: 2026-11-04
 - [ ] Baue nach einer kurzen Beschreibung eine kleine Web-App, die die Buchungen der Landmaschinen zeigt.
   > Beim Bauen einer App entscheidet sich der nächste Schritt aus dem letzten: Fehler lesen, Code ändern, erneut testen. Das ist die Schleife eines Agenten.
 
-## Welche dieser Aufgaben übernimmt der Harness und nicht das Sprachmodell? {#ag-004}
+## Welche dieser Aufgaben übernimmt der Harness und nicht das Sprachmodell? (Mehrere richtige Antworten möglich.) {#ag-004}
 
 - [x] die Werkzeugaufrufe ausführen und die Ergebnisse zurückgeben
   > Richtig: Das Modell schreibt den Aufruf nur auf; ausgeführt wird er vom Harness, wie im Spiel, wo der Harness jede Karte zum Werkzeug trägt.
@@ -86,7 +86,7 @@ based_on: 2026-11-04
 - [ ] Im Browser, der das Modell zu Beginn der Sitzung herunterlädt.
   > Claude Code läuft nicht im Browser, und das Modell wird nicht heruntergeladen. Ein Modell lokal zu betreiben ist möglich, aber eine eigene Entscheidung mit kleineren Modellen.
 
-## Dein Agent arbeitet mit deinem Benutzerkonto, und du hast ihm erlaubt, Befehle ohne Rückfrage auszuführen. Was kann er tun? {#ag-008}
+## Dein Agent arbeitet mit deinem Benutzerkonto, und du hast ihm erlaubt, Befehle ohne Rückfrage auszuführen. Was kann er tun? (Mehrere richtige Antworten möglich.) {#ag-008}
 
 - [x] Dateien in deinem persönlichen Ordner löschen
   > Richtig: Alles, was dein Konto darf, darf der Agent auch, Löschen eingeschlossen.
