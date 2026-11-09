@@ -26,7 +26,7 @@ to instrumental variables and regression discontinuity.
 
 ## Why it fits here
 
-In the lesson [[analytic-questions]], causal questions sit low in the
+In the lesson [[exploratory-data-analysis-basics]], causal questions sit low in the
 decision tree, because they demand the most. If you want to know how to
 answer them with observational data nonetheless, and where such answers
 fail, this is the thorough and readable continuation. The examples can be

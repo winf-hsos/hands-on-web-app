@@ -3380,6 +3380,27 @@ details.callout[open] > summary::before {
   margin-bottom: 1.25rem;
 }
 
+/* A paper: the way to it at the top of its page, the reference beside it. */
+.paper-link {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  margin: 0 0 2.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.75rem;
+}
+
+.paper-ref {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin: 0;
+  color: var(--quiet);
+  font-size: 0.95rem;
+}
+
 .script-file {
   display: flex;
   flex-wrap: wrap;

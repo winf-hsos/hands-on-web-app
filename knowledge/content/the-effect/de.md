@@ -41,7 +41,7 @@ Regressionsdiskontinuität.
 
 ## Warum es hierher passt
 
-In der Lektion [[analytic-questions]] stehen kausale Fragen weit unten im
+In der Lektion [[exploratory-data-analysis-basics]] stehen kausale Fragen weit unten im
 Entscheidungsbaum, weil sie am meisten verlangen. Wer wissen will, wie man sie
 trotzdem mit Beobachtungsdaten beantwortet und woran solche Antworten
 scheitern, findet hier die ausführliche und gut lesbare Fortsetzung. Die

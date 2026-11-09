@@ -76,5 +76,16 @@ auch hier, nur mit 2.809 statt 30 Personen.
 
 Einkommen, Schulabschluss und Erwerbsstatus fehlen, ebenso die zwei Personen,
 die beim Geschlecht „divers“ angegeben haben: Für eine Auswertung sind sie zu
-wenige, und sie wären leicht wiederzuerkennen. Wie der Auszug entsteht, steht
-im Skript `scripts/survey-compact.py` im Repository der Plattform.
+wenige, und sie wären leicht wiederzuerkennen.
+
+## Wie er entsteht
+
+Den Auszug baust du in der [[dplyr-exercise-compact-survey|Übung zum
+kompakten Datensatz]] selbst, aus der Rohfassung der Umfrage: laden, filtern,
+Spalten auswählen und umbenennen, Codes in Wörter übersetzen und speichern.
+Deshalb gibt es ihn in zwei Formaten. Die CSV-Datei ist einfacher Text, den
+jedes Programm lesen kann; liest R sie ein, sind `gender`, `diet` und die
+anderen übersetzten Spalten wieder Text, und `count(diet)` sortiert die
+Ernährungsweisen alphabetisch. Die RDS-Datei bewahrt die Tabelle so, wie die
+Übung sie gebaut hat, mit Faktoren und der Reihenfolge ihrer Stufen, kann
+aber nur von R gelesen werden.

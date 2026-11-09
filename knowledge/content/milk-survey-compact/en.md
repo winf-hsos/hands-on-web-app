@@ -63,5 +63,15 @@ therefore runs here as well, only with 2,809 instead of 30 people.
 
 Income, education and employment status are left out, as are the two people
 who gave "diverse" as their gender: they are too few for an analysis and
-would be easy to recognise. How the excerpt is made is shown by the script
-`scripts/survey-compact.py` in the platform's repository.
+would be easy to recognise.
+
+## How it is made
+
+You build the excerpt yourself in the [[dplyr-exercise-compact-survey|exercise
+on the compact data set]], from the raw version of the survey: load, filter,
+select and rename columns, translate codes into words, and save. That is why
+it comes in two formats. The CSV file is plain text that every program can
+read; when R reads it, `gender`, `diet` and the other translated columns are
+text again, and `count(diet)` sorts the diets alphabetically. The RDS file
+keeps the table as the exercise built it, with factors and the order of their
+levels, but only R can read it.

@@ -16,6 +16,8 @@ export const icons = {
   close: svg('<path d="M6 6l12 12M18 6 6 18"/>'),
   chevron: svg('<path d="m6 9 6 6 6-6"/>', 16),
   download: svg('<path d="M12 4v11m-4.5-4.5L12 15l4.5-4.5M5 19.5h14"/>', 18),
+  // a link that leaves the site, such as the way to a paper (Lucide: external-link)
+  external: svg(iconShapes('external-link'), 18),
   list: svg('<path d="M3 5h.01M3 12h.01M3 19h.01M8 5h13M8 12h13M8 19h13"/>', 18),
   // a quiz shown live in the lecture hall (Lucide: cast)
   live: svg(iconShapes('cast'), 15),

@@ -35,11 +35,24 @@ export function datasetInfo(itemDir, file) {
   return info;
 }
 
-/** The lines that load the file, by language; the name of the table is the file's name. */
-export function loadingCode(file) {
+/** The RDS file next to a dataset's CSV, with the same name, or null. RDS is
+    R's own format and keeps the types of the columns, factors with the order
+    of their levels included, which a CSV loses (Nicolas, 2026-11-09). */
+export function rdsFile(itemDir, file) {
+  const rds = file.replace(/\.csv$/, '.rds');
+  return rds !== file && existsSync(datasetPath(itemDir, rds)) ? rds : null;
+}
+
+/** Size of a file in media/datasets/ in bytes. */
+export const datasetBytes = (itemDir, file) => statSync(datasetPath(itemDir, file)).size;
+
+/** The lines that load the file, by language; the name of the table is the
+    file's name. With an RDS file, R also gets the line that reads it, after
+    the comment `rdsComment`. */
+export function loadingCode(file, rds = null, rdsComment = '') {
   const name = file.replace(/\.csv$/, '').replace(/[^\w]/g, '_').replace(/^(\d)/, 'd_$1');
   return {
-    r: `library(readr)\n\n${name} <- read_csv("${file}")`,
+    r: `library(readr)\n\n${name} <- read_csv("${file}")${rds ? `\n\n# ${rdsComment}\n${name} <- readRDS("${rds}")` : ''}`,
     python: `import pandas as pd\n\n${name} = pd.read_csv("${file}", low_memory=False)`,
   };
 }

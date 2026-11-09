@@ -8,7 +8,7 @@ import { itemRow, progressBar, more, facts, icons, typeIcon, typeLabel, viewSwit
 import { typesOf, hasType } from '../build/types.mjs';
 import { iconSvg, iconShapes } from '../build/icons.mjs';
 import { deckFile, deckPdf } from '../build/deck.mjs';
-import { datasetInfo, loadingCode } from '../build/dataset.mjs';
+import { datasetInfo, datasetBytes, loadingCode, rdsFile } from '../build/dataset.mjs';
 import { youtubeId } from '../build/youtube.mjs';
 import { highlight } from '../client/highlight.js';
 import { areasOf } from '../build/site.mjs';
@@ -317,13 +317,14 @@ export function item(site, doc, lang) {
         ${!hasType(lead, 'quiz') && objectivesBlock(site, text, lang)}
         ${scriptBlock(site, doc, lang)}
         ${hasType(lead, 'slides') && slidesBlock(site, doc, lang)}
+        ${hasType(lead, 'paper') && paperBlock(doc, lang)}
         ${hasType(lead, 'dataset') && datasetBlock(doc, lang)}
         ${hasType(lead, 'video') && videoBlock(site, doc, lang)}
         ${content}
         ${isQuiz && quizFilesBlock(site, doc, lang)}
-        ${((lead.url && !hasType(lead, 'video')) || lead.buy) &&
+        ${((lead.url && !hasType(lead, 'video') && !hasType(lead, 'paper')) || lead.buy) &&
         html`<p class="links">
-          ${lead.url && !hasType(lead, 'video') && html`<a class="button button-quiet" href="${lead.url}" rel="noopener">${new URL(lead.url).host.replace(/^www\./, '')}</a>`}
+          ${lead.url && !hasType(lead, 'video') && !hasType(lead, 'paper') && html`<a class="button button-quiet" href="${lead.url}" rel="noopener">${new URL(lead.url).host.replace(/^www\./, '')}</a>`}
           ${lead.buy && html`<a class="button button-quiet" href="${lead.buy}" rel="noopener">${t(lang, 'buy_at')} ${new URL(lead.buy).host.replace(/^www\./, '')}</a>`}
         </p>`}
         <div class="finish">
@@ -446,19 +447,38 @@ function quizFilesBlock(site, doc, lang, base = '') {
 function datasetBlock(doc, lang) {
   const { file } = doc.lead;
   const { bytes, rows, columns } = datasetInfo(doc.dir, file);
+  const rds = rdsFile(doc.dir, file);
   const number = (n, digits = 0) => n.toLocaleString(lang === 'de' ? 'de-DE' : 'en-GB', { maximumFractionDigits: digits });
-  const size = bytes < 1e6 ? `${number(bytes / 1e3)} kB` : `${number(bytes / 1e6, 1)} MB`;
-  const code = loadingCode(file);
+  const size = (b) => (b < 1e6 ? `${number(b / 1e3)} kB` : `${number(b / 1e6, 1)} MB`);
+  const code = loadingCode(file, rds, t(lang, 'dataset_rds_comment'));
   return html`<section class="dataset prose">
       <div class="dataset-file">
         <a class="button" href="/media/datasets/${file}" download="${file}">${icons.download}<span>${t(lang, 'dataset_download')}</span></a>
-        <p class="dataset-facts"><code>${file}</code><span>${number(rows)} ${t(lang, 'dataset_rows')}</span><span>${number(columns)} ${t(lang, 'dataset_columns')}</span><span>${size}</span></p>
+        ${rds && html`<a class="button button-quiet" href="/media/datasets/${rds}" download="${rds}">${icons.download}<span>${t(lang, 'dataset_download_rds')}</span></a>`}
+        <p class="dataset-facts"><code>${file}</code><span>${number(rows)} ${t(lang, 'dataset_rows')}</span><span>${number(columns)} ${t(lang, 'dataset_columns')}</span><span>${size(bytes)}</span>${rds && html`<span><code>${rds}</code> ${size(datasetBytes(doc.dir, rds))}</span>`}</p>
       </div>
       <p>${t(lang, 'dataset_load')}</p>
+      ${rds && html`<p>${t(lang, 'dataset_rds')}</p>`}
       ${['r', 'python'].map(
         (l) => html`<p class="dataset-lang">${l === 'r' ? 'R' : 'Python'}</p>
           <pre class="code"><code class="language-${l}">${raw(highlight(code[l], l))}</code></pre>`,
       )}
+    </section>`;
+}
+
+/**
+ * Where to read a paper, at the top of its page and always in the same form
+ * (Nicolas, 2026-11-09): a button to the paper, by its DOI or else its URL,
+ * and the reference beside it, authors and year, venue and the address.
+ */
+function paperBlock(doc, lang) {
+  const { authors, year, venue, doi, url } = doc.lead;
+  const href = doi ? `https://doi.org/${doi}` : url;
+  if (!href) return '';
+  const who = authors?.length && `${authors.join(', ')}${year ? ` (${year})` : ''}`;
+  return html`<section class="paper-link">
+      <a class="button" href="${href}" target="_blank" rel="noopener">${icons.external}<span>${t(lang, 'paper_read')}</span></a>
+      <p class="paper-ref">${who && html`<span>${who}</span>`}${venue && html`<span>${venue}</span>`}<span>${doi ? `doi.org/${doi}` : new URL(url).host.replace(/^www\./, '')}</span></p>
     </section>`;
 }
 

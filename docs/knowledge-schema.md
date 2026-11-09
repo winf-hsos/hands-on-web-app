@@ -173,11 +173,11 @@ Type-specific fields:
 |---|---|
 | `demo` | `url` if the demo runs elsewhere; otherwise its files sit in `media/` |
 | `tool` | `url`, `license` (of the tool) |
-| `source`, `paper` | `authors`, `year`, `url` or `doi`, `publisher` or `venue`, `isbn`, `buy` (a page where the book can be bought) |
+| `source`, `paper` | `authors`, `year`, `url` or `doi`, `publisher` or `venue`, `isbn`, `buy` (a page where the book can be bought). A paper's page begins with the way to it, always in the same form (Nicolas, 2026-11-09): a button "Paper lesen" to its DOI, or its `url` where it has none, and the reference beside it, authors and year, venue and address |
 | `story` | `when` (year or span, free text such as `1838` or `um 1840`) |
 | `person` | `born`, and `died` where it applies, as years |
 | `slides` | a stagekit deck in the folder `slides/` (one `.html` file, optionally `export/<deck>.pdf`); `deck_lang` if the slides are in one language only; `recordings` later, as `{ title, url, slide }` with YouTube links per part. The subtitle of the title slide is the author's name only, `data-subtitle="prof. dr. nicolas meseth"`, without the area, module or anything else (Nicolas, 2026-11-01) |
-| `dataset` | `file`, the name of a CSV in `media/datasets/`; `authors`, `year`, `license` where known. The page offers the file for download with its rows, columns and size, measured when building, and the lines that load it in R and in Python; the body describes the data. Only a dataset has a `file` |
+| `dataset` | `file`, the name of a CSV in `media/datasets/`; `authors`, `year`, `license` where known. The page offers the file for download with its rows, columns and size, measured when building, and the lines that load it in R and in Python; the body describes the data. Only a dataset has a `file`. An RDS file of the same name next to the CSV (`milk_survey_compact.rds`) is offered as a second download, with `readRDS()` in the R lines and a sentence on what RDS keeps that CSV loses, the types of the columns (Nicolas, 2026-11-09) |
 | `video` | `url`, a YouTube link, and `start`, the second to begin at. The page shows the video in a frame, but loads nothing from YouTube until the learner presses play; then the player comes from youtube-nocookie.com (Nicolas, 2026-11-02) |
 | `quiz` | none; the questions are in the body, see section 7 |
 | `challenge` | no `duration`; the task of one phase of a project, see section 9a |
