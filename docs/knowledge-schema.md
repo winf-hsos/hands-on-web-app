@@ -668,10 +668,20 @@ Every quiz is also published as JSON for the live quiz of Classroom Live
 `updated`, `page` and the `questions`, each with `id`, `type` (single or
 multiple), `stem` as Markdown with its code blocks and full addresses for
 images, the `options` with `key` (a, b, c …), `text`, `correct` and an
-optional `reason`, and an optional `explanation`. Texts are objects with one
+optional `reason`, and an optional `explanation`; text before the first
+question comes as an optional `intro`, which Classroom Live shows before the
+first question. Texts are objects with one
 key per language the quiz has. The sentence on several answers is left out of
 the stem, since `type` says it. The published site holds only published
 quizzes; the one with drafts has its own files under `/drafts/`.
+
+A published quiz has, at the far end of its line of downloads, a small icon
+that opens it as a live quiz in Classroom Live
+(`https://live.hsos.uber.space/live?quiz=<code>&lang=<de|en>`, set in
+`liveQuizUrl` of `src/build/quiz-json.mjs`), so that Nicolas gets there in a
+lecture in one click (2026-11-09). It is barely visible until pointed at,
+since it needs his admin key and is no use to students; Classroom Live only
+chooses the quiz, and he starts it there.
 
 Below every quiz the page offers it as two files to learn with elsewhere
 (Nicolas, 2026-11-03), written next to the page by the build

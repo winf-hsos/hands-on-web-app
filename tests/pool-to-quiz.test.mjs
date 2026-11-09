@@ -68,6 +68,9 @@ test('a quiz becomes JSON for the live quiz, without the sentence on several ans
   assert.equal(q.stem.de, 'Welche Werte gibt es?\n\nDas Programm:\n\n```python\nprint("kalt")\n```');
   assert.deepEqual(q.options.map((o) => [o.key, o.correct, o.reason?.en]), [['a', true, 'Yes.'], ['b', true, undefined], ['c', false, 'No.']]);
   assert.deepEqual(q.explanation, { de: 'Merksatz.', en: 'Takeaway.' });
+  assert.equal(quiz.intro, undefined);
+  const withIntro = quizJson({ doc, area: 'cs', texts: { de: { ...texts.de, body: `Vorweg.\n\n${texts.de.body}` } }, lead: 'de' });
+  assert.deepEqual(withIntro.intro, { de: 'Vorweg.' });
 });
 
 test('the questions of a quiz body keep their ids and their text in order', () => {

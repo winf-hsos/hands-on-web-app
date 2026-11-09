@@ -3416,6 +3416,21 @@ details.callout[open] > summary::before {
   color: var(--accent-ink);
 }
 
+/* the way to the live quiz in Classroom Live: an icon at the far end of the line,
+   barely there until it is pointed at (Nicolas, 2026-11-09) */
+.quiz-files .quiz-live {
+  display: inline-flex;
+  margin-left: auto;
+  opacity: 0.4;
+  text-decoration: none;
+  transition: opacity 0.2s, color 0.2s;
+}
+
+.quiz-files .quiz-live:hover,
+.quiz-files .quiz-live:focus-visible {
+  opacity: 1;
+}
+
 .script-note {
   color: var(--quiet);
   font-size: 0.9rem;

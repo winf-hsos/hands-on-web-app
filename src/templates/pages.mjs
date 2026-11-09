@@ -3,6 +3,7 @@
 // what is not needed to choose or to read sits in a disclosure.
 import { html, raw, json } from '../build/html.mjs';
 import { t, count, formatDate, backLabels } from '../build/i18n.mjs';
+import { liveQuizUrl } from '../build/quiz-json.mjs';
 import { itemRow, progressBar, more, facts, icons, typeIcon, typeLabel, viewSwitch, draftTag, editable } from './parts.mjs';
 import { typesOf, hasType } from '../build/types.mjs';
 import { iconSvg, iconShapes } from '../build/icons.mjs';
@@ -426,6 +427,8 @@ function scriptBlock(site, doc, lang) {
 }
 
 /** A quiz to download below it, with the answers, to learn with outside the page (build/quiz-export.mjs).
+ * A published quiz also gets a quiet link that opens it as a live quiz in Classroom Live, for the lecture
+ * hall (Nicolas, 2026-11-09); drafts are not in /quizzes.json, so they have none.
  * Below a quiz embedded in a lesson as well, with `base` the quiz's own page, where the files lie.
  * One quiet line, not buttons, since the quiz itself is what the page is for (Nicolas, 2026-11-03). */
 function quizFilesBlock(site, doc, lang, base = '') {
@@ -435,6 +438,7 @@ function quizFilesBlock(site, doc, lang, base = '') {
       <a href="${base}${csv.name}" download="${csv.name}" title="${t(lang, 'quiz_csv')}">CSV</a>
       <span aria-hidden="true">·</span>
       <a href="${base}${anki.name}" download="${anki.name}" title="${t(lang, 'quiz_anki')}">Anki</a>
+      ${doc.lead.status === 'published' ? html`<a class="quiz-live" href="${liveQuizUrl(doc.lead.code, lang)}" target="_blank" rel="noopener" title="${t(lang, 'quiz_live')}" aria-label="${t(lang, 'quiz_live')}">${icons.live}</a>` : ''}
     </p>`;
 }
 

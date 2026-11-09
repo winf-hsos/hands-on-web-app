@@ -1,7 +1,7 @@
 // Small pieces shared by several pages.
 import { html, raw } from '../build/html.mjs';
 import { t } from '../build/i18n.mjs';
-import { iconSvg } from '../build/icons.mjs';
+import { iconSvg, iconShapes } from '../build/icons.mjs';
 import { typesOf } from '../build/types.mjs';
 
 const svg = (body, size = 20) =>
@@ -17,6 +17,8 @@ export const icons = {
   chevron: svg('<path d="m6 9 6 6 6-6"/>', 16),
   download: svg('<path d="M12 4v11m-4.5-4.5L12 15l4.5-4.5M5 19.5h14"/>', 18),
   list: svg('<path d="M3 5h.01M3 12h.01M3 19h.01M8 5h13M8 12h13M8 19h13"/>', 18),
+  // a quiz shown live in the lecture hall (Lucide: cast)
+  live: svg(iconShapes('cast'), 15),
   cards: svg('<rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>', 18),
 };
 

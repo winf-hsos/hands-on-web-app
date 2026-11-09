@@ -60,6 +60,8 @@ export function quizJson({ doc, area, texts, lead, titleOf = () => null }) {
     if (explanation) question.explanation = explanation;
     return question;
   });
+  // text before the first question belongs to the whole quiz, such as what the code in it means
+  const intro = perLang((lang) => portable(texts[lang].body.split(/^## /m)[0].trim(), texts[lang].url, titleOf));
   return {
     format: QUIZ_FORMAT,
     code: doc.lead.code,
@@ -69,6 +71,7 @@ export function quizJson({ doc, area, texts, lead, titleOf = () => null }) {
     title: perLang((lang) => texts[lang].title),
     updated: doc.lead.updated instanceof Date ? isoDay(doc.lead.updated) : String(doc.lead.updated),
     page: perLang((lang) => `${SITE_ORIGIN}${texts[lang].url}`),
+    ...(intro ? { intro } : {}),
     questions,
   };
 }
@@ -87,3 +90,6 @@ export function quizIndexEntry(quiz, doc, jsonUrl) {
     page: quiz.page,
   };
 }
+
+/** Where Classroom Live runs a quiz of the platform as a live quiz, by its code (one place, agreed with Classroom Live). */
+export const liveQuizUrl = (code, lang) => `https://live.hsos.uber.space/live?quiz=${code}&lang=${lang}`;
