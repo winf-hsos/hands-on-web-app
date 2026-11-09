@@ -67,17 +67,21 @@ function surveyTable(o = {}) {
 /* --- slide: a question for the survey ---------------------------------------------
  * The whole survey as a pale grid, 30 rows and 11 columns: cells 140 x 12 with
  * 8 between columns and 4 between rows, 11 x 148 = 1628 wide, 30 x 16 = 480
- * high. diet and organic_share are the 7th and 8th column. */
+ * high. The two columns the question needs stand apart, as the 3rd and the 8th
+ * (a picture of the idea, not the real order of the columns), and are gray;
+ * only in the rows that count do their cells light up, so the answer needs
+ * some columns and some rows, not the whole table. */
 (function () {
   const parts = [d.label(0, 0, "do vegetarians buy more organic food than others?", { size: 48, centerY: 40 })];
+  const NEED = [2, 7], SKIP = new Set([2, 6, 7, 11, 15, 18, 21, 25, 28]);
   for (let c = 0; c < 11; c++) {
-    const bright = c === 6 || c === 7;
     for (let r = 0; r < 30; r++) {
-      parts.push(`<rect x="${26 + c * 148}" y="${170 + r * 16}" width="140" height="12" rx="2" fill="${bright ? C.gray : C.dark}"/>`);
+      const fill = !NEED.includes(c) ? C.dark : SKIP.has(r) ? C.gray : C.light;
+      parts.push(`<rect x="${26 + c * 148}" y="${170 + r * 16}" width="140" height="12" rx="2" fill="${fill}" fill-opacity="${fill === C.gray ? 0.45 : 1}"/>`);
     }
   }
   // "organic_share" is 13 x 12 = 156 at size 20, 8 more than its column; its neighbours carry no label
-  parts.push(d.label(26 + 6 * 148 + 70, 0, "diet", { size: 20, mono: true, anchor: "middle", centerY: 145, color: C.light }));
+  parts.push(d.label(26 + 2 * 148 + 70, 0, "diet", { size: 20, mono: true, anchor: "middle", centerY: 145, color: C.light }));
   parts.push(d.label(26 + 7 * 148 + 70, 0, "organic_share", { size: 20, mono: true, anchor: "middle", centerY: 145, color: C.light }));
   el("fig-question").innerHTML = d.svg(1680, 660, ...parts);
 })();
@@ -463,7 +467,9 @@ function keycap(x, cy, label) {
   });
   parts.push(table("t0", 0, pc, all), table("c1", 0, pc, all), table("c2", 1, pc, older),
     table("c3", 2, pc, older.map((r) => ({ ...r, tint: true }))), table("s3", 3, qc, counts), table("c4", 3, qc, counts),
-    d.g("glab", d.label(X(2) - 160, 0, "# Groups:   diet [3]", { size: 20, mono: true, keepCase: true, color: C.gray, centerY: 262 })));
+    d.g("glab", d.label(X(2) - 160, 0, "# Groups:   diet [3]", { size: 20, mono: true, keepCase: true, color: C.gray, centerY: 262 })),
+    // summarize() returns one row per group, sorted by the grouping column: 18 x 12 = 216 < 320
+    d.g("slab", d.label(X(3) - 160, 0, "# diet from a to z", { size: 20, mono: true, color: C.gray, centerY: 262 })));
   el("fig-pipeline").innerHTML = d.svg(1680, 804, `<g transform="translate(0,60)">`, ...parts, `</g>`);
 
   const a = d.anim("fig-pipeline");
@@ -480,10 +486,11 @@ function keycap(x, cy, label) {
   // group_by: the rows take the colours of their groups, nothing else changes
   a.step(light(2), carry("c2"),
     a.par(a.show("glab", { dur: 600 }), ...older.map((r) => a.color(`[data-a="c2-r${r.id}"] rect`, GROUP[r.diet], { part: "fill", dur: 600 }))));
-  // summarize: each group falls into its row of the result, in the colour of the group
+  // summarize: each group falls into its row of the result, in the colour of the group;
+  // the result comes sorted by diet from a to z, so the omnivores land in the middle
   const into = { omnivore: 1, flexitarian: 0, vegetarian: 2 };
   a.step(light(3), carry("c3"),
-    a.par(a.hide("c3-h", { dur: 700 }), a.show("s3", { dur: 700 }),
+    a.par(a.hide("c3-h", { dur: 700 }), a.show("s3", { dur: 700 }), a.show("slab", { dur: 700 }),
       ...older.map((r) => a.par(a.move("c3-r" + r.id, 0, (into[r.diet] - r.pos) * RT, { dur: 900 }), a.hide("c3-r" + r.id, { dur: 900 })))));
   // arrange: the omnivores move to the top
   a.step(light(4), carry("c4"),

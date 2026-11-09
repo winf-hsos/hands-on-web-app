@@ -14,11 +14,13 @@ summarizing, turns any table into the one that holds the answer.
 
 **A question for the survey (frame 5).** The survey on milk and organic food
 has 30 rows, one per respondent, and eleven columns. The question is whether
-vegetarians buy more organic food than others. Everything needed is in two
-columns, `diet` and `organic_share`, but the answer only appears once we take
-the right rows, split them by diet and compute an average per group. That is
-data transformation: making one table out of another, without collecting new
-data.
+vegetarians buy more organic food than others. Everything needed is in two of
+the eleven columns, `diet` and `organic_share`, and not every row counts: in
+the full survey many people skipped the question on organic food, and those
+rows have to go. The picture shows this with the two columns standing apart
+and only some of their cells lit. The answer only appears once we take the
+right rows, split them by diet and compute an average per group. That is data
+transformation: making one table out of another, without collecting new data.
 
 **A table in, a table out (frames 6 to 10).** A table goes into a
 transformation, but the table itself stays where it is, because the
@@ -111,17 +113,21 @@ others. `%/%` is integer division, so 56 becomes 50, the decade. The new
 column is filled row by row from the age in the same row, and the number of
 rows stays the same.
 
-**One row in, one row out (frame 42).** `mutate()` computes in every row on its
-own. It can create several columns at once, and a column may use one computed
-earlier in the same call. `organic_fan = organic_share >= 4` is a logical
-column: `TRUE` for everyone who buys mostly organic food.
+**One row in, one row out (frames 42 and 43).** `mutate()` computes in every
+row on its own. It can create several columns at once, and a column may use
+one computed earlier in the same call. `organic_fan = organic_share >= 4` is a
+logical column: `TRUE` for everyone who buys mostly organic food. The result
+shows the first eight rows with the two new columns on the right: age 56 falls
+into the decade 50, and only respondent 7, with an organic share of 5, is an
+organic fan. Every row stays where it was, and the table has as many rows as
+before.
 
-**`summarize()` turns many rows into one (frames 43 to 45).**
+**`summarize()` turns many rows into one (frames 44 to 46).**
 `survey |> summarize(n = n(), mean_organic = mean(organic_share))` counts the
 six rows and turns the six organic shares into one number, 1.67. What remains is a table with a single
 row and only the columns that were computed.
 
-**Frequently used summary functions (frame 46).** Inside `summarize()` go
+**Frequently used summary functions (frame 47).** Inside `summarize()` go
 functions that turn many values into one. Frequently used are `n()`, `mean()`,
 `median()`, `min()`, `max()` and `sd()`, a selection among many more, such as
 `quantile()` or `n_distinct()`.
@@ -129,27 +135,27 @@ A single missing value makes the mean missing as well, because R does not
 know what that value would have been; `na.rm = TRUE` leaves missing values
 out.
 
-**`group_by()` splits into groups (frames 47 to 49).**
+**`group_by()` splits into groups (frames 48 to 50).**
 `survey |> group_by(diet)` marks every row with its diet, and R notes above the
 table `# Groups: diet [3]`. Not a single value changes. Pulling the groups
 apart only makes them visible; R keeps the rows where they are, and the
 grouping matters only to the next verb.
 
-**One row per group (frames 50 and 51).**
+**One row per group (frames 51 and 52).**
 `survey |> group_by(diet) |> summarize(n = n(), mean_age = mean(age))` puts two
 verbs in a row. `group_by()` alone changes nothing visible; it tells
 `summarize()` to work per group: one flexitarian aged 74, four omnivores with a
 mean age of 47.5 and one vegetarian aged 48. The groups come out in
 alphabetical order.
 
-**Two quick checks (frames 52 to 57).** Respondents from Bavaria are rows, and
+**Two quick checks (frames 53 to 58).** Respondents from Bavaria are rows, and
 keeping some rows is `filter()`, with `state == "Bayern"`. The average age per
 diet takes two verbs, `group_by()` and `summarize()`: the second alone gives one
 average for everybody, the first alone changes nothing visible.
 
 ## Part 3: the pipe
 
-**Nested calls are read from the inside out (frames 59 to 63).** Without the
+**Nested calls are read from the inside out (frames 60 to 64).** Without the
 pipe every verb takes the table as its first argument, so four steps (keep
 everyone aged 40 or older, group by diet, count, sort by the count) end up
 inside each other. Nested, R runs them from the inside out, so `filter()`
@@ -157,11 +163,11 @@ comes first and `arrange()` last, although it stands at the top. The
 arguments also stand far from their function: `desc(n)` at the bottom belongs
 to `arrange()` at the top.
 
-**Intermediate tables (frame 64).** Giving every step a name reads from top to
+**Intermediate tables (frame 65).** Giving every step a name reads from top to
 bottom, but leaves four tables behind, three of which nobody needs again, and
 every name is a chance to pick the wrong one.
 
-**The pipe passes the table on (frames 65 to 68).** The pipe `|>` takes what
+**The pipe passes the table on (frames 66 to 69).** The pipe `|>` takes what
 stands on its left and puts it into the first slot of the function on its
 right: in `x |> f(y)` the `x` travels into `f()` and R runs `f(x, y)`. This is why the first-argument rule of
 dplyr matters, because every verb takes a table first, so a table can be piped
@@ -169,16 +175,17 @@ into every verb. Read `|>` as "and then". Older code uses `%>%`, which does
 the same. The keys ctrl + shift + m type the pipe in RStudio and Positron,
 with cmd instead of ctrl on a Mac.
 
-**A pipeline (frames 69 to 73).** The same four steps as a pipeline, drawn as
-four stations the table passes, with the call above each station and the
-table it returns below. `filter()` drops the 32-year-old and five rows
-remain. `group_by()` gives the rows the
-colours of their groups and changes nothing else. `summarize()` makes one row
-per group with its count, in the colour of the group: three omnivores, one
-flexitarian, one vegetarian.
-`arrange()` sorts by the count, so the omnivores come first.
+**A pipeline (frames 70 to 74).** The same four steps as a pipeline, drawn as
+four stations the table passes, with the call above each station and the table
+it returns below. `filter()` drops the 32-year-old and five rows remain.
+`group_by()` gives the rows the colours of their groups and changes nothing
+else. `summarize()` makes one row per group with its count, in the colour of
+the group. The groups come out sorted by diet from a to z, not in the order of
+the rows before, which is why the omnivores move to the middle: one
+flexitarian, three omnivores, one vegetarian. `arrange(desc(n))` sorts by the
+count, largest first, so the omnivores come to the top.
 
-**The same, as you would write it (frames 74 to 79).**
+**The same, as you would write it (frames 75 to 80).**
 
 ```r
 survey |>
@@ -193,14 +200,14 @@ survey, and then keep everyone aged 40 or older, and then group by diet, and
 then count, and then sort by the count. The code reads in the order in which
 it runs.
 
-**Plan in words, then translate (frames 80 to 86).** Back to the question
+**Plan in words, then translate (frames 81 to 87).** Back to the question
 whether vegetarians buy more organic food. Before writing code, the steps are
 planned in words: take the survey, keep the rows with an organic share, split
 by diet, average and count per group, sort by the average. Each line then
 becomes one verb. This is the real task: the verbs are learned quickly, while
 the thinking lies in breaking a question into steps in the right order.
 
-**The answer (frames 87 and 88).**
+**The answer (frames 88 and 89).**
 
 ```r
 survey |>
@@ -221,12 +228,12 @@ respondents, and there the question can be answered. Copy the code into an R
 box on the site or into Positron, run it, and then change one line, for
 example `median()` instead of `mean()`.
 
-**Six verbs and a pipe (frame 89).** `select()` chooses columns, `filter()`
+**Six verbs and a pipe (frame 90).** `select()` chooses columns, `filter()`
 rows, `arrange()` the order, `mutate()` adds columns, `summarize()` makes one
 row, `group_by()` makes the next verb work per group, and `|>` chains them
 with "and then".
 
-**The chart of bricks (frame 90).** The same bricks, now sorted by colour and
+**The chart of bricks (frame 91).** The same bricks, now sorted by colour and
 built into a small bar chart: a handful of operations in the right order
 turned the jumble into something that answers a question. The learning path
 "Data transformation with R and dplyr" on Hands-on Data Science practises the

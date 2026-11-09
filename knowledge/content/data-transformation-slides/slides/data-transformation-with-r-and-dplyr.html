@@ -21,7 +21,7 @@
     .code.small { font-size: var(--small); }
     .legend { display: grid; grid-template-columns: auto auto; column-gap: 40px; row-gap: 8px; font-size: var(--small); }
     .legend .k { font-family: var(--mono); color: var(--white); text-transform: none; }
-    .legend .v { color: var(--gray-light); }
+    .legend .v { color: var(--gray-light); white-space: nowrap; }
     .answer { display: grid; grid-template-columns: auto auto; column-gap: 140px; align-items: center; }
     table.tt th.right, table.tt td.right { text-align: right; }
     table.tt td.left, table.tt th.left { text-align: left; }
@@ -82,7 +82,7 @@
     <h2>a question for the survey</h2>
     <div class="figure" id="fig-question"></div>
     <div class="punch">the answer is in the table, but you cannot read it off.</div>
-    <aside class="notes">This is our survey on milk and organic food: 30 rows, one per respondent, and eleven columns. The question is whether vegetarians buy more organic food than others. Everything we need is in two columns, diet and organic_share. But the answer only appears once we take the right rows, split them by diet and compute an average per group. That is data transformation: making one table out of another, without collecting new data.</aside>
+    <aside class="notes">This is our survey on milk and organic food: 30 rows, one per respondent, and eleven columns. The question is whether vegetarians buy more organic food than others. Everything we need is in two of the eleven columns, diet and organic_share, and not every row counts: in the full survey many people skipped the question on organic food, and those rows have to go. But the answer only appears once we take the right rows, split them by diet and compute an average per group. That is data transformation: making one table out of another, without collecting new data.</aside>
   </section>
 
   <section class="slide has-punch">
@@ -241,13 +241,26 @@ survey |&gt;
   <section class="slide">
     <h2>one row in, one row out</h2>
     <div class="content">
-      <div class="code">survey |&gt;
+      <div class="answer">
+        <div class="code small">survey |&gt;
   <span class="hl">mutate</span>(
     decade = age %/% 10 * 10,
     organic_fan = organic_share &gt;= 4
   )</div>
+        <table class="tt keep-case" data-step="1">
+          <tr><th class="right">id</th><th class="right">age</th><th class="right">organic_share</th><th class="right hl">decade</th><th class="left hl">organic_fan</th></tr>
+          <tr><td class="right">1</td><td class="right">56</td><td class="right">2</td><td class="right hl">50</td><td class="left hl">FALSE</td></tr>
+          <tr><td class="right">2</td><td class="right">55</td><td class="right">2</td><td class="right hl">50</td><td class="left hl">FALSE</td></tr>
+          <tr><td class="right">3</td><td class="right">47</td><td class="right">1</td><td class="right hl">40</td><td class="left hl">FALSE</td></tr>
+          <tr><td class="right">4</td><td class="right">32</td><td class="right">1</td><td class="right hl">30</td><td class="left hl">FALSE</td></tr>
+          <tr><td class="right">5</td><td class="right">74</td><td class="right">2</td><td class="right hl">70</td><td class="left hl">FALSE</td></tr>
+          <tr><td class="right">6</td><td class="right">48</td><td class="right">2</td><td class="right hl">40</td><td class="left hl">FALSE</td></tr>
+          <tr><td class="right">7</td><td class="right">36</td><td class="right">5</td><td class="right hl">30</td><td class="left hl">TRUE</td></tr>
+          <tr><td class="right">8</td><td class="right">26</td><td class="right">3</td><td class="right hl">20</td><td class="left hl">FALSE</td></tr>
+        </table>
+      </div>
     </div>
-    <aside class="notes">mutate() computes in every row on its own, one row in and one row out. It can create several columns at once, and a column may use one computed earlier in the same call. The second column here is a logical value: TRUE for everyone who buys mostly organic food.</aside>
+    <aside class="notes">mutate() computes in every row on its own, one row in and one row out. It can create several columns at once, and a column may use one computed earlier in the same call. The second column here is a logical value: TRUE for everyone who buys mostly organic food. On the key, the first eight rows of the result, with the two new columns highlighted on the right: age 56 falls into the decade 50, and only respondent 7, with an organic share of 5, is an organic fan. Every row stays where it was, and the table has as many rows as before.</aside>
   </section>
 
   <section class="slide">
@@ -361,7 +374,7 @@ result &lt;- arrange(counts, desc(n))</div>
   <section class="slide">
     <h2>a pipeline</h2>
     <div class="figure" id="fig-pipeline"></div>
-    <aside class="notes">The same four steps as a pipeline, station by station, and under each station the table it returns. First key: filter() drops the 32-year-old, five rows remain. Second key: group_by() gives the rows the colours of their groups and changes nothing else. Third key: summarize() makes one row per group with its count, three omnivores, one flexitarian and one vegetarian, each in the colour of its group. Fourth key: arrange() sorts by the count, so the omnivores come first. Each table goes on to the next station as a copy, so every intermediate result stays in view.</aside>
+    <aside class="notes">The same four steps as a pipeline, station by station, and under each station the table it returns. First key: filter() drops the 32-year-old, five rows remain. Second key: group_by() gives the rows the colours of their groups and changes nothing else. Third key: summarize() makes one row per group with its count, each in the colour of its group. The groups come out sorted by diet from a to z, not in the order of the rows before, which is why the omnivores move to the middle: one flexitarian, three omnivores, one vegetarian. Fourth key: arrange() sorts by the count, largest first, so the omnivores come to the top. Each table goes on to the next station as a copy, so every intermediate result stays in view.</aside>
   </section>
 
   <section class="slide">
@@ -450,7 +463,7 @@ result &lt;- arrange(counts, desc(n))</div>
 </div>
 <script src="../../stagekit/draw.js?v=0.7.0-156254"></script>
 <script src="../../stagekit/anim.js?v=0.7.0-156254"></script>
-<script src="deck.js?v=5"></script>
+<script src="deck.js?v=6"></script>
 <script src="../../stagekit/stagekit.js?v=0.7.0-156254"></script>
 </body>
 </html>
