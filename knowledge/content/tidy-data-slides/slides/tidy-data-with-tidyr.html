@@ -75,7 +75,7 @@
     <h2>one answer, four tables</h2>
     <div class="figure" id="fig-four"></div>
     <div class="punch" data-step="4">all four hold the same numbers, but only the first lets you ask a question with the verbs you know.</div>
-    <aside class="notes">Three respondents of the survey said which price for a litre of milk they find fair, for three brands: Weihenstephan, Gut &amp; Günstig and alpro. These are their real answers, written down four times. The first table has one row per person and brand, with the columns id, brand and price. On the key, the second: one row per person and one column per brand. Next key, the third: everything a person said in a single cell. Next key, the fourth: the brands as rows and the people as columns. None of the four is wrong, and people find the second one the easiest to read. Last key: whoever wants the median per brand gets it from the first table without any rebuilding, with group_by(brand) and summarize(), while the second would need three calculations and the third would first have to cut text apart.</aside>
+    <aside class="notes">Three respondents of the survey said which price for a litre of milk they find fair, for three brands: Weihenstephan, Gut &amp; Günstig and alpro. These are their real answers, written down four times, and each card says in gray how its table is built. The table on the left has one row per answer, with the columns respondent, brand and price, and because respondent identifies the person, it repeats once for every brand that person judged. On the key, the second: one column per brand and one row per person. Next key, the third: all prices of a person in one cell. Next key, the fourth: one column per person and the brands as rows. None of the four is wrong, and people find the second one the easiest to read. Last key: whoever wants the median per brand gets it from the first table without any rebuilding, with group_by(brand) and summarize(), while the second would need three calculations and the third would first have to cut text apart.</aside>
   </section>
 
   <section class="slide">
@@ -101,13 +101,13 @@
   <section class="slide poll" data-poll="tidy-wide-prices">
     <div class="poll-q">respondents gave a price for each of three brands, one column per brand. is this table tidy?</div>
     <ol class="poll-opts"><li>yes, one row per person</li><li data-correct>no, values in column names</li><li>no, two values in one cell</li><li>it depends on the question</li></ol>
-    <aside class="notes">Quick quiz. The intended answer is that values sit in the column names: weihenstephan, gut and alpro are values of the variable brand. Strictly speaking the last answer is right as well, and that is the bridge to the slide on observations: for every question that compares brands, the brands hide in the column names, while for a question about each person the table is fine as it is.</aside>
+    <aside class="notes">Quick quiz. The intended answer is that values sit in the column names: weihen, gut and alpro are values of the variable brand. Strictly speaking the last answer is right as well, and that is the bridge to the slide on observations: for every question that compares brands, the brands hide in the column names, while for a question about each person the table is fine as it is.</aside>
   </section>
 
   <section class="slide">
     <h2>four ways to be messy</h2>
     <div class="figure" id="fig-messy"></div>
-    <aside class="notes">This is the map for the rest of the input: four ways in which a table can be messy, each with the verb that repairs it. Values in column names are repaired by pivot_longer(), two variables in one column by pivot_wider(), two values in one cell by separate_wider_delim(), and a list in one cell by separate_longer_delim(). All four come from the package tidyr, which library(tidyverse) loads together with dplyr.</aside>
+    <aside class="notes">This is the map for the rest of the input: four ways in which a table can be messy, each shown on a small piece of our own data with the messy part in yellow and the verb that repairs it underneath. When the brands stand in the column names, pivot_longer() repairs it; when one column called measure holds both the price and the certainty, pivot_wider(); when a cell holds a range such as 1.30 to 1.50, separate_wider_delim(); and when a cell holds a list of shops, separate_longer_delim(). All four come from the package tidyr, which library(tidyverse) loads together with dplyr.</aside>
   </section>
 
   <!-- ===== part 2: wide to long ===== -->
@@ -123,23 +123,23 @@
 raw &lt;- read_csv(
   "https://hands-on-computer-science.de/media/datasets/mds12_schoko_milch.csv"
 ) |&gt;
-  mutate(id = <span class="hl">row_number</span>(), .before = 1)</div>
-      <div class="sidenote" style="margin-top: 40px; max-width: 1500px">one row per respondent, 2,811 rows and 606 columns, but no column that tells the respondents apart, so <span class="mono">row_number()</span> gives every row an id</div>
+  mutate(respondent = <span class="hl">row_number</span>(), .before = 1)</div>
+      <div class="sidenote" style="margin-top: 40px; max-width: 1500px">one row per respondent, 2,811 rows and 606 columns, but no column that tells the respondents apart, so <span class="mono">row_number()</span> gives every row a number in the new column <span class="mono">respondent</span></div>
     </div>
-    <aside class="notes">From here on we work with the raw version of the survey on milk and chocolate, as it came out of the survey tool: 2,811 rows, one per respondent, and 606 columns. read_csv() loads it straight from the site. The file has no column that tells the respondents apart, so mutate() with row_number() numbers the rows, and .before = 1 puts the new column first. Live moment: copy the block and run it, because everything that follows builds on raw.</aside>
+    <aside class="notes">From here on we work with the raw version of the survey on milk and chocolate, as it came out of the survey tool: 2,811 rows, one per respondent, and 606 columns. read_csv() loads it straight from the site. The file has no column that tells the respondents apart, so mutate() with row_number() numbers the rows in a new column respondent, and .before = 1 puts it first. Live moment: copy the block and run it, because everything that follows builds on raw.</aside>
   </section>
 
   <section class="slide has-punch">
     <h2>the price question, as the survey stores it</h2>
     <div class="figure" id="fig-raw-prices"></div>
     <div class="punch">the brand is a variable, but here it hides in three column names.</div>
-    <aside class="notes">The question which price for a litre is fair, asked for three brands, is stored in three columns: u013pzahl_1weihen, u013pzahl_2gut and u013pzahl_3alpro. The first row holds the answers we have seen, 1.49, 1.09 and 1.89. Rows 2 to 4 are empty, and so are 2,580 of the 2,811 rows, because only 231 people were asked this question. The brand is a variable, but it hides in the column names.</aside>
+    <aside class="notes">The question which price for a litre is fair, asked for three brands, is stored in three columns: u013pzahl_1weihen, u013pzahl_2gut and u013pzahl_3alpro. The first row holds the answers we have seen, 1.49, 1.09 and 1.89, rows 2 and 3 are empty, and further down respondents 16 and 36 answered again, while in all 2,580 of the 2,811 rows are empty, because only 231 people were asked this question. The brand is a variable, but it hides in the column names.</aside>
   </section>
 
   <section class="slide">
     <h2>pivot_longer(): columns become rows</h2>
     <div class="figure" id="fig-longer"></div>
-    <aside class="notes">The three respondents again, with simple column names. First key: the three brand columns are the ones to turn into rows, while id stays as it is. Second key: the first row unfolds. Its id is copied three times, the three column names travel as values into a new column brand, and the three prices into a column price, so that three rows stand on the right. Third key: the other two respondents follow at once, and the long table has nine rows. Last key: the wide table goes, and above the long one appear the two arguments that name the new columns, names_to for the column that takes the names and values_to for the one that takes the values.</aside>
+    <aside class="notes">The three respondents again, with simple column names. First key: the three brand columns are the ones to turn into rows, while respondent stays as it is. Second key: the first row unfolds. Its respondent number is copied three times, the three column names travel as values into a new column brand, and the three prices into a column price, so that three rows stand on the right. Third key: the other two respondents follow at once, and the long table has nine rows. Last key: the wide table goes, and above the long one appear the two arguments that name the new columns, names_to for the column that takes the names and values_to for the one that takes the values.</aside>
   </section>
 
   <section class="slide">
@@ -147,15 +147,15 @@ raw &lt;- read_csv(
     <div class="content">
       <div class="beside">
         <div class="code small">prices &lt;- tribble(
-  ~id, ~weihenstephan, ~gut, ~alpro,
-  1,   1.49,           1.09, 1.89,
-  16,  1.19,           1.19, 1.49,
-  36,  1.09,           1.09, 1.49
+  ~respondent, ~weihen, ~gut, ~alpro,
+  1,           1.49,    1.09, 1.89,
+  16,          1.19,    1.19, 1.49,
+  36,          1.09,    1.09, 1.49
 )
 
 prices |&gt;
   <span class="hl">pivot_longer</span>(
-    cols = c(weihenstephan, gut, alpro),
+    cols = c(weihen, gut, alpro),
     <span class="hl">names_to</span> = "brand",
     <span class="hl">values_to</span> = "price"
   )</div>
@@ -175,7 +175,7 @@ prices |&gt;
     <h2>with the real survey</h2>
     <div class="content">
       <div class="code small">raw |&gt;
-  select(id, age = Q002alter, starts_with("u013pzahl")) |&gt;
+  select(respondent, age = Q002alter, starts_with("u013pzahl")) |&gt;
   pivot_longer(
     cols = <span class="hl">starts_with("u013pzahl")</span>,
     names_to = "brand",
@@ -184,7 +184,7 @@ prices |&gt;
       <div class="result" data-step="1" style="margin-top: 24px">
         <div class="rnote"># A tibble: 8,433 × 4</div>
         <table class="tt keep-case">
-          <tr><th class="right">id</th><th class="right">age</th><th class="left">brand</th><th class="right">price</th></tr>
+          <tr><th class="right">respondent</th><th class="right">age</th><th class="left">brand</th><th class="right">price</th></tr>
           <tr><td class="right">1</td><td class="right">55</td><td class="left">u013pzahl_1weihen</td><td class="right">1.49</td></tr>
           <tr><td class="right">1</td><td class="right">55</td><td class="left">u013pzahl_2gut</td><td class="right">1.09</td></tr>
           <tr><td class="right">1</td><td class="right">55</td><td class="left">u013pzahl_3alpro</td><td class="right">1.89</td></tr>
@@ -194,14 +194,14 @@ prices |&gt;
         </table>
       </div>
     </div>
-    <aside class="notes">The same move on the raw survey, with the real names. select() keeps the id, the age, renamed from Q002alter to age, and the three price columns, which starts_with() finds by the start of their names. pivot_longer() takes the same three columns. On the key, the result: 8,433 rows, three for each of the 2,811 respondents. It works, but two things get in the way: 7,740 of the rows are empty, from people who were never asked, and the brands still carry the clumsy names of the columns.</aside>
+    <aside class="notes">The same move on the raw survey, with the real names. select() keeps respondent, the age, renamed from Q002alter to age, and the three price columns, which starts_with() finds by the start of their names. pivot_longer() takes the same three columns. On the key, the result: 8,433 rows, three for each of the 2,811 respondents. It works, but two things get in the way: 7,740 of the rows are empty, from people who were never asked, and the brands still carry the clumsy names of the columns.</aside>
   </section>
 
   <section class="slide">
     <h2>cleaning up on the way</h2>
     <div class="content">
       <div class="code small">prices_long &lt;- raw |&gt;
-  select(id, age = Q002alter, starts_with("u013pzahl")) |&gt;
+  select(respondent, age = Q002alter, starts_with("u013pzahl")) |&gt;
   pivot_longer(
     cols = starts_with("u013pzahl"),
     names_to = "brand",
@@ -222,7 +222,7 @@ prices |&gt;
         <div class="result" data-step="1">
           <div class="rnote"># A tibble: 693 × 4</div>
           <table class="tt">
-            <tr><th class="right">id</th><th class="right">age</th><th class="left">brand</th><th class="right">price</th></tr>
+            <tr><th class="right">respondent</th><th class="right">age</th><th class="left">brand</th><th class="right">price</th></tr>
             <tr><td class="right">1</td><td class="right">55</td><td class="left">weihen</td><td class="right">1.49</td></tr>
             <tr><td class="right">1</td><td class="right">55</td><td class="left">gut</td><td class="right">1.09</td></tr>
             <tr><td class="right">1</td><td class="right">55</td><td class="left">alpro</td><td class="right">1.89</td></tr>
@@ -265,7 +265,7 @@ prices |&gt;
     <div class="content">
       <div class="answer">
         <div class="code small">raw |&gt;
-  select(id, starts_with("v008ort")) |&gt;
+  select(respondent, starts_with("v008ort")) |&gt;
   pivot_longer(
     cols = starts_with("v008ort"),
     names_to = "shop",
@@ -300,19 +300,13 @@ prices |&gt;
     <h2>two variables in one column</h2>
     <div class="figure" id="fig-measure"></div>
     <div class="punch">price and certainty are two variables, so they need two columns, even if the table looks tidy at first sight.</div>
-    <aside class="notes">A small long table, made up for this example: two respondents, two brands, and in the column measure two different things, the price someone finds fair and how sure they are to buy the brand, on a scale from -4 to 4. Data from a database or a measuring device often look like this. At first sight the table looks tidy, with one value per row, but the mean of value would be nonsense, because it mixes euros and points on a scale. Price and certainty are two variables, so they need two columns.</aside>
-  </section>
-
-  <section class="slide poll" data-poll="tidy-count-rows">
-    <div class="poll-q">a long table has 3 people, 3 brands and 2 measures in rows. how many rows does it have?</div>
-    <ol class="poll-opts"><li>6</li><li>9</li><li data-correct>18</li><li>27</li></ol>
-    <aside class="notes">Quick quiz. Every combination of person, brand and measure is one row, so 3 times 3 times 2 makes 18. Made wide with pivot_wider(), the same table has 9 rows, one per person and brand.</aside>
+    <aside class="notes">A small long table, made up for this example: two respondents, two brands, and in the column measure two different things, the price someone finds fair and how sure they are to buy the brand, on a scale from -4 to 4. Data from a database or a measuring device often look like this. At first sight the table looks tidy, with one value per row, but the mean of value would be nonsense, because it mixes euros and points on a scale. Price and certainty are two variables, so they need two columns, and pivot_wider() gives them those.</aside>
   </section>
 
   <section class="slide">
     <h2>pivot_wider(): rows become columns</h2>
     <div class="figure" id="fig-wider"></div>
-    <aside class="notes">The table from before. First key: measure and value are the columns that turn into new columns. Second key: the two rows of respondent 1 on weihen travel together into one row; price and sure rise up as the names of two new columns, and their values move beneath them, while the rows that are done turn gray. Third key: all other pairs follow at once, and on the right stand id, brand, price and sure, one row per person and brand.</aside>
+    <aside class="notes">The table from before. First key: measure and value are the columns that turn into new columns. Second key: the two rows of respondent 1 on weihen travel together into one row; price and sure rise up as the names of two new columns, and their values move beneath them, while the rows that are done turn gray. Third key: all other pairs follow at once, and on the right stand respondent, brand, price and sure, one row per person and brand.</aside>
   </section>
 
   <section class="slide">
@@ -320,15 +314,15 @@ prices |&gt;
     <div class="content">
       <div class="beside">
         <div class="code small">answers &lt;- tribble(
-  ~id, ~brand,   ~measure, ~value,
-  1,   "weihen", "price",  1.49,
-  1,   "weihen", "sure",   2,
-  1,   "alpro",  "price",  1.89,
-  1,   "alpro",  "sure",   -1,
-  16,  "weihen", "price",  1.19,
-  16,  "weihen", "sure",   3,
-  16,  "alpro",  "price",  1.49,
-  16,  "alpro",  "sure",   1
+  ~respondent, ~brand,   ~measure, ~value,
+  1,           "weihen", "price",  1.49,
+  1,           "weihen", "sure",   2,
+  1,           "alpro",  "price",  1.89,
+  1,           "alpro",  "sure",   -1,
+  16,          "weihen", "price",  1.19,
+  16,          "weihen", "sure",   3,
+  16,          "alpro",  "price",  1.49,
+  16,          "alpro",  "sure",   1
 )
 
 answers |&gt;
@@ -345,6 +339,12 @@ answers |&gt;
       </div>
     </div>
     <aside class="notes">The same in R, with the small table written by tribble(), so that the block runs as it is. pivot_wider() needs two answers: names_from, the column that supplies the names of the new columns, and values_from, the column that fills them. Both are bare column names without quotes, because they name columns that already exist, while names_to and values_to in pivot_longer() name columns that do not exist yet.</aside>
+  </section>
+
+  <section class="slide poll" data-poll="tidy-count-rows">
+    <div class="poll-q">a long table has 3 people, 3 brands and 2 measures in rows. how many rows does it have?</div>
+    <ol class="poll-opts"><li>6</li><li>9</li><li data-correct>18</li><li>27</li></ol>
+    <aside class="notes">Quick quiz on what we just did with two people and two brands, now with three of each. Every combination of person, brand and measure is one row, so 3 times 3 times 2 makes 18. Made wide with pivot_wider(), the same table has 9 rows, one per person and brand, just as the 8 rows of answers became 4.</aside>
   </section>
 
   <section class="slide has-punch">
@@ -385,27 +385,27 @@ answers |&gt;
   <section class="slide">
     <h2>two variables across two brands</h2>
     <div class="figure" id="fig-value"></div>
-    <aside class="notes">A harder case: two variables, price and sure, each spread over the brands, in four columns. First key: every column name splits at the underscore into two parts, the first, in yellow, naming a variable and the second a brand. Second key: the yellow parts become the names of columns, the other parts become values in a column brand, and the result is the tidy table with id, brand, price and sure, the same as after pivot_wider().</aside>
+    <aside class="notes">A harder case: two variables, price and sure, each spread over the brands, in four columns. First key: every column name splits at the underscore into two parts, the first, in yellow, naming a variable and the second a brand. Second key: the yellow parts become the names of columns, the other parts become values in a column brand, and the result is the tidy table with respondent, brand, price and sure, the same as after pivot_wider().</aside>
   </section>
 
   <section class="slide">
     <h2>names_to with ".value"</h2>
     <div class="content">
       <div class="code small">both &lt;- tribble(
-  ~id, ~price_weihen, ~price_alpro, ~sure_weihen, ~sure_alpro,
-  1,   1.49,          1.89,         2,            -1,
-  16,  1.19,          1.49,         3,            1
+  ~respondent, ~price_weihen, ~price_alpro, ~sure_weihen, ~sure_alpro,
+  1,           1.49,          1.89,         2,            -1,
+  16,          1.19,          1.49,         3,            1
 )
 
 both |&gt;
   pivot_longer(
-    cols = -id,
+    cols = -respondent,
     names_to = c(<span class="hl">".value"</span>, "brand"),
     <span class="hl">names_sep</span> = "_"
   )</div>
-      <div class="sidenote" style="margin-top: 40px">the result is the tidy table with the columns <span class="mono">id</span>, <span class="mono">brand</span>, <span class="mono">price</span> and <span class="mono">sure</span></div>
+      <div class="sidenote" style="margin-top: 40px">the result is the tidy table with the columns <span class="mono">respondent</span>, <span class="mono">brand</span>, <span class="mono">price</span> and <span class="mono">sure</span></div>
     </div>
-    <aside class="notes">cols = -id takes every column except id. names_sep = "_" splits every column name at the underscore, and names_to gets two names for the two parts. The special name ".value" says that this part of the name stays a column name, while the second part goes into a new column brand. So one pivot_longer() turns the wide table into the tidy one in a single step, without a pivot_wider() afterwards.</aside>
+    <aside class="notes">cols = -respondent takes every column except respondent. names_sep = "_" splits every column name at the underscore, and names_to gets two names for the two parts. The special name ".value" says that this part of the name stays a column name, while the second part goes into a new column brand. So one pivot_longer() turns the wide table into the tidy one in a single step, without a pivot_wider() afterwards.</aside>
   </section>
 
   <!-- ===== part 4: one cell, many things ===== -->
@@ -443,7 +443,7 @@ ranges |&gt;
   <section class="slide">
     <h2>a list in one cell</h2>
     <div class="figure" id="fig-split-long"></div>
-    <aside class="notes">Where three respondents shop, written as a list in one cell, the way some survey tools and many spreadsheets store it. The shops are the real answers of respondents 12, 24 and 48, translated into English. First key: the commas light up. Second key: every cell falls apart at its commas, the parts slide below each other, and the id is copied for every new row, so that seven rows stand on the right, one per person and shop.</aside>
+    <aside class="notes">Where three respondents shop, written as a list in one cell, the way some survey tools and many spreadsheets store it. The shops are the real answers of respondents 12, 24 and 48, translated into English. First key: the commas light up. Second key: every cell falls apart at its commas, the parts slide below each other, and the respondent number is copied for every new row, so that seven rows stand on the right, one per person and shop.</aside>
   </section>
 
   <section class="slide has-punch">
@@ -451,10 +451,10 @@ ranges |&gt;
     <div class="content">
       <div class="answer">
         <div class="code small">shopping &lt;- tribble(
-  ~id, ~shops,
-  12,  "supermarket",
-  24,  "discounter, supermarket, farm shop",
-  48,  "supermarket, specialist shop, organic shop"
+  ~respondent, ~shops,
+  12,          "supermarket",
+  24,          "discounter, supermarket, farm shop",
+  48,          "supermarket, specialist shop, organic shop"
 )
 
 shopping |&gt;
@@ -477,7 +477,7 @@ shopping |&gt;
   <section class="slide">
     <h2>one question, three shapes</h2>
     <div class="figure" id="fig-shapes"></div>
-    <aside class="notes">The same answers of respondents 12, 24 and 48 in three shapes. As a list in one cell, separate_longer_delim() makes them tidy. As nine columns of zeros and ones, the way the survey stores them, pivot_longer() and a filter() for the ones do the same. Both roads end in the same tidy table with one row per person and shop.</aside>
+    <aside class="notes">The same answers of respondents 12, 24 and 48 in three labelled shapes. Top left they stand as a list in one cell, and separate_longer_delim() turns that into the tidy table on the right, with one row per person and shop. On the key, the shape in which the survey really stores them: one column per shop with 1 for ticked, here five of the nine shops by name, and pivot_longer() followed by a filter() for the ones leads to the very same tidy table.</aside>
   </section>
 
   <section class="slide poll" data-poll="tidy-verb-for-lists">
@@ -501,13 +501,13 @@ shopping |&gt;
   <section class="slide">
     <h2>fill()</h2>
     <div class="code small left-half">sheet &lt;- tribble(
-  ~brand,          ~id, ~price,
-  "weihenstephan", 1,   1.49,
-  NA,              16,  1.19,
-  NA,              36,  1.09,
-  "alpro",         1,   1.89,
-  NA,              16,  1.49,
-  NA,              36,  1.49
+  ~brand,   ~respondent, ~price,
+  "weihen", 1,           1.49,
+  NA,       16,          1.19,
+  NA,       36,          1.09,
+  "alpro",  1,           1.89,
+  NA,       16,          1.49,
+  NA,       36,          1.49
 )
 
 sheet |&gt;
@@ -541,7 +541,7 @@ sheet |&gt;
 </div>
 <script src="../../stagekit/draw.js?v=0.7.0-156254"></script>
 <script src="../../stagekit/anim.js?v=0.7.0-156254"></script>
-<script src="deck.js?v=2"></script>
+<script src="deck.js?v=3"></script>
 <script src="../../stagekit/stagekit.js?v=0.7.0-156254"></script>
 </body>
 </html>

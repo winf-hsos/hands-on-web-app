@@ -16,10 +16,12 @@ and which four moves bring a table into that shape.
 **One answer, four tables (frames 5 to 9).** Three respondents of the survey
 said which price for a litre of milk they find fair, for three brands:
 Weihenstephan, Gut & Günstig and alpro. Their real answers are written down
-four times. The first table has one row per person and brand, with the columns
-id, brand and price; the second has one row per person and one column per
-brand; the third holds everything a person said in a single cell; and the
-fourth has the brands as rows and the people as columns. None of the four is
+four times, and a gray caption on each card says how its table is built. The
+table on the left has one row per answer, with the columns respondent, brand
+and price, and because respondent identifies the person, it repeats once for
+every brand that person judged. The second has one column per brand and one row
+per person, the third holds all prices of a person in one cell, and the fourth
+has one column per person and the brands as rows. None of the four is
 wrong, and people find the second one the easiest to read. Whoever wants the
 median per brand, however, gets it from the first table without any rebuilding,
 with `group_by(brand)` and `summarize()`, while the second would need three
@@ -50,17 +52,20 @@ when the brand is a column.
 
 **Quick quiz (frames 18 to 20).** Respondents gave a price for each of three
 brands, one column per brand: is this table tidy? The intended answer is that
-values sit in the column names, because weihenstephan, gut and alpro are
+values sit in the column names, because weihen, gut and alpro are
 values of the variable brand. Strictly speaking the last answer is right as
 well, which leads back to the observations: for every question that compares
 brands the brands hide in the column names, while for a question about each
 person the table is fine as it is.
 
 **Four ways to be messy (frame 21).** The rest of the input follows a map of
-four ways in which a table can be messy, each with the verb that repairs it.
-Values in column names are repaired by `pivot_longer()`, two variables in one
-column by `pivot_wider()`, two values in one cell by `separate_wider_delim()`,
-and a list in one cell by `separate_longer_delim()`. All four come from the
+four ways in which a table can be messy, each shown on a small piece of the
+deck's own data with the messy part in yellow and the verb that repairs it
+underneath. When the brands stand in the column names, `pivot_longer()`
+repairs it; when one column called measure holds both the price and the
+certainty, `pivot_wider()`; when a cell holds a range such as 1.30 to 1.50,
+`separate_wider_delim()`; and when a cell holds a list of shops,
+`separate_longer_delim()`. All four come from the
 package tidyr, which `library(tidyverse)` loads together with dplyr.
 
 ## Part 2: wide to long
@@ -69,21 +74,22 @@ package tidyr, which `library(tidyverse)` loads together with dplyr.
 survey on milk and chocolate, as it came out of the survey tool, with 2,811
 rows, one per respondent, and 606 columns. `read_csv()` loads it straight from
 the site. Since the file has no column that tells the respondents apart,
-`mutate()` with `row_number()` numbers the rows, and `.before = 1` puts the new
-column first. Everything that follows builds on `raw`, so this is the moment to
+`mutate()` with `row_number()` numbers the rows in a new column `respondent`,
+and `.before = 1` puts it first. Everything that follows builds on `raw`, so this is the moment to
 copy the block and run it.
 
 **The price question, as the survey stores it (frame 24).** The question which
 price for a litre is fair, asked for three brands, is stored in the three
 columns `u013pzahl_1weihen`, `u013pzahl_2gut` and `u013pzahl_3alpro`. The
-first row holds the answers we have already seen, while 2,580 of the 2,811
-rows are empty, because only 231 people were asked this question. The brand
+first row holds the answers we have already seen, rows 2 and 3 are empty, and
+further down respondents 16 and 36 answered again, while in all 2,580 of the
+2,811 rows are empty, because only 231 people were asked this question. The brand
 is a variable, but here it hides in three column names.
 
 **pivot_longer(): columns become rows (frames 25 to 29).** The three
 respondents appear again with simple column names. The three brand columns are
-the ones to turn into rows, while id stays as it is. The first row unfolds:
-its id is copied three times, the three column names travel as values into a
+the ones to turn into rows, while respondent stays as it is. The first row
+unfolds: its respondent number is copied three times, the three column names travel as values into a
 new column brand and the three prices into a column price, so that three rows
 stand on the right. The other two respondents follow, and the long table has
 nine rows. Finally the wide table goes, and above the long one appear the two
@@ -97,7 +103,7 @@ their names go, in `names_to`; and where their values go, in `values_to`. The
 two new names stand in quotes, because these columns do not exist yet.
 
 **With the real survey (frames 31 to 32).** The same move works on the raw
-survey with the real names. `select()` keeps the id, the age, renamed from
+survey with the real names. `select()` keeps respondent, the age, renamed from
 `Q002alter` to `age`, and the three price columns, which `starts_with()` finds
 by the start of their names. The result has 8,433 rows, three for each of the
 2,811 respondents. It works, but 7,740 of the rows are empty, from people who
@@ -149,27 +155,29 @@ the brand, on a scale from -4 to 4. Data from a database or a measuring device
 often look like this. At first sight the table looks tidy, with one value per
 row, but the mean of value would be nonsense, because it mixes euros and
 points on a scale. Price and certainty are two variables, so they need two
-columns.
+columns, and `pivot_wider()` gives them those.
 
-**Quick quiz (frames 42 to 44).** A long table has 3 people, 3 brands and 2
-measures in rows: how many rows does it have? Every combination of person,
-brand and measure is one row, so 3 times 3 times 2 makes 18. Made wide with
-`pivot_wider()`, the same table has 9 rows, one per person and brand.
-
-**pivot_wider(): rows become columns (frames 45 to 48).** In the table from
+**pivot_wider(): rows become columns (frames 42 to 45).** In the table from
 before, measure and value are the columns that turn into new columns. The two
 rows of respondent 1 on weihen travel together into one row, where price and
 sure rise up as the names of two new columns and their values move beneath
 them, while the rows that are done turn gray. All other pairs follow, and on
-the right stand id, brand, price and sure, one row per person and brand.
+the right stand respondent, brand, price and sure, one row per person and brand.
 
-**The code (frame 49).** In R the small table is again written with
+**The code (frame 46).** In R the small table is again written with
 `tribble()`, so that the block runs as it is. `pivot_wider()` needs two
 answers: `names_from`, the column that supplies the names of the new columns,
 and `values_from`, the column that fills them. Both are bare column names
 without quotes, because they name columns that already exist, while
 `names_to` and `values_to` in `pivot_longer()` name columns that do not exist
 yet.
+
+**Quick quiz (frames 47 to 49).** A long table has 3 people, 3 brands and 2
+measures in rows: how many rows does it have? The quiz repeats what the code
+just did with two people and two brands, now with three of each. Every
+combination of person, brand and measure is one row, so 3 times 3 times 2 makes
+18, and made wide with `pivot_wider()` the same table has 9 rows, one per
+person and brand, just as the 8 rows of answers became 4.
 
 **Wide is for people (frames 50 to 51).** Wide is not wrong, because it is the
 shape people read best. The pipeline computes the medians of the fair prices by
@@ -190,11 +198,11 @@ variables, price and sure, are each spread over the brands, in four columns.
 Every column name splits at the underscore into two parts, the first, in
 yellow, naming a variable and the second a brand. The yellow parts become the
 names of columns, the other parts become values in a column brand, and the
-result is the tidy table with id, brand, price and sure, the same as after
+result is the tidy table with respondent, brand, price and sure, the same as after
 `pivot_wider()`.
 
-**names_to with ".value" (frame 56).** `cols = -id` takes every column except
-id, `names_sep = "_"` splits every column name at the underscore, and
+**names_to with ".value" (frame 56).** `cols = -respondent` takes every column
+except respondent, `names_sep = "_"` splits every column name at the underscore, and
 `names_to` gets two names for the two parts. The special name `".value"` says
 that this part of the name stays a column name, while the second part goes
 into a new column brand. So a single `pivot_longer()` turns the wide table into
@@ -218,7 +226,7 @@ to into numbers. The opposite, which joins two columns into one, is called
 written as a list in one cell, the way some survey tools and many spreadsheets
 store it; they are the real answers of respondents 12, 24 and 48, translated
 into English. The commas light up, then every cell falls apart at its commas,
-the parts slide below each other and the id is copied for every new row, so
+the parts slide below each other and the respondent number is copied for every new row, so
 that seven rows stand on the right, one per person and shop.
 
 **separate_longer_delim() (frames 65 to 66).** `separate_longer_delim()` splits
@@ -228,37 +236,39 @@ supermarket, and every other shop is named once. A price range has a fixed
 number of parts and becomes columns, while a list has as many parts as someone
 ticked and becomes rows, and the question decides which one is needed.
 
-**One question, three shapes (frame 67).** The same answers of respondents 12,
-24 and 48 appear in three shapes. As a list in one cell, `separate_longer_delim()`
-makes them tidy, and as nine columns of zeros and ones, the way the survey
-stores them, `pivot_longer()` and a `filter()` for the ones do the same. Both
-roads end in the same tidy table with one row per person and shop.
+**One question, three shapes (frames 67 to 68).** The same answers of
+respondents 12, 24 and 48 appear in three labelled shapes. Top left they stand
+as a list in one cell, and `separate_longer_delim()` turns that into the tidy
+table on the right, with one row per person and shop. Then the shape in which
+the survey really stores them joins in: one column per shop with 1 for ticked,
+here five of the nine shops by name, and `pivot_longer()` followed by a
+`filter()` for the ones leads to the very same tidy table.
 
-**Quick quiz (frames 68 to 70).** A cell holds "vegan, organic, regional", and
+**Quick quiz (frames 69 to 71).** A cell holds "vegan, organic, regional", and
 the task is to count how often each label occurs. A cell with several labels
 separated by commas is a list, and counting labels needs one row per label, so
 it takes `separate_longer_delim()` with `delim = ", "` and then `count()`.
 
 ## Part 5: the map
 
-**Spreadsheet habits (frame 72).** In spreadsheets a group is often named only
+**Spreadsheet habits (frame 73).** In spreadsheets a group is often named only
 in the first row of its block: the brand stands at the top, and the rows below
 are left empty because a reader fills them in without thinking. For R the empty
 cells are missing values, which `read_csv()` and `read_excel()` read as NA, and
 a filter on alpro would find only one of the three rows.
 
-**fill() (frames 73 to 74).** In R the same table has NA in the empty cells.
+**fill() (frames 74 to 75).** In R the same table has NA in the empty cells.
 `fill()` writes the last known value downward into the missing cells, so the
 gaps fill block by block. Related is `drop_na()`, which removes rows with
 missing values, but it belongs only where it is clear why they are missing.
 
-**From symptom to verb (frame 75).** The map of this input pairs what you see in
+**From symptom to verb (frame 76).** The map of this input pairs what you see in
 a table with the verb that repairs it: values in column names call for
 `pivot_longer()`, two variables in one column for `pivot_wider()`, two values
 in one cell for `separate_wider_delim()`, a list in one cell for
 `separate_longer_delim()`, and a group named only once for `fill()`.
 
-**The workshop wall again (frame 76).** The same wall appears without the
+**The workshop wall again (frame 77).** The same wall appears without the
 crate, and the last tool is going back into its outline. In real projects
 tidying often takes more time than the analysis itself, but once every value
 has its place, every new question costs only a few lines of code. To practise,
