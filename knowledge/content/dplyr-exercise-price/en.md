@@ -22,44 +22,32 @@ In the survey, some of the respondents were shown a brand of milk, either
 Weihenstephan or alpro, and asked from which price a litre would be too
 expensive for them. The brand is in `milk_brand`, the answer in
 `price_too_expensive`. Everyone else never saw the question, and both values
-are missing for them.
-
-Answer three questions with `select()` and `filter()`, each with a pipe of
-its own:
-
-1. How many people answered the price question?
-2. For these people, show only `id`, `age`, `diet`, `milk_brand` and
-   `price_too_expensive`, and leave out the one answer that cannot be meant
-   seriously as a price per litre.
-3. Which of them are not omnivores and gave the price for alpro?
+are missing for them. Answer three questions with `select()` and `filter()`,
+each with a pipe of its own in a box of its own.
 
 ## Your code
 
-Each question has its own box. In the first one you count how many people
-answered the price question:
+1. How many people answered the price question?
 
 ```r
-# 1. How many answered the price question?
 survey |>
   filter() |>
   nrow()
 ```
 
-In the second one you keep only the plausible answers and the five columns
-named above:
+2. For these people, show only `id`, `age`, `diet`, `milk_brand` and
+   `price_too_expensive`, and leave out the one answer that cannot be meant
+   seriously as a price per litre.
 
 ```r
-# 2. The plausible answers, with five columns
 survey |>
   filter() |>
   select()
 ```
 
-In the third one you look for everyone who is not an omnivore and gave the
-price for alpro:
+3. Which of them are not omnivores and gave the price for alpro?
 
 ```r
-# 3. Not omnivores and alpro
 survey |>
   filter()
 ```

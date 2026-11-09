@@ -31,45 +31,33 @@ In der Umfrage wurde einem Teil der Befragten eine Milchmarke gezeigt, mal
 Weihenstephan, mal alpro, mit der Frage, ab welchem Preis ihnen ein Liter zu
 teuer wäre. Die Marke steht in `milk_brand`, die Antwort in
 `price_too_expensive`. Alle anderen haben die Frage nie gesehen, bei ihnen
-fehlen beide Werte.
-
-Beantworte mit `select()` und `filter()` drei Fragen, jede mit einer eigenen
-Pipe:
-
-1. Wie viele Personen haben die Preisfrage beantwortet?
-2. Zeige für diese Personen nur `id`, `age`, `diet`, `milk_brand` und
-   `price_too_expensive`, und lass dabei die eine Angabe weg, die als
-   Literpreis nicht ernst gemeint sein kann.
-3. Wer von ihnen ernährt sich nicht omnivor und hat den Preis für alpro
-   genannt?
+fehlen beide Werte. Beantworte mit `select()` und `filter()` drei Fragen,
+jede mit einer eigenen Pipe in ihrer eigenen Box.
 
 ## Dein Code
 
-Für jede Frage gibt es eine eigene Box. In der ersten zählst du, wie viele
-Personen die Preisfrage beantwortet haben:
+1. Wie viele Personen haben die Preisfrage beantwortet?
 
 ```r
-# 1. Wie viele haben die Preisfrage beantwortet?
 survey |>
   filter() |>
   nrow()
 ```
 
-In der zweiten behältst du nur die plausiblen Antworten und die fünf
-genannten Spalten:
+2. Zeige für diese Personen nur `id`, `age`, `diet`, `milk_brand` und
+   `price_too_expensive`, und lass dabei die eine Angabe weg, die als
+   Literpreis nicht ernst gemeint sein kann.
 
 ```r
-# 2. Die plausiblen Antworten, mit fünf Spalten
 survey |>
   filter() |>
   select()
 ```
 
-In der dritten suchst du alle, die sich nicht omnivor ernähren und den
-Preis für alpro genannt haben:
+3. Wer von ihnen ernährt sich nicht omnivor und hat den Preis für alpro
+   genannt?
 
 ```r
-# 3. Nicht omnivor und alpro
 survey |>
   filter()
 ```
