@@ -94,7 +94,7 @@
     <h2>six yes-or-no questions</h2>
     <div class="figure" id="fig-tree"></div>
     <div class="footnote">after <a href="https://doi.org/10.1126/science.aaa6146" target="_blank" rel="noopener"><span class="keep-case">Leek &amp; Peng</span> (2015), <span class="keep-case">Science</span> 347, 1314–1315</a></div>
-    <aside class="notes">You start at the top and answer until you reach a type. If you did not summarise the data, for example because you only show single rows, it is not yet a data analysis. A summary reported without interpretation is descriptive. If you do not check whether your discoveries would hold in a new sample, the analysis is exploratory, and that is the type of this deck. If you do check it, the next question is whether you want to know how changing one quantity changes another. If not, you either predict values for individuals, which is predictive and the field of machine learning, or you test whether a pattern in the sample is more than chance, so that it holds for everyone the sample stands for, which is inferential. If you do, an effect on average is causal, found best with experiments and the methods of causal inference, and an effect that occurs in exactly this way in every single case is mechanistic. The two questions that matter most are whether a pattern is meant to hold for more people than those you asked and whether you are asking for a cause. The tree is strict on purpose: it names what you are entitled to claim at the end.</aside>
+    <aside class="notes">You start at the top and answer until you reach a type. If you did not summarise the data, for example because you only show single rows, it is not yet a data analysis. A summary reported without interpretation is descriptive. If you do not check whether your discoveries would hold in a new sample, the analysis is exploratory, and that is the type of this deck. If you do check it, the next question is whether you want to know how changing one quantity changes another. If not, you either predict values for individuals, which is predictive and the field of machine learning, or you test whether a pattern in the sample is systematic rather than chance, which is inferential. If you do, an effect on average is causal, found best with experiments and the methods of causal inference, and an effect that occurs in exactly this way in every single case is mechanistic. The two questions that matter most are whether a pattern is meant to be more than chance and whether you are asking for a cause. The tree is strict on purpose: it names what you are entitled to claim at the end.</aside>
   </section>
 
   <section class="slide">
@@ -104,39 +104,34 @@
         <tr><th>type</th><th>what you do</th><th>a question for the milk survey</th></tr>
         <tr><td>descriptive</td><td>count and summarise</td><td>how many drink milk every day?</td></tr>
         <tr><td class="expl">exploratory</td><td>look for patterns</td><td>are the young more open to oat milk?</td></tr>
-        <tr><td>inferential</td><td>test a pattern against chance</td><td>does that hold for all of <span class="keep-case">Germany</span>?</td></tr>
+        <tr><td>inferential</td><td>test a pattern against chance</td><td>is this a real pattern or due to chance?</td></tr>
         <tr><td>predictive</td><td>predict for individuals</td><td>can age and diet predict oat milk?</td></tr>
         <tr><td>causal</td><td>change one thing, watch another</td><td>does a higher price change the choice?</td></tr>
         <tr><td>mechanistic</td><td>understand each single case</td><td>how much energy heats a litre of milk?</td></tr>
       </table>
     </div>
-    <aside class="notes">The examples are those of the lesson on analytic questions. 1,452 of the 2,387 people asked drink milk every day, which answers the descriptive question. The causal question can actually be answered with this survey, because the price of alpro oat drink was an experiment: chance decided whether a respondent saw it ten cents cheaper, at its normal price, or ten or thirty cents dearer, and everyone said how surely they would buy it. The mechanistic one cannot be answered by any survey; it belongs to physics.</aside>
+    <aside class="notes">The examples are those of the lesson on analytic questions. 1,452 of the 2,387 people asked drink milk every day, which answers the descriptive question. The inferential question asks whether the age pattern is real or due to chance, and a significance test on these data answers it; whether it holds for all of Germany is a different question, about how well the sample represents the country. The causal question can actually be answered with this survey, because the price of alpro oat drink was an experiment: chance decided whether a respondent saw it ten cents cheaper, at its normal price, or ten or thirty cents dearer, and everyone said how surely they would buy it. The mechanistic one cannot be answered by any survey; it belongs to physics.</aside>
   </section>
 
   <section class="slide poll" data-poll="eda-type-organic-share">
     <div class="poll-q">which type of question is this: “what share of the respondents buys (almost) only organic food?”</div>
     <ol class="poll-opts"><li data-correct>descriptive</li><li>exploratory</li><li>inferential</li><li>causal</li></ol>
-    <aside class="notes">Descriptive: the question counts and summarises without interpreting. The answer is 111 of 2,793 people, about 4 percent. It would turn inferential the moment we claimed that 4 percent of all Germans buy (almost) only organic food.</aside>
+    <aside class="notes">Descriptive: the question counts and summarises without interpreting. The answer is 111 of 2,793 people, about 4 percent. It would turn inferential if we asked whether a difference in this share, say between age groups, is a real pattern or due to chance.</aside>
   </section>
 
   <section class="slide has-punch">
     <h2>the step people skip</h2>
     <div class="figure" id="fig-skip"></div>
     <div class="punch">the data stay the same, only the claim grows, and with it what you would have to show.</div>
-    <aside class="notes">The most common mistake is not a wrong calculation but a silent promotion. The first sentence is exploratory and honest: in our survey, the younger respondents are more open to oat milk. The second claims the same for all young people in Germany; that is inferential and needs a significance test on these data, which checks whether a difference of this size could be chance in a sample of this size, and nobody ran it. The third says that being young causes it; that is causal and would need an experiment. Nothing in the data changed between the three sentences; only the claim did.</aside>
+    <aside class="notes">The most common mistake is not a wrong calculation but a silent promotion. The first sentence is exploratory and honest: in our survey, younger people appear more open to oat milk. The second claims that the difference is systematic and not chance; that is inferential and needs a significance test on these data, which nobody ran. The third says that being young causes it; that is causal and would need an experiment. Nothing in the data changed between the three sentences; only the claim did. Whether any of it holds for all of Germany is yet another question, about how well the sample represents the country.</aside>
   </section>
 
-  <section class="slide poll" data-poll="eda-type-vegetarians">
-    <div class="poll-q">which type of claim is this: “vegetarians in <span class="keep-case">Germany</span> buy more organic food than others.”</div>
-    <ol class="poll-opts"><li>descriptive</li><li>exploratory</li><li data-correct>inferential</li><li>causal</li></ol>
-    <aside class="notes">Inferential: the sentence speaks of all vegetarians in Germany, not of the 134 in our survey. In the survey the pattern is there, so as an exploratory finding it is fine; as a statement about Germany it needs a significance test on these data, which checks whether the difference could have come about by chance alone.</aside>
-  </section>
 
   <section class="slide has-punch">
     <h2>search long enough, and you will find something</h2>
     <div class="figure" id="fig-chance"></div>
-    <div class="punch">with 606 columns some pattern always appears, even if it lives only in these 2,811 people.</div>
-    <aside class="notes">With 606 columns there are 183,315 pairs of variables. To see what chance alone produces, shuffle every column on its own, so that no column has anything to do with any other, and test every pair that can be tested: about 7,000 pairs still pass a test at the 5 percent level, with correlations of up to about 0.5. That is no reason not to explore; it is the reason why an exploratory finding is a question for the next study and not its result.</aside>
+    <div class="punch">so write down your questions and what theory leads you to expect before you collect data, not after searching it.</div>
+    <aside class="notes">With 606 columns there are 183,315 pairs of variables. To see what chance alone produces, shuffle every column on its own, so that no column has anything to do with any other, and test every pair that can be tested: about 7,000 pairs still pass a test at the 5 percent level, with correlations of up to about 0.5. That is no reason not to explore, but it is the reason to write down your questions, and the expectations you derive from theory, before you collect the data. A hypothesis stated in advance is tested once, while a pattern found by searching had thousands of chances to appear, which is why an exploratory finding is a question for the next study and not its result.</aside>
   </section>
 
   <section class="slide">
@@ -207,7 +202,7 @@ ggplot(survey, aes(x = price_too_expensive)) +
   ggplot(aes(x = age_group, fill = no_oat_milk == 0)) +
   geom_bar(position = "fill")</div>
     <div class="punch">a pattern in 234 people is a question for the next study, not yet an answer.</div>
-    <aside class="notes">This is the exploratory question from the table of types. In yellow the share of people who would buy oat milk at all: 68 percent of the youngest group, 38 percent of those over 60. The picture suggests an answer, but it rests on 234 people from a quota sample, and the youngest group holds only 34 of them. To say something about everyone in Germany, the question becomes inferential, and a significance test on these data would have to show that the difference is more than chance.</aside>
+    <aside class="notes">This is the exploratory question from the table of types. In yellow the share of people who would buy oat milk at all: 68 percent of the youngest group, 38 percent of those over 60. The picture suggests an answer, but it rests on 234 people from a quota sample, and the youngest group holds only 34 of them. Whether the difference is a real pattern or due to chance is the inferential question, and a significance test on these data answers it; whether it holds for everyone in Germany depends on how well the quota sample represents the country.</aside>
   </section>
 
   <section class="slide poll" data-poll="eda-type-alpro-price">
@@ -220,7 +215,7 @@ ggplot(survey, aes(x = price_too_expensive)) +
     <h2>from exploring to the next question</h2>
     <div class="figure" id="fig-cards"></div>
     <div class="punch">the result of an exploration is a list of better questions.</div>
-    <aside class="notes">Three findings from this exploration and the questions they raise. That younger respondents are more open to oat milk raises the inferential question whether it holds for Germany. That vegans and vegetarians buy more organic food raises a causal one: is it the diet, or something behind both, such as income? And the 16 price answers above 20 euros raise a question for the design of the next survey: how should it ask for a price so that typing errors and "don't know" do not end up as numbers?</aside>
+    <aside class="notes">Three findings from this exploration and the questions they raise. That younger respondents seem more open to oat milk raises the inferential question whether this is a real pattern or due to chance. That vegans and vegetarians buy more organic food raises a causal one: is it the diet, or something behind both, such as income? And that people name very different prices from which a litre of milk is too expensive raises a predictive question: can age and diet predict a person's price limit?</aside>
   </section>
 
   <section class="slide">
@@ -236,7 +231,7 @@ ggplot(survey, aes(x = price_too_expensive)) +
 </div>
 <script src="../../stagekit/draw.js?v=0.7.0-156254"></script>
 <script src="../../stagekit/anim.js?v=0.7.0-156254"></script>
-<script src="deck.js?v=3"></script>
+<script src="deck.js?v=4"></script>
 <script src="../../stagekit/stagekit.js?v=0.7.0-156254"></script>
 </body>
 </html>

@@ -75,15 +75,17 @@ The examples come from the [[milk-chocolate-survey|survey on milk and chocolate]
 |---|---|---|
 | descriptive | count and summarise without interpreting | How many respondents drink milk every day? |
 | exploratory | look for patterns that raise new questions | Do younger people buy oat drink more often than older ones? |
-| inferential | test whether a pattern is more than chance | Does that also hold for everyone who shops in Germany? |
+| inferential | test whether a pattern is more than chance | Is this a real pattern or due to chance? |
 | predictive | predict for individuals, often with machine learning | Can age, diet and place of shopping predict whether someone buys oat drink? |
 | causal | find out what changes on average when you change one quantity, most reliably with an experiment | Does the intention to buy alpro drop when its price rises by ten cents? |
 | mechanistic | understand exactly how a cause works in every single case | How much energy does a litre of milk need to warm from 4 to 60 degrees? |
 
 Inferential does not mean that you would need other data. A significance test
 on exactly these data checks whether a difference of this size could also
-have come about by chance in a sample of this size. If that is unlikely, you
-may ascribe it to the people the sample stands for.
+have come about by chance in a sample of this size. If that is unlikely, it
+is called significant: it is systematic and not chance. Whether it also holds
+for all of Germany is a question of its own, because it depends on how well
+the sample represents the country.
 
 The causal question can actually be answered with this survey, because the
 price of alpro was an experiment in it. The shelf showed Weihenstephan at
@@ -108,9 +110,15 @@ with 606 columns and you will always find some association, even if it only
 exists by chance in these 2,811 people: shuffle every column on its own, so
 that no column has anything to do with any other, and about 7,000 pairs of
 columns still pass a test at the five percent level. Report such an
-association as if it held for everyone, and an exploratory question has
+association as if it were systematic, and an exploratory question has
 silently become an inferential one; read it as a cause, and it has even
 become a causal one.
+
+It follows that the questions belong before the data collection. If you write
+down beforehand what you want to know and what theory leads you to expect,
+you test a hypothesis exactly once; if you search the data afterwards, you
+give chance thousands of opportunities. Exploring stays valuable, but what it
+finds is a question for the next data collection.
 
 ## What exploring the survey shows
 
@@ -138,8 +146,8 @@ over to almost any data set:
   together?
 - Six types of questions: descriptive, exploratory, inferential, predictive,
   causal and mechanistic. What matters most is whether a pattern is meant to
-  hold for more people than those asked and whether you are asking for a
-  cause.
+  be more than chance and whether you are asking for a cause.
 - Inferential means testing on these data whether a pattern is more than
   chance; causal most reliably needs an experiment.
-- An exploratory finding is the beginning of a study, not its result.
+- Questions and expectations from theory belong before the data collection;
+  an exploratory finding is the beginning of a study, not its result.

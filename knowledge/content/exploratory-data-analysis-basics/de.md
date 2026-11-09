@@ -88,7 +88,7 @@ Die Beispiele stammen aus der [[milk-chocolate-survey|Umfrage zu Milch und Schok
 |---|---|---|
 | deskriptiv | zählen und zusammenfassen, ohne zu deuten | Wie viele der Befragten trinken täglich Milch? |
 | explorativ | Muster suchen, die neue Fragen aufwerfen | Kaufen Jüngere häufiger Hafermilch als Ältere? |
-| inferentiell | prüfen, ob ein Muster mehr ist als Zufall | Gilt das auch für alle, die in Deutschland einkaufen? |
+| inferentiell | prüfen, ob ein Muster mehr ist als Zufall | Ist das ein echtes Muster oder Zufall? |
 | prädiktiv | für Einzelne vorhersagen, oft mit maschinellem Lernen | Lässt sich aus Alter, Ernährung und Einkaufsort vorhersagen, ob jemand Hafermilch kauft? |
 | kausal | herausfinden, was sich im Durchschnitt ändert, wenn man eine Größe verändert, am sichersten mit einem Experiment | Sinkt die Kaufbereitschaft für alpro, wenn der Preis um zehn Cent steigt? |
 | mechanistisch | verstehen, wie eine Ursache in jedem Einzelfall genau wirkt | Wie viel Energie braucht ein Liter Milch, um von 4 auf 60 Grad warm zu werden? |
@@ -96,8 +96,10 @@ Die Beispiele stammen aus der [[milk-chocolate-survey|Umfrage zu Milch und Schok
 Inferentiell heißt nicht, dass man dafür andere Daten bräuchte. Ein
 Signifikanztest auf genau diesen Daten prüft, ob ein Unterschied dieser
 Größe in einer Stichprobe dieser Größe auch durch Zufall entstanden sein
-könnte. Ist das unwahrscheinlich, darf man ihn den Menschen zuschreiben, für
-die die Stichprobe steht.
+könnte. Ist das unwahrscheinlich, nennt man ihn signifikant: Er ist
+systematisch und nicht zufällig. Ob er auch für ganz Deutschland gilt, ist eine
+eigene Frage, denn sie hängt davon ab, wie gut die Stichprobe Deutschland
+abbildet.
 
 Die kausale Frage lässt sich mit dieser Umfrage tatsächlich beantworten, weil
 der Preis für alpro darin ein Experiment war. Im Regal standen Weihenstephan
@@ -123,9 +125,15 @@ mit 606 Spalten lange genug sucht, findet immer irgendeinen Zusammenhang,
 auch wenn er nur zufällig in diesen 2.811 Menschen steckt: Mischt man jede
 Spalte für sich zufällig durch, sodass keine mehr etwas mit einer anderen zu
 tun hat, bestehen immer noch rund 7.000 Paare von Spalten einen Test auf dem
-Fünf-Prozent-Niveau. Berichtet man einen solchen Zusammenhang, als gelte er
-für alle, ist aus einer explorativen Frage stillschweigend eine inferentielle
-geworden, und liest man ihn als Ursache, sogar eine kausale.
+Fünf-Prozent-Niveau. Berichtet man einen solchen Zusammenhang, als sei er
+systematisch, ist aus einer explorativen Frage stillschweigend eine
+inferentielle geworden, und liest man ihn als Ursache, sogar eine kausale.
+
+Daraus folgt, dass die Fragen vor die Erhebung gehören. Schreibt man vorher
+auf, was man wissen will und was man nach der Theorie erwartet, prüft man eine
+Hypothese ein einziges Mal; sucht man erst hinterher in den Daten, gibt man
+dem Zufall Tausende Gelegenheiten. Erkunden bleibt wertvoll, aber was es
+findet, ist eine Frage für die nächste Erhebung.
 
 ## Was beim Erkunden der Umfrage auffällt
 
@@ -133,9 +141,9 @@ Die Folien erkunden die Umfrage zu Milch und Schokolade, und drei Befunde
 lassen sich auf fast jeden Datensatz übertragen:
 
 - **Fehlend heißt meist „nicht gefragt“.** Fast die Hälfte aller Zellen ist
-  leer, weil viele Fragen nur an einen Teil der Befragten gingen. Wer alle
-  Zeilen mit einer Lücke entfernt, behält niemanden, und wer sie für eine
-  Frage entfernt, spricht über eine andere Gruppe, als er denkt.
+  leer, weil viele Fragen nur an einen Teil der Befragten gingen. Entfernt
+  man alle Zeilen mit einer Lücke, bleibt niemand übrig, und entfernt man sie
+  für eine Frage, spricht man über eine andere Gruppe, als man denkt.
 - **Ein seltsamer Wert kann eine ganze Verteilung verdecken.** Bei der Frage,
   ab welchem Preis ein Liter Milch zu teuer ist, liegen 16 Antworten über 20
   Euro, bis hin zu 999. Ein Histogramm aller Antworten zeigt dann nur einen
@@ -153,10 +161,9 @@ lassen sich auf fast jeden Datensatz übertragen:
   Modellieren, der mit zwei Fragen beginnt: Wie variiert eine Variable, und
   wie variieren zwei gemeinsam?
 - Sechs Typen von Fragen: deskriptiv, explorativ, inferentiell, prädiktiv,
-  kausal und mechanistisch. Entscheidend ist, ob ein Muster für mehr
-  Menschen gelten soll als für die befragten und ob man nach einer Ursache
-  fragt.
+  kausal und mechanistisch. Entscheidend ist, ob ein Muster mehr sein soll
+  als Zufall und ob man nach einer Ursache fragt.
 - Inferentiell heißt, mit einem Test auf diesen Daten zu prüfen, ob ein
   Muster mehr ist als Zufall; kausal verlangt am sichersten ein Experiment.
-- Ein explorativer Befund ist der Anfang einer Untersuchung, nicht ihr
-  Ergebnis.
+- Fragen und Erwartungen aus der Theorie gehören vor die Erhebung; ein
+  explorativer Befund ist der Anfang einer Untersuchung, nicht ihr Ergebnis.

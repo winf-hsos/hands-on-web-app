@@ -149,13 +149,13 @@ const typeBox = (x, y, w, h, name, o = {}) => name === "exploratory"
  * its box). The yellow marker sits around the current type and moves 570 to
  * the right per step; a red cross under a requirement says it was not shown.
  * The claim stands in a box 1240 x 100 at (220, 400); the longest sentence,
- * 61 characters at 32, is about 980. */
+ * 60 characters at 32, is about 960. */
 (function () {
   const xs = [70, 640, 1210];
   const needs = ["holds for these 2,811 people", "needs a test against chance", "needs an experiment"];
   const claims = [
-    "in our survey, younger respondents are more open to oat milk.",
-    "young people in Germany are more open to oat milk.",
+    "in our survey, younger people appear more open to oat milk.",
+    "younger people are more open to oat milk, and not by chance.",
     "being young makes people more open to oat milk."];
   el("fig-skip").innerHTML = d.svg(1680, 660,
     d.arrow(470, 100, 640, 100, { color: C.gray }), d.arrow(1040, 100, 1210, 100, { color: C.gray }),
@@ -261,13 +261,13 @@ const typeBox = (x, y, w, h, name, o = {}) => name === "exploratory"
  * Figure 1680 x 660 (has-punch). Three cards 516 wide on a pitch of 580 from
  * x 2: the finding (140 high, from y 40), an arrow, the question it raises
  * (dashed, 140 high, from y 250) and the type of that question in grey at
- * y 436. Text in two lines at 32 from x + 24; the longest line, "younger
- * respondents are", is about 370 wide. */
+ * y 436. Text in two lines at 32 from x + 24; the longest line, "price
+ * limits differ a lot", is about 400 wide. */
 (function () {
   const cards = [
-    ["younger respondents are\nmore open to oat milk", "does it hold for all\nof Germany?", "an inferential question"],
+    ["younger respondents seem\nmore open to oat milk", "is it a real pattern\nor due to chance?", "an inferential question"],
     ["vegans and vegetarians\nbuy more organic food", "is it the diet, or the\nincome behind it?", "a causal question"],
-    ["16 price answers lie\nabove 20 €", "how should the\nquestionnaire ask?", "a question for the design"]];
+    ["price limits differ a lot\nfrom person to person", "can age and diet predict\na person's price limit?", "a predictive question"]];
   const parts = [];
   cards.forEach(([finding, question, type], k) => {
     const x = 2 + 580 * k, cx = x + 258;

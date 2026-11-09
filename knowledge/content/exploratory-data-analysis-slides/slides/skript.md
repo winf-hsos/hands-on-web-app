@@ -48,63 +48,61 @@ and suggest deciding which type of question you are asking before you start.
 **Six yes-or-no questions (frames 14 to 21).** Their decision tree, redrawn
 here, starts at the top and asks until it reaches a type. If you did not
 summarise the data, for example because you only show single rows, it is not
-yet a data analysis. A summary reported without interpretation is
-descriptive. If you do not check whether your discoveries would hold in a new
-sample, the analysis is exploratory, which is the type of this deck. If you do
-check it, the next question is whether you want to know how changing one
-measurement changes another. If not, you either predict values for
-individuals, which is predictive and the field of machine learning, or you
-test whether a pattern in the sample is more than chance, so that it holds for
-everyone the sample stands for, which is inferential. If you do, an effect on
-average is causal, found best with experiments and the methods of causal
-inference, and an effect that occurs in exactly this way in every single case
-is mechanistic. Two of the six questions matter most: whether a pattern is
-meant to hold for more people than those you asked, and whether you are asking
-for a cause.
-The tree is strict on purpose, because it names what you are entitled to
-claim at the end.
+yet a data analysis. A summary reported without interpretation is descriptive.
+If you do not check whether your discoveries would hold in a new sample, the
+analysis is exploratory, which is the type of this deck. If you do check it,
+the next question is whether you want to know how changing one measurement
+changes another. If not, you either predict values for individuals, which is
+predictive and the field of machine learning, or you test whether a pattern in
+the sample is systematic rather than chance, which is inferential. If you do,
+an effect on average is causal, found best with experiments and the methods of
+causal inference, and an effect that occurs in exactly this way in every
+single case is mechanistic. Two of the six questions matter most: whether a
+pattern is meant to be more than chance, and whether you are asking for a
+cause. The tree is strict on purpose, because it names what you are entitled
+to claim at the end.
 
 **Six types, asked of one survey (frame 22).** The same six types, each with a
 question to the survey on milk and chocolate. That 1,452 of the 2,387 people
-asked drink milk every day answers the descriptive question. The causal
-question can actually be answered with this survey, because the price of
-alpro oat drink was an experiment: chance decided whether a respondent saw it
-ten cents cheaper, at its normal price, or ten or thirty cents dearer, and
-everyone said how surely they would buy it. Inferential, in the table, means
-testing a pattern against chance. The mechanistic question cannot be answered by any survey; it belongs to physics.
+asked drink milk every day answers the descriptive question. The inferential
+question asks whether the age pattern is real or due to chance, and a
+significance test on these data answers it; whether it holds for all of
+Germany is a different question, about how well the sample represents the
+country. The causal question can actually be answered with this survey,
+because the price of alpro oat drink was an experiment: chance decided whether
+a respondent saw it ten cents cheaper, at its normal price, or ten or thirty
+cents dearer, and everyone said how surely they would buy it. The mechanistic
+question cannot be answered by any survey; it belongs to physics.
 
 **Quick quiz: organic share (frames 23 to 25).** "What share of the
 respondents buys (almost) only organic food?" is descriptive: it counts and
 summarises without interpreting. The answer is 111 of 2,793 people, about 4
-percent. It would turn inferential the moment we claimed that 4 percent of all
-Germans buy (almost) only organic food.
+percent. It would turn inferential if we asked whether a difference in this
+share, say between age groups, is a real pattern or due to chance.
 
 **The step people skip (frames 26 to 28).** The most common mistake is not a
 wrong calculation but a silent promotion. The first sentence, "in our survey,
-younger respondents are more open to oat milk", is exploratory and honest. The
-second claims the same for all young people in Germany; that is inferential
-and needs a significance test on these data, which checks whether a difference
-of this size could be chance in a sample of this size, and nobody ran it. The third says that
-being young causes it; that is causal and would need an experiment. The data
-stay the same in all three sentences, while the claim grows, and with it what
-you would have to show.
+younger people appear more open to oat milk", is exploratory and honest. The
+second, "younger people are more open to oat milk, and not by chance", claims
+that the difference is systematic; that is inferential and needs a
+significance test on these data, which nobody ran. The third says that being
+young causes it; that is causal and would need an experiment. The data stay
+the same in all three sentences, while the claim grows, and with it what you
+would have to show. Whether any of it holds for all of Germany is yet another
+question, about how well the sample represents the country.
 
-**Quick quiz: vegetarians (frames 29 to 31).** "Vegetarians in Germany buy
-more organic food than others" is inferential, because the sentence speaks of
-all vegetarians in Germany and not of the 134 in the survey. As an exploratory
-finding about the survey it is fine; as a statement about Germany it needs a
-significance test on these data, which checks whether the difference could
-have come about by chance alone.
-
-**Search long enough, and you will find something (frame 32).** With 606
+**Search long enough, and you will find something (frame 29).** With 606
 columns there are 183,315 pairs of columns. To see what chance alone produces,
 shuffle every column on its own, so that no column has anything to do with any
 other, and test every pair that can be tested. About 7,000 pairs still pass a
 test at the 5 percent level, with correlations of up to about 0.5. That is no
-reason not to explore, but it is the reason why an exploratory finding is a
-question for the next study and not its result.
+reason not to explore, but it is the reason to write down your questions, and
+the expectations you derive from theory, before you collect the data rather
+than after searching it. A hypothesis stated in advance is tested once, while
+a pattern found by searching had thousands of chances to appear, which is why
+an exploratory finding is a question for the next study and not its result.
 
-**The sentence of the deck (frame 33).** Exploring finds questions worth
+**The sentence of the deck (frame 30).** Exploring finds questions worth
 asking, it does not answer them. Everything you find while exploring deserves
 a name that says what it is: a pattern in these data, worth checking.
 
@@ -115,7 +113,7 @@ household, and it has 606 columns. The columns used here carry readable names
 instead of the codes of the questionnaire; loading the data, renaming and
 selecting the columns and saving the result is an exercise of its own.
 
-**Half of the table is empty (frame 35).** The picture shows the whole table,
+**Half of the table is empty (frame 32).** The picture shows the whole table,
 one pixel per cell, answered cells light and empty ones dark. Almost exactly
 half of all cells are empty, and hardly any of them because someone refused to
 answer: many questions went only to a part of the respondents, the chocolate
@@ -124,13 +122,13 @@ sit at the top of the picture. Remove every row with a missing value, and
 nobody is left, because every single row has gaps. Remove them for one
 question, and you are talking about a different group than you think.
 
-**Variation: age (frame 36).** The histogram is the first tool for variation.
+**Variation: age (frame 33).** The histogram is the first tool for variation.
 All 2,811 people gave their age, from 18 to 80, with a median of 50. The shape
 is no accident, because the panel provider filled quotas for age, gender and
 federal state, and that matters whenever a result is meant to hold for
 Germany as a whole.
 
-**Unusual values: when is milk too expensive? (frames 37 to 39).** 612 people
+**Unusual values: when is milk too expensive? (frames 34 to 36).** 612 people
 said from which price on a litre of milk is too expensive for them. The first
 histogram is useless, a single bar, because a few answers up to 999 stretch
 the axis to a thousand euros. Zoomed in with `coord_cartesian()`, the real
@@ -140,7 +138,7 @@ values themselves: 16 answers lie above 20 euros. A 160 is almost certainly
 "don't know". One strange value can hide a whole distribution, so look at the
 extremes before you look at the average.
 
-**Mean or median? (frame 40).** With all 612 answers the mean is 8.11 euros, a
+**Mean or median? (frame 37).** With all 612 answers the mean is 8.11 euros, a
 price at which nobody in the survey would really stop buying milk; the 16
 extreme answers pull it up. Set only those answers to `NA`, which keeps
 everything else these people said, and the mean drops to 2.17 euros. The median stays at 1.99 euros in both cases, because it depends only
@@ -148,7 +146,7 @@ on the middle of the sorted values. When a distribution has extreme values,
 report the median, and say which values you set to `NA` and why, because the
 threshold is a judgement.
 
-**Covariation: organic food and diet (frame 41).** For a categorical and a
+**Covariation: organic food and diet (frame 38).** For a categorical and a
 numerical variable the boxplot is the standard picture. The median share of
 organic food rises from 2 for omnivores to 3 for flexitarians, vegetarians and
 pescetarians and to 4 for vegans. Read the group sizes before the boxes: 1,816
@@ -157,16 +155,16 @@ differs most, which is exactly where chance plays the biggest part; a striking
 box built on a handful of people is a reason for a closer look, not for a
 headline.
 
-**Covariation: oat milk and age (frame 42).** This is the exploratory question
+**Covariation: oat milk and age (frame 39).** This is the exploratory question
 from the table of types. The yellow bars show the share of people who would
 buy oat milk at all: 68 percent of the youngest group and 38 percent of those
 over 60. The picture suggests an answer, but it rests on 234 people from a
-quota sample, and the youngest group holds only 34 of them. To say something
-about everyone in Germany, the question becomes inferential, and a
-significance test on these data would have to show that the difference is more
-than chance.
+quota sample, and the youngest group holds only 34 of them. Whether the
+difference is a real pattern or due to chance is the inferential question, and
+a significance test on these data answers it; whether it holds for everyone in
+Germany depends on how well the quota sample represents the country.
 
-**Quick quiz: the alpro price (frames 43 to 45).** "Respondents saw alpro oat
+**Quick quiz: the alpro price (frames 40 to 42).** "Respondents saw alpro oat
 drink at a price chosen by chance and said how surely they would buy it. Which
 type of question can this answer?" Causal: on a shelf next to Weihenstephan at
 1.79 euros and Gut & Günstig at 1.09, alpro cost 1.69, 1.79, 1.89 or 2.09
@@ -174,21 +172,19 @@ euros, and chance decided which of the four a respondent saw. For each of the
 three milks they said how surely they would buy it, from −4 for certainly not
 to +4 for certainly. Because chance decided who saw which price, the groups
 differ only in the price, and a difference in how surely they would buy alpro
-can be put down to it.
-That is the idea of an experiment, and it is the strongest way to answer a
-causal question.
+can be put down to it. That is the idea of an experiment, and it is the
+strongest way to answer a causal question.
 
-**From exploring to the next question (frame 46).** Three findings of this
-exploration and the questions they raise. That younger respondents are more
-open to oat milk raises the inferential question whether it holds for all of
-Germany. That vegans and vegetarians buy more organic food raises a causal
-one: is it the diet, or something behind both, such as income? And the 16
-price answers above 20 euros raise a question for the design of the next
-survey: how should it ask for a price so that typing errors and "don't know"
-do not end up as numbers? The result of an exploration is a list of better
-questions.
+**From exploring to the next question (frame 43).** Three findings of this
+exploration and the questions they raise. That younger respondents seem more
+open to oat milk raises the inferential question whether this is a real
+pattern or due to chance. That vegans and vegetarians buy more organic food
+raises a causal one: is it the diet, or something behind both, such as income?
+And that people name very different prices from which a litre of milk is too
+expensive raises a predictive question: can age and diet predict a person's
+price limit? The result of an exploration is a list of better questions.
 
-**Take the map with you (frame 47).** Draw what you see, mark what you do not
+**Take the map with you (frame 44).** Draw what you see, mark what you do not
 understand, and keep the question marks. Exploring is the start of every
 analysis, and the honest name for its findings is "worth checking". To read
 on: Leek and Peng, "What is the question?"
