@@ -21,45 +21,38 @@ const typeBox = (x, y, w, h, name, o = {}) => name === "exploratory"
   : d.box(x, y, w, h, name, { border: C.light, size: o.size || 32 });
 
 /* --- slide: the workflow of a data analysis -----------------------------------
- * Figure 1680 x 660 (has-punch), after R for Data Science. Everything sits on
- * the row y 300: load 70..270 and tidy 350..550 (200 x 64), the loop as a
- * circle around (900, 300) with r 190, communicate 1330..1590 (260 x 64;
- * "communicate" at 32 is about 210). The three steps of the loop sit on the
- * circle at -90, 30 and 150 degrees, 220 x 64 each ("transform" about 175):
- * transform (900, 110), visualise (1065, 395), model (735, 395); between the
- * two lower boxes 110 stay free. "explore" at 48 in the middle of the loop.
+ * Figure 1680 x 660 (has-punch), after R for Data Science. The row y 300
+ * holds load 90..270 and tidy 340..520 (180 x 64), the frame "explore"
+ * 590..1250 (y 70..530) and communicate 1330..1590 (260 x 64; "communicate"
+ * at 32 is about 210); grey arrows run from box to box in between. Inside the
+ * frame the three steps of the loop form a triangle, 220 x 64 each
+ * ("transform" about 175): transform 810..1030 at y 175, model 630..850 and
+ * visualise 990..1210 at y 400, 40 from the frame on either side. Blue arrows
+ * lead from one box to the next, clockwise; "explore" at 48 heads the frame.
  * The frame "program" runs from (20, 30) to (1660, 630). */
 (function () {
-  const cx = 900, cy = 300, r = 190;
-  const at = (deg) => [cx + r * Math.cos(deg * Math.PI / 180), cy + r * Math.sin(deg * Math.PI / 180)];
-  const node = (deg, text) => { const [x, y] = at(deg); return d.box(x - 110, y - 32, 220, 64, text); };
-  // small heads in the middle of each arc show the direction, clockwise
-  const head = (deg) => {
-    const [x, y] = at(deg), t = deg * Math.PI / 180, ux = -Math.sin(t), uy = Math.cos(t);
-    return d.arrow(x - ux * 12, y - uy * 12, x + ux * 12, y + uy * 12, { color: C.blue, width: 3, head: 18 });
-  };
-  const circle = `M ${cx} ${cy - r} A ${r} ${r} 0 1 1 ${cx - 0.01} ${cy - r}`;
   el("fig-workflow").innerHTML = d.svg(1680, 660,
     d.g("program",
       `<rect x="20" y="30" width="1640" height="600" rx="24" fill="none" stroke="${C.gray}" stroke-width="2"/>`,
       d.label(60, 0, "program", { size: 32, color: C.gray, centerY: 590 })),
-    d.g("load", d.box(70, 268, 200, 64, "load")),
-    d.g("tidy", d.arrow(270, 300, 350, 300, { color: C.gray }), d.box(350, 268, 200, 64, "tidy")),
-    d.g("into", d.arrow(550, 300, cx - r, 300, { color: C.gray })),
-    d.g("loop", `<path d="${circle}" fill="none" stroke="${C.blue}" stroke-width="3"/>`, head(-30), head(90), head(210)),
-    d.g("route", `<path d="${circle}" fill="none" stroke="none"/>`),
-    d.g("nodes", node(-90, "transform"), node(30, "visualise"), node(150, "model")),
-    d.g("explore", d.label(cx, 0, "explore", { size: 48, color: C.blue, anchor: "middle", centerY: 262 })),
-    d.g("dot", `<circle cx="${cx}" cy="${cy - r}" r="12" fill="${C.yellow}"/>`),
-    d.g("comm", d.arrow(cx + r, 300, 1330, 300, { color: C.gray }), d.box(1330, 268, 260, 64, "communicate")));
+    d.g("load", d.box(90, 268, 180, 64, "load")),
+    d.g("tidy", d.arrow(270, 300, 340, 300, { color: C.gray }), d.box(340, 268, 180, 64, "tidy")),
+    d.g("into", d.arrow(520, 300, 590, 300, { color: C.gray }),
+      d.box(590, 70, 660, 460, "", { border: C.light, rx: 24 }),
+      d.label(920, 0, "explore", { size: 48, color: C.blue, anchor: "middle", centerY: 122 })),
+    d.g("nodes", d.box(810, 175, 220, 64, "transform"), d.box(990, 400, 220, 64, "visualise"),
+      d.box(630, 400, 220, 64, "model")),
+    d.g("a1", d.arrow(990, 239, 1080, 400, { color: C.blue, width: 3 })),
+    d.g("a2", d.arrow(990, 432, 850, 432, { color: C.blue, width: 3 })),
+    d.g("a3", d.arrow(760, 400, 850, 239, { color: C.blue, width: 3 })),
+    d.g("comm", d.arrow(1250, 300, 1330, 300, { color: C.gray }), d.box(1330, 268, 260, 64, "communicate")));
   const a = d.anim("fig-workflow");
-  a.set("program", { opacity: 0 }); a.set("into", { opacity: 0 }); a.set("explore", { opacity: 0 }); a.set("dot", { opacity: 0 });
+  a.set("program", { opacity: 0 });
   // load, then tidy: the preparation
   a.step(a.show("tidy", { dur: 600 }));
-  // the loop draws itself, a point runs once around it, and it gets its name
-  a.step(a.par(a.show("into", { dur: 400 }), a.draw("loop", { dur: 1000 }), a.show("nodes", { dur: 600 })),
-    a.show("dot", { dur: 150 }), a.along("dot", "route", { dur: 1600, ease: "linear" }), a.hide("dot", { dur: 150 }),
-    a.show("explore", { dur: 500 }));
+  // the frame and its three steps appear, then the arrows go round once
+  a.step(a.par(a.show("into", { dur: 500 }), a.show("nodes", { dur: 500 })),
+    a.show("a1", { dur: 400 }), a.show("a2", { dur: 400 }), a.show("a3", { dur: 400 }));
   // what was understood goes out
   a.step(a.show("comm", { dur: 600 }));
   // programming holds it all together
@@ -69,24 +62,31 @@ const typeBox = (x, y, w, h, name, o = {}) => name === "exploratory"
 /* --- slide: two kinds of questions ---------------------------------------------
  * Figure 1680 x 660 (has-punch), two panels centred at x 400 and 1280. Left a
  * histogram of twelve bars (44 wide, pitch 50, x 100..694, baseline y 400),
- * right a scatter plot with its axes from (980, 140) to (1580, 400). Under
- * each panel what it shows at y 440, in grey, and the question at y 540 in two
+ * right a scatter plot with its axes from (980, 130) to (1590, 400), named
+ * x at the end of the horizontal and y above the vertical one. The dots come
+ * from a seeded random generator: x uniform, y a rising trend plus normal
+ * noise, so they look like data and stay the same on every load. Under each
+ * panel what it shows at y 440, in grey, and the question at y 540 in two
  * lines (about 22 characters, 350 wide at 32). */
 (function () {
   const heights = [24, 60, 110, 170, 226, 250, 220, 172, 122, 78, 42, 18];
   const bars = heights.map((h, k) => `<rect x="${100 + 50 * k}" y="${400 - h}" width="44" height="${h}" fill="${C.light}"/>`);
+  let seed = 20261109;
+  const uniform = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+  const normal = () => Math.sqrt(-2 * Math.log(uniform())) * Math.cos(2 * Math.PI * uniform());
   const dots = [];
-  for (let i = 0; i < 44; i++) {
-    const x = 1000 + ((i * 137) % 560);
-    const noise = ((i * 71) % 120) - 60;
-    const y = Math.max(156, Math.min(388, 380 - (x - 1000) * 0.36 + noise));
-    dots.push(`<circle cx="${x}" cy="${y}" r="7" fill="${C.light}"/>`);
+  for (let i = 0; i < 52; i++) {
+    const x = 1005 + uniform() * 560;
+    const y = Math.max(150, Math.min(390, 372 - (x - 1000) * 0.34 + normal() * 34));
+    dots.push(`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="7" fill="${C.light}"/>`);
   }
   el("fig-questions").innerHTML = d.svg(1680, 660,
     d.line(90, 400, 704, 400, { color: C.gray }), ...bars,
     d.label(400, 0, "one column", { size: 32, color: C.gray, anchor: "middle", centerY: 446 }),
     d.label(400, 0, "what variation occurs\nwithin one variable?", { size: 32, anchor: "middle", centerY: 550 }),
     d.line(980, 130, 980, 400, { color: C.gray }), d.line(980, 400, 1590, 400, { color: C.gray }), ...dots,
+    d.label(1610, 0, "x", { size: 32, color: C.gray, centerY: 398 }),
+    d.label(980, 0, "y", { size: 32, color: C.gray, anchor: "middle", centerY: 104 }),
     d.label(1280, 0, "two columns", { size: 32, color: C.gray, anchor: "middle", centerY: 446 }),
     d.label(1280, 0, "what covariation occurs\nbetween variables?", { size: 32, anchor: "middle", centerY: 550 }));
 })();
@@ -145,14 +145,14 @@ const typeBox = (x, y, w, h, name, o = {}) => name === "exploratory"
 /* --- slide: the step people skip -------------------------------------------------
  * Figure 1680 x 660 (has-punch). Three types in a row, 400 x 80 at x 70, 640
  * and 1210 (y 60..140), with what each one needs underneath at y 200 (the
- * longest, "needs a test beyond the sample", is about 480 wide, centred under
+ * longest, "needs a test against chance", is about 450 wide, centred under
  * its box). The yellow marker sits around the current type and moves 570 to
  * the right per step; a red cross under a requirement says it was not shown.
  * The claim stands in a box 1240 x 100 at (220, 400); the longest sentence,
  * 61 characters at 32, is about 980. */
 (function () {
   const xs = [70, 640, 1210];
-  const needs = ["holds for these 2,811 people", "needs a test beyond the sample", "needs an experiment"];
+  const needs = ["holds for these 2,811 people", "needs a test against chance", "needs an experiment"];
   const claims = [
     "in our survey, younger respondents are more open to oat milk.",
     "young people in Germany are more open to oat milk.",

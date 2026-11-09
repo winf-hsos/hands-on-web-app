@@ -18,8 +18,7 @@ and brings it into a tidy shape, which is preparation. Understanding happens
 in a loop: you transform the data, look at it in a picture, perhaps fit a
 simple model, and every picture sends you back with a new idea. Only at the
 end do you communicate, and programming holds it all together so that every
-step can be repeated. Exploring sits in the middle of this picture, and it is
-a loop rather than a step. The figure follows the introduction of *R for Data
+step can be repeated. Exploring data is a loop, not a step. The figure follows the introduction of *R for Data
 Science* ([r4ds.hadley.nz/intro.html](https://r4ds.hadley.nz/intro.html)).
 
 **A state of mind (frame 10).** There is no checklist that makes an
@@ -55,11 +54,13 @@ sample, the analysis is exploratory, which is the type of this deck. If you do
 check it, the next question is whether you want to know how changing one
 measurement changes another. If not, you either predict values for
 individuals, which is predictive and the field of machine learning, or you
-generalise from the sample, which is inferential. If you do, an effect on
+test whether a pattern in the sample is more than chance, so that it holds for
+everyone the sample stands for, which is inferential. If you do, an effect on
 average is causal, found best with experiments and the methods of causal
 inference, and an effect that occurs in exactly this way in every single case
-is mechanistic. Two of the six questions matter most: whether you want to say
-something beyond the sample at hand, and whether you are asking for a cause.
+is mechanistic. Two of the six questions matter most: whether a pattern is
+meant to hold for more people than those you asked, and whether you are asking
+for a cause.
 The tree is strict on purpose, because it names what you are entitled to
 claim at the end.
 
@@ -68,8 +69,9 @@ question to the survey on milk and chocolate. That 1,452 of the 2,387 people
 asked drink milk every day answers the descriptive question. The causal
 question can actually be answered with this survey, because the price of
 alpro oat drink was an experiment: chance decided whether a respondent saw it
-ten cents cheaper, at its normal price, or ten or thirty cents dearer. The
-mechanistic question cannot be answered by any survey; it belongs to physics.
+ten cents cheaper, at its normal price, or ten or thirty cents dearer, and
+everyone said how surely they would buy it. Inferential, in the table, means
+testing a pattern against chance. The mechanistic question cannot be answered by any survey; it belongs to physics.
 
 **Quick quiz: organic share (frames 23 to 25).** "What share of the
 respondents buys (almost) only organic food?" is descriptive: it counts and
@@ -81,7 +83,8 @@ Germans buy (almost) only organic food.
 wrong calculation but a silent promotion. The first sentence, "in our survey,
 younger respondents are more open to oat milk", is exploratory and honest. The
 second claims the same for all young people in Germany; that is inferential
-and needs a check beyond the sample, which nobody made. The third says that
+and needs a significance test on these data, which checks whether a difference
+of this size could be chance in a sample of this size, and nobody ran it. The third says that
 being young causes it; that is causal and would need an experiment. The data
 stay the same in all three sentences, while the claim grows, and with it what
 you would have to show.
@@ -90,7 +93,8 @@ you would have to show.
 more organic food than others" is inferential, because the sentence speaks of
 all vegetarians in Germany and not of the 134 in the survey. As an exploratory
 finding about the survey it is fine; as a statement about Germany it needs a
-test beyond the sample, and a quota sample makes that harder still.
+significance test on these data, which checks whether the difference could
+have come about by chance alone.
 
 **Search long enough, and you will find something (frame 32).** With 606
 columns there are 183,315 pairs of columns. To see what chance alone produces,
@@ -106,23 +110,12 @@ a name that says what it is: a pattern in these data, worth checking.
 
 ## Part 3: exploring the survey
 
-**A first look (frame 35).** The survey on milk and chocolate asked 2,811
-people who shop for their household, and it has 606 columns. `dim()` gives
-the size, and `glimpse()` shows every column with its type and first values,
-one line per column. One row is one person, one column is one answer or a
-value derived from answers. That sentence is worth writing down before
-anything else, because every later question depends on it. The column names
-are codes from the questionnaire, and the codebook says what each one means.
+The survey on milk and chocolate asked 2,811 people who shop for their
+household, and it has 606 columns. The columns used here carry readable names
+instead of the codes of the questionnaire; loading the data, renaming and
+selecting the columns and saving the result is an exercise of its own.
 
-**Readable names (frame 36).** Of the 606 columns this exploration needs five,
-and their codes are hard to read. `rename()` gives them names, the new name on
-the left and the old one on the right. The diet is stored as a number from 0
-to 4, and `factor()` turns it into a variable with named levels in the order
-of the questionnaire. `organic_share` runs from 1, (almost) never organic, to
-5, (almost) only organic. `no_oat_milk` is 1 for everyone who would never buy
-oat milk; it was asked only of the 234 people in the milk part of the survey.
-
-**Half of the table is empty (frame 37).** The picture shows the whole table,
+**Half of the table is empty (frame 35).** The picture shows the whole table,
 one pixel per cell, answered cells light and empty ones dark. Almost exactly
 half of all cells are empty, and hardly any of them because someone refused to
 answer: many questions went only to a part of the respondents, the chocolate
@@ -131,12 +124,13 @@ sit at the top of the picture. Remove every row with a missing value, and
 nobody is left, because every single row has gaps. Remove them for one
 question, and you are talking about a different group than you think.
 
-**Variation: age (frame 38).** The histogram is the first tool for variation.
+**Variation: age (frame 36).** The histogram is the first tool for variation.
 All 2,811 people gave their age, from 18 to 80, with a median of 50. The shape
 is no accident, because the panel provider filled quotas for age, gender and
-federal state, and that matters for every later claim beyond the sample.
+federal state, and that matters whenever a result is meant to hold for
+Germany as a whole.
 
-**Unusual values: when is milk too expensive? (frames 39 to 41).** 612 people
+**Unusual values: when is milk too expensive? (frames 37 to 39).** 612 people
 said from which price on a litre of milk is too expensive for them. The first
 histogram is useless, a single bar, because a few answers up to 999 stretch
 the axis to a thousand euros. Zoomed in with `coord_cartesian()`, the real
@@ -146,20 +140,15 @@ values themselves: 16 answers lie above 20 euros. A 160 is almost certainly
 "don't know". One strange value can hide a whole distribution, so look at the
 extremes before you look at the average.
 
-**Deal with them, and say so (frame 42).** Dropping the whole row would also
-drop everything else the person said. Setting only this one answer to `NA`
-with `if_else()` keeps the rest, which is what *R for Data Science* recommends.
-Which threshold is right is a judgement, and that is why it belongs in the
-report rather than hidden in the code.
-
-**Mean or median? (frame 43).** With all 612 answers the mean is 8.11 euros, a
+**Mean or median? (frame 40).** With all 612 answers the mean is 8.11 euros, a
 price at which nobody in the survey would really stop buying milk; the 16
-extreme answers pull it up. Set those to `NA`, and the mean drops to 2.17
-euros. The median stays at 1.99 euros in both cases, because it depends only
+extreme answers pull it up. Set only those answers to `NA`, which keeps
+everything else these people said, and the mean drops to 2.17 euros. The median stays at 1.99 euros in both cases, because it depends only
 on the middle of the sorted values. When a distribution has extreme values,
-report the median, or say what you removed.
+report the median, and say which values you set to `NA` and why, because the
+threshold is a judgement.
 
-**Covariation: organic food and diet (frame 44).** For a categorical and a
+**Covariation: organic food and diet (frame 41).** For a categorical and a
 numerical variable the boxplot is the standard picture. The median share of
 organic food rises from 2 for omnivores to 3 for flexitarians, vegetarians and
 pescetarians and to 4 for vegans. Read the group sizes before the boxes: 1,816
@@ -168,22 +157,28 @@ differs most, which is exactly where chance plays the biggest part; a striking
 box built on a handful of people is a reason for a closer look, not for a
 headline.
 
-**Covariation: oat milk and age (frame 45).** This is the exploratory question
+**Covariation: oat milk and age (frame 42).** This is the exploratory question
 from the table of types. The yellow bars show the share of people who would
 buy oat milk at all: 68 percent of the youngest group and 38 percent of those
 over 60. The picture suggests an answer, but it rests on 234 people from a
 quota sample, and the youngest group holds only 34 of them. To say something
-about everyone in Germany, the question becomes inferential, and that needs
-different methods.
+about everyone in Germany, the question becomes inferential, and a
+significance test on these data would have to show that the difference is more
+than chance.
 
-**Quick quiz: the alpro price (frames 46 to 48).** "Chance decided which price
-for alpro oat drink each respondent saw. Which type of question can this
-answer?" Causal: because chance decided who saw which price, the groups differ
-only in the price, and a difference in their answers can be put down to it.
+**Quick quiz: the alpro price (frames 43 to 45).** "Respondents saw alpro oat
+drink at a price chosen by chance and said how surely they would buy it. Which
+type of question can this answer?" Causal: on a shelf next to Weihenstephan at
+1.79 euros and Gut & Günstig at 1.09, alpro cost 1.69, 1.79, 1.89 or 2.09
+euros, and chance decided which of the four a respondent saw. For each of the
+three milks they said how surely they would buy it, from −4 for certainly not
+to +4 for certainly. Because chance decided who saw which price, the groups
+differ only in the price, and a difference in how surely they would buy alpro
+can be put down to it.
 That is the idea of an experiment, and it is the strongest way to answer a
 causal question.
 
-**From exploring to the next question (frame 49).** Three findings of this
+**From exploring to the next question (frame 46).** Three findings of this
 exploration and the questions they raise. That younger respondents are more
 open to oat milk raises the inferential question whether it holds for all of
 Germany. That vegans and vegetarians buy more organic food raises a causal
@@ -193,7 +188,7 @@ survey: how should it ask for a price so that typing errors and "don't know"
 do not end up as numbers? The result of an exploration is a list of better
 questions.
 
-**Take the map with you (frame 50).** Draw what you see, mark what you do not
+**Take the map with you (frame 47).** Draw what you see, mark what you do not
 understand, and keep the question marks. Exploring is the start of every
 analysis, and the honest name for its findings is "worth checking". To read
 on: Leek and Peng, "What is the question?"
