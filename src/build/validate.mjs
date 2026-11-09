@@ -655,11 +655,12 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
       // an info page introduces no concept, so it need not say what is learnt;
       // material inside a lesson has the lesson's objectives, and a lesson that
       // only gathers info pages, such as "Eure Ausrüstung", has none of its own
-      // (Nicolas, 2026-11-04)
+      // (Nicolas, 2026-11-04); a data set is material too, even where no lesson
+      // embeds it, and has none (Nicolas, 2026-11-09)
       const inLesson = [...embedding.values()].some((ids) => ids.includes(doc.id));
       const embeds = embedding.get(doc.id) ?? [];
       const infoOnly = embeds.length > 0 && embeds.every((id) => items.has(id) && hasType(items.get(id).lead, 'info'));
-      if (file && doc.section === 'content' && !file.data.objectives && !inLesson && !infoOnly && !['info', 'quiz', 'slides'].some((type) => hasType(doc.lead, type)))
+      if (file && doc.section === 'content' && !file.data.objectives && !inLesson && !infoOnly && !['info', 'quiz', 'slides', 'dataset'].some((type) => hasType(doc.lead, type)))
         warnings.push(`${file.path}: no objectives (what you learn)`);
       if (file?.data.objectives && inLesson && !['experiment', 'challenge', 'exercise'].some((type) => hasType(doc.lead, type)))
         warnings.push(`${file.path}: has objectives, but is material of a lesson, whose objectives count`);

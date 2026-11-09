@@ -153,7 +153,8 @@ first paragraphs are the way into the topic. An item without `objectives` is a
 warning, not an error, so that a new draft can be saved first; an item of type
 `info` may leave them out without a warning. A quiz never shows the box,
 since its questions already say what it checks (Nicolas, 2026-11-02), and it
-needs no `objectives`.
+needs no `objectives`. A data set is material as well and has none, even
+where no lesson embeds it (Nicolas, 2026-11-09).
 
 **Several types** (Nicolas, 2026-11-02; undone on 2026-11-04, when lessons
 began to embed their slides as items of their own, section 6a: no item has
