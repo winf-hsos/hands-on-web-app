@@ -157,7 +157,9 @@
   <section class="slide has-punch">
     <h2>variation: how old are the respondents?</h2>
     <div class="figure" id="fig-age"><svg viewBox="0 0 1680 660" xmlns="http://www.w3.org/2000/svg"><image href="img/age-histogram.svg" x="0" y="0" width="1680" height="660"/></svg></div>
-    <div class="code figcode">ggplot(survey, aes(x = age)) +
+    <div class="code figcode">survey |&gt;
+  ggplot() +
+  aes(x = age) +
   geom_histogram(binwidth = 5)</div>
     <div class="punch">ages from 18 to 80 with the middle at 50: a quota sample, not a random one.</div>
     <aside class="notes">The histogram is the first tool for variation: what values occur, which are common, which are rare. All 2,811 people gave their age, from 18 to 80, with a median of 50. The shape is no accident; the panel provider filled quotas for age, gender and federal state. That matters whenever a result is meant to hold for Germany as a whole.</aside>
@@ -166,10 +168,14 @@
   <section class="slide has-punch">
     <h2>unusual values: when is milk too expensive?</h2>
     <div class="figure" id="fig-price"></div>
-    <div class="code figcode">ggplot(survey, aes(x = price_too_expensive)) +
+    <div class="code figcode">survey |&gt;
+  ggplot() +
+  aes(x = price_too_expensive) +
   geom_histogram(binwidth = 10)
 
-ggplot(survey, aes(x = price_too_expensive)) +
+survey |&gt;
+  ggplot() +
+  aes(x = price_too_expensive) +
   geom_histogram(binwidth = 0.1) +
   coord_cartesian(xlim = c(0, 5))</div>
     <div class="punch">one strange value can hide a whole distribution, so look at the extremes before you look at the average.</div>
@@ -187,7 +193,9 @@ ggplot(survey, aes(x = price_too_expensive)) +
   <section class="slide has-punch">
     <h2>covariation: organic food and diet</h2>
     <div class="figure" id="fig-organic"><svg viewBox="0 0 1680 660" xmlns="http://www.w3.org/2000/svg"><image href="img/organic-by-diet.svg" x="0" y="0" width="1680" height="660"/></svg></div>
-    <div class="code figcode">ggplot(survey, aes(x = diet, y = organic_share)) +
+    <div class="code figcode">survey |&gt;
+  ggplot() +
+  aes(x = diet, y = organic_share) +
   geom_boxplot()</div>
     <div class="punch">the groups differ, and the smallest group differs most, which is exactly where chance plays the biggest part.</div>
     <aside class="notes">A categorical and a numerical variable: the boxplot is the standard picture. The median share of organic food rises from 2 for omnivores to 3 for flexitarians, vegetarians and pescetarians and 4 for vegans. Read the group sizes before the boxes: 1,816 omnivores, but only 36 vegans. A striking box built on a handful of people is a reason for a closer look, not for a headline.</aside>
@@ -199,7 +207,8 @@ ggplot(survey, aes(x = price_too_expensive)) +
     <div class="code figcode">survey |&gt;
   filter(!is.na(no_oat_milk)) |&gt;
   mutate(age_group = cut(age, c(17, 29, 44, 59, 80))) |&gt;
-  ggplot(aes(x = age_group, fill = no_oat_milk == 0)) +
+  ggplot() +
+  aes(x = age_group, fill = no_oat_milk == 0) +
   geom_bar(position = "fill")</div>
     <div class="punch">a pattern in 234 people is a question for the next study, not yet an answer.</div>
     <aside class="notes">This is the exploratory question from the table of types. In yellow the share of people who would buy oat milk at all: 68 percent of the youngest group, 38 percent of those over 60. The picture suggests an answer, but it rests on 234 people from a quota sample, and the youngest group holds only 34 of them. Whether the difference is a real pattern or due to chance is the inferential question, and a significance test on these data answers it; whether it holds for everyone in Germany depends on how well the quota sample represents the country.</aside>
