@@ -19,7 +19,7 @@ duration: 15
 topics: [transforming-data]
 modules: [ea]
 areas: [ds]
-status: draft
+status: published
 updated: 2026-11-09
 ---
 

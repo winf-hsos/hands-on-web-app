@@ -23,7 +23,7 @@ areas: [ds]
 relations:
   requires: [dplyr-select, dplyr-filter, dplyr-arrange-mutate]
   see_also: [milk-chocolate-survey, milk-survey-compact, positron]
-status: draft
+status: published
 updated: 2026-11-09
 ---
 

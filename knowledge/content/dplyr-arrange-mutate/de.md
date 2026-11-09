@@ -21,7 +21,7 @@ modules: [ea]
 areas: [ds]
 relations:
   requires: [dplyr-filter]
-status: draft
+status: published
 updated: 2026-11-09
 ---
 

@@ -21,7 +21,7 @@ modules: [ea]
 areas: [ds]
 relations:
   requires: [dplyr-arrange-mutate, r-missing-values]
-status: draft
+status: published
 updated: 2026-11-09
 ---
 

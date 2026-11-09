@@ -12,6 +12,6 @@ duration: 45
 topics: [transforming-data, programming-with-r]
 modules: [ea, wmg, pmg]
 areas: [ds]
-status: draft
+status: published
 updated: 2026-11-09
 ---

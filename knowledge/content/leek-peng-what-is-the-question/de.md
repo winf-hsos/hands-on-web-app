@@ -15,7 +15,7 @@ duration: 10
 topics: [questions-and-measurement]
 modules: [ea]
 areas: [ds]
-status: draft
+status: published
 updated: 2026-11-09
 ---
 

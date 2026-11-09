@@ -16,7 +16,7 @@ modules: [ea, wmg, pmg]
 areas: [ds]
 relations:
   see_also: [r-data-frames]
-status: draft
+status: published
 updated: 2026-11-09
 ---
 

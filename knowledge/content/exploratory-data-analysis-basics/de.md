@@ -22,7 +22,7 @@ modules: [ea, wmg, pmg]
 areas: [ds]
 relations:
   see_also: [the-effect, milk-chocolate-survey, milk-survey-compact]
-status: draft
+status: published
 updated: 2026-11-09
 ---
 

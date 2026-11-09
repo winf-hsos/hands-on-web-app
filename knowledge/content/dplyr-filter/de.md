@@ -22,7 +22,7 @@ areas: [ds]
 relations:
   requires: [r-vectors, r-pipe]
   see_also: [dplyr-select]
-status: draft
+status: published
 updated: 2026-11-09
 ---
 

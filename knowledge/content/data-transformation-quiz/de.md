@@ -13,7 +13,7 @@ areas: [ds]
 relations:
   checks: [data-transformation-basics, tidy-data, dplyr-select, dplyr-filter, dplyr-arrange-mutate, dplyr-summarize-group-by]
 questions: [hds-001, hds-002, hds-003, hds-004, hds-005, hds-006, hds-007, hds-008, hds-009, hds-010, hds-011, hds-012]
-status: draft
+status: published
 updated: 2026-11-09
 ---
 
