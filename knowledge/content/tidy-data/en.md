@@ -15,6 +15,8 @@ translation_of: de
 based_on: 2026-11-09
 ---
 
+![Slides: Tidy data with tidyr](item:tidy-data-slides)
+
 The basic operations from [[data-transformation-basics]] work best when a
 table has a particular shape. Hadley Wickham, who also wrote dplyr, calls
 this shape **tidy data**. The idea is older than R and applies just as well

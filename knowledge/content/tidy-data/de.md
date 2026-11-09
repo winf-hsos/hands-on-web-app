@@ -25,6 +25,8 @@ status: published
 updated: 2026-11-09
 ---
 
+![Folien: Tidy Data mit tidyr](item:tidy-data-slides)
+
 Die Grundoperationen aus [[data-transformation-basics]] funktionieren am
 besten, wenn eine Tabelle eine bestimmte Form hat. Hadley Wickham, der auch
 dplyr geschrieben hat, nennt diese Form **Tidy Data**, sinngemäß
