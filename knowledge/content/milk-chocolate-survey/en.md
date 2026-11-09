@@ -4,16 +4,8 @@ summary: >-
   An online survey of 2,811 people on shopping, diet and attitudes, with two
   sub-studies on chocolate and milk: real data with filter questions,
   experiments and everything else that comes with analysing them.
-objectives:
-  intro: "With this data set you practise analysing a market research study on a real survey with filter questions and experiments, and with it you can:"
-  goals:
-    - "read the question block from the start of a column name and tell raw data, prepared columns and text versions ending in `f` apart"
-    - "explain why a missing value here mostly means \"not asked\" and why removing `NA` changes the group you are looking at"
-    - "interpret numeric codes such as those in `q004geschlecht` with the help of the columns ending in `f`"
-    - "compare the randomly formed groups of an embedded experiment using the columns starting with `a`"
-    - "judge whom the results of a quota-based online sample speak for and whom they do not"
 translation_of: de
-based_on: 2026-11-01
+based_on: 2026-11-09
 ---
 
 Prof. Dr. Ulrich Enneking (agricultural marketing, Osnabrück University of

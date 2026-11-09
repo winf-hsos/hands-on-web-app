@@ -4,16 +4,8 @@ summary: >-
   All 2,809 respondents of the milk survey, but only 21 selected questions
   with English column names and words instead of codes: the way into a real
   survey with filter questions, experiments and outliers.
-objectives:
-  intro: "With this excerpt from a real survey you practise exploring a large data set, and with it you can:"
-  goals:
-    - "say for each of the 21 columns which question it answers and which values it can take"
-    - "explain why a missing value here mostly means \"not asked\" and why `drop_na()` over the whole table leaves almost nobody"
-    - "compare the randomly assigned brands in `rated_brand` by quality and willingness to buy, as in an experiment"
-    - "find implausible values such as prices above €10 and decide how to deal with them"
-    - "argue whether answers on a scale from −2 to +2 may be averaged"
 translation_of: de
-based_on: 2026-11-03
+based_on: 2026-11-09
 ---
 
 This data set is an excerpt from the [[milk-chocolate-survey]] by Prof. Dr.

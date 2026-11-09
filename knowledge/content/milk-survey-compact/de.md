@@ -6,14 +6,6 @@ summary: >-
   Alle 2.809 Befragten der Milch-Umfrage, aber nur 21 ausgewählte Fragen mit
   englischen Spaltennamen und Wörtern statt Codes: der Einstieg in eine echte
   Befragung mit Filterfragen, Experimenten und Ausreißern.
-objectives:
-  intro: "Mit diesem Auszug aus einer echten Befragung übst du, einen großen Datensatz zu erkunden, und kannst damit:"
-  goals:
-    - "zu jeder der 21 Spalten sagen, welche Frage sie beantwortet und welche Werte sie annehmen kann"
-    - "erklären, warum ein fehlender Wert hier meist „nicht gefragt“ bedeutet und `drop_na()` über die ganze Tabelle fast niemanden übrig lässt"
-    - "die zufällig zugeteilten Marken in `rated_brand` nach Qualität und Kaufbereitschaft vergleichen, wie in einem Experiment"
-    - "unplausible Werte wie Preise über 10 € finden und entscheiden, wie du mit ihnen umgehst"
-    - "begründen, ob man Antworten auf einer Skala von −2 bis +2 mitteln darf"
 authors: [Ulrich Enneking]
 year: 2025
 file: milk_survey_compact.csv
@@ -25,7 +17,7 @@ areas: [ds]
 relations:
   see_also: [milk-chocolate-survey, r-data-frames]
 status: draft
-updated: 2026-11-03
+updated: 2026-11-09
 ---
 
 Dieser Datensatz ist ein Auszug aus der [[milk-chocolate-survey]] von Prof.
