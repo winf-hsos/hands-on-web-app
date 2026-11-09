@@ -22,8 +22,9 @@ step by step.
 After that you put the ideas into practice in R with the package dplyr: you
 select columns and rows, sort rows, compute new columns and summarise groups
 into figures, until you use them to answer a question about the price
-experiment in the survey. Every code box is a small editor in which R runs
-right in your browser, so there is nothing to install. All examples use a
-survey on milk and milk alternatives with 2,809 respondents. If you do not know
+experiment in the survey. Finally you apply everything to a data set you
+do not know yet, products from the REWE online shop. Every code box is a small editor in which R runs
+right in your browser, so there is nothing to install. The examples in the
+lessons use a survey on milk and milk alternatives with 2,809 respondents. If you do not know
 R yet, start with the path [[getting-started-with-r]]; that is also where you
 get to know the data set. Steps on joining tables will follow.

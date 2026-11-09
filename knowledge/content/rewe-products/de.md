@@ -14,7 +14,7 @@ topics: [getting-data, exploring-data, data-pitfalls]
 modules: [ea]
 areas: [ds]
 relations:
-  see_also: [eda-self-assessment]
+  see_also: [eda-self-assessment, dplyr-exercise-rewe]
 status: published
 updated: 2026-11-09
 ---

@@ -24,6 +24,7 @@ steps:
   - dplyr-mutate
   - dplyr-summarize
   - dplyr-exercise-brands
+  - dplyr-exercise-rewe
   - data-transformation-quiz
 status: published
 updated: 2026-11-09
@@ -40,9 +41,10 @@ Einzelheiten.
 Danach setzt du die Ideen in R mit dem Paket dplyr um: Du wählst Spalten und
 Zeilen aus, sortierst Zeilen, berechnest neue Spalten und fasst Gruppen zu
 Kennzahlen zusammen, bis du damit eine Frage an das Preisexperiment der
-Umfrage beantwortest. Jeder Codekasten ist ein kleiner Editor, in dem R
-direkt in deinem Browser läuft; installieren musst du nichts. Alle Beispiele
-verwenden eine Umfrage zu Milch und Milchalternativen mit 2.809
+Umfrage beantwortest. Zum Schluss wendest du alles an einem Datensatz an,
+den du noch nicht kennst, an Produkten aus dem REWE-Onlineshop. Jeder Codekasten ist ein kleiner Editor, in dem R
+direkt in deinem Browser läuft; installieren musst du nichts. Die Beispiele der
+Lektionen verwenden eine Umfrage zu Milch und Milchalternativen mit 2.809
 Befragten. Wer R noch nicht kennt, beginnt mit dem Lernpfad
 [[getting-started-with-r]]; dort lernst du auch den Datensatz kennen.
 Schritte zum Verknüpfen von Tabellen folgen.
