@@ -14,7 +14,7 @@ A split-flap board in a railway station from before the age of chips clatters le
 
 ### Digital is not the same as electronic (Frame 5)
 
-The scoreboard from the sports hall that you flip by hand is digital, and so are the light switch, the abacus and the die. The slide rule, the dial thermometer, the dimmer and the hourglass are analog. Not one of these things contains a chip, so digital cannot mean electronic. Electronics is only today's usual carrier, and the reverse holds as well: an amplifier is electronic and still stepless.
+The scoreboard from the sports hall that you flip by hand is digital, and so are the light switch, the abacus and the die. The slide rule, the dial thermometer, the dimmer and the water tap are analog. Not one of these things contains a chip, so digital cannot mean electronic. Electronics is only today's usual carrier, and the reverse holds as well: an amplifier is electronic and still stepless.
 
 ### The word for it (Frame 6)
 

@@ -23,7 +23,7 @@ modules: [dup]
 relations:
   see_also: [place-value-systems, measuring-your-noise]
 status: published
-updated: 2026-11-04
+updated: 2026-11-09
 ---
 
 ![Slides: Analog and digital](item:analog-and-digital-slides)
@@ -40,7 +40,7 @@ start: digital is a question of states, not of electronics.
 
 The scoreboard in a sports hall that you flip by hand is digital, and so are
 the light switch, the abacus and the die. The slide rule, the dial
-thermometer, the dimmer and the hourglass are analog. Not one of these things
+thermometer, the dimmer and the water tap are analog. Not one of these things
 contains a chip, so digital cannot mean electronic. The reverse holds as
 well: an amplifier is electronic and still stepless, so electronics is only
 today's usual carrier of digital states.
@@ -119,8 +119,9 @@ that are clearly apart.
 
 The program gets these states in two steps: the sensor measures and delivers
 a number, and the program decides which state that number belongs to. That is
-all the word **digitising** means: representing a signal by a finite sequence
-of numbers.
+all the word **digitising** means: measuring a signal and assigning every
+reading to one of finitely many states. Whether these states are written as
+numbers, colours or other symbols makes no difference.
 
 ## The same scatter, cut into more regions
 

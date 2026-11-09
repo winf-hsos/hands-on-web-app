@@ -112,25 +112,25 @@ else:
 
 ## Was heißt es, ein Signal zu „digitalisieren“? {#ad-009}
 
-- [x] Es durch eine endliche Folge von Zahlen darstellen.
-  > Genau. Mehr steckt nicht im Wort: messen und die Messwerte endlich vielen Zuständen zuordnen. Was die Zahlen bedeuten, regelt danach die Codierung.
+- [x] Es messen und jeden Messwert einem von endlich vielen Zuständen zuordnen.
+  > Genau, mehr steckt nicht im Wort, und ob die Zustände als Zahlen, Farben oder andere Symbole erscheinen, spielt keine Rolle; was sie bedeuten, regelt danach die Codierung.
 - [ ] Es in eine Form bringen, die sich über das Internet übertragen lässt.
-  > Übertragung ist ein eigener Schritt und setzt die Zahlenform meist schon voraus. Digitalisieren passiert davor, am Übergang von der Welt zur Zahl.
+  > Übertragung ist ein eigener Schritt und setzt die digitale Form meist schon voraus. Digitalisieren passiert davor, am Übergang von der stufenlosen Welt zu endlich vielen Zuständen.
 - [ ] Es verkleinern, damit es weniger Speicher braucht.
   > Das ist Kompression, ein anderes Thema. Digitalisieren kann die Datenmenge sogar riesig machen, man denke an unkomprimiertes Video.
 - [ ] Es mit einem elektronischen Gerät aufnehmen statt mit einem mechanischen.
-  > Auch ein Kassettenrekorder ist elektronisch und zeichnet trotzdem analog auf, mit der Spannung als stufenloser Magnetisierung. Digital wird ein Signal erst, wenn es in endlich viele Zahlen übersetzt ist.
+  > Auch ein Kassettenrekorder ist elektronisch und zeichnet trotzdem analog auf, mit der Spannung als stufenloser Magnetisierung. Digital wird ein Signal erst, wenn jeder Messwert einem von endlich vielen Zuständen zugeordnet ist.
 
-> Digitalisieren heißt nichts weiter, als ein Signal durch eine endliche Folge von Zahlen darzustellen.
+> Digitalisieren heißt nichts weiter, als ein Signal zu messen und jeden Messwert einem von endlich vielen Zuständen zuzuordnen.
 
-## Eine Strecke überträgt Daten mit Licht: Ein Programm stellt die Helligkeit einer LED mit Zahlen von 0 bis 255 ein, und ein Farbsensor am anderen Ende macht aus dem Licht wieder Zahlen. Wo verläuft die Grenze zwischen analog und digital? {#ad-010}
+## Eine Strecke überträgt Daten mit Licht: Ein Programm stellt die Helligkeit einer LED mit Zahlen von 0 bis 255 ein, und ein Farbsensor am anderen Ende macht aus dem Licht wieder Zahlen. An welchen Stellen wechselt das Signal zwischen digital und analog? (Mehrere richtige Antworten möglich.) {#ad-010}
 
-- [ ] Schon am Sender: Weil die LED mit Zahlen von 0 bis 255 angesteuert wird, ist auch ihr Licht digital.
-  > Die Ansteuerung ist digital, das Licht selbst nicht: Seine Helligkeit ist stufenlos, sie hängt von Abstand und Winkel ab, und das Umgebungslicht addiert sich dazu. Zwischen den beiden Geräten ist die Strecke analog.
+- [x] An der LED: Sie macht aus den Zahlen von 0 bis 255 stufenloses Licht.
+  > Richtig, hier geht es von digital nach analog. Die Ansteuerung ist digital, das Licht selbst nicht, denn seine Helligkeit ist stufenlos, hängt von Abstand und Winkel ab, und das Umgebungslicht addiert sich dazu.
 - [ ] Erst im Programm auf der Empfangsseite, wenn es den Messwert mit einer Schwelle vergleicht.
   > Da ist der Wert längst eine Zahl. Der Vergleich reduziert viele Zahlen auf wenige Symbole, das ist wichtig, aber digital war es schon vorher.
-- [x] Im Farbsensor: Er setzt das stufenlose Licht in Zahlen um, und ab dort rechnet alles mit Zahlen.
-  > Genau. Die ganze Strecke läuft digital, analog, digital: Der Sender macht aus Zahlen Licht, das Licht fliegt stufenlos und gestört durch den Raum, und der Sensor macht daraus wieder Zahlen. Das analoge Mittelstück ist der Teil, den kein Programm kontrolliert, und genau dort entscheidet sich, wie zuverlässig die Strecke ist.
+- [x] Im Farbsensor: Er macht aus dem stufenlosen Licht wieder Zahlen.
+  > Richtig, hier geht es von analog zurück nach digital. Die ganze Strecke läuft also digital, analog, digital, und das analoge Mittelstück zwischen LED und Sensor ist der Teil, den kein Programm kontrolliert; genau dort entscheidet sich, wie zuverlässig die Strecke ist.
 - [ ] Nirgends: Die ganze Strecke ist digital, weil an beiden Enden Computer stehen.
   > Die Computer an den Enden ändern nichts daran, dass dazwischen Physik liegt. Wer das analoge Mittelstück vergisst, wundert sich später über jede Störung.
 
@@ -146,8 +146,8 @@ else:
   > Der Zeiger wandert stufenlos, jede Zwischenstellung ist möglich und gültig. Erst wer ihn an einer Skala mit Bereichen abliest, digitalisiert.
 - [x] Ein Würfel
   > Sechs Zustände, und dazwischen gibt es nichts Gültiges: Ein Würfel auf der Kante kippt in eine Lage. Genau dieses Einrasten in getrennte Zustände macht digital aus.
-- [ ] Eine Sanduhr
-  > Der Sandstand sinkt stufenlos. Über die einzelnen Körner lässt sich streiten, aber abgelesen wird der stufenlose Füllstand.
+- [ ] Ein Wasserhahn
+  > Ein Wasserhahn lässt sich beliebig weit aufdrehen, und jede Stellung dazwischen ist gültig: Zwischen zwei Durchflussmengen liegt immer noch eine dritte.
 
 > Was in einen von endlich vielen Zuständen einrastet, ist digital, mit oder ohne Chip.
 

@@ -104,7 +104,7 @@ function drawKinds() {
   const analog = [["img/icon-slide-rule.png", "slide rule"],
                   ["img/icon-thermometer.png", "dial thermometer"],
                   ["img/icon-dimmer.png", "dimmer"],
-                  ["img/icon-hourglass.png", "hourglass"]];
+                  ["img/icon-water-tap.png", "water tap"]];
   const g = 108, pitch = 132, top = 96;
   const parts = [
     d.label(60, 56, "digital", { size: 32, color: c.white }),

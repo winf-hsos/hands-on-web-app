@@ -15,7 +15,7 @@ objectives:
     - "die Größe eines Bildes als Punkte mal Bits je Punkt abschätzen und in eine Übertragungszeit umrechnen"
     - "eine Schwelle im Code setzen, die aus einem Messwert ein Symbol macht, und ihren Wert aus der eigenen Messreihe begründen"
 translation_of: en
-based_on: 2026-11-04
+based_on: 2026-11-09
 ---
 
 ![Folien: Analog und digital](item:analog-and-digital-slides)
@@ -33,7 +33,7 @@ Elektronik.
 
 Die Anzeigetafel aus der Sporthalle, die man von Hand umblättert, ist digital,
 und dasselbe gilt für den Lichtschalter, den Abakus und den Würfel. Der
-Rechenschieber, das Zeigerthermometer, der Dimmer und die Sanduhr sind
+Rechenschieber, das Zeigerthermometer, der Dimmer und der Wasserhahn sind
 dagegen analog. In keinem dieser Dinge steckt ein Chip, also kann digital
 nicht elektronisch bedeuten. Umgekehrt gilt es genauso: Ein Verstärker ist
 elektronisch und trotzdem stufenlos, die Elektronik ist also nur der heute
@@ -114,8 +114,9 @@ Zustände mit klarem Abstand.
 
 Das Programm bekommt diese Zustände in zwei Schritten: Der Sensor misst und
 liefert eine Zahl, und das Programm entscheidet, zu welchem Zustand diese Zahl
-gehört. Mehr steckt nicht im Wort **Digitalisieren**: ein Signal durch eine
-endliche Folge von Zahlen darstellen.
+gehört. Mehr steckt nicht im Wort **Digitalisieren**: ein Signal messen und
+jeden Messwert einem von endlich vielen Zuständen zuordnen. Ob diese Zustände
+als Zahlen, Farben oder andere Symbole geschrieben werden, spielt keine Rolle.
 
 ## Dieselbe Streuung, in mehr Bereiche geschnitten
 

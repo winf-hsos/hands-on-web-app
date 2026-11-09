@@ -121,25 +121,25 @@ else:
 
 ## What does it mean to "digitise" a signal? {#ad-009}
 
-- [x] To represent it by a finite sequence of numbers.
-  > Exactly. That is all the word contains: measure, and assign the measurements to finitely many states. What the numbers mean is settled afterwards by coding.
+- [x] To measure it and assign every reading to one of finitely many states.
+  > Exactly, that is all the word contains, and whether the states appear as numbers, colours or other symbols makes no difference; what they mean is settled afterwards by coding.
 - [ ] To put it into a form that can be transmitted over the internet.
-  > Transmission is a separate step and usually presupposes the numeric form. Digitising happens before, at the crossing from the world to numbers.
+  > Transmission is a separate step and usually presupposes the digital form. Digitising happens before, at the crossing from the continuous world to finitely many states.
 - [ ] To shrink it so it needs less storage.
   > That is compression, a different topic. Digitising can even make the data huge; think of uncompressed video.
 - [ ] To record it with an electronic device rather than a mechanical one.
-  > A cassette recorder is electronic too and still records in analog form, with the voltage as a continuous magnetisation. A signal only becomes digital once it is turned into finitely many numbers.
+  > A cassette recorder is electronic too and still records in analog form, with the voltage as a continuous magnetisation. A signal only becomes digital once every reading is assigned to one of finitely many states.
 
-> Digitising means nothing more than representing a signal by a finite sequence of numbers.
+> Digitising means nothing more than measuring a signal and assigning every reading to one of finitely many states.
 
-## A link sends data with light: a program sets the brightness of an LED with numbers from 0 to 255, and a colour sensor at the other end turns the light back into numbers. Where is the boundary between analog and digital? {#ad-010}
+## A link sends data with light: a program sets the brightness of an LED with numbers from 0 to 255, and a colour sensor at the other end turns the light back into numbers. At which points does the signal switch between digital and analog? (Several answers may be correct.) {#ad-010}
 
-- [ ] Already at the sender: because the LED is driven with numbers from 0 to 255, its light is digital too.
-  > The control is digital, the light itself is not: its brightness is continuous, depends on distance and angle, and ambient light adds to it. Between the two devices the link is analog.
+- [x] At the LED: it turns the numbers from 0 to 255 into continuous light.
+  > Right, this is where it goes from digital to analog. The control is digital but the light itself is not, because its brightness is continuous, depends on distance and angle, and ambient light adds to it.
 - [ ] Only in the program at the receiving end, when it compares the reading with a threshold.
   > By then the value has long been a number. The comparison reduces many numbers to a few symbols, which matters, but it was digital before that.
-- [x] In the colour sensor: it turns the continuous light into numbers, and from there on everything computes with numbers.
-  > Exactly. The whole link runs digital, analog, digital: the sender turns numbers into light, the light travels continuously and disturbed through the room, and the sensor turns it back into numbers. The analog middle is the part no program controls, and that is where the reliability of the link is decided.
+- [x] In the colour sensor: it turns the continuous light back into numbers.
+  > Right, this is where it goes from analog back to digital. So the whole link runs digital, analog, digital, and the analog middle between LED and sensor is the part no program controls; that is where the reliability of the link is decided.
 - [ ] Nowhere: the whole link is digital because there are computers at both ends.
   > The computers at the ends do not change the physics in between. Whoever forgets the analog middle will later be surprised by every disturbance.
 
@@ -155,8 +155,8 @@ else:
   > The needle moves continuously; every intermediate position is possible and valid. Only reading it against a scale of regions digitises it.
 - [x] A die
   > Six states, and nothing valid in between: a die on its edge tips into one position. Exactly this snapping into separated states is what digital means.
-- [ ] An hourglass
-  > The sand level falls continuously. You may quibble about individual grains, but what is read off is the continuous level.
+- [ ] A water tap
+  > A tap can be opened as far as you like, and every position in between is valid: between two flow rates there is always a third.
 
 > Whatever snaps into one of finitely many states is digital, with or without a chip.
 
