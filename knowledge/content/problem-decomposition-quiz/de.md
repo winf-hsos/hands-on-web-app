@@ -13,7 +13,7 @@ modules: [dup]
 relations:
   checks: [problem-decomposition]
 questions: [pd-001, pd-002, pd-003, pd-004, pd-005, pd-006, pd-007, pd-008, pd-009, pd-010, pd-011, pd-012]
-status: draft
+status: published
 updated: 2026-11-09
 ---
 

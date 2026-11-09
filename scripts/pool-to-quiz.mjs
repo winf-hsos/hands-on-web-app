@@ -117,7 +117,7 @@ function listedQuizzes() {
   return quizzes;
 }
 
-/** Writes (or with `check`, compares) one quiz; returns true if its body differs from the pool. */
+/** Writes (or with `check`, compares) one quiz; returns true if its body or a figure differs from the pool. */
 function syncQuiz(quiz, pool, { check }) {
   const chosen = quiz.list.map((id) => {
     const found = pool.get(id);
@@ -139,6 +139,10 @@ function syncQuiz(quiz, pool, { check }) {
     texts[lang] = { path, front, fresh, eol };
     if (fresh !== body.replace(/^\r?\n/, '')) differs = true;
   }
+  // a figure redrawn in the pool counts as a change, even when no text moved
+  const media = join(quiz.dir, 'media');
+  const same = (image) => existsSync(join(media, image.name)) && readFileSync(image.file).equals(readFileSync(join(media, image.name)));
+  if (!images.every(same)) differs = true;
   if (!differs || check) return differs;
   for (const [lang, { path, front, fresh, eol }] of Object.entries(texts)) {
     const field = lang === quiz.lead ? 'updated' : 'based_on';
@@ -146,8 +150,8 @@ function syncQuiz(quiz, pool, { check }) {
     writeFileSync(path, `${dated}${eol}${fresh}`);
   }
   if (images.length) {
-    mkdirSync(join(quiz.dir, 'media'), { recursive: true });
-    for (const image of images) copyFileSync(image.file, join(quiz.dir, 'media', image.name));
+    mkdirSync(media, { recursive: true });
+    for (const image of images) copyFileSync(image.file, join(media, image.name));
   }
   return true;
 }
