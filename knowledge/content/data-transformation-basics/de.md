@@ -23,7 +23,7 @@ status: published
 updated: 2026-11-09
 ---
 
-![Folien: Sechs Verben und eine Pipe](item:data-transformation-slides)
+![Folien: Datentransformation mit R und dplyr](item:data-transformation-slides)
 
 Angenommen, du hast eine Umfrage mit einigen tausend Befragten vor dir und
 willst wissen, ob Menschen, die sich vegan oder vegetarisch ernähren, mehr Bio

@@ -16,7 +16,7 @@ translation_of: de
 based_on: 2026-11-09
 ---
 
-![Slides: Six verbs and a pipe](item:data-transformation-slides)
+![Slides: Data transformation with R and dplyr](item:data-transformation-slides)
 
 Suppose you have a survey with a few thousand respondents in front of you and
 want to know whether people who eat vegan or vegetarian buy more organic food

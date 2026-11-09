@@ -1,7 +1,7 @@
 ---
 type: slides
 code: 5186
-title: Sechs Verben und eine Pipe
+title: Datentransformation mit R und dplyr
 summary: >-
   Sechs Verben und die Pipe: wie select(), filter(), arrange(), mutate(),
   summarize() und group_by() eine Tabelle verändern, an sechs Zeilen der
