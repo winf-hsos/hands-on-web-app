@@ -1,7 +1,7 @@
 ---
 title: "Quiz: Transforming data"
 summary: >-
-  Twelve questions on the basic operations, tidy data, the verbs of dplyr
+  Thirteen questions on the basic operations, tidy data, the verbs of dplyr
   and missing values, each with its reason.
 translation_of: de
 based_on: 2026-11-09
@@ -144,3 +144,16 @@ based_on: 2026-11-09
   > A single `=` assigns rather than compares; `filter()` stops with a hint to use `==`.
 
 > The order of the verbs follows the question: first choose whom it is about, then summarise.
+
+## The column `diet` holds five diets, and 28 people gave no answer. What does `survey |> summarize(n_diets = n_distinct(diet))` return? {#hds-013}
+
+- [x] one row with the value 6
+  > Correct: `n_distinct()` counts `NA` as a value of its own, so it is five diets plus `NA`.
+- [ ] one row with the value 5
+  > That is the result of `n_distinct(diet, na.rm = TRUE)`; without this argument `NA` counts as a value of its own.
+- [ ] one row with the value 2,809
+  > 2,809 is the number of rows that `n()` would count; `n_distinct()` counts only the different values.
+- [ ] one row per diet with the number of its people
+  > One row per value with its count is what `count(diet)` returns; `summarize()` without `group_by()` returns exactly one row.
+
+> `n()` counts rows and `n_distinct()` different values, and `NA` counts as well unless you set `na.rm = TRUE`.

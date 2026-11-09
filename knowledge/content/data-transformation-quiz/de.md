@@ -3,7 +3,7 @@ type: quiz
 code: 6400
 title: "Quiz: Daten transformieren"
 summary: >-
-  Zwölf Fragen zu den Grundoperationen, Tidy Data, den Verben von dplyr
+  Dreizehn Fragen zu den Grundoperationen, Tidy Data, den Verben von dplyr
   und fehlenden Werten, jede mit ihrer Begründung.
 level: 1
 duration: 15
@@ -12,7 +12,7 @@ modules: [ea]
 areas: [ds]
 relations:
   checks: [data-transformation-basics, tidy-data, dplyr-select, dplyr-filter, dplyr-arrange, dplyr-mutate, dplyr-summarize]
-questions: [hds-001, hds-002, hds-003, hds-004, hds-005, hds-006, hds-007, hds-008, hds-009, hds-010, hds-011, hds-012]
+questions: [hds-001, hds-002, hds-003, hds-004, hds-005, hds-006, hds-007, hds-008, hds-009, hds-010, hds-011, hds-012, hds-013]
 status: published
 updated: 2026-11-09
 ---
@@ -154,3 +154,16 @@ updated: 2026-11-09
   > Ein einzelnes `=` weist zu und vergleicht nicht; `filter()` bricht mit einem Hinweis auf `==` ab.
 
 > Die Reihenfolge der Verben folgt der Frage: erst auswählen, um wen es geht, dann zusammenfassen.
+
+## Die Spalte `diet` enthält fünf Ernährungsweisen, und bei 28 Personen fehlt die Angabe. Was liefert `survey |> summarize(n_diets = n_distinct(diet))`? {#hds-013}
+
+- [x] eine Zeile mit dem Wert 6
+  > Richtig: `n_distinct()` zählt `NA` als eigenen Wert mit, deshalb sind es fünf Ernährungsweisen und `NA`.
+- [ ] eine Zeile mit dem Wert 5
+  > Das liefert erst `n_distinct(diet, na.rm = TRUE)`; ohne dieses Argument zählt `NA` als eigener Wert mit.
+- [ ] eine Zeile mit dem Wert 2.809
+  > 2.809 ist die Zahl der Zeilen, die `n()` zählen würde; `n_distinct()` zählt nur die verschiedenen Werte.
+- [ ] eine Zeile je Ernährungsweise mit der Zahl ihrer Personen
+  > Eine Zeile je Wert mit seiner Anzahl liefert `count(diet)`; `summarize()` ohne `group_by()` liefert genau eine Zeile.
+
+> `n()` zählt Zeilen und `n_distinct()` verschiedene Werte, wobei `NA` mitzählt, solange du nicht `na.rm = TRUE` angibst.
