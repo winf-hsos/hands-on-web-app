@@ -25,9 +25,10 @@ Dr. Ulrich Enneking. Alle Befragten sind drin, aber statt 606 Spalten nur eine
 Auswahl an Fragen, mit englischen Spaltennamen und Wörtern statt Zahlencodes.
 Jede Zeile ist eine befragte Person.
 
-Die ersten elf Spalten heißen und sehen genauso aus wie im kleinen Datensatz
-`survey` aus der Lektion [[r-data-frames]]. Code, der dort läuft, läuft deshalb
-auch hier, nur mit 2.809 statt 30 Personen.
+In den Codekästen der Seite steht dieser Datensatz unter dem Namen `survey`
+bereit, etwa in der Lektion [[r-data-frames]] und den Lektionen zu dplyr.
+Liest du ihn in Positron unter demselben Namen ein, läuft der Code von dort
+auch bei dir.
 
 ## Die Spalten
 

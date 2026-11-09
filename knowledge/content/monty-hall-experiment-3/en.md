@@ -71,14 +71,37 @@ monty_hall |>
 
 > [!SOLUTION]
 > ```r static
-> monty_hall |> select(prize_door)              # 1.: a table with one column
-> monty_hall |> pull(prize_door)                # 1.: a vector
-> monty_hall |> select(prize_door, decision)    # 2.
-> monty_hall |> slice_head(n = 10)              # 3.
-> monty_hall |> slice_tail(n = 10)              # 3.
-> monty_hall |> select(-contestant)             # 4.
-> monty_hall |> arrange(prize_door)             # 5.
-> monty_hall |> arrange(desc(prize_door))       # 5.
+> # 1.: a table with one column
+> monty_hall |>
+>   select(prize_door)
+>
+> # 1.: a vector
+> monty_hall |>
+>   pull(prize_door)
+>
+> # 2.
+> monty_hall |>
+>   select(prize_door, decision)
+>
+> # 3.
+> monty_hall |>
+>   slice_head(n = 10)
+>
+> # 3.
+> monty_hall |>
+>   slice_tail(n = 10)
+>
+> # 4.
+> monty_hall |>
+>   select(-contestant)
+>
+> # 5.
+> monty_hall |>
+>   arrange(prize_door)
+>
+> # 5.
+> monty_hall |>
+>   arrange(desc(prize_door))
 > ```
 >
 > Each of these functions takes a table and returns a table again; only

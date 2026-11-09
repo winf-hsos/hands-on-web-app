@@ -25,14 +25,16 @@ The symbol `|>` passes the result on its left as the first argument to the
 function on its right. It is best read as "and then":
 
 ```r
-survey |> nrow()
+survey |>
+  nrow()
 ```
 
 This means the same as `nrow(survey)`: take `survey` and then count the
 rows. You attach a dplyr verb in the same way:
 
 ```r
-survey |> filter(diet == "vegan")
+survey |>
+  filter(diet == "vegan")
 ```
 
 This reads: take `survey` and then keep the rows in which `diet` equals

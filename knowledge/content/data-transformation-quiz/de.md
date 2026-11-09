@@ -30,16 +30,16 @@ updated: 2026-11-09
 
 > Um wen oder was es geht, entscheidet das Filtern der Zeilen; welche Spalten du danach brauchst, ist eine zweite Frage.
 
-## Welche Operation macht aus 30 Zeilen immer genau eine? {#hds-002}
+## Welche Operation macht aus allen Zeilen einer Tabelle immer genau eine? {#hds-002}
 
 - [ ] `filter()` mit einer Bedingung
-  > `filter()` kann zufällig genau eine Zeile übrig lassen, aber je nach Bedingung auch keine oder alle 30.
+  > `filter()` kann zufällig genau eine Zeile übrig lassen, aber je nach Bedingung auch keine oder alle.
 - [ ] `arrange()` nach einer Spalte
-  > `arrange()` ändert nur die Reihenfolge, die Zahl der Zeilen bleibt 30.
+  > `arrange()` ändert nur die Reihenfolge, die Zahl der Zeilen bleibt gleich.
 - [x] `summarize()` ohne `group_by()`
   > Richtig: `summarize()` fasst alle Zeilen zu einer zusammen, etwa zu einem Mittelwert und einer Anzahl; mit `group_by()` davor entsteht eine Zeile je Gruppe.
 - [ ] `mutate()` mit einer neuen Spalte
-  > `mutate()` berechnet für jede Zeile einen neuen Wert und behält alle 30 Zeilen.
+  > `mutate()` berechnet für jede Zeile einen neuen Wert und behält alle Zeilen.
 
 ## Eine Tabelle hat die Spalten `id`, `price_2024` und `price_2025`. Was daran ist nicht tidy? {#hds-003}
 
@@ -54,7 +54,7 @@ updated: 2026-11-09
 
 ## Was liefert `survey |> select(id, starts_with("milk"))`? (Mehrere richtige Antworten möglich.) {#hds-004}
 
-- [x] alle 30 Zeilen
+- [x] alle 2.809 Zeilen
   > Richtig: `select()` wählt Spalten und ändert nie die Zahl der Zeilen.
 - [x] die Spalte `id`
   > Richtig: `id` steht als erster Name in `select()` und bleibt deshalb vorne.

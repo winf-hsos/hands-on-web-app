@@ -60,7 +60,7 @@ test('an R script loads the packages and data sets its boxes use, from the site'
   const { name, text } = script('```r\nsurvey |>\n  filter(age > 30)\n```\n', 'en');
   assert.equal(name, 'tax.R');
   assert.match(text, /^library\(dplyr\)$/m);
-  assert.match(text, new RegExp(`^survey <- as_tibble\\(read\\.csv\\("${SITE_ORIGIN}/media/datasets/milk_survey\\.csv"`, 'm'));
+  assert.match(text, new RegExp(`^survey <- as_tibble\\(read\\.csv\\("${SITE_ORIGIN}/media/datasets/milk_survey_compact\\.csv"`, 'm'));
   assert.match(text, /^# The task and the hints are comments here/m);
 });
 

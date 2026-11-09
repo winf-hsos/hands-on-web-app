@@ -34,14 +34,16 @@ Das Zeichen `|>` reicht das Ergebnis links als erstes Argument an die
 Funktion rechts weiter. Am besten liest man es als „und dann“:
 
 ```r
-survey |> nrow()
+survey |>
+  nrow()
 ```
 
 Das heißt dasselbe wie `nrow(survey)`: Nimm `survey` und dann zähle die
 Zeilen. Ein Verb von dplyr hängst du genauso an:
 
 ```r
-survey |> filter(diet == "vegan")
+survey |>
+  filter(diet == "vegan")
 ```
 
 Das liest sich: Nimm `survey` und dann behalte die Zeilen, in denen `diet`

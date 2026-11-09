@@ -2,13 +2,13 @@
 title: "Exercise: The price question"
 summary: >-
   From which price is a litre of milk too expensive? With select() and
-  filter() you find out who answered the question, and clear an implausible
-  answer out of the way.
+  filter() you find out who answered the question, and clear implausible
+  answers out of the way.
 objectives:
   intro: "In this exercise you apply `select()` and `filter()` to the survey's price question, and afterwards you can:"
   goals:
     - "find the rows that hold an answer with `!is.na()` and count them with `nrow()`"
-    - "combine several conditions in one `filter()` with a comma, for instance to exclude an implausible outlier"
+    - "combine several conditions in one `filter()` with a comma, for instance to exclude implausible outliers"
     - "filter by text values such as brand and diet with `==` and `!=`"
     - "keep only the columns you need with `select()` after filtering"
     - "explain why `filter()` already drops rows with a missing value as soon as you compare that value"
@@ -36,7 +36,7 @@ survey |>
 ```
 
 2. For these people, show only `id`, `age`, `diet`, `milk_brand` and
-   `price_too_expensive`, and leave out the one answer that cannot be meant
+   `price_too_expensive`, and leave out the answers that cannot be meant
    seriously as a price per litre.
 
 ```r
@@ -55,12 +55,13 @@ survey |>
 > [!HINT]
 > A person answered the question if `price_too_expensive` is not missing. How
 > to ask for missing values is shown in the lesson [[dplyr-filter]]; you get
-> the opposite with `!`. To check: there are nine people.
+> the opposite with `!`. To check: there are 611 people.
 
 > [!HINT]
 > For the second question you need two conditions in `filter()`, separated
 > by a comma, followed by a `select()`. A limit of 10 euros safely separates
-> serious prices per litre from the one outlier; eight rows remain.
+> serious prices per litre from the 20 outliers, the smallest of which is
+> 10.99 euros; 591 rows remain.
 
 > [!SOLUTION]
 > Question 1:
@@ -90,7 +91,9 @@ survey |>
 > Strictly speaking, the first condition in the second pipe is unnecessary,
 > because `filter()` drops rows with a missing price anyway as soon as you
 > compare the price. It does no harm, though, and makes clear what is meant.
-> The third question finds three people, all of them flexitarian.
+> The third question finds 105 people, 86 of them flexitarian. The four
+> people without a diet who saw alpro are missing from the result, because
+> `diet != "omnivore"` gives `NA` for them, and `filter()` drops such rows.
 
 ## For the quick ones
 

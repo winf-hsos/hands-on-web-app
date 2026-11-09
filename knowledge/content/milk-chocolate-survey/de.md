@@ -29,8 +29,8 @@ vorkommt, und dazu einige Experimente. Er hat der Nutzung auf dieser
 Plattform zugestimmt.
 
 Jede Zeile ist eine befragte Person, jede Spalte eine Antwort oder ein daraus
-abgeleiteter Wert. Der kleine Datensatz `survey` aus der Lektion [[r-data-frames]] ist
-ein Auszug daraus.
+abgeleiteter Wert. Der Datensatz `survey` aus der Lektion [[r-data-frames]] ist
+ihre kompakte Fassung, der [[milk-survey-compact]].
 
 ## Was drinsteht
 

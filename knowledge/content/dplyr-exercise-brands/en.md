@@ -12,14 +12,14 @@ objectives:
     - "exclude an implausible value with `filter()` and then compute the mean and median per group with `group_by()` and `summarize()`"
     - "turn a price into a price class with `mutate()` and `case_when()` and sort the result with `arrange()`"
     - "split an analysis by a second column such as diet"
-    - "explain why a difference between two groups of four answers each says nothing yet about the brands"
+    - "check whether the two groups of an experiment differ in diet as well as in brand, and explain why chance only makes them comparable with many answers"
 translation_of: de
 based_on: 2026-11-09
 ---
 
 ## Task
 
-The survey contains a small experiment. Some of the respondents were shown a
+The survey contains an experiment. Some of the respondents were shown a
 brand of milk, and chance decided whether it was Weihenstephan or alpro;
 which brand someone saw is in `milk_brand`. They were then asked from which
 price a litre of this milk would be too expensive for them, and that answer
@@ -32,7 +32,7 @@ Follow the question in five steps, each with a pipe of its own:
 1. Count how many people answered the price question for each of the two
    brands.
 2. Compute, per brand, the number of answers, the mean price and the
-   median, without the one answer that cannot be meant seriously as a price
+   median, without the answers that cannot be meant seriously as a price
    per litre.
 3. For the plausible answers, create a column `price_class` with
    `mutate()` that puts each price into one of three classes: `"under 2"`
@@ -101,13 +101,13 @@ survey |>
 > You can tell who answered the price question by a value in
 > `price_too_expensive`, as in the exercise [[dplyr-exercise-price]].
 > `count()` takes the column whose values it should count. To check: there
-> are nine answers, five for alpro and four for Weihenstephan.
+> are 611 answers, 293 for alpro and 318 for Weihenstephan.
 
 > [!HINT]
-> A limit of 10 euros separates the serious prices per litre from the one
-> outlier. Because `filter()` with this comparison also drops all rows
-> without a price, you need no `na.rm = TRUE` afterwards. To check: each
-> brand then has four answers.
+> A limit of 10 euros separates the serious prices per litre from the 20
+> outliers. Because `filter()` with this comparison also drops all rows
+> without a price, you need no `na.rm = TRUE` afterwards. To check: 284
+> answers remain for alpro and 307 for Weihenstephan.
 
 > [!HINT]
 > `case_when()` checks the cases from top to bottom, so the condition
@@ -181,20 +181,26 @@ survey |>
 >   arrange(desc(mean_price))
 > ```
 >
-> Without the outlier, the limit for alpro is 2.12 euros on average and 2.09
-> euros in the median, for Weihenstephan 1.90 and 2 euros. Those who saw
-> alpro would therefore pay a good 20 cents more on average. In the price
-> classes, however, alpro falls below 2 euros twice and Weihenstephan only
-> once; the higher mean comes mainly from the 2.79 euros of a single person.
+> Without the outliers, the limit for alpro is 2.19 euros on average and 2
+> euros in the median, for Weihenstephan 1.99 and 1.99 euros. Those who saw
+> alpro would therefore pay around 20 cents more on average. The price
+> classes show that this does not depend on a few people: for Weihenstephan,
+> 182 of the 307 answers lie below 2 euros, for alpro only 129 of 284, and in
+> the top class alpro leads with 86 answers against 57. The whole
+> distribution is shifted upwards.
 >
-> The fifth task shows why this means little. The plausible answers come
-> only from flexitarians and omnivores, and the flexitarians give 2.29 euros
-> on average, the omnivores only 1.53 euros. Of the four answers for alpro,
-> three come from flexitarians, of those for Weihenstephan only two, so part
-> of the difference may come from diet rather than from the brand. Chance
-> only evens out such differences between the groups with many respondents,
-> and with four answers per brand a single extra person could reverse the
-> result; with the outlier, alpro would even average 33.70 euros.
+> The fifth task shows whether diet could be behind it. Vegans and
+> vegetarians give higher prices on average, 2.60 and 2.40 euros, than
+> omnivores and flexitarians with around 2.05 euros each. If you count with
+> `count(milk_brand, diet)`, you see that chance has spread the large groups
+> almost evenly, 177 to 187 omnivores and 84 to 83 flexitarians. Only among
+> the vegans did Weihenstephan get more, 14 to 3, which tends to raise
+> Weihenstephan's mean and so does not explain the difference to alpro. With
+> around 300 answers per brand, chance largely evens out such differences;
+> whether the difference of 20 cents is more than chance only a test can
+> tell. With the outliers, by the way, the mean for alpro would be 9.07 euros
+> and for Weihenstephan 7.25 euros, while the median would stay at 2 and 1.99
+> euros.
 
 ## For the quick ones
 
@@ -203,9 +209,7 @@ Create a column with `mutate()` that holds `TRUE` or `FALSE`, and compute
 its mean per brand: the mean of `TRUE` and `FALSE` is the share of `TRUE`,
 as you know from the lesson [[r-vectors]].
 
-Whether alpro really may cost more can only be said with more answers. The
-full data set [[milk-survey-compact]] contains the same experiment with more
-than 600 answers. Download it from its page, read it into Positron and
-repeat the second task. Look at the outliers first, because
-there are twenty prices above 10 euros there, and a litre for 0 euros is
-hardly meant seriously either.
+Does the result hold if you draw the limit differently? A litre for 0 euros
+is hardly meant seriously either, and two people gave exactly that. Repeat
+the second task only with prices above 50 cents and at most 5 euros, and
+compare mean and median with your first result.

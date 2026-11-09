@@ -32,7 +32,7 @@ Spalte.
 
 ## Eine Tabelle ansehen
 
-In jedem R-Kasten auf dieser Plattform liegt eine kleine Tabelle bereit, die
+In jedem R-Kasten auf dieser Plattform liegt eine Tabelle bereit, die
 `survey` heißt. Schreibst du ihren Namen, zeigt R sie an:
 
 ```r
@@ -72,31 +72,34 @@ die Spaltennamen.
 
 ## Der Datensatz `survey`
 
-Die 30 Zeilen stammen aus einer Online-Befragung zu Milch und
-Milchalternativen von Prof. Dr. Ulrich Enneking (Hochschule Osnabrück),
-an der rund 2.800 Menschen teilgenommen haben. Für diese Lektionen sind es
-wenige ausgewählte Personen und zehn Fragen; die Spalten sind englisch
-benannt, wie es beim Programmieren üblich ist. Die ganze Befragung kannst du
-als [[milk-chocolate-survey|Datensatz]] herunterladen.
+`survey` ist der [[milk-survey-compact|kompakte Datensatz]] aus einer
+Online-Befragung zu Milch und Milchalternativen von Prof. Dr. Ulrich
+Enneking (Hochschule Osnabrück): 2.809 Personen und 21 ausgewählte Fragen,
+mit englischen Spaltennamen, wie es beim Programmieren üblich ist. Für diese
+Lektionen genügen die ersten elf Spalten:
 
 | Spalte | Bedeutung |
 |---|---|
-| `id` | laufende Nummer der Person in diesem Auszug |
+| `id` | laufende Nummer der Person |
 | `age` | Alter in Jahren |
 | `gender` | Geschlecht (`female`, `male`) |
 | `state` | Bundesland |
 | `town_size` | Größe des Wohnorts, von `village` bis `city` |
 | `household_size` | Zahl der Personen im Haushalt |
-| `diet` | Ernährungsweise, etwa `omnivore`, `flexitarian`, `vegan` |
+| `diet` | Ernährungsweise: `omnivore`, `flexitarian`, `pescetarian`, `vegetarian`, `vegan` |
 | `organic_share` | Anteil an Bio-Lebensmitteln beim Einkauf, von 1 (kaum) bis 5 (fast alles) |
 | `milk_freq` | wie oft die Person Milch trinkt: `daily`, `weekly`, `monthly`, `rarely` |
 | `milk_brand` | welche Marke ihr im Preisteil gezeigt wurde: `Weihenstephan` oder `alpro` |
 | `price_too_expensive` | ab welchem Preis in Euro ihr ein Liter dieser Marke zu teuer wäre |
 
-Nicht jede Person hat jede Frage bekommen, deshalb gibt es fehlende Werte.
-Den Preisteil zum Beispiel sah nur ein Teil der Befragten, und jeweils nur
-für eine der beiden Marken. Einige Werte sind auch bewusst seltsam, damit es
-beim Aufräumen etwas zu entdecken gibt.
+Die übrigen zehn Spalten zu Einkaufsorten, Einstellungen, einem zweiten
+Markenexperiment und TikTok beschreibt die Seite des Datensatzes; die ganze
+Befragung mit 606 Spalten liegt als [[milk-chocolate-survey|Rohfassung]]
+bereit. Nicht jede Person hat jede Frage bekommen, deshalb gibt es fehlende
+Werte. Den Preisteil zum Beispiel sahen nur 611 der Befragten, und jeweils
+nur für eine der beiden Marken. Einige Werte sind auch seltsam, etwa
+Literpreise von mehreren hundert Euro, und die Lektionen zu dplyr zeigen,
+wie man sie findet.
 
 ## Zum Mitnehmen
 

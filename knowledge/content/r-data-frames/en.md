@@ -22,7 +22,7 @@ know about vectors therefore applies to every column.
 
 ## Looking at a table
 
-In every R box on this platform a small table called `survey` is ready for
+In every R box on this platform a table called `survey` is ready for
 you. If you write its name, R shows it:
 
 ```r
@@ -63,31 +63,34 @@ column names.
 
 ## The data set `survey`
 
-The 30 rows come from an online survey on milk and milk alternatives by
-Prof. Dr. Ulrich Enneking (Osnabrück University of Applied Sciences), in
-which about 2,800 people took part. For these lessons it is a few selected
-people and ten questions; the columns have English names, as is customary in
-programming. You can download the whole survey as a
-[[milk-chocolate-survey|data set]].
+`survey` is the [[milk-survey-compact|compact data set]] from an online
+survey on milk and milk alternatives by Prof. Dr. Ulrich Enneking
+(Osnabrück University of Applied Sciences): 2,809 people and 21 selected
+questions, with English column names, as is customary in programming. The
+first eleven columns are enough for these lessons:
 
 | Column | Meaning |
 |---|---|
-| `id` | running number of the person in this excerpt |
+| `id` | running number of the person |
 | `age` | age in years |
 | `gender` | gender (`female`, `male`) |
 | `state` | German federal state |
 | `town_size` | size of the place of residence, from `village` to `city` |
 | `household_size` | number of people in the household |
-| `diet` | diet, such as `omnivore`, `flexitarian`, `vegan` |
+| `diet` | diet: `omnivore`, `flexitarian`, `pescetarian`, `vegetarian`, `vegan` |
 | `organic_share` | share of organic food when shopping, from 1 (hardly any) to 5 (almost all) |
 | `milk_freq` | how often the person drinks milk: `daily`, `weekly`, `monthly`, `rarely` |
 | `milk_brand` | which brand they were shown in the price part: `Weihenstephan` or `alpro` |
 | `price_too_expensive` | from which price in euros a litre of this brand would be too expensive for them |
 
-Not everyone was asked every question, which is why there are missing
-values. The price part, for example, was only shown to some of the
-respondents, and only for one of the two brands. Some values are also
-deliberately odd, so that there is something to discover when tidying up.
+The other ten columns, on places of shopping, attitudes, a second brand
+experiment and TikTok, are described on the page of the data set; the whole
+survey with 606 columns is available as the
+[[milk-chocolate-survey|raw version]]. Not everyone was asked every
+question, which is why there are missing values. The price part, for
+example, was only shown to 611 of the respondents, and only for one of the
+two brands. Some values are also odd, such as prices of several hundred
+euros for a litre, and the lessons on dplyr show how to find them.
 
 ## Key points
 

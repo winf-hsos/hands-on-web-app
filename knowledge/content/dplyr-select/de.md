@@ -26,7 +26,7 @@ updated: 2026-11-09
 ---
 
 Echte Datensätze sind breit. Die Umfrage, aus der `survey` stammt, hat 606
-Spalten, und für eine einzelne Frage braucht man selten mehr als eine
+Spalten, ihre kompakte Fassung `survey` immer noch 21, und für eine einzelne Frage braucht man selten mehr als eine
 Handvoll davon. `select()` behält die Spalten, die du nennst, und lässt alle
 anderen weg; an den Zeilen ändert es nichts.
 
@@ -36,14 +36,16 @@ Das erste Argument von `select()` ist die Tabelle, die die Pipe liefert,
 danach folgen die Spalten, durch Kommas getrennt und ohne Anführungszeichen:
 
 ```r
-survey |> select(id, age, diet)
+survey |>
+  select(id, age, diet)
 ```
 
 Die Reihenfolge, in der du die Spalten nennst, ist auch die Reihenfolge im
 Ergebnis. So kannst du eine Tabelle zugleich verkleinern und umsortieren:
 
 ```r
-survey |> select(diet, age, id)
+survey |>
+  select(diet, age, id)
 ```
 
 ## Bereiche und Ausschlüsse
@@ -52,13 +54,15 @@ Ein Doppelpunkt wählt alle Spalten von einer bis zu einer anderen, so wie
 sie in der Tabelle nebeneinander stehen:
 
 ```r
-survey |> select(id:state)
+survey |>
+  select(id:state)
 ```
 
 Ein Minuszeichen schließt eine Spalte aus, und alle übrigen bleiben:
 
 ```r
-survey |> select(-state, -town_size, -household_size)
+survey |>
+  select(-state, -town_size, -household_size)
 ```
 
 Ausschließen ist praktisch, wenn du fast alles behalten willst. Bei sehr
@@ -80,14 +84,16 @@ solche Muster erkennen:
 So holst du die Kennung und alle Spalten, die mit `milk` beginnen:
 
 ```r
-survey |> select(id, starts_with("milk"))
+survey |>
+  select(id, starts_with("milk"))
 ```
 
 Ein Helfer kann auch allein stehen, dann bleiben nur die Spalten, die zum
 Muster passen:
 
 ```r
-survey |> select(ends_with("size"))
+survey |>
+  select(ends_with("size"))
 ```
 
 Hier zahlt sich eine Regel aus, die man beim Aufbereiten von Daten oft
@@ -101,7 +107,8 @@ auswählen, statt jede einzeln aufzuzählen.
 mit Text:
 
 ```r
-survey |> select(where(is.numeric))
+survey |>
+  select(where(is.numeric))
 ```
 
 Achte darauf, dass auch `id` eine Zahl ist. R weiß nicht, dass sich mit
@@ -118,14 +125,15 @@ survey |>
   names()
 ```
 
-`names()` zeigt nur die Spaltennamen, und so siehst du die beiden neuen am
-Ende, ohne dass die Tabelle sie aus Platzgründen weglässt.
+`names()` zeigt nur die Spaltennamen, und so siehst du die beiden neuen an
+ihrer Stelle, ohne dass die Tabelle sie aus Platzgründen weglässt.
 
 Dasselbe geht auch innerhalb von `select()`, dann aber nur für die
 ausgewählten Spalten:
 
 ```r
-survey |> select(id, brand = milk_brand, too_expensive = price_too_expensive)
+survey |>
+  select(id, brand = milk_brand, too_expensive = price_too_expensive)
 ```
 
 ## Spalten nach vorne holen
@@ -134,7 +142,8 @@ Manchmal willst du alle Spalten behalten und nur bestimmte zuerst sehen. Das
 erledigt `relocate()`:
 
 ```r
-survey |> relocate(diet, organic_share)
+survey |>
+  relocate(diet, organic_share)
 ```
 
 ## Zum Mitnehmen

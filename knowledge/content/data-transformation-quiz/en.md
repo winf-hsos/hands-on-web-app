@@ -20,16 +20,16 @@ based_on: 2026-11-09
 
 > Filtering rows decides who or what the analysis is about; which columns you need afterwards is a second question.
 
-## Which operation always turns 30 rows into exactly one? {#hds-002}
+## Which operation always turns all rows of a table into exactly one? {#hds-002}
 
 - [ ] `filter()` with a condition
-  > `filter()` may happen to leave exactly one row, but depending on the condition it can also leave none or all 30.
+  > `filter()` may happen to leave exactly one row, but depending on the condition it can also leave none or all.
 - [ ] `arrange()` by one column
-  > `arrange()` only changes the order; the number of rows stays 30.
+  > `arrange()` only changes the order; the number of rows stays the same.
 - [x] `summarize()` without `group_by()`
   > Correct: `summarize()` combines all rows into one, for instance into an average and a count; with `group_by()` before it, you get one row per group.
 - [ ] `mutate()` with a new column
-  > `mutate()` computes a new value for every row and keeps all 30 rows.
+  > `mutate()` computes a new value for every row and keeps all rows.
 
 ## A table has the columns `id`, `price_2024` and `price_2025`. What is untidy about it? {#hds-003}
 
@@ -44,7 +44,7 @@ based_on: 2026-11-09
 
 ## What does `survey |> select(id, starts_with("milk"))` return? (Several answers may be correct.) {#hds-004}
 
-- [x] all 30 rows
+- [x] all 2,809 rows
   > Correct: `select()` picks columns and never changes the number of rows.
 - [x] the column `id`
   > Correct: `id` is the first name in `select()`, so it stays at the front.

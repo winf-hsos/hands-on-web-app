@@ -83,8 +83,8 @@ survey |>
 ```
 
 Absteigend sortiert ist das zugleich ein schneller Weg zu Ausreißern: Die
-160 Euro für einen Liter Milch, die du aus der Lektion [[dplyr-filter]]
-kennst, stehen ganz oben.
+Preise von mehreren hundert Euro für einen Liter Milch, die du aus der
+Lektion [[dplyr-filter]] kennst, stehen ganz oben, angeführt von 999 Euro.
 
 ## Die ersten oder größten Zeilen
 
@@ -161,8 +161,8 @@ survey |>
 ## Eine Spalte überschreiben
 
 Gibst du einer Spalte in `mutate()` einen Namen, den es schon gibt, ersetzt
-das Ergebnis die alte Spalte. So lässt sich der unplausible Preis durch einen
-fehlenden Wert ersetzen, ohne dass die Person aus der Tabelle verschwindet,
+das Ergebnis die alte Spalte. So lassen sich die unplausiblen Preise durch
+fehlende Werte ersetzen, ohne dass die Personen aus der Tabelle verschwinden,
 wie es mit `filter()` geschähe:
 
 ```r
@@ -174,7 +174,7 @@ survey |>
   select(id, milk_brand, price_too_expensive)
 ```
 
-Das `filter()` am Ende zeigt nur die neun Personen, die die Preisfrage
+Das `filter()` am Ende zeigt nur die 611 Personen, die die Preisfrage
 gesehen haben. Bei allen anderen ist schon die Bedingung
 `price_too_expensive > 10` unbekannt, und `if_else()` gibt dann ebenfalls
 `NA` zurück, sodass ein fehlender Wert fehlend bleibt. Ob du einen Wert so
@@ -210,7 +210,7 @@ bekommen. Vertausch einmal die ersten beiden Fälle und sieh nach, wo die
 
 > [!WARNING]
 > Ein fehlender Wert erfüllt keine der Bedingungen und bekommt deshalb den
-> Wert von `.default`. Teilst du Preise so in Klassen ein, landen alle 21
+> Wert von `.default`. Teilst du Preise so in Klassen ein, landen alle 2.198
 > Personen ohne Preisangabe in der letzten Klasse. Filtere sie vorher heraus
 > oder fang sie mit einem ersten Fall `is.na(price_too_expensive) ~ NA` ab.
 

@@ -41,7 +41,7 @@ Zeilen aus, sortierst Zeilen, berechnest neue Spalten und fasst Gruppen zu
 Kennzahlen zusammen, bis du damit eine Frage an das Preisexperiment der
 Umfrage beantwortest. Jeder Codekasten ist ein kleiner Editor, in dem R
 direkt in deinem Browser läuft; installieren musst du nichts. Alle Beispiele
-verwenden einen kleinen Ausschnitt aus einer Umfrage zu Milch und
-Milchalternativen. Wer R noch nicht kennt, beginnt mit dem Lernpfad
+verwenden eine Umfrage zu Milch und Milchalternativen mit 2.809
+Befragten. Wer R noch nicht kennt, beginnt mit dem Lernpfad
 [[getting-started-with-r]]; dort lernst du auch den Datensatz kennen.
 Schritte zum Verknüpfen von Tabellen folgen.

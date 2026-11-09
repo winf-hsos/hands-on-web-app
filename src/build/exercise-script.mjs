@@ -161,7 +161,7 @@ function rSetup(code, labels) {
     lines.push(...packages.map((p) => `library(${p})`));
   }
   for (const [name, file] of data) {
-    const table = `read.csv("${SITE_ORIGIN}/media/datasets/${file}", na.strings = "", stringsAsFactors = FALSE)`;
+    const table = `read.csv("${SITE_ORIGIN}/media/datasets/${file}", na.strings = c("", "NA"), stringsAsFactors = FALSE)`;
     lines.push(`${name} <- ${PLAIN.has(name) ? table : `as_tibble(${table})`}`);
   }
   return [...lines, ''];

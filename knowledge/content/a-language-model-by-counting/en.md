@@ -263,7 +263,8 @@ pairs <- tokens |>
 current <- "<s>"
 sentence <- c()
 while (length(sentence) < 15) {
-  bag <- pairs |> filter(word == current)
+  bag <- pairs |>
+    filter(word == current)
   current <- sample(bag$next_word, size = 1, prob = bag$n)
   if (current == "</s>") break
   sentence <- c(sentence, current)
@@ -392,7 +393,8 @@ write_sentence <- function() {
   current <- "<s>"
   sentence <- c()
   while (length(sentence) < 15) {
-    bag <- pairs |> filter(word == current)
+    bag <- pairs |>
+      filter(word == current)
     current <- sample(bag$next_word, size = 1, prob = bag$n)
     if (current == "</s>") break
     sentence <- c(sentence, current)

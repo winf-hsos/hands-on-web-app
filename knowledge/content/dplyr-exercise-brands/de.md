@@ -14,7 +14,7 @@ objectives:
     - "einen unplausiblen Wert mit `filter()` ausschließen und danach mit `group_by()` und `summarize()` Mittelwert und Median je Gruppe berechnen"
     - "mit `mutate()` und `case_when()` aus einem Preis eine Preisklasse machen und das Ergebnis mit `arrange()` sortieren"
     - "eine Auswertung nach einer zweiten Spalte wie der Ernährungsweise aufteilen"
-    - "begründen, warum ein Unterschied zwischen zwei Gruppen mit je vier Antworten noch nichts über die Marken aussagt"
+    - "prüfen, ob sich die beiden Gruppen eines Experiments außer in der Marke auch in der Ernährungsweise unterscheiden, und begründen, warum der Zufall sie erst bei vielen Antworten vergleichbar macht"
 level: 1
 duration: 25
 topics: [transforming-data, programming-with-r]
@@ -28,7 +28,7 @@ updated: 2026-11-09
 
 ## Aufgabe
 
-In der Umfrage steckt ein kleines Experiment. Einem Teil der Befragten wurde
+In der Umfrage steckt ein Experiment. Einem Teil der Befragten wurde
 eine Milchmarke gezeigt, und der Zufall entschied, ob es Weihenstephan oder
 alpro war; welche Marke jemand sah, steht in `milk_brand`. Danach sollten sie
 sagen, ab welchem Preis ihnen ein Liter dieser Milch zu teuer wäre, und diese
@@ -41,8 +41,8 @@ Gehe der Frage in fünf Schritten nach, jeder mit einer eigenen Pipe:
 1. Zähle, wie viele Personen die Preisfrage für jede der beiden Marken
    beantwortet haben.
 2. Berechne je Marke die Zahl der Antworten, den mittleren Preis und den
-   Median, ohne die eine Angabe, die als Literpreis nicht ernst gemeint sein
-   kann.
+   Median, ohne die Angaben, die als Literpreis nicht ernst gemeint sein
+   können.
 3. Lege für die plausiblen Antworten mit `mutate()` eine Spalte
    `price_class` an, die jeden Preis einer von drei Klassen zuordnet:
    `"under 2"` für weniger als 2 Euro, `"2 to 2.49"` und `"2.50 or more"`.
@@ -111,14 +111,14 @@ survey |>
 > Wer die Preisfrage beantwortet hat, erkennst du an einem Wert in
 > `price_too_expensive`, wie in der Übung [[dplyr-exercise-price]].
 > `count()` bekommt die Spalte, deren Werte es zählen soll.
-> Zur Kontrolle: Es sind neun Antworten, fünf für alpro und vier für
+> Zur Kontrolle: Es sind 611 Antworten, 293 für alpro und 318 für
 > Weihenstephan.
 
 > [!HINT]
-> Eine Grenze von 10 Euro trennt die ernst gemeinten Literpreise von dem
-> einen Ausreißer. Weil `filter()` mit diesem Vergleich auch alle Zeilen ohne
+> Eine Grenze von 10 Euro trennt die ernst gemeinten Literpreise von den 20
+> Ausreißern. Weil `filter()` mit diesem Vergleich auch alle Zeilen ohne
 > Preis verwirft, brauchst du danach kein `na.rm = TRUE`. Zur Kontrolle:
-> Jede Marke hat dann vier Antworten.
+> Es bleiben 284 Antworten für alpro und 307 für Weihenstephan.
 
 > [!HINT]
 > `case_when()` prüft die Fälle von oben nach unten, deshalb genügt für die
@@ -192,22 +192,26 @@ survey |>
 >   arrange(desc(mean_price))
 > ```
 >
-> Ohne den Ausreißer liegt die Grenze bei alpro im Mittel bei 2,12 Euro und
-> im Median bei 2,09 Euro, bei Weihenstephan bei 1,90 und 2 Euro. Wer alpro
-> sah, würde also im Mittel gut 20 Cent mehr zahlen. Bei den Preisklassen
-> fällt alpro dagegen zweimal unter 2 Euro und Weihenstephan nur einmal; der
-> höhere Mittelwert geht vor allem auf die 2,79 Euro einer einzigen Person
-> zurück.
+> Ohne die Ausreißer liegt die Grenze bei alpro im Mittel bei 2,19 Euro und
+> im Median bei 2 Euro, bei Weihenstephan bei 1,99 und 1,99 Euro. Wer alpro
+> sah, würde also im Mittel rund 20 Cent mehr zahlen. Die Preisklassen
+> zeigen, dass das nicht an wenigen Personen hängt: Bei Weihenstephan liegen
+> 182 der 307 Antworten unter 2 Euro, bei alpro nur 129 von 284, und in der
+> obersten Klasse ist alpro mit 86 Antworten gegen 57 vorn. Die ganze
+> Verteilung ist also nach oben verschoben.
 >
-> Die fünfte Aufgabe zeigt, warum das wenig heißt. Unter den plausiblen
-> Antworten sind nur flexitarisch und omnivor lebende Personen, und die
-> Flexitarier nennen im Mittel 2,29 Euro, die Omnivoren nur 1,53 Euro. Von
-> den vier Antworten zu alpro stammen drei von Flexitariern, von denen zu
-> Weihenstephan nur zwei, sodass ein Teil des Unterschieds auf die
-> Ernährungsweise zurückgehen kann statt auf die Marke. Der Zufall gleicht
-> solche Unterschiede zwischen den Gruppen erst bei vielen Befragten aus, und
-> mit vier Antworten je Marke könnte schon eine Person mehr das Ergebnis
-> umdrehen; mit dem Ausreißer läge alpro im Mittel sogar bei 33,70 Euro.
+> Die fünfte Aufgabe zeigt, ob die Ernährungsweise dahinterstecken könnte.
+> Vegan und vegetarisch lebende Personen nennen im Mittel höhere Preise, 2,60
+> und 2,40 Euro, als die Omnivoren und Flexitarier mit je rund 2,05 Euro.
+> Zählst du mit `count(milk_brand, diet)` nach, siehst du, dass der Zufall die
+> großen Gruppen fast gleich verteilt hat, 177 zu 187 Omnivoren und 84 zu 83
+> Flexitarier. Nur unter den Veganern hat Weihenstephan mit 14 zu 3 mehr
+> abbekommen, was den Mittelwert von Weihenstephan eher hebt und den
+> Unterschied zu alpro also nicht erklärt. Bei rund 300 Antworten je Marke
+> gleicht der Zufall solche Unterschiede weitgehend aus; ob der Unterschied
+> von 20 Cent mehr ist als Zufall, beantwortet erst ein Test. Mit den
+> Ausreißern läge der Mittelwert bei alpro übrigens bei 9,07 Euro und bei
+> Weihenstephan bei 7,25 Euro, und der Median bliebe bei 2 und 1,99 Euro.
 
 ## Für Schnelle
 
@@ -217,9 +221,7 @@ und berechne ihren Mittelwert je Marke: Der Mittelwert von `TRUE` und
 `FALSE` ist der Anteil der `TRUE`, wie du aus der Lektion [[r-vectors]]
 weißt.
 
-Ob alpro wirklich mehr kosten darf, lässt sich erst mit mehr Antworten
-sagen. Der vollständige Datensatz [[milk-survey-compact]] enthält dasselbe
-Experiment mit über 600 Antworten. Lade ihn von seiner Seite herunter, lies
-ihn in Positron ein und wiederhole die zweite Aufgabe. Schau dir
-vorher die Ausreißer an, denn dort sind es zwanzig Preise über 10 Euro, und
-auch ein Liter für 0 Euro ist kaum ernst gemeint.
+Hält das Ergebnis, wenn du die Grenze anders ziehst? Auch ein Liter für 0
+Euro ist kaum ernst gemeint, und zwei Personen haben genau das angegeben.
+Wiederhole die zweite Aufgabe nur mit Preisen über 50 Cent und höchstens 5
+Euro und vergleiche Mittelwert und Median mit deinem ersten Ergebnis.

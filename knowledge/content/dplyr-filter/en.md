@@ -34,13 +34,15 @@ A condition is usually a comparison. R knows these comparison operators:
 With `>=` you keep, for example, all respondents who are 70 or older:
 
 ```r
-survey |> filter(age >= 70)
+survey |>
+  filter(age >= 70)
 ```
 
 You compare text in the same way:
 
 ```r
-survey |> filter(diet == "vegetarian")
+survey |>
+  filter(diet == "vegetarian")
 ```
 
 Text goes in quotation marks, column names do not. Without the quotation
@@ -59,13 +61,15 @@ If you separate conditions with commas, all of them must hold at once. You
 get the same with `&` (and):
 
 ```r
-survey |> filter(gender == "female", age < 40)
+survey |>
+  filter(gender == "female", age < 40)
 ```
 
 If at least one should hold, you join them with `|` (or):
 
 ```r
-survey |> filter(household_size >= 4 | town_size == "village")
+survey |>
+  filter(household_size >= 4 | town_size == "village")
 ```
 
 A `!` reverses a condition: `!(diet == "omnivore")` is the same as
@@ -92,7 +96,8 @@ missing in `milk_freq`, and the obvious attempt to find them returns not a
 single row:
 
 ```r
-survey |> filter(milk_freq == NA)
+survey |>
+  filter(milk_freq == NA)
 ```
 
 The reason: a comparison with an unknown value is itself unknown. Is a value
@@ -130,8 +135,8 @@ aware of it when you count rows afterwards and compare them with the total.
 ## Filtering to check data
 
 `filter()` is not only for analyses but also for tracking down values that
-cannot be right. A litre of milk costs one, two, maybe three euros. What does
-this line tell you?
+cannot be right. A litre of milk costs one, two, maybe three euros. What do
+these rows tell you?
 
 ```r
 survey |>
@@ -139,10 +144,11 @@ survey |>
   select(id, age, milk_brand, price_too_expensive)
 ```
 
-Whether someone made a typo, whether 160 cents were meant or whether someone
+There are 20 answers above 10 euros, from 11 euros up to 999. Whether
+someone made a typo, whether 160 was meant as 1.60 euros or whether someone
 did not take the question seriously cannot be decided from the data alone.
-What matters is that you find the value before it distorts an average, and
-that you record how you deal with it.
+What matters is that you find such values before they distort an average,
+and that you record how you deal with them.
 
 ## Key points
 

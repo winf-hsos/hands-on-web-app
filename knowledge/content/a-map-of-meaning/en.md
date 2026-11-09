@@ -213,7 +213,11 @@ three words it started with. How the similarity is computed from the numbers
 you will see in Step 7.
 
 ```r
-word <- function(w) word_vectors |> filter(word == w) |> pull(value)
+word <- function(w) {
+  word_vectors |>
+    filter(word == w) |>
+    pull(value)
+}
 target <- word("king") - word("man") + word("woman")
 
 word_vectors |>
@@ -450,8 +454,10 @@ text so that its arrow has the length 1, and then this sum is exactly the
 similarity from the search. Here for cards 1 and 7:
 
 ```r
-one <- vectors |> filter(card == 1)
-seven <- vectors |> filter(card == 7)
+one <- vectors |>
+  filter(card == 1)
+seven <- vectors |>
+  filter(card == 7)
 sum(one$value * seven$value)
 ```
 

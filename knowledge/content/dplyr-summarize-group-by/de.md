@@ -36,7 +36,7 @@ Daten verlangen.
 
 In `summarize()` steht wie in `mutate()` links der Name einer neuen Spalte
 und rechts die Rechnung, nur muss die Rechnung aus einer ganzen Spalte einen
-einzigen Wert machen. So berechnest du das Durchschnittsalter der 30
+einzigen Wert machen. So berechnest du das Durchschnittsalter der 2.809
 Befragten:
 
 ```r
@@ -77,9 +77,9 @@ survey |>
   )
 ```
 
-Die 30 Befragten sind zwischen 24 und 74 Jahre alt, im Mittel 51,4 Jahre.
-Dass der Median mit 55,5 Jahren darüber liegt, zeigt, dass einige deutlich
-Jüngere den Mittelwert nach unten ziehen.
+Die Befragten sind zwischen 18 und 80 Jahre alt, im Mittel 48,4 Jahre. Dass
+der Median mit 50 Jahren etwas darüber liegt, zeigt, dass die Jüngeren den
+Mittelwert ein wenig nach unten ziehen.
 
 ## Fehlende Werte und `na.rm = TRUE`
 
@@ -90,7 +90,7 @@ survey |>
   summarize(mean_price = mean(price_too_expensive))
 ```
 
-21 der 30 Befragten haben die Frage nie gesehen, und wie die Lektion
+2.198 der 2.809 Befragten haben die Frage nie gesehen, und wie die Lektion
 [[r-missing-values]] zeigt, ist jede Rechnung mit einem unbekannten Wert
 selbst unbekannt. Mit `na.rm = TRUE` lässt du die fehlenden Werte
 ausdrücklich weg. `n()` zählt allerdings weiter alle Zeilen; wie viele
@@ -109,19 +109,19 @@ survey |>
 > [!IMPORTANT]
 > `na.rm = TRUE` ist eine Entscheidung darüber, für wen die Kennzahl gilt,
 > und kein Schalter, der eine Fehlermeldung wegmacht. Hier gilt sie für die
-> neun Personen, die das Preisexperiment gesehen haben, und genau das gehört
+> 611 Personen, die das Preisexperiment gesehen haben, und genau das gehört
 > in jeden Satz, mit dem du das Ergebnis berichtest.
 
 ## Mittelwert oder Median
 
-Fast 20 Euro als mittlere Schmerzgrenze für einen Liter Milch, bei einem
-Median von 2 Euro? Den Unterschied macht eine einzige Person, die 160 Euro
-angegeben hat. Der Mittelwert verteilt diesen einen Wert auf alle neun
+Gut 8 Euro als mittlere Schmerzgrenze für einen Liter Milch, bei einem
+Median von 1,99 Euro? Den Unterschied machen die 20 Antworten über 10 Euro,
+bis hin zu 999 Euro. Der Mittelwert verteilt diese Werte auf alle 611
 Antworten, während der Median nur auf die Mitte der sortierten Werte schaut
-und sich von einem Ausreißer kaum bewegen lässt.
+und sich von wenigen Ausreißern kaum bewegen lässt.
 
 Weil `summarize()` am Ende der Pipe steht, legst du davor mit `filter()`
-fest, welche Zeilen eingehen. Ohne den unplausiblen Wert sieht es so aus:
+fest, welche Zeilen eingehen. Ohne die unplausiblen Werte sieht es so aus:
 
 ```r
 survey |>
@@ -133,7 +133,7 @@ survey |>
   )
 ```
 
-Jetzt liegen Mittelwert und Median mit 2,01 und 2 Euro fast gleichauf.
+Jetzt liegen Mittelwert und Median mit 2,08 und 1,99 Euro fast gleichauf.
 `na.rm = TRUE` ist hier nicht mehr nötig, weil `filter()` die Zeilen ohne
 Preis schon beim Vergleich verworfen hat.
 
@@ -143,7 +143,8 @@ Seine eigentliche Stärke zeigt `summarize()` zusammen mit `group_by()`.
 `group_by()` ändert an den Daten nichts Sichtbares, merkt sich aber, welche
 Zeilen zusammengehören, und das folgende `summarize()` rechnet dann für jede
 Gruppe einzeln. Wie alt sind die Befragten je Ernährungsweise, und wie viel
-Bio kaufen sie?
+Bio kaufen sie? Weil 18 Personen den Bio-Anteil nicht angegeben haben,
+braucht der Mittelwert dafür `na.rm = TRUE`:
 
 ```r
 survey |>
@@ -151,14 +152,16 @@ survey |>
   summarize(
     n = n(),
     mean_age = mean(age),
-    mean_organic = mean(organic_share)
+    mean_organic = mean(organic_share, na.rm = TRUE)
   )
 ```
 
 Die Spalte, nach der du gruppierst, bleibt im Ergebnis, sodass jede Zeile
-sagt, für welche Gruppe sie steht. Schau dabei immer auch auf `n`: Der
-Mittelwert der Gruppe `vegan` ist die Angabe einer einzigen Person und sagt
-über Menschen, die vegan leben, so gut wie nichts.
+sagt, für welche Gruppe sie steht; die 28 Personen ohne Angabe zur
+Ernährung bilden eine eigene Gruppe `NA`. Schau dabei immer auch auf `n`:
+1.826 Personen essen alles, aber nur je 36 leben vegan oder pescetarisch,
+und ein Mittelwert aus 36 Angaben schwankt von Stichprobe zu Stichprobe
+deutlich stärker als einer aus 1.826.
 
 ## Gruppen sortieren
 
@@ -171,7 +174,7 @@ survey |>
   group_by(diet) |>
   summarize(
     n = n(),
-    mean_organic = mean(organic_share)
+    mean_organic = mean(organic_share, na.rm = TRUE)
   ) |>
   arrange(desc(mean_organic))
 ```
@@ -186,7 +189,7 @@ survey |>
   group_by(gender, diet) |>
   summarize(
     n = n(),
-    mean_organic = mean(organic_share),
+    mean_organic = mean(organic_share, na.rm = TRUE),
     .groups = "drop"
   )
 ```
@@ -252,8 +255,8 @@ survey |>
   mutate(share = n / sum(n))
 ```
 
-17 der 30 Befragten essen alles, ein Anteil von 0,567, und 9 leben
-flexitarisch, genau 0,3. Die Anteile ergeben zusammen 1; wer Prozent lieber
+1.826 der 2.809 Befragten essen alles, ein Anteil von 0,650, und 749 leben
+flexitarisch, 0,267. Die Anteile ergeben zusammen 1; wer Prozent lieber
 mag, rechnet mal 100.
 
 Sollen sich die Anteile innerhalb jeder Gruppe zu 1 summieren, etwa je

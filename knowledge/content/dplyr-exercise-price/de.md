@@ -4,13 +4,13 @@ code: 3967
 title: "Übung: Die Preisfrage"
 summary: >-
   Ab welchem Preis ist ein Liter Milch zu teuer? Mit select() und filter()
-  findest du heraus, wer die Frage beantwortet hat, und räumst eine
-  unplausible Angabe aus dem Weg.
+  findest du heraus, wer die Frage beantwortet hat, und räumst
+  unplausible Angaben aus dem Weg.
 objectives:
   intro: "In dieser Übung wendest du `select()` und `filter()` auf die Preisfrage der Umfrage an und kannst danach:"
   goals:
     - "mit `!is.na()` die Zeilen finden, in denen eine Antwort vorliegt, und sie mit `nrow()` zählen"
-    - "mehrere Bedingungen in einem `filter()` durch ein Komma verbinden, etwa um einen unplausiblen Ausreißer auszuschließen"
+    - "mehrere Bedingungen in einem `filter()` durch ein Komma verbinden, etwa um unplausible Ausreißer auszuschließen"
     - "mit `==` und `!=` nach Textwerten wie Marke und Ernährungsweise filtern"
     - "nach dem Filtern mit `select()` nur die Spalten behalten, die du brauchst"
     - "erklären, warum `filter()` Zeilen mit fehlendem Wert schon verwirft, sobald du mit diesem Wert vergleichst"
@@ -45,8 +45,8 @@ survey |>
 ```
 
 2. Zeige für diese Personen nur `id`, `age`, `diet`, `milk_brand` und
-   `price_too_expensive`, und lass dabei die eine Angabe weg, die als
-   Literpreis nicht ernst gemeint sein kann.
+   `price_too_expensive`, und lass dabei die Angaben weg, die als
+   Literpreis nicht ernst gemeint sein können.
 
 ```r
 survey |>
@@ -66,13 +66,13 @@ survey |>
 > Eine Person hat die Frage beantwortet, wenn `price_too_expensive` nicht
 > fehlt. Wie man nach fehlenden Werten fragt, steht in der Lektion
 > [[dplyr-filter]]; das Gegenteil bekommst du mit `!`. Zur Kontrolle: Es
-> sind neun Personen.
+> sind 611 Personen.
 
 > [!HINT]
 > Für die zweite Frage brauchst du zwei Bedingungen in `filter()`, durch ein
 > Komma getrennt, und danach ein `select()`. Eine Grenze von 10 Euro trennt
-> ernst gemeinte Literpreise sicher von dem einen Ausreißer; es bleiben
-> acht Zeilen.
+> ernst gemeinte Literpreise sicher von den 20 Ausreißern, deren kleinster bei
+> 10,99 Euro liegt; es bleiben 591 Zeilen.
 
 > [!SOLUTION]
 > Frage 1:
@@ -102,8 +102,10 @@ survey |>
 > In der zweiten Pipe ist die erste Bedingung genau genommen überflüssig,
 > denn `filter()` wirft Zeilen mit fehlendem Preis ohnehin hinaus, sobald du
 > mit dem Preis vergleichst. Sie schadet aber nicht und macht beim Lesen
-> klar, was gemeint ist. Bei der dritten Frage sind es drei Personen, alle
-> flexitarisch.
+> klar, was gemeint ist. Bei der dritten Frage sind es 105 Personen, 86 davon
+> flexitarisch. Die vier Personen ohne Angabe zur Ernährung, die alpro
+> gesehen haben, fehlen im Ergebnis, denn für sie ergibt `diet != "omnivore"`
+> den Wert `NA`, und solche Zeilen wirft `filter()` hinaus.
 
 ## Für Schnelle
 

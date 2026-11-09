@@ -73,8 +73,8 @@ survey |>
 ```
 
 Sorted in descending order, this is also a quick way to find outliers: the
-160 euros for a litre of milk that you know from the lesson [[dplyr-filter]]
-are right at the top.
+prices of several hundred euros for a litre of milk that you know from the
+lesson [[dplyr-filter]] are right at the top, led by 999 euros.
 
 ## The first or largest rows
 
@@ -149,8 +149,8 @@ survey |>
 ## Overwriting a column
 
 If you give a column in `mutate()` a name that already exists, the result
-replaces the old column. This way you can replace the implausible price with
-a missing value without the person disappearing from the table, as they
+replaces the old column. This way you can replace the implausible prices with
+missing values without the people disappearing from the table, as they
 would with `filter()`:
 
 ```r
@@ -162,7 +162,7 @@ survey |>
   select(id, milk_brand, price_too_expensive)
 ```
 
-The `filter()` at the end shows only the nine people who saw the price
+The `filter()` at the end shows only the 611 people who saw the price
 question. For everyone else the condition `price_too_expensive > 10` is
 itself unknown, and `if_else()` then returns `NA` as well, so a missing
 value stays missing. Whether you replace a value like this or drop the row
@@ -197,7 +197,7 @@ line. Swap the first two cases and see where the 26-year-olds end up.
 
 > [!WARNING]
 > A missing value meets none of the conditions and therefore gets the value
-> of `.default`. If you divide prices into classes this way, all 21 people
+> of `.default`. If you divide prices into classes this way, all 2,198 people
 > without a price end up in the last class. Filter them out first, or catch
 > them with a first case `is.na(price_too_expensive) ~ NA`.
 

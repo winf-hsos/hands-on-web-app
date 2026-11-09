@@ -72,7 +72,7 @@ async function prepare(r, code) {
       loaded.add(file);
     }
     if (!byName || loaded.has(name)) continue;
-    const table = `read.csv("${file}", na.strings = "", stringsAsFactors = FALSE)`;
+    const table = `read.csv("${file}", na.strings = c("", "NA"), stringsAsFactors = FALSE)`;
     await r.evalRVoid(`${name} <- ${PLAIN.has(name) ? table : `tibble::as_tibble(${table})`}`);
     loaded.add(name);
   }

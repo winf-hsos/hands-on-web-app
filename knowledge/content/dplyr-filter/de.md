@@ -45,13 +45,15 @@ Mit `>=` behältst du zum Beispiel alle Befragten, die 70 Jahre oder älter
 sind:
 
 ```r
-survey |> filter(age >= 70)
+survey |>
+  filter(age >= 70)
 ```
 
 Bei Text vergleichst du auf dieselbe Weise:
 
 ```r
-survey |> filter(diet == "vegetarian")
+survey |>
+  filter(diet == "vegetarian")
 ```
 
 Texte stehen in Anführungszeichen, Spaltennamen nicht. Ohne die
@@ -70,13 +72,15 @@ Trennst du Bedingungen mit Kommas, müssen alle zugleich zutreffen. Dasselbe
 erreichst du mit `&` (und):
 
 ```r
-survey |> filter(gender == "female", age < 40)
+survey |>
+  filter(gender == "female", age < 40)
 ```
 
 Soll mindestens eine zutreffen, verbindest du sie mit `|` (oder):
 
 ```r
-survey |> filter(household_size >= 4 | town_size == "village")
+survey |>
+  filter(household_size >= 4 | town_size == "village")
 ```
 
 Ein `!` kehrt eine Bedingung um: `!(diet == "omnivore")` ist dasselbe wie
@@ -103,7 +107,8 @@ Angaben, und der naheliegende Versuch, sie zu finden, liefert keine einzige
 Zeile:
 
 ```r
-survey |> filter(milk_freq == NA)
+survey |>
+  filter(milk_freq == NA)
 ```
 
 Der Grund: Ein Vergleich mit einem unbekannten Wert ist selbst unbekannt.
@@ -143,7 +148,7 @@ wissen, wenn du anschließend Zeilen zählst und mit der Gesamtzahl vergleichst.
 
 `filter()` ist nicht nur für Auswertungen da, sondern auch zum Aufspüren von
 Werten, die nicht stimmen können. Ein Liter Milch kostet ein, zwei, vielleicht
-drei Euro. Was sagt dir diese Zeile?
+drei Euro. Was sagen dir diese Zeilen?
 
 ```r
 survey |>
@@ -151,10 +156,11 @@ survey |>
   select(id, age, milk_brand, price_too_expensive)
 ```
 
-Ob sich jemand vertippt hat, ob 160 Cent gemeint waren oder ob jemand die
-Frage nicht ernst genommen hat, lässt sich aus den Daten allein nicht
-entscheiden. Wichtig ist, dass du den Wert findest, bevor er einen Mittelwert
-verzerrt, und dass du festhältst, wie du mit ihm umgehst.
+Es sind 20 Antworten über 10 Euro, von 11 Euro bis zu 999. Ob sich jemand
+vertippt hat, ob mit 160 eigentlich 1,60 Euro gemeint waren oder ob jemand
+die Frage nicht ernst genommen hat, lässt sich aus den Daten allein nicht
+entscheiden. Wichtig ist, dass du solche Werte findest, bevor sie einen
+Mittelwert verzerren, und dass du festhältst, wie du mit ihnen umgehst.
 
 ## Zum Mitnehmen
 

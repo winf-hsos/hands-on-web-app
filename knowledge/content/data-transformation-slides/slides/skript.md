@@ -13,11 +13,11 @@ summarizing, turns any table into the one that holds the answer.
 ## Part 1: why transform
 
 **A question for the survey (frame 5).** The survey on milk and organic food
-has 30 rows, one per respondent, and eleven columns. The question is whether
-vegetarians buy more organic food than others. Everything needed is in two of
-the eleven columns, `diet` and `organic_share`, and not every row counts: in
-the full survey many people skipped the question on organic food, and those
-rows have to go. The picture shows this with the two columns standing apart
+has one row for each of 2,809 respondents and 21 columns; the picture shows a
+section of it. The question is whether vegetarians buy more organic food than
+others. Everything needed is in two of the columns, `diet` and
+`organic_share`, and not every row counts: some people did not answer the
+question on organic food, and those rows have to go. The picture shows this with the two columns standing apart
 and only some of their cells lit. The answer only appears once we take the
 right rows, split them by diet and compute an average per group. That is data
 transformation: making one table out of another, without collecting new data.
@@ -220,11 +220,13 @@ survey |>
   arrange(desc(mean_organic))
 ```
 
-On the 30 rows of the excerpt the single vegan comes first with 5, the
-flexitarians follow with 2.89 (9 people), the omnivores with 2.12 (17), the
-vegetarians with 1.5 (2) and the single pescetarian with 1. With two
-vegetarians this answers nothing; the data set to download has 2,811
-respondents, and there the question can be answered. Copy the code into an R
+For the whole survey the vegans come first with 3.69 (36 people), followed
+by the vegetarians with 3.03 (134), the pescetarians and flexitarians with
+2.86 each (36 and 742), the 28 people without a diet as a group `NA` of their
+own with 2.43, and the omnivores last with 2.21 (1,815). Vegans and
+vegetarians therefore give a clearly higher organic share than omnivores;
+whether the difference is more than chance is a question for a test. Copy the
+code into an R
 box on the site or into Positron, run it, and then change one line, for
 example `median()` instead of `mean()`.
 

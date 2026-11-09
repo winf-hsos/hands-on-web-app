@@ -13,9 +13,10 @@ Ulrich Enneking. All respondents are in it, but instead of 606 columns only a
 selection of questions, with English column names and words instead of
 numeric codes. Each row is one respondent.
 
-The first eleven columns are named and look exactly like those in the small
-data set `survey` from the lesson [[r-data-frames]]. Code that runs there
-therefore runs here as well, only with 2,809 instead of 30 people.
+In the code boxes of the site, this data set is available under the name
+`survey`, for instance in the lesson [[r-data-frames]] and the lessons on
+dplyr. If you read it into Positron under the same name, the code from there
+runs for you as well.
 
 ## The columns
 

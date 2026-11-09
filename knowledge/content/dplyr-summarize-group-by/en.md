@@ -27,7 +27,7 @@ lets you compare groups, and that is what most questions about data ask for.
 Inside `summarize()`, as in `mutate()`, the name of a new column stands on
 the left and the calculation on the right, except that the calculation has
 to turn a whole column into a single value. This is how you compute the
-average age of the 30 respondents:
+average age of the 2,809 respondents:
 
 ```r
 survey |>
@@ -65,9 +65,9 @@ survey |>
   )
 ```
 
-The 30 respondents are between 24 and 74 years old, 51.4 years on average.
-That the median of 55.5 years lies above it shows that a few much younger
-people pull the mean down.
+The respondents are between 18 and 80 years old, 48.4 years on average.
+That the median of 50 years lies a little above it shows that the younger
+people pull the mean down slightly.
 
 ## Missing values and `na.rm = TRUE`
 
@@ -78,7 +78,7 @@ survey |>
   summarize(mean_price = mean(price_too_expensive))
 ```
 
-21 of the 30 respondents never saw the question, and as the lesson
+2,198 of the 2,809 respondents never saw the question, and as the lesson
 [[r-missing-values]] shows, any calculation with an unknown value is itself
 unknown. With `na.rm = TRUE` you leave the missing values out explicitly.
 `n()`, however, still counts all rows; how many answers actually go into the
@@ -96,19 +96,20 @@ survey |>
 
 > [!IMPORTANT]
 > `na.rm = TRUE` is a decision about whom the figure describes, not a switch
-> that makes an error go away. Here it describes the nine people who saw the
+> that makes an error go away. Here it describes the 611 people who saw the
 > price experiment, and exactly that belongs in every sentence in which you
 > report the result.
 
 ## Mean or median
 
-Almost 20 euros as the average limit for a litre of milk, with a median of
-2 euros? The difference comes from a single person who gave 160 euros. The
-mean spreads this one value over all nine answers, while the median only
-looks at the middle of the sorted values and is hardly moved by an outlier.
+Over 8 euros as the average limit for a litre of milk, with a median of
+1.99 euros? The difference comes from the 20 answers above 10 euros, up to
+999 euros. The mean spreads these values over all 611 answers, while the
+median only looks at the middle of the sorted values and is hardly moved by
+a few outliers.
 
 Because `summarize()` stands at the end of the pipe, you decide beforehand
-with `filter()` which rows go into it. Without the implausible value it
+with `filter()` which rows go into it. Without the implausible values it
 looks like this:
 
 ```r
@@ -121,7 +122,7 @@ survey |>
   )
 ```
 
-Now mean and median are almost level at 2.01 and 2 euros. `na.rm = TRUE` is
+Now mean and median are almost level at 2.08 and 1.99 euros. `na.rm = TRUE` is
 no longer needed here, because `filter()` already dropped the rows without a
 price when comparing.
 
@@ -131,7 +132,8 @@ price when comparing.
 `group_by()` changes nothing visible in the data, but it remembers which
 rows belong together, and the following `summarize()` then calculates for
 each group separately. How old are the respondents per diet, and how much
-organic food do they buy?
+organic food do they buy? Because 18 people did not give their organic
+share, the mean needs `na.rm = TRUE` for it:
 
 ```r
 survey |>
@@ -139,14 +141,15 @@ survey |>
   summarize(
     n = n(),
     mean_age = mean(age),
-    mean_organic = mean(organic_share)
+    mean_organic = mean(organic_share, na.rm = TRUE)
   )
 ```
 
 The column you group by stays in the result, so every row says which group
-it stands for. Always look at `n` as well: the mean of the group `vegan` is
-the answer of a single person and says next to nothing about people who
-live vegan.
+it stands for; the 28 people who gave no diet form a group of their own,
+`NA`. Always look at `n` as well: 1,826 people are omnivores, but only 36
+each are vegan or pescetarian, and a mean of 36 answers varies much more
+from sample to sample than one of 1,826.
 
 ## Sorting groups
 
@@ -159,7 +162,7 @@ survey |>
   group_by(diet) |>
   summarize(
     n = n(),
-    mean_organic = mean(organic_share)
+    mean_organic = mean(organic_share, na.rm = TRUE)
   ) |>
   arrange(desc(mean_organic))
 ```
@@ -174,7 +177,7 @@ survey |>
   group_by(gender, diet) |>
   summarize(
     n = n(),
-    mean_organic = mean(organic_share),
+    mean_organic = mean(organic_share, na.rm = TRUE),
     .groups = "drop"
   )
 ```
@@ -240,8 +243,8 @@ survey |>
   mutate(share = n / sum(n))
 ```
 
-17 of the 30 respondents are omnivores, a share of 0.567, and 9 are
-flexitarians, exactly 0.3. The shares add up to 1; if you prefer per cent,
+1,826 of the 2,809 respondents are omnivores, a share of 0.650, and 749 are
+flexitarians, 0.267. The shares add up to 1; if you prefer per cent,
 multiply by 100.
 
 If the shares should add up to 1 within each group, for instance per gender,
