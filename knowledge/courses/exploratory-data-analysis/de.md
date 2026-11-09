@@ -12,6 +12,8 @@ summary: >-
   Daten kennenlernen, bevor man Schlüsse zieht: Verteilungen, Zusammenhänge
   und Auffälligkeiten finden und zeigen, mit R und guten Grafiken.
 sections:
+  - title: { de: Ausrüstung, en: Equipment }
+    items: [eda-software]
   - project: monty-hall
   - path: getting-started-with-r
   - title: { de: "Explorative Datenanalyse (EDA)", en: "Exploratory data analysis (EDA)" }
@@ -25,7 +27,9 @@ updated: 2026-11-09
 ---
 
 Diese Sammlung begleitet den Teil zur explorativen Datenanalyse im
-Mastermodul Empirisches Arbeiten. Nach einem Einstieg in R zeigt die Lektion
+Mastermodul Empirisches Arbeiten. Was du dafür auf deinem Laptop brauchst,
+R, Positron und den KI-Assistenten, richtest du mit [[eda-software]] ein.
+Nach einem Einstieg in R zeigt die Lektion
 [[exploratory-data-analysis-basics]] an der Umfrage zu Milch und Schokolade,
 was Erkunden leistet und welche Art von Frage es beantworten kann, und in
 einer Übung baust du danach aus der Rohfassung der Umfrage den kompakten

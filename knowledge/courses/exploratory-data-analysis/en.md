@@ -9,7 +9,9 @@ based_on: 2026-11-09
 ---
 
 This collection accompanies the part on exploratory data analysis in the
-master's module Empirical Research. After an introduction to R, the lesson
+master's module Empirical Research. What you need on your laptop for it, R,
+Positron and the AI assistant, you set up with [[eda-software]]. After an
+introduction to R, the lesson
 [[exploratory-data-analysis-basics]] uses the survey on milk and chocolate to
 show what exploring achieves and which type of question it can answer, and
 in an exercise you then build the compact data set from the raw version of
