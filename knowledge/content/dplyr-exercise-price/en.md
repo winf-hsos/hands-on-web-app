@@ -13,7 +13,7 @@ objectives:
     - "keep only the columns you need with `select()` after filtering"
     - "explain why `filter()` already drops rows with a missing value as soon as you compare that value"
 translation_of: de
-based_on: 2026-11-01
+based_on: 2026-11-09
 ---
 
 ## Task
@@ -31,11 +31,12 @@ its own:
 2. For these people, show only `id`, `age`, `diet`, `milk_brand` and
    `price_too_expensive`, and leave out the one answer that cannot be meant
    seriously as a price per litre.
-3. Which of them do not eat omnivore and gave the price for alpro?
+3. Which of them are not omnivores and gave the price for alpro?
 
 ## Your code
 
-Each question has its own box.
+Each question has its own box. In the first one you count how many people
+answered the price question:
 
 ```r
 # 1. How many answered the price question?
@@ -44,6 +45,9 @@ survey |>
   nrow()
 ```
 
+In the second one you keep only the plausible answers and the five columns
+named above:
+
 ```r
 # 2. The plausible answers, with five columns
 survey |>
@@ -51,8 +55,11 @@ survey |>
   select()
 ```
 
+In the third one you look for everyone who is not an omnivore and gave the
+price for alpro:
+
 ```r
-# 3. Not omnivore and alpro
+# 3. Not omnivores and alpro
 survey |>
   filter()
 ```

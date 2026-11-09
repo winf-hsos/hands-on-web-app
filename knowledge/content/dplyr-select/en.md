@@ -12,11 +12,11 @@ objectives:
     - "rename columns with `rename()` or within `select()`"
     - "move certain columns to the front with `relocate()` without losing the others"
 translation_of: de
-based_on: 2026-11-01
+based_on: 2026-11-09
 ---
 
-Real data sets are wide. The survey that `survey` comes from has more than
-800 columns, and a single question rarely needs more than a handful of them.
+Real data sets are wide. The survey that `survey` comes from has 606
+columns, and a single question rarely needs more than a handful of them.
 `select()` keeps the columns you name and drops all others; it does not touch
 the rows.
 
@@ -66,6 +66,8 @@ recognise such patterns:
 | `ends_with("size")` | ends with `size` |
 | `contains("price")` | contains `price` anywhere |
 | `everything()` | all remaining columns |
+
+This is how you get the identifier and every column that starts with `milk`:
 
 ```r
 survey |> select(id, starts_with("milk"))

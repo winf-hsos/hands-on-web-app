@@ -11,7 +11,7 @@ objectives:
   goals:
     - "erklären, warum sich eine Frage selten direkt an Rohdaten ablesen lässt und was Daten transformieren bedeutet"
     - "die Grundoperationen Spalten auswählen, Zeilen filtern, Sortieren, neue Spalten berechnen, Zusammenfassen und Gruppieren benennen und angeben, was jede an einer Tabelle ändert"
-    - "begründen, warum sich die Operationen beliebig verketten lassen"
+    - "begründen, warum sich die Operationen verketten lassen und warum ihre Reihenfolge zählt"
     - "eine Frage an Daten als Folge von Grundoperationen planen, bevor du Code schreibst"
     - "jeder Operation ihr Verb in `dplyr`, etwa `select()` oder `filter()`, und ihre Entsprechung in SQL, pandas und Excel zuordnen"
 level: 1
@@ -20,8 +20,10 @@ topics: [transforming-data]
 modules: [ea]
 areas: [ds]
 status: draft
-updated: 2026-11-01
+updated: 2026-11-09
 ---
+
+![Folien: Sechs Verben und eine Pipe](item:data-transformation-slides)
 
 Angenommen, du hast eine Umfrage mit einigen tausend Befragten vor dir und
 willst wissen, ob Menschen, die sich vegan oder vegetarisch ernähren, mehr Bio
@@ -39,7 +41,8 @@ geliefert wurden.
 
 Die gute Nachricht: Für die allermeisten Fragen genügt eine Handvoll
 Grundoperationen. Jede nimmt eine Tabelle und gibt wieder eine Tabelle
-zurück, und deshalb lassen sie sich beliebig hintereinander schalten.
+zurück, und deshalb lassen sie sich hintereinander schalten, in der
+Reihenfolge, die die Frage verlangt.
 
 | Operation | Frage dahinter | was sich ändert |
 |---|---|---|
@@ -59,8 +62,11 @@ fast wie einen Satz lesen kann:
 4. berechne je Gruppe den mittleren Bio-Anteil und zähle die Personen,
 5. sortiere die Gruppen nach diesem Mittelwert.
 
-So eine Folge plant man am besten auf Papier, bevor man eine Zeile Code
-schreibt. Wer die Schritte kennt, muss danach nur noch übersetzen.
+Die Reihenfolge zählt dabei: Wer zuerst je Gruppe den Mittelwert bildet und
+erst danach die fehlenden Antworten herausfiltern will, findet keine
+einzelnen Befragten mehr, nach denen sich filtern ließe. So eine Folge plant
+man deshalb am besten auf Papier, bevor man eine Zeile Code schreibt, und
+wer die Schritte kennt, muss danach nur noch übersetzen.
 
 ## Dieselben Ideen überall
 
@@ -83,9 +89,11 @@ in SQL oder pandas schnell zurecht, denn gedacht wird überall gleich.
 
 ## Ausprobieren, bevor man programmiert
 
-In der [[dplyr-verbs-demo|Demo zu den Verben]] siehst du an
-sechs Zeilen der Umfrage, wie jedes Verb eine Tabelle umformt, bevor du in
-den folgenden Lektionen selbst Code schreibst.
+In der Demo zu den Verben siehst du an sechs Zeilen der Umfrage, wie jedes
+Verb eine Tabelle umformt, bevor du in den folgenden Lektionen selbst Code
+schreibst.
+
+![Die Verben von dplyr zum Ausprobieren](item:dplyr-verbs-demo)
 
 ## Zum Mitnehmen
 
@@ -94,6 +102,7 @@ den folgenden Lektionen selbst Code schreibst.
 - Eine Handvoll Operationen genügt: auswählen, filtern, sortieren, berechnen,
   zusammenfassen und gruppieren.
 - Jede Operation macht aus einer Tabelle eine Tabelle, deshalb lassen sie
-  sich zu einer Folge von Schritten verketten.
+  sich zu einer Folge von Schritten verketten, deren Reihenfolge die Frage
+  bestimmt.
 - Die Ideen sind in R, SQL, pandas und Excel dieselben, nur die Namen
   wechseln.

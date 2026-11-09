@@ -11,7 +11,7 @@ objectives:
   goals:
     - "die drei Regeln von Tidy Data nennen und prüfen, ob eine Tabelle ihnen folgt"
     - "für eine Fragestellung bestimmen, was in einer Tabelle eine Beobachtung ist"
-    - "Werte in Spaltennamen, mehrere Werte in einer Zelle und Codes statt Bedeutungen als typische Muster unaufgeräumter Daten erkennen"
+    - "Werte in Spaltennamen und mehrere Werte in einer Zelle als Verstöße gegen die Regeln erkennen und Codes statt Bedeutungen als Fehlerquelle"
     - "beschreiben, wie eine breite Tabelle durch Pivotieren mit `pivot_longer()` aus `tidyr` in die lange Form kommt"
     - "begründen, warum sich das Aufräumen vor dem Auswerten lohnt"
 level: 1
@@ -22,7 +22,7 @@ areas: [ds]
 relations:
   deepens: [data-transformation-basics]
 status: draft
-updated: 2026-11-01
+updated: 2026-11-09
 ---
 
 Die Grundoperationen aus [[data-transformation-basics]] funktionieren am
@@ -45,9 +45,11 @@ Zeile, und jede Frage hat ihre Spalte. `survey` ist so aufgebaut.
 
 ## Woran man Daten erkennt, die nicht tidy sind
 
-Solche Tabellen sind nicht falsch. Oft sind sie für Menschen sogar
-angenehmer zu lesen oder entstehen ganz natürlich bei der Erhebung. Sie
-machen nur das Auswerten mühsamer. Drei Muster begegnen einem immer wieder.
+Solche Tabellen sind nicht falsch, denn oft lesen Menschen sie sogar leichter
+oder sie entstehen ganz natürlich bei der Erhebung, aber sie machen das
+Auswerten mühsamer. Drei Muster begegnen einem dabei immer wieder: Die ersten
+beiden verletzen eine der Regeln, das dritte verletzt keine und ist trotzdem
+eine stete Fehlerquelle.
 
 ### Werte stecken in Spaltennamen
 
@@ -89,7 +91,9 @@ In der Rohfassung der Umfrage steht für das Geschlecht `1` oder `2` und für
 die Ortsgröße eine Zahl von 1 bis 6. Was die Zahlen bedeuten, verrät nur das
 Codebuch. Das verletzt keine der drei Regeln, ist aber eine stete
 Fehlerquelle: R rechnet bereitwillig den Mittelwert des Geschlechts aus. In
-`survey` stehen deshalb Wörter, wo die Rohdaten Codes hatten.
+`survey` stehen deshalb für Geschlecht und Ortsgröße Wörter, wo die Rohdaten
+Codes hatten; Skalen wie der Bio-Anteil von 1 bis 5 bleiben Zahlen, weil ihre
+Reihenfolge etwas bedeutet.
 
 ## Erst aufräumen, dann auswerten
 
@@ -102,7 +106,8 @@ weil danach jede weitere Frage nur noch ein paar Zeilen braucht.
 
 - Tidy ist eine Tabelle, wenn jede Variable eine Spalte, jede
   Beobachtung eine Zeile und jeder Wert eine Zelle hat.
-- Typische Abweichungen sind Werte in Spaltennamen, mehrere Werte in einer
-  Zelle und Codes ohne Bedeutung.
+- Typische Abweichungen sind Werte in Spaltennamen und mehrere Werte in
+  einer Zelle; Codes ohne Bedeutung verletzen keine Regel, machen das
+  Auswerten aber fehleranfällig.
 - Wer zuerst aufräumt, kann danach jede Frage mit denselben wenigen Verben
   beantworten.

@@ -8,11 +8,11 @@ objectives:
   goals:
     - "state the three rules of tidy data and check whether a table follows them"
     - "decide for a given question what counts as an observation in a table"
-    - "recognise values in column names, several values in one cell and codes instead of meanings as typical patterns of untidy data"
+    - "recognise values in column names and several values in one cell as breaches of the rules, and codes instead of meanings as a source of mistakes"
     - "describe how pivoting with `pivot_longer()` from `tidyr` brings a wide table into the long form"
     - "explain why it pays to tidy data before analysing it"
 translation_of: de
-based_on: 2026-11-01
+based_on: 2026-11-09
 ---
 
 The basic operations from [[data-transformation-basics]] work best when a
@@ -34,9 +34,11 @@ question has its column. `survey` is built like this.
 
 ## How to recognise untidy data
 
-Untidy tables are not wrong. They are often even more pleasant for people to
-read, or arise quite naturally during data collection. They just make the
-analysis more laborious. Three patterns come up again and again.
+Untidy tables are not wrong, since people often find them easier to read or
+they arise quite naturally during data collection, but they make the
+analysis more laborious. Three patterns come up again and again: the first
+two break one of the rules, while the third breaks none and is still a
+constant source of mistakes.
 
 ### Values hidden in column names
 
@@ -78,7 +80,9 @@ In the raw version of the survey, gender is `1` or `2` and the size of the
 town a number from 1 to 6. What the numbers mean is only revealed by the
 codebook. This breaks none of the three rules, but it is a constant source of
 mistakes: R will happily compute the mean of gender. That is why `survey` has
-words where the raw data had codes.
+words for gender and town size where the raw data had codes, while scales such
+as the organic share from 1 to 5 stay numbers because their order means
+something.
 
 ## Tidy first, analyse second
 
@@ -91,7 +95,8 @@ worth it, because afterwards every further question takes only a few lines.
 
 - A table is tidy when every variable has a column, every observation a row
   and every value a cell.
-- Typical deviations are values in column names, several values in one cell
-  and codes without meaning.
+- Typical deviations are values in column names and several values in one
+  cell; codes without meaning break no rule but make the analysis prone to
+  mistakes.
 - If you tidy first, you can then answer every question with the same few
   verbs.

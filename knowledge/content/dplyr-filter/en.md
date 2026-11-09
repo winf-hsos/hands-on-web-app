@@ -2,7 +2,7 @@
 title: Filtering rows with filter()
 summary: >-
   With filter() you keep the rows for which a condition holds: comparisons,
-  several conditions, sets with %in%, and why missing values follow rules of
+  several conditions, sets with `%in%`, and why missing values follow rules of
   their own.
 objectives:
   intro: "This lesson shows you how to pick the rows of a table with `filter()`, and afterwards you can:"
@@ -13,7 +13,7 @@ objectives:
     - "find missing values with `is.na()` and explain why rows with `NA` in the condition silently drop out"
     - "use `filter()` to track down implausible values before they distort an analysis"
 translation_of: de
-based_on: 2026-11-01
+based_on: 2026-11-09
 ---
 
 `select()` picks columns, `filter()` picks rows. You state a **condition**, R
@@ -30,6 +30,8 @@ A condition is usually a comparison. R knows these comparison operators:
 | `!=` | not equal |
 | `<`, `<=` | less than, less than or equal |
 | `>`, `>=` | greater than, greater than or equal |
+
+With `>=` you keep, for example, all respondents who are 70 or older:
 
 ```r
 survey |> filter(age >= 70)
@@ -69,7 +71,7 @@ survey |> filter(household_size >= 4 | town_size == "village")
 A `!` reverses a condition: `!(diet == "omnivore")` is the same as
 `diet != "omnivore"`.
 
-## Sets with %in%
+## Sets with `%in%`
 
 If you want all rows whose value belongs to a list, a chain of `|` quickly
 gets long. `%in%` checks whether a value occurs in a vector:
@@ -85,9 +87,9 @@ For ranges of numbers there is `between()`, which includes both limits:
 
 ## Missing values
 
-This is where the most common trap in filtering lies. Some answers are
-missing in `milk_freq`. The obvious attempt to find them returns not a single
-row:
+This is where the most common trap in filtering lies: some answers are
+missing in `milk_freq`, and the obvious attempt to find them returns not a
+single row:
 
 ```r
 survey |> filter(milk_freq == NA)
@@ -99,13 +101,17 @@ equal to a value nobody knows? R can only answer that with `NA`, and
 you ask for missing values with `is.na()`:
 
 ```r
-survey |> filter(is.na(milk_freq)) |> select(id, age, milk_freq)
+survey |>
+  filter(is.na(milk_freq)) |>
+  select(id, age, milk_freq)
 ```
 
 With a `!` in front you get, the other way round, all rows that have a value:
 
 ```r
-survey |> filter(!is.na(milk_freq)) |> nrow()
+survey |>
+  filter(!is.na(milk_freq)) |>
+  nrow()
 ```
 
 The same rule applies where you are not asking about missing values at all.

@@ -22,7 +22,7 @@ areas: [ds]
 relations:
   requires: [dplyr-select, dplyr-filter]
 status: draft
-updated: 2026-11-01
+updated: 2026-11-09
 ---
 
 ## Aufgabe
@@ -45,7 +45,8 @@ Pipe:
 
 ## Dein Code
 
-Für jede Frage gibt es eine eigene Box.
+Für jede Frage gibt es eine eigene Box. In der ersten zählst du, wie viele
+Personen die Preisfrage beantwortet haben:
 
 ```r
 # 1. Wie viele haben die Preisfrage beantwortet?
@@ -54,12 +55,18 @@ survey |>
   nrow()
 ```
 
+In der zweiten behältst du nur die plausiblen Antworten und die fünf
+genannten Spalten:
+
 ```r
 # 2. Die plausiblen Antworten, mit fünf Spalten
 survey |>
   filter() |>
   select()
 ```
+
+In der dritten suchst du alle, die sich nicht omnivor ernähren und den
+Preis für alpro genannt haben:
 
 ```r
 # 3. Nicht omnivor und alpro

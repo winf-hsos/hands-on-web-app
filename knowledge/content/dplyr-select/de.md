@@ -22,11 +22,11 @@ areas: [ds]
 relations:
   requires: [r-pipe]
 status: draft
-updated: 2026-11-01
+updated: 2026-11-09
 ---
 
-Echte Datensätze sind breit. Die Umfrage, aus der `survey` stammt, hat über
-800 Spalten, und für eine einzelne Frage braucht man selten mehr als eine
+Echte Datensätze sind breit. Die Umfrage, aus der `survey` stammt, hat 606
+Spalten, und für eine einzelne Frage braucht man selten mehr als eine
 Handvoll davon. `select()` behält die Spalten, die du nennst, und lässt alle
 anderen weg; an den Zeilen ändert es nichts.
 
@@ -76,6 +76,8 @@ solche Muster erkennen:
 | `ends_with("size")` | auf `size` endet |
 | `contains("price")` | irgendwo `price` enthält |
 | `everything()` | alle übrigen Spalten |
+
+So holst du die Kennung und alle Spalten, die mit `milk` beginnen:
 
 ```r
 survey |> select(id, starts_with("milk"))

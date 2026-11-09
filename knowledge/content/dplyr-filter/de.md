@@ -4,7 +4,7 @@ code: 7565
 title: Zeilen filtern mit filter()
 summary: >-
   Mit filter() behältst du die Zeilen, für die eine Bedingung zutrifft:
-  Vergleiche, mehrere Bedingungen, Mengen mit %in%, und warum fehlende Werte
+  Vergleiche, mehrere Bedingungen, Mengen mit `%in%`, und warum fehlende Werte
   dabei eigene Regeln haben.
 objectives:
   intro: "In dieser Lektion lernst du, mit `filter()` die Zeilen einer Tabelle auszuwählen, und kannst danach:"
@@ -23,7 +23,7 @@ relations:
   requires: [r-vectors, r-pipe]
   see_also: [dplyr-select]
 status: draft
-updated: 2026-11-01
+updated: 2026-11-09
 ---
 
 `select()` wählt Spalten, `filter()` wählt Zeilen. Du gibst eine
@@ -40,6 +40,9 @@ Eine Bedingung ist meist ein Vergleich. R kennt diese Vergleichszeichen:
 | `!=` | ungleich |
 | `<`, `<=` | kleiner, kleiner oder gleich |
 | `>`, `>=` | größer, größer oder gleich |
+
+Mit `>=` behältst du zum Beispiel alle Befragten, die 70 Jahre oder älter
+sind:
 
 ```r
 survey |> filter(age >= 70)
@@ -79,7 +82,7 @@ survey |> filter(household_size >= 4 | town_size == "village")
 Ein `!` kehrt eine Bedingung um: `!(diet == "omnivore")` ist dasselbe wie
 `diet != "omnivore"`.
 
-## Mengen mit %in%
+## Mengen mit `%in%`
 
 Willst du alle Zeilen, deren Wert zu einer Liste gehört, wird eine Kette aus
 `|` schnell lang. `%in%` prüft, ob ein Wert in einem Vektor vorkommt:
@@ -95,8 +98,9 @@ Für Zahlenbereiche gibt es `between()`, das beide Grenzen einschließt:
 
 ## Fehlende Werte
 
-Hier steckt die häufigste Falle beim Filtern. In `milk_freq` fehlen einige
-Angaben. Der naheliegende Versuch, sie zu finden, liefert keine einzige Zeile:
+Hier steckt die häufigste Falle beim Filtern: In `milk_freq` fehlen einige
+Angaben, und der naheliegende Versuch, sie zu finden, liefert keine einzige
+Zeile:
 
 ```r
 survey |> filter(milk_freq == NA)
@@ -109,13 +113,17 @@ Bedingung ausdrücklich `TRUE` ist. Nach fehlenden Werten fragt man deshalb
 mit `is.na()`:
 
 ```r
-survey |> filter(is.na(milk_freq)) |> select(id, age, milk_freq)
+survey |>
+  filter(is.na(milk_freq)) |>
+  select(id, age, milk_freq)
 ```
 
 Mit `!` davor bekommst du umgekehrt alle Zeilen, in denen ein Wert steht:
 
 ```r
-survey |> filter(!is.na(milk_freq)) |> nrow()
+survey |>
+  filter(!is.na(milk_freq)) |>
+  nrow()
 ```
 
 Dieselbe Regel wirkt auch dort, wo du gar nicht nach fehlenden Werten

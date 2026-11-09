@@ -9,12 +9,14 @@ objectives:
   goals:
     - "explain why a question can rarely be read straight off raw data and what transforming data means"
     - "name the basic operations of selecting columns, filtering rows, sorting, computing new columns, summarising and grouping, and state what each changes in a table"
-    - "explain why the operations can be chained in any order"
+    - "explain why the operations can be chained and why their order matters"
     - "plan a question about data as a sequence of basic operations before writing any code"
     - "match each operation to its verb in `dplyr`, such as `select()` or `filter()`, and to its counterpart in SQL, pandas and Excel"
 translation_of: de
-based_on: 2026-11-01
+based_on: 2026-11-09
 ---
+
+![Slides: Six verbs and a pipe](item:data-transformation-slides)
 
 Suppose you have a survey with a few thousand respondents in front of you and
 want to know whether people who eat vegan or vegetarian buy more organic food
@@ -31,7 +33,8 @@ and every model needs the data in a shape in which they were not delivered.
 
 The good news is that a handful of basic operations is enough for the vast
 majority of questions. Each takes a table and returns a table again, and
-that is why they can be chained in any order.
+that is why they can be chained one after another, in the order the question
+requires.
 
 | Operation | Question behind it | What changes |
 |---|---|---|
@@ -51,8 +54,11 @@ almost like a sentence:
 4. compute the average organic share for each group and count the people,
 5. sort the groups by this average.
 
-Such a sequence is best planned on paper before writing a single line of
-code. Once you know the steps, all that is left is to translate them.
+The order matters: if you first compute the average for each group and only
+then try to filter out the missing answers, there are no individual
+respondents left to filter. Such a sequence is therefore best planned on
+paper before writing a single line of code, and once you know the steps, all
+that is left is to translate them.
 
 ## The same ideas everywhere
 
@@ -75,9 +81,10 @@ SQL or pandas as well, because the thinking is the same everywhere.
 
 ## Try it before you program
 
-In the [[dplyr-verbs-demo|demo of the verbs]] you can see on six rows of the
-survey how each verb reshapes a table, before you write code yourself in the
-following lessons.
+In the demo of the verbs you can see on six rows of the survey how each verb
+reshapes a table, before you write code yourself in the following lessons.
+
+![The verbs of dplyr to try out](item:dplyr-verbs-demo)
 
 ## Key points
 
@@ -85,5 +92,5 @@ following lessons.
 - A handful of operations is enough: selecting, filtering, sorting,
   computing, summarising and grouping.
 - Each operation turns a table into a table, so they can be chained into a
-  sequence of steps.
+  sequence of steps whose order the question determines.
 - The ideas are the same in R, SQL, pandas and Excel; only the names change.
