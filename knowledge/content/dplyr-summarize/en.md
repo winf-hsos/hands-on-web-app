@@ -1,9 +1,9 @@
 ---
-title: Summarising by group with summarize(), group_by() and count()
+title: Summarising with summarize()
 summary: >-
   With `summarize()` you condense many rows into figures such as the mean and
-  the median, with `group_by()` for every group separately, and `count()`
-  counts in one step how often each value occurs.
+  the median, with `group_by()` before it for every group separately, and
+  `count()` is the shortcut for the most common summary, counting.
 objectives:
   intro: "This lesson shows you how to condense a table into figures with `summarize()`, `group_by()` and `count()`, and afterwards you can:"
   goals:
@@ -128,10 +128,10 @@ price when comparing.
 
 ## One row per group
 
-`summarize()` shows its real strength together with `group_by()`.
-`group_by()` changes nothing visible in the data, but it remembers which
-rows belong together, and the following `summarize()` then calculates for
-each group separately. How old are the respondents per diet, and how much
+`summarize()` shows its real strength together with `group_by()`, which you
+know from the lesson [[dplyr-mutate]]. While `mutate()` after a `group_by()`
+gives every row a value of its group and keeps all rows, `summarize()` turns
+each group into a single row. How old are the respondents per diet, and how much
 organic food do they buy? Because 18 people did not give their organic
 share, the mean needs `na.rm = TRUE` for it:
 

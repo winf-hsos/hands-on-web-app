@@ -21,7 +21,7 @@ topics: [getting-data, transforming-data, programming-with-r]
 modules: [ea]
 areas: [ds]
 relations:
-  requires: [dplyr-select, dplyr-filter, dplyr-arrange-mutate]
+  requires: [dplyr-select, dplyr-filter, dplyr-mutate]
   see_also: [milk-chocolate-survey, milk-survey-compact, positron]
 status: published
 updated: 2026-11-09
@@ -304,6 +304,6 @@ mehr enthalten, weil sie in `price_too_expensive` aufgegangen sind. Prüfe
 mit `count(milk_brand, is.na(price_too_expensive))`, ob jede Person, die eine
 Marke gesehen hat, auch einen Preis genannt hat. Lege danach mit `mutate()`
 eine Spalte `age_group` als Faktor mit den Stufen `18-29`, `30-49`, `50-64`
-und `65+` an, wie in der Lektion [[dplyr-arrange-mutate]], und speichere die
+und `65+` an, wie in der Lektion [[dplyr-mutate]], und speichere die
 Tabelle erneut als RDS: Liest du sie wieder ein, stehen die Altersgruppen in
 der richtigen Reihenfolge und nicht alphabetisch.

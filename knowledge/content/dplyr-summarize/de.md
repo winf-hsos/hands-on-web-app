@@ -1,11 +1,12 @@
 ---
 type: lesson
 code: 9918
-title: Zusammenfassen nach Gruppen mit summarize(), group_by() und count()
+formerly: [dplyr-summarize-group-by]
+title: Zusammenfassen mit summarize()
 summary: >-
   Mit `summarize()` fasst du viele Zeilen zu Kennzahlen wie Mittelwert und
-  Median zusammen, mit `group_by()` für jede Gruppe einzeln, und `count()`
-  zählt in einem Schritt, wie oft jeder Wert vorkommt.
+  Median zusammen, mit `group_by()` davor für jede Gruppe einzeln, und
+  `count()` ist die Abkürzung für das häufigste Zusammenfassen, das Zählen.
 objectives:
   intro: "In dieser Lektion lernst du, eine Tabelle mit `summarize()`, `group_by()` und `count()` zu Kennzahlen zu verdichten, und kannst danach:"
   goals:
@@ -20,7 +21,7 @@ topics: [transforming-data, programming-with-r]
 modules: [ea]
 areas: [ds]
 relations:
-  requires: [dplyr-arrange-mutate, r-missing-values]
+  requires: [dplyr-mutate, r-missing-values]
 status: published
 updated: 2026-11-09
 ---
@@ -139,10 +140,10 @@ Preis schon beim Vergleich verworfen hat.
 
 ## Eine Zeile je Gruppe
 
-Seine eigentliche Stärke zeigt `summarize()` zusammen mit `group_by()`.
-`group_by()` ändert an den Daten nichts Sichtbares, merkt sich aber, welche
-Zeilen zusammengehören, und das folgende `summarize()` rechnet dann für jede
-Gruppe einzeln. Wie alt sind die Befragten je Ernährungsweise, und wie viel
+Seine eigentliche Stärke zeigt `summarize()` zusammen mit `group_by()`, das
+du aus der Lektion [[dplyr-mutate]] kennst. Während `mutate()` nach einem
+`group_by()` jeder Zeile einen Wert ihrer Gruppe gibt und alle Zeilen
+behält, macht `summarize()` aus jeder Gruppe eine einzige Zeile. Wie alt sind die Befragten je Ernährungsweise, und wie viel
 Bio kaufen sie? Weil 18 Personen den Bio-Anteil nicht angegeben haben,
 braucht der Mittelwert dafür `na.rm = TRUE`:
 

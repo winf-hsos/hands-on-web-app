@@ -20,8 +20,9 @@ steps:
   - dplyr-select
   - dplyr-filter
   - dplyr-exercise-price
-  - dplyr-arrange-mutate
-  - dplyr-summarize-group-by
+  - dplyr-arrange
+  - dplyr-mutate
+  - dplyr-summarize
   - dplyr-exercise-brands
   - data-transformation-quiz
 status: published

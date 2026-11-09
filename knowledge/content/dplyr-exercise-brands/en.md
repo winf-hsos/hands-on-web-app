@@ -27,48 +27,38 @@ is in `price_too_expensive`. Because the brand was assigned at random, the
 two groups should differ only in the brand they saw. So will people pay more
 for alpro than for Weihenstephan?
 
-Follow the question in five steps, each with a pipe of its own:
-
-1. Count how many people answered the price question for each of the two
-   brands.
-2. Compute, per brand, the number of answers, the mean price and the
-   median, without the answers that cannot be meant seriously as a price
-   per litre.
-3. For the plausible answers, create a column `price_class` with
-   `mutate()` that puts each price into one of three classes: `"under 2"`
-   for less than 2 euros, `"2 to 2.49"` and `"2.50 or more"`. Show `id`,
-   `milk_brand`, `price_too_expensive` and `price_class`, sorted from the
-   highest price to the lowest.
-4. Count how often each price class occurs for each brand.
-5. Compute, for each diet, the number of plausible answers and the mean
-   price, and sort the groups so that the highest mean comes first.
+Follow the question in five steps, each with a pipe of its own in a box
+of its own.
 
 ## Your code
 
-Each task has its own box. In the first one you count the answers per
-brand:
+1. Count how many people answered the price question for each of the two
+   brands.
 
 ```r
-# 1. Answers per brand
 survey |>
   filter() |>
   count()
 ```
 
-In the second one you compute the three figures per brand:
+2. Compute, per brand, the number of answers, the mean price and the
+   median, without the answers that cannot be meant seriously as a price
+   per litre.
 
 ```r
-# 2. Number, mean and median per brand
 survey |>
   filter() |>
   group_by() |>
   summarize()
 ```
 
-In the third one you create the price class and sort:
+3. For the plausible answers, create a column `price_class` with
+   `mutate()` that puts each price into one of three classes: `"under 2"`
+   for less than 2 euros, `"2 to 2.49"` and `"2.50 or more"`. Show `id`,
+   `milk_brand`, `price_too_expensive` and `price_class`, sorted from the
+   highest price to the lowest.
 
 ```r
-# 3. Price class per answer
 survey |>
   filter() |>
   mutate() |>
@@ -76,20 +66,19 @@ survey |>
   arrange()
 ```
 
-In the fourth one you count brand and price class together:
+4. Count how often each price class occurs for each brand.
 
 ```r
-# 4. Price classes per brand
 survey |>
   filter() |>
   mutate() |>
   count()
 ```
 
-In the fifth one you split by diet:
+5. Compute, for each diet, the number of plausible answers and the mean
+   price, and sort the groups so that the highest mean comes first.
 
 ```r
-# 5. Mean price per diet
 survey |>
   filter() |>
   group_by() |>

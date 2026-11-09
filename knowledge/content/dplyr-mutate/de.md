@@ -1,18 +1,18 @@
 ---
 type: lesson
 code: 1304
-title: Zeilen sortieren und Spalten berechnen mit arrange() und mutate()
+formerly: [dplyr-arrange-mutate]
+title: Spalten berechnen mit mutate()
 summary: >-
-  Mit `arrange()` bringst du die Zeilen einer Tabelle in eine Reihenfolge, mit
-  `mutate()` berechnest du neue Spalten aus vorhandenen, bis hin zu Gruppen
-  wie Altersklassen mit `if_else()` und `case_when()`.
+  Mit `mutate()` berechnest du neue Spalten aus vorhandenen, bildest mit
+  `if_else()` und `case_when()` Gruppen wie Altersklassen und rechnest mit
+  `group_by()` innerhalb jeder Gruppe, ohne dass eine Zeile verloren geht.
 objectives:
-  intro: "In dieser Lektion lernst du, Zeilen mit `arrange()` zu sortieren und mit `mutate()` neue Spalten zu berechnen, und kannst danach:"
+  intro: "In dieser Lektion lernst du, mit `mutate()` neue Spalten zu berechnen, und kannst danach:"
   goals:
-    - "Zeilen mit `arrange()` aufsteigend, mit `desc()` absteigend und nach mehreren Spalten sortieren und sagen, wo fehlende Werte dabei landen"
-    - "mit `slice_head()` und `slice_max()` nur die ersten oder die größten Zeilen einer Tabelle behalten"
     - "mit `mutate()` eine neue Spalte aus vorhandenen berechnen, eine Spalte überschreiben und mehrere Spalten in einem Schritt anlegen, die aufeinander aufbauen"
     - "mit `if_else()` zwei Fälle unterscheiden und mit `case_when()` aus einer Zahl Gruppen wie Altersklassen bilden"
+    - "mit `group_by()` und `mutate()` für jede Zeile einen Wert ihrer Gruppe berechnen, etwa den Mittelwert, und die Gruppierung mit `ungroup()` wieder auflösen"
     - "erklären, warum `mutate()` die Tabelle `survey` nicht verändert und wie du ein Ergebnis mit `<-` behältst"
 level: 1
 duration: 25
@@ -20,95 +20,14 @@ topics: [transforming-data, programming-with-r]
 modules: [ea]
 areas: [ds]
 relations:
-  requires: [dplyr-filter]
+  requires: [dplyr-arrange]
 status: published
 updated: 2026-11-09
 ---
 
-`select()` und `filter()` machen eine Tabelle kleiner, weil sie nur einen Teil
-der Spalten oder der Zeilen behalten. Die beiden Verben dieser Lektion lassen
-dagegen alle Zeilen stehen: `arrange()` ändert nur ihre Reihenfolge, und
-`mutate()` fügt neue Spalten hinzu, die du aus den vorhandenen berechnest.
-
-## Zeilen sortieren
-
-`arrange()` sortiert die Zeilen nach den Werten einer Spalte, und zwar
-aufsteigend, also die kleinste Zahl zuerst. Damit die Ausgabe übersichtlich
-bleibt, behält ein `select()` danach nur vier Spalten:
-
-```r
-survey |>
-  arrange(age) |>
-  select(id, age, gender, diet)
-```
-
-Oben stehen jetzt die jüngsten Befragten. Texte sortiert `arrange()`
-alphabetisch, sodass `arrange(diet)` die Zeilen mit `flexitarian` vor die mit
-`omnivore` stellt.
-
-## Absteigend mit `desc()`
-
-Für die umgekehrte Reihenfolge legst du `desc()` um den Spaltennamen, kurz
-für *descending*, absteigend. Dann stehen die ältesten Befragten oben:
-
-```r
-survey |>
-  arrange(desc(age)) |>
-  select(id, age, gender, diet)
-```
-
-## Nach mehreren Spalten
-
-Nennst du mehrere Spalten, sortiert `arrange()` zuerst nach der ersten und
-zieht die nächste nur heran, wo die erste gleich ist. Hier stehen die
-Ernährungsweisen alphabetisch und innerhalb jeder Ernährungsweise die
-Ältesten vorn:
-
-```r
-survey |>
-  arrange(diet, desc(age)) |>
-  select(id, diet, age, gender)
-```
-
-## Wohin die fehlenden Werte kommen
-
-Bei der Preisfrage fehlt für die meisten Befragten ein Wert, weil sie die
-Frage nie gesehen haben. `arrange()` stellt Zeilen mit `NA` immer ans Ende,
-ob du aufsteigend oder absteigend sortierst:
-
-```r
-survey |>
-  arrange(desc(price_too_expensive)) |>
-  select(id, milk_brand, price_too_expensive)
-```
-
-Absteigend sortiert ist das zugleich ein schneller Weg zu Ausreißern: Die
-Preise von mehreren hundert Euro für einen Liter Milch, die du aus der
-Lektion [[dplyr-filter]] kennst, stehen ganz oben, angeführt von 999 Euro.
-
-## Die ersten oder größten Zeilen
-
-Oft interessieren nach dem Sortieren nur die ersten Zeilen. `slice_head()`
-behält so viele, wie du mit `n` angibst, in der Reihenfolge, in der die
-Tabelle gerade steht:
-
-```r
-survey |>
-  arrange(desc(age)) |>
-  slice_head(n = 3) |>
-  select(id, age, gender, diet)
-```
-
-`slice_max()` erledigt Sortieren und Abschneiden in einem Schritt und
-behält die Zeilen mit den größten Werten einer Spalte; `slice_min()` behält
-die mit den kleinsten. Teilen sich mehrere Zeilen den letzten Platz, liefert
-es alle davon, auch wenn es dann mehr als `n` werden:
-
-```r
-survey |>
-  slice_max(price_too_expensive, n = 3) |>
-  select(id, milk_brand, price_too_expensive)
-```
+`select()`, `filter()` und `arrange()` arbeiten mit den Spalten, die eine
+Tabelle schon hat. `mutate()` fügt neue hinzu, die du aus den vorhandenen
+berechnest, und lässt dabei alle Zeilen stehen.
 
 ## Eine neue Spalte berechnen
 
@@ -214,6 +133,68 @@ bekommen. Vertausch einmal die ersten beiden Fälle und sieh nach, wo die
 > Personen ohne Preisangabe in der letzten Klasse. Filtere sie vorher heraus
 > oder fang sie mit einem ersten Fall `is.na(price_too_expensive) ~ NA` ab.
 
+## Rechnen innerhalb von Gruppen
+
+Bisher hat `mutate()` jede Zeile für sich berechnet. Manche Rechnungen
+brauchen aber die anderen Zeilen derselben Gruppe, etwa wenn du wissen
+willst, ob eine Person älter oder jünger ist als der Durchschnitt ihrer
+Ernährungsweise. Dafür stellst du `group_by()` vor das `mutate()`:
+
+```r
+survey |>
+  group_by(diet) |>
+  mutate(
+    mean_age_diet = mean(age),
+    age_diff = age - mean_age_diet
+  ) |>
+  select(id, diet, age, mean_age_diet, age_diff)
+```
+
+`group_by()` ändert an den Daten nichts Sichtbares, merkt sich aber, welche
+Zeilen zusammengehören, und die Ausgabe zeigt das in der Zeile
+`# Groups: diet [6]`: sechs Gruppen, die fünf Ernährungsweisen und die
+Personen ohne Angabe. `mean(age)` rechnet danach in jeder Gruppe für sich,
+sodass alle Omnivoren den Wert 48,8 bekommen und alle Flexitarier 49,3. Die
+Tabelle behält dabei alle 2.809 Zeilen, und `age_diff` sagt für jede Person,
+wie weit sie vom Mittel ihrer Gruppe abweicht: Person 2 ist mit 35 Jahren
+13,8 Jahre jünger als die Omnivoren im Mittel.
+
+## Die Gruppierung wieder auflösen
+
+Die Gruppierung bleibt an der Tabelle hängen, auch nach dem `mutate()`, und
+jedes weitere Verb arbeitet ebenfalls je Gruppe. `slice_max()` aus der
+Lektion [[dplyr-arrange]] liefert dann nicht die älteste Person insgesamt,
+sondern die älteste jeder Ernährungsweise; `with_ties = FALSE` sorgt dafür,
+dass es auch bei Gleichstand bei einer Person je Gruppe bleibt:
+
+```r
+survey |>
+  group_by(diet) |>
+  slice_max(age, n = 1, with_ties = FALSE) |>
+  select(id, diet, age)
+```
+
+Das ist praktisch, wenn du es willst, und eine Falle, wenn du es vergisst.
+Brauchst du die Gruppen nicht mehr, löst `ungroup()` sie auf. Hier zählt
+`n()` zuerst in jeder Gruppe, wie viele Personen eine Ernährungsweise hat,
+und nach dem `ungroup()` behält `filter()` nur die Ernährungsweisen mit
+mindestens 100 Personen:
+
+```r
+survey |>
+  group_by(diet) |>
+  mutate(n_diet = n()) |>
+  ungroup() |>
+  filter(n_diet >= 100) |>
+  select(id, diet, n_diet)
+```
+
+Es bleiben die 2.709 Omnivoren, Flexitarier und Vegetarier, während die je
+36 vegan und pescetarisch lebenden Personen und die 28 ohne Angabe
+herausfallen. Wie du mit `group_by()` jede Gruppe zu einer einzigen Zeile
+zusammenfasst, statt alle Zeilen zu behalten, zeigt die Lektion
+[[dplyr-summarize]].
+
 ## Das Ergebnis behalten
 
 `mutate()` verändert `survey` nicht, sondern liefert eine neue Tabelle, die R
@@ -236,14 +217,12 @@ Idee, weil danach niemand mehr sieht, wie die Tabelle ursprünglich aussah.
 
 ## Zum Mitnehmen
 
-- `arrange()` sortiert Zeilen aufsteigend, `desc()` dreht die Reihenfolge
-  um, und weitere Spalten entscheiden bei Gleichstand; fehlende Werte landen
-  immer am Ende.
-- `slice_head()` behält die ersten Zeilen, `slice_max()` und `slice_min()`
-  die mit den größten oder kleinsten Werten einer Spalte.
 - `mutate(name = Rechnung)` legt eine Spalte an oder überschreibt eine
   vorhandene, und in einem `mutate()` kann eine Spalte auf der vorigen
   aufbauen.
 - `if_else()` unterscheidet zwei Fälle, `case_when()` beliebig viele, die es
   von oben nach unten prüft; ein `NA` landet dort bei `.default`.
+- Mit `group_by()` davor rechnet `mutate()` je Gruppe, etwa einen
+  Gruppenmittelwert, und behält dabei alle Zeilen; `ungroup()` löst die
+  Gruppierung wieder auf.
 - Ein Ergebnis bleibt nur, wenn du es weiterreichst oder mit `<-` speicherst.

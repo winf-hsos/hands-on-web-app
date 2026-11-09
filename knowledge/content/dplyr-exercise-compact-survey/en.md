@@ -292,6 +292,6 @@ result, because they went into `price_too_expensive`. Check with
 `count(milk_brand, is.na(price_too_expensive))` whether everyone who saw a
 brand also named a price. Then create a column `age_group` with `mutate()`
 as a factor with the levels `18-29`, `30-49`, `50-64` and `65+`, as in the
-lesson [[dplyr-arrange-mutate]], and save the table as RDS again: when you
+lesson [[dplyr-mutate]], and save the table as RDS again: when you
 read it back in, the age groups stand in the right order and not
 alphabetically.

@@ -21,7 +21,7 @@ topics: [transforming-data, programming-with-r]
 modules: [ea]
 areas: [ds]
 relations:
-  requires: [dplyr-arrange-mutate, dplyr-summarize-group-by]
+  requires: [dplyr-arrange, dplyr-mutate, dplyr-summarize]
 status: published
 updated: 2026-11-09
 ---
@@ -36,49 +36,38 @@ Antwort steht in `price_too_expensive`. Weil die Marke zufällig zugeteilt
 wurde, sollten sich die beiden Gruppen nur in der Marke unterscheiden, die
 sie gesehen haben. Darf alpro also mehr kosten als Weihenstephan?
 
-Gehe der Frage in fünf Schritten nach, jeder mit einer eigenen Pipe:
-
-1. Zähle, wie viele Personen die Preisfrage für jede der beiden Marken
-   beantwortet haben.
-2. Berechne je Marke die Zahl der Antworten, den mittleren Preis und den
-   Median, ohne die Angaben, die als Literpreis nicht ernst gemeint sein
-   können.
-3. Lege für die plausiblen Antworten mit `mutate()` eine Spalte
-   `price_class` an, die jeden Preis einer von drei Klassen zuordnet:
-   `"under 2"` für weniger als 2 Euro, `"2 to 2.49"` und `"2.50 or more"`.
-   Zeige `id`, `milk_brand`, `price_too_expensive` und `price_class`, vom
-   höchsten Preis zum niedrigsten sortiert.
-4. Zähle, wie oft jede Preisklasse bei jeder Marke vorkommt.
-5. Berechne für jede Ernährungsweise die Zahl der plausiblen Antworten und
-   den mittleren Preis, und sortiere die Gruppen so, dass der höchste
-   Mittelwert oben steht.
+Gehe der Frage in fünf Schritten nach, jeder mit einer eigenen Pipe in
+einer eigenen Box.
 
 ## Dein Code
 
-Für jede Aufgabe gibt es eine eigene Box. In der ersten zählst du die
-Antworten je Marke:
+1. Zähle, wie viele Personen die Preisfrage für jede der beiden Marken
+   beantwortet haben.
 
 ```r
-# 1. Antworten je Marke
 survey |>
   filter() |>
   count()
 ```
 
-In der zweiten berechnest du die drei Kennzahlen je Marke:
+2. Berechne je Marke die Zahl der Antworten, den mittleren Preis und den
+   Median, ohne die Angaben, die als Literpreis nicht ernst gemeint sein
+   können.
 
 ```r
-# 2. Anzahl, Mittelwert und Median je Marke
 survey |>
   filter() |>
   group_by() |>
   summarize()
 ```
 
-In der dritten legst du die Preisklasse an und sortierst:
+3. Lege für die plausiblen Antworten mit `mutate()` eine Spalte
+   `price_class` an, die jeden Preis einer von drei Klassen zuordnet:
+   `"under 2"` für weniger als 2 Euro, `"2 to 2.49"` und `"2.50 or more"`.
+   Zeige `id`, `milk_brand`, `price_too_expensive` und `price_class`, vom
+   höchsten Preis zum niedrigsten sortiert.
 
 ```r
-# 3. Preisklasse je Antwort
 survey |>
   filter() |>
   mutate() |>
@@ -86,20 +75,20 @@ survey |>
   arrange()
 ```
 
-In der vierten zählst du Marke und Preisklasse zusammen:
+4. Zähle, wie oft jede Preisklasse bei jeder Marke vorkommt.
 
 ```r
-# 4. Preisklassen je Marke
 survey |>
   filter() |>
   mutate() |>
   count()
 ```
 
-In der fünften teilst du nach der Ernährungsweise auf:
+5. Berechne für jede Ernährungsweise die Zahl der plausiblen Antworten und
+   den mittleren Preis, und sortiere die Gruppen so, dass der höchste
+   Mittelwert oben steht.
 
 ```r
-# 5. Mittlerer Preis je Ernährungsweise
 survey |>
   filter() |>
   group_by() |>

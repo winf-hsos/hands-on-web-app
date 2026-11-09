@@ -1,103 +1,23 @@
 ---
-title: Sorting rows and computing columns with arrange() and mutate()
+title: Computing columns with mutate()
 summary: >-
-  With `arrange()` you put the rows of a table in order, with `mutate()` you
-  compute new columns from existing ones, up to groups such as age groups
-  with `if_else()` and `case_when()`.
+  With `mutate()` you compute new columns from existing ones, form groups
+  such as age groups with `if_else()` and `case_when()`, and calculate within
+  each group with `group_by()` without losing a single row.
 objectives:
-  intro: "This lesson shows you how to sort rows with `arrange()` and compute new columns with `mutate()`, and afterwards you can:"
+  intro: "This lesson shows you how to compute new columns with `mutate()`, and afterwards you can:"
   goals:
-    - "sort rows in ascending order with `arrange()`, in descending order with `desc()` and by several columns, and say where missing values end up"
-    - "keep only the first or the largest rows of a table with `slice_head()` and `slice_max()`"
     - "compute a new column from existing ones with `mutate()`, overwrite a column and create several columns in one step that build on each other"
     - "distinguish two cases with `if_else()` and turn a number into groups such as age groups with `case_when()`"
+    - "compute a value of its group for every row with `group_by()` and `mutate()`, such as the mean, and dissolve the grouping again with `ungroup()`"
     - "explain why `mutate()` does not change the table `survey` and how you keep a result with `<-`"
 translation_of: de
 based_on: 2026-11-09
 ---
 
-`select()` and `filter()` make a table smaller, because they keep only some
-of its columns or rows. The two verbs of this lesson, in contrast, keep every
-row: `arrange()` only changes their order, and `mutate()` adds new columns
-that you compute from the existing ones.
-
-## Sorting rows
-
-`arrange()` sorts the rows by the values of a column in ascending order, so
-the smallest number comes first. To keep the output readable, a `select()`
-afterwards keeps only four columns:
-
-```r
-survey |>
-  arrange(age) |>
-  select(id, age, gender, diet)
-```
-
-The youngest respondents are now at the top. `arrange()` sorts text
-alphabetically, so `arrange(diet)` puts the rows with `flexitarian` before
-those with `omnivore`.
-
-## Descending with `desc()`
-
-For the reverse order you wrap the column name in `desc()`, short for
-*descending*. Then the oldest respondents come first:
-
-```r
-survey |>
-  arrange(desc(age)) |>
-  select(id, age, gender, diet)
-```
-
-## By several columns
-
-If you name several columns, `arrange()` sorts by the first one and only
-turns to the next where the first is equal. Here the diets are in
-alphabetical order, and within each diet the oldest come first:
-
-```r
-survey |>
-  arrange(diet, desc(age)) |>
-  select(id, diet, age, gender)
-```
-
-## Where missing values go
-
-Most respondents have no value for the price question, because they never
-saw it. `arrange()` always puts rows with `NA` at the end, whether you sort
-in ascending or descending order:
-
-```r
-survey |>
-  arrange(desc(price_too_expensive)) |>
-  select(id, milk_brand, price_too_expensive)
-```
-
-Sorted in descending order, this is also a quick way to find outliers: the
-prices of several hundred euros for a litre of milk that you know from the
-lesson [[dplyr-filter]] are right at the top, led by 999 euros.
-
-## The first or largest rows
-
-After sorting, often only the first rows matter. `slice_head()` keeps as
-many as you give with `n`, in the order the table is in at that moment:
-
-```r
-survey |>
-  arrange(desc(age)) |>
-  slice_head(n = 3) |>
-  select(id, age, gender, diet)
-```
-
-`slice_max()` sorts and cuts in one step and keeps the rows with the largest
-values of a column; `slice_min()` keeps those with the smallest. If several
-rows share the last place, it returns all of them, even if that makes more
-than `n`:
-
-```r
-survey |>
-  slice_max(price_too_expensive, n = 3) |>
-  select(id, milk_brand, price_too_expensive)
-```
+`select()`, `filter()` and `arrange()` work with the columns a table already
+has. `mutate()` adds new ones that you compute from the existing ones, and
+keeps every row while doing so.
 
 ## Computing a new column
 
@@ -201,6 +121,66 @@ line. Swap the first two cases and see where the 26-year-olds end up.
 > without a price end up in the last class. Filter them out first, or catch
 > them with a first case `is.na(price_too_expensive) ~ NA`.
 
+## Calculating within groups
+
+So far `mutate()` has calculated every row on its own. Some calculations,
+however, need the other rows of the same group, for instance if you want to
+know whether a person is older or younger than the average of their diet.
+For this you put `group_by()` before the `mutate()`:
+
+```r
+survey |>
+  group_by(diet) |>
+  mutate(
+    mean_age_diet = mean(age),
+    age_diff = age - mean_age_diet
+  ) |>
+  select(id, diet, age, mean_age_diet, age_diff)
+```
+
+`group_by()` changes nothing visible in the data, but it remembers which
+rows belong together, and the output shows this in the line
+`# Groups: diet [6]`: six groups, the five diets and the people without an
+answer. `mean(age)` then calculates within each group separately, so all
+omnivores get the value 48.8 and all flexitarians 49.3. The table keeps all
+2,809 rows, and `age_diff` tells for every person how far they are from the
+mean of their group: person 2, aged 35, is 13.8 years younger than the
+omnivores on average.
+
+## Dissolving the grouping
+
+The grouping stays attached to the table, even after the `mutate()`, and
+every further verb works per group as well. `slice_max()` from the lesson
+[[dplyr-arrange]] then returns not the oldest person overall but the oldest
+of each diet; `with_ties = FALSE` makes sure it stays at one person per
+group even in case of a tie:
+
+```r
+survey |>
+  group_by(diet) |>
+  slice_max(age, n = 1, with_ties = FALSE) |>
+  select(id, diet, age)
+```
+
+That is handy when you want it and a trap when you forget it. Once you no
+longer need the groups, `ungroup()` dissolves them. Here `n()` first counts
+within each group how many people a diet has, and after the `ungroup()`,
+`filter()` keeps only the diets with at least 100 people:
+
+```r
+survey |>
+  group_by(diet) |>
+  mutate(n_diet = n()) |>
+  ungroup() |>
+  filter(n_diet >= 100) |>
+  select(id, diet, n_diet)
+```
+
+The 2,709 omnivores, flexitarians and vegetarians remain, while the 36
+vegans, the 36 pescetarians and the 28 people without an answer drop out.
+How `group_by()` lets you collapse each group into a single row instead of
+keeping all rows is shown in the lesson [[dplyr-summarize]].
+
 ## Keeping the result
 
 `mutate()` does not change `survey`; it returns a new table, which R prints
@@ -223,12 +203,10 @@ like.
 
 ## Key points
 
-- `arrange()` sorts rows in ascending order, `desc()` reverses the order,
-  and further columns break ties; missing values always end up last.
-- `slice_head()` keeps the first rows, `slice_max()` and `slice_min()` those
-  with the largest or smallest values of a column.
 - `mutate(name = calculation)` creates a column or overwrites an existing
   one, and within one `mutate()` a column can build on the previous one.
 - `if_else()` distinguishes two cases, `case_when()` any number of them,
   checked from top to bottom; an `NA` ends up at `.default` there.
+- With `group_by()` before it, `mutate()` calculates per group, such as a
+  group mean, and keeps all rows; `ungroup()` dissolves the grouping again.
 - A result only stays if you pass it on or store it with `<-`.
