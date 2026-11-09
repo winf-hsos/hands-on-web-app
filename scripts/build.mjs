@@ -8,7 +8,8 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { loadKnowledge, LANGS } from '../src/build/load.mjs';
 import { validate } from '../src/build/validate.mjs';
-import { createSite } from '../src/build/site.mjs';
+import { createSite, areasOf } from '../src/build/site.mjs';
+import { quizJson, quizIndexEntry, QUIZ_INDEX_FORMAT } from '../src/build/quiz-json.mjs';
 import { t } from '../src/build/i18n.mjs';
 import { isUnpublished } from '../src/build/deck.mjs';
 import { typesOf, hasType } from '../src/build/types.mjs';
@@ -328,6 +329,21 @@ function renderSite(knowledge, base, { write, asset }) {
   // the entrance: one page per language that leads into the areas, with the
   // content of all of them below, and the index its search needs
   const all = createSite(knowledge, null, base);
+  // every quiz as JSON for the live quiz of Classroom Live (build/quiz-json.mjs)
+  const quizzes = [];
+  for (const doc of all.items.filter((d) => hasType(d.lead, 'quiz'))) {
+    const texts = Object.fromEntries(LANGS.filter((lang) => doc.files[lang]).map((lang) => [lang, { title: doc.files[lang].data.title, body: doc.files[lang].body, url: all.url(doc, lang) }]));
+    const titleOf = (id) => {
+      const target = all.item.get(id);
+      return target ? all.localize(target, doc.leadLang).title : null;
+    };
+    const quiz = quizJson({ doc, area: areasOf(doc)[0], texts, lead: doc.leadLang, titleOf });
+    const path = `${base}/quizzes/${quiz.code}.json`;
+    write(path, `${JSON.stringify(quiz, null, 2)}\n`);
+    quizzes.push(quizIndexEntry(quiz, doc, path));
+  }
+  quizzes.sort((a, b) => a.slug.localeCompare(b.slug));
+  write(`${base}/quizzes.json`, `${JSON.stringify({ format: QUIZ_INDEX_FORMAT, quizzes }, null, 2)}\n`);
   for (const lang of LANGS) {
     write(`${base}/${lang}/`, String(chooser({ lang, areas: entrances[lang], asset, base, finder: pages.finder(all, lang, { areas: true }) })));
     write(`${base}/${lang}/index.json`, JSON.stringify(clientIndex(all, lang)));

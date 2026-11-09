@@ -6,6 +6,7 @@
     "dev": "node scripts/dev.mjs",
     "build": "node scripts/build.mjs",
     "new-code": "node scripts/new-code.mjs",
+    "pool-to-quiz": "node scripts/pool-to-quiz.mjs",
     "fetch-r-packages": "node scripts/fetch-r-packages.mjs",
     "fetch-embedding-model": "node scripts/fetch-embedding-model.mjs",
     "test": "node --test \"tests/*.test.mjs\"",

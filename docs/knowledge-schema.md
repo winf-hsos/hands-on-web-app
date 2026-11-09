@@ -629,12 +629,49 @@ multiple-choice question with something chosen, Enter checks the answer first,
 so that it is never skipped. A focused button or link keeps its own Enter, and
 on an option Space chooses it.
 
-This form is deliberately independent of the existing question pools, as the
-concept requires. `scripts/convert-questions.mjs <pool-folder> <de|en> [id …]`
-turns questions of a pool in the format of the skill multiple-choice-pruefung
-into this form, with the pool's ids as explicit ids and its reasons as option
-reasons, as a starting point that is then rewritten for the platform. It
-refuses questions that are not public, since those belong to an exam.
+**Questions come from the question pools** (Nicolas, 2026-11-09,
+`02 - Lehrinhalte/Fragenpools/Konzept.md` in OneDrive). One pool per area,
+in Markwise's format (one YAML file per question, both languages, a reason
+per option), feeds practice on this site, the live quiz of Classroom Live and
+the exam in Markwise, so a question is written and changed in the pool and
+nowhere else. A quiz names its questions in its lead file, in order:
+
+```yaml
+questions: [hcs-001, hcs-002, hcs-003]
+```
+
+`node scripts/pool-to-quiz.mjs [quiz-id …]` writes the body of `de.md` and
+`en.md` of every such quiz from the pools; the front matter and any text before
+the first question stay. Each question gets its pool id as explicit id, its
+stem's first paragraph as heading and the rest below it, a figure from the
+pool's `images/` copied to `media/`, its code as a static box (`python` and
+`r`; other languages as plain boxes), its reasons below the options and its
+`takeaway` as the explanation. A question of `type: multiple` ends in
+„(Mehrere richtige Antworten möglich.)“ or “(Several answers may be
+correct.)”. Only questions with `public: true` are taken; one that is only for
+exams, an exam variant or retired is refused, so that no exam question reaches
+the site. When a body changes, the lead's `updated` and the translation's
+`based_on` become today. `--check` only reports which quizzes differ from the
+pools, and the build rejects a quiz whose questions are not exactly those of
+its list. The pools lie in OneDrive, which the build on GitHub cannot reach;
+the tool finds them there (or in `HOCS_POOLS`, or with `--pools <folder>`), and
+what it writes is committed like any other change. A quiz without a list
+(those of data science, for which there is no pool yet) keeps its questions in
+its own body.
+
+Every quiz is also published as JSON for the live quiz of Classroom Live
+(form agreed with that agent, 2026-11-09; `src/build/quiz-json.mjs`):
+`/quizzes.json` (`format: hocs-quiz-index/1`) lists each quiz with `code`,
+`slug`, `area`, `title`, `modules`, the number of `questions`, `updated`, the
+`url` of its file and its `page` per language; `/quizzes/<code>.json`
+(`format: hocs-quiz/1`) holds `code`, `slug`, `area`, `status`, `title`,
+`updated`, `page` and the `questions`, each with `id`, `type` (single or
+multiple), `stem` as Markdown with its code blocks and full addresses for
+images, the `options` with `key` (a, b, c …), `text`, `correct` and an
+optional `reason`, and an optional `explanation`. Texts are objects with one
+key per language the quiz has. The sentence on several answers is left out of
+the stem, since `type` says it. The published site holds only published
+quizzes; the one with drafts has its own files under `/drafts/`.
 
 Below every quiz the page offers it as two files to learn with elsewhere
 (Nicolas, 2026-11-03), written next to the page by the build

@@ -167,6 +167,8 @@ function shapes(vocabulary) {
           project: id,
           // earlier ids, such as the deck merged into a lesson; their addresses lead here (scripts/build.mjs)
           formerly: list(id),
+          // a quiz's questions from the pools, in order (scripts/pool-to-quiz.mjs)
+          questions: list(id, 1),
         },
       },
       translation: { required: translation.required, optional: { objectives } },
@@ -624,6 +626,13 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
         if (!/^\s*[-*] \[[ x]\]/im.test(q)) errors.push(`${file.path}: question ${n + 1} has no options (- [ ] …)`);
         else if (!/^\s*[-*] \[x\]/im.test(q)) errors.push(`${file.path}: question ${n + 1} has no correct answer (- [x] …)`);
       });
+      // a quiz written from the pools has exactly its listed questions, in order
+      const listed = item.lead.questions;
+      if (listed) {
+        const ids = questions.map((q) => q.split(/\r?\n/)[0].match(/\{#([\w-]+)\}\s*$/)?.[1] ?? '?');
+        if (ids.join(' ') !== listed.join(' '))
+          errors.push(`${file.path}: the questions (${ids.join(', ')}) are not those of the list in questions:; run node scripts/pool-to-quiz.mjs ${item.id}`);
+      }
     }
   }
 

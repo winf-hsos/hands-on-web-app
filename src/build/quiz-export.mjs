@@ -23,17 +23,30 @@ export function quizQuestions(body) {
     .slice(1)
     .map((block) => {
       const lines = block.split(/\r?\n/);
+      const id = lines[0].match(/\{#([\w-]+)\}\s*$/)?.[1] ?? null;
       const question = { title: lines[0].replace(/\s*\{#[\w-]+\}\s*$/, '').trim(), text: [], code: [], options: [], explanation: [] };
+      // the question below its heading as Markdown, paragraphs and code blocks in their order
+      const parts = [];
+      let paragraph = null;
       let option = null;
       for (let i = 1; i < lines.length; i += 1) {
         const line = lines[i];
-        if (!line.trim()) continue;
-        const fence = line.match(/^\s*```/);
+        if (!line.trim()) {
+          paragraph = null;
+          continue;
+        }
+        const fence = line.match(/^\s*```\s*(\S*)/);
         if (fence) {
           const code = [];
           for (i += 1; i < lines.length && !/^\s*```/.test(lines[i]); i += 1) code.push(lines[i]);
           question.code.push(code.join('\n'));
+          if (!question.options.length) parts.push(`\`\`\`${fence[1]}\n${code.join('\n')}\n\`\`\``);
+          paragraph = null;
           continue;
+        }
+        if (!question.options.length && !/^[-*] \[[ xX]\]/.test(line) && !line.startsWith('>')) {
+          if (paragraph === null) parts.push((paragraph = []));
+          paragraph.push(line.trim());
         }
         const start = line.match(/^[-*] \[([ xX])\]\s+(.*)$/);
         if (start) {
@@ -48,7 +61,9 @@ export function quizQuestions(body) {
       }
       const join = (parts) => parts.join(' ').replace(/\s+/g, ' ').trim();
       return {
+        id,
         title: question.title,
+        body: parts.map((p) => (Array.isArray(p) ? p.join(' ') : p)),
         text: join(question.text),
         code: question.code,
         options: question.options.map((o) => ({ text: join(o.text), correct: o.correct, reason: join(o.reason) })),
