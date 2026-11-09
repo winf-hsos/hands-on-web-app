@@ -3,7 +3,8 @@ title: Summarising with summarize()
 summary: >-
   With `summarize()` you condense many rows into figures such as the mean and
   the median, with `group_by()` before it for every group separately, and
-  `count()` is the shortcut for the most common summary, counting.
+  `count()` is the shortcut for the most common summary, counting;
+  `distinct()` and `n_distinct()` show and count the different values.
 objectives:
   intro: "This lesson shows you how to condense a table into figures with `summarize()`, `group_by()` and `count()`, and afterwards you can:"
   goals:
@@ -12,6 +13,7 @@ objectives:
     - "show with an outlier why the median is often more robust than the mean, and filter out implausible values before summarising"
     - "compute one row per group with `group_by()` and `summarize()`, also for the combinations of two columns"
     - "count frequencies with `count()` and turn them into shares with `mutate()`, overall or within a group"
+    - "list which values and combinations occur with `distinct()` and count how many different ones there are with `n_distinct()`, also per group"
 translation_of: de
 based_on: 2026-11-09
 ---
@@ -259,6 +261,65 @@ survey |>
   mutate(share = n / sum(n))
 ```
 
+## Different values with `distinct()` and `n_distinct()`
+
+Sometimes it does not matter how often a value occurs, only which values
+there are at all. `distinct()` keeps exactly one row for each value of the
+column you name:
+
+```r
+survey |>
+  distinct(diet)
+```
+
+Six rows remain, the five diets and `NA` for the people without an answer.
+Unlike `count()`, `distinct()` does not count but only lists. With two
+columns it returns every combination that occurs in the data:
+
+```r
+survey |>
+  distinct(milk_brand, diet)
+```
+
+These are 18 combinations, because each of the three values of
+`milk_brand`, `alpro`, `Weihenstephan` and `NA` for everyone who did not see
+the price experiment, occurs with each of the six values of `diet`.
+
+If you only want to know how many different values there are,
+`n_distinct()` counts them inside `summarize()`, just as `n()` counts the
+rows:
+
+```r
+survey |>
+  summarize(
+    n = n(),
+    n_states = n_distinct(state),
+    n_diets = n_distinct(diet),
+    n_diets_known = n_distinct(diet, na.rm = TRUE)
+  )
+```
+
+The 2,809 respondents come from all 16 federal states. For the diet,
+`n_distinct()` counts `NA` as a value of its own and arrives at six; with
+`na.rm = TRUE` it is the five actual diets.
+
+Together with `group_by()`, `n_distinct()` counts per group. This shows
+from how many federal states the respondents of each diet come:
+
+```r
+survey |>
+  group_by(diet) |>
+  summarize(
+    n = n(),
+    n_states = n_distinct(state)
+  )
+```
+
+Omnivores, flexitarians and vegetarians live in all 16 states, while the 36
+vegans are spread over ten. As with the mean, it pays to look at `n`,
+because a small group has fewer different values simply because it is
+small.
+
 ## Key points
 
 - `summarize()` turns many rows into one, with figures such as `n()`,
@@ -271,3 +332,6 @@ survey |>
   two columns, `.groups = "drop"` removes the grouping afterwards.
 - `count()` counts values and combinations, and `mutate(share = n / sum(n))`
   turns them into shares.
+- `distinct()` lists which values or combinations occur, and
+  `n_distinct()` counts inside `summarize()` how many different ones there
+  are; an `NA` counts as well unless you set `na.rm = TRUE`.

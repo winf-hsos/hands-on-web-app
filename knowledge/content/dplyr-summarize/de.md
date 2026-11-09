@@ -6,7 +6,8 @@ title: Zusammenfassen mit summarize()
 summary: >-
   Mit `summarize()` fasst du viele Zeilen zu Kennzahlen wie Mittelwert und
   Median zusammen, mit `group_by()` davor für jede Gruppe einzeln, und
-  `count()` ist die Abkürzung für das häufigste Zusammenfassen, das Zählen.
+  `count()` ist die Abkürzung für das häufigste Zusammenfassen, das Zählen;
+  `distinct()` und `n_distinct()` zeigen und zählen die verschiedenen Werte.
 objectives:
   intro: "In dieser Lektion lernst du, eine Tabelle mit `summarize()`, `group_by()` und `count()` zu Kennzahlen zu verdichten, und kannst danach:"
   goals:
@@ -15,8 +16,9 @@ objectives:
     - "an einem Ausreißer zeigen, warum der Median oft robuster ist als der Mittelwert, und unplausible Werte vor dem Zusammenfassen herausfiltern"
     - "mit `group_by()` und `summarize()` eine Zeile je Gruppe berechnen, auch für die Kombinationen zweier Spalten"
     - "mit `count()` Häufigkeiten zählen und daraus mit `mutate()` Anteile berechnen, insgesamt oder innerhalb einer Gruppe"
+    - "mit `distinct()` auflisten, welche Werte und Kombinationen vorkommen, und mit `n_distinct()` zählen, wie viele verschiedene es sind, auch je Gruppe"
 level: 1
-duration: 30
+duration: 35
 topics: [transforming-data, programming-with-r]
 modules: [ea]
 areas: [ds]
@@ -272,6 +274,67 @@ survey |>
   mutate(share = n / sum(n))
 ```
 
+## Verschiedene Werte mit `distinct()` und `n_distinct()`
+
+Manchmal interessiert nicht, wie oft ein Wert vorkommt, sondern nur, welche
+Werte es überhaupt gibt. `distinct()` behält von jedem Wert der genannten
+Spalte genau eine Zeile:
+
+```r
+survey |>
+  distinct(diet)
+```
+
+Es bleiben sechs Zeilen, die fünf Ernährungsweisen und `NA` für die Personen
+ohne Angabe. Anders als `count()` zählt `distinct()` nicht, sondern listet
+nur auf. Mit zwei Spalten liefert es jede Kombination, die in den Daten
+vorkommt:
+
+```r
+survey |>
+  distinct(milk_brand, diet)
+```
+
+Das sind 18 Kombinationen, denn jeder der drei Werte von `milk_brand`,
+`alpro`, `Weihenstephan` und `NA` für alle, die das Preisexperiment nicht
+gesehen haben, kommt mit jedem der sechs Werte von `diet` vor.
+
+Willst du nur wissen, wie viele verschiedene Werte es gibt, zählt
+`n_distinct()` sie innerhalb von `summarize()`, so wie `n()` die Zeilen
+zählt:
+
+```r
+survey |>
+  summarize(
+    n = n(),
+    n_states = n_distinct(state),
+    n_diets = n_distinct(diet),
+    n_diets_known = n_distinct(diet, na.rm = TRUE)
+  )
+```
+
+Die 2.809 Befragten kommen aus allen 16 Bundesländern. Bei der
+Ernährungsweise zählt `n_distinct()` das `NA` als eigenen Wert mit und kommt
+auf sechs; mit `na.rm = TRUE` sind es die fünf tatsächlichen
+Ernährungsweisen.
+
+Zusammen mit `group_by()` zählt `n_distinct()` je Gruppe. So siehst du, aus
+wie vielen Bundesländern die Befragten jeder Ernährungsweise kommen:
+
+```r
+survey |>
+  group_by(diet) |>
+  summarize(
+    n = n(),
+    n_states = n_distinct(state)
+  )
+```
+
+Omnivoren, Flexitarier und Vegetarier gibt es in allen 16 Bundesländern,
+während sich die 36 vegan lebenden Personen auf zehn verteilen. Wie beim
+Mittelwert lohnt der Blick auf `n`, denn eine kleine Gruppe hat schon
+deshalb weniger verschiedene Werte, weil sie klein ist.
+
 ## Zum Mitnehmen
 
 - `summarize()` macht aus vielen Zeilen eine, mit Kennzahlen wie `n()`,
@@ -284,3 +347,6 @@ survey |>
   Spalten gruppiert, löst `.groups = "drop"` die Gruppierung danach auf.
 - `count()` zählt Werte und Kombinationen, und `mutate(share = n / sum(n))`
   macht daraus Anteile.
+- `distinct()` listet auf, welche Werte oder Kombinationen vorkommen, und
+  `n_distinct()` zählt in `summarize()`, wie viele verschiedene es sind; ein
+  `NA` zählt dabei mit, solange du nicht `na.rm = TRUE` angibst.
