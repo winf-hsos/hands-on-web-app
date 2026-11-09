@@ -77,8 +77,11 @@ export function itemRow(site, item, lang, { optional = false, summary = true, to
   const attributes = Object.entries(data).map(([key, value]) => html` data-${key}="${value}"`);
   // the colour of its area as a mark, half and half for two (the entrance)
   const mark = areas && html` style="--mark-a: var(--${areas[0]}); --mark-b: var(--${areas[1] ?? areas[0]})"`;
+  // a numbered step marks itself done on a click of its number (site.js), and
+  // a lesson its material with it, all but its quizzes, as on its own page
+  const also = number !== undefined && (site.embedsOf?.(item) ?? []).filter((m) => !typesOf(m.lead).includes('quiz')).map((m) => m.id);
   return html`<li class="row${areas ? ' has-area' : ''}" data-progress-id="${item.id}"${mark}${attributes}>
-    ${number !== undefined && html`<span class="row-step" aria-hidden="true"><span>${number}</span>${icons.check}</span>`}
+    ${number !== undefined && html`<button type="button" class="row-step" aria-pressed="false"${also.length > 0 && html` data-mark-also="${also.join(' ')}"`}><span>${number}</span>${icons.check}</button>`}
     <a class="row-link" href="${site.url(item, lang)}">
       ${typeIcon(site, item)}
       <span class="row-head">

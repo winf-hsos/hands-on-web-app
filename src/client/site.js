@@ -45,9 +45,21 @@ if (page) {
   });
 }
 
-// The green check of a done row in a path, course or list is a button: it
-// offers to take the mark back, in a small popover beside it.
-const { markedDone, markUndone } = document.body.dataset;
+// The number of a step in a path, project or module is a button that marks
+// the step done and takes the mark back, without opening it first. The green
+// check of a done row in an unnumbered list offers to take the mark back, in
+// a small popover beside it.
+const { markDone, markedDone, markUndone } = document.body.dataset;
+
+function toggleStep(step) {
+  const id = step.closest('[data-progress-id]').dataset.progressId;
+  let done;
+  update(id, (p) => {
+    p.done = p.done ? undefined : today();
+    done = !!p.done;
+  });
+  if (done) for (const other of step.dataset.markAlso?.split(' ').filter(Boolean) ?? []) update(other, (p) => (p.done ??= today()));
+}
 let undo;
 
 function offerUndo(check) {
@@ -79,11 +91,13 @@ function offerUndo(check) {
 }
 
 document.addEventListener('click', (e) => {
-  const check = e.target.closest('.row.is-done :is(.row-step, .row-done)');
+  const step = e.target.closest('.row-step');
+  if (step) return toggleStep(step);
+  const check = e.target.closest('.row.is-done .row-done');
   if (check) offerUndo(check);
 });
 document.addEventListener('keydown', (e) => {
-  const check = e.target.closest?.('.row.is-done :is(.row-step, .row-done)');
+  const check = e.target.closest?.('.row.is-done .row-done');
   if (check && (e.key === 'Enter' || e.key === ' ')) {
     e.preventDefault();
     offerUndo(check);
@@ -94,7 +108,14 @@ function render(progress) {
   for (const el of document.querySelectorAll('[data-progress-id]')) {
     const done = isDone(progress, el.dataset.progressId);
     el.classList.toggle('is-done', done);
-    const check = el.querySelector(':scope > :is(.row-step, .row-done)');
+    const step = el.querySelector(':scope > .row-step');
+    if (step) {
+      step.setAttribute('aria-pressed', String(done));
+      step.title = done ? `${markedDone} – ${markUndone}` : markDone;
+      step.setAttribute('aria-label', `${step.textContent.trim()}: ${step.title}`);
+      continue;
+    }
+    const check = el.querySelector(':scope > .row-done');
     if (!check) continue;
     if (done) {
       Object.assign(check, { tabIndex: 0, title: `${markedDone} – ${markUndone}` });
@@ -105,8 +126,7 @@ function render(progress) {
       check.removeAttribute('aria-hidden');
     } else {
       for (const name of ['tabindex', 'role', 'aria-label', 'aria-haspopup', 'aria-expanded']) check.removeAttribute(name);
-      check.title = check.classList.contains('row-done') ? markedDone : '';
-      if (check.classList.contains('row-step')) check.setAttribute('aria-hidden', 'true');
+      check.title = markedDone;
     }
   }
   for (const el of document.querySelectorAll('[data-progress-ids]')) {

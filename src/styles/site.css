@@ -560,8 +560,9 @@ select {
   transform: none;
 }
 
-/* a done check takes its mark back on click (site.js) */
-.row.is-done :is(.row-step, .row-done) {
+/* a done check takes its mark back on click, a step number toggles it (site.js) */
+.row.is-done .row-done,
+.row-step {
   cursor: pointer;
 }
 
@@ -569,7 +570,12 @@ select {
   filter: brightness(1.12);
 }
 
-.row.is-done :is(.row-step, .row-done):focus-visible {
+.row:not(.is-done) .row-step:hover {
+  background: color-mix(in srgb, var(--done) 18%, var(--paper));
+  border-color: var(--done);
+}
+
+:is(.row.is-done .row-done, .row-step):focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
   border-radius: 50%;
@@ -633,10 +639,14 @@ select {
   border: 2px solid var(--accent);
   display: grid;
   place-items: center;
+  padding: 0;
+  font: inherit;
   font-weight: 700;
   font-size: 0.9rem;
+  color: inherit;
   background: var(--paper);
   z-index: 1;
+  transition: background 0.2s, border-color 0.2s;
 }
 
 .row-step .icon {
