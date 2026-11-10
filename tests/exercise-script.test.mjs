@@ -64,6 +64,17 @@ test('an R script loads the packages and data sets its boxes use, from the site'
   assert.match(text, /^# The task and the hints are comments here/m);
 });
 
+test('an R script follows the page: a name of r_datasets means its file, and more of the tidyverse loads all of it', () => {
+  const { text } = exerciseScript({
+    id: 'self-study', title: 'Self-study', lang: 'en', url: '/ds/en/items/self-study/',
+    body: '```r\nsurvey |>\n  pivot_longer(starts_with("v008"))\n```\n',
+    datasets: { survey: 'mds12_schoko_milch.csv' },
+  });
+  assert.match(text, /^library\(tidyverse\)$/m);
+  assert.doesNotMatch(text, /^library\(dplyr\)$/m);
+  assert.ok(text.includes(`\nsurvey <- as_tibble(read.csv("${SITE_ORIGIN}/media/datasets/mds12_schoko_milch.csv"`));
+});
+
 test('exercises without Python or R boxes have no script', () => {
   assert.equal(scriptLanguage('```bash\nls\n```\n> ```python\n> x\n> ```\n'), null);
   assert.equal(script('```bash\nls\n```\n'), null);

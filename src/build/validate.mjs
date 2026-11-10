@@ -169,6 +169,25 @@ function shapes(vocabulary) {
           formerly: list(id),
           // a quiz's questions from the pools, in order (scripts/pool-to-quiz.mjs)
           questions: list(id, 1),
+          // the file an R table name means on this page, as `survey` for the full survey (client/r-engine.js)
+          r_datasets: (v) => {
+            if (!v || typeof v !== 'object' || Array.isArray(v)) return 'expected { name: file.csv }';
+            const bad = Object.entries(v).find(([name, file]) => !/^[A-Za-z][\w.]*$/.test(name) || typeof file !== 'string' || !/^[\w.-]+\.csv$/.test(file));
+            return bad ? `${bad[0]}: expected an R name and the name of a CSV file in media/datasets/` : null;
+          },
+          // the tasks of a test, in the order of their ```r check=N boxes (client/runner.js)
+          checks: list((v) => {
+            if (!v || typeof v !== 'object' || Array.isArray(v)) return 'expected { name, md5 or plot, review }';
+            const extra = Object.keys(v).find((k) => !['name', 'md5', 'plot', 'review'].includes(k));
+            if (extra) return `unknown field ${extra} (allowed: name, md5, plot, review)`;
+            if (typeof v.name !== 'string' || !/^[A-Za-z][\w.]*$/.test(v.name)) return 'name: expected the R name that holds the answer';
+            if ((v.md5 === undefined) === (v.plot === undefined)) return 'expected either md5 or plot';
+            if (v.md5 !== undefined && !/^[0-9a-f]{32}$/.test(v.md5)) return 'md5: expected 32 hexadecimal digits';
+            const p = v.plot;
+            if (p !== undefined && (!p || typeof p !== 'object' || !Array.isArray(p.counts) || !p.counts.every(Number.isInteger) || !Number.isInteger(p.rows)))
+              return 'plot: expected { counts: [numbers], rows: number, defaults: [names] }';
+            return v.review === undefined ? null : id(v.review) && `review: ${id(v.review)}`;
+          }, 1),
         },
       },
       translation: { required: translation.required, optional: { objectives } },
@@ -574,6 +593,34 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
     }
     const info = datasetInfo(item.dir, item.lead.file);
     if (info.error) errors.push(`${where}: file: ${info.error}`);
+  }
+
+  // R data sets of a page: each file lies in media/datasets/.
+  for (const item of content) {
+    for (const [name, file] of Object.entries(item.lead.r_datasets ?? {})) {
+      if (!existsSync(join(item.dir, '..', '..', 'media', 'datasets', file))) errors.push(`content/${item.id}: r_datasets: ${name}: media/datasets/${file} does not exist`);
+    }
+  }
+
+  // Tests: their checks and their ```r check=N boxes belong together, one to
+  // one, and only a test has checks.
+  for (const item of content) {
+    const where = `content/${item.id}`;
+    const checks = item.lead.checks;
+    if (!hasType(item.lead, 'test')) {
+      if (checks !== undefined) errors.push(`${where}: checks: only a test has checks`);
+      continue;
+    }
+    if (!Array.isArray(checks)) {
+      errors.push(`${where}: a test needs checks:`);
+      continue;
+    }
+    for (const c of checks) if (c.review && !content.some((d) => d.id === c.review)) errors.push(`${where}: checks: review: ${c.review} does not exist`);
+    for (const file of Object.values(item.files)) {
+      const numbers = [...file.body.matchAll(/^```r\b[^\n]*\bcheck=(\d+)/gm)].map((m) => Number(m[1]));
+      if (numbers.join() !== checks.map((_, i) => i + 1).join())
+        errors.push(`${file.path}: the boxes with check=N (${numbers.join(', ') || 'none'}) must be 1 to ${checks.length}, in order, once each`);
+    }
   }
 
   // Videos: `url` is a YouTube link, and `start`, the second to begin at,

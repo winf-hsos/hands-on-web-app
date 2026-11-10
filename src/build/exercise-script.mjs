@@ -3,6 +3,7 @@
 // the code of its boxes becomes code, and the solution stays on the page. An R
 // script loads the packages and data sets the boxes get in the browser.
 import { DATASETS, PLAIN } from '../client/r-datasets.js';
+import { CORE, EXPORTS } from '../client/r-packages.js';
 
 export const SITE_ORIGIN = 'https://hands-on-computer-science.de';
 
@@ -148,21 +149,43 @@ function convert(lines, { language, labels, titleOf, inCallout = false }) {
   return { lines: out, code };
 }
 
-/** What an R script needs before its code: packages and the data sets it names. */
-function rSetup(code, labels) {
-  const packages = [];
-  if (DPLYR.test(code) || Object.keys(DATASETS).some((name) => new RegExp(`\\b${name}\\b`).test(code))) packages.push('dplyr');
-  if (DRAWS.test(code)) packages.push('ggplot2');
-  const data = Object.entries(DATASETS).filter(([name]) => new RegExp(`\\b${name}\\b`).test(code));
-  if (!packages.length && !data.length) return [];
+// the core packages of the tidyverse that dplyr and ggplot2 do not bring
+// along; dplyr re-exports tibble() and as_tibble(), so tibble is not among them
+const TIDYVERSE_REST = CORE.filter((p) => p !== 'ggplot2' && p !== 'tibble');
+
+/** Whether the code calls a function of the tidyverse beyond dplyr and ggplot2 (client/r-packages.js). */
+function needsTidyverse(code) {
+  for (const [, space, name] of code.matchAll(/(?:\b([A-Za-z][\w.]*)::)?\b([A-Za-z.][\w.]*)\s*\(/g)) {
+    const packages = space ? [space] : Object.hasOwn(EXPORTS, name) ? EXPORTS[name] : [];
+    if (packages.some((p) => TIDYVERSE_REST.includes(p))) return true;
+  }
+  return /\blibrary\(\s*tidyverse\s*\)/.test(code);
+}
+
+/**
+ * What an R script needs before its code: packages and the data sets it names.
+ * `aliases` are the page's r_datasets, a name that means another file there,
+ * as `survey` for the full survey. Where the boxes use more of the tidyverse
+ * than dplyr and ggplot2, the script loads all of it, as the page does.
+ */
+function rSetup(code, labels, aliases = {}) {
+  const datasets = { ...DATASETS, ...aliases };
+  const names = Object.keys(datasets).filter((name) => new RegExp(`\\b${name}\\b`).test(code));
+  let packages = [];
+  if (needsTidyverse(code)) packages = ['tidyverse'];
+  else {
+    if (DPLYR.test(code) || names.length) packages.push('dplyr');
+    if (DRAWS.test(code)) packages.push('ggplot2');
+  }
+  if (!packages.length && !names.length) return [];
   const lines = [`# ${labels.setup} ----`, '#'];
   if (packages.length) {
     lines.push(`# ${labels.install}`, `# install.packages(${packages.length > 1 ? `c(${packages.map((p) => `"${p}"`).join(', ')})` : `"${packages[0]}"`})`, '');
     lines.push(...packages.map((p) => `library(${p})`));
   }
-  for (const [name, file] of data) {
-    const table = `read.csv("${SITE_ORIGIN}/media/datasets/${file}", na.strings = c("", "NA"), stringsAsFactors = FALSE)`;
-    lines.push(`${name} <- ${PLAIN.has(name) ? table : `as_tibble(${table})`}`);
+  for (const name of names) {
+    const table = `read.csv("${SITE_ORIGIN}/media/datasets/${datasets[name]}", na.strings = c("", "NA"), stringsAsFactors = FALSE)`;
+    lines.push(`${name} <- ${PLAIN.has(name) && !aliases[name] ? table : `as_tibble(${table})`}`);
   }
   return [...lines, ''];
 }
@@ -171,7 +194,7 @@ function rSetup(code, labels) {
  * The script of an exercise, or null when its boxes are not Python or R:
  * { name, text }, where name is the file next to the page.
  */
-export function exerciseScript({ id, title, body, lang, url, titleOf = () => null }) {
+export function exerciseScript({ id, title, body, lang, url, titleOf = () => null, datasets = {} }) {
   const language = scriptLanguage(body);
   if (!language) return null;
   const labels = LABELS[lang];
@@ -197,6 +220,6 @@ export function exerciseScript({ id, title, body, lang, url, titleOf = () => nul
   }
   while (text.at(-1) === '' || text.at(-1) === '#') text.pop();
   const head = [`# ${title}`, `# ${SITE_ORIGIN}${url}`, '#', ...wrap(labels.intro), ''];
-  const setup = language === 'r' ? rSetup(code.join('\n'), labels) : [];
+  const setup = language === 'r' ? rSetup(code.join('\n'), labels, datasets) : [];
   return { name: `${id}.${LANGUAGES[language]}`, language, text: `${[...head, ...setup, ...text].join('\n')}\n` };
 }

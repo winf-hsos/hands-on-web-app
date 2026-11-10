@@ -130,16 +130,26 @@ All motion is switched off for people who ask their system for reduced motion.
   build time and while editing.
 - **R** runs in the browser with webR (R compiled to WebAssembly), served
   from `/assets/vendor/webr-<version>/` and started on the first click
-  (`src/client/r-engine.js`). It installs dplyr from a small package
-  repository of our own under `/assets/vendor/webr-repo/` (dplyr, tibble,
-  ggplot2 and their dependencies, about 20 MB), which `npm run
+  (`src/client/r-engine.js`). It installs packages from a small repository
+  of our own under `/assets/vendor/webr-repo/`, the nine core packages of the
+  tidyverse and their dependencies, about 39 MB (Nicolas, 2026-11-10: every
+  box behaves as after `library(tidyverse)`), which `npm run
   fetch-r-packages` fetches once from the webR repository; nothing is loaded
-  from elsewhere while someone learns. Every run gets a fresh environment, so
-  the code boxes do not depend on each other. Data sets and ggplot2 come only
-  when a block needs them: a block that names `survey` or `rewe` gets that
-  table from `knowledge/media/datasets/` (the list is `DATASETS` in
-  `r-engine.js`), and a block that draws loads ggplot2, whose plots come back
-  as images. Stop ends webR, the next Run starts it again.
+  from elsewhere while someone learns. The metapackage `tidyverse` itself is
+  not there: it would bring 75 MB, with packages for databases, web scraping
+  and spreadsheets that do not work in the browser, and `library(tidyverse)`
+  in a box does nothing. Every run gets a fresh environment, so the code
+  boxes do not depend on each other. dplyr is attached at the start; data
+  sets and the other packages come only when a block needs them: a block that
+  names `survey` or `rewe` gets that table from `knowledge/media/datasets/`
+  (the list is `DATASETS` in `r-datasets.js`, and a page's `r_datasets` can
+  map a name to another file), and a block that calls `pivot_longer()` or
+  `ggplot()` attaches tidyr or ggplot2 first. Which function belongs to which
+  package is `EXPORTS` in `src/client/r-packages.js`, written by
+  `Rscript scripts/r-exports.R` after the package list changes. Plots come
+  back as images. A test checks an answer the same way, in the background
+  (`check()` in `r-engine.js`, see the knowledge schema, section 7b). Stop
+  ends webR, the next Run starts it again.
 - **Embeddings** run in the browser with transformers.js and its ONNX
   runtime, served from `/assets/vendor/transformers-<version>/`, and the
   model all-MiniLM-L6-v2 (8 bits, about 23 MB) from `/assets/vendor/models/`,

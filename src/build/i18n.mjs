@@ -398,6 +398,54 @@ export const formatDate = (date, lang) =>
 
 export const isoDay = (date) => date.toISOString().slice(0, 10);
 
+/** Labels of a test (client/runner.js, client/test.js): the check of a task and the result of all. */
+export const testLabels = {
+  de: {
+    check: 'Prüfen',
+    checking: 'wird geprüft …',
+    correct: 'Richtig.',
+    wrong: 'Noch nicht richtig.',
+    share: 'Fast: Das ist der Anteil zwischen 0 und 1, gesucht ist der Wert in Prozent.',
+    empty: 'Noch kein Ergebnis: Ersetze NULL durch deinen Code.',
+    missing: 'Im Code fehlt die Zeile, die {name} einen Wert gibt.',
+    table: 'Das Ergebnis ist eine Tabelle mit {rows} Zeilen und {cols} Spalten. Gesucht ist ein einzelner Wert, und pull() holt eine Spalte heraus.',
+    many: 'Das Ergebnis hat {n} Werte, gesucht ist ein einzelner.',
+    error: 'Der Code bricht mit einem Fehler ab: {detail} Mit „Ausführen“ siehst du die ganze Meldung.',
+    not_plot: 'Das ist keine Abbildung mit ggplot2. Speichere sie mit {name} <- ggplot() + …',
+    plot_error: 'Die Abbildung lässt sich nicht zeichnen. Führ den Code mit „Ausführen“ aus und lies die Fehlermeldung.',
+    plot_wrong: 'Die Abbildung zeigt noch nicht das Gesuchte.',
+    plot_labels: 'Die Balken stimmen, aber mindestens eine Achse trägt noch den Namen der Variablen. Beschrifte beide mit labs(x = …, y = …).',
+    failed: 'R konnte nicht starten.',
+    review: 'Nacharbeiten:',
+    score: '{n} von {total} Aufgaben richtig',
+    none: 'Noch keine Aufgabe geprüft.',
+    open: 'Noch nicht richtig:',
+    all: 'Alles richtig.',
+  },
+  en: {
+    check: 'Check',
+    checking: 'checking …',
+    correct: 'Correct.',
+    wrong: 'Not right yet.',
+    share: 'Almost: this is the share between 0 and 1, the value in per cent is wanted.',
+    empty: 'No result yet: replace NULL with your code.',
+    missing: 'The code lacks the line that gives {name} a value.',
+    table: 'The result is a table with {rows} rows and {cols} columns. A single value is wanted, and pull() takes out a column.',
+    many: 'The result has {n} values, a single one is wanted.',
+    error: 'The code stops with an error: {detail} Run it to see the whole message.',
+    not_plot: 'This is not a ggplot2 chart. Store it with {name} <- ggplot() + …',
+    plot_error: 'The chart cannot be drawn. Run the code and read the error message.',
+    plot_wrong: 'The chart does not show what is asked for yet.',
+    plot_labels: 'The bars are right, but at least one axis still carries the name of the variable. Label both with labs(x = …, y = …).',
+    failed: 'R could not start.',
+    review: 'Review:',
+    score: '{n} of {total} tasks right',
+    none: 'No task checked yet.',
+    open: 'Not right yet:',
+    all: 'All right.',
+  },
+};
+
 /** Labels of the code runner (client/runner.js), and a plain hint per kind of error. */
 export const runnerLabels = {
   de: {

@@ -21,6 +21,7 @@ types:
   dataset:    { de: Datensatz,       en: Data set,   icon: table }
   video:      { de: Video,           en: Video,      icon: circle-play }
   challenge:  { de: Challenge,       en: Challenge,  icon: trophy }
+  test:       { de: Test,            en: Test,       icon: clipboard-check }
 
 # Each relation is stored at A and points to B; `inverse` is how B shows it.
 relations:

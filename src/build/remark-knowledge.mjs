@@ -242,6 +242,8 @@ function callouts(tree, lang) {
 // sample run, is shown as it is, in the same frame. A block that is not run
 // and names a file, as in ```python static file=task_1_light_on.py, shows the
 // name above it with a button that saves the code under it (client/copy.js).
+// In a test, ```r check=3 is the box of the third task: it gets a button that
+// checks its answer against the third entry of the test's checks.
 function runnable(tree) {
   visit(tree, 'code', (node) => {
     if (DEMOS[node.lang]) return;
@@ -255,6 +257,7 @@ function runnable(tree) {
     }
     const lang = node.lang;
     const runs = !/\bstatic\b/.test(node.meta ?? '');
+    const check = lang === 'r' && node.meta?.match(/\bcheck=(\d+)\b/)?.[1];
     const code = {
       type: 'element',
       tagName: 'code',
@@ -268,7 +271,7 @@ function runnable(tree) {
     // elements instead of wrapping them in its own <pre>.
     node.type = 'runnableCode';
     node.data = runs
-      ? { hName: 'div', hProperties: { className: ['runner'], dataRunner: '', dataLang: lang }, hChildren: [pre] }
+      ? { hName: 'div', hProperties: { className: ['runner'], dataRunner: '', dataLang: lang, ...(check && { dataCheck: check }) }, hChildren: [pre] }
       : { hName: 'pre', hProperties: shown, hChildren: [code] };
   });
 }

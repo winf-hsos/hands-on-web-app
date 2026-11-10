@@ -180,6 +180,7 @@ Type-specific fields:
 | `dataset` | `file`, the name of a CSV in `media/datasets/`; `authors`, `year`, `license` where known. The page offers the file for download with its rows, columns and size, measured when building, and the lines that load it in R and in Python; the body describes the data. Only a dataset has a `file`. An RDS file of the same name next to the CSV (`milk_survey_compact.rds`) is offered as a second download, with `readRDS()` in the R lines and a sentence on what RDS keeps that CSV loses, the types of the columns (Nicolas, 2026-11-09) |
 | `video` | `url`, a YouTube link, and `start`, the second to begin at. The page shows the video in a frame, but loads nothing from YouTube until the learner presses play; then the player comes from youtube-nocookie.com (Nicolas, 2026-11-02) |
 | `quiz` | none; the questions are in the body, see section 7 |
+| `test` | `checks`, the tasks whose answers the page checks, see section 7b |
 | `challenge` | no `duration`; the task of one phase of a project, see section 9a |
 | `info` | none; a page that tells what to know or set up, such as the software for a project, without introducing a concept. A concept is a `lesson` (Nicolas, 2026-11-02) |
 
@@ -364,7 +365,8 @@ The body is plain Markdown with a few conventions:
   same view opens as a layer over the page. The code is `client/focus.js`,
   used by `runner.js`, `tables.js` and `quiz.js`.
 - **R code** in a ` ```r ` block works the same way with webR; ` ```r static `
-  only shows it. Each block runs on its own, with dplyr loaded and the data
+  only shows it. Each block runs on its own, as after `library(tidyverse)`
+  (the core packages load when a block calls one of their functions), and the data
   sets `survey` (`media/datasets/milk_survey.csv`), `rewe`
   (`media/datasets/rewe_products.csv`), `monty_hall`
   (`media/datasets/lets_make_a_deal.csv`, a plain `data.frame`, since the
@@ -372,7 +374,7 @@ The body is plain Markdown with a few conventions:
   sentences of the experiment `a-language-model-by-counting`, in
   `farm_corpus.csv` one per row and in `farm_corpus_tokens.csv` one row per
   token with its sentence and position, `<s>` at position 0 and `</s>` at
-  the end of each sentence, because webR has no tidyr to split them; both
+  the end of each sentence, prepared before tidyr was on the site; both
   written by `scripts/counting-corpus.py`), and `cards`, `vectors` and
   `word_vectors` (the 24 cards of the experiment `a-map-of-meaning` and the
   384 numbers of every card and of 48 single words, one row per number, in
@@ -725,7 +727,9 @@ hints and extension become comments, headings become sections (`# Aufgabe ----`
 in R), the code of the boxes becomes code, and the solution stays on the page.
 Lines of setup that several boxes begin with appear once. An R script starts
 by loading what the boxes get in the browser: dplyr, ggplot2 where it draws,
-and every data set it names, read from the site. Only boxes that run on the
+`library(tidyverse)` instead where the boxes call a function of another
+package of the tidyverse, and every data set it names, read from the site,
+with the file that `r_datasets` gives the name on that page. Only boxes that run on the
 page count: an exercise whose code is all `static` gets no script.
 
 **Slides with tasks to do along** are an exercise first (Nicolas, 2026-11-02):
@@ -735,6 +739,44 @@ callouts, so they can be read and continued without the deck. `first-light`
 is the first. Its learners write the code into files on their own computer
 and run it in the terminal, so its blocks are `static` and the page offers
 no script.
+
+## 7b. Tests
+
+A test (type `test`, Nicolas, 2026-11-10) is a set of tasks whose answers the
+page checks: each task stores its result under a given R name, and a **Prüfen**
+button below its box runs the code in the background and says whether the
+result is right. It does not replace a quiz, which asks for knowledge; a test
+asks for a result of the learner's own code. The first is `survey-self-test`,
+the self-test of the R self-study in Praxis der Markt- und
+Gesellschaftsforschung, with the checksums of the course's `check_answers.R`.
+
+The lead file names the tasks in order, and the body has one
+` ```r check=N ` box per task, numbered 1 to N in the same order (the build
+checks both):
+
+```yaml
+r_datasets: { survey: mds12_schoko_milch.csv }
+checks:
+  - { name: answer_1, md5: 06c131cb00477b64637a40eec7781743, review: survey-exercise-describing-variables }
+  - { name: plot_8, plot: { counts: [425, 728, 769, 889], rows: 4, defaults: [Q002altergru4f] }, review: survey-exercise-figures }
+```
+
+- `name` is the R name that holds the answer after the box has run.
+- `md5` is the MD5 of `"<N>:<answer>"`, where a number is rounded to one
+  decimal (`format(round(x, 1), nsmall = 1, trim = TRUE)`) and text is
+  lower-cased and trimmed, so the page never holds the answer in plain text.
+  A table of one value counts as that value; an answer that is right times
+  100 gets the hint that a percentage is wanted.
+- `plot` checks a ggplot instead: the first layer has `rows` rows, its
+  values include `counts`, and neither axis is labelled with one of
+  `defaults`, `count`, `n` or nothing.
+- `review` is the item to work through again when the answer is not right;
+  the verdict links it, and so does the score at the end of the page.
+
+The results live in the progress of the browser, one 1 or 0 per task, and a
+test counts as done once every task is right. `r_datasets` works on any page
+with R boxes: it maps an R name to a CSV in `media/datasets/`, so `survey`
+means the full survey there instead of the compact one.
 
 ## 8. Learning paths
 

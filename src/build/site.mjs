@@ -61,7 +61,7 @@ export function createSite({ vocabulary, sections, hidden = new Map() }, area, b
       const target = byId.get(id) ?? hidden.get(id);
       return target ? localize(target, lang).title : null;
     };
-    return exerciseScript({ id: doc.id, title: text.title, body: text.file.body, lang, url: docUrl(doc, lang), titleOf });
+    return exerciseScript({ id: doc.id, title: text.title, body: text.file.body, lang, url: docUrl(doc, lang), titleOf, datasets: doc.lead.r_datasets });
   };
 
   /** A quiz as a CSV and as cards for Anki to download (build/quiz-export.mjs), or null. */

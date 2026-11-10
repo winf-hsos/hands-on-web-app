@@ -2,7 +2,7 @@
 // layout; the build writes them out. Overview first, details on request:
 // what is not needed to choose or to read sits in a disclosure.
 import { html, raw, json } from '../build/html.mjs';
-import { t, count, formatDate, backLabels } from '../build/i18n.mjs';
+import { t, count, formatDate, backLabels, testLabels } from '../build/i18n.mjs';
 import { liveQuizUrl } from '../build/quiz-json.mjs';
 import { itemRow, progressBar, more, facts, icons, typeIcon, typeLabel, viewSwitch, draftTag, editable } from './parts.mjs';
 import { typesOf, hasType } from '../build/types.mjs';
@@ -273,7 +273,19 @@ export function item(site, doc, lang) {
   const isQuiz = hasType(lead, 'quiz');
   // in an experiment or an exercise the numbered lists are the tasks, set off
   // from the text around them (site.css, "Tasks in an experiment or exercise")
-  const prose = ['experiment', 'exercise'].some((type) => hasType(lead, type)) ? 'prose has-tasks' : 'prose';
+  const prose = ['experiment', 'exercise', 'test'].some((type) => hasType(lead, type)) ? 'prose has-tasks' : 'prose';
+  // what an R box needs to know beyond its code: which file a table name means
+  // on this page, and in a test what each task checks and where to review it
+  // (client/runner.js, client/test.js)
+  const rData = lead.r_datasets && JSON.stringify(lead.r_datasets);
+  const test =
+    hasType(lead, 'test') &&
+    JSON.stringify(
+      (lead.checks ?? []).map((c, i) => {
+        const review = c.review && site.item.get(c.review);
+        return { number: i + 1, name: c.name, md5: c.md5, plot: c.plot, review: review && { url: site.url(review, lang), title: site.localize(review, lang).title } };
+      }),
+    );
   const v = site.vocabulary;
   // a lesson's own text in parts, with its material between them (build/embed.mjs)
   const parts = site.parts(doc, lang);
@@ -298,11 +310,11 @@ export function item(site, doc, lang) {
     title: text.title,
     description: text.summary,
     // an item of one project is not in the list of items
-    scripts: [(isQuiz || quizzes.length > 0) && 'quiz', toc && 'toc', hasType(lead, 'video') && 'video', ...scriptsFor(body)].filter(Boolean),
+    scripts: [(isQuiz || quizzes.length > 0) && 'quiz', toc && 'toc', hasType(lead, 'video') && 'video', test && 'test', ...scriptsFor(body)].filter(Boolean),
     // the item's own drawings, next to its page (docs/figures.md)
     figures: body.includes('data-figure') && `figures.js?v=${figureFile(doc)?.hash}`,
     content: html`
-      <article class="page item" data-item-page="${doc.id}">
+      <article class="page item" data-item-page="${doc.id}"${rData && html` data-r-datasets="${rData}"`}${test && html` data-test="${test}" data-test-labels="${JSON.stringify(testLabels[lang])}"`}>
         ${toc}
         <header class="page-head">
           <p class="kicker"${editable(site, 'kicker')}>${typeIcon(site, doc)}<span>${typeLabel(site, doc, lang)}</span>${lead.duration && html`<span>${lead.duration} ${t(lang, 'minutes')}</span>`}${backIcon(site, lang, back)}</p>

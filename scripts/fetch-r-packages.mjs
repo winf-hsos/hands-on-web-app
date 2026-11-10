@@ -8,7 +8,8 @@ import { mkdirSync, writeFileSync, existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const R_VERSION = '4.6'; // the R inside webR 0.6
-const WANTED = ['dplyr', 'tibble', 'ggplot2'];
+// the core of the tidyverse, the nine packages library(tidyverse) attaches
+const WANTED = ['dplyr', 'tibble', 'ggplot2', 'tidyr', 'readr', 'purrr', 'stringr', 'forcats', 'lubridate'];
 const SOURCE = `https://repo.r-wasm.org/bin/emscripten/contrib/${R_VERSION}`;
 const TARGET = join(import.meta.dirname, '..', 'vendor/webr-repo/bin/emscripten/contrib', R_VERSION);
 

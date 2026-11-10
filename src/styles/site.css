@@ -1367,6 +1367,58 @@ select {
   box-shadow: inset 3px 0 0 var(--warn);
 }
 
+/* the check of a task in a test (client/runner.js): what came out, under the
+   buttons; "not yet" is marked like a hint, not like an error, since it
+   invites another try */
+.runner-verdict {
+  margin: 0 !important;
+  padding: 0.6rem 1rem 0.7rem;
+  border-top: 1px dashed var(--rule);
+  font-size: 0.92rem;
+  color: var(--ink);
+}
+
+.runner-verdict.is-correct {
+  box-shadow: inset 3px 0 0 var(--done);
+}
+
+.runner-verdict.is-correct strong {
+  color: var(--done);
+}
+
+.runner-verdict.is-wrong {
+  box-shadow: inset 3px 0 0 var(--warn);
+}
+
+/* the score of a test, at its end (client/test.js) */
+.test-score {
+  margin: 2rem 0 1rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.75rem;
+  background: var(--paper-2);
+}
+
+.test-score.is-complete {
+  border-color: var(--done);
+}
+
+.test-score-line {
+  margin: 0 0 0.5rem;
+  font-weight: 700;
+}
+
+.test-score progress {
+  width: 100%;
+  height: 0.5rem;
+  accent-color: var(--done);
+}
+
+.test-score-note {
+  margin: 0.5rem 0 0;
+  font-size: 0.92rem;
+}
+
 /* the simulated LED of a program that uses lifi_hardware (client/led-view.js):
    the LED and the time on the left, the timeline beside it; the bars take the
    LED's own colours, since they stand for light */

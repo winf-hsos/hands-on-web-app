@@ -10,6 +10,7 @@ import { highlight } from './highlight.js';
 import { savedOnPage, fingerprint } from './saved.js';
 import { presentable } from './present.js';
 import { showLed } from './led-view.js';
+import { load, update, today } from './progress.js';
 
 const { pythonWorker, pyodide, runnerLabels } = document.body.dataset;
 const L = JSON.parse(runnerLabels);
@@ -72,14 +73,62 @@ function stopAll() {
 // R is loaded only on pages that have R blocks, and only on the first click.
 let rEngine = null;
 const rWaiting = new Set();
-async function sendR(code, onMessage) {
+async function sendR(code, onMessage, options) {
   rEngine ??= await import('./r-engine.js');
   rWaiting.add(onMessage);
-  await rEngine.run(code, (message) => {
-    if (!rWaiting.has(onMessage)) return; // stopped meanwhile
-    if (message.type === 'done') rWaiting.delete(onMessage);
-    onMessage(message);
+  await rEngine.run(
+    code,
+    (message) => {
+      if (!rWaiting.has(onMessage)) return; // stopped meanwhile
+      if (message.type === 'done') rWaiting.delete(onMessage);
+      onMessage(message);
+    },
+    options,
+  );
+}
+
+// The files a page means by a table name (r_datasets in its head), from the
+// nearest element that says so: on the self-study pages `survey` is the full
+// survey instead of the compact one.
+const aliasesOf = (box) => JSON.parse(box.closest('[data-r-datasets]')?.dataset.rDatasets ?? '{}');
+
+// --- a task of a test ------------------------------------------------------------
+
+// What the box of task N checks (data-test on the page, pages.mjs), with the
+// labels and the id of the test; the results live in the progress like those
+// of a quiz, 1 for right and 0 for not yet, and the test is done when all are
+// right (client/test.js shows the score). The last check of a task counts, as
+// check_answer() in the course: a box that says "not yet" is not counted right.
+function testTask(box) {
+  const page = box.closest('[data-test]');
+  const number = Number(box.dataset.check);
+  const spec = JSON.parse(page?.dataset.test ?? '[]').find((t) => t.number === number);
+  return spec && { ...spec, item: page.dataset.itemPage, total: JSON.parse(page.dataset.test).length, labels: JSON.parse(page.dataset.testLabels) };
+}
+
+const testResults = (item) => load().items[item]?.test ?? {};
+
+function recordTest(task, correct) {
+  update(task.item, (p) => {
+    p.test ??= {};
+    p.test[task.number] = correct ? 1 : 0;
+    if (Object.values(p.test).filter((v) => v === 1).length === task.total) p.done ??= today();
   });
+}
+
+function showVerdict(verdict, task, result, detail = '') {
+  const L = task.labels;
+  const [rows, cols] = detail.split(' ');
+  const fill = (s) => s.replace('{name}', task.name).replace('{rows}', rows).replace('{cols}', cols).replace('{n}', detail).replace('{detail}', detail.trim().replace(/([^.!?])$/, '$1.'));
+  const correct = result === 'correct';
+  verdict.hidden = false;
+  verdict.className = `runner-verdict ${correct ? 'is-correct' : 'is-wrong'}`;
+  const message = correct ? L.correct : result === 'wrong' ? L.wrong : fill(L[result] ?? L.wrong);
+  verdict.replaceChildren(el('strong', {}, correct ? L.correct : L.wrong));
+  if (!correct && message !== L.wrong) verdict.append(' ', message);
+  // where to review it, when the answer is there but not right
+  if (!correct && task.review && ['wrong', 'share', 'table', 'many', 'plot_wrong', 'plot_labels'].includes(result))
+    verdict.append(' ', L.review, ' ', el('a', { href: task.review.url }, task.review.title));
 }
 
 // --- one block -------------------------------------------------------------------
@@ -119,8 +168,26 @@ function setup(box) {
   const hint = el('p', { className: 'runner-hint', hidden: true });
   // what the simulated LED did, for a program that uses lifi_hardware (led-view.js)
   const led = el('div', { className: 'led-view', role: 'group', hidden: true });
-  const bar = el('div', { className: 'runner-bar' }, run, reset, status);
-  box.replaceChildren(code, bar, led, output, hint);
+  // in a test, the box of a task also checks its answer (Nicolas, 2026-11-10)
+  const task = lang === 'r' && box.dataset.check ? testTask(box) : null;
+  const checker = task && el('button', { type: 'button', className: 'button button-quiet runner-check', textContent: task.labels.check });
+  const verdict = task && el('p', { className: 'runner-verdict', role: 'status', hidden: true });
+  const bar = el('div', { className: 'runner-bar' }, ...[run, checker, reset, status].filter(Boolean));
+  box.replaceChildren(...[code, bar, verdict, led, output, hint].filter(Boolean));
+  if (task) {
+    if (testResults(task.item)[task.number] === 1) showVerdict(verdict, task, 'correct');
+    checker.addEventListener('click', async () => {
+      checker.disabled = true;
+      verdict.hidden = false;
+      verdict.className = 'runner-verdict';
+      verdict.textContent = task.labels.checking;
+      rEngine ??= await import('./r-engine.js');
+      const { result, detail } = await rEngine.check(editor.value, task, { datasets: aliasesOf(box) });
+      checker.disabled = false;
+      showVerdict(verdict, task, result, detail);
+      recordTest(task, result === 'correct');
+    });
+  }
   // Larger, for working on the code together on a projector: presented on a
   // stage with its heading and paragraph (present.js), at one size for all
   // boxes, with a fixed room for the output in which longer output scrolls.
@@ -223,7 +290,7 @@ function setup(box) {
       status.textContent = '';
       finish(message);
     };
-    if (lang === 'r') sendR(editor.value, reply);
+    if (lang === 'r') sendR(editor.value, reply, { datasets: aliasesOf(box) });
     else send(editor.value, answers, reply);
   }
 
