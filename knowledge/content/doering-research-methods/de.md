@@ -21,7 +21,7 @@ url: https://doi.org/10.1007/978-3-662-64762-2
 level: 2
 duration: 5
 topics: [questions-and-measurement]
-modules: [ea]
+modules: [ea, pmg]
 areas: [ds]
 status: draft
 updated: 2026-11-02

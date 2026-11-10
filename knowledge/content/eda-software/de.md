@@ -9,7 +9,7 @@ summary: >-
 level: 1
 duration: 30
 topics: [reproducible-work, programming-with-r]
-modules: [ea]
+modules: [ea, pmg]
 areas: [ds]
 status: published
 updated: 2026-11-09

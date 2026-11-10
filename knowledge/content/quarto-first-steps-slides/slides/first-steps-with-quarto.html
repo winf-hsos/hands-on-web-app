@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>first steps with quarto</title>
+  <link rel="stylesheet" href="theme.css?v=1">
+  <link rel="stylesheet" href="../../stagekit/stagekit.css?v=0.7.0-156254">
+  <style>
+    /* deck-specific layout, colours and sizes only from the theme */
+    /* photo slides with text: the photo on 64 % height, the text left of it */
+    .slide img.photo.side { height: 64%; top: 18%; }
+    .slide .photo-text.side { width: 30%; font-size: var(--normal); line-height: 1.25; }
+    .code.small { font-size: var(--small); }
+    .stack { display: flex; flex-direction: column; gap: 24px; }
+    .stack .header + .code, .stack .header + img { margin-top: -8px; }
+    .stack .gap { height: 24px; }
+    /* a crop of the rendered PDF: white paper on the black slide */
+    img.paper { display: block; border-radius: 6px; }
+    /* code on the left, its result on the right; 140 between leaves room for the copy button */
+    .answer { display: grid; grid-template-columns: auto auto; column-gap: 140px; align-items: start; }
+    .answer > div { display: flex; flex-direction: column; gap: 16px; }
+    /* the header with a remark beside some of its lines: both rows 1.35 em of 32 high */
+    .beside { display: grid; grid-template-columns: auto auto; column-gap: 140px; align-items: start; }
+    .beside .said > div { height: calc(var(--small) * 1.35); display: flex; align-items: center; font-size: var(--small); color: var(--gray-light); white-space: nowrap; }
+    /* the chunk options: yes in white, no in grey */
+    table.opts { border-collapse: collapse; font-size: var(--small); }
+    table.opts th { color: var(--gray); font-weight: normal; text-align: left; padding: 0 70px 20px 0; }
+    table.opts td { color: var(--white); padding: 16px 70px 16px 0; border-top: 2px solid var(--gray-dark); }
+    table.opts td:first-child { font-family: var(--mono); text-transform: none; }
+    table.opts td.no { color: var(--gray); }
+    table.opts tr.point td:first-child { color: var(--blue); }
+    /* what goes wrong when rendering: the cause and the line that gives it away */
+    .fails { display: grid; grid-template-columns: 620px auto; column-gap: 80px; row-gap: 36px; font-size: var(--small); align-items: center; }
+    .fails .tell { font-family: var(--mono); color: var(--gray-light); text-transform: none; white-space: nowrap; }
+    .fails .silent { color: var(--gray); }
+    .fails .rule { grid-column: 1 / 3; height: 0; border-top: 2px solid var(--gray-dark); margin: 4px 0; }
+    .keep-case { text-transform: none; }
+  </style>
+</head>
+<body>
+<div class="deck" data-title="first steps with quarto"
+     data-subtitle="prof. dr. nicolas meseth"
+     data-parts='["one source", "writing", "code and results", "the scholarly apparatus", "rendering"]'
+     data-live-url="https://live.hsos.uber.space" data-live-series="first-steps-with-quarto">
+
+  <section class="slide title">
+    <aside class="notes">This input is about writing a paper with Quarto. The message to take home is one sentence: a Quarto document holds text, code and results in one source, so the paper always shows exactly what the analysis computes.</aside>
+  </section>
+  <section class="slide agenda">
+    <aside class="notes">Five parts: why one source beats copy and paste, how to write text with Markdown, how code and its results get into the paper, how cross-references and citations work, and how to render the document and what to do when that fails.</aside>
+  </section>
+
+  <!-- opening photo, before the first part -->
+  <section class="slide">
+    <img class="photo side" src="img/opening-cut-and-paste.jpg" alt="A laptop showing a bar chart next to a printed report with the same chart glued in, scissors, a glue stick and cut-out charts on a desk">
+    <div class="photo-text side">every time the data change, someone copies the chart into the report again, unless the report computes the chart itself.</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">This is how most reports come about: a chart is made in R, exported and pasted into Word, and a number is typed into the text by hand. When a filter changes, the report no longer matches the analysis, and nobody notices. Quarto turns this around, because the report contains the code and computes itself every time it is rendered.</aside>
+  </section>
+
+  <!-- ===== part 1: one source ===== -->
+  <section class="slide part" data-part="one source" data-subtitle="text, code and results in one file">
+    <aside class="notes">First the idea behind Quarto: one file that holds the text, the code and therefore the results.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>copy and paste</h2>
+    <div class="figure" id="fig-copy"></div>
+    <aside class="notes">Results reach the document on three paths: a chart is exported, a table is copied and a number is typed in. Each of them is manual work that would have to be repeated after every change. Next step: one line of the script changes, for example a filter, and from that moment nobody knows whether the chart, the table and the number in the report are still right, unless someone goes down all three paths again.</aside>
+  </section>
+
+  <section class="slide poll" data-poll="quarto-writing-tool">
+    <div class="poll-q">what do you write longer texts in today?</div>
+    <ol class="poll-opts"><li>word</li><li>google docs</li><li>latex or typst</li><li>markdown</li><li>something else</li></ol>
+    <aside class="notes">A poll without a right answer. Most people write in Word or Google Docs, and both are fine for text; the problem only starts when results from an analysis have to get into the text.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>one source</h2>
+    <div class="figure" id="fig-source"></div>
+    <aside class="notes">A Quarto document is a text file with the ending .qmd. It consists of exactly three things: a header with information about the document, text in Markdown, and R code in chunks. There is nothing more to learn than these three; everything else is a detail of one of them.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>what rendering does</h2>
+    <div class="figure" id="fig-render"></div>
+    <aside class="notes">When you render, Quarto first hands the document to knitr, which runs all R code from top to bottom in a fresh R session; the chunks are what is being worked on. Out comes a Markdown file in which the results stand where the code was: the chart, the table, the numbers. Typst then sets this Markdown file into a PDF, and one command, quarto render, runs the whole chain. Two rules follow from it: the document has to load everything it needs itself, and an error in the code stops the rendering.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="statement">the document is the analysis, so a number in the text can only be wrong if the code is wrong.</div>
+    </div>
+    <aside class="notes">This is the sentence of the whole input. Nothing is copied by hand any more, and every number in the paper comes from the same code that you can check, run again and hand to someone else.</aside>
+  </section>
+
+  <!-- ===== part 2: writing ===== -->
+  <section class="slide part" data-part="writing" data-subtitle="header, markdown, references, math">
+    <aside class="notes">Now the parts of the document one by one, starting with the text.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>the header</h2>
+    <div class="content" style="top: 150px; bottom: 40px">
+      <div class="beside">
+        <div class="code small"><div>---</div><div>title: "What is milk worth?"</div><div>author: "Group 4"</div><div>date: today</div><div>lang: en</div><div>abstract: |</div><div>  We ask from which price on a litre</div><div>  of milk is too expensive for shoppers.</div><div>format:</div><div>  <span class="hl">typst</span>:</div><div>    <span class="hl">papersize: a4</span></div><div>    number-sections: true</div><div>execute:</div><div>  echo: false</div><div>bibliography: references.bib</div><div>csl: apa</div><div>---</div></div>
+        <div class="said"><div></div><div></div><div></div><div>the day of rendering</div><div>english hyphenation and labels</div><div></div><div></div><div></div><div></div><div><span>the <span class="keep-case">PDF</span> is set by typst</span></div><div><span>without it, the page is <span class="keep-case">US</span> letter</span></div><div>numbers for the headings</div><div></div><div>results, but no code</div><div>the file with the sources</div><div>the citation style</div><div></div></div>
+      </div>
+    </div>
+    <aside class="notes">The header stands between two lines of three dashes and is written in YAML: a name, a colon, a value, and indentation with spaces. It holds everything that concerns the document as a whole and the format it is rendered to. Two lines matter more than they look: typst decides that the PDF is set by Typst, which comes with Quarto, and papersize: a4 is needed because Quarto's default is US letter. lang: de switches to German hyphenation and labels such as "Abbildung"; the example stays in English. execute: echo: false hides the code in the whole paper, so only the results appear.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>markdown</h2>
+    <div class="content">
+      <div class="answer">
+        <div><div class="header">typed in the .qmd</div>
+          <div class="code small">## Method
+
+This is **important**.
+
+We ran a *survey*.
+
+- one item
+- another item
+
+See [quarto.org](https://quarto.org).
+
+A claim.^[a footnote]</div></div>
+        <div><div class="header">in the <span class="keep-case">PDF</span></div><img class="paper" src="img/pdf-markdown.png" style="width: 483px" alt="The rendered Markdown: a numbered heading, a bold word, an italic word, a list, a link and a footnote"></div>
+      </div>
+    </div>
+    <aside class="notes">Markdown is text with a few characters for the form: hashes for headings, stars for emphasis, dashes for lists, square brackets for links and a caret for footnotes. You write the content, and the form comes from the template. The heading carries a number because the header switches on number-sections.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>sections you can point to</h2>
+    <div class="content">
+      <div class="stack">
+        <div class="header">a heading with a label</div>
+        <div class="code small">## Method <span class="hl">{#sec-method}</span></div>
+        <div class="gap"></div>
+        <div class="header">a reference to it in the text</div>
+        <div class="code small">As described in <span class="hl">@sec-method</span>, the respondents form a quota sample.</div>
+        <div class="gap"></div>
+        <div class="header">in the <span class="keep-case">PDF</span></div>
+        <img class="paper" src="img/pdf-secref.png" style="width: 1476px" alt="As described in Section 2, the respondents form a quota sample">
+      </div>
+    </div>
+    <aside class="notes">A heading gets a label in curly braces, starting with sec- and a hash in front, and the text points to the label with an at sign. Quarto writes "Section 2" and counts correctly even when the outline changes. The number appears only when the header switches on number-sections.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>math</h2>
+    <div class="content">
+      <div class="stack">
+        <div class="answer">
+          <div><div class="header">typed in the .qmd</div>
+            <div class="code small">$$
+\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i
+$$</div></div>
+          <div><div class="header">in the <span class="keep-case">PDF</span></div><img class="paper" src="img/pdf-formula.png" style="width: 535px" alt="The mean, set as a formula"></div>
+        </div>
+        <div class="gap"></div>
+        <div class="sidenote">one dollar sign for math inside a sentence, two for a formula on a line of its own</div>
+      </div>
+    </div>
+    <aside class="notes">Formulas stand between dollar signs, a single one inside a sentence and a double one for a formula on its own line. The notation is that of LaTeX, and every AI assistant can write it for you if you describe the formula.</aside>
+  </section>
+
+  <!-- ===== part 3: code and results ===== -->
+  <section class="slide part" data-part="code and results" data-subtitle="chunks, figures, tables, numbers">
+    <aside class="notes">Now the part that makes a Quarto document more than a text: code and what it computes.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>a code chunk</h2>
+    <div class="content">
+      <div class="stack">
+        <div class="code">```{r}
+<span class="hl">#| label: setup</span>
+<span class="hl">#| message: false</span>
+library(tidyverse)
+
+survey &lt;- read_csv("milk_survey_compact.csv")
+```</div>
+        <div class="gap"></div>
+        <div class="sidenote">lines that start with <span class="mono keep-case">#|</span> are options for quarto, and R ignores them as comments</div>
+      </div>
+    </div>
+    <aside class="notes">A code chunk starts with three backticks and r in curly braces and ends with three backticks. The lines that start with a hash and a vertical bar are options for this chunk: Quarto reads them, R ignores them. The file name is relative to the document, so the CSV file lies in the same folder as the .qmd.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>chunk options</h2>
+    <div class="content">
+      <div class="stack">
+        <table class="opts">
+          <tr><th>option</th><th>code shown</th><th>runs</th><th>result shown</th></tr>
+          <tr class="point"><td>echo: false</td><td class="no">no</td><td>yes</td><td>yes</td></tr>
+          <tr><td>include: false</td><td class="no">no</td><td>yes</td><td class="no">no</td></tr>
+          <tr><td>eval: false</td><td>yes</td><td class="no">no</td><td class="no">no</td></tr>
+          <tr><td>warning: false</td><td>yes</td><td>yes</td><td>yes, without warnings</td></tr>
+          <tr><td>message: false</td><td>yes</td><td>yes</td><td>yes, without messages</td></tr>
+        </table>
+        <div class="gap"></div>
+        <div class="sidenote">for the whole paper, set <span class="mono keep-case">echo: false</span> once in the header, under <span class="mono keep-case">execute:</span></div>
+      </div>
+    </div>
+    <aside class="notes">In a paper you rarely want to see the code, but you do want its result, and that is echo: false. include: false runs a chunk and shows nothing, which suits a chunk that only loads packages and data. eval: false shows code without running it. warning and message switch off what R prints on the side. Set echo: false for the whole document in the header instead of in every chunk.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>a figure</h2>
+    <div class="content">
+      <div class="answer">
+        <div><div class="header">typed in the .qmd</div>
+          <div class="code small">```{r}
+#| label: <span class="hl">fig-threshold</span>
+#| <span class="hl">fig-cap</span>: "Price at which milk is too expensive."
+survey |&gt;
+  filter(price_too_expensive &lt;= 5) |&gt;
+  ggplot() +
+  aes(x = price_too_expensive) +
+  geom_histogram(binwidth = 0.25)
+```</div></div>
+        <div><div class="header">in the <span class="keep-case">PDF</span></div><img class="paper" src="img/pdf-figure.png" style="width: 560px" alt="A histogram of the price thresholds with the caption Figure 1: Price at which milk is too expensive"></div>
+      </div>
+    </div>
+    <aside class="notes">A figure needs two things: a label that starts with fig- and a caption. Without fig- at the start it is no figure you can refer to. The filter keeps the answers up to five euros; a few answers up to 999 euros would otherwise stretch the axis until the distribution disappears. Quarto numbers the figure and puts "Figure 1" in front of the caption.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>a table</h2>
+    <div class="content">
+      <div class="answer">
+        <div><div class="header">typed in the .qmd</div>
+          <div class="code small">```{r}
+#| label: <span class="hl">tbl-diet</span>
+#| <span class="hl">tbl-cap</span>: "Respondents by diet."
+survey |&gt;
+  count(diet, sort = TRUE) |&gt;
+  <span class="hl">knitr::kable()</span>
+```</div></div>
+        <div><div class="header">in the <span class="keep-case">PDF</span></div><img class="paper" src="img/pdf-table.png" style="width: 534px" alt="Table 1: Respondents by diet, with omnivore 1826, flexitarian 749, vegetarian 134, pescetarian 36, vegan 36 and NA 28"></div>
+      </div>
+    </div>
+    <aside class="notes">The same for tables, with tbl-. knitr::kable() turns a data frame into a set table; packages such as gt or tinytable make nicer ones. NA in the last row stands for the 28 people who did not name a diet.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>numbers in the text</h2>
+    <div class="content">
+      <div class="stack">
+        <div class="header">typed in the .qmd</div>
+        <div class="code small">The median threshold is
+<span class="hl">`{r} median(survey$price_too_expensive, na.rm = TRUE)`</span>
+euros.</div>
+        <div class="gap"></div>
+        <div class="header" data-step="1">in the <span class="keep-case">PDF</span></div>
+        <img class="paper" data-step="1" src="img/pdf-median.png" style="width: 595px" alt="The median threshold is 1.99 euros.">
+      </div>
+    </div>
+    <aside class="notes">This is the part that replaces typing numbers by hand: a number in a sentence is R code between backticks, with r in curly braces in front. Next step: in the PDF there is the number, 1.99 euros, and when the data change, the number changes with them. Write every value that comes from the data this way.</aside>
+  </section>
+
+  <!-- ===== part 4: the scholarly apparatus ===== -->
+  <section class="slide part" data-part="the scholarly apparatus" data-subtitle="cross-references and citations">
+    <aside class="notes">What makes a text a paper: references to figures and tables, and citations.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>cross-references</h2>
+    <div class="content">
+      <div class="stack">
+        <div class="header">typed in the .qmd</div>
+        <div class="code small"><span class="hl">@fig-threshold</span> shows the answers up to five euros.
+
+Most respondents eat meat, see <span class="hl">@tbl-diet</span>.</div>
+        <div class="gap"></div>
+        <div class="header" data-step="1">in the <span class="keep-case">PDF</span></div>
+        <img class="paper" data-step="1" src="img/pdf-figref.png" style="width: 731px" alt="Figure 1 shows the answers up to five euros.">
+        <img class="paper" data-step="1" src="img/pdf-tblref.png" style="width: 660px" alt="Most respondents eat meat, see Table 1.">
+      </div>
+    </div>
+    <aside class="notes">Never write "the figure below", but point to the label with an at sign. Next step: Quarto writes "Figure 1" and "Table 1", and the numbers stay right after you move things around.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>citations</h2>
+    <div class="figure" id="fig-cite"></div>
+    <aside class="notes">The literature lives in a file of its own in BibTeX format, which every reference manager and Google Scholar export. Next step: in the text you cite with an at sign and the key of the entry, in square brackets and with a page or chapter if you like. Next step: in the PDF the citation appears in the style the header asks for, here APA through csl: apa, and the entry lands in the bibliography at the end.</aside>
+  </section>
+
+  <section class="slide poll" data-poll="quarto-figure-label">
+    <div class="poll-q">which label lets you write @fig-prices in the text?</div>
+    <ol class="poll-opts"><li>label: prices</li><li data-correct>label: fig-prices</li><li>label: figure-prices</li><li>fig-cap: prices</li></ol>
+    <aside class="notes">label: fig-prices. The label must start with fig- for a figure, and the reference repeats it exactly with an at sign in front. figure- is not recognised, and fig-cap is the caption, not the label.</aside>
+  </section>
+
+  <!-- ===== part 5: rendering ===== -->
+  <section class="slide part" data-part="rendering" data-subtitle="from the .qmd to the PDF">
+    <aside class="notes">Finally the way from the file to the PDF, and what to do when it does not work.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>render</h2>
+    <div class="figure" id="fig-preview"></div>
+    <aside class="notes">In Positron the Preview button above the editor renders the document, and the PDF appears in the Viewer next to it; the commands "Quarto: Preview" and "Quarto: Render Document" in the command palette do the same. In the terminal, quarto render renders it. Positron brings Quarto along, and Quarto brings Typst along; the only thing to install is the R package rmarkdown. The button is drawn after Positron and may look a little different there.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>when rendering fails</h2>
+    <div class="content">
+      <div class="fails">
+        <div>a package is not loaded</div><div class="tell">could not find function "ggplot"</div>
+        <div data-step="1">a file is not found</div><div class="tell" data-step="1">does not exist in current working directory</div>
+        <div data-step="2">the header is indented wrongly</div><div class="tell" data-step="2">Validation of YAML front matter failed.</div>
+        <div data-step="3">a label without fig- or tbl-</div><div class="tell" data-step="3">?@fig-threshold</div>
+        <div class="rule" data-step="4"></div>
+        <div class="silent" data-step="4">no blank line before a list</div><div class="silent" data-step="4">the list becomes running text</div>
+        <div class="silent" data-step="4">no <span class="mono keep-case">papersize: a4</span></div><div class="silent" data-step="4">the page is <span class="keep-case">US</span> letter</div>
+      </div>
+    </div>
+    <aside class="notes">The four most common causes, each with the line that gives it away. The document renders in a fresh R session, so a package that was only loaded in the console is unknown to it. A file path is relative to the document, not to wherever the console happens to be. The header is YAML, and a wrong indentation breaks it. A reference to a label that does not exist, often because the label lacks fig- or tbl-, appears in the PDF with a question mark. Next step, in grey, two silent errors that do not stop anything: without a blank line before it, a list becomes running text, and without papersize: a4 the page is US letter.</aside>
+  </section>
+
+  <!-- closing photo -->
+  <section class="slide">
+    <img class="photo side" src="img/closing-rendered-report.jpg" alt="The same desk, tidied up: only the laptop with the chart and the printed report next to it">
+    <div class="photo-text side">write the analysis once, render as often as you like, and every number in the paper stays the one the data give.</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">From now on the paper is written in Quarto, and every change to the data is a click on render instead of an afternoon of copying. To try it, put the example paper milk-prices.qmd into a folder together with milk_survey_compact.csv and references.bib and render it yourself.</aside>
+  </section>
+
+</div>
+<script src="../../stagekit/draw.js?v=0.7.0-156254"></script>
+<script src="../../stagekit/anim.js?v=0.7.0-156254"></script>
+<script src="deck.js?v=1"></script>
+<script src="../../stagekit/stagekit.js?v=0.7.0-156254"></script>
+</body>
+</html>

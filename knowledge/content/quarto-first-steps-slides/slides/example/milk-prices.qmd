@@ -1,0 +1,86 @@
+---
+title: "What is milk worth?"
+author: "Group 4"
+date: today
+lang: en
+abstract: |
+  We ask from which price on a litre
+  of milk is too expensive for shoppers.
+format:
+  typst:
+    papersize: a4
+    number-sections: true
+execute:
+  echo: false
+bibliography: references.bib
+csl: apa
+---
+
+<!-- This paper reads the compact milk survey from the file
+     milk_survey_compact.csv, which must lie in the same folder. -->
+
+```{r}
+#| label: setup
+#| message: false
+library(tidyverse)
+
+survey <- read_csv("milk_survey_compact.csv")
+```
+
+## Introduction
+
+Milk is one of the few foods whose price many shoppers know by heart. We ask
+from which price on a litre is *too expensive*, and we look at the whole
+distribution of the answers before we summarise it [@wickham2023, chap. 10].
+
+## Method {#sec-method}
+
+The data come from an online survey with a **quota sample** of people who do
+their own shopping. Each respondent saw one of two brands of milk, chosen at
+random, and named the price from which it would be too expensive. We use
+
+- `price_too_expensive`, the price in euros, and
+- `diet`, the diet the respondents named.
+
+We summarise the prices with the median rather than the mean
+
+$$
+\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i
+$$
+
+because a few answers lie far above any real price.^[Some answers reach 999
+euros, a common code for "don't know".]
+
+## Results
+
+```{r}
+#| label: fig-threshold
+#| fig-cap: "Price at which milk is too expensive."
+survey |>
+  filter(price_too_expensive <= 5) |>
+  ggplot() +
+  aes(x = price_too_expensive) +
+  geom_histogram(binwidth = 0.25)
+```
+
+@fig-threshold shows the answers up to five euros.
+
+The median threshold is
+`{r} median(survey$price_too_expensive, na.rm = TRUE)`
+euros.
+
+```{r}
+#| label: tbl-diet
+#| tbl-cap: "Respondents by diet."
+survey |>
+  count(diet, sort = TRUE) |>
+  knitr::kable()
+```
+
+Most respondents eat meat, see @tbl-diet.
+
+## Discussion
+
+As described in @sec-method, the respondents form a quota sample and not a
+random one, so the thresholds describe the people who took part and not all
+of Germany.

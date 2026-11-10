@@ -22,7 +22,7 @@ url: https://theeffectbook.net/
 level: 2
 duration: 5
 topics: [questions-and-measurement, data-pitfalls]
-modules: [ea]
+modules: [ea, pmg]
 areas: [ds]
 status: draft
 updated: 2026-11-01
