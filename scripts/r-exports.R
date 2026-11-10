@@ -40,5 +40,8 @@ lines <- c(
   "};",
   ""
 )
-writeLines(lines, "src/client/r-packages.js", useBytes = TRUE)
+# a binary connection keeps LF line endings on Windows, as .gitattributes wants
+out <- file("src/client/r-packages.js", "wb")
+writeLines(lines, out, useBytes = TRUE)
+close(out)
 cat(length(owners), "functions from", length(core), "packages\n")
