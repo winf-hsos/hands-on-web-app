@@ -49,9 +49,12 @@ export function merge(into, from) {
 }
 
 let index;
-/** Titles, codes and URLs of everything, for search and transfer; fetched once. */
+/** Titles, codes and URLs of everything, for search and transfer; fetched once.
+    The host lets browsers keep it for ten minutes, so right after a release a
+    browser would still name a new course unknown and lead back to the content
+    instead of to it; asking the server first costs a 304 when nothing changed. */
 export function loadIndex() {
-  index ??= fetch(document.body.dataset.index)
+  index ??= fetch(document.body.dataset.index, { cache: 'no-cache' })
     .then((r) => r.json())
     .then((data) => {
       renameCourses(data.courses);
