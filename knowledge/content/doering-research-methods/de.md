@@ -6,13 +6,6 @@ summary: >-
   Nicola Döring beschreibt den ganzen Weg einer empirischen Studie, von der
   Forschungsfrage über Operationalisierung, Stichprobe und Datenerhebung bis
   zur Auswertung, und ist das deutschsprachige Standardwerk dafür.
-objectives:
-  intro: "Aus diesem Buch nimmst du mit, wie eine empirische Studie geplant, erhoben und ausgewertet wird, und kannst danach:"
-  goals:
-    - "erklären, was eine Variable ist und wie ein theoretisches Konzept über die Operationalisierung messbar wird"
-    - "die vier Skalenniveaus nominal, ordinal, intervall und verhältnis unterscheiden und sagen, welche Aussagen und Rechnungen jedes erlaubt"
-    - "eine Datenmatrix mit Fällen in den Zeilen und Variablen in den Spalten samt Codeplan und fehlenden Werten anlegen"
-    - "einschätzen, ob eine Ratingskala als ordinal oder als intervallskaliert ausgewertet werden darf"
 authors: [Nicola Döring]
 year: 2023
 publisher: Springer
@@ -23,8 +16,8 @@ duration: 5
 topics: [questions-and-measurement]
 modules: [ea, pmg]
 areas: [ds]
-status: draft
-updated: 2026-11-02
+status: published
+updated: 2026-11-11
 ---
 
 Das Buch begleitet eine empirische Studie Schritt für Schritt: vom
@@ -37,7 +30,14 @@ Bericht stehen muss.
 
 ## Warum es hierher passt
 
-Für die Datenanalyse sind vor allem zwei Kapitel wichtig. Kapitel 8,
+In Praxis der Markt- und Gesellschaftsforschung ist es das Lehrbuch für den
+Weg von der Frage zum Paper. Kapitel 5, „Forschungsthema“, zeigt, wie aus
+einem Thema eine Forschungsfrage wird, die eine Studie beantworten kann; darauf
+baut die Lektion [[research-questions]] auf. Kapitel 13, „Ergebnispräsentation“,
+beschreibt, welche Teile ein empirischer Bericht hat und welche Aufgabe jeder
+erfüllt, und ist die Grundlage der Lektion [[paper-structure]].
+
+Für die Datenanalyse sind vor allem zwei weitere Kapitel wichtig. Kapitel 8,
 „Operationalisierung“, erklärt, was eine Variable ist und welche vier
 Skalenniveaus es gibt, und zeigt für jedes, welche Aussagen und Rechnungen
 erlaubt sind; dort steht auch, warum zehn Grad nicht doppelt so warm sind wie
@@ -49,7 +49,9 @@ erste Zeile R schreibst.
 ## Ausgaben
 
 Die sechste, vollständig überarbeitete Auflage erschien 2023 bei Springer, als
-gedrucktes Buch (ISBN 978-3-662-64761-5) und als E-Book. Frühere Auflagen
-erschienen unter den Namen Bortz und Döring. Das Buch ist auf Deutsch
-geschrieben; über die Hochschulbibliothek ist das E-Book meist auf SpringerLink
-zugänglich.
+gedrucktes Buch (ISBN 978-3-662-64761-5) und als E-Book (ISBN
+978-3-662-64762-2). Frühere Auflagen erschienen unter den Namen Bortz und
+Döring. Das Buch ist auf Deutsch geschrieben und nicht frei zugänglich, aber
+die Hochschule Osnabrück hat eine Lizenz: Im Netz der Hochschule oder über VPN
+kannst du auf SpringerLink jedes Kapitel als PDF herunterladen, über den Link
+oben auf dieser Seite.

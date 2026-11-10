@@ -58,7 +58,7 @@ versucht hast.
 
 ## Teil 1: Die Variablen vorbereiten
 
-1. **5.1** Such die Spalten, die du für deine Frage brauchst, im Codebuch und
+1. Such die Spalten, die du für deine Frage brauchst, im Codebuch und
    notiere für jede die Seite, den Fragetext in Kurzform und die Codes. Leg
    dann eine kleine Tabelle an, die nur eine Kennung `respondent_id` und
    diese Spalten enthält.
@@ -131,7 +131,7 @@ survey
 >   select(respondent_id, starts_with("p030green"), starts_with("p031bio"))
 > ```
 
-2. **5.2** Bestimme für jede deiner Spalten das Skalenniveau und prüfe, ob
+2. Bestimme für jede deiner Spalten das Skalenniveau und prüfe, ob
    der Datentyp dazu passt. Wandle um, wo es nötig ist: in einen Faktor mit
    richtiger Reihenfolge, in Gruppen oder, bei umgepolten Aussagen, in
    umgedrehte Werte.
@@ -142,7 +142,7 @@ survey
 
 > [!HINT]
 > Gruppen bildest du mit `case_when()` und bringst sie mit `fct_relevel()` in
-> die richtige Reihenfolge, so wie in Aufgabe 3.5 aus
+> die richtige Reihenfolge, so wie in Aufgabe 5 aus
 > [[survey-exercise-comparing-groups|Kapitel 3]]. Ein Vergleich wie
 > `v032bioanteil >= 3` macht aus einem Code einen Wahrheitswert. Weil die
 > Aussagen von −2 bis +2 um null herum liegen, drehst du eine umgepolte
@@ -240,7 +240,7 @@ survey
 >   select(green_score, organic_score)
 > ```
 
-3. **5.3** Prüf, welche Werte in deinen Spalten vorkommen und wie viele
+3. Prüf, welche Werte in deinen Spalten vorkommen und wie viele
    fehlen, und beschreib in einem Satz, warum sie fehlen. Leg fest, wen du
    aus der Auswertung ausschließt, und zähle, wie viele das sind.
 
@@ -347,7 +347,7 @@ survey
 
 ## Teil 2: Antworten
 
-4. **5.4** Beschreib zuerst jede deiner Variablen einzeln und dann ihren
+4. Beschreib zuerst jede deiner Variablen einzeln und dann ihren
    Zusammenhang, mit Anteilen oder Mittelwerten je Gruppe oder, bei Frage D,
    mit einer Korrelation (`cor()` mit `use = "complete.obs"`). Gib zu jeder
    Zahl an, auf wie vielen Befragten sie beruht.
@@ -502,7 +502,7 @@ survey
 > hat, braucht `cor()` hier kein `use = "complete.obs"`; ohne den `filter()`
 > wäre es nötig.
 
-5. **5.5** Zeichne eine Abbildung, die deine Frage beantwortet, so, dass du
+5. Zeichne eine Abbildung, die deine Frage beantwortet, so, dass du
    sie in einen Bericht übernehmen könntest: mit passender Form, sinnvoller
    Reihenfolge, Beschriftungen und, bei Anteilen, einer Achse, die bei null
    beginnt.
@@ -643,7 +643,7 @@ survey |>
 
 ## Teil 3: Der Befund
 
-6. **5.6** Schreib deinen Befund in drei Sätzen auf. Der erste nennt das
+6. Schreib deinen Befund in drei Sätzen auf. Der erste nennt das
    Ergebnis mit einer Zahl, der zweite die Basis, also über wen die Zahl
    spricht, wie viele es sind und wer fehlt, und der dritte die Grenze, also
    was ausdrücklich nicht aus dem Ergebnis folgt.

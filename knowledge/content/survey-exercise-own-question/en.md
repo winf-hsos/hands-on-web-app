@@ -46,7 +46,7 @@ part on your question each time, and only once you have tried it yourself.
 
 ## Part 1: Preparing the variables
 
-1. **5.1** Look up the columns you need for your question in the codebook
+1. Look up the columns you need for your question in the codebook
    and note for each one the page, the question text in short and the
    codes. Then create a small table that contains only an identifier
    `respondent_id` and these columns.
@@ -120,7 +120,7 @@ survey
 >   select(respondent_id, starts_with("p030green"), starts_with("p031bio"))
 > ```
 
-2. **5.2** Determine the level of measurement of each of your columns and
+2. Determine the level of measurement of each of your columns and
    check whether the data type fits it. Convert where needed: into a factor
    with the right order, into groups or, for reverse-coded statements, into
    reversed values.
@@ -131,7 +131,7 @@ survey
 
 > [!HINT]
 > You build groups with `case_when()` and put them in the right order with
-> `fct_relevel()`, as in task 3.5 of [[survey-exercise-comparing-groups|chapter 3]].
+> `fct_relevel()`, as in task 5 of [[survey-exercise-comparing-groups|chapter 3]].
 > A comparison such as `v032bioanteil >= 3` turns a code into a logical
 > value. Since the statements run from −2 to +2 around zero, you reverse a
 > reverse-coded statement with a minus sign, and
@@ -229,7 +229,7 @@ survey
 >   select(green_score, organic_score)
 > ```
 
-3. **5.3** Check which values occur in your columns and how many are
+3. Check which values occur in your columns and how many are
    missing, and describe in one sentence why they are missing. Decide whom
    you exclude from the analysis, and count how many people that is.
 
@@ -336,7 +336,7 @@ survey
 
 ## Part 2: Answers
 
-4. **5.4** First describe each of your variables on its own and then their
+4. First describe each of your variables on its own and then their
    relationship, with shares or means per group or, for question D, with a
    correlation (`cor()` with `use = "complete.obs"`). State for every
    number how many respondents it rests on.
@@ -492,7 +492,7 @@ survey
 > `cor()` needs no `use = "complete.obs"` here; without the `filter()` it
 > would be necessary.
 
-5. **5.5** Draw a figure that answers your question in a way that you could
+5. Draw a figure that answers your question in a way that you could
    put it into a report: with a fitting form, a sensible order, labels and,
    for shares, an axis that starts at zero.
 
@@ -632,7 +632,7 @@ survey |>
 
 ## Part 3: The finding
 
-6. **5.6** Write down your finding in three sentences. The first names the
+6. Write down your finding in three sentences. The first names the
    result with a number, the second the base, that is whom the number
    speaks about, how many they are and who is missing, and the third the
    limit, that is what explicitly does not follow from the result.

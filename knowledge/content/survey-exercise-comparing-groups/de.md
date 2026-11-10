@@ -39,13 +39,13 @@ In den Kästen liegt die ganze
 bereit, und das tidyverse ist geladen. Weil jeder Kasten für sich läuft, gibt
 es die Spalten `city_size` und `organic_share` aus Kapitel 2 hier nicht von
 selbst; wo eine Aufgabe sie braucht, legst du sie am Anfang der Pipe selbst an,
-und der Tipp zeigt dir den Code dafür. Die Nummern der Aufgaben stimmen mit
-denen in `chapter_3.R` aus deinem Kursordner überein, und zu den meisten gibt
+und der Tipp zeigt dir den Code dafür. In `chapter_3.R` aus deinem Kursordner
+tragen die Aufgaben in derselben Reihenfolge die Nummern 3.1 bis 3.7, und zu den meisten gibt
 es im Tipp einen Kontrollwert, an dem du dein Ergebnis selbst prüfen kannst.
 
 ## Teil 1: Zusammenfassen und gruppieren
 
-1. **3.1** Führ die beiden Pipes aus und vergleich, wie viele Zeilen jedes
+1. Führ die beiden Pipes aus und vergleich, wie viele Zeilen jedes
    Ergebnis hat. Beschreib den Unterschied zwischen `summarise()` und
    `mutate()` in einem Satz, und schreib das `summarise()` danach mit der
    kürzeren Funktion, die dasselbe liefert.
@@ -78,7 +78,7 @@ survey |>
 > jeder von ihnen dieselbe Zahl als neue Spalte anhängt. Die Abkürzung für
 > das `summarise()` ist `count()`, das seine Spalte allerdings `n` nennt.
 
-2. **3.2** Setz vor beide Pipes aus 3.1 ein `group_by(Q004geschlechtf)` und
+2. Setz vor beide Pipes aus 3.1 ein `group_by(Q004geschlechtf)` und
    führ sie erneut aus. Beschreib, was sich bei `summarise()` und was sich bei
    `mutate()` ändert, und find heraus, woher die Zeile mit `NA` kommt.
 
@@ -126,7 +126,7 @@ survey |>
 
 ## Teil 2: Anteile vergleichen
 
-3. **3.3** Berechne je Wohnortgröße (`city_size`) die Zahl der Befragten und
+3. Berechne je Wohnortgröße (`city_size`) die Zahl der Befragten und
    den Anteil in Prozent, die im Hofladen (`v008ort_6hof`) und auf dem
    Wochenmarkt (`v008ort_5markt`) einkaufen. Lass die 7 Personen ohne Angabe
    zum Wohnort weg und begründe das in einem Kommentar im Code. Beschreib dann
@@ -184,7 +184,7 @@ survey
 > auf die Befragten, nicht auf die Nennungen, denn jede Person konnte mehrere
 > Einkaufsorte angeben.
 
-4. **3.4** Berechne, wie sich der Bio-Anteil (`organic_share`) innerhalb
+4. Berechne, wie sich der Bio-Anteil (`organic_share`) innerhalb
    jeder Wohnortgröße verteilt. Zähl dazu mit `count(city_size,
    organic_share)`, gruppier dann nach `city_size`, berechne mit `mutate()`
    den Anteil jeder Zeile an ihrer Gruppe in Prozent
@@ -252,7 +252,7 @@ survey
 
 ## Teil 3: Gruppen selbst bilden
 
-5. **3.5** Das Einkommen (`d049einkommen`) hat elf Stufen, für einen
+5. Das Einkommen (`d049einkommen`) hat elf Stufen, für einen
    Vergleich zu viele. Bilde mit `case_when()` eine Spalte `income_group` mit
    vier Gruppen, in der Personen ohne Angabe `NA` bleiben, und bring die
    Gruppen mit `fct_relevel()` in die richtige Reihenfolge:
@@ -318,7 +318,7 @@ survey
 > Einkommen stehen in einer eigenen Zeile mit `NA`, und ihr Anteil von
 > 52,5 % gehört zu keiner Einkommensgruppe.
 
-6. **3.6** Find heraus, ob Haushalte mit Kindern unter 12 häufiger beim
+6. Find heraus, ob Haushalte mit Kindern unter 12 häufiger beim
    Discounter (`v008ort_1discount`) einkaufen. Bilde dazu eine Spalte
    `has_children`, die `TRUE` ist, wenn `D043kinderzahl` größer als 0 ist.
    Zähl zuerst, bei wie vielen Befragten `has_children` fehlt und in welchen
@@ -331,7 +331,7 @@ survey
 ```
 
 > [!HINT]
-> Erinnere dich an Kapitel 2, Aufgabe 2.6: Die Frage nach den Kindern wurde
+> Erinnere dich an Kapitel 2, Aufgabe 6: Die Frage nach den Kindern wurde
 > nur gestellt, wenn zum Haushalt mindestens zwei Personen gehören (Codebuch
 > Seite 32), und bei der Aufbereitung zu `D043kinderzahl` sind 12
 > unglaubwürdige Werte entfernt worden. Warum ein fehlender Wert oft „nicht
@@ -369,7 +369,7 @@ survey
 
 ## Teil 4: Wie viele stecken dahinter?
 
-7. **3.7** Berechne das Durchschnittsalter (`Q002alter`) nach Ernährungsweise
+7. Berechne das Durchschnittsalter (`Q002alter`) nach Ernährungsweise
    (`V041nofleischf`) zusammen mit der Zahl der Befragten je Gruppe, und
    sortier nach der Gruppengröße. Beschreib dann in zwei Sätzen, wie sehr du
    dem Mittelwert der kleinsten Gruppe traust und was neben dieser Zahl in

@@ -29,13 +29,13 @@ In the boxes the whole
 `survey`, and the tidyverse is loaded. Because every box runs on its own, the
 columns `city_size` and `organic_share` from chapter 2 do not exist here by
 themselves; where a task needs them, you create them at the start of the pipe
-yourself, and the hint shows you the code for it. The numbers of the tasks
-match those in `chapter_3.R` from your course folder, and most of them have a
+yourself, and the hint shows you the code for it. In `chapter_3.R` from your
+course folder the tasks carry the numbers 3.1 to 3.7 in the same order, and most of them have a
 control value in the hint against which you can check your result yourself.
 
 ## Part 1: Summarising and grouping
 
-1. **3.1** Run the two pipes and compare how many rows each result has.
+1. Run the two pipes and compare how many rows each result has.
    Describe the difference between `summarise()` and `mutate()` in one
    sentence, and then write the `summarise()` with the shorter function that
    gives the same result.
@@ -68,7 +68,7 @@ survey |>
 > number to each of them as a new column. The shortcut for the `summarise()`
 > is `count()`, which, however, calls its column `n`.
 
-2. **3.2** Put a `group_by(Q004geschlechtf)` in front of both pipes from 3.1
+2. Put a `group_by(Q004geschlechtf)` in front of both pipes from 3.1
    and run them again. Describe what changes for `summarise()` and what
    changes for `mutate()`, and find out where the row with `NA` comes from.
 
@@ -117,7 +117,7 @@ survey |>
 
 ## Part 2: Comparing shares
 
-3. **3.3** Compute per size of the place of residence (`city_size`) the
+3. Compute per size of the place of residence (`city_size`) the
    number of respondents and the share in percent who shop at a farm shop
    (`v008ort_6hof`) and at a weekly market (`v008ort_5markt`). Leave out the
    7 people without information on their place of residence and give the
@@ -178,7 +178,7 @@ survey
 > see this difference. The shares refer to the respondents, not to the
 > mentions, because every person could name several places to shop.
 
-4. **3.4** Compute how the organic share (`organic_share`) is distributed
+4. Compute how the organic share (`organic_share`) is distributed
    within each size of the place of residence. To do so, count with
    `count(city_size, organic_share)`, then group by `city_size`, compute with
    `mutate()` the share of each row in its group in percent
@@ -247,7 +247,7 @@ survey
 
 ## Part 3: Forming groups yourself
 
-5. **3.5** Income (`d049einkommen`) has eleven levels, too many for a
+5. Income (`d049einkommen`) has eleven levels, too many for a
    comparison. Use `case_when()` to form a column `income_group` with four
    groups in which people without information remain `NA`, and put the
    groups in the right order with `fct_relevel()`:
@@ -314,7 +314,7 @@ survey
 > in a row of their own with `NA`, and their share of 52.5 % belongs to no
 > income group.
 
-6. **3.6** Find out whether households with children under 12 shop at a
+6. Find out whether households with children under 12 shop at a
    discounter (`v008ort_1discount`) more often. To do so, form a column
    `has_children` that is `TRUE` if `D043kinderzahl` is greater than 0.
    First count for how many respondents `has_children` is missing and in
@@ -327,7 +327,7 @@ survey
 ```
 
 > [!HINT]
-> Remember chapter 2, task 2.6: the question about children was only asked
+> Remember chapter 2, task 6: the question about children was only asked
 > if the household has at least two members (codebook page 32), and 12
 > implausible values were removed in the processing into `D043kinderzahl`.
 > Why a missing value often means "not asked" is explained on the page
@@ -364,7 +364,7 @@ survey
 
 ## Part 4: How many are behind it?
 
-7. **3.7** Compute the mean age (`Q002alter`) by diet (`V041nofleischf`)
+7. Compute the mean age (`Q002alter`) by diet (`V041nofleischf`)
    together with the number of respondents per group, and sort by group
    size. Then describe in two sentences how far you trust the mean of the
    smallest group and what would have to stand next to this number in a

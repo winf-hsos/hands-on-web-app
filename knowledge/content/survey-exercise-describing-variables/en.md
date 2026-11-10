@@ -30,8 +30,8 @@ In the boxes on this page the complete
 [[milk-chocolate-survey|survey on milk and chocolate]] is ready as the table
 `survey`, with 2,811 rows and 606 columns, and the tidyverse packages are
 loaded. Every box runs on its own: whatever you create in one box, a new
-column for instance, no longer exists in the next. The task numbers match
-those in `chapter_2.R` from your course folder. Every task comes with a
+column for instance, no longer exists in the next. In `chapter_2.R` from your
+course folder the tasks carry the numbers 2.1 to 2.8 in the same order. Every task comes with a
 control value, a hint with the reading and a solution; try each one on your
 own first.
 
@@ -48,7 +48,7 @@ data set.
 
 ## Part 1: Level of measurement and data type
 
-1. **2.1** Determine the level of measurement (nominal, ordinal, interval
+1. Determine the level of measurement (nominal, ordinal, interval
    or ratio) of each of the variables `q003land`, `D044stadtf`,
    `Q002alter`, `v032bioanteil`, `d049einkommen` and `p031bio_1lieberbio`,
    and justify it in half a sentence. Then use `glimpse()` to see which
@@ -92,7 +92,7 @@ survey
 >   which are open.
 > - `p031bio_1lieberbio` is ordinal, an agreement from −2 to +2; in
 >   practice such scales are often treated as interval-scaled as soon as
->   you compute means, as in task 2.8.
+>   you compute means, as in task 8.
 >
 > R only knows numbers and text: all columns except `D044stadtf` are
 > integers (`<int>`), `D044stadtf` is text (`<chr>`). This fits only for
@@ -106,7 +106,7 @@ survey
 
 ## Part 2: Summary statistics and orders
 
-2. **2.2** Compute minimum, maximum, median and standard deviation of
+2. Compute minimum, maximum, median and standard deviation of
    `Q002alter` in a single `summarise()`, and explain in one sentence why
    these are the fitting statistics for this variable. To check: median
    50, standard deviation 14.7.
@@ -138,7 +138,7 @@ survey
 > and maximum show the range set by the quotas. No age value is missing,
 > so there is no need for `na.rm = TRUE` here.
 
-3. **2.3** Count the respondents by `D044stadtf` with `count()`. The order
+3. Count the respondents by `D044stadtf` with `count()`. The order
    is alphabetical and therefore meaningless, since "Dorf" (village) comes
    before "Großstadt" (large city). So use `mutate()` to create a new
    column `city_size` that holds the same values as a factor in the order
@@ -186,7 +186,7 @@ survey
 > `NA` shows a larger number than 7, one of the values in `levels` is
 > misspelt.
 
-4. **2.4** `v032bioanteil` is the share of organic food in one's own
+4. `v032bioanteil` is the share of organic food in one's own
    shopping, as a code from 1 to 5. Create a column `organic_share` that
    carries the codes as text, in the right order, with `factor()`,
    `levels = 1:5` and `labels = c(...)`. Then count by `organic_share`,
@@ -199,7 +199,7 @@ survey
 ```
 
 > [!HINT]
-> The codes are on page 28 of the codebook (chapter 1, task 1.4): 1
+> The codes are on page 28 of the codebook (chapter 1, task 4): 1
 > "(fast) nie Bio" ((almost) never organic), 2 "deutlich weniger als die
 > Hälfte" (clearly less than half), 3 "etwa die Hälfte" (about half), 4
 > "deutlich mehr als die Hälfte" (clearly more than half), 5 "(fast) nur
@@ -237,7 +237,7 @@ survey
 
 ## Part 3: Missing and implausible values
 
-5. **2.5** Compute how many respondents gave no answer on income
+5. Compute how many respondents gave no answer on income
    (`d049einkommen`), as a count and in percent. Describe in one sentence
    why they might be missing and whether this is the same kind of missing
    as with a question that was never put to someone. To check: 3.6%.
@@ -270,7 +270,7 @@ survey
 > because none was expected, while here an answer is missing that should
 > have been there.
 
-6. **2.6** The question about the number of children under 12 exists
+6. The question about the number of children under 12 exists
    twice, raw (`d043kinderzahl`) and prepared (`D043kinderzahl`).
 
    a) Compare the maximum of both columns and describe what has happened.
@@ -341,7 +341,7 @@ survey
 
 ## Part 4: Multiple responses and item batteries
 
-7. **2.7** For the question "Where do you usually buy your food?" every
+7. For the question "Where do you usually buy your food?" every
    person could name several places, and there is one column per place,
    from `v008ort_1discount` to `v008ort_9online` (1 = named, 0 = not
    named). Compute for each of the nine places the share of respondents
@@ -387,7 +387,7 @@ survey
 > add up to a good 277%, because every person named almost three places on
 > average; the base is the person, not the mention.
 
-8. **2.8** Question 31 consists of seven statements about organic
+8. Question 31 consists of seven statements about organic
    products, each from +2 (fully agree) to −2 (strongly disagree), in the
    columns `p031bio_1lieberbio` to `p031bio_7besserfuehlen`.
 

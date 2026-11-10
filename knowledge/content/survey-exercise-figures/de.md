@@ -52,7 +52,7 @@ seines Buchs [[fundamentals-of-data-visualization]].
 
 ## Eine Variable zeigen
 
-1. **4.1** Zeichne ein Histogramm des Alters (`Q002alter`) mit
+1. Zeichne ein Histogramm des Alters (`Q002alter`) mit
    `geom_histogram()` und beschrifte beide Achsen. Probiere `binwidth = 1`,
    `5` und `10` aus und beschreib in zwei Sätzen, welche Breite die
    Verteilung am besten zeigt und was du siehst: Form, Spitzen und Grenzen.
@@ -87,7 +87,7 @@ survey
 > Breite von 10 Jahren glättet dagegen so stark, dass von beidem nichts mehr
 > zu sehen ist.
 
-2. **4.2** Zeichne ein Balkendiagramm der Befragten je Wohnortgröße
+2. Zeichne ein Balkendiagramm der Befragten je Wohnortgröße
    (`city_size`) in der Reihenfolge des Codebuchs, von der Großstadt bis zum
    Dorf. Lass die 7 Befragten ohne Angabe weg und schreib in einem Kommentar
    im Code, dass du es machst. Begründe in einem Satz, warum du die Balken
@@ -104,7 +104,7 @@ survey |>
 ```
 
 > [!HINT]
-> Der Startcode bildet `city_size` so wie in Kapitel 2, Aufgabe 2.3: als
+> Der Startcode bildet `city_size` so wie in Kapitel 2, Aufgabe 3: als
 > Faktor, dessen Stufen die Reihenfolge festlegen. Hänge `filter()` und dann
 > `ggplot()` mit `geom_bar()` an; `geom_bar()` zählt die Zeilen selbst.
 
@@ -132,9 +132,9 @@ survey |>
 > Großstadt die häufigste Kategorie, mit 188 die Kleinstadt unter 5.000
 > Einwohnern die seltenste.
 
-3. **4.3** Zeig die Einkaufsorte als liegende Balken, einen Balken je Ort,
+3. Zeig die Einkaufsorte als liegende Balken, einen Balken je Ort,
    sortiert nach dem Anteil und mit der x-Achse in Prozent. Der Startcode ist
-   die Tabelle `places` aus Kapitel 2, Aufgabe 2.7. Weil Spaltennamen wie
+   die Tabelle `places` aus Kapitel 2, Aufgabe 7. Weil Spaltennamen wie
    `v008ort_5markt` niemand versteht, legst du davor eine kleine Tabelle
    `place_labels` mit den Spalten `place` und `label` an und verbindest
    beide mit `left_join()`.
@@ -202,7 +202,7 @@ places
 
 ## Gruppen vergleichen
 
-4. **4.4** Zeig, wie sich der Bio-Anteil (`organic_share`) in den vier
+4. Zeig, wie sich der Bio-Anteil (`organic_share`) in den vier
    Einkommensgruppen (`income_group`) verteilt. Der Startcode bildet beide
    Spalten wie in den Kapiteln 2 und 3, lässt Befragte ohne Angabe bei einer
    der beiden weg und zeichnet die gestapelte Fassung. Ändere ihn zweimal,
@@ -282,7 +282,7 @@ survey |>
 > 3 waren es in der obersten Gruppe 291, weil dort der Bio-Anteil keine Rolle
 > spielte und 2 von ihnen ihn nicht angegeben haben.
 
-5. **4.5** Zeichne Boxplots des Alters je Stufe von `organic_share` mit
+5. Zeichne Boxplots des Alters je Stufe von `organic_share` mit
    `geom_boxplot()`, die Stufen auf der y-Achse, damit die langen Texte
    lesbar bleiben. Beschreib dann in zwei Sätzen, ob die Befragten, die viel
    Bio kaufen, jünger oder älter sind, was ein Boxplot zeigt und was er
@@ -331,9 +331,9 @@ survey |>
 > in der Gruppe „(fast) nur Bio“ sind es nur 111 Befragte, in der Gruppe
 > „deutlich weniger als die Hälfte“ dagegen 938.
 
-6. **4.6** Zeig den Anteil, der im Hofladen und auf dem Wochenmarkt
+6. Zeig den Anteil, der im Hofladen und auf dem Wochenmarkt
    einkauft, je Wohnortgröße als zwei Balkendiagramme nebeneinander. Der
-   Startcode ist die Tabelle aus Kapitel 3, Aufgabe 3.3. Bring die beiden
+   Startcode ist die Tabelle aus Kapitel 3, Aufgabe 3. Bring die beiden
    Anteile mit `pivot_longer()` untereinander, eine Spalte für den Ort und
    eine für den Anteil, und teile die Abbildung mit `facet_wrap()`.
    Beschreib in einem Satz, was die Abbildung schneller zeigt als die
@@ -399,7 +399,7 @@ survey |>
 
 ## Eine Abbildung, die täuscht
 
-7. **4.7** Der Startcode ist die Abbildung der Einkaufsorte aus Aufgabe 4.3,
+7. Der Startcode ist die Abbildung der Einkaufsorte aus Aufgabe 3,
    als `plot_places` gespeichert. Lass die x-Achse erst bei 5 Prozent
    beginnen, indem du `+ coord_cartesian(xlim = c(5, NA), expand = FALSE)`
    anhängst, und vergleiche die Abbildung mit der aus 4.3. Beschreib in zwei

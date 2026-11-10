@@ -41,7 +41,7 @@ of his book [[fundamentals-of-data-visualization]].
 
 ## Showing one variable
 
-1. **4.1** Draw a histogram of age (`Q002alter`) with `geom_histogram()` and
+1. Draw a histogram of age (`Q002alter`) with `geom_histogram()` and
    label both axes. Try `binwidth = 1`, `5` and `10` and describe in two
    sentences which width shows the distribution best and what you see:
    shape, peaks and limits.
@@ -75,7 +75,7 @@ survey
 > 7 older people up to 80 follow. A width of 10 years, by contrast, smooths
 > so much that neither can be seen.
 
-2. **4.2** Draw a bar chart of the respondents by size of place of residence
+2. Draw a bar chart of the respondents by size of place of residence
    (`city_size`) in the order of the codebook, from the large city to the
    village. Leave out the 7 respondents without an answer and write a
    comment in the code saying that you do so. Explain in one sentence why
@@ -92,7 +92,7 @@ survey |>
 ```
 
 > [!HINT]
-> The starter code builds `city_size` as in chapter 2, task 2.3: as a
+> The starter code builds `city_size` as in chapter 2, task 3: as a
 > factor whose levels set the order. The levels are the values in the data,
 > so they stay German, from "Großstadt" (large city) to "Dorf" (village).
 > Add `filter()` and then `ggplot()` with `geom_bar()`; `geom_bar()` counts
@@ -122,9 +122,9 @@ survey |>
 > respondents the large city is the most frequent category, and with 188
 > the small town under 5,000 inhabitants is the rarest.
 
-3. **4.3** Show the shopping places as horizontal bars, one bar per place,
+3. Show the shopping places as horizontal bars, one bar per place,
    sorted by share and with the x-axis in percent. The starter code is the
-   table `places` from chapter 2, task 2.7. Because nobody understands
+   table `places` from chapter 2, task 7. Because nobody understands
    column names like `v008ort_5markt`, you first create a small table
    `place_labels` with the columns `place` and `label` and join both with
    `left_join()`.
@@ -191,7 +191,7 @@ places
 
 ## Comparing groups
 
-4. **4.4** Show how the organic share (`organic_share`) is distributed in
+4. Show how the organic share (`organic_share`) is distributed in
    the four income groups (`income_group`). The starter code builds both
    columns as in chapters 2 and 3, leaves out respondents without an answer
    on either of them and draws the stacked version. Change it twice, first
@@ -272,7 +272,7 @@ survey |>
 > had 291, because the organic share played no part there and 2 of them did
 > not give it.
 
-5. **4.5** Draw box plots of age for each level of `organic_share` with
+5. Draw box plots of age for each level of `organic_share` with
    `geom_boxplot()`, with the levels on the y-axis so that the long labels
    stay readable. Then describe in two sentences whether the respondents
    who buy a lot of organic food are younger or older, what a box plot
@@ -321,9 +321,9 @@ survey |>
 > group "(almost) only organic" has only 111 respondents, while the group
 > "clearly less than half" has 938.
 
-6. **4.6** Show the share who shop at a farm shop and at a weekly market for
+6. Show the share who shop at a farm shop and at a weekly market for
    each size of place of residence as two bar charts side by side. The
-   starter code is the table from chapter 3, task 3.3. Bring the two shares
+   starter code is the table from chapter 3, task 3. Bring the two shares
    below each other with `pivot_longer()`, one column for the place and one
    for the share, and split the figure with `facet_wrap()`. Describe in one
    sentence what the figure shows faster than the table.
@@ -389,7 +389,7 @@ survey |>
 
 ## A figure that deceives
 
-7. **4.7** The starter code is the figure of the shopping places from task
+7. The starter code is the figure of the shopping places from task
    4.3, stored as `plot_places`. Let the x-axis start at 5 percent by
    adding `+ coord_cartesian(xlim = c(5, NA), expand = FALSE)`, and compare
    the figure with the one from 4.3. Describe in two sentences how much

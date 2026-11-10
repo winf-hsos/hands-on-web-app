@@ -39,13 +39,14 @@ To get started, [[r-for-data-science]] is worth reading: chapter
 [2 "Workflow: basics"](https://r4ds.hadley.nz/workflow-basics.html), sections
 [6.1 and 6.2 "Scripts" and "Projects"](https://r4ds.hadley.nz/workflow-scripts.html)
 and [7.2 "Reading data from a file"](https://r4ds.hadley.nz/data-import.html#reading-data-from-a-file),
-together with the page on the [[milk-chocolate-survey|survey]]. The task
-numbers match those in `chapter_1.R` in your course folder, and many tasks
+together with the page on the [[milk-chocolate-survey|survey]]. In
+`chapter_1.R` in your course folder the tasks carry the numbers 1.1 to 1.6 in
+the same order, and many tasks
 come with a control value against which you can check your result yourself.
 
 ## Part 1: How large, and who is who?
 
-1. **1.1** Find out how many rows and how many columns `survey` has. Then
+1. Find out how many rows and how many columns `survey` has. Then
    describe in one sentence what a row and what a column stands for.
 
 ```r
@@ -70,7 +71,7 @@ survey
 > of a question or a value derived from it. The postcode and the open answers
 > are not included, so that nobody can be recognised by them.
 
-2. **1.2** Every observation in a data set should be identifiable, so that you
+2. Every observation in a data set should be identifiable, so that you
    can find it again and join tables. Use `n_distinct()` on the first five
    columns to check whether one of them does this: an identifier would have as
    many distinct values as there are rows. If none fits, use `mutate()` to
@@ -121,7 +122,7 @@ survey
 
 ## Part 2: Column names and codebook
 
-3. **1.3** The first letter of a column name tells you which block the
+3. The first letter of a column name tells you which block the
    question belongs to. Count how many columns belong to block `v`
    (behaviour) by selecting them with `select(starts_with("v"))` and counting
    them with `ncol()`. By default, `starts_with()` does not distinguish
@@ -169,7 +170,7 @@ survey
 > `starts_with("v")`, without `ignore.case = FALSE` you also get prepared
 > columns that contain the same question a second time, partly as text.
 
-4. **1.4** The column `v032bioanteil` contains numbers from 1 to 5. Look up
+4. The column `v032bioanteil` contains numbers from 1 to 5. Look up
    the question in the codebook and note the page, the question text in short
    and what codes 1 and 5 mean.
 
@@ -201,7 +202,7 @@ survey
 > and for 18 people the value is missing. Without the codebook you would not
 > even know whether 5 means a lot of organic food or little.
 
-5. **1.5** Show `respondent_id`, `q002geburt`, `Q002alter`, `Q002altergru4`
+5. Show `respondent_id`, `q002geburt`, `Q002alter`, `Q002altergru4`
    and `Q002altergru4f` side by side for the first five respondents, using
    `select()` and `slice()`. Then describe in one sentence how the four age
    columns are related and which one you would use for a table and which for
@@ -214,7 +215,7 @@ survey
 > [!HINT]
 > Read section [3.2 "Rows"](https://r4ds.hadley.nz/data-transform.html#rows)
 > in [[r-for-data-science]], where `slice()` and its relatives are
-> introduced. `respondent_id` from task 1.2 does not exist yet in this box;
+> introduced. `respondent_id` from task 2 does not exist yet in this box;
 > create it again at the start of the pipe with `mutate()`.
 
 > [!SOLUTION]
@@ -236,7 +237,7 @@ survey
 
 ## Part 3: What is not in the data
 
-6. **1.6** Read pages 1 to 3 of the codebook on the aim of the survey, the
+6. Read pages 1 to 3 of the codebook on the aim of the survey, the
    sample and how it was carried out. Then name two things you need to know
    for the analysis that are in no column.
 

@@ -49,14 +49,15 @@ Zum Einstieg lohnen sich in [[r-for-data-science]] das Kapitel
 [2 „Workflow: basics“](https://r4ds.hadley.nz/workflow-basics.html), die
 Abschnitte [6.1 und 6.2 „Scripts“ und „Projects“](https://r4ds.hadley.nz/workflow-scripts.html)
 und [7.2 „Reading data from a file“](https://r4ds.hadley.nz/data-import.html#reading-data-from-a-file),
-dazu die Seite zur [[milk-chocolate-survey|Umfrage]]. Die Nummern der Aufgaben
-stimmen mit denen in `chapter_1.R` aus deinem Kursordner überein, und zu
+dazu die Seite zur [[milk-chocolate-survey|Umfrage]]. In `chapter_1.R` aus deinem
+Kursordner tragen die Aufgaben in derselben Reihenfolge die Nummern 1.1 bis
+1.6, und zu
 vielen gibt es einen Kontrollwert, an dem du dein Ergebnis selbst prüfen
 kannst.
 
 ## Teil 1: Wie groß, und wer ist wer?
 
-1. **1.1** Bestimme, wie viele Zeilen und wie viele Spalten `survey` hat.
+1. Bestimme, wie viele Zeilen und wie viele Spalten `survey` hat.
    Beschreib dann in einem Satz, wofür eine Zeile und wofür eine Spalte steht.
 
 ```r
@@ -81,7 +82,7 @@ survey
 > Postleitzahl und die offenen Antworten sind nicht enthalten, damit niemand
 > über sie wiederzuerkennen ist.
 
-2. **1.2** Jede Beobachtung in einem Datensatz sollte sich eindeutig
+2. Jede Beobachtung in einem Datensatz sollte sich eindeutig
    bezeichnen lassen, damit man sie wiederfindet und Tabellen verbinden kann.
    Prüfe mit `n_distinct()` für die ersten fünf Spalten, ob eine von ihnen
    das leistet: Eine Kennung hätte so viele verschiedene Werte, wie es Zeilen
@@ -134,7 +135,7 @@ survey
 
 ## Teil 2: Spaltennamen und Codebuch
 
-3. **1.3** Der erste Buchstabe eines Spaltennamens sagt, zu welchem Block die
+3. Der erste Buchstabe eines Spaltennamens sagt, zu welchem Block die
    Frage gehört. Zähle, wie viele Spalten zum Block `v` (Verhalten) gehören,
    indem du sie mit `select(starts_with("v"))` auswählst und mit `ncol()`
    zählst. `starts_with()` unterscheidet von sich aus nicht zwischen groß und
@@ -181,7 +182,7 @@ survey
 > auswählen will, bekommt ohne `ignore.case = FALSE` aufbereitete Spalten
 > dazu, in denen dieselbe Frage ein zweites Mal steckt, teils als Text.
 
-4. **1.4** Die Spalte `v032bioanteil` enthält Zahlen von 1 bis 5. Schlag die
+4. Die Spalte `v032bioanteil` enthält Zahlen von 1 bis 5. Schlag die
    Frage im Codebuch nach und notiere die Seite, den Fragetext in Kurzform
    und was die Codes 1 und 5 heißen.
 
@@ -213,7 +214,7 @@ survey
 > Wert. Ohne das Codebuch wüsstest du nicht einmal, ob 5 viel oder wenig Bio
 > bedeutet.
 
-5. **1.5** Zeige für die ersten fünf Befragten `respondent_id`, `q002geburt`,
+5. Zeige für die ersten fünf Befragten `respondent_id`, `q002geburt`,
    `Q002alter`, `Q002altergru4` und `Q002altergru4f` nebeneinander, mit
    `select()` und `slice()`. Beschreib dann in einem Satz, wie die vier
    Altersspalten zusammenhängen und welche du für eine Tabelle und welche für
@@ -226,7 +227,7 @@ survey
 > [!HINT]
 > Lies dazu in [[r-for-data-science]] den Abschnitt
 > [3.2 „Rows“](https://r4ds.hadley.nz/data-transform.html#rows), dort stehen
-> `slice()` und seine Verwandten. `respondent_id` aus Aufgabe 1.2 gibt es in
+> `slice()` und seine Verwandten. `respondent_id` aus Aufgabe 2 gibt es in
 > diesem Kasten noch nicht; leg sie zu Beginn der Pipe mit `mutate()` wieder
 > an.
 
@@ -249,7 +250,7 @@ survey
 
 ## Teil 3: Was nicht in den Daten steht
 
-6. **1.6** Lies im Codebuch die Seiten 1 bis 3 über Ziel der Befragung,
+6. Lies im Codebuch die Seiten 1 bis 3 über Ziel der Befragung,
    Stichprobe und Durchführung. Nenne dann zwei Dinge, die man für die
    Auswertung wissen muss, die aber in keiner Spalte stehen.
 

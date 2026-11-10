@@ -41,8 +41,9 @@ In den Kästen auf dieser Seite liegt die vollständige
 [[milk-chocolate-survey|Umfrage zu Milch und Schokolade]] als Tabelle
 `survey` bereit, mit 2.811 Zeilen und 606 Spalten, und die Pakete des
 tidyverse sind geladen. Jeder Kasten läuft für sich: Was du in einem Kasten
-anlegst, etwa eine neue Spalte, gibt es im nächsten nicht mehr. Die Nummern
-der Aufgaben entsprechen denen in `chapter_2.R` aus deinem Kursordner. Zu
+anlegst, etwa eine neue Spalte, gibt es im nächsten nicht mehr. In
+`chapter_2.R` aus deinem Kursordner tragen die Aufgaben in derselben
+Reihenfolge die Nummern 2.1 bis 2.8. Zu
 jeder Aufgabe gibt es einen Kontrollwert, einen Tipp mit den Lesestellen und
 eine Lösung; versuch jede zuerst allein.
 
@@ -58,7 +59,7 @@ man rechnet“.
 
 ## Teil 1: Skalenniveau und Datentyp
 
-1. **2.1** Bestimm für jede der Variablen `q003land`, `D044stadtf`,
+1. Bestimm für jede der Variablen `q003land`, `D044stadtf`,
    `Q002alter`, `v032bioanteil`, `d049einkommen` und `p031bio_1lieberbio`
    das Skalenniveau (nominal, ordinal, intervall- oder verhältnisskaliert)
    und begründe es mit einem halben Satz. Lass dir dann mit `glimpse()`
@@ -101,7 +102,7 @@ survey
 >   erste („unter 500 €“) und letzte („5.000 € und mehr“) offen sind.
 > - `p031bio_1lieberbio` ist ordinal, eine Zustimmung von −2 bis +2; in der
 >   Praxis behandelt man solche Skalen oft wie intervallskaliert, sobald man
->   Mittelwerte bildet, wie in Aufgabe 2.8.
+>   Mittelwerte bildet, wie in Aufgabe 8.
 >
 > R kennt nur Zahlen und Text: Alle Spalten außer `D044stadtf` sind
 > ganze Zahlen (`<int>`), `D044stadtf` ist Text (`<chr>`). Passend ist das
@@ -115,7 +116,7 @@ survey
 
 ## Teil 2: Kennzahlen und Reihenfolgen
 
-2. **2.2** Berechne in einem einzigen `summarise()` Minimum, Maximum, Median
+2. Berechne in einem einzigen `summarise()` Minimum, Maximum, Median
    und Standardabweichung von `Q002alter`, und begründe in einem Satz, warum
    das die passenden Kennzahlen für diese Variable sind. Zur Kontrolle:
    Median 50, Standardabweichung 14,7.
@@ -147,7 +148,7 @@ survey
 > und Minimum und Maximum zeigen die Spannweite, die die Quoten vorgeben.
 > Beim Alter fehlt kein Wert, deshalb braucht es hier kein `na.rm = TRUE`.
 
-3. **2.3** Zähl die Befragten nach `D044stadtf` mit `count()`. Die
+3. Zähl die Befragten nach `D044stadtf` mit `count()`. Die
    Reihenfolge ist alphabetisch und damit sinnlos, denn „Dorf“ steht vor
    „Großstadt“. Leg deshalb mit `mutate()` eine neue Spalte `city_size` an,
    die dieselben Werte als Faktor in der Reihenfolge des Codebuchs enthält,
@@ -195,7 +196,7 @@ survey
 > dem Umwandeln bei `NA` eine größere Zahl als 7, ist einer der Werte in
 > `levels` falsch geschrieben.
 
-4. **2.4** `v032bioanteil` ist der Bio-Anteil am eigenen Einkauf, als Code
+4. `v032bioanteil` ist der Bio-Anteil am eigenen Einkauf, als Code
    von 1 bis 5. Leg eine Spalte `organic_share` an, die die Codes als Text
    trägt, in der richtigen Reihenfolge, mit `factor()`, `levels = 1:5` und
    `labels = c(...)`. Zähl dann nach `organic_share`, berechne mit
@@ -208,7 +209,7 @@ survey
 ```
 
 > [!HINT]
-> Die Codes stehen im Codebuch auf Seite 28 (Kapitel 1, Aufgabe 1.4):
+> Die Codes stehen im Codebuch auf Seite 28 (Kapitel 1, Aufgabe 4):
 > 1 „(fast) nie Bio“, 2 „deutlich weniger als die Hälfte“, 3 „etwa die
 > Hälfte“, 4 „deutlich mehr als die Hälfte“, 5 „(fast) nur Bio“. Den
 > Median einer geordneten Variable findest du, indem du die Anteile von oben
@@ -246,7 +247,7 @@ survey
 
 ## Teil 3: Fehlende und unglaubwürdige Werte
 
-5. **2.5** Berechne, wie viele Befragte beim Einkommen (`d049einkommen`)
+5. Berechne, wie viele Befragte beim Einkommen (`d049einkommen`)
    keine Angabe gemacht haben, absolut und in Prozent. Beschreib in einem
    Satz, warum sie fehlen könnten und ob das dieselbe Art Fehlen ist wie bei
    einer Frage, die jemandem gar nicht gestellt wurde. Zur Kontrolle:
@@ -280,7 +281,7 @@ survey
 > gibt es keine Antwort, weil keine erwartet war, hier fehlt eine Antwort,
 > die es hätte geben sollen.
 
-6. **2.6** Die Frage nach der Zahl der Kinder unter 12 Jahren gibt es
+6. Die Frage nach der Zahl der Kinder unter 12 Jahren gibt es
    zweimal, roh (`d043kinderzahl`) und aufbereitet (`D043kinderzahl`).
 
    a) Vergleich das Maximum beider Spalten und beschreib, was passiert ist.
@@ -351,7 +352,7 @@ survey
 
 ## Teil 4: Mehrfachantworten und Fragebatterien
 
-7. **2.7** Bei der Frage „Wo kaufen Sie gewöhnlich Ihre Lebensmittel ein?“
+7. Bei der Frage „Wo kaufen Sie gewöhnlich Ihre Lebensmittel ein?“
    konnte jede Person mehrere Orte nennen, und für jeden Ort gibt es eine
    Spalte, von `v008ort_1discount` bis `v008ort_9online` (1 = genannt, 0 =
    nicht genannt). Berechne für jeden der neun Orte den Anteil der
@@ -398,7 +399,7 @@ survey
 > Prozente ergeben zusammen gut 277 %, weil jede Person im Mittel fast drei
 > Orte genannt hat; die Basis ist die Person, nicht die Nennung.
 
-8. **2.8** Frage 31 besteht aus sieben Aussagen zu Bio-Produkten, jede von
+8. Frage 31 besteht aus sieben Aussagen zu Bio-Produkten, jede von
    +2 (trifft voll und ganz zu) bis −2 (trifft überhaupt nicht zu), in den
    Spalten `p031bio_1lieberbio` bis `p031bio_7besserfuehlen`.
 
