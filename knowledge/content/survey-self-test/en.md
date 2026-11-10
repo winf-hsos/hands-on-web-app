@@ -9,15 +9,17 @@ based_on: 2026-11-11
 ---
 
 This test shows you whether you are already confident enough with R to keep
-up in the next session. Each of the eleven tasks produces exactly one value or
-one figure, which you store under a given name such as `answer_1`. With
-**Check** below the box your code runs in the background, and the line below
-it says whether the result is right. If it is not, the page names the chapter
+up in the next session. Each of the eleven tasks gives exactly one value or
+one figure. With **Check** below the box your code runs in the background, and
+the line below it says whether the result is right. What the last line of
+your code gives is checked, which is exactly what **Run** shows you. If it is
+not right, the page names the chapter
 of the [[survey-exercise-first-look|exercise]] where you can catch up; at the
 end of the page you see how many tasks you already have right.
 
-In tasks 1 to 8 you write code yourself, in tasks 9 to 11 you read code that
-is given. It runs without an error, and still there is something in it you
+In tasks 1 to 8 you write code yourself: every box starts with `survey`, and
+you continue after it with a pipe. In tasks 9 to 11 you read code that is
+given. It runs without an error, and still there is something in it you
 need to know. In every box the whole [[milk-chocolate-survey|survey]] is
 loaded as `survey`, and so is the tidyverse.
 
@@ -33,7 +35,7 @@ How many respondents live in a large city (`Großstadt`)? The size of the
 place of residence is in `D044stadtf`.
 
 ```r check=1
-answer_1 <- NULL
+survey
 ```
 
 > [!HINT]
@@ -46,7 +48,7 @@ How old are the respondents on average (`Q002alter`)? One decimal place is
 enough.
 
 ```r check=2
-answer_2 <- NULL
+survey
 ```
 
 > [!HINT]
@@ -57,7 +59,7 @@ answer_2 <- NULL
 How many respondents are 60 or older **and** live in a village (`Dorf`)?
 
 ```r check=3
-answer_3 <- NULL
+survey
 ```
 
 > [!HINT]
@@ -70,7 +72,7 @@ Respondents without an answer on their place of residence do not count. What
 is the lowest mean age? One decimal place.
 
 ```r check=4
-answer_4 <- NULL
+survey
 ```
 
 > [!HINT]
@@ -86,7 +88,7 @@ each person how many places they named, in a new column `n_places`. How many
 places do the respondents name on average? One decimal place.
 
 ```r check=5
-answer_5 <- NULL
+survey
 ```
 
 > [!HINT]
@@ -100,7 +102,7 @@ What percentage of the respondents shop at a discounter
 (`v008ort_1discount`)? One decimal place.
 
 ```r check=6
-answer_6 <- NULL
+survey
 ```
 
 > [!HINT]
@@ -114,7 +116,7 @@ bought **and** consumed milk (`v006gekauft_3mi == 3`) and still have no value
 in `v007freq3_mi`?
 
 ```r check=7
-answer_7 <- NULL
+survey
 ```
 
 > [!HINT]
@@ -125,13 +127,10 @@ answer_7 <- NULL
 ## Task 8: A figure with ggplot2
 
 Draw a bar chart with the number of respondents per age group
-(`Q002altergru4f`), both axes with a label that a human understands. Store
-the figure under the name `plot_8`; the second line in the box shows it.
+(`Q002altergru4f`), both axes with a label that a human understands.
 
 ```r check=8
-plot_8 <- NULL
-
-plot_8
+survey
 ```
 
 > [!HINT]
@@ -148,14 +147,15 @@ rows: women, men and `NA` with 2 people. Where does the third row come from?
 - **c)** R always adds a row for missing values in `group_by()`.
 - **d)** Two rows were damaged when the file was read.
 
-Check your guess with code before you answer, then enter the letter.
+Check your guess with code before you answer, then write the letter between
+the quotation marks in the last line.
 
 ```r check=9
 survey |>
   group_by(Q004geschlechtf) |>
   summarise(mean_age = mean(Q002alter), n_respondents = n())
 
-answer_9 <- ""
+""
 ```
 
 > [!HINT]
@@ -167,13 +167,14 @@ answer_9 <- ""
 
 The code in the box calculates how often the respondents drink milk on average
 (4 = mostly daily to 1 = less often). It runs without an error, but whom does
-the number speak about? On how many respondents is it based?
+the number speak about? On how many respondents is it based? Below the
+given code, `survey` is already there as the start of your answer.
 
 ```r check=10
 survey |>
   summarise(mean_milk_frequency = mean(v007freq3_mi, na.rm = TRUE))
 
-answer_10 <- NULL
+survey
 ```
 
 > [!HINT]
@@ -198,7 +199,7 @@ survey |>
   count(place, name = "n_mentions") |>
   mutate(pct_mentions = round(100 * n_mentions / sum(n_mentions), 1))
 
-answer_11 <- ""
+""
 ```
 
 > [!HINT]

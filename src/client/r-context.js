@@ -136,8 +136,8 @@ export function currentWord(text, cursor) {
  * [name, signature, package] of the packages that count here, `known` all
  * functions there are, for `package::`; `constants` are [name, type and
  * value, package or null]; `offered` are the tables whose names are suggested
- * (all of them unless given). `force` asks even without two
- * typed letters (Ctrl+Space).
+ * (all of them unless given). `force` asks even without two typed letters
+ * (Ctrl+Space); inside a call of a pipe one letter is enough.
  */
 export function suggest(text, cursor, { tables, functions, known = functions, constants = [], offered = Object.keys(tables), force = false }) {
   const { start, word } = currentWord(text, cursor);
@@ -147,7 +147,10 @@ export function suggest(text, cursor, { tables, functions, known = functions, co
   if (before.inText) return null;
   const dollar = text[start - 1] === '$';
   const namespace = text.slice(start - 2, start) === '::';
-  if (!force && !dollar && !namespace && word.length < 2) return null;
+  // inside a call of a pipe one letter is enough, since its columns come first
+  // and a table such as the full survey has too many to remember
+  const columnsHere = before.stack.length > 0 && Boolean(before.table);
+  if (!force && !dollar && !namespace && word.length < (columnsHere ? 1 : 2)) return null;
 
   const columnsOf = (table, extra = []) => [
     ...(tables[table] ?? []).map(([name, type]) => ({ name, kind: 'column', detail: `<${type}>` })),
@@ -167,7 +170,7 @@ export function suggest(text, cursor, { tables, functions, known = functions, co
     if (names.includes(owner)) items = columnsOf(owner);
     else if (known) items = columnsOf(known.table, known.extra);
   } else {
-    if (before.stack.length > 0 && before.table) items.push(...columnsOf(before.table, before.created));
+    if (columnsHere) items.push(...columnsOf(before.table, before.created));
     const everywhere = scan(text, names);
     items.push(...[...everywhere.assigned].map((name) => ({ name, kind: 'variable', detail: '' })));
     items.push(...offered.map((name) => ({ name, kind: 'table', detail: '' })));
@@ -181,7 +184,54 @@ export function suggest(text, cursor, { tables, functions, known = functions, co
     seen.add(item.name);
     return true;
   });
-  // columns in the order of their table, everything else alphabetically
-  matches.sort((a, b) => KIND_ORDER[a.kind] - KIND_ORDER[b.kind] || (a.kind === 'column' ? 0 : a.name.localeCompare(b.name)));
+  // what is written as typed before what only matches in another case (D04
+  // finds D044stadtf before d040luxus), then columns in the order of their
+  // table and everything else alphabetically
+  const exact = (item) => (item.name.startsWith(word) ? 0 : 1);
+  matches.sort((a, b) => KIND_ORDER[a.kind] - KIND_ORDER[b.kind] || exact(a) - exact(b) || (a.kind === 'column' ? 0 : a.name.localeCompare(b.name)));
   return matches.length ? { start, end: cursor, items: matches } : null;
+}
+
+// --- indentation after Enter ------------------------------------------------------
+
+// a line that ends like this goes on with the next step of a pipe or a plot
+const CHAIN = /(\|>|%[^%\s]*%|\+)$/;
+// a line without its strings and its comment, so that a bracket or # in a
+// string does not count
+const codeOf = (line) =>
+  line
+    .replace(/"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g, '""')
+    .replace(/#.*$/, '')
+    .trimEnd();
+const indentOf = (line) => line.match(/^ */)[0];
+// opening brackets minus closing ones
+const balance = (line) => {
+  const bare = codeOf(line);
+  return (bare.match(/[([{]/g) ?? []).length - (bare.match(/[)\]}]/g) ?? []).length;
+};
+
+/**
+ * The indentation of the line after `before` (the text up to the cursor), as
+ * Positron does it: one level more after an opening bracket, and for the steps
+ * of a pipe or a plot one level more than the line the statement started on,
+ * however many steps came before (Nicolas, 2026-11-11: from the second step
+ * on, Enter added a level each time). Where the statement ends, the next line
+ * goes back to where it started.
+ */
+export function nextIndent(before, unit = '  ') {
+  const lines = before.split('\n');
+  const line = codeOf(lines.at(-1));
+  const own = indentOf(lines.at(-1));
+  if (/[([{]$/.test(line)) return own + unit;
+  // an argument list going on: one level more only after the bracket opened here
+  if (/,$/.test(line)) return balance(line) > 0 ? own + unit : own;
+  // the line the statement started on: up past brackets closed in this line
+  // and past the steps of a pipe or a plot before it
+  let i = lines.length - 1;
+  let depth = balance(lines[i]);
+  while (i > 0 && (depth < 0 || CHAIN.test(codeOf(lines[i - 1])))) {
+    i--;
+    depth += balance(lines[i]);
+  }
+  return indentOf(lines[i]) + (CHAIN.test(line) ? unit : '');
 }

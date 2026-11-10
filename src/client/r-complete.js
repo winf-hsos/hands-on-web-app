@@ -17,7 +17,10 @@ function packagesIn(text, functions) {
 }
 
 export async function findR(editor, force) {
-  const { functions, constants, tables } = await loadR();
+  const { functions, constants, tables: shared, files = {} } = await loadR();
+  // a table name the page means another file by (r_datasets) has that file's columns
+  const aliases = JSON.parse(editor.closest('[data-r-datasets]')?.dataset.rDatasets ?? '{}');
+  const tables = { ...shared, ...Object.fromEntries(Object.entries(aliases).filter(([, file]) => files[file]).map(([name, file]) => [name, files[file]])) };
   const pageCode = [...document.querySelectorAll('.runner[data-lang="r"] textarea')].map((t) => t.value).join('\n');
   const groups = packagesIn(pageCode, functions);
   // a table is offered by name only where the page uses it

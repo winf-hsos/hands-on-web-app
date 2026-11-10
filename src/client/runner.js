@@ -5,6 +5,7 @@
 import { addCopyButton } from './copy.js';
 import { attachCompletion } from './complete.js';
 import { findR, loadR } from './r-complete.js';
+import { nextIndent } from './r-context.js';
 import { suggest as suggestPython } from './py-context.js';
 import { highlight } from './highlight.js';
 import { savedOnPage, fingerprint } from './saved.js';
@@ -17,15 +18,24 @@ const L = JSON.parse(runnerLabels);
 const PLAY = '<svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg>';
 const STOP = '<svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1.5"/></svg>';
 
-// What differs between the languages: indentation, when Enter indents one
-// level more, how an error message names the kind of error, and for R the
-// pipe that Ctrl+Shift+M inserts, as in Positron.
+// What differs between the languages: indentation, the indentation of the
+// line after Enter, how an error message names the kind of error, and for R
+// the pipe that Ctrl+Shift+M inserts, as in Positron.
 const LANGS = {
-  python: { indent: '    ', opens: /:\s*$/, errorKind: (text) => text.match(/^(\w+Error)\b/m)?.[1] },
+  python: {
+    indent: '    ',
+    // the indentation of the line, one level more after a colon
+    next: (before) => {
+      const line = before.slice(before.lastIndexOf('\n') + 1);
+      return line.match(/^ */)[0] + (/:\s*$/.test(line) ? '    ' : '');
+    },
+    errorKind: (text) => text.match(/^(\w+Error)\b/m)?.[1],
+  },
   r: {
     indent: '  ',
     pipe: '|> ',
-    opens: /(\{|\(|\|>|,)\s*$/,
+    // r-context.js: steps of a pipe stay one level in, brackets open one more
+    next: (before) => nextIndent(before, '  '),
     errorKind: (text) =>
       [
         [/object '.*' not found/, 'r_object'],
@@ -119,7 +129,7 @@ function recordTest(task, correct) {
 function showVerdict(verdict, task, result, detail = '') {
   const L = task.labels;
   const [rows, cols] = detail.split(' ');
-  const fill = (s) => s.replace('{name}', task.name).replace('{rows}', rows).replace('{cols}', cols).replace('{n}', detail).replace('{detail}', detail.trim().replace(/([^.!?])$/, '$1.'));
+  const fill = (s) => s.replace('{rows}', rows).replace('{cols}', cols).replace('{n}', detail).replace('{detail}', detail.trim().replace(/([^.!?])$/, '$1.'));
   const correct = result === 'correct';
   verdict.hidden = false;
   verdict.className = `runner-verdict ${correct ? 'is-correct' : 'is-wrong'}`;
@@ -365,13 +375,8 @@ function setup(box) {
       e.preventDefault();
       insert(spec.indent);
     } else if (e.key === 'Enter' && !e.shiftKey) {
-      // keep the indentation of the line, one level more where a block opens
-      // (a colon in Python; a brace, bracket, pipe or comma in R)
-      const before = editor.value.slice(0, editor.selectionStart);
-      const line = before.slice(before.lastIndexOf('\n') + 1);
-      const indent = line.match(/^ */)[0] + (spec.opens.test(line) ? spec.indent : '');
       e.preventDefault();
-      insert(`\n${indent}`);
+      insert(`\n${spec.next(editor.value.slice(0, editor.selectionStart))}`);
     }
   });
 

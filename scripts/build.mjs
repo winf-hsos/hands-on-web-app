@@ -202,8 +202,10 @@ function render(knowledge) {
       hashes[name] = hash(readFileSync(source));
     }
   }
-  // what R editors suggest: functions and the columns of the data sets
-  const completions = JSON.stringify(rCompletions(join(ROOT, 'knowledge')));
+  // what R editors suggest: functions and the columns of the data sets,
+  // also of the files a page means by a table name (r_datasets)
+  const pageFiles = Object.values(knowledge.sections).flat().flatMap((d) => Object.values(d.lead.r_datasets ?? {}));
+  const completions = JSON.stringify(rCompletions(join(ROOT, 'knowledge'), pageFiles));
   writeFileSync(join(DIST, 'assets', 'r-completions.json'), completions);
   hashes['r-completions.json'] = createHash('sha1').update(completions).digest('hex').slice(0, 8);
   for (const file of PYODIDE_FILES) {

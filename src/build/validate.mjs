@@ -177,10 +177,10 @@ function shapes(vocabulary) {
           },
           // the tasks of a test, in the order of their ```r check=N boxes (client/runner.js)
           checks: list((v) => {
-            if (!v || typeof v !== 'object' || Array.isArray(v)) return 'expected { name, md5 or plot, review }';
-            const extra = Object.keys(v).find((k) => !['name', 'md5', 'plot', 'review'].includes(k));
-            if (extra) return `unknown field ${extra} (allowed: name, md5, plot, review)`;
-            if (typeof v.name !== 'string' || !/^[A-Za-z][\w.]*$/.test(v.name)) return 'name: expected the R name that holds the answer';
+            if (!v || typeof v !== 'object' || Array.isArray(v)) return 'expected { md5 or plot, review }';
+            // the answer is what the box gives at the end, so it has no name (Nicolas, 2026-11-11)
+            const extra = Object.keys(v).find((k) => !['md5', 'plot', 'review'].includes(k));
+            if (extra) return `unknown field ${extra} (allowed: md5, plot, review)`;
             if ((v.md5 === undefined) === (v.plot === undefined)) return 'expected either md5 or plot';
             if (v.md5 !== undefined && !/^[0-9a-f]{32}$/.test(v.md5)) return 'md5: expected 32 hexadecimal digits';
             const p = v.plot;

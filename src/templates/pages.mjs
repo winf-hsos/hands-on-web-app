@@ -283,7 +283,7 @@ export function item(site, doc, lang) {
     JSON.stringify(
       (lead.checks ?? []).map((c, i) => {
         const review = c.review && site.item.get(c.review);
-        return { number: i + 1, name: c.name, md5: c.md5, plot: c.plot, review: review && { url: site.url(review, lang), title: site.localize(review, lang).title } };
+        return { number: i + 1, md5: c.md5, plot: c.plot, review: review && { url: site.url(review, lang), title: site.localize(review, lang).title } };
       }),
     );
   const v = site.vocabulary;

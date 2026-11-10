@@ -13,17 +13,17 @@ modules: [pmg]
 areas: [ds]
 r_datasets: { survey: mds12_schoko_milch.csv }
 checks:
-  - { name: answer_1, md5: 06c131cb00477b64637a40eec7781743, review: survey-exercise-describing-variables }
-  - { name: answer_2, md5: bbb4177ff7c8ede063978a95e0adc8e0, review: survey-exercise-describing-variables }
-  - { name: answer_3, md5: c21fe90d968765cb18fb24ab87f5eec8, review: survey-exercise-comparing-groups }
-  - { name: answer_4, md5: 1af7e592fe0c082720b2c64b046ed07b, review: survey-exercise-comparing-groups }
-  - { name: answer_5, md5: 7fd7d0e482752985c4e708224a35394c, review: survey-exercise-describing-variables }
-  - { name: answer_6, md5: dd7b4b6a831a9449261166e829087515, review: survey-exercise-describing-variables }
-  - { name: answer_7, md5: bb20e64c619cd0bb568c68d701637629, review: survey-exercise-describing-variables }
-  - { name: plot_8, plot: { counts: [425, 728, 769, 889], rows: 4, defaults: [Q002altergru4f, Q002altergru4] }, review: survey-exercise-figures }
-  - { name: answer_9, md5: 5fc039684d3805e442f4c99fc0d2a649, review: survey-exercise-comparing-groups }
-  - { name: answer_10, md5: 2bbd990c5281146712e9b88561c2d03d, review: survey-exercise-describing-variables }
-  - { name: answer_11, md5: 0baa435477adb894f640c2f544a78150, review: survey-exercise-describing-variables }
+  - { md5: 06c131cb00477b64637a40eec7781743, review: survey-exercise-describing-variables }
+  - { md5: bbb4177ff7c8ede063978a95e0adc8e0, review: survey-exercise-describing-variables }
+  - { md5: c21fe90d968765cb18fb24ab87f5eec8, review: survey-exercise-comparing-groups }
+  - { md5: 1af7e592fe0c082720b2c64b046ed07b, review: survey-exercise-comparing-groups }
+  - { md5: 7fd7d0e482752985c4e708224a35394c, review: survey-exercise-describing-variables }
+  - { md5: dd7b4b6a831a9449261166e829087515, review: survey-exercise-describing-variables }
+  - { md5: bb20e64c619cd0bb568c68d701637629, review: survey-exercise-describing-variables }
+  - { plot: { counts: [425, 728, 769, 889], rows: 4, defaults: [Q002altergru4f, Q002altergru4] }, review: survey-exercise-figures }
+  - { md5: 5fc039684d3805e442f4c99fc0d2a649, review: survey-exercise-comparing-groups }
+  - { md5: 2bbd990c5281146712e9b88561c2d03d, review: survey-exercise-describing-variables }
+  - { md5: 0baa435477adb894f640c2f544a78150, review: survey-exercise-describing-variables }
 relations:
   see_also: [milk-chocolate-survey, survey-exercise-first-look]
 status: published
@@ -31,16 +31,18 @@ updated: 2026-11-11
 ---
 
 Mit diesem Test findest du heraus, ob du mit R schon so sicher bist, dass du
-in der nächsten Sitzung mitkommst. Jede der elf Aufgaben erzeugt genau einen
-Wert oder eine Abbildung, die du unter einem vorgegebenen Namen speicherst,
-etwa `answer_1`. Mit **Prüfen** unter dem Kasten läuft dein Code im
-Hintergrund, und darunter steht, ob das Ergebnis stimmt. Stimmt es nicht,
+in der nächsten Sitzung mitkommst. Jede der elf Aufgaben ergibt genau einen
+Wert oder eine Abbildung. Mit **Prüfen** unter dem Kasten läuft dein Code im
+Hintergrund, und darunter steht, ob das Ergebnis stimmt. Geprüft wird, was die
+letzte Zeile deines Codes ergibt, also genau das, was dir **Ausführen**
+anzeigt. Stimmt es nicht,
 nennt die Seite das Kapitel der [[survey-exercise-first-look|Übung]], in dem
 du nacharbeiten kannst; am Ende der Seite siehst du, wie viele Aufgaben du
 schon richtig hast.
 
-In den Aufgaben 1 bis 8 schreibst du selbst Code, in den Aufgaben 9 bis 11
-liest du vorgegebenen Code. Er läuft ohne Fehler, und trotzdem steckt etwas
+In den Aufgaben 1 bis 8 schreibst du selbst Code: Jeder Kasten beginnt mit
+`survey`, und du schreibst mit einer Pipe dahinter weiter. In den Aufgaben 9
+bis 11 liest du vorgegebenen Code. Er läuft ohne Fehler, und trotzdem steckt etwas
 darin, das man wissen muss. In jedem Kasten liegt die ganze
 [[milk-chocolate-survey|Umfrage]] als `survey` bereit, und das tidyverse ist
 geladen.
@@ -57,7 +59,7 @@ Wie viele Befragte wohnen in einer Großstadt? Die Größe des Wohnorts steht in
 `D044stadtf`.
 
 ```r check=1
-answer_1 <- NULL
+survey
 ```
 
 > [!HINT]
@@ -70,7 +72,7 @@ Wie alt sind die Befragten im Durchschnitt (`Q002alter`)? Eine Nachkommastelle
 genügt.
 
 ```r check=2
-answer_2 <- NULL
+survey
 ```
 
 > [!HINT]
@@ -81,7 +83,7 @@ answer_2 <- NULL
 Wie viele Befragte sind 60 Jahre oder älter **und** wohnen in einem Dorf?
 
 ```r check=3
-answer_3 <- NULL
+survey
 ```
 
 > [!HINT]
@@ -94,7 +96,7 @@ Befragte ohne Angabe zum Wohnort zählen nicht mit. Wie hoch ist das
 niedrigste Durchschnittsalter? Eine Nachkommastelle.
 
 ```r check=4
-answer_4 <- NULL
+survey
 ```
 
 > [!HINT]
@@ -111,7 +113,7 @@ für jede Person, wie viele Orte sie genannt hat, in einer neuen Spalte
 Nachkommastelle.
 
 ```r check=5
-answer_5 <- NULL
+survey
 ```
 
 > [!HINT]
@@ -125,7 +127,7 @@ Wie viel Prozent der Befragten kaufen beim Discounter ein
 (`v008ort_1discount`)? Eine Nachkommastelle.
 
 ```r check=6
-answer_6 <- NULL
+survey
 ```
 
 > [!HINT]
@@ -139,7 +141,7 @@ viele Befragte haben Milch gekauft **und** verzehrt (`v006gekauft_3mi == 3`)
 und trotzdem keinen Wert bei `v007freq3_mi`?
 
 ```r check=7
-answer_7 <- NULL
+survey
 ```
 
 > [!HINT]
@@ -151,13 +153,10 @@ answer_7 <- NULL
 
 Zeichne ein Balkendiagramm mit der Zahl der Befragten je Altersgruppe
 (`Q002altergru4f`), beide Achsen mit einer Beschriftung, die ein Mensch
-versteht. Speichere die Abbildung unter dem Namen `plot_8`; die zweite Zeile
-im Kasten zeigt sie dir an.
+versteht.
 
 ```r check=8
-plot_8 <- NULL
-
-plot_8
+survey
 ```
 
 > [!HINT]
@@ -175,15 +174,15 @@ die dritte Zeile?
 - **c)** R fügt bei `group_by()` immer eine Zeile für fehlende Werte hinzu.
 - **d)** Beim Einlesen der Datei sind zwei Zeilen beschädigt worden.
 
-Prüf deine Vermutung mit Code, bevor du antwortest, und trag dann den
-Buchstaben ein.
+Prüf deine Vermutung mit Code, bevor du antwortest, und schreib dann den
+Buchstaben zwischen die Anführungszeichen in der letzten Zeile.
 
 ```r check=9
 survey |>
   group_by(Q004geschlechtf) |>
   summarise(mean_age = mean(Q002alter), n_respondents = n())
 
-answer_9 <- ""
+""
 ```
 
 > [!HINT]
@@ -194,13 +193,14 @@ answer_9 <- ""
 
 Der Code im Kasten berechnet, wie oft die Befragten im Durchschnitt Milch
 trinken (4 = meistens täglich bis 1 = seltener). Er läuft ohne Fehler, aber
-über wen spricht die Zahl? Auf wie vielen Befragten beruht sie?
+über wen spricht die Zahl? Auf wie vielen Befragten beruht sie? Unter dem
+vorgegebenen Code steht schon `survey` als Anfang deiner Antwort.
 
 ```r check=10
 survey |>
   summarise(mean_milk_frequency = mean(v007freq3_mi, na.rm = TRUE))
 
-answer_10 <- NULL
+survey
 ```
 
 > [!HINT]
@@ -225,7 +225,7 @@ survey |>
   count(place, name = "n_mentions") |>
   mutate(pct_mentions = round(100 * n_mentions / sum(n_mentions), 1))
 
-answer_11 <- ""
+""
 ```
 
 > [!HINT]

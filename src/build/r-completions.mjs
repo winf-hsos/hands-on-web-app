@@ -1,7 +1,9 @@
 // The data behind the suggestions in R editors (client/complete.js): the
 // functions and constants of r-functions.json, made by scripts/r-functions.R, and the
 // columns of every data set an R block can use, with their type as R would
-// read it. Written once per build as /assets/r-completions.json.
+// read it, and those of the files pages mean by a table name (r_datasets), so
+// that `survey` on the self-study pages offers the columns of the full survey.
+// Written once per build as /assets/r-completions.json.
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DATASETS } from '../client/r-datasets.js';
@@ -46,12 +48,19 @@ function columnType(values) {
   return 'chr';
 }
 
-/** { functions: { base: [[name, signature, package], …], … }, constants: [[name, type and value, package or null], …], tables: { survey: [[column, type], …], … } } */
-export function rCompletions(knowledgeRoot) {
-  const tables = {};
-  for (const [name, file] of Object.entries(DATASETS)) {
-    const [header, ...rows] = parseCsv(readFileSync(join(knowledgeRoot, 'media', 'datasets', file), 'utf8'));
-    tables[name] = header.map((column, i) => [column, columnType(rows.map((r) => r[i] ?? ''))]);
-  }
-  return { ...JSON.parse(readFileSync(FUNCTIONS, 'utf8')), tables };
+/** The columns of a CSV in media/datasets/ as [[column, type], …]. */
+function columnsOf(knowledgeRoot, file) {
+  const [header, ...rows] = parseCsv(readFileSync(join(knowledgeRoot, 'media', 'datasets', file), 'utf8'));
+  return header.map((column, i) => [column, columnType(rows.map((r) => r[i] ?? ''))]);
+}
+
+/**
+ * { functions: { base: [[name, signature, package], …], … }, constants: [[name, type and value, package or null], …],
+ *   tables: { survey: [[column, type], …], … }, files: { 'mds12_schoko_milch.csv': [[column, type], …], … } }
+ * `pageFiles` are the files named in r_datasets anywhere.
+ */
+export function rCompletions(knowledgeRoot, pageFiles = []) {
+  const tables = Object.fromEntries(Object.entries(DATASETS).map(([name, file]) => [name, columnsOf(knowledgeRoot, file)]));
+  const files = Object.fromEntries([...new Set(pageFiles)].map((file) => [file, columnsOf(knowledgeRoot, file)]));
+  return { ...JSON.parse(readFileSync(FUNCTIONS, 'utf8')), tables, files };
 }

@@ -48,10 +48,12 @@ async function start() {
       base::library(name, character.only = TRUE, ...)
     }
     # The check of a test (client/test.js): runs the learner's code quietly in
-    # an environment of its own and compares the value of the answer with the
-    # checksum of the right one, as the self-test of the course folder does
-    # (check_answers.R): numbers rounded to one decimal, text in lower case,
-    # MD5 of "number:value". Returns a code and a detail for the page.
+    # an environment of its own and compares what its last expression gives
+    # with the checksum of the right one, as the self-test of the course
+    # folder does (check_answers.R): numbers rounded to one decimal, text in
+    # lower case, MD5 of "number:value". The answer needs no name of its own
+    # (Nicolas, 2026-11-11), so "Run" shows the very value that is checked.
+    # Returns a code and a detail for the page.
     .hocs_md5 <- function(number, x) {
       value <- if (is.numeric(x)) format(round(x, 1), nsmall = 1, trim = TRUE) else tolower(trimws(as.character(x)))
       file <- tempfile()
@@ -71,19 +73,18 @@ async function start() {
       if (!named(labels$x) || !named(labels$y)) return(c("plot_labels", ""))
       c("correct", "")
     }
-    .hocs_check <- function(code, name, number, expected = "", counts = NULL, rows = NA, defaults = character()) {
+    .hocs_check <- function(code, number, expected = "", counts = NULL, rows = NA, defaults = character()) {
       env <- new.env(parent = globalenv())
       exprs <- tryCatch(parse(text = code), error = function(e) e)
       if (inherits(exprs, "error")) return(c("error", conditionMessage(exprs)))
+      answer <- NULL
       for (e in exprs) {
         problem <- tryCatch({
-          suppressWarnings(suppressMessages(eval(e, env)))
+          answer <- suppressWarnings(suppressMessages(eval(e, env)))
           NULL
         }, error = function(err) conditionMessage(err))
         if (!is.null(problem)) return(c("error", problem))
       }
-      if (!exists(name, envir = env, inherits = FALSE)) return(c("missing", ""))
-      answer <- get(name, envir = env)
       if (is.null(answer) || length(answer) == 0 || (is.character(answer) && !nzchar(trimws(answer[1])))) return(c("empty", ""))
       if (!is.null(counts)) return(.hocs_check_plot(answer, counts, rows, defaults))
       if (is.data.frame(answer)) {
@@ -214,8 +215,8 @@ export async function run(code, onMessage, { datasets: aliases } = {}) {
 
 /**
  * Checks the answer of a test task (client/test.js): runs `code` quietly and
- * compares what it leaves in `check.name` with the right answer. Resolves to
- * { result, detail }, where result is correct, wrong, share, empty, missing,
+ * compares the value of its last expression with the right answer. Resolves to
+ * { result, detail }, where result is correct, wrong, share, empty,
  * table, many, error or, for a plot, not_plot, plot_error, plot_wrong or
  * plot_labels; failed when R could not start.
  */
@@ -235,7 +236,7 @@ export async function check(code, task, { datasets: aliases } = {}) {
   const plot = task.plot
     ? `, counts = c(${task.plot.counts.join(', ')}), rows = ${task.plot.rows}, defaults = c(${(task.plot.defaults ?? []).map((d) => JSON.stringify(d)).join(', ')})`
     : '';
-  const call = `.hocs_check(${JSON.stringify(code)}, ${JSON.stringify(task.name)}, ${task.number}, ${JSON.stringify(task.md5 ?? '')}${plot})`;
+  const call = `.hocs_check(${JSON.stringify(code)}, ${task.number}, ${JSON.stringify(task.md5 ?? '')}${plot})`;
   try {
     const [result, detail = ''] = (await r.evalRString(`paste(${call}, collapse = "\\t")`)).split('\t');
     return { result, detail };

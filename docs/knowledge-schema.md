@@ -743,9 +743,11 @@ no script.
 ## 7b. Tests
 
 A test (type `test`, Nicolas, 2026-11-10) is a set of tasks whose answers the
-page checks: each task stores its result under a given R name, and a **Prüfen**
-button below its box runs the code in the background and says whether the
-result is right. It does not replace a quiz, which asks for knowledge; a test
+page checks: a **Prüfen** button below each task's box runs the code in the
+background and says whether what its last expression gives is right. The
+answer needs no name of its own (Nicolas, 2026-11-11), so **Ausführen** shows
+the very value that is checked, and a box that writes code starts with the
+table, as `survey`. It does not replace a quiz, which asks for knowledge; a test
 asks for a result of the learner's own code. The first is `survey-self-test`,
 the self-test of the R self-study in Praxis der Markt- und
 Gesellschaftsforschung, with the checksums of the course's `check_answers.R`.
@@ -757,11 +759,10 @@ checks both):
 ```yaml
 r_datasets: { survey: mds12_schoko_milch.csv }
 checks:
-  - { name: answer_1, md5: 06c131cb00477b64637a40eec7781743, review: survey-exercise-describing-variables }
-  - { name: plot_8, plot: { counts: [425, 728, 769, 889], rows: 4, defaults: [Q002altergru4f] }, review: survey-exercise-figures }
+  - { md5: 06c131cb00477b64637a40eec7781743, review: survey-exercise-describing-variables }
+  - { plot: { counts: [425, 728, 769, 889], rows: 4, defaults: [Q002altergru4f] }, review: survey-exercise-figures }
 ```
 
-- `name` is the R name that holds the answer after the box has run.
 - `md5` is the MD5 of `"<N>:<answer>"`, where a number is rounded to one
   decimal (`format(round(x, 1), nsmall = 1, trim = TRUE)`) and text is
   lower-cased and trimmed, so the page never holds the answer in plain text.
