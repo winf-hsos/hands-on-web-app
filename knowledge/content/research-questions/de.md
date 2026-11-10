@@ -22,7 +22,7 @@ modules: [pmg, ea, wmg]
 areas: [ds]
 relations:
   see_also: [exploratory-data-analysis-basics, milk-chocolate-survey]
-status: draft
+status: published
 updated: 2026-11-10
 ---
 

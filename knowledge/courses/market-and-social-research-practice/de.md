@@ -17,7 +17,7 @@ sections:
     items: [data-analysis-with-r-slides, survey-self-test, survey-exercise-first-look, survey-exercise-describing-variables, survey-exercise-comparing-groups, survey-exercise-figures, survey-exercise-own-question]
   - title: { de: "Forschungsfragen, wissenschaftliche Paper und Quarto", en: "Research questions, scientific papers and Quarto" }
     items: [quarto-first-steps, research-questions, paper-structure, milk-chocolate-survey]
-status: draft
+status: published
 updated: 2026-11-11
 ---
 

@@ -10,7 +10,7 @@ duration: 20
 topics: [ai-agents-as-tools, reproducible-work]
 modules: [pmg]
 areas: [ds]
-status: draft
+status: published
 updated: 2026-11-10
 ---
 

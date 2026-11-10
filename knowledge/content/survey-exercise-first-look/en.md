@@ -67,9 +67,8 @@ survey
 >
 > `survey` has 2,811 rows and 606 columns: each row is one respondent, and
 > each column is a question or, for multiple answers and item batteries, part
-> of a question or a value derived from it. The full version in your course
-> folder has 813 columns, because the platform version lacks, among other
-> things, the postcode and the open answers.
+> of a question or a value derived from it. The postcode and the open answers
+> are not included, so that nobody can be recognised by them.
 
 2. **1.2** Every observation in a data set should be identifiable, so that you
    can find it again and join tables. Use `n_distinct()` on the first five

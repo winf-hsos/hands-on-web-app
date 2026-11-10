@@ -22,7 +22,7 @@ r_datasets: { survey: mds12_schoko_milch.csv }
 relations:
   requires: [survey-exercise-comparing-groups]
   see_also: [milk-chocolate-survey, r-for-data-science, fundamentals-of-data-visualization]
-status: draft
+status: published
 updated: 2026-11-11
 ---
 

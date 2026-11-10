@@ -14,6 +14,6 @@ duration: 40
 topics: [communicating-results, reproducible-work]
 modules: [pmg, ea, wmg]
 areas: [ds]
-status: draft
+status: published
 updated: 2026-11-10
 ---

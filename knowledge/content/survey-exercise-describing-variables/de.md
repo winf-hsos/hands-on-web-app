@@ -24,7 +24,7 @@ r_datasets: { survey: mds12_schoko_milch.csv }
 relations:
   requires: [survey-exercise-first-look]
   see_also: [milk-chocolate-survey, r-for-data-science]
-status: draft
+status: published
 updated: 2026-11-11
 ---
 

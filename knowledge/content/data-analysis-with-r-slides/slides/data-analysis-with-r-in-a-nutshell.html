@@ -152,7 +152,7 @@
     <span data-step="1"></span>
     <span data-step="2"></span>
     <div class="footnote">from a <span class="keep-case">German Excel</span> with <span class="mono">;</span> and decimal commas: <span class="mono">read_csv2()</span></div>
-    <aside class="notes">Bevor wir laden: Was ist das für eine Datei? CSV heißt comma-separated values, und so sieht sie aus, wenn man sie in einem Texteditor öffnet: reiner Text, hier ein Ausschnitt, vier von 813 Spalten, die ersten drei Befragten. Die erste Zeile enthält die Spaltennamen. Jede weitere Zeile ist eine befragte Person. Das Komma trennt die Spalten, und NA steht für einen fehlenden Wert, hier bei der Kinderzahl: Die Frage wurde Menschen, die allein leben, gar nicht gestellt. read_csv() liest den Text und macht daraus eine Tabelle, ein tibble, mit einer Spalte je Name. Weil die Datei reiner Text ist, kann sie jedes Programm lesen, auch euer Assistent. Aufpassen bei Dateien aus einem deutschen Excel: Das trennt mit Semikolon und schreibt Dezimalzahlen mit Komma; dafür gibt es read_csv2(). Unsere Datei ist UTF-8 mit Kommas, read_csv() genügt ohne weitere Angaben.</aside>
+    <aside class="notes">Bevor wir laden: Was ist das für eine Datei? CSV heißt comma-separated values, und so sieht sie aus, wenn man sie in einem Texteditor öffnet: reiner Text, hier ein Ausschnitt, vier von 606 Spalten, die ersten drei Befragten. Die erste Zeile enthält die Spaltennamen. Jede weitere Zeile ist eine befragte Person. Das Komma trennt die Spalten, und NA steht für einen fehlenden Wert, hier bei der Kinderzahl: Die Frage wurde Menschen, die allein leben, gar nicht gestellt. read_csv() liest den Text und macht daraus eine Tabelle, ein tibble, mit einer Spalte je Name. Weil die Datei reiner Text ist, kann sie jedes Programm lesen, auch euer Assistent. Aufpassen bei Dateien aus einem deutschen Excel: Das trennt mit Semikolon und schreibt Dezimalzahlen mit Komma; dafür gibt es read_csv2(). Unsere Datei ist UTF-8 mit Kommas, read_csv() genügt ohne weitere Angaben.</aside>
   </section>
 
   <section class="slide">
@@ -163,7 +163,7 @@ survey &lt;- <span class="hl">read_csv</span>("data/mds12_schoko_milch.csv")</di
       <div class="sidenote below">the result gets the name <span class="mono">survey</span> and appears in the variables pane on the right.</div>
       <div class="sidenote" style="font-size: var(--tiny); margin-top: 24px;">tip for other data: <span class="mono">janitor::clean_names()</span> tidies messy column names. not here: it would lowercase <span class="mono">Q002alter</span> and break the raw/prepared system.</div>
     </div>
-    <aside class="notes">Strg+Enter führt die Zeile aus. Die Meldungen nach library sind keine Fehler. Der Pfeil aus Kleiner-Zeichen und Minus gibt dem Ergebnis einen Namen. Namen im Code sind englisch: survey, nicht umfrage; das gilt ab jetzt für alles, was ihr benennt. Der Pfad beginnt mit data/, weil Positron den Kursordner geöffnet hat; das ist der Grund, warum ihr den ganzen Ordner öffnet und nicht nur eine Datei. Unten ein Tipp für andere Datensätze: clean_names() aus dem Paket janitor macht aus unordentlichen Spaltennamen mit Leerzeichen, Umlauten und Großbuchstaben saubere Namen in snake_case. Bei unserer Befragung aber nicht: Es würde 170 der 813 Namen ändern, aus Q002alter q002alter machen, und die aufbereitete Q004geschlecht kollidiert mit der rohen q004geschlecht und heißt danach q004geschlecht_2. Die Unterscheidung klein gleich roh, groß gleich aufbereitet wäre weg. Nicht blind aufräumen.</aside>
+    <aside class="notes">Strg+Enter führt die Zeile aus. Die Meldungen nach library sind keine Fehler. Der Pfeil aus Kleiner-Zeichen und Minus gibt dem Ergebnis einen Namen. Namen im Code sind englisch: survey, nicht umfrage; das gilt ab jetzt für alles, was ihr benennt. Der Pfad beginnt mit data/, weil Positron den Kursordner geöffnet hat; das ist der Grund, warum ihr den ganzen Ordner öffnet und nicht nur eine Datei. Unten ein Tipp für andere Datensätze: clean_names() aus dem Paket janitor macht aus unordentlichen Spaltennamen mit Leerzeichen, Umlauten und Großbuchstaben saubere Namen in snake_case. Bei unserer Befragung aber nicht: Es würde 186 der 606 Namen ändern, aus Q002alter q002alter machen, und die aufbereitete Q004geschlecht kollidiert mit der rohen q004geschlecht und heißt danach q004geschlecht_2. Die Unterscheidung klein gleich roh, groß gleich aufbereitet wäre weg. Nicht blind aufräumen.</aside>
   </section>
 
   <section class="slide">
@@ -171,14 +171,14 @@ survey &lt;- <span class="hl">read_csv</span>("data/mds12_schoko_milch.csv")</di
     <div class="content">
       <div class="code">survey |&gt;
   <span class="hl">glimpse</span>()</div>
-      <div class="sidenote below">2,811 rows, one per respondent. 813 columns, one per question.</div>
+      <div class="sidenote below">2,811 rows, one per respondent. 606 columns, one per question.</div>
       <div class="sidenote" style="font-size: var(--tiny); margin-top: 24px;">also useful: <span class="mono">nrow()</span> · <span class="mono">ncol()</span> · <span class="mono">names()</span> · <span class="mono">summary()</span> · <span class="mono">skimr::skim()</span></div>
     </div>
-    <aside class="notes">glimpse() zeigt jede Spalte mit ihrem Datentyp und den ersten Werten: dbl für Zahlen, chr für Text. Eine Zeile ist eine befragte Person, eine Spalte eine Frage; 813 Spalten sind lang, scrollt einmal durch. Nach der Pipe beginnt eine neue Zeile, eingerückt, auch bei nur einem Schritt. Darunter klein, was außerdem hilft: nrow() und ncol() zählen Zeilen und Spalten, names() listet die Spaltennamen, summary() fasst jede Spalte zusammen, und skim() aus dem Paket skimr zeigt je Spalte fehlende Werte, Füllgrad, Mittelwert, Streuung und ein kleines Histogramm. Wie die Namen gebaut sind, zeigt die nächste Folie.</aside>
+    <aside class="notes">glimpse() zeigt jede Spalte mit ihrem Datentyp und den ersten Werten: dbl für Zahlen, chr für Text. Eine Zeile ist eine befragte Person, eine Spalte eine Frage; 606 Spalten sind lang, scrollt einmal durch. Nach der Pipe beginnt eine neue Zeile, eingerückt, auch bei nur einem Schritt. Darunter klein, was außerdem hilft: nrow() und ncol() zählen Zeilen und Spalten, names() listet die Spaltennamen, summary() fasst jede Spalte zusammen, und skim() aus dem Paket skimr zeigt je Spalte fehlende Werte, Füllgrad, Mittelwert, Streuung und ein kleines Histogramm. Wie die Namen gebaut sind, zeigt die nächste Folie.</aside>
   </section>
 
   <section class="slide has-punch" data-on-show="figPrefix">
-    <h2>813 columns, one system</h2>
+    <h2>606 columns, one system</h2>
     <div class="figure" id="fig-prefix"></div>
     <div class="punch">lowercase = raw, uppercase = prepared, f = as text</div>
     <aside class="notes">Der erste Buchstabe sagt, zu welchem Block die Frage gehört (Codebuch, Seite 4), und mit select(starts_with("Q002")) holt ihr euch einen Block heraus, hier die Altersspalten. Hier die sechs, die ihr am meisten braucht; im Codebuch stehen noch b für Bewertungen, u für Gesamturteile, w für Wissensfragen, und ac oder ax für die Varianten eines Experiments. Kleinbuchstaben sind so, wie die Antworten aus dem Befragungstool kamen, Großbuchstaben hat Herr Enneking aufbereitet. Das Codebuch ist die Studiendokumentation in data/.</aside>
@@ -551,7 +551,7 @@ survey |&gt;
 <!-- order matters: deck.js BEFORE stagekit.js. stagekit calls the data-on-show
      functions on first display; if they come later, they do not exist yet. -->
 <script src="../../stagekit/draw.js?v=0.7.0-156254"></script>
-<script src="deck.js?v=3"></script>
+<script src="deck.js?v=4"></script>
 <script src="../../stagekit/stagekit.js?v=0.7.0-156254"></script>
 </body>
 </html>

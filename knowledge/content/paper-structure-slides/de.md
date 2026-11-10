@@ -14,6 +14,6 @@ duration: 20
 topics: [communicating-results]
 modules: [pmg, ea, wmg]
 areas: [ds]
-status: draft
+status: published
 updated: 2026-11-10
 ---

@@ -22,7 +22,7 @@ areas: [ds]
 r_datasets: { survey: mds12_schoko_milch.csv }
 relations:
   see_also: [milk-chocolate-survey, r-for-data-science]
-status: draft
+status: published
 updated: 2026-11-11
 ---
 
@@ -78,8 +78,8 @@ survey
 > `survey` hat 2.811 Zeilen und 606 Spalten: Jede Zeile ist eine befragte
 > Person, und jede Spalte ist eine Frage oder, bei Mehrfachantworten und
 > Fragebatterien, ein Teil einer Frage oder ein daraus abgeleiteter Wert. Die
-> vollständige Fassung in deinem Kursordner hat 813 Spalten, weil auf der
-> Plattform unter anderem die Postleitzahl und die offenen Antworten fehlen.
+> Postleitzahl und die offenen Antworten sind nicht enthalten, damit niemand
+> über sie wiederzuerkennen ist.
 
 2. **1.2** Jede Beobachtung in einem Datensatz sollte sich eindeutig
    bezeichnen lassen, damit man sie wiederfindet und Tabellen verbinden kann.

@@ -24,7 +24,7 @@ modules: [pmg, ea, wmg]
 areas: [ds]
 relations:
   see_also: [paper-structure, eda-software, milk-survey-compact]
-status: draft
+status: published
 updated: 2026-11-10
 ---
 

@@ -26,7 +26,7 @@ checks:
   - { name: answer_11, md5: 0baa435477adb894f640c2f544a78150, review: survey-exercise-describing-variables }
 relations:
   see_also: [milk-chocolate-survey, survey-exercise-first-look]
-status: draft
+status: published
 updated: 2026-11-11
 ---
 

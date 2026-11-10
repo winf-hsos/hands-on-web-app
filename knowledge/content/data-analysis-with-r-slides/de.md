@@ -16,6 +16,6 @@ modules: [pmg]
 areas: [ds]
 relations:
   see_also: [milk-chocolate-survey, opencode-course-assistant, survey-self-test]
-status: draft
+status: published
 updated: 2026-11-11
 ---

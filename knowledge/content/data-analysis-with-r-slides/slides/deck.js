@@ -115,7 +115,7 @@ window.figProcessTransform = () => figProcess("fig-process-transform", "transfor
 window.figProcessVisualise = () => figProcess("fig-process-visualise", "visualise");
 
 /* ------------------------------------------------------------------ */
-/* 813 columns, one system: links die Praefixe, rechts die Kette am Alter */
+/* 606 columns, one system: links die Praefixe, rechts die Kette am Alter */
 /* ------------------------------------------------------------------ */
 function figPrefix() {
   const c = C();
@@ -214,7 +214,7 @@ window.figAssistant = figAssistant;
 
 /* ------------------------------------------------------------------ */
 /* The data: a CSV file. Oben die Datei als Text (Kopfzeile und die     */
-/* ersten drei Befragten, 4 von 813 Spalten, echte Werte), darunter die */
+/* ersten drei Befragten, 4 von 606 Spalten, echte Werte), darunter die */
 /* Tabelle, die read_csv() daraus macht. Schritt 0: nur die Datei;      */
 /* Schritt 1: Kommas und NA gelb, rechts die Regeln; Schritt 2: die     */
 /* Tabelle. Alles steht in jedem Schritt an seinem Platz, was noch      */
