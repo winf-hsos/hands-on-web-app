@@ -17,7 +17,7 @@ sections:
   - project: monty-hall
   - path: getting-started-with-r
   - title: { de: "Explorative Datenanalyse (EDA)", en: "Exploratory data analysis (EDA)" }
-    items: [exploratory-data-analysis-basics, dplyr-exercise-compact-survey, milk-survey-compact]
+    items: [exploratory-data-analysis-basics, dplyr-exercise-compact-survey, milk-chocolate-survey, milk-survey-compact]
   - path: data-transformation-with-r
   - path: data-visualisation-with-r
   - title: { de: Selbsttest, en: Self-assessment }
