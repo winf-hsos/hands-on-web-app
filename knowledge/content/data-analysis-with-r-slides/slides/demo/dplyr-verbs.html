@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>dplyr verbs</title>
+<link rel="stylesheet" href="../theme.css">
+<style>
+  /* Demonstrator for the dplyr verbs, deliberately plain: pick a verb, see the
+     code, one sentence, the table before and after. Designed for the embed area
+     of a slide (1680 x 830 slide pixels); colours and fonts from theme.css.
+     Blue marks what the verb is about (the verb in the code, a new column),
+     as on the code slides; group colours (--groups-g1..g3) mean "which group". */
+  @font-face { font-family: "Roboto Mono"; src: url("../../../stagekit/fonts/RobotoMono-Regular.woff2") format("woff2"); }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--gray-light); font-family: var(--font); }
+  body { padding: 20px 24px; min-width: 1600px; }
+  body.embed { padding: 0; }
+
+  .verbs { display: flex; gap: 14px; margin-bottom: 40px; }
+  .verbs button { font: 32px var(--mono); padding: 8px 22px; border-radius: 10px; border: 2px solid var(--gray-dark);
+                  background: transparent; color: var(--gray-light); cursor: pointer; }
+  .verbs button:hover { border-color: var(--gray); color: var(--white); }
+  .verbs button.on { border-color: var(--blue); color: var(--white); }
+
+  .code { font-family: var(--mono); font-size: 32px; line-height: 1.35; color: var(--white); white-space: pre; min-height: 130px; }
+  .code .hl { color: var(--blue); }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+
+  .explain { font-size: 32px; color: var(--gray-light); margin: 24px 0 30px; min-height: 42px; }
+  /* on a slide the sentence goes: the tables say it (only in the stand-alone version) */
+  body.embed .explain { display: none; }
+  body.embed .tables { margin-top: 40px; }
+
+  .tables { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+  .tcap { font-size: 20px; color: var(--gray); margin-bottom: 8px; min-height: 26px; }
+  table { border-collapse: collapse; font-family: var(--mono); font-size: 32px; }
+  th, td { padding: 0 18px; height: 44px; text-align: right; white-space: nowrap; }
+  th { color: var(--gray); font-weight: normal; border-bottom: 2px solid var(--gray-dark); }
+  td.txt, th.txt { text-align: left; }
+  tr.drop td { color: var(--gray-dark); text-decoration: line-through; text-decoration-thickness: 2px; }
+  th.gone, td.gone { color: var(--gray-dark); }
+  th.new, td.new { color: var(--blue); }
+  th.sort, td.sort { color: var(--white); }
+  th.sort::after { content: " \2193"; }
+  td.stripe { width: 10px; padding: 0 6px 0 0; }
+  td.stripe span { display: block; width: 8px; height: 34px; border-radius: 3px; }
+  th.stripe { padding: 0; }
+  .g1 { background: var(--groups-g1); } .g2 { background: var(--groups-g2); } .g3 { background: var(--groups-g3); }
+</style>
+</head>
+<body>
+<div class="verbs" id="verbs"></div>
+<div class="code" id="code"></div>
+<div class="explain" id="explain"></div>
+<div class="tables">
+  <div><div class="tcap" id="cap-left"></div><div id="left"></div></div>
+  <div><div class="tcap" id="cap-right"></div><div id="right"></div></div>
+</div>
+
+<script>
+/* six respondents, small enough to follow every row. The columns follow
+   real questions of the survey: age in years (Q002alter), size of place,
+   simplified to city/town/village (D044stadtf), persons in the household
+   (d042hhzahl) */
+const DATA = [
+  { id: 1, age: 23, city: "city",    household: 1 },
+  { id: 2, age: 67, city: "village", household: 2 },
+  { id: 3, age: 45, city: "town",    household: 4 },
+  { id: 4, age: 34, city: "city",    household: 3 },
+  { id: 5, age: 58, city: "village", household: 2 },
+  { id: 6, age: 71, city: "town",    household: 1 },
+];
+const COLS = ["id", "age", "city", "household"];
+const LEGEND = "six respondents: age in years, size of place, persons in the household";
+const mean = (xs) => xs.reduce((a, b) => a + b, 0) / xs.length;
+const fmt = (v) => typeof v === "number" ? (Number.isInteger(v) ? String(v) : v.toFixed(1))
+                 : typeof v === "boolean" ? (v ? "TRUE" : "FALSE") : String(v);
+const isText = (v) => typeof v === "string";
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const CITIES = [...new Set(DATA.map((r) => r.city))].sort();
+const groupClass = (city) => "g" + (CITIES.indexOf(city) + 1);
+const byCity = (rows) => CITIES.map((c) => rows.filter((r) => r.city === c));
+
+/* each verb: code (the verb in <hl>), the result, one sentence, highlights */
+const VERBS = {
+  "select": {
+    code: ["survey |>", "  <hl>select</hl>(id, age, city)"],
+    run: () => ({ cols: ["id", "age", "city"], rows: DATA }),
+    explain: "select() keeps columns: 3 of 4. every row stays.",
+    before: { cols: { household: "gone" } },
+  },
+  "filter": {
+    code: ["survey |>", "  <hl>filter</hl>(age >= 50)"],
+    run: () => ({ cols: COLS, rows: DATA.filter((r) => r.age >= 50) }),
+    explain: "filter() keeps the rows where the condition is TRUE: 3 of 6.",
+    before: { drop: (r) => r.age < 50 },
+  },
+  "arrange": {
+    code: ["survey |>", "  <hl>arrange</hl>(desc(age))"],
+    run: () => ({ cols: COLS, rows: [...DATA].sort((a, b) => b.age - a.age) }),
+    explain: "arrange() sorts the rows, here by age, oldest first. nothing is added or removed.",
+    after: { cols: { age: "sort" } },
+  },
+  "mutate": {
+    code: ["survey |>", "  <hl>mutate</hl>(is_50_plus = age >= 50)"],
+    run: () => ({ cols: [...COLS, "is_50_plus"], rows: DATA.map((r) => ({ ...r, is_50_plus: r.age >= 50 })) }),
+    explain: "mutate() adds a column, one value per row. every row stays.",
+    after: { cols: { is_50_plus: "new" } },
+  },
+  "group_by + summarise": {
+    code: ["survey |>", "  <hl>group_by</hl>(city) |>", "  <hl>summarise</hl>(mean_age = mean(age), n = n())"],
+    run: () => ({ cols: ["city", "mean_age", "n"],
+                  rows: byCity(DATA).map((g) => ({ city: g[0].city, mean_age: mean(g.map((r) => r.age)), n: g.length })) }),
+    explain: "group_by() forms the groups, summarise() turns every group into one row: 3 groups, 3 rows.",
+    stripe: true, after: { cols: { mean_age: "new", n: "new" } },
+  },
+  "summarise or mutate?": { compare: true },
+};
+
+const params = new URLSearchParams(location.search);
+if (params.get("embed") === "1") document.body.classList.add("embed");
+let current = params.get("preset") || "filter";
+if (!(current in VERBS)) current = "filter";
+
+const $ = (id) => document.getElementById(id);
+const codeHtml = (lines) => lines.map((l) => esc(l).replace(/&lt;hl&gt;(.*?)&lt;\/hl&gt;/g, '<span class="hl">$1</span>')).join("\n");
+
+function tableHtml(cols, rows, hl = {}, stripe = false) {
+  const c = hl.cols || {};
+  const head = `<tr>${stripe ? '<th class="stripe"></th>' : ""}${cols.map((k) =>
+    `<th class="${isText(rows[0]?.[k]) ? "txt " : ""}${c[k] || ""}">${esc(k)}</th>`).join("")}</tr>`;
+  const body = rows.map((r) => `<tr class="${hl.drop && hl.drop(r) ? "drop" : ""}">${stripe ? `<td class="stripe"><span class="${groupClass(r.city)}"></span></td>` : ""}${cols.map((k) =>
+    `<td class="${isText(r[k]) ? "txt " : ""}${c[k] || ""}">${esc(fmt(r[k]))}</td>`).join("")}</tr>`).join("");
+  return `<table>${head}${body}</table>`;
+}
+
+function renderCompare() {
+  const groups = byCity(DATA);
+  const sum = groups.map((g) => ({ city: g[0].city, mean_age: mean(g.map((r) => r.age)) }));
+  const mut = DATA.map((r) => ({ ...r, mean_age: mean(groups[CITIES.indexOf(r.city)].map((x) => x.age)) }));
+  $("code").innerHTML = `<div class="pair"><div>${codeHtml(["survey |>", "  group_by(city) |>", "  <hl>summarise</hl>(mean_age = mean(age))"])}</div>` +
+                        `<div>${codeHtml(["survey |>", "  group_by(city) |>", "  <hl>mutate</hl>(mean_age = mean(age))"])}</div></div>`;
+  $("explain").textContent = "same groups, same mean: summarise() keeps one row per group, mutate() keeps every row.";
+  $("cap-left").textContent = "summarise(): one row per group";
+  $("cap-right").textContent = "mutate(): every row stays";
+  $("left").innerHTML = tableHtml(["city", "mean_age"], sum, { cols: { mean_age: "new" } }, true);
+  $("right").innerHTML = tableHtml([...COLS, "mean_age"], mut, { cols: { mean_age: "new" } }, true);
+}
+
+function render() {
+  $("verbs").innerHTML = Object.keys(VERBS).map((k) => `<button class="${k === current ? "on" : ""}" data-v="${esc(k)}">${esc(k)}</button>`).join("");
+  $("verbs").querySelectorAll("button").forEach((b) => b.onclick = () => { current = b.dataset.v; render(); });
+  const v = VERBS[current];
+  if (v.compare) return renderCompare();
+  const out = v.run();
+  $("code").innerHTML = codeHtml(v.code);
+  $("explain").textContent = v.explain;
+  $("cap-left").textContent = `before: ${LEGEND}`;
+  $("cap-right").textContent = `after: ${out.rows.length} rows, ${out.cols.length} columns`;
+  $("left").innerHTML = tableHtml(COLS, DATA, v.before || {}, !!v.stripe);
+  $("right").innerHTML = tableHtml(out.cols, out.rows, v.after || {}, !!v.stripe);
+}
+
+render();
+</script>
+</body>
+</html>
