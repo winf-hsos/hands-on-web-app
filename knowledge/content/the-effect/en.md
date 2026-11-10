@@ -4,15 +4,8 @@ summary: >-
   Nick Huntington-Klein explains, intuitively and with few equations, when you
   may conclude causes from observational data and with which methods, free to
   read online.
-objectives:
-  intro: "From this book you take away when, and with which methods, you may conclude causes from observational data, and afterwards you can:"
-  goals:
-    - "explain why an experiment allows a conclusion about the cause while data that simply accumulated does not without further ado"
-    - "write down a causal question as a causal diagram and read from it which influences you have to rule out"
-    - "distinguish methods such as regression, matching, difference-in-differences, instrumental variables and regression discontinuity"
-    - "judge where a causal answer from observational data can fail"
 translation_of: de
-based_on: 2026-11-01
+based_on: 2026-11-11
 ---
 
 An experiment assigns chance itself, and that is why you may conclude a cause
@@ -25,6 +18,11 @@ common methods, from regression and matching through difference-in-differences
 to instrumental variables and regression discontinuity.
 
 ## Why it fits here
+
+In Practice of Market and Social Research, chapter 2, "Research Questions",
+is the second basis of the lesson [[research-questions]]: it says which two
+conditions a research question has to meet and gives a checklist in section
+2.4 that you hold against your own question.
 
 In the lesson [[exploratory-data-analysis-basics]], causal questions sit low in the
 decision tree, because they demand the most. If you want to know how to

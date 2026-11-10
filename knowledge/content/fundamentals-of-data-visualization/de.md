@@ -22,12 +22,12 @@ url: https://clauswilke.com/dataviz/
 level: 1
 duration: 5
 topics: [visualising-data, communicating-results]
-modules: [ea]
+modules: [ea, pmg]
 areas: [ds]
 relations:
   see_also: [r-for-data-science]
-status: draft
-updated: 2026-11-01
+status: published
+updated: 2026-11-11
 ---
 
 Der erste Teil des Buchs geht von den Daten aus und fragt, welche Darstellung
@@ -44,7 +44,10 @@ erzählen.
 Das Buch enthält keinen Code, obwohl alle Abbildungen mit R und ggplot2
 entstanden sind. Gerade deshalb ergänzt es [[r-for-data-science]] gut: Dort
 lernt man, wie man ein Diagramm in R baut, hier, welches Diagramm die Frage
-beantwortet und woran man ein irreführendes erkennt.
+beantwortet und woran man ein irreführendes erkennt. Im Selbststudium von
+Praxis der Markt- und Gesellschaftsforschung hilft dir sein „Directory of
+Visualizations“ in [[survey-exercise-figures|Kapitel 4]], für jede Frage die
+passende Abbildung zu finden.
 
 ## Ausgaben
 

@@ -6,13 +6,6 @@ summary: >-
   Nick Huntington-Klein erklärt anschaulich und mit wenigen Formeln, wann man
   aus Beobachtungsdaten auf Ursachen schließen darf und mit welchen Methoden,
   frei lesbar im Netz.
-objectives:
-  intro: "Aus diesem Buch nimmst du mit, wann und mit welchen Methoden man aus Beobachtungsdaten auf Ursachen schließen darf, und kannst danach:"
-  goals:
-    - "erklären, warum ein Experiment einen Schluss auf die Ursache erlaubt, Daten, die einfach angefallen sind, dagegen nicht ohne Weiteres"
-    - "eine kausale Frage als Kausaldiagramm aufschreiben und daraus ablesen, welche Einflüsse du ausschalten musst"
-    - "Methoden wie Regression, Matching, Differenz-von-Differenzen, Instrumentvariablen und Regressionsdiskontinuität unterscheiden"
-    - "einschätzen, woran eine kausale Antwort aus Beobachtungsdaten scheitern kann"
 authors: [Nick Huntington-Klein]
 year: 2025
 publisher: Chapman & Hall
@@ -24,8 +17,8 @@ duration: 5
 topics: [questions-and-measurement, data-pitfalls]
 modules: [ea, pmg]
 areas: [ds]
-status: draft
-updated: 2026-11-01
+status: published
+updated: 2026-11-11
 ---
 
 Ein Experiment verteilt den Zufall selbst, und deshalb darf man aus seinem
@@ -40,6 +33,11 @@ Differenz-von-Differenzen bis zu Instrumentvariablen und
 Regressionsdiskontinuität.
 
 ## Warum es hierher passt
+
+In Praxis der Markt- und Gesellschaftsforschung ist Kapitel 2, „Research
+Questions“, die zweite Grundlage der Lektion [[research-questions]]: Es sagt,
+welche zwei Bedingungen eine Forschungsfrage erfüllen muss, und gibt in
+Abschnitt 2.4 eine Prüfliste, an die du deine eigene Frage hältst.
 
 In der Lektion [[exploratory-data-analysis-basics]] stehen kausale Fragen weit unten im
 Entscheidungsbaum, weil sie am meisten verlangen. Wer wissen will, wie man sie

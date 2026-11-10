@@ -22,12 +22,12 @@ url: https://r4ds.hadley.nz/
 level: 1
 duration: 5
 topics: [programming-with-r, getting-data, transforming-data, visualising-data]
-modules: [ea]
+modules: [ea, pmg]
 areas: [ds]
 relations:
   see_also: [r-pipe, tidy-data, data-transformation-basics]
-status: draft
-updated: 2026-11-01
+status: published
+updated: 2026-11-11
 ---
 
 Das Buch zeigt, wie man mit R Daten auswertet, vom Einlesen über das
@@ -43,7 +43,10 @@ Die Lektionen zu dplyr denken in derselben Weise: [[tidy-data|Tidy Data]]
 geht auf Hadley Wickham zurück, und die Verben aus
 [[data-transformation-basics]] erklärt das Buch ausführlich und mit vielen
 weiteren Beispielen. Wer nach dem Lernpfad [[getting-started-with-r]] mehr R lernen will, findet
-hier den nächsten Schritt.
+hier den nächsten Schritt. Im Selbststudium von Praxis der Markt- und
+Gesellschaftsforschung nennt jedes der fünf Kapitel, ab
+[[survey-exercise-first-look|Kapitel 1]], die Abschnitte dieses Buchs, die du
+vorher lesen solltest.
 
 ## Ausgaben
 

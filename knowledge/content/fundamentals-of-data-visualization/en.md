@@ -12,7 +12,7 @@ objectives:
     - "spot a misleading figure and say what makes it misleading"
     - "tell a story with figures"
 translation_of: de
-based_on: 2026-11-01
+based_on: 2026-11-11
 ---
 
 The first part of the book starts from the data and asks which visualisation
@@ -28,7 +28,10 @@ telling a story with figures.
 The book contains no code, although all its figures were made with R and
 ggplot2. That is exactly why it complements [[r-for-data-science]] well:
 there you learn how to build a chart in R, here which chart answers the
-question and how to spot a misleading one.
+question and how to spot a misleading one. In the self-study of Practice of
+Market and Social Research, its "Directory of Visualizations" helps you in
+[[survey-exercise-figures|chapter 4]] to find the right figure for each
+question.
 
 ## Editions
 

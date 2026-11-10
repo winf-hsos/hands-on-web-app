@@ -12,7 +12,7 @@ objectives:
     - "program your own code so that you can reuse it across analyses"
     - "communicate the results of an analysis in a finished report"
 translation_of: de
-based_on: 2026-11-01
+based_on: 2026-11-11
 ---
 
 The book shows how to analyse data with R, from importing it through tidying
@@ -27,6 +27,9 @@ The lessons on dplyr think the same way: [[tidy-data|tidy data]] goes back
 to Hadley Wickham, and the book explains the verbs from
 [[data-transformation-basics]] in detail and with many more examples. If you
 want more R after the path [[getting-started-with-r]], this is the next step.
+In the self-study of Practice of Market and Social Research, each of the five
+chapters, from [[survey-exercise-first-look|chapter 1]] on, names the sections
+of this book you should read first.
 
 ## Editions
 
