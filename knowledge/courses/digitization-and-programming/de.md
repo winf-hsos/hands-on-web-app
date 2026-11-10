@@ -1,7 +1,6 @@
 ---
 kind: course
 code: 3307
-access_code: LICHT-26
 module: dup
 formerly: [dup-2026-27-ws, digitalisation-and-programming]
 institution: hs-osnabrueck

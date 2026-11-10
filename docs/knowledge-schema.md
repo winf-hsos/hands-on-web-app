@@ -797,15 +797,14 @@ semester (Nicolas, 2026-11-01): the platform has no reference to a term, in
 fields, ids or texts, so a module stays valid from one year to the next. All
 courses are listed on the site under "Module" once they are published, and
 opening one adds it to "My learning", which also makes it a filter in the
-content list. Access codes are not used for now (Nicolas, 2026-11-01): the
-home page leads to the list of courses instead of a field for a code, and a
-link with a code from before, `/de/learning/?code=…`, still opens its course.
+content list. Courses have no access codes (Nicolas, 2026-11-01; the
+field was removed from all courses, the editor and the validator on
+2026-11-10): the home page leads to the list of courses.
 
 ```yaml
 ---
 kind: course
 code: 3307                   # short code, like any page
-access_code: LICHT-26        # optional, not used for now: courses are listed under Module (Nicolas, 2026-11-01)
 module: dup                  # or a list, module: [ea, wmg]
 formerly: [dup-2026-27-ws]   # optional: earlier ids, whose addresses lead here
 institution: hs-osnabrueck      # from vocabulary.yaml, with name, address and logo
@@ -1160,6 +1159,6 @@ Approved by Nicolas on 2026-10-21 as proposed:
    on 2026-10-27 for data sets to download; `info` added on 2026-11-02 for
    pages that inform or guide without introducing a concept.
 5. **Levels** 1–4 with the labels above.
-6. **Access codes for courses** are readable word codes such as `LICHT-26`;
-   case, spaces and hyphens are ignored. Not used for now (2026-11-01).
+6. **Access codes for courses** were readable word codes such as
+   `LICHT-26`; removed on 2026-11-10, courses are open (2026-11-01).
 7. **`access: code`** exists in the schema but has no effect yet.

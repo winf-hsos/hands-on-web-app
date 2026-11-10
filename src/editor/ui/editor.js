@@ -50,7 +50,7 @@ const HANDLED = {
   common: ['type', 'kind', 'code', 'title', 'summary', 'goal', 'audience', 'status', 'updated', 'translation_of', 'based_on'],
   content: ['level', 'duration', 'topics', 'modules', 'relations', 'objectives', ...Object.keys(FIELD_LABEL)],
   paths: ['level', 'requires', 'steps'],
-  courses: ['access_code', 'module'],
+  courses: ['module'],
   projects: ['level', 'modules'],
   pages: ['featured_path', 'samples'],
 };
@@ -248,7 +248,6 @@ function renderShared() {
     html.push(linkList('requires', 'Voraussetzungen'));
   }
   if (work.section === 'courses') {
-    html.push(field('Zugangscode für Studierende', input('access_code', d.access_code), { hint: 'Vorerst nicht genutzt, Module stehen offen unter „Module“. Großbuchstaben, Ziffern, Bindestrich' }));
     html.push(field('Modul im Modulhandbuch', multi('module', Object.entries(v.modules).map(([k, l]) => [k, l.de]), [].concat(d.module ?? [])), { wide: true }));
   }
   if (work.section === 'projects') {

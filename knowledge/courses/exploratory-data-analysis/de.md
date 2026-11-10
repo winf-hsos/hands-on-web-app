@@ -1,7 +1,6 @@
 ---
 kind: course
 code: 1419
-access_code: EDA-26
 module: ea
 formerly: [eda-2026-27-ws]
 institution: hs-osnabrueck

@@ -16,20 +16,8 @@ const rich = (text) => codeParts(text).map((p) => (p.code ? el('code', { textCon
 
 // --- courses ------------------------------------------------------------------
 
-// Courses are listed under "Kurse" and join "My learning" when opened
-// (course.js). A link with an access code from before, …/learning/?code=LICHT-26,
-// still opens its course; codes are compared without case, spaces or hyphens.
-const normal = (s) => s.toUpperCase().replace(/[\s-]/g, '');
-
-const linked = new URLSearchParams(location.search).get('code');
-const linkedCourse = linked && data.courses.find((c) => c.access && normal(c.access) === normal(linked));
-if (linkedCourse) {
-  const progress = load();
-  if (!progress.courses.includes(linkedCourse.id)) progress.courses.push(linkedCourse.id);
-  save(progress);
-  // the link should not come back here with "back"
-  location.replace(linkedCourse.url);
-}
+// Courses are listed openly under "Module" and join "My learning" when opened
+// (course.js); they have no access codes (Nicolas, 2026-11-01 and 2026-11-10).
 
 function renderCourses(progress) {
   const list = $('my-courses');

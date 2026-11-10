@@ -207,14 +207,13 @@ function shapes(vocabulary) {
           updated: date,
         },
         // a subtitle and where the course is taught
-        // access codes are not used for now, courses are listed under "Kurse" (Nicolas, 2026-11-01)
+        // courses have no access codes, they are listed openly under "Module" (Nicolas, 2026-11-01 and 2026-11-10)
         optional: {
           subtitle: text,
           institution: oneOf(institutions, 'institution'),
           areas: inAreas,
           // earlier ids; their addresses lead to the course (scripts/build.mjs)
           formerly: list(id),
-          access_code: (v) => (typeof v === 'string' && /^[A-Z0-9-]{4,16}$/.test(v) ? null : 'expected upper case letters, digits and hyphens'),
         },
       },
       translation: { required: translation.required, optional: { subtitle: text } },
@@ -410,12 +409,6 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
     const owner = codes.get(doc.lead.code);
     if (owner) errors.push(`${doc.section}/${doc.id}: code ${doc.lead.code} is already used by ${owner}`);
     codes.set(doc.lead.code, `${doc.section}/${doc.id}`);
-  }
-  const access = new Map();
-  for (const course of courses.filter((c) => c.lead.access_code)) {
-    const key = course.lead.access_code.replace(/-/g, '');
-    if (access.has(key)) errors.push(`courses/${course.id}: access code ${course.lead.access_code} is already used by ${access.get(key)}`);
-    access.set(key, course.id);
   }
 
   for (const item of content) {
