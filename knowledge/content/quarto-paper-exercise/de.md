@@ -23,7 +23,7 @@ areas: [ds]
 relations:
   requires: [quarto-first-steps]
   see_also: [paper-structure, opencode-course-assistant, research-question-exercise]
-status: draft
+status: published
 updated: 2026-11-11
 ---
 

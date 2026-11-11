@@ -22,7 +22,7 @@ areas: [ds]
 relations:
   requires: [research-questions]
   see_also: [opencode-course-assistant, milk-chocolate-survey]
-status: draft
+status: published
 updated: 2026-11-11
 ---
 
