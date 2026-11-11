@@ -112,6 +112,8 @@ Attention relates every token with every token before it. A grid with one row an
 
 How attention computes these strengths is a topic for later. For now it is enough to know the one thing the slides end with: a language model writes one token at a time, and the whole context flows into the prediction of every single one.
 
+![Quiz: Next-token prediction](item:next-token-prediction-quiz)
+
 ## Further reading
 
 - Ashish Vaswani et al.: [Attention Is All You Need](https://arxiv.org/abs/1706.03762), NeurIPS 2017, the paper that introduced the transformer.
