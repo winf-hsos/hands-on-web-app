@@ -51,8 +51,12 @@ expectation. As a hypothesis the same question becomes concrete: "respondents
 over 60 buy a larger share of organic food than respondents under 30" names
 two groups and a direction, so that the data can prove it wrong. A hypothesis
 is not a hunch: it has to rest on theory or on earlier findings, which you
-cite. With a survey that is already collected, the open question is the normal
-case (after Döring 2023, pp. 149–152). This hypothesis would, incidentally,
+cite. Whether the data are already collected does not decide this, but
+whether you can say, before you look at the data, where the expectation comes
+from. With a ready-made survey you often cannot, and a hypothesis written after
+a first look at the data only describes what you have already seen, so it can
+no longer fail; without an expectation you can cite, the open question is the
+honest choice (after Döring 2023, pp. 149–152). This hypothesis would, incidentally,
 fail in this survey: 54 percent of the respondents under 30 buy at least half
 of their food organic, against 38 percent of those over 60.
 
@@ -131,7 +135,7 @@ advertising.
 
 ## Part 4: sharpening a question
 
-**A pencil in a sharpener (frame 41).** A vague idea becomes a question once
+**A pencil beside a sharpener (frame 41).** A vague idea becomes a question once
 you can say who, where, when, what varies, what you measure and what you
 compare.
 

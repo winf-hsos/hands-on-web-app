@@ -71,28 +71,29 @@ const mono = (x, cy, text, o = {}) =>
 
 /* --- slide: two conditions -------------------------------------------------------
  * Figure 1680 x 804, after Huntington-Klein, ch. 2. A map instead of boxes:
- * x axis "answerable with evidence" from the origin (220, 700) to 1660, y axis
- * "teaches us how the world works" up to 40, quadrants divided by dashed lines
- * at x 940 and y 370. Three questions land on it, one per step: top left the
- * ad (centred at 580), bottom right the count of big-city respondents (at
- * 1300; "answerable, but it teaches nothing" about 650), top right the good
- * question as a green verdict 640 x 180 at (980, 100), its two lines at most
+ * x axis "answerable with evidence" from the origin (120, 700) to 1560, so the
+ * map sits in the middle of the figure, y axis "teaches us how the world
+ * works" up to 40, quadrants divided by dashed lines at x 840 and y 370. Three
+ * questions land on it, one per step: top left the ad (centred at 480),
+ * bottom right the count of big-city respondents (at 1200; "answerable, but
+ * it teaches nothing" about 650), top right the good question as a green
+ * verdict 640 x 180 at (880, 100), its two lines at most
  * 29 characters (about 557), its columns in the code font under it (y 330). */
 (function () {
   el("fig-conditions").innerHTML = d.svg(1680, 804,
-    d.line(940, 40, 940, 700, { color: C.dark, dashed: true }), d.line(220, 370, 1660, 370, { color: C.dark, dashed: true }),
-    d.arrow(220, 700, 1660, 700, { color: C.gray }), d.arrow(220, 700, 220, 40, { color: C.gray }),
-    d.label(1660, 0, "answerable with evidence", { size: 32, color: C.gray, anchor: "end", centerY: 750 }),
-    d.label(250, 0, "teaches us how the world works", { size: 32, color: C.gray, centerY: 50 }),
+    d.line(840, 40, 840, 700, { color: C.dark, dashed: true }), d.line(120, 370, 1560, 370, { color: C.dark, dashed: true }),
+    d.arrow(120, 700, 1560, 700, { color: C.gray }), d.arrow(120, 700, 120, 40, { color: C.gray }),
+    d.label(1560, 0, "answerable with evidence", { size: 32, color: C.gray, anchor: "end", centerY: 750 }),
+    d.label(150, 0, "teaches us how the world works", { size: 32, color: C.gray, centerY: 50 }),
     d.g("w1",
-      d.label(580, 0, "which milk ad is the best?", { size: 32, color: C.light, anchor: "middle", centerY: 190 }),
-      d.label(580, 0, "no measure decides “best”", { size: 32, color: C.gray, anchor: "middle", centerY: 250 })),
+      d.label(480, 0, "which milk ad is the best?", { size: 32, color: C.light, anchor: "middle", centerY: 190 }),
+      d.label(480, 0, "no measure decides “best”", { size: 32, color: C.gray, anchor: "middle", centerY: 250 })),
     d.g("w2",
-      d.label(1300, 0, "how many respondents live\nin a big city?", { size: 32, color: C.light, anchor: "middle", centerY: 500 }),
-      d.label(1300, 0, "answerable, but it teaches nothing", { size: 32, color: C.gray, anchor: "middle", centerY: 590 })),
+      d.label(1200, 0, "how many respondents live\nin a big city?", { size: 32, color: C.light, anchor: "middle", centerY: 500 }),
+      d.label(1200, 0, "answerable, but it teaches nothing", { size: 32, color: C.gray, anchor: "middle", centerY: 590 })),
     d.g("good",
-      d.verdict(980, 100, 640, 180, "do older respondents buy a\nlarger share of organic food?", true),
-      mono(1300, 330, "Q002alter, v032bioanteil", { anchor: "middle" })));
+      d.verdict(880, 100, 640, 180, "do older respondents buy a\nlarger share of organic food?", true),
+      mono(1200, 330, "Q002alter, v032bioanteil", { anchor: "middle" })));
   const a = d.anim("fig-conditions");
   ["w1", "w2", "good"].forEach((g) => a.step(a.show(g, { dur: 500 })));
 })();
@@ -101,7 +102,7 @@ const mono = (x, cy, text, o = {}) =>
  * Figure 1680 x 660 (has-punch), after Döring (2023), pp. 149-152. One
  * example twice, side by side: left the research question, right (with the
  * step) the same question made concrete as a hypothesis. Two columns from
- * x 0 and x 900, divided by a dark line at x 850; the kind at 48 (y 40), the
+ * x 50 and x 900, each with a thin dark guide line on its left (x 1 and 850); the kind at 48 (y 40), the
  * sentence at 48 left-aligned with its top at y 110 (at most 23 characters a
  * line, about 662), and what it is in grey at 32 (y 440, at most 28
  * characters, about 538). In blue the parts that become concrete: "differ by
@@ -110,12 +111,13 @@ const mono = (x, cy, text, o = {}) =>
   const B = C.blue, lh = 48 * 1.3;
   const top = (n) => 110 + n * lh / 2;
   el("fig-qh").innerHTML = d.svg(1680, 660,
-    d.label(0, 0, "research question", { size: 48, centerY: 40 }),
-    rich(0, top(3), [
+    d.line(1, 10, 1, 500, { color: C.dark }),
+    d.label(50, 0, "research question", { size: 48, centerY: 40 }),
+    rich(50, top(3), [
       ["does the share of"],
       ["organic food people buy"],
       [["differ by age", B], "?"]], { size: 48 }),
-    d.label(0, 0, "open: it asks, without\nexpecting a direction", { size: 32, color: C.gray, centerY: 440 }),
+    d.label(50, 0, "open: it asks, without\nexpecting a direction", { size: 32, color: C.gray, centerY: 440 }),
     d.g("hyp",
       d.line(850, 10, 850, 500, { color: C.dark }),
       d.label(900, 0, "hypothesis", { size: 48, centerY: 40 }),
