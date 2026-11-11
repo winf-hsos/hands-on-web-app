@@ -23,7 +23,7 @@ updated: 2026-11-11
 - [ ] The next word, which it planned for the whole answer before writing.
   > The model plans no whole answer in advance; in every step it only sees the text so far.
 - [x] A probability for every token in its vocabulary that it comes next.
-  > Correct: this list is all the model produces in one step; which token is taken is decided by the program around it.
+  > Correct: these probabilities are all the model produces in one step; which token is taken is decided by the program around it.
 - [ ] The whole next sentence at once, which is then shown word by word.
   > The answer really is made token by token; every new token needs a pass of its own through the model.
 - [ ] Only the single most likely token, without values for the others.
@@ -32,31 +32,31 @@ updated: 2026-11-11
 ## Why does a German text usually need more tokens than an English one with the same content? {#np-002}
 
 - [ ] Every umlaut and every ß is always counted as a token of its own.
-  > Words with an umlaut can be a single token too; what matters is how frequent a word was in the texts used for the list.
+  > Words with an umlaut can be a single token too; what matters is how frequent a word was in the texts the vocabulary was built from.
 - [ ] For German, the model has to send the grammar along as extra tokens.
   > Grammar is not sent along as tokens; the tokens are only the pieces of the text itself.
-- [x] The list of tokens was built mainly from English text, so German words fall apart into several pieces more often.
-  > Correct: frequent words are a single token, and whatever was rare in the texts used for the list is cut into pieces.
+- [x] The model's vocabulary was built mainly from English text, so German words fall apart into several pieces more often.
+  > Correct: frequent words are a single token, and whatever was rare in the texts used for the vocabulary is cut into pieces.
 - [ ] A token always stands for exactly one syllable, and German words have more syllables.
   > Tokens do not follow syllables: a frequent word with three syllables can be a single token.
 
-## The program has drawn a token from the list. What happens next? {#np-003}
+## The program has drawn the next token according to the probabilities of the model. What happens next? {#np-003}
 
-- [x] The token is appended to the context, and the model computes the next list from the longer text.
+- [x] The token is appended to the context, and the model computes new probabilities from the longer text.
   > Correct: every output becomes input; this is called autoregressive.
 - [ ] The model checks the answer so far and replaces earlier tokens that no longer fit.
   > A token once written is never taken back; the model can only continue.
 - [ ] The model learns from the drawn token and adjusts its parameters.
   > The parameters do not change while answering; the model only learns during training.
-- [ ] The program keeps drawing from the same list until the answer is complete.
-  > For every new token the model computes a new list, because the context has grown by one token.
+- [ ] The program keeps drawing with the same probabilities until the answer is complete.
+  > For every new token the model computes new probabilities, because the context has grown by one token.
 
 ## A language model writes something wrong, fluently and confidently. Which explanation follows from next-token prediction? {#np-004}
 
 - [ ] It looked up a wrong source in its database.
   > A language model looks nothing up; it computes probabilities for the next token.
 - [ ] It invents something on purpose to appear creative.
-  > The model has no intention; it draws tokens from a list of probabilities.
+  > The model has no intention; tokens are drawn according to the probabilities it computes.
 - [ ] The tokenizer cut the question up wrongly, and the model answered a different question.
   > The tokenizer cuts every text in a fixed way; hallucinations arise while the answer is written.
 - [x] It writes the most likely continuation, and that is not always the true one.
@@ -66,8 +66,8 @@ updated: 2026-11-11
 
 - [ ] The provider answers every question with a different model.
   > Even a single model on your laptop answers differently as long as the temperature is above 0.
-- [x] The next token is drawn from the list, and every drawn token changes everything that follows.
-  > Correct: the model stays the same; only which token is drawn differs.
+- [x] The next token is drawn at random according to the model's probabilities.
+  > Correct: the model and its probabilities stay the same; only which token is drawn differs, and every token changes everything that follows.
 - [ ] The model learned from the first answer and answers better the second time.
   > The model learns nothing in the chat; its parameters do not change between two questions.
 - [ ] The question is reworded at random before it is sent.
@@ -80,11 +80,11 @@ updated: 2026-11-11
 - [ ] The model does not answer, because no token may be drawn.
   > At 0 the model still writes, only without chance.
 - [x] The most likely token is always taken, and the same question gets the same answer every time.
-  > Correct: the list becomes so sharp that the first token gets everything.
+  > Correct: the probabilities become so sharp that the most likely token gets everything.
 - [ ] The model writes more creatively, because it prefers rare tokens.
   > At 0 rare tokens get no chance at all; more variety comes from a higher temperature.
 
-## The list for the next token starts with field 41%, barn 22%, yard 9%, shed 6%. Which tokens remain with top p = 0.6? {#np-007}
+## For the next token, the model computes field 41%, barn 22%, yard 9%, shed 6% and less for all others. Which tokens remain with top p = 0.6? {#np-007}
 
 - [ ] only field
   > field alone has 41% and does not yet reach 0.6; a second token is needed.

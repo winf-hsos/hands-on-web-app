@@ -13,7 +13,7 @@ based_on: 2026-11-11
 - [ ] Das nächste Wort, das es schon vor dem Schreiben für die ganze Antwort geplant hat.
   > Das Modell plant keine ganze Antwort im Voraus; es sieht in jedem Schritt nur den Text bis hierher.
 - [x] Für jedes Token seines Vokabulars eine Wahrscheinlichkeit, dass es als Nächstes kommt.
-  > Richtig: Diese Liste ist alles, was das Modell in einem Schritt liefert; welches Token genommen wird, entscheidet das Programm darum herum.
+  > Richtig: Diese Wahrscheinlichkeiten sind alles, was das Modell in einem Schritt liefert; welches Token genommen wird, entscheidet das Programm darum herum.
 - [ ] Den ganzen nächsten Satz auf einmal, der dann Wort für Wort angezeigt wird.
   > Die Antwort entsteht wirklich Token für Token; jedes neue Token braucht einen eigenen Durchlauf durch das Modell.
 - [ ] Nur das eine wahrscheinlichste Token, ohne Werte für die anderen.
@@ -22,31 +22,31 @@ based_on: 2026-11-11
 ## Warum braucht ein deutscher Text meist mehr Tokens als ein englischer mit demselben Inhalt? {#np-002}
 
 - [ ] Jeder Umlaut und jedes ß wird grundsätzlich als eigenes Token gezählt.
-  > Auch Wörter mit Umlaut können ein einzelnes Token sein; entscheidend ist, wie häufig ein Wort in den Texten für die Liste war.
+  > Auch Wörter mit Umlaut können ein einzelnes Token sein; entscheidend ist, wie häufig ein Wort in den Texten war, aus denen das Vokabular gebaut wurde.
 - [ ] Das Modell muss für Deutsch zusätzlich die Grammatik als Tokens mitschicken.
   > Grammatik wird nicht als Token mitgeschickt; die Tokens sind nur die Stücke des Textes selbst.
-- [x] Die Liste der Tokens wurde vor allem aus englischen Texten gebaut, deshalb zerfallen deutsche Wörter öfter in mehrere Stücke.
-  > Richtig: Häufige Wörter sind ein Token, und was in den Texten für die Liste selten war, wird in Stücke zerlegt.
+- [x] Das Vokabular des Modells wurde vor allem aus englischen Texten gebaut, deshalb zerfallen deutsche Wörter öfter in mehrere Stücke.
+  > Richtig: Häufige Wörter sind ein Token, und was in den Texten für das Vokabular selten war, wird in Stücke zerlegt.
 - [ ] Ein Token steht immer für genau eine Silbe, und deutsche Wörter haben mehr Silben.
   > Tokens folgen nicht den Silben: Ein häufiges Wort mit drei Silben kann ein einziges Token sein.
 
-## Das Programm hat ein Token aus der Liste gezogen. Was geschieht als Nächstes? {#np-003}
+## Das Programm hat das nächste Token nach den Wahrscheinlichkeiten des Modells gezogen. Was geschieht als Nächstes? {#np-003}
 
-- [x] Das Token wird an den Kontext angehängt, und das Modell berechnet aus dem längeren Text die nächste Liste.
+- [x] Das Token wird an den Kontext angehängt, und das Modell berechnet aus dem längeren Text neue Wahrscheinlichkeiten.
   > Richtig: Jede Ausgabe wird zur Eingabe; das heißt autoregressiv.
 - [ ] Das Modell prüft die bisherige Antwort und ersetzt frühere Tokens, die nicht mehr passen.
   > Ein geschriebenes Token wird nie zurückgenommen; das Modell kann nur weiterschreiben.
 - [ ] Das Modell lernt aus dem gezogenen Token und passt seine Parameter an.
   > Beim Antworten ändern sich die Parameter nicht; gelernt wird nur beim Training.
-- [ ] Das Programm zieht aus derselben Liste so lange weiter, bis die Antwort fertig ist.
-  > Für jedes neue Token rechnet das Modell eine neue Liste, weil der Kontext um ein Token länger geworden ist.
+- [ ] Das Programm zieht mit denselben Wahrscheinlichkeiten weiter, bis die Antwort fertig ist.
+  > Für jedes neue Token berechnet das Modell neue Wahrscheinlichkeiten, weil der Kontext um ein Token länger geworden ist.
 
 ## Ein Sprachmodell schreibt flüssig und überzeugt etwas Falsches. Welche Erklärung folgt aus der Vorhersage des nächsten Tokens? {#np-004}
 
 - [ ] Es hat in seiner Datenbank eine falsche Quelle nachgeschlagen.
   > Ein Sprachmodell schlägt nichts nach; es berechnet Wahrscheinlichkeiten für das nächste Token.
 - [ ] Es erfindet absichtlich etwas, um kreativ zu wirken.
-  > Das Modell hat keine Absicht; es zieht Tokens aus einer Liste von Wahrscheinlichkeiten.
+  > Das Modell hat keine Absicht; Tokens werden nach den Wahrscheinlichkeiten gezogen, die es berechnet.
 - [ ] Der Tokenizer hat die Frage falsch zerlegt, und das Modell hat eine andere Frage beantwortet.
   > Der Tokenizer zerlegt jeden Text eindeutig; Halluzinationen entstehen beim Schreiben der Antwort.
 - [x] Es schreibt die wahrscheinlichste Fortsetzung, und die ist nicht immer die wahre.
@@ -56,8 +56,8 @@ based_on: 2026-11-11
 
 - [ ] Der Anbieter beantwortet jede Frage mit einem anderen Modell.
   > Auch ein einziges Modell auf deinem Laptop antwortet unterschiedlich, solange die Temperatur über 0 liegt.
-- [x] Das nächste Token wird aus der Liste gezogen, und jedes gezogene Token verändert alles, was danach kommt.
-  > Richtig: Das Modell bleibt gleich; verschieden ist nur, welches Token gezogen wird.
+- [x] Das nächste Token wird zufällig nach den Wahrscheinlichkeiten des Modells gezogen.
+  > Richtig: Das Modell und seine Wahrscheinlichkeiten bleiben gleich; verschieden ist nur, welches Token gezogen wird, und jedes Token verändert alles, was danach kommt.
 - [ ] Das Modell hat aus der ersten Antwort gelernt und antwortet beim zweiten Mal besser.
   > Im Chat lernt das Modell nichts; seine Parameter ändern sich zwischen zwei Fragen nicht.
 - [ ] Die Frage wird vor dem Senden zufällig umformuliert.
@@ -70,11 +70,11 @@ based_on: 2026-11-11
 - [ ] Das Modell antwortet nicht, weil keine Token gezogen werden dürfen.
   > Auch bei 0 wird geschrieben, nur ohne Zufall.
 - [x] Es wird immer das wahrscheinlichste Token genommen, und dieselbe Frage bekommt jedes Mal dieselbe Antwort.
-  > Richtig: Die Liste wird so scharf, dass das erste Token alles bekommt.
+  > Richtig: Die Wahrscheinlichkeiten werden so scharf, dass das wahrscheinlichste Token alles bekommt.
 - [ ] Das Modell schreibt kreativer, weil es seltene Tokens bevorzugt.
   > Seltene Tokens bekommen bei 0 gar keine Chance; mehr Abwechslung bringt eine höhere Temperatur.
 
-## Die Liste für das nächste Token beginnt mit field 41 %, barn 22 %, yard 9 %, shed 6 %. Welche Tokens bleiben bei Top p = 0,6 übrig? {#np-007}
+## Das Modell berechnet für das nächste Token field 41 %, barn 22 %, yard 9 %, shed 6 % und für alle anderen weniger. Welche Tokens bleiben bei Top p = 0,6 übrig? {#np-007}
 
 - [ ] nur field
   > field allein hat 41 % und erreicht 0,6 noch nicht; es braucht ein zweites Token.
