@@ -37,7 +37,7 @@ the devices. Calibrate again before every run, because the light at the test
 table differs from the light at your seat, and build your optics so that it
 survives the trip there.
 
-Each acceptance test includes a live change: you change your code on the spot
+From challenge 2 on, each acceptance test includes a live change: you change your code on the spot
 according to a given task. This shows that you understand what you built with
 the AI assistant. Written documentation is not required; the only exception
 is the protocol description from challenge 3, without which the interop test

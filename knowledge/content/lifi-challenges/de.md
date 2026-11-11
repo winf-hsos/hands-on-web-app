@@ -10,7 +10,7 @@ topics: [solving-problems]
 modules: [dup]
 project: lifi
 status: published
-updated: 2026-11-04
+updated: 2026-11-11
 ---
 
 ## Vorlagen und Verträge
@@ -45,7 +45,7 @@ Geräten. Kalibriert vor jedem Durchgang neu, denn das Licht am Testtisch ist ei
 anderes als an eurem Platz, und baut eure Optik so, dass sie den Weg dorthin
 übersteht.
 
-Zu jeder Abnahme gehört eine Live-Änderung: Ihr ändert euren Code vor Ort nach
+Ab Challenge 2 gehört zu jeder Abnahme eine Live-Änderung: Ihr ändert euren Code vor Ort nach
 einer Vorgabe. Damit zeigt ihr, dass ihr versteht, was ihr mit dem KI-Assistenten
 gebaut habt. Eine schriftliche Dokumentation ist nicht verlangt; einzige
 Ausnahme ist die Protokollbeschreibung aus Challenge 3, ohne die der
