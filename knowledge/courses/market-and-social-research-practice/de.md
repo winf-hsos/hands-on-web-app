@@ -16,7 +16,7 @@ sections:
   - title: { de: Einstieg in die Datenanalyse mit R, en: Getting started with data analysis in R }
     items: [data-analysis-with-r-slides, survey-self-test, survey-exercise-first-look, survey-exercise-describing-variables, survey-exercise-comparing-groups, survey-exercise-figures, survey-exercise-own-question]
   - title: { de: "Forschungsfragen, wissenschaftliche Paper und Quarto", en: "Research questions, scientific papers and Quarto" }
-    items: [quarto-first-steps, research-questions, paper-structure, milk-chocolate-survey]
+    items: [quarto-first-steps, research-questions, research-question-exercise, paper-structure, quarto-paper-exercise, milk-chocolate-survey]
 status: published
 updated: 2026-11-11
 ---
