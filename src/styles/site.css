@@ -3490,7 +3490,8 @@ details.callout[open] > summary::before {
   flex-wrap: wrap;
   align-items: center;
   gap: 0.2rem 0.45rem;
-  margin: 0 0 1.5rem;
+  /* clear space to the buttons and the verdict of the quiz above (Nicolas, 2026-11-11) */
+  margin: 1.5rem 0 1.5rem;
   color: var(--quiet);
   font-size: 0.85rem;
 }
