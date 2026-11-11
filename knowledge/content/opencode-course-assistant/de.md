@@ -11,7 +11,7 @@ topics: [ai-agents-as-tools, reproducible-work]
 modules: [pmg]
 areas: [ds]
 status: published
-updated: 2026-11-10
+updated: 2026-11-11
 ---
 
 [OpenCode](https://opencode.ai) ist ein KI-Agent, der auf deinem Laptop in
@@ -114,6 +114,8 @@ Ein Befehl beginnt mit einem Schrägstrich und startet einen festen Ablauf.
 | `/onboarding` | der erste Start: Modul festlegen, kennenlernen, R, Positron, Pakete und Daten prüfen |
 | `/update-semester` | holt neues Material, Vorlagen und Pakete in den Kursordner; `my-code/` und `data/` bleiben unberührt |
 | `/paper` | legt die Vorlage für eure Ausarbeitung an: fragt nach Titel, Thema, Forschungsfrage und Autoren, legt ein Quarto-Dokument in `my-code/paper/` an und rendert es einmal als PDF |
+| `/research-question` | Rückmeldung zu eurer Forschungsfrage nach der Lektion [Was ist eine Forschungsfrage?](/ds/de/items/research-questions/): Einordnung, Prüfung, die Spalten im Codebuch und ein Urteil, bei Bedarf mit zwei geschärften Fassungen |
+| `/paper-feedback` | Rückmeldung zum Aufbau eures Berichts nach der Lektion [Aufbau eines wissenschaftlichen Papers](/ds/de/items/paper-structure/), für den ganzen Bericht oder nur einen Abschnitt |
 | `/self-study` | begleitet das Selbststudium in R: Stand feststellen, nächstes Kapitel, Hilfe in Stufen |
 | `/final-check` | die Abnahme des Selbststudiums: Selbsttest ausführen und ein kurzes Gespräch über deinen Code |
 
@@ -140,6 +142,42 @@ Lies, was er vorhat, bevor du zustimmst, und führ Code, den er schreibt,
 selbst Zeile für Zeile aus. Für das, was in eurer Ausarbeitung steht, steht
 ihr gerade und nicht der Agent; deshalb musst du jeden Schritt verstehen,
 den du übernimmst.
+
+### Rückmeldung zu Forschungsfrage und Bericht
+
+Zwei Befehle geben euch eine Rückmeldung nach den Maßstäben der Lektionen,
+ohne etwas für euch auszurechnen oder umzuschreiben. Beide Abläufe greifen
+auch ohne Befehl, wenn ihr einfach fragt.
+
+**`/research-question`** nehmt ihr, sobald ihr eine erste Fassung eurer
+Frage habt, und schreibt sie direkt hinter den Befehl:
+
+```text
+/research-question Kaufen Veganer häufiger Haferdrink als Menschen, die alles essen?
+```
+
+Der Agent sagt zuerst, ob der Text schon eine Frage ist oder noch ein Thema.
+Dann prüft er die zwei Bedingungen, die Art der Frage und die vier Fallen,
+sucht für jeden Teil der Frage die Spalte im Codebuch mit Filter und
+Fallzahl und urteilt in einem Wort: beantwortbar, anpassen oder verwerfen.
+Bei den letzten beiden schlägt er zwei geschärfte Fassungen vor, zwischen
+denen ihr wählt. Ausgerechnet wird dabei nichts, denn es geht darum, ob die
+Frage trägt, nicht um ihre Antwort. Die genannten Spalten schlagt ihr danach
+selbst im Codebuch nach.
+
+**`/paper-feedback`** nehmt ihr, sobald im Bericht etwas steht. Ohne Zusatz
+sieht der Agent den ganzen Bericht an, mit einem Abschnittsnamen nur diesen
+Teil:
+
+```text
+/paper-feedback Ergebnisse
+```
+
+Zurück kommen ein Gesamteindruck, je Abschnitt höchstens drei Punkte mit der
+Stelle, um die es geht, eine Liste, welcher Satz wohin wandern sollte, und
+der eine nächste Schritt. Besonders achtet er auf Deutungen im Ergebnisteil,
+etwa ein „wahrscheinlich, weil“, das in die Diskussion gehört. Er schreibt
+nur um, wenn ihr darum bittet, und er gibt keine Note.
 
 ## Wenn etwas nicht läuft
 

@@ -108,6 +108,8 @@ A command starts with a slash and runs a fixed procedure.
 | `/onboarding` | the first start: set the module, get to know you, check R, Positron, packages and data |
 | `/update-semester` | brings new material, templates and packages into the course folder; `my-code/` and `data/` stay untouched |
 | `/paper` | creates the template for your paper: asks for title, topic, research question and authors, creates a Quarto document in `my-code/paper/` and renders it once as a PDF |
+| `/research-question` | feedback on your research question after the lesson [What is a research question?](/ds/en/items/research-questions/): classification, check, the columns in the codebook and a verdict, with two sharpened versions where needed |
+| `/paper-feedback` | feedback on the structure of your paper after the lesson [How a scientific paper is built](/ds/en/items/paper-structure/), for the whole paper or only one section |
 | `/self-study` | accompanies the self-study in R: find out where you stand, next chapter, help in stages |
 | `/final-check` | the sign-off of the self-study: run the self-test and a short conversation about your code |
 
@@ -133,6 +135,42 @@ Before OpenCode changes a file or runs a command, it asks. Read what it
 plans to do before you agree, and run code it writes yourself, line by
 line. You answer for what is in your paper, not the agent; that is why you
 have to understand every step you take over.
+
+### Feedback on your research question and paper
+
+Two commands give you feedback by the standards of the lessons, without
+calculating or rewriting anything for you. Both work without the command
+too, if you simply ask.
+
+**`/research-question`** is for when you have a first version of your
+question; write it directly after the command:
+
+```text
+/research-question Do vegans buy oat drink more often than people who eat everything?
+```
+
+The agent first says whether the text is already a question or still a
+topic. Then it checks the two conditions, the kind of question and the four
+traps, looks up the column in the codebook for every part of the question,
+with its filter and number of cases, and gives a verdict in one word:
+answerable, adjust or discard. For the last two it suggests two sharpened
+versions, and you choose between them. It calculates nothing, because the
+point is whether the question holds, not what its answer is. Afterwards you
+look up the named columns in the codebook yourselves.
+
+**`/paper-feedback`** is for when your paper has some text in it. Without an
+addition the agent looks at the whole paper, with the name of a section
+only at that part:
+
+```text
+/paper-feedback results
+```
+
+You get an overall impression, at most three points per section with the
+passage they are about, a list of which sentence should move where, and the
+one next step. It looks especially for interpretations in the results, such
+as a "probably because" that belongs in the discussion. It only rewrites
+when you ask, and it gives no grade.
 
 ## If something does not work
 
