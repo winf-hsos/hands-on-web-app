@@ -14,7 +14,7 @@ relations:
 modules: [aai]
 areas: [ai]
 questions: [np-001, np-002, np-003, np-004, np-005, np-006, np-007, np-008, np-009, np-010]
-status: draft
+status: published
 updated: 2026-11-11
 ---
 
