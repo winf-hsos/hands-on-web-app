@@ -8,21 +8,14 @@
   <style>
     /* deck-specific layout, colours and sizes only from the theme */
     .keep-case { text-transform: none; }
-    /* opening and closing photo with the sentence on the left: photo at 64 % height */
+    /* photos with the sentence on the left: photo at 64 % height */
     .slide img.photo.side { height: 64%; top: 18%; }
     .slide .photo-text.side { width: 40%; font-size: var(--normal); line-height: 1.25; }
     .stack { display: flex; flex-direction: column; gap: 48px; }
-    /* the checklist: the name of each check in grey, the question below it */
+    /* the checklist: the name of each check in blue, the question below it */
     .checklist { display: flex; flex-direction: column; gap: 30px; }
-    .checklist .term { font-size: var(--small); color: var(--gray); }
+    .checklist .term { font-size: var(--small); color: var(--blue); }
     .checklist .q { font-size: var(--normal); color: var(--white); line-height: 1.2; }
-    /* the sharpened question checked against the codebook */
-    table.cb { border-collapse: collapse; font-size: var(--small); width: 1680px; table-layout: fixed; }
-    table.cb th { color: var(--gray); font-weight: normal; text-align: left; padding: 0 40px 18px 0; }
-    table.cb td { color: var(--white); padding: 16px 40px 16px 0; border-top: 2px solid var(--gray-dark); vertical-align: top; line-height: 1.3; }
-    table.cb td.col { font-family: var(--mono); color: var(--blue); text-transform: none; }
-    table.cb td.none { color: var(--gray); }
-    table.cb .mono { font-family: var(--mono); text-transform: none; }
   </style>
 </head>
 <body>
@@ -52,6 +45,13 @@
   </section>
 
   <section class="slide">
+    <img class="photo side" src="img/part1-plant-milk-shelf.jpg" alt="A dark supermarket fridge in which a single shelf of unbranded cartons of oat, soy and almond drinks is lit">
+    <div class="photo-text side">plant-based milk is a topic, and a topic names a shelf without saying what you want to know about it.</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">Many projects start with a topic like this one, and that is fine as a start. But a topic does not say what to compute: the price, the brands, who buys it, why, or how often. The next slide shows the way from the shelf to one question about it.</aside>
+  </section>
+
+  <section class="slide">
     <h2>topic, problem, question</h2>
     <div class="figure" id="fig-funnel"></div>
     <div class="footnote">after <span class="keep-case">Döring</span> (2023), <a href="https://doi.org/10.1007/978-3-662-64762-2" target="_blank" rel="noopener"><span class="keep-case">Forschungsmethoden und Evaluation</span></a>, p. 148</div>
@@ -62,20 +62,15 @@
     <h2>two conditions</h2>
     <div class="figure" id="fig-conditions"></div>
     <div class="footnote">after <span class="keep-case">Huntington-Klein</span>, <a href="https://theeffectbook.net" target="_blank" rel="noopener"><span class="keep-case">The Effect</span></a>, ch. 2</div>
-    <aside class="notes">Huntington-Klein asks two things of a research question: there must be evidence that can answer it, and the answer must tell us something about how the world works, for instance why people do what they do. "Which milk ad is the best?" fails the first condition, because nothing says what "best" means, so no evidence can decide it. "How many respondents live in Lower Saxony?" passes the first and fails the second: the column q003land answers it, but the number teaches us nothing about behaviour. The question in green meets both, and the survey has a column for each of its parts. A useful test is whether an unexpected result would change your mind; if it would not, the question is not yet a research question.</aside>
+    <aside class="notes">Huntington-Klein asks two things of a research question: there must be evidence that can answer it, and the answer must tell us something about how the world works, for instance why people do what they do. Think of the two conditions as a map. "Which milk ad is the best?" sounds interesting but fails the first condition, because nothing says what "best" means, so no evidence can decide it. "How many respondents live in a big city?" is answerable with the column D044stadtf, but the number teaches us nothing about behaviour. The question in the top right meets both: age and the share of organic food are both in the survey, and either answer would teach us something. The answer, by the way, runs against what many expect: among respondents under 30, 54 percent buy at least half of their food organic, among those over 60 only 38 percent. A useful test is whether an unexpected result would change your mind; if it would not, the question is not yet a research question.</aside>
   </section>
 
-  <section class="slide poll" data-poll="rq-which-is-a-question">
-    <div class="poll-q">which of these is a research question?</div>
-    <ol class="poll-opts"><li>sustainability and milk</li><li>milk is too cheap</li><li data-correct>do vegans buy more organic?</li><li>analyse the milk survey</li></ol>
-    <aside class="notes">Only "do vegans buy more organic?" is a question that evidence can answer: it names a group, an outcome and a comparison, and the survey holds both the diet (V041nofleischf) and the share of organic food (v032bioanteil). "Sustainability and milk" is a topic, "milk is too cheap" is a judgement, and "analyse the milk survey" is a task, not a question.</aside>
-  </section>
-
-  <section class="slide">
+  <section class="slide has-punch">
     <h2>question or hypothesis</h2>
     <div class="figure" id="fig-qh"></div>
     <div class="footnote">after <span class="keep-case">Döring</span> (2023), <a href="https://doi.org/10.1007/978-3-662-64762-2" target="_blank" rel="noopener"><span class="keep-case">Forschungsmethoden und Evaluation</span></a>, pp. 149–152</div>
-    <aside class="notes">A research question is open: it asks, often with a w-word, and it fits a field in which there is not yet enough prior knowledge for a firm expectation. A hypothesis is a claim with a direction, and it is not a hunch: it has to rest on theory or on earlier findings, which you cite. Where that prior knowledge is missing, you ask an open question instead. For the analysis of a survey that is already collected, the open question is the normal case, and a hypothesis is only worth stating when you can name where the expectation comes from.</aside>
+    <div class="punch">with a survey that is already collected, the open question is the normal case.</div>
+    <aside class="notes">A research question is open: it asks, often with a w-word, and it fits a field in which there is not yet enough prior knowledge for a firm expectation. A hypothesis is a claim with a direction, and it is not a hunch: it has to rest on theory or on earlier findings, which you cite. Where that prior knowledge is missing, you ask an open question instead. For the analysis of a survey that is already collected, the open question is the normal case, and a hypothesis is only worth stating when you can name where the expectation comes from. The hypothesis on the slide, incidentally, would fail in this survey: the older respondents buy the smaller share of organic food.</aside>
   </section>
 
   <!-- ===== part 2: what makes a good one ===== -->
@@ -86,7 +81,14 @@
   <section class="slide">
     <h2>three kinds of questions</h2>
     <div class="figure" id="fig-kinds"></div>
-    <aside class="notes">What you may claim at the end depends on the kind of question. A descriptive question counts and summarises: 73 percent of the respondents name the discounter as a place where they shop for food. A relational question compares groups or asks whether two things go together: in big cities 9 percent shop for food online, in villages 1 percent. A causal question asks what happens when one thing changes, and it needs a design that separates the cause from everything that goes along with it. Describing and comparing works with any survey, while a cause can only be claimed where the data allow it; in this survey the price experiment for alpro oat drink is such a place. Whoever knows the six types of Leek and Peng sees their rough version here.</aside>
+    <aside class="notes">What you may claim at the end depends on the kind of question, and each kind has its own kind of answer. A descriptive question counts and summarises: 73 percent of the respondents name the discounter as a place where they shop for food. A relational question compares groups or asks whether two things go together: in big cities 9 percent shop for food online, elsewhere 4 percent. A causal question asks what happens when one thing changes, and it needs a design that separates the cause from everything that goes along with it. Describing and comparing works with any survey, while a cause can only be claimed where the data allow it; in this survey the price experiment for alpro oat drink is such a place, and its answer comes later. Whoever knows the six types of Leek and Peng sees their rough version here.</aside>
+  </section>
+
+  <section class="slide">
+    <img class="photo side" src="img/part2-pilot-checklist.jpg" alt="A pilot's hand holds a lit checklist on a clipboard in a dark cockpit">
+    <div class="photo-text side">pilots go through their checklist before take-off, and you go through yours before you compute anything.</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">A checklist does not make the pilot better, but it makes sure that nothing obvious is forgotten. A research question has such a checklist too, and it takes a few minutes before the first line of code.</aside>
   </section>
 
   <section class="slide">
@@ -107,8 +109,8 @@
   <section class="slide has-punch">
     <h2>too broad, just right</h2>
     <div class="figure" id="fig-broad"></div>
-    <div class="punch">a narrow question names one variation, one outcome and one comparison.</div>
-    <aside class="notes">The broad question sounds more important, but it is a whole research programme: income, diet, values, where people live and what they can buy all drive organic purchases. The narrow question can be answered in a few weeks, and afterwards you know something. It varies one thing, the diet in V041nofleischf, measures one outcome, the share of organic food in v032bioanteil, and makes one comparison, vegetarians against people who eat meat without restrictions.</aside>
+    <div class="punch">a narrow question names one variation, one outcome and one comparison, and then it has an answer.</div>
+    <aside class="notes">The broad question sounds more important, but it is a whole research programme: income, diet, values, where people live and what they can buy all drive organic purchases. The narrow question varies one thing, the diet in V041nofleischf, measures one outcome, the share of organic food in v032bioanteil, and makes one comparison, vegetarians against people who eat meat without restrictions. And then it has an answer: 65 percent of the 134 vegetarians buy at least half of their food organic, against 36 percent of the 1,827 respondents without restrictions. That is a relation, not yet a cause, but it is a fact you did not have before.</aside>
   </section>
 
   <section class="slide">
@@ -124,6 +126,13 @@
   </section>
 
   <section class="slide">
+    <img class="photo side" src="img/part3-archive-empty-shelf.jpg" alt="The dark archive again: a flashlight beam falls on the one empty compartment of a full shelf">
+    <div class="photo-text side">some questions sound important and still find an empty shelf in your data.</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">This is the same archive as at the start, but this time the light falls on a compartment that is empty. It is better to notice that before you compute than in the last week before the deadline.</aside>
+  </section>
+
+  <section class="slide">
     <h2>four traps</h2>
     <div class="figure" id="fig-traps"></div>
     <aside class="notes">These questions are not stupid, but these data cannot answer them. A normative question asks what should be, and data only describe what is. A vague question has no object and no measure. A causal question without a design asks for a cause where the survey can only show that things go together: people with a higher income also differ in education, in where they live and in their values, and one survey cannot tell these apart. And a question about change needs more than one point in time, while this survey was asked once, in November 2025. The normative question can be turned into how many respondents hold a view, the causal one into a question about a relation, and the vague one can be narrowed down.</aside>
@@ -132,8 +141,8 @@
   <section class="slide has-punch">
     <h2>rescue the question</h2>
     <div class="figure" id="fig-rescue"></div>
-    <div class="punch">“makes” becomes “is related to”, and the report says honestly why it cannot claim more.</div>
-    <aside class="notes">The rescued question keeps the interest of the original one and asks only what the data can show: whether household income (d049einkommen) and the share of organic food (v032bioanteil) go together. In the report you then say plainly that a relation is not yet a cause, and why these data cannot separate income from what comes with it.</aside>
+    <div class="punch">“make” becomes “is related to”, and the report says honestly why it cannot claim more.</div>
+    <aside class="notes">One word turns the question into a causal one: make. The rescued question keeps the interest of the original one and asks only what the data can show: whether household income (d049einkommen) and the share of organic food (v032bioanteil) go together. In the report you then say plainly that a relation is not yet a cause, and why these data cannot separate income from what comes with it.</aside>
   </section>
 
   <section class="slide poll" data-poll="rq-what-the-survey-answers">
@@ -145,6 +154,13 @@
   <!-- ===== part 4: sharpening a question ===== -->
   <section class="slide part" data-part="sharpening a question">
     <aside class="notes">Now the way from a vague idea to a question in which every word points into the data.</aside>
+  </section>
+
+  <section class="slide">
+    <img class="photo side" src="img/part4-pencil-sharpener.jpg" alt="A freshly sharpened pencil stands in a metal sharpener on a dark wooden table, shavings beside it">
+    <div class="photo-text side">a vague idea becomes a question once you can say who, where, when, what varies, what you measure and what you compare.</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">Sharpening takes something away until a point remains. A question is sharpened the same way: you cut away everything you cannot measure until six things are left that the data can say.</aside>
   </section>
 
   <section class="slide">
@@ -166,8 +182,15 @@
   <section class="slide has-punch">
     <h2>the price experiment</h2>
     <div class="figure" id="fig-shelves"></div>
-    <div class="punch">chance made the groups alike except for the price, so a difference in purchase certainty can be put down to it.</div>
+    <div class="punch">chance decided which shelf each respondent saw, so a difference in purchase certainty can be put down to the price.</div>
     <aside class="notes">Every respondent in this test saw the same shelf with Weihenstephan at 1.79 euros and Gut &amp; Günstig at 1.09 euros, and alpro at one of four prices: 1.69, 1.79, 1.89 or 2.09 euros. For each of the three milks they said how surely they would buy it, from minus 4 for certainly not to plus 4 for certainly. Because chance decided who saw which price, the groups differ only in the price, and here, and only here, you may say that the price changes purchase certainty. That is the difference between a design you have inherited and a question that only sounds causal.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>and the answer</h2>
+    <div class="figure" id="fig-answer"></div>
+    <div class="punch">the price hardly moved purchase certainty, and for a good question that is an answer too.</div>
+    <aside class="notes">The four means lie between minus 0.3 and plus 0.1 on a scale from minus 4 to plus 4, and the 95 percent intervals of all four overlap: at 2.09 euros purchase certainty is a little lower than at the regular price, but the difference is smaller than the uncertainty. Each group answered with a spread of about 3 points, which is wide compared with the differences between the groups. So within these 40 cents the price did not change much, at least not on this scale and on this shelf. That is exactly what the checklist meant with potential results: a question is good when the answer "no clear effect" teaches you as much as a large effect would.</aside>
   </section>
 
   <!-- ===== part 5: the reality test ===== -->
@@ -176,28 +199,22 @@
   </section>
 
   <section class="slide">
+    <img class="photo side" src="img/part5-codebook-highlighter.jpg" alt="An open ring binder with questionnaire pages on a dark table; a hand marks one line with a yellow highlighter">
+    <div class="photo-text side">the data came first, so the question has to fit them and not the other way round.</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">The questionnaire and the codebook are the inventory of the archive. Before a question is final, you go through them with a highlighter and mark the line that answers each part of it.</aside>
+  </section>
+
+  <section class="slide">
     <h2>the data came first</h2>
     <div class="figure" id="fig-cycle"></div>
-    <aside class="notes">The data are collected, and no question can create a column afterwards. So the question adapts to the data and not the other way round: adapting the question is the normal way of working, while talking the data into fitting the question is the mistake. If every word of the question has a column, it is answerable; if a part is missing, you adapt the question and check it again; and if nothing fits, you drop it. In applied market research this is everyday work, because most analyses use data that someone else collected for another purpose.</aside>
+    <aside class="notes">The data are collected, and no question can create a column afterwards. So the question adapts to the data and not the other way round: adapting the question is the normal way of working, while talking the data into fitting the question is the mistake. If every word of the question has a column, it is answerable; if nothing fits, you drop it; and if a part is missing, you adapt the question and check it again. In applied market research this is everyday work, because most analyses use data that someone else collected for another purpose.</aside>
   </section>
 
   <section class="slide">
     <h2>check it against the codebook</h2>
-    <div class="content" style="top: 150px">
-      <div class="stack">
-        <table class="cb">
-          <colgroup><col style="width: 500px"><col style="width: 520px"><col style="width: 660px"></colgroup>
-          <tr><th>in the question</th><th>column</th><th>what the codebook says</th></tr>
-          <tr><td>people who buy and drink milk</td><td class="col">v006gekauft_3mi == 3</td><td>bought and drank milk or milk alternatives in the last 12 months</td></tr>
-          <tr><td>price of alpro oat drink</td><td class="col">ad015p1reaktion4</td><td>codes 1 to 4 for 1.69, 1.79, 1.89 and 2.09 euros, assigned by chance</td></tr>
-          <tr><td>purchase certainty</td><td class="col">U015p1reaktion4_3alpro</td><td>from −4 for certainly not to +4 for certainly</td></tr>
-          <tr><td>the regular 1.79 euros</td><td class="col">ad015p1reaktion4 == 2</td><td>“<span class="mono">Normal alpro</span>” in <span class="mono">AD015p1reaktion4f</span></td></tr>
-          <tr><td>online, november 2025</td><td class="none">no column</td><td>the study documentation</td></tr>
-        </table>
-        <div class="sidenote">601 respondents saw a price and 596 of them rated alpro; the test went only to people who bought and drank milk, although the questionnaire also names those who only bought it.</div>
-      </div>
-    </div>
-    <aside class="notes">Every word of the question has a column, and for every column the codebook says who was asked. The filter is the first thing to check: according to the questionnaire the price test went to people who bought milk, with or without drinking it, but in the data only code 3, bought and drank, occurs among the 601 respondents who saw a price. Of them 596 rated alpro, between 139 and 161 per price. Time and place of the survey are not columns at all; they come from the study documentation. If a part of your question has no column, the question changes, not the data.</aside>
+    <div class="figure" id="fig-codebook"></div>
+    <aside class="notes">Every place in the question that points into the data has a column, and for every column the codebook says who was asked and what the codes mean. The filter is the first thing to check: according to the questionnaire the price test went to people who bought milk, with or without drinking it, but in the data only code 3, bought and drank, occurs among the 601 respondents who saw a price. Of them 596 rated alpro, between 139 and 161 per price. Time and place of the survey are not columns at all; they come from the study documentation. If a part of your question has no column, the question changes, not the data.</aside>
   </section>
 
   <!-- closing photo -->
@@ -211,7 +228,7 @@
 </div>
 <script src="../../stagekit/draw.js?v=0.7.0-156254"></script>
 <script src="../../stagekit/anim.js?v=0.7.0-156254"></script>
-<script src="deck.js?v=2"></script>
+<script src="deck.js?v=3"></script>
 <script src="../../stagekit/stagekit.js?v=0.7.0-156254"></script>
 </body>
 </html>
