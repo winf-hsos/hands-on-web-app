@@ -1,6 +1,8 @@
 # Entwurf: Input „A map of meaning“
 
-**Status:** Entwurf vom 05.11.2026, noch nicht freigegeben.
+**Status:** Entwurf vom 05.11.2026, von Nicolas am selben Tag freigegeben,
+gebaut (`a-map-of-meaning.html`) und seit dem 05.11.2026 online. Ab jetzt ist
+die HTML-Datei die Quelle; dieser Entwurf wird nicht mehr nachgezogen.
 **Verortung:** Deck zum Experiment `a-map-of-meaning` (Text-Embeddings). Es
 begleitet das Experiment Schritt für Schritt: je Schritt ein kurzer Input, der
 den Begriff oder die Idee erklärt, bevor die Gruppen am Demonstrator weiter
@@ -317,7 +319,10 @@ Frage erst zu Zahlen, suchen die ähnlichsten Absätze und geben sie dem
 Sprachmodell mit. Und in jedem Sprachmodell wird jedes Token als Erstes durch
 eine solche Zahlenliste ersetzt.
 
-## Offene Fragen an Nicolas
+## Offene Fragen an Nicolas (mit der Freigabe erledigt)
+
+Beides blieb so, wie hier vorgeschlagen: Die Zeichnung baut sich in Schritten
+auf, und die Rechnung mit Bedeutung ist die einzige Animation des Decks.
 
 - Die Zeichnung auf Folie 18 ist die Abbildung der Seite, in vier Schritten
   aufgebaut statt fertig. Passt das, oder soll sie als Ganzes stehen?
