@@ -110,15 +110,15 @@ Der Fehler, der in studentischen Arbeiten am häufigsten vorkommt, ist ein
 Satz wie dieser im Ergebnisteil: „Vegetarier nennen eine höhere
 Preisschwelle, wahrscheinlich weil ihnen Tierwohl wichtig ist.“ Der erste
 Halbsatz ist ein Befund, den die Daten zeigen: In der Milch-Umfrage liegt der
-Median der 29 Vegetarier, die eine Preisschwelle genannt haben, bei 2,49
-Euro, der von 379 Befragten, die alles essen, bei 1,99 Euro. Der zweite
+Median der 28 Vegetarier, die eine plausible Preisschwelle genannt haben, bei
+2,45 Euro, der von 362 Befragten, die alles essen, bei 1,99 Euro. Der zweite
 Halbsatz ist eine Deutung, die die Daten nicht zeigen, denn nach Tierwohl
 wurde an dieser Stelle nicht gefragt.
 
 Die Lösung ist, den Satz zu teilen. Der Befund bleibt mit seinen Zahlen im
 Ergebnisteil. Die Deutung wandert in die Diskussion, wird dort als
 Vermutung gekennzeichnet und mit anderen Studien verglichen, die sie stützen
-oder ihr widersprechen, und dort gehört auch der Hinweis hin, dass 29
+oder ihr widersprechen, und dort gehört auch der Hinweis hin, dass 28
 Personen eine kleine Gruppe sind. So kann jede Leserin unterscheiden, was du gemessen
 hast und was du daraus schließt.
 

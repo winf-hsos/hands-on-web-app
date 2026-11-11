@@ -95,15 +95,15 @@ conclusion.
 The mistake found most often in student papers is a sentence like this in
 the results: "Vegetarians name a higher price threshold, probably because
 animal welfare matters to them." The first half is a finding the data show:
-in the milk survey, the median of the 29 vegetarians who named a price
-threshold is 2.49 euros, that of 379 respondents who eat everything 1.99
-euros. The second half is an interpretation the data do not show, because
+in the milk survey, the median of the 28 vegetarians who named a plausible
+price threshold is 2.45 euros, that of 362 respondents who eat everything
+1.99 euros. The second half is an interpretation the data do not show, because
 animal welfare was not asked about at this point.
 
 The solution is to split the sentence. The finding stays in the results with
 its numbers. The interpretation moves to the discussion, is marked there as
 a conjecture and compared with other studies that support or contradict it,
-and that is also where the remark belongs that 29 people are a small group.
+and that is also where the remark belongs that 28 people are a small group.
 That way every reader can tell what you measured and what you conclude from
 it.
 

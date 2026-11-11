@@ -1,83 +1,64 @@
-# Entwurf: Input „how a scientific paper is built“
+# Entwurf: Input „how a scientific paper is built“ (zweite Fassung)
 
-**Status:** Am 2026-11-10 mit allen Empfehlungen freigegeben und gebaut:
-`how-a-scientific-paper-is-built.html`, 20 Folien, 35 Frames, Export ohne
-Warnung. Abweichungen vom Entwurf: (1) Folie 4 zeigt 1935 bis 1985 statt
-1940 bis 1980 und nur die Werte, die Sollaci & Pereira im Text nennen
-(1935 keiner, 1950 über 10 %, 1955 etwa 20 %, 1970er über 80 %, 1980er
-alle), als Punkte mit gestrichelter Verbindung und dem Hinweis darauf; ihre
-Abbildung 1 ist nicht nachgezeichnet. (2) Folien 7 bis 10 ohne Rot: „goes
-in“ mit grünem Haken, „stays out“ grau, der Punkt der Folie blau, dazu je
-eine Punchline. (3) Folie 11 und 12: Die Zahlen des Entwurfs (Veganer, 2.29
-gegen 1.99 €) stimmten nicht; 2.295 ist der Median von Veganern und
-Vegetariern zusammen, Veganer allein nennen 2.00 € gegen 1.99 € der übrigen,
-also keinen nennenswerten Unterschied. Gebaut ist deshalb der Vergleich
-Vegetarier gegen Allesesser, Median 2.49 € (n = 29) gegen 1.99 € (n = 379),
-und der Quizsatz lautet „vegetarians named a higher price limit, probably
-because they value animal welfare.“ (4) Folie 14: Die Längenangabe heißt
-„about 150 to 250 words“ nach Döring S. 776 (Beispiel 150–300) und dem
-APA-Handbuch (höchstens 250), nicht nur nach Döring; das Beispiel-Abstract
-nutzt dieselben Zahlen (611 von 2.809 nannten einen Preis). (5) Die
-Sprechernotiz zu Folie 13 verweist nicht mehr auf die Übung der Lektion,
-sondern sagt nur, dass im Ergebnisteil eine Zahl steht, die nicht stimmen
-kann. (6) Die Sanduhr (Folie 6) trägt die Fußnote nach Cals & Kotz; der
-Abschnitt „strengths and limitations“ steht im Paper ohne Nummer unter
-„4. discussion“ und ist so gezeichnet.
+**Status:** freigegeben und gebaut am 2026-11-11 (23 Folien, 47 Frames), mit
+diesen Abweichungen vom Entwurf:
+- **Zahlen nach der Bereinigung.** Der Methodenteil lässt 23 unplausible
+  Preise weg (20 über 10 €, 3 unter 0,50 €), wie die Dokumentation der Spalte
+  `price_too_expensive` es nahelegt; danach liegt der Median der Vegetarier
+  bei 2,45 € (n = 28), der Allesesser bei 1,99 € (n = 362), 588 Preise
+  bleiben. Folie 15 und das Abstract nennen dieselben Zahlen.
+- **Die Frage heißt kürzer** `do price limits for milk differ by diet?`,
+  damit sie als schmalste Zeile am Ende des Trichters steht.
+- **Fünf Diätgruppen** statt vier in Abbildung 1 (auch Pescetarier).
+- **Diskussion ohne Vergleichsstudie:** keine Quelle gefunden, also der
+  vorgesehene Ersatzsatz `whether this reflects concern for animals, the
+  data cannot say.` Der falsche Satz ist ein echter Befund der Umfrage
+  (`women named higher price limits than men.`, 2,00 € gegen 1,89 €) statt
+  eines erfundenen über Ältere.
+- **Folie 6** zeigt im zweiten Schritt Dörings unausgewogenes Paper (zwölf
+  Seiten Theorie, zwei Ergebnisse, der Rest gestrichelt).
+- **Folie 18:** Unterstreichungen grau, die jeweils neueste gelb, statt einer
+  Farbe je Raum, weil Farben Bedeutung tragen; das Abstract hat 72 Wörter.
+- **Folie 15:** Der Satz bleibt grau an seinem Platz stehen, während die
+  Hälften in die Räume gleiten; die Räume haben eine Tür wie im Grundriss.
 
-**Verortung:** neuer Folien-Inhalt `paper-structure-slides` auf Hands-on
-Data Science, eingebettet oben in die Lektion `paper-structure` („Aufbau
-eines wissenschaftlichen Papers“), im Kurs „Praxis der Markt- und
-Gesellschaftsforschung“ im ersten Abschnitt. Wiederkehrender Input von etwa
-20 Minuten ohne Datum und ohne Verweis auf andere Sitzungen; er taugt ebenso
-für Abschlussarbeiten.
+Die erste Fassung (20 Folien,
+35 Frames, gebaut am 2026-11-10) steht mit ihrem Entwurf in der
+Git-Geschichte; diese ersetzt sie nach Nicolas' Durchsicht: Die Folien ab
+Frame 15 sind „unschön“, auf Frame 28 überlappen sich die beiden unteren
+Markierungen, und insgesamt wirkt der Satz „lieblos“: „Diese Slides müssen
+glänzen.“
+
+**Die Idee der Neufassung:** Das Haus aus Eröffnung und Schluss trägt durch
+den ganzen Satz, und statt über Abschnitte zu reden, zeigt der Satz einen.
+- **Ein Grundriss statt einer Liste.** IMRaD erscheint als Grundriss eines
+  Hauses mit vier Räumen, Titel und Abstract sind die Haustür, die Literatur
+  der Raum hinten (Folie 4). Die Bilder der Teile setzen das fort: ein
+  Puppenhaus im Schnitt, eine Badewanne in der Küche, ein Exposé.
+- **Eine Studie, die durch den Satz läuft.** Die vier Listen „goes in / stays
+  out“ werden zu vier Seiten eines kurzen Papers über die Milchumfrage, die
+  der Satz wirklich schreibt (Folien 9 bis 12): je ein echter Absatz, am Rand
+  mit Klammern beschriftet, was er leistet, und darunter grau ein Satz, der
+  in diesen Raum nicht gehört, mit einem Pfeil in den Raum, in den er gehört.
+  Am Ende setzt sich das Abstract aus genau diesen Seiten zusammen (Folie 18).
+- **Formen statt Kästen.** Die Sanduhr wird als Sanduhr gezeichnet, die
+  Längen der Teile als zwanzig Seiten eines Papers, der Satz aus dem Quiz
+  wird sichtbar zerschnitten.
+- **Frame 28:** Die Markierungen im Inhaltsverzeichnis des echten Papers
+  bekommen Zeilen, die höher sind als die Markierung, dazu gelbe Ziffern für
+  die Lesereihenfolge (Folie 16).
+
+**Unverändert:** Verortung (oben in der Lektion `paper-structure`, etwa
+20 Minuten, ohne Datum), Kernbotschaft, Publikum, Sprache, `style.toml`,
+Quellen (Döring 2023, Kap. 13; Sollaci & Pereira 2004; APA JARS-Quant;
+Cals & Kotz 2013; Dorina et al. 2025), die Live-Abfrage
+`paper-sentence-section` und die Zahlen der Beispielstudie: Median der
+Preisgrenze bei Vegetariern 2.49 € (n = 29), bei Allesessern 1.99 €
+(n = 379), 611 von 2,809 Befragten nannten eine Grenze.
 
 **Kernbotschaft:** `every section of a paper has one job, and the most
 common mistake is doing the job of another section, above all interpreting
 in the results.`
-
-**Publikum:** Bachelorstudierende im dritten Semester, die eine empirische
-Ausarbeitung über eine vorhandene Umfrage schreiben; viele haben noch kein
-Paper ganz gelesen.
-
-**Sprache und Design:** Folien, Beispiele und Notizen englisch, `style.toml`
-von Hands-on Data Science.
-
-**Quellen:**
-- Döring, *Forschungsmethoden und Evaluation*, 6. Aufl. 2023, Kap. 13: die
-  Standardgliederung eines empirischen Artikels (S. 770), die Diskussion mit
-  Limitationen (S. 770), Umfang der Teile mit dem Richtwert für 20 Seiten
-  (S. 770–771), Titel (S. 771), jeder Befund nur einmal in Text, Tabelle oder
-  Abbildung (S. 772), Abstract mit je einem Satz pro Teil (S. 776).
-- Sollaci & Pereira (2004), *J Med Libr Assoc* 92(3): wie IMRaD zwischen
-  1940 und 1980 zur Regel wurde und warum (modulares Lesen).
-- APA, *Journal Article Reporting Standards* (JARS-Quant): was in welchen
-  Teil gehört, darunter der Hinweis, eine Sekundäranalyse als solche zu
-  kennzeichnen und die Datenquelle zu beschreiben.
-- Cals & Kotz (2013), Serie „Effective writing and publishing scientific
-  papers“, *J Clin Epidemiol* 66: Einleitung als Trichter, Methode als
-  Rezept, Ergebnisse ohne Deutung, Diskussion als umgekehrter Trichter.
-- Beispielpaper zum Zerlegen: Dorina, Nikpour, Mullan & Uren (2025),
-  „Health, Environment or Taste? Using the Theory of Planned Behaviour to
-  Predict Plant-Based Milk Consumption“, *Foods* 14(11), 1970,
-  doi:10.3390/foods14111970, CC BY 4.0. Eine Online-Befragung zu
-  Pflanzenmilch mit N = 286, durchgehend IMRaD, Antwort auf die Fragen im
-  ersten Absatz der Diskussion.
-
-## Zu entscheiden
-
-1. **Das Beispielpaper von Dorina et al. (2025) (empfohlen)** als echtes
-   Paper, das die Folien Abschnitt für Abschnitt zeigen und das die Lektion
-   als Literaturquelle zum Zerlegen einbettet. Es passt im Thema
-   (Pflanzenmilch), in der Methode (Online-Befragung) und in der Länge, und
-   es steht unter CC BY, sodass Ausschnitte auf die Folien dürfen. Es hat
-   zwei Schwächen, die sich zum Üben eignen: eine unmögliche
-   Standardabweichung im Ergebnisteil und neue Mittelwerte in der
-   Diskussion.
-2. **Die Sanduhr als eine Animation** (Folie 6): Einleitung verengt sich zur
-   Frage, Methode und Ergebnisse bleiben schmal, die Diskussion weitet sich
-   wieder. Das ist kein Ablauf in der Zeit, deshalb schlage ich einen
-   Aufbau in Schritten statt einer Animation vor.
-3. **Eine Live-Abfrage** (Folie 11): ein Satz, und wohin er gehört.
 
 ## Symbole
 
@@ -86,190 +67,226 @@ von Hands-on Data Science.
 | 🎬 | Abschnittsfolie |
 | 📷 | Foto |
 | 🖼️ | Zeichnung |
-| 📊 | Vergleich |
-| 💬 | Merksatz |
+| 📊 | Abbildung mit Daten |
 | 🪜 | Aufbau in Schritten |
+| 🎞️ | Animation |
 | 🗳️ | Live-Abfrage |
 
 # Die Folien
 
-## Teil 0: Auftakt (2 Folien)
+## Teil 0: Auftakt (3 Folien)
 
 ### Folie 1 🎬
 
-**Titel:** `how a scientific paper is built`
-**Untertitel:** `prof. dr. nicolas meseth`
+**Titel:** `how a scientific paper is built` · **Untertitel:** `prof. dr. nicolas meseth`
 
-Die Agenda füllt stagekit aus den Teilen `one shape for all papers`,
-`what goes where`, `the most common mistake` und `the abstract`.
+### Folie 2
 
-### Folie 2 📷
+Agenda aus den vier Teilen.
 
-**Bild:** ein aufgeschlagener Bauplan eines Hauses auf einem dunklen Tisch
-vor schwarzem Grund, die Räume beschriftet, daneben ein gedrucktes Paper,
-dessen Abschnittsüberschriften man erahnt. Licht von oben, Ränder im
-Schwarz.
+### Folie 3 📷 (bleibt)
 
-**Text:** `readers don't read a paper from start to end, they jump to the
-room they need, so every room has to be where they expect it.`
-
-**Dazu sagen.** Wer ein Paper liest, liest zuerst Titel und Abstract, dann
-oft die Diskussion und erst danach, wenn überhaupt, die Methode. Das geht
-nur, weil alle Paper gleich gebaut sind.
+**Bild:** Grundriss und gedruckter Artikel auf dem dunklen Tisch.
+**Text:** `readers don't read a paper from start to end, they jump to the room
+they need, so every room has to be where they expect it.`
 
 ## Teil 1: one shape for all papers (4 Folien)
 
-### Folie 3 🖼️ 🪜
+### Folie 4 🖼️ 🪜
 
 **Titel klein:** `imrad`
-**Zeichnung:** vier Blöcke untereinander, Schritt für Schritt:
-`introduction: why and what is the question?`,
-`methods: how did we find out?`,
-`results: what did we find?`,
-`discussion: what does it mean?`
-Davor grau `title, abstract`, danach grau `references`.
-
-**Dazu sagen.** Vier Abschnitte, vier Fragen. Döring nennt den Forschungsstand
-als eigenen fünften Teil; viele Zeitschriften ziehen ihn in die Einleitung.
-
-### Folie 4 🖼️
-
-**Titel klein:** `how imrad won`
-**Zeichnung:** ein Liniendiagramm 1940 bis 1980, Anteil der Originalartikel
-in vier großen medizinischen Zeitschriften mit IMRaD-Gliederung: über 10 %
-um 1950, über 80 % in den 1970ern, in den 1980ern alle.
-Fußnote: `sollaci & pereira (2004)`.
-
-**Dazu sagen.** Die Gliederung haben nicht Forschende erfunden, sondern
-Herausgeber durchgesetzt, weil Leser damit gezielt in einen Abschnitt
-springen können.
+**Zeichnung:** ein Grundriss in dünnen hellen Linien, wie ein Bauplan: vier
+Räume in einer Reihe, verbunden durch Türen; in jedem Raum oben sein Name in
+48, darunter seine Frage in 32: `introduction` · `why, and what is the
+question?`, `methods` · `how did we find out?`, `results` · `what did we
+find?`, `discussion` · `what does it mean?`. Links davor grau gestrichelt
+die Haustür `title, abstract`, rechts dahinter ein schmaler Raum
+`references`. Der Raum, der gerade dazukommt, ist blau umrandet.
+**Aufbau:** Haustür und Einleitung, dann Raum für Raum.
 
 ### Folie 5 📊
 
+**Titel klein:** `how imrad won`
+**Abbildung:** wie bisher nur die Werte, die Sollaci & Pereira im Text
+nennen, als Punkte (1935 keiner, 1950 über 10 %, 1955 etwa 20 %, 1975 über
+80 %, 1985 alle), aber ruhiger: Fläche unter der Verbindung in Dunkelgrau
+statt gestrichelter Linie, die Werte direkt an den Punkten. Neu oben an der
+100-%-Linie die vier Zeitschriften an dem Jahr, in dem sie nur noch IMRaD
+druckten: `nejm` 1975, `bmj` 1980, `jama` und `the lancet` 1985.
+**Punchline (bleibt):** `editors made imrad the rule, because readers can
+then jump straight to the section they need.`
+
+### Folie 6 🖼️
+
 **Titel klein:** `how long is each part?`
-**Balken:** Döring's Richtwert für 20 Seiten: introduction 1, theory 4,
-methods 2, results 6, discussion 3, references 4.
-Fußnote: `after döring (2023), p. 771`.
+**Zeichnung:** zwanzig kleine Seiten nebeneinander in zwei Reihen zu zehn,
+jede mit angedeuteten Textzeilen, nach Abschnitt eingefärbt: 1 Seite
+Einleitung, 4 Theorie, 2 Methode, **6 Ergebnisse in Blau**, 3 Diskussion,
+4 Literatur; unter jeder Gruppe ihr Name. Darunter grau `a rule of thumb for
+an empirical paper of 20 pages`.
+**Punchline (bleibt):** `the results take the most room, and the theory
+must not crowd them out.`
 
-**Dazu sagen.** Der größte Teil sind die Ergebnisse. Zwölf Seiten Theorie
-und zwei Seiten Ergebnisse nennt Döring unausgewogen.
-
-### Folie 6 🖼️ 🪜
+### Folie 7 🖼️ 🪜
 
 **Titel klein:** `the hourglass`
-**Zeichnung:** eine Sanduhr, oben breit `the world`, verengt sich zu
-`the gap` und `your question` (Ende der Einleitung), schmal in der Mitte
-`methods` und `results`, unten weitet sie sich zu `answer`, `compared with
-others`, `limitations`, `implications`. Schritt für Schritt von oben nach
-unten.
+**Zeichnung:** eine echte Sanduhr als Umriss, zwei gewölbte Kolben und eine
+schmale Mitte. Im oberen Kolben von breit nach schmal `the topic and why it
+matters`, `what is known`, `the gap`, an der Engstelle oben blau `your
+question`; in der Mitte `how you found out`, `what you found`; an der
+Engstelle unten blau `your answer`, darunter breiter `compared with others`,
+`limitations`, `what follows from it`. Rechts grau die Abschnittsnamen an
+Klammern. **Aufbau:** oberer Kolben, Mitte, unterer Kolben.
+**Punchline (bleibt):** `the introduction ends with your question, and the
+discussion begins with its answer.`
 
-**Dazu sagen.** Die Einleitung endet mit der Frage, die Diskussion beginnt
-mit der Antwort. Wer nur den letzten Absatz der Einleitung und den ersten
-der Diskussion liest, weiß, worum es geht.
+## Teil 2: what goes where (5 Folien)
 
-## Teil 2: what goes where (4 Folien)
+### Folie 8 📷 neu
 
-### Folie 7 📊
+**Bild:** ein Puppenhaus im Querschnitt auf einem dunklen Tisch, vier Räume
+nebeneinander, jeder warm beleuchtet und eindeutig eingerichtet (Flur mit
+Garderobe, Werkstatt, Küche, Wohnzimmer), schwarzer Grund, Blick frontal
+leicht von oben, keine Schrift.
+**Text:** `every room of a paper has one job, and what belongs to another room
+gets carried there.`
 
-**Titel klein:** `introduction`
-**Zwei Spalten:** links grün, was hineingehört (why it matters, what is
-known, the gap, the question at the end), rechts rot, was nicht (a summary
-of the whole field, results, a question that appears only later).
+### Folien 9 bis 12 🖼️ 🪜 (je eine Seite des Beispielpapers)
 
-**Dazu sagen.** Ein Trichter: vom Allgemeinen zur Lücke und zur Frage, die
-im letzten Absatz steht.
+**Gemeinsamer Aufbau:** links eine Seite des Papers als heller Umriss mit
+der Abschnittsüberschrift und einem echten Absatz in 32 (etwa sechs bis acht
+Zeilen), rechts am Rand graue Klammern mit dem Namen dessen, was der
+jeweilige Satz leistet; der Satz, um den es auf der Folie geht, blau.
+Darunter, abgesetzt, ein grauer durchgestrichener Satz, der hier nicht
+hingehört, mit einem Pfeil und dem Raum, in den er gehört.
+**Aufbau:** Schritt 1 die Seite, Schritt 2 die Randklammern, Schritt 3 der
+falsche Satz mit seinem Pfeil.
 
-### Folie 8 📊
+**Folie 9, `introduction`.** Der Absatz verengt sich von Satz zu Satz,
+gesetzt als Trichter (Zeilen mittig, jede kürzer): `milk competes on price
+in every supermarket.` (topic) · `earlier studies asked why people choose
+plant-based milk, and found health, the environment and taste (dorina et al.,
+2025).` (what is known) · `whether people's price limits differ with their
+diet has not been asked.` (the gap) · blau `do people with different diets
+name different price limits for milk?` (the question). **Falscher Satz:**
+`vegetarians accept higher prices.` → `belongs in the results`.
+**Punchline:** `the introduction narrows from the topic to your question,
+and the question stands in its last paragraph.`
 
-**Titel klein:** `methods`
-**Zwei Spalten:** hinein: data source and that it is a secondary analysis,
-who was asked and how they were recruited, the questions you use, how you
-cleaned the data, how you analysed; nicht hinein: explaining what a mean is,
-results.
-Fußnote: `apa jars-quant`.
+**Folie 10, `methods`.** `we reanalysed the milk and chocolate survey, an
+existing online survey of 2,809 adults in germany.` (data source) ·
+`respondents were shown a milk and asked from which price it would be too
+expensive; 611 named a price.` (measure and sample) · ein Satz zur
+Bereinigung (cleaning), den ich beim Bau aus der Aufbereitung der Spalte
+`price_too_expensive` übernehme, statt ihn zu erfinden · blau `we compared
+the medians of the diet groups.` (analysis). **Falscher Satz:** `the median is the middle value of a
+sorted list.` → `belongs in a textbook`.
+**Punchline (bleibt):** `the methods are a recipe that would let someone
+else repeat your analysis.`
 
-**Dazu sagen.** Die Methode ist ein Rezept: Könnte jemand mit diesen Angaben
-dieselbe Auswertung wiederholen? Für euch heißt das auch, ehrlich zu
-schreiben, dass ihr eine vorhandene Umfrage auswertet und wer sie erhoben
-hat.
+**Folie 11, `results`.** Links der Absatz, rechts daneben eine kleine
+Abbildung, die dasselbe nicht noch einmal sagt, sondern ergänzt: die Mediane
+der Diätgruppen als Punkte mit n. Absatz: `vegetarians named a median price
+limit of 2.49 € (n = 29), omnivores 1.99 € (n = 379).` · blau `figure 1
+shows all four groups.` **Falscher Satz:** `probably because they value
+animal welfare.` → `belongs in the discussion`.
+**Punchline (bleibt):** `the results report what the data say, and leave
+what it means to the discussion.`
 
-### Folie 9 📊
+**Folie 12, `discussion`.** Der Absatz weitet sich, als umgekehrter
+Trichter: blau `vegetarians named higher price limits than omnivores.` (the
+answer) · `this fits studies that link a plant-based diet to concern for
+animals.` (compared with others) · `only 29 vegetarians named a limit, and
+one milk was shown.` (limitations) · `a larger sample should test whether
+the difference holds.` (what follows). **Falscher Satz:** `among people over
+60, the difference was larger.` → `a new result belongs in the results`.
+**Punchline (bleibt):** `the discussion opens with the answer and then
+widens like an upside-down funnel.`
 
-**Titel klein:** `results`
-**Zwei Spalten:** hinein: what you found, in the order of your questions,
-numbers, tables and figures, each finding once; nicht hinein: why it is so,
-what it means, adjectives like „remarkably“.
+Die Wortwahl im Vergleich mit anderen Studien („this fits studies that …“)
+steht nur, wenn ich beim Bau eine Quelle finde, die genau das sagt; sonst
+heißt der Satz `whether this reflects concern for animals, the data cannot
+say.` und das Feld `what the data cannot say`.
 
-**Dazu sagen.** Jeder Befund steht genau einmal da, im Text, in einer
-Tabelle oder in einer Abbildung, nicht dreimal (Döring, S. 772).
+## Teil 3: the most common mistake (4 Folien)
 
-### Folie 10 📊
+### Folie 13 📷 neu
 
-**Titel klein:** `discussion`
-**Zwei Spalten:** hinein: the answer first, comparison with other studies,
-limitations, implications; nicht hinein: new results, repeating every
-number, „more research is needed“ as the only conclusion.
+**Bild:** eine freistehende weiße Badewanne mitten in einer dunklen Küche
+zwischen Herd und Esstisch, ein Lichtkegel von oben, sonst Dunkelheit;
+fotografisch, ruhig, leicht absurd.
+**Text:** `the most common mistake is not a wrong number, but a sentence
+standing in the wrong room.`
 
-**Dazu sagen.** Nach dem Abstract ist sie der Teil, den Fachleute zuerst
-lesen, und sie beginnt mit der Antwort auf die Frage aus der Einleitung.
+### Folie 14 🗳️ (bleibt)
 
-## Teil 3: the most common mistake (3 Folien)
+`where does this sentence belong?` mit dem Satz über Vegetarier, richtige
+Antwort `discussion`.
 
-### Folie 11 🗳️
-
-**Abfrage (Quiz):** `where does this sentence belong? "vegans named a
-higher price threshold, probably because they value animal welfare."`
-Antworten: `introduction`, `methods`, `results`, `discussion` (richtig).
-
-### Folie 12 📊 🪜
+### Folie 15 🖼️ 🎞️
 
 **Titel klein:** `result or interpretation`
-**Zwei Kästen:** links `results` mit dem ersten Halbsatz `vegans named a
-higher price threshold (median 2.29 vs 1.99 euros).` (Zahlen beim Bau
-nachrechnen), rechts `discussion` mit dem zweiten `this may reflect that
-they value animal welfare, as earlier studies suggest.` Schritt 2: ein
-Pfeil trennt den Satz in zwei.
+**Zeichnung:** der Satz aus dem Quiz groß und mittig in einer Zeile pro
+Hälfte. **Animation, schrittweise:** Abschnitt 1, eine gestrichelte
+Schnittlinie fährt zwischen „limit,“ und „probably“ durch den Satz;
+Abschnitt 2, die erste Hälfte gleitet nach links unten in einen Raum
+`results` und bekommt dort ihre Zahlen (`2.49 € against 1.99 €, n = 29 and
+379`), die zweite gleitet nach rechts unten in einen Raum `discussion` und
+wird vorsichtig (`this may reflect …, as earlier studies suggest`). Danach
+stehen zwei Räume mit je einem ganzen Satz da.
+**Punchline (bleibt):** `a result says what the data show, and the
+“because” waits for the discussion.`
 
-**Dazu sagen.** Der Befund ist, was die Daten sagen; das „weil“ ist eine
-Deutung, und die gehört in die Diskussion, wo sie mit anderen Studien
-verglichen und als Vermutung gekennzeichnet wird.
-
-### Folie 13 🖼️ 🪜
+### Folie 16 🖼️ 🪜
 
 **Titel klein:** `dissecting a real paper`
-**Zeichnung:** die erste Seite des Beispielpapers verkleinert als Umriss
-(Titel, Abschnittsköpfe), daneben Schritt für Schritt Marken: wo die Frage
-steht (`1.2 the current study`), wo die Antwort steht (erster Absatz von
-`4 discussion`), wo die Limitationen stehen.
-Fußnote: `dorina et al. (2025), foods 14(11), cc by 4.0`.
+**Zeichnung:** das Inhaltsverzeichnis von Dorina et al. (2025) wie bisher,
+aber mit Zeilenabstand 48 statt 42, damit die Markierungen (Höhe 40) sich
+nicht berühren. Vor die markierten Zeilen kommen gelbe Ziffern 1, 2, 3 als
+Lesereihenfolge, rechts blau, was dort zu lesen ist: `1 the question, with
+hypotheses`, `2 the answer, in its first paragraph`, `3 the limitations,
+before you trust it`.
 
-**Dazu sagen.** So lest ihr jedes Paper: erst die Frage am Ende der
-Einleitung, dann die Antwort am Anfang der Diskussion, dann prüfen, ob die
-Methode trägt. In diesem Paper findet ihr dabei auch einen Fehler, den die
-Übung in der Lektion aufdeckt.
+## Teil 4: the abstract (3 Folien)
 
-## Teil 4: the abstract (2 Folien)
+### Folie 17 📷 neu
 
-### Folie 14 🖼️ 🪜
+**Bild:** ein gedrucktes Exposé eines Hauses auf dem dunklen Tisch, eine
+Seite mit einem kleinen Foto des Hauses und einem kurzen Textblock, daneben
+ein Schlüssel; Schrift nicht lesbar, schwarzer Grund.
+**Text:** `the abstract is the paper's listing: one paragraph that tells a
+reader whether to open the door.`
+
+### Folie 18 🖼️ 🪜
 
 **Titel klein:** `the paper in miniature`
-**Zeichnung:** fünf Zeilen, je eine Zeile für `problem`, `question`,
-`method`, `findings`, `conclusion`, Schritt für Schritt mit einem Satz aus
-einem Beispiel-Abstract zur Milch-Umfrage gefüllt; darunter grau `150 to
-250 words`.
-Fußnote: `after döring (2023), p. 776`.
+**Zeichnung:** das Abstract der Beispielstudie als ein Absatz Fließtext,
+nicht als Tabelle. Satz für Satz kommt er hinzu, jeder Satz mit einer feinen
+Unterstreichung in der Farbe seines Raums und darüber klein und grau der
+Raum, aus dem er stammt (`introduction`, `methods`, `results`,
+`discussion`); die Sätze sind die blauen Sätze der Folien 9 bis 12, gekürzt.
+Rechts unten grau die Wortzahl, die mitwächst (`84 words`) und am Ende neben
+`150 to 250 words are usual, written last` steht.
 
-**Dazu sagen.** Das Abstract ist das ganze Paper in einem Absatz, je ein
-Satz pro Teil, und es entsteht zuletzt.
+### Folie 19 📷 (bleibt)
 
-### Folie 15 📷
-
-**Bild:** derselbe Bauplan wie auf Folie 2, jetzt steht daneben das fertige
-kleine Haus als Modell.
-
+**Bild:** das fertige Hausmodell auf dem Grundriss.
 **Text:** `write your question at the end of the introduction and your
 answer at the start of the discussion, and let everything else connect the
 two.`
 
-**Dazu sagen.** Mit dieser Gliederung legt ihr die Vorlage eurer
-Ausarbeitung an; die Überschriften stehen schon, ihr füllt die Räume.
+## Zu entscheiden
+
+1. **Eine Beispielstudie, die der Satz schreibt (empfohlen).** Die vier
+   Seiten (Folien 9 bis 12) und das Abstract sind Text, den ich schreibe, mit
+   den Zahlen der Milchumfrage; Dorina et al. bleibt das echte Paper zum
+   Zerlegen. Alternative: Ausschnitte aus Dorina et al. (CC BY) auf den vier
+   Seiten. Das ist echter, passt aber nicht zur Frage, die der Satz von der
+   Sanduhr bis zum Abstract verfolgt.
+2. **Vier neue Fotos (empfohlen):** Puppenhaus, Badewanne in der Küche,
+   Exposé, dazu die beiden vorhandenen. Die Badewanne ist bewusst ein wenig
+   komisch; wenn dir das zu verspielt ist, wird es ein Sofa im Badezimmer
+   oder ein Buch im Kühlschrank.
+3. **Die Animation auf Folie 15 (empfohlen):** Der Satz wird wirklich
+   zerschnitten, weil das der Vorgang ist, um den es geht. Ohne Animation
+   erscheinen die beiden Räume in einem Schritt.
