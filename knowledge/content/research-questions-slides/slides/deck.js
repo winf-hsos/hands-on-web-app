@@ -97,20 +97,34 @@ const mono = (x, cy, text, o = {}) =>
   ["w1", "w2", "good"].forEach((g) => a.step(a.show(g, { dur: 500 })));
 })();
 
-/* --- slide: question or hypothesis -----------------------------------------------
- * Figure 1680 x 660 (has-punch), after Döring (2023), pp. 149-152. Two
- * sentences set large, without frames: the research question in blue at 48
- * (41 characters, about 1181), under it in grey what it is; then the
- * hypothesis in two lines at 48 (the longer 41 characters), under it in grey
- * what it is (77 characters at 32, about 1478). The hypothesis comes with
- * the step. */
+/* --- slide: research question or hypothesis ------------------------------------
+ * Figure 1680 x 660 (has-punch), after Döring (2023), pp. 149-152. One
+ * example twice, side by side: left the research question, right (with the
+ * step) the same question made concrete as a hypothesis. Two columns from
+ * x 0 and x 900, divided by a dark line at x 850; the kind at 48 (y 40), the
+ * sentence at 48 left-aligned with its top at y 110 (at most 23 characters a
+ * line, about 662), and what it is in grey at 32 (y 440, at most 28
+ * characters, about 538). In blue the parts that become concrete: "differ by
+ * age" turns into "over 60", "larger" and "under 30". */
 (function () {
+  const B = C.blue, lh = 48 * 1.3;
+  const top = (n) => 110 + n * lh / 2;
   el("fig-qh").innerHTML = d.svg(1680, 660,
-    d.label(0, 0, "which shops do vegans use for their food?", { size: 48, color: C.blue, centerY: 80 }),
-    d.label(0, 0, "a research question: open, for when prior knowledge is thin", { size: 32, color: C.gray, centerY: 150 }),
+    d.label(0, 0, "research question", { size: 48, centerY: 40 }),
+    rich(0, top(3), [
+      ["does the share of"],
+      ["organic food people buy"],
+      [["differ by age", B], "?"]], { size: 48 }),
+    d.label(0, 0, "open: it asks, without\nexpecting a direction", { size: 32, color: C.gray, centerY: 440 }),
     d.g("hyp",
-      d.label(0, 0, "respondents over 60 buy a larger share of\norganic food than respondents under 30.", { size: 48, centerY: 330 }),
-      d.label(0, 0, "a hypothesis: a claim with a direction, derived from theory you have to cite", { size: 32, color: C.gray, centerY: 450 })));
+      d.line(850, 10, 850, 500, { color: C.dark }),
+      d.label(900, 0, "hypothesis", { size: 48, centerY: 40 }),
+      rich(900, top(4), [
+        ["respondents ", ["over 60", B]],
+        ["buy a ", ["larger", B], " share of"],
+        ["organic food than"],
+        ["respondents ", ["under 30", B], "."]], { size: 48 }),
+      d.label(900, 0, "a claim with a direction,\nbased on theory you cite", { size: 32, color: C.gray, centerY: 440 })));
   const a = d.anim("fig-qh");
   a.step(a.show("hyp", { dur: 500 }));
 })();
@@ -119,10 +133,11 @@ const mono = (x, cy, text, o = {}) =>
  * Figure 1680 x 804. Three columns 516 wide centred at x 260, 840 and 1420,
  * one per step. Each: the kind at 48 (y 40), the question at 32 in up to
  * three lines (y 160, at most 24 characters, about 460), the answer from the
- * survey as a small chart (y 290..620) and the columns in the code font in
- * grey (y 690).
+ * survey as a small chart (y 290..620) and, set apart and small, the columns
+ * in the code font in grey at 20 (y 760; the longest 40 characters, about
+ * 480): they only show that the data exist.
  * descriptive: a ring, r 130 with a stroke of 40, 73.5 % of it blue, the
- *   share at 80 in its middle (73.5 % of 2,811 name the discounter).
+ *   share at 80 in its middle (73.5 % of 2,811 shop at a discounter).
  * relational: two bars 140 wide on the base y 580 at 26 per percent, big
  *   cities 9.2 % (n = 1,042) in blue, elsewhere 4.4 % (n = 1,769).
  * causal: the four prices of the experiment as price tags, the yellow warning
@@ -137,8 +152,7 @@ const mono = (x, cy, text, o = {}) =>
   const ring = [
     `<circle cx="${x0}" cy="${y0}" r="${r}" fill="none" stroke="${C.dark}" stroke-width="40"/>`,
     `<circle cx="${x0}" cy="${y0}" r="${r}" fill="none" stroke="${C.blue}" stroke-width="40" stroke-dasharray="${0.735 * circ} ${circ}" transform="rotate(-90 ${x0} ${y0})"/>`,
-    d.label(x0, 0, "73 %", { size: 80, anchor: "middle", centerY: y0 }),
-    d.label(x0, 0, "name the discounter", { size: 32, color: C.gray, anchor: "middle", centerY: 615 })];
+    d.label(x0, 0, "73 %", { size: 80, anchor: "middle", centerY: y0 })];
   const bar = (x, pct, colour, value, name) => {
     const h = 26 * pct;
     return [`<rect x="${x}" y="${580 - h}" width="140" height="${h}" fill="${colour}"/>`,
@@ -149,14 +163,14 @@ const mono = (x, cy, text, o = {}) =>
     d.box(cx[2] - 250 + 128 * j, 300, 112, 60, p.toFixed(2), { border: C.light, color: C.light }));
   el("fig-kinds").innerHTML = d.svg(1680, 804,
     d.g("k0", ...head(0, "descriptive", "what share of the\nrespondents shops\nat a discounter?"), ...ring,
-      mono(cx[0], 690, "v008ort_1discount", { anchor: "middle" })),
+      mono(cx[0], 760, "v008ort_1discount", { size: 20, anchor: "middle" })),
     d.g("k1", ...head(1, "relational", "do people in big cities\nshop online more often?"),
       ...bar(cx[1] - 160, 9.2, C.blue, "9 %", "big city"), ...bar(cx[1] + 20, 4.4, C.light, "4 %", "elsewhere"),
-      mono(cx[1], 690, "D044stadtf,\nv008ort_9online", { anchor: "middle" })),
+      mono(cx[1], 760, "D044stadtf, v008ort_9online", { size: 20, anchor: "middle" })),
     d.g("k2", ...head(2, "causal", "does a higher price\nlower purchase certainty\nfor alpro oat drink?"), ...tags,
       d.mark(cx[2], 430, "caution"),
       d.label(cx[2], 0, "only with a design that\nseparates the cause,\nhere an experiment", { size: 32, color: C.gray, anchor: "middle", centerY: 540 }),
-      mono(cx[2], 690, "ad015p1reaktion4,\nU015p1reaktion4_3alpro", { anchor: "middle" })));
+      mono(cx[2], 760, "ad015p1reaktion4, U015p1reaktion4_3alpro", { size: 20, anchor: "middle" })));
   const a = d.anim("fig-kinds");
   a.step(a.show("k1", { dur: 500 }));
   a.step(a.show("k2", { dur: 500 }));
@@ -196,7 +210,6 @@ const mono = (x, cy, text, o = {}) =>
       ...part(480, "outcome", "v032bioanteil", true),
       ...part(530, "comparison", "vegetarians against no restrictions", false)),
     d.g("answer",
-      d.label(1390, 0, "buy at least half organic", { size: 32, color: C.gray, anchor: "middle", centerY: 40 }),
       ...bar(1250, 64.9, C.blue, "65 %", "vegetarian", "n = 134"),
       ...bar(1530, 35.7, C.light, "36 %", "no restriction", "n = 1,827")));
   const a = d.anim("fig-broad");
@@ -214,8 +227,8 @@ const mono = (x, cy, text, o = {}) =>
 (function () {
   const traps = [
     ["normative", "should oat milk cost as\nmuch as cow's milk?", "data describe what is,\nthey do not judge it"],
-    ["vague", "what do germans think\nabout food?", "no object, no measure"],
-    ["causal without design", "does a higher income make\npeople buy organic?", "income goes with education,\nplace and values"],
+    ["vague", "what do germans think\nabout food?", "“think about food” names\nnothing you could measure"],
+    ["causal without design", "does a higher income make\npeople buy organic?", "nobody assigned income at random,\nand it goes with education and values"],
     ["not in the data", "has organic buying grown\nsince 2020?", "one survey at one time,\nnovember 2025"]];
   const cells = traps.map(([name, question, why], k) => {
     const x = (k % 2) * 870, y = Math.floor(k / 2) * 410;
@@ -350,7 +363,7 @@ const mono = (x, cy, text, o = {}) =>
 /* --- slide: the data came first -------------------------------------------------------
  * Figure 1680 x 804, read from left to right. Your question (4..364, y
  * 300..400) leads to the check, a box 520 x 160 at (480, 270) with two lines
- * ("is every word a column", about 422). From its right edge a line to a
+ * ("does every part have", about 384). From its right edge a line to a
  * dark-grey bus at x 1060 (y 115..590), and from it three arrows into the
  * outcomes at x 1200 (476 wide): answerable, a green verdict 150 high (its
  * text sits at y 98, so the arrow enters at 115); drop it, grey and dashed
@@ -365,7 +378,7 @@ const mono = (x, cy, text, o = {}) =>
   el("fig-cycle").innerHTML = d.svg(1680, 804,
     d.arrow(364, 350, 478, 350, { color: C.gray }),
     d.box(4, 300, 360, 100, "your question", { border: C.light }),
-    d.box(480, 270, 520, 160, "is every word a column\nin the codebook?", { border: C.light }),
+    d.box(480, 270, 520, 160, "does every part have\na column in the data?", { border: C.light }),
     d.g("out",
       d.line(1000, 350, 1060, 350, { color: C.gray }), d.line(1060, 115, 1060, 590, { color: C.gray }),
       ...out(115, "yes"), ...out(350, "no"), ...out(590, "partly"),

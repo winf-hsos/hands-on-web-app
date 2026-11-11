@@ -71,8 +71,9 @@ A **hypothesis** is a claim with a direction, such as "respondents over 60
 buy a larger share of organic food than respondents under 30". It is not a
 gut feeling but has to be derived from a theory or from earlier findings
 that one cites (Döring 2023, pp. 149–150). Where this prior knowledge is
-missing, one asks an open **research question**, often a wh-question that
-leaves the direction open. Whoever analyses an existing survey from a new
+missing, one asks an open **research question** that leaves the direction
+open, for the same example "does the share of organic food people buy differ
+by age?". Whoever analyses an existing survey from a new
 angle usually works with questions; you only state a hypothesis if you can
 back it with literature.
 
@@ -176,7 +177,9 @@ names an existing data set as a legitimate occasion for a question, as long
 as one can say why it matters (*The Effect*, section 2.3).
 
 The test goes like this: break your question into its parts and look up the
-column for each part in the codebook. Check who was asked, because many
+column for each part in the codebook, the documentation of the data that
+lists every column with its question, who was asked and what each code
+means. Check who was asked, because many
 questions of the survey went only to part of the respondents. At the end
 there is one of three results: the question can be answered, it has to be
 adapted, or it is dropped. The mistake is not adapting the question but

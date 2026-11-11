@@ -43,24 +43,25 @@ food organic, among those over 60 only 38 percent. A useful test is whether an
 unexpected result would change your mind; if it would not, the question is not
 yet a research question.
 
-**Question or hypothesis (frames 13 and 14).** A research question is open: it
-asks, often with a w-word such as how, which or who, and it fits a field in
-which there is not yet enough prior knowledge for a firm expectation, for
-example "which shops do vegans use for their food?". A hypothesis is a claim
-with a direction, such as "respondents over 60 buy a larger share of organic
-food than respondents under 30", and it is not a hunch: it has to rest on
-theory or on earlier findings, which you cite. With a survey that is already
-collected, the open question is the normal case (after Döring 2023,
-pp. 149–152). The hypothesis on the slide would, incidentally, fail in this
-survey.
+**Research question or hypothesis (frames 13 and 14).** The slide states one
+example twice. As a research question it is open: "does the share of organic
+food people buy differ by age?" asks without expecting a direction, which fits
+a field in which there is not yet enough prior knowledge for a firm
+expectation. As a hypothesis the same question becomes concrete: "respondents
+over 60 buy a larger share of organic food than respondents under 30" names
+two groups and a direction, so that the data can prove it wrong. A hypothesis
+is not a hunch: it has to rest on theory or on earlier findings, which you
+cite. With a survey that is already collected, the open question is the normal
+case (after Döring 2023, pp. 149–152). This hypothesis would, incidentally,
+fail in this survey: 54 percent of the respondents under 30 buy at least half
+of their food organic, against 38 percent of those over 60.
 
-## Part 2: what makes a good one
+## Part 2: what makes a good question
 
 **Three kinds of questions (frames 16 to 18).** What you may claim at the end
 depends on the kind of question, and each kind has its own kind of answer. A
 descriptive question counts and summarises: what share of the respondents
-shops at a discounter? In the survey, 73 percent name the discounter
-(`v008ort_1discount`). A relational question compares groups or asks whether
+shops at a discounter? In the survey, 73 percent do (`v008ort_1discount`). A relational question compares groups or asks whether
 two things go together: do people in big cities shop online more often? Of
 those in big cities 9 percent shop for food online, of everyone else 4 percent
 (`D044stadtf`, `v008ort_9online`). A causal question asks what happens when
@@ -69,7 +70,8 @@ certainty for alpro oat drink, and it needs a design that separates the cause
 from everything that goes along with it. Describing and comparing works with
 any survey, while a cause can only be claimed where the data allow it; in this
 survey the price experiment is such a place (`ad015p1reaktion4`,
-`U015p1reaktion4_3alpro`).
+`U015p1reaktion4_3alpro`). The column names stand small under each chart: they
+are not the point, they only show that the data exist.
 
 **A pilot's checklist (frame 19).** Pilots go through their checklist before
 take-off, and you go through yours before you compute anything.
@@ -102,10 +104,13 @@ an empty shelf in your data.
 and still cannot be answered with these data. A normative question such as
 "should oat milk cost as much as cow's milk?" asks what should be, while data
 describe what is. A vague question such as "what do Germans think about
-food?" has no object and no measure. A causal question without a design, such
+food?" names no particular attitude: "think about food" could mean taste,
+price, health or anything else, so there is nothing to measure. A causal question without a design, such
 as "does a higher income make people buy organic?", asks for a cause where the
-survey can only show that things go together, because income goes with
-education, place and values. And "has organic buying grown since 2020?" needs
+survey can only show that things go together: nobody assigned income at
+random, and income goes with education, place and values. An experiment would
+have to give randomly chosen people more income, as studies of a basic income
+do, and such studies are rare and expensive. And "has organic buying grown since 2020?" needs
 more than one point in time, while this survey was asked once, in November
 2025. The normative question can be turned into how many respondents hold a
 view, the causal one into a question about a relation, and the vague one can
@@ -166,8 +171,10 @@ checklist meant with potential results.
 question has to fit them and not the other way round.
 
 **The data came first (frames 54 and 55).** The data are collected, and no
-question can create a column afterwards. The check is whether every word of
-the question is a column in the codebook: if yes, the question is answerable;
+question can create a column afterwards. The check is whether every part of
+the question has a column in the data, which you look up in the codebook, the
+documentation that lists every column with its question, who was asked and
+what each code means: if yes, the question is answerable;
 if nothing fits, you drop it; and if a part is missing, you adapt the question
 and check it again. Adapting the question is the normal way of working, while
 talking the data into fitting the question is the mistake.

@@ -84,7 +84,9 @@ kaufen einen größeren Anteil Bio-Lebensmittel als Befragte unter 30“. Sie is
 keine Vermutung aus dem Bauch, sondern muss aus einer Theorie oder aus
 früheren Befunden abgeleitet sein, die man zitiert (Döring 2023,
 S. 149–150). Wo dieses Vorwissen fehlt, stellt man eine offene
-**Forschungsfrage**, oft eine W-Frage, die die Richtung offenlässt. Wer eine
+**Forschungsfrage**, die die Richtung offenlässt, für dasselbe Beispiel etwa
+„Unterscheidet sich der Anteil Bio-Lebensmittel, den Menschen kaufen, nach dem
+Alter?“. Wer eine
 vorhandene Umfrage unter einem neuen Gesichtspunkt auswertet, arbeitet
 meistens mit Fragen; eine Hypothese stellst du nur auf, wenn du sie mit
 Literatur begründen kannst.
@@ -190,7 +192,9 @@ einen vorhandenen Datensatz ausdrücklich als legitimen Anlass für eine Frage,
 solange man sagen kann, warum sie zählt (*The Effect*, Abschnitt 2.3).
 
 Der Test geht so: Zerleg deine Frage in ihre Teile und such für jeden Teil
-die Spalte im Codebuch. Prüf dabei, wem die Frage gestellt wurde, denn viele
+die Spalte im Codebuch, der Dokumentation der Daten, die jede Spalte mit
+ihrer Frage, dem Kreis der Befragten und der Bedeutung jedes Codes aufführt.
+Prüf dabei, wem die Frage gestellt wurde, denn viele
 Fragen der Umfrage gingen nur an einen Teil der Befragten. Am Ende steht eins
 von drei Ergebnissen: Die Frage ist beantwortbar, sie muss angepasst werden,
 oder sie wird verworfen. Der Fehler ist nicht das Anpassen der Frage, sondern
