@@ -51,11 +51,15 @@ of methods, six of results, three of discussion and four of references. The
 results take the most room, and a paper of twenty pages that spends twelve on
 theories and only two on results is, in her word, unbalanced; the slide shows
 such a paper below the rule of thumb, with the six remaining pages undivided,
-since the book gives only these two numbers. In a shorter student paper the
+since the book gives only these two numbers, and marks it with a small warning
+sign as the one not to follow, while a check marks the rule of thumb. In a shorter student paper the
 pages shrink, but the proportions stay.
 
 **The hourglass (frames 12–14).** A paper has the shape of an hourglass
-(after Cals and Kotz, 2013). The introduction starts broad, with the topic and
+(after Cals and Kotz, 2013). Its width shows how broad the text is, not how
+long a part is: at the rims it speaks about the whole field, in the neck only
+about your own study, and the slide says so on the left. The introduction
+starts broad, with the topic and
 what is known about it, and narrows to the gap and to your question. Methods
 and results stay narrow, because they are about your study only. The
 discussion widens again, from the answer to the comparison with other
@@ -66,15 +70,19 @@ the paper is about.
 
 ## Part 2: what goes where (frames 15–28)
 
-**A dollhouse (frame 16).** In a dollhouse you see at once what each room is
-for, because every room holds only what belongs to it. The four pages that
-follow are a short paper on the milk survey, written for this input, with the
-question whether price limits for milk differ by diet. On each page the
-brackets on the margin say what each sentence does, and below the page stands
-a sentence that would be out of place there, with the room it belongs to.
+**Moving boxes (frame 16).** Every sentence of a paper belongs in one room,
+just as every moving box carries the name of the room it goes to. The four
+slides that follow take a short paper on the milk survey apart, written for
+this input, with the question whether price limits for milk differ by diet.
+Each slide shows the building blocks of one section, one panel per block:
+first the sentences, then the name of each block. The stack of panels has
+the shape of the section, a funnel for the introduction, a list for methods
+and results and an upside-down funnel for the discussion. Below the panels,
+quietly, stands a sentence that would be out of place there, with the room it
+belongs in.
 
-**Introduction (frames 17–19).** The introduction is a funnel, and the page is
-set like one: "milk competes on price in every supermarket. Earlier studies
+**Introduction (frames 17–19).** The introduction is a funnel, and its four
+blocks narrow like one: "milk competes on price in every supermarket. Earlier studies
 asked why people choose plant-based milk (Dorina et al., 2025), but whether
 price limits differ with diet is not known. Do price limits for milk differ by
 diet?" It moves from the topic to what is known, to the gap and, in its last
@@ -141,7 +149,9 @@ the data themselves do not show.
 **Dissecting a real paper (frames 37–40).** The outline is that of an article
 on plant-based milk by Dorina, Nikpour, Mullan and Uren (2025, *Foods* 14(11),
 1970, CC BY 4.0), an online survey of 286 people that follows imrad
-throughout. Read every paper in this order: first the question at the end of
+throughout. The three marks on the outline are what to read first, and
+the numbers give the order, which the slide also says in a note. Read every
+paper in this order: first the question at the end of
 the introduction, here section 1.2, "the current study", with its three
 hypotheses; then the answer at the start of the discussion, whose first
 paragraph says which hypotheses were supported; then the limitations, here
@@ -156,7 +166,8 @@ paragraph that tells a reader whether to open the door. Most readers see only
 the title and the abstract and decide from them whether to read on.
 
 **The paper in miniature (frames 43–46).** The abstract of the example paper
-takes one sentence from each room, in the order of the rooms (after Döring,
+takes one sentence from each room, in the order of the rooms, each sentence
+underlined in its own colour (after Döring,
 2023, p. 776): "Milk competes on price, but whether price limits for milk
 differ by diet has not been asked. We reanalysed an online survey of 2,809
 adults in Germany and compared, across five diets, the price from which 588

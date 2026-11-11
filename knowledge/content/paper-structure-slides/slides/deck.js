@@ -133,7 +133,9 @@ function rich(x, cy, lines, o = {}) {
  * the next part. The six pages of the results are blue. Below, as the second
  * step, a paper of the same length that Döring calls unbalanced: twelve pages
  * of theory and two of results; the other six pages are drawn dark and
- * unnamed, since the book gives only these two numbers. */
+ * unnamed, since the book gives only these two numbers. A small green check
+ * before the first caption and a yellow warning sign before the second mark
+ * which of the two papers is the one to follow. */
 (function () {
   const W = 64, H = 90, GAP = 6, SEP = 32;
   const page = (x, y, col, lineCol) => lineCol === null
@@ -154,10 +156,12 @@ function rich(x, cy, lines, o = {}) {
     return out;
   }
   el("fig-length").innerHTML = d.svg(1680, 660,
-    d.label(90, 0, "a rule of thumb for an empirical paper of 20 pages", { size: 32, color: C.gray, centerY: 100 }),
+    d.mark(108, 100, true, { size: 28 }),
+    d.label(140, 0, "a rule of thumb for an empirical paper of 20 pages", { size: 32, color: C.gray, centerY: 100 }),
     ...row(140, [["introduction", 1], ["theory", 4], ["methods", 2], ["results", 6, "point"], ["discussion", 3], ["references", 4]]),
     d.g("bad",
-      rich(90, 380, [["and one with twelve pages of theory and two of results, which ", ["Döring", C.gray, true], " calls unbalanced"]], { color: C.gray }),
+      d.mark(108, 380, "caution", { size: 28 }),
+      rich(140, 380, [["and one with twelve pages of theory and two of results, which ", ["Döring", C.gray, true], " calls unbalanced"]], { color: C.gray }),
       ...row(420, [["", 1, "dim"], ["theory", 12], ["", 1, "dim"], ["results", 2, "point"], ["", 4, "dim"]])));
   const a = d.anim("fig-length");
   a.step(a.show("bad", { dur: 600 }));
@@ -165,13 +169,18 @@ function rich(x, cy, lines, o = {}) {
 
 /* --- slide: the hourglass (after Cals & Kotz 2013) -------------------------------
  * Figure 1680 x 660 (has-punch). An hourglass drawn as one: two curved bulbs
- * centred on x 640, from 1080 wide at the rims (y 8 and 652) to a neck 420
- * wide (x 430..850) between y 264 and 392. Ten lines of text at 32 on a pitch
+ * centred on x 760, from 1080 wide at the rims (y 8 and 652) to a neck 420
+ * wide (x 550..970) between y 264 and 392. Ten lines of text at 32 on a pitch
  * of 64 from centre y 40, each narrower than the glass at its height: at
  * y 232 the glass is about 444 wide and "your question" about 210; in the
  * neck "how you found out" about 280 of 420. Question and answer are blue,
  * the two sentences the punchline names. On the right, grey brackets at
- * x 1250 name the sections. Build-up: top bulb, neck, bottom bulb. */
+ * x 1370 name the sections. On the left, in grey, what the width means: how
+ * broad the text is, the whole field at the rims and only your study in the
+ * neck ("broad:" and "the field" right-aligned at x 190, where the bulb
+ * begins at about 222; "narrow: only your study", about 440, right-aligned
+ * at 520 beside the neck), so that nobody reads it as the length of a part.
+ * Build-up: top bulb, neck, bottom bulb. */
 (function () {
   const rows = [
     "the topic and why it matters", "what is known", "the gap", ["your question"],
@@ -180,142 +189,131 @@ function rich(x, cy, lines, o = {}) {
   const cy = (k) => 40 + 64 * k;
   const text = (k) => {
     const point = Array.isArray(rows[k]);
-    return d.label(640, 0, point ? rows[k][0] : rows[k], { size: 32, anchor: "middle", centerY: cy(k), color: point ? C.blue : C.white });
+    return d.label(760, 0, point ? rows[k][0] : rows[k], { size: 32, anchor: "middle", centerY: cy(k), color: point ? C.blue : C.white });
   };
-  const glass = "M100,8 C100,150 430,160 430,264 L430,392 C430,500 100,510 100,652 " +
-    "L1180,652 C1180,510 850,500 850,392 L850,264 C850,160 1180,150 1180,8 Z";
+  const glass = "M220,8 C220,150 550,160 550,264 L550,392 C550,500 220,510 220,652 " +
+    "L1300,652 C1300,510 970,500 970,392 L970,264 C970,160 1300,150 1300,8 Z";
   const bracket = (from, to, name) => {
     const y1 = cy(from) - 24, y2 = cy(to) + 24;
-    return [`<path d="M1240 ${y1} L1250 ${y1} L1250 ${y2} L1240 ${y2}" fill="none" stroke="${C.gray}" stroke-width="2"/>`,
-      d.label(1280, 0, name, { size: 32, color: C.gray, centerY: (y1 + y2) / 2 })];
+    return [`<path d="M1360 ${y1} L1370 ${y1} L1370 ${y2} L1360 ${y2}" fill="none" stroke="${C.gray}" stroke-width="2"/>`,
+      d.label(1400, 0, name, { size: 32, color: C.gray, centerY: (y1 + y2) / 2 })];
   };
+  const width = (x, y, t) => d.label(x, 0, t, { size: 32, color: C.gray, anchor: "end", centerY: y });
   const range = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => text(a + i));
   el("fig-hourglass").innerHTML = d.svg(1680, 660,
     `<path d="${glass}" fill="${C.dark}" fill-opacity="0.35" stroke="${C.light}" stroke-width="3"/>`,
-    d.line(70, 8, 1210, 8, { color: C.gray, width: 8 }), d.line(70, 652, 1210, 652, { color: C.gray, width: 8 }),
-    d.g("intro", ...range(0, 3), ...bracket(0, 3, "introduction")),
-    d.g("middle", ...range(4, 5), ...bracket(4, 4, "methods"), ...bracket(5, 5, "results")),
-    d.g("disc", ...range(6, 9), ...bracket(6, 9, "discussion")));
+    d.line(190, 8, 1330, 8, { color: C.gray, width: 8 }), d.line(190, 652, 1330, 652, { color: C.gray, width: 8 }),
+    d.g("intro", ...range(0, 3), ...bracket(0, 3, "introduction"), width(190, 80, "broad:\nthe field")),
+    d.g("middle", ...range(4, 5), ...bracket(4, 4, "methods"), ...bracket(5, 5, "results"), width(520, 328, "narrow: only your study")),
+    d.g("disc", ...range(6, 9), ...bracket(6, 9, "discussion"), width(190, 580, "broad:\nthe field")));
   const a = d.anim("fig-hourglass");
   a.step(a.show("middle", { dur: 500 }));
   a.step(a.show("disc", { dur: 500 }));
 })();
 
-/* --- slides: four pages of the example paper ------------------------------------------
- * Figure 1680 x 660 (has-punch). One page of the paper as a light outline,
- * 980 wide (x 4..984) and as high as its content (bottom at o.bottom, 470
- * for seven lines of text), with its numbered heading at 48 and a paragraph
- * at 32, lines on a pitch of 44 from centre y 140; the longest line is about
- * 830 of the 900 inside. The sentence the slide is about is blue. On the
- * margin, brackets at x 1006 say what each sentence does, labels from x 1028
- * (at most about 370). 70 below the page, the sentence that does not belong
- * here: grey and struck through, an arrow with "belongs in" above it, and the
- * room it belongs to as a box at x 1316..1674 (dashed and grey when it is no
- * room of the paper at all). Build-up: page, brackets, the stray sentence. */
-function paperPage(id, o) {
-  const cy = (i) => 140 + 44 * i;
-  const bottom = o.bottom || 470, wy = bottom + 70;
-  const centred = o.align === "middle";
-  const x = centred ? 494 : 44;
-  const parts = [
-    `<rect x="4" y="4" width="980" height="${bottom - 4}" rx="6" fill="${C.dark}" fill-opacity="0.25" stroke="${C.light}" stroke-width="2"/>`,
-    d.label(44, 0, o.heading, { size: 48, centerY: 66 }),
-    ...o.lines.map((segs, i) => rich(x, cy(i), [segs], { anchor: centred ? "middle" : "start",
-      color: o.blue.includes(i) ? C.blue : C.white }))];
-  if (o.extra) parts.push(o.extra);
-  const bracket = ([y1, y2, name, point]) => [
-    `<path d="M996 ${y1} L1006 ${y1} L1006 ${y2} L996 ${y2}" fill="none" stroke="${point ? C.blue : C.gray}" stroke-width="2"/>`,
-    d.label(1028, 0, name, { size: 32, color: point ? C.blue : C.gray, centerY: (y1 + y2) / 2 })];
-  const lineSpan = ([a, b, name, point]) => [cy(a) - 19, cy(b) + 19, name, point];
-  const brackets = o.brackets.map((b) => bracket(b.y || lineSpan(b))).flat();
-  const w = textWidth(o.wrong);
-  const room = o.room.dashed
-    ? d.box(1316, wy - 32, 358, 64, o.room.name, { border: C.gray, color: C.gray, dashed: true })
-    : d.box(1316, wy - 32, 358, 64, o.room.name, { border: C.light });
+/* --- slides: four sections of the example paper ---------------------------------------
+ * Figure 1680 x 660 (has-punch). A section of the example paper taken apart
+ * into its building blocks, one panel per block and no page frame around
+ * them: a dark panel with a bar on its left edge, the name of the block in
+ * grey at 32 from 30 inside the panel, and the sentence at 32, left-aligned,
+ * from a text column that starts 50 after the longest name. The block the
+ * slide is about has its bar, name and sentence in blue. Panels are 50 high
+ * plus 42 per line (92 for one line, 134 for two) and 14 apart. The shape
+ * of the stack carries the shape of the section: the introduction narrows
+ * like a funnel (each panel 120 narrower, centred on 840), the discussion
+ * widens again, methods and results are a list of equal panels. Under the
+ * panels, after a gap, the sentence that does not belong here, kept quiet:
+ * grey, struck through, a short arrow and the room it belongs in, without a
+ * box. Build-up: the blocks, their names, the stray sentence. */
+function sectionPage(id, o) {
+  const lw = Math.max(...o.blocks.map((b) => textWidth(b.name)));
+  const tx = 30 + lw + 50;
+  const n = o.blocks.length;
+  const parts = [], names = [];
+  let y = 4;
+  o.blocks.forEach((b, i) => {
+    const w = o.shape === "funnel" ? 1680 - 120 * i : o.shape === "widen" ? 1680 - 120 * (n - 1 - i) : 1680;
+    const x = (1680 - w) / 2;
+    const h = b.h || 50 + 42 * b.text.length;
+    const col = b.point ? C.blue : C.gray;
+    parts.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="6" fill="${C.dark}" fill-opacity="0.35"/>`,
+      `<rect x="${x}" y="${y}" width="6" height="${h}" rx="3" fill="${col}"/>`,
+      b.figure ? b.figure(x + tx, y) : rich(x + tx, y + h / 2, b.text, { color: b.point ? C.blue : C.white }));
+    names.push(d.label(x + 30, 0, b.name, { size: 32, color: col, centerY: y + h / 2 }));
+    y += h + 14;
+  });
+  const wy = y + 50, w = textWidth(o.wrong);
   el(id).innerHTML = d.svg(1680, 660, ...parts,
-    d.g("brackets", ...brackets),
+    d.g("names", ...names),
     d.g("wrong",
-      d.label(44, 0, o.wrong, { size: 32, color: C.gray, centerY: wy }),
-      d.line(38, wy, 50 + w, wy, { color: C.gray, width: 3 }),
-      d.label((80 + w + 1300) / 2, 0, "belongs in", { size: 32, color: C.gray, anchor: "middle", centerY: wy - 44 }),
-      d.arrow(80 + w, wy, 1300, wy, { color: C.gray, width: 3 }),
-      room));
+      d.label(30, 0, o.wrong, { size: 32, color: C.gray, centerY: wy }),
+      d.line(24, wy, 36 + w, wy, { color: C.gray, width: 2 }),
+      d.arrow(60 + w, wy, 150 + w, wy, { color: C.gray, width: 2 }),
+      d.label(170 + w, 0, "belongs in " + o.room, { size: 32, color: C.gray, centerY: wy })));
   const a = d.anim(id);
-  a.step(a.show("brackets", { dur: 500 }));
+  a.step(a.show("names", { dur: 500 }));
   a.step(a.show("wrong", { dur: 500 }));
 }
 
-// Introduction: centred lines that narrow like a funnel, the question last.
-paperPage("fig-intro", {
-  heading: "1. introduction", align: "middle", blue: [5, 6],
-  lines: [
-    ["milk competes on price in every supermarket."],
-    ["earlier studies asked why people choose"],
-    ["plant-based milk (", ["Dorina et al., 2025", C.white, true], ")."],
-    ["but whether price limits differ"],
-    ["with diet is not known."],
-    ["do price limits for"],
-    ["milk differ by diet?"]],
-  brackets: [[0, 0, "the topic"], [1, 2, "what is known"], [3, 4, "the gap"], [5, 6, "your question", true]],
-  wrong: "vegetarians accept higher prices.", room: { name: "results" } });
+// Introduction: a funnel from the topic to the question.
+sectionPage("fig-intro", {
+  shape: "funnel",
+  blocks: [
+    { name: "the topic", text: [["milk competes on price in every supermarket."]] },
+    { name: "what is known", text: [["earlier studies asked why people choose plant-based milk"], ["(", ["Dorina et al., 2025", C.white, true], ")."]] },
+    { name: "the gap", text: [["but whether price limits differ with diet is not known."]] },
+    { name: "your question", point: true, text: [["do price limits for milk differ by diet?"]] }],
+  wrong: "vegetarians accept higher prices.", room: "the results" });
 
-// Methods: a recipe, left-aligned.
-paperPage("fig-methods", {
-  heading: "2. methods", blue: [6],
-  lines: [
-    ["we reanalysed the milk and chocolate survey, an existing"],
-    ["online survey of 2,809 adults in ", ["Germany", C.white, true], "."],
-    ["619 respondents saw one of two milks and were asked from"],
-    ["which price it would be too expensive; 611 named one."],
-    ["we left out 23 prices below 0.50 € or above 10 €, which"],
-    ["can hardly be meant for a litre, so 588 remained."],
-    ["we compared the median price limit of the diet groups."]],
-  brackets: [[0, 1, "data source"], [2, 3, "measure and sample"], [4, 5, "cleaning"], [6, 6, "analysis", true]],
-  wrong: "the median is the middle value of a sorted list.", room: { name: "a textbook", dashed: true } });
+// Methods: a recipe, four equal steps.
+sectionPage("fig-methods", {
+  shape: "list",
+  blocks: [
+    { name: "data source", text: [["we reanalysed the milk and chocolate survey, an existing online"], ["survey of 2,809 adults in ", ["Germany", C.white, true], "."]] },
+    { name: "measure and sample", text: [["619 respondents saw one of two milks and were asked from which"], ["price it would be too expensive; 611 named one."]] },
+    { name: "cleaning", text: [["we left out 23 prices below 0.50 € or above 10 €, which can"], ["hardly be meant for a litre, so 588 remained."]] },
+    { name: "analysis", point: true, text: [["we compared the median price limit of the diet groups."]] }],
+  wrong: "the median is the middle value of a sorted list.", room: "a textbook" });
 
-// Results: two sentences and figure 1 on the same page, which is 540 high.
-// The figure is a dot plot of the five medians on a pitch of 40 from y 290,
-// names right-aligned at x 250 ("pescetarian" about 165), the axis from
-// 1.80 € at x 270 to 2.60 € at x 790 (650 per euro), n at 20 in a column at
-// x 830, the tick labels at 20 under the plot and the caption under them.
+// Results: the finding, the pointer and figure 1 as the third block, 270
+// high. The figure is a dot plot of the five medians on a pitch of 38 from
+// 36 inside the panel, names right-aligned at 165 from the text column
+// ("pescetarian" about 165), the axis from 1.80 € at 185 to 2.60 € at 905
+// (900 per euro), n at 20 in a column at 945, tick labels at 20 under the
+// plot and the caption under them.
 (function () {
   const groups = [["vegetarian", 2.445, 28], ["vegan", 2.0, 17], ["flexitarian", 1.99, 166], ["omnivore", 1.99, 362], ["pescetarian", 1.99, 7]];
-  const X = (v) => 270 + (v - 1.8) * 650;
-  const ry = (k) => 290 + 40 * k;
-  const fig = [
-    ...[2.0, 2.5].map((v) => d.line(X(v), 268, X(v), 462, { color: C.gray, dashed: true })),
-    ...[2.0, 2.5].map((v) => d.label(X(v), 0, v.toFixed(2) + " €", { size: 20, color: C.gray, anchor: "middle", centerY: 482 })),
-    ...groups.map(([name, v, n], k) => [
-      d.label(250, 0, name, { size: 32, anchor: "end", centerY: ry(k) }),
-      d.line(270, ry(k), X(v), ry(k), { color: C.gray }),
-      `<circle cx="${X(v)}" cy="${ry(k)}" r="9" fill="${C.white}"/>`,
-      d.label(830, 0, "n = " + n, { size: 20, color: C.gray, centerY: ry(k) })]).flat(),
-    d.label(44, 0, "figure 1. median price limit by diet", { size: 20, color: C.gray, centerY: 512 })];
-  paperPage("fig-results", {
-    heading: "3. results", blue: [2], bottom: 540,
-    lines: [
-      ["vegetarians named a median price limit of 2.45 € (n = 28),"],
-      ["omnivores one of 1.99 € (n = 362)."],
-      ["figure 1 shows all five diet groups."]],
-    extra: fig.join(""),
-    brackets: [[0, 1, "the finding, with n"], [2, 2, "pointer to the figure", true], { y: [268, 524, "the full picture"] }],
-    wrong: "probably because they value animal welfare.", room: { name: "discussion" } });
+  const figure = (x0, y0) => {
+    const X = (v) => x0 + 185 + (v - 1.8) * 900;
+    const ry = (k) => y0 + 36 + 38 * k;
+    return [
+      ...[2.0, 2.5].map((v) => d.line(X(v), y0 + 16, X(v), y0 + 206, { color: C.gray, dashed: true })),
+      ...[2.0, 2.5].map((v) => d.label(X(v), 0, v.toFixed(2) + " €", { size: 20, color: C.gray, anchor: "middle", centerY: y0 + 224 })),
+      ...groups.map(([name, v, n], k) => [
+        d.label(x0 + 165, 0, name, { size: 32, anchor: "end", centerY: ry(k) }),
+        d.line(x0 + 185, ry(k), X(v), ry(k), { color: C.gray }),
+        `<circle cx="${X(v)}" cy="${ry(k)}" r="9" fill="${C.white}"/>`,
+        d.label(x0 + 945, 0, "n = " + n, { size: 20, color: C.gray, centerY: ry(k) })]).flat(),
+      d.label(x0, 0, "figure 1. median price limit by diet", { size: 20, color: C.gray, centerY: y0 + 250 })].join("");
+  };
+  sectionPage("fig-results", {
+    shape: "list",
+    blocks: [
+      { name: "the finding, with n", text: [["vegetarians named a median price limit of 2.45 € (n = 28),"], ["omnivores one of 1.99 € (n = 362)."]] },
+      { name: "pointer to the figure", point: true, text: [["figure 1 shows all five diet groups."]] },
+      { name: "the full picture", h: 270, figure }],
+    wrong: "probably because they value animal welfare.", room: "the discussion" });
 })();
 
-// Discussion: centred lines that widen like an upside-down funnel, the
-// answer first.
-paperPage("fig-discussion", {
-  heading: "4. discussion", align: "middle", blue: [0, 1],
-  lines: [
-    ["only vegetarians"],
-    ["named higher price limits."],
-    ["whether this reflects concern"],
-    ["for animals, the data cannot say."],
-    ["only 28 vegetarians named a limit, and"],
-    ["each respondent saw only one of two milks."],
-    ["a larger sample should test whether the difference holds."]],
-  brackets: [[0, 1, "the answer", true], [2, 3, "what the data cannot say"], [4, 5, "limitations"], [6, 6, "what follows"]],
-  wrong: "women named higher price limits than men.", room: { name: "results" } });
+// Discussion: an upside-down funnel, from the answer to what follows.
+sectionPage("fig-discussion", {
+  shape: "widen",
+  blocks: [
+    { name: "the answer", point: true, text: [["only vegetarians named higher price limits."]] },
+    { name: "what it cannot say", text: [["whether this reflects concern for animals,"], ["the data cannot say."]] },
+    { name: "limitations", text: [["only 28 vegetarians named a limit, and each"], ["respondent saw only one of two milks."]] },
+    { name: "what follows", text: [["a larger sample should test whether the difference holds."]] }],
+  wrong: "women named higher price limits than men.", room: "the results" });
 
 /* --- slide: result or interpretation ---------------------------------------------------
  * Figure 1680 x 660 (has-punch). The sentence from the quiz at 48, one half
@@ -359,7 +357,9 @@ paperPage("fig-discussion", {
  * a blue highlight marks a row; it is 39 high (size 28), so the two adjacent
  * marks keep 5 apart. A yellow numeral at x 46 gives the reading order and a
  * blue label on the right (from x 1080, at most about 480) says what to read
- * there; an arrow joins label and frame. */
+ * there; an arrow joins label and frame. With the first mark a grey note
+ * at the top right says why these three: they are what to read first, in
+ * this order. */
 (function () {
   const rows = [
     ["abstract", 0, true], ["1. introduction", 0], ["1.1. theory of planned behaviour", 1], ["1.2. the current study", 1],
@@ -375,7 +375,8 @@ paperPage("fig-discussion", {
     d.label(1080, 0, text, { size: 32, color: C.blue, centerY: cy(k) })];
   el("fig-paper").innerHTML = d.svg(1680, 804,
     d.box(4, 4, 996, 796, "", { border: C.gray, fill: "none" }),
-    d.g("m1", ...mark(3, 1, "the question and hypotheses")),
+    d.g("m1", d.label(1080, 0, "read these three first,\nin this order", { size: 32, color: C.gray, centerY: 112 }),
+      ...mark(3, 1, "the question and hypotheses")),
     d.g("m2", ...mark(12, 2, "the answer, first paragraph")),
     d.g("m3", ...mark(13, 3, "the limitations")),
     d.label(90, 0, "health, environment or taste?", { size: 48, centerY: 52 }),
@@ -390,7 +391,8 @@ paperPage("fig-discussion", {
  * lines on a pitch of 100 from centre y 200, so that above each sentence
  * there is room for the name of the section it comes from (20, grey) and
  * under it for a thin underline. The newest sentence is underlined in
- * yellow, the earlier ones in grey. Bottom left, the word count grows with
+ * yellow; once the next one comes, it takes its own colour, blue and
+ * grey-light in turn, like the name of its section above it. Bottom left, the word count grows with
  * the text; with the last sentence the usual length appears beside it. */
 (function () {
   const sentences = [
@@ -411,9 +413,12 @@ paperPage("fig-discussion", {
     placed.push({ ...t, x, line, width: w });
     x += w + sp;
   });
+  // each sentence keeps its own colour once the next one comes, blue and
+  // grey-light in turn, so that sentences that meet on one line stay apart
+  const own = (i) => (i % 2 === 0 ? C.blue : C.light);
   const groups = sentences.map(([room], i) => {
     const mine = placed.filter((p) => p.s === i);
-    const out = [d.label(mine[0].x, 0, room, { size: 20, color: C.gray, centerY: cy(mine[0].line) - 40 })];
+    const out = [d.label(mine[0].x, 0, room, { size: 20, color: own(i), centerY: cy(mine[0].line) - 40 })];
     const unders = [];
     [...new Set(mine.map((p) => p.line))].forEach((ln) => {
       const seg = mine.filter((p) => p.line === ln);
@@ -431,7 +436,7 @@ paperPage("fig-discussion", {
     d.g("norm", d.label(300, 0, "150 to 250 words are usual, and the abstract is written last", { size: 32, color: C.gray, centerY: 690 })));
   const a = d.anim("fig-abstract");
   for (let i = 1; i < sentences.length; i++) {
-    const items = [a.color(`[data-a="u${i - 1}"] line`, "gray", { dur: 400 }), a.show("s" + i, { dur: 500 }),
+    const items = [a.color(`[data-a="u${i - 1}"] line`, own(i - 1), { dur: 400 }), a.show("s" + i, { dur: 500 }),
       a.count("wc", count(i), { from: count(i - 1), suffix: " words", dur: 600 })];
     if (i === sentences.length - 1) items.push(a.show("norm", { dur: 500 }));
     a.step(a.par(...items));
