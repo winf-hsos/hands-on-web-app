@@ -497,6 +497,19 @@ select {
   margin-right: auto;
 }
 
+/* from tablet width on, the meta keeps its place on the right and a long
+   title wraps inside its own column, instead of the meta dropping below it */
+@media (min-width: 40rem) {
+  .row-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .row-meta {
+    justify-self: end;
+  }
+}
+
 .row-link:hover .row-title {
   color: var(--accent-ink);
 }
