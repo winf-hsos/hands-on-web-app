@@ -1,19 +1,17 @@
-/* Zeichnungen des Decks "Reasoning" (Entwurf vom 2026-11-12, am selben Tag
- * freigegeben).
+/* Drawings of the deck "Reasoning" (draft of 2026-11-12, reworked the same day
+ * after Nicolas' review).
  *
- * Leinwand 1680 breit, damit die Schriftgroessen so herauskommen, wie sie
- * hier stehen. Erlaubt: 20, 32, 48, 80. Leitungen zuerst, dann Kaesten, dann
- * Beschriftungen (d.layers). Folien mit Aufbau zeichnen immer dieselbe
- * Leinwand; was noch nicht sichtbar sein soll, wird weggelassen, nie
- * verschoben.
+ * Canvas 1680 wide, so that font sizes come out as written here. Allowed: 20,
+ * 32, 48, 80. Wires first, then boxes, then labels (d.layers). Slides with a
+ * build-up always draw the same canvas; what is not visible yet is left out,
+ * never moved.
  *
- * Farben: Grau fuer alles, Pink (Rolle "blue") fuer den Punkt der Folie.
- * Gruen und Rot nur als kleine Zeichen fuer richtig und falsch bei der
- * Traktorfrage, nie als grosser Urteilskasten (Wunsch Nicolas, 2026-11-03).
+ * Colours: grey for everything, pink (role "blue") for the point of the slide.
+ * Green and red only as small marks for right and wrong, never as a large
+ * verdict box (Nicolas, 2026-11-03).
  *
- * Die Zeichnungen answer-or-think, learning-from-rewards und
- * longer-or-more-often stammen aus der Lektion (content/reasoning/figures.js,
- * 1600 breit) und sind hier um 40 nach rechts gerueckt.
+ * The drawing learning-from-rewards comes from the lesson
+ * (content/reasoning/figures.js, 1600 wide) and is shifted 40 to the right.
  */
 
 const d = window.draw;
@@ -22,7 +20,10 @@ const C = () => window.draw.colors();
 const put = (id, svg) => { const el = $(id); if (el) el.innerHTML = svg; };
 const shift = (...parts) => `<g transform="translate(40,0)">${parts.flat().join("")}</g>`;
 
-/* Textbreite in Arial, im Browser gemessen; Codeschrift rechnet 0,6 x Groesse */
+// Bootstrap Icons "person-fill" 1.11.3 (MIT, (c) The Bootstrap Authors)
+const ICON_PERSON = '<path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>';
+
+/* Text width in Arial, measured in the browser; monospace counts 0.6 x size */
 function breite(text, size, mono) {
   if (mono) return text.length * size * 0.6;
   const ctx = breite.ctx || (breite.ctx = document.createElement("canvas").getContext("2d"));
@@ -30,110 +31,160 @@ function breite(text, size, mono) {
   return ctx.measureText(text).width;
 }
 
-/* Linksbuendige Zeilen mit gleichem Abstand */
+/* Left-aligned lines with equal spacing */
 function zeilen(x, erste, abstand, texte, o) {
   return texte.map((t, i) => d.label(x, 0, t, { size: 32, centerY: erste + i * abstand, ...o }));
 }
 
+/* Keep runs of spaces in monospace lines (SVG collapses them) */
+const pre = (t) => t.replace(/ {2,}|^ /g, (m) => " ".repeat(m.length));
+
+/* Column headers of the IPO model: input, processing, output */
+function ipoHeads(xs) {
+  const c = C();
+  return ["input", "processing", "output"].map((t, i) => d.label(xs[i], 0, t, { size: 32, color: c.gray, anchor: "middle", centerY: 30 }));
+}
+
 /* ------------------------------------------------------------------ */
-/* Traktorfrage: sofort antworten oder erst schreiben (aus der Lektion) */
+/* Tractor question as IPO: answer at once, or write first             */
 /* ------------------------------------------------------------------ */
-/* Antwortkaesten 1220-1480 (260 breit; "1,000 €" in 48 = 7 x 28,8 = 202),
- * das Zeichen bei 1530. Statt eines roten Urteilskastens steht unter der
- * falschen Antwort, was aus ihr folgt. */
+/* Input column centre 150, model 370-670, output 780-1600. Answer boxes
+ * 1400-1600 ("1,000 €" in 48 is about 160), mark at 1640. Lower row: the
+ * thoughts are output, and the arrow below leads them back into the model,
+ * because every new token is predicted from everything written so far. */
 function figAnswer(step) {
   const c = C();
-  const A = 95, B = 380;
-  const wires = [d.arrow(400, A, 1205, A, { color: c.gray, width: 3, head: 16 })];
+  const A = 130, B = 390;
+  const wires = [
+    d.arrow(250, A, 355, A, { color: c.gray, width: 3, head: 16 }),
+    d.arrow(670, A, 1385, A, { color: c.gray, width: 3, head: 16 }),
+  ];
   const boxes = [
-    d.box(40, A - 55, 360, 110, "question", { size: 48, border: c.gray }),
-    d.box(1220, A - 55, 260, 110, "1,000 €", { size: 48, border: c.light }),
-    d.mark(1530, A, false),
+    d.box(370, A - 60, 300, 120, "language model", { size: 32, border: c.light }),
+    d.box(1400, A - 55, 200, 110, "1,000 €", { size: 48, border: c.light }),
+    d.mark(1640, A, false),
   ];
   const labels = [
-    d.label(802, 0, "answers right away", { size: 32, color: c.gray, anchor: "middle", centerY: A - 32 }),
-    // "then together: 12,000 €" rund 350 breit, mittig unter dem Kasten: 1175-1525
-    d.label(1350, 0, "then together: 12,000 €", { size: 32, color: c.gray, anchor: "middle", centerY: A + 90 }),
+    ...ipoHeads([150, 520, 1190]),
+    d.label(150, 0, "question", { size: 32, anchor: "middle", centerY: A }),
+    d.label(1030, 0, "answers right away", { size: 32, color: c.gray, anchor: "middle", centerY: A - 30 }),
+    d.label(1600, 0, "then together: 12,000 €", { size: 32, color: c.gray, anchor: "end", centerY: A + 90 }),
   ];
   if (step >= 1) {
-    wires.push(d.arrow(400, B, 505, B, { color: c.gray, width: 3, head: 16 }),
-               d.arrow(1100, B, 1205, B, { color: c.gray, width: 3, head: 16 }));
-    // Denkkasten 520-1100; laengste Zeile "x + x + 10,000 = 11,000" 23 x 19,2 = 442 ab 560
-    // Textblock 274-486 (Mitten 290..470, je 16 darueber und darunter), Kasten 240-520: oben 34, unten 34
-    boxes.push(d.box(40, B - 55, 360, 110, "question", { size: 48, border: c.gray }),
-               d.box(520, 240, 580, 280, "", { border: c.blue, width: 3 }),
-               d.box(1220, B - 55, 260, 110, "500 €", { size: 48, border: c.light }),
-               d.mark(1530, B, true));
-    labels.push(d.label(810, 0, "thinks in writing first", { size: 32, color: c.blue, anchor: "middle", centerY: 212 }),
-                ...zeilen(560, 290, 60, ["trailer: x", "tractor: x + 10,000", "x + x + 10,000 = 11,000", "x = 500"], { color: c.white }));
+    wires.push(
+      d.arrow(250, B, 355, B, { color: c.gray, width: 3, head: 16 }),
+      d.arrow(670, B, 765, B, { color: c.gray, width: 3, head: 16 }),
+      d.arrow(1300, B, 1385, B, { color: c.gray, width: 3, head: 16 }),
+      d.line(1040, 510, 1040, 570, { color: c.blue, width: 3 }),
+      d.line(1040, 570, 520, 570, { color: c.blue, width: 3 }),
+      d.arrow(520, 570, 520, 455, { color: c.blue, width: 3, head: 16 }));
+    // longest line "x + x + 10,000 = 11,000" about 360 from 820; four lines 55 apart, centred in 270-510
+    boxes.push(
+      d.box(370, B - 60, 300, 120, "language model", { size: 32, border: c.light }),
+      d.box(780, 270, 520, 240, "", { border: c.blue, width: 3 }),
+      d.box(1400, B - 55, 200, 110, "500 €", { size: 48, border: c.light }),
+      d.mark(1640, B, true));
+    labels.push(
+      d.label(150, 0, "question", { size: 32, anchor: "middle", centerY: B }),
+      d.label(1040, 0, "thinks in writing first", { size: 32, color: c.blue, anchor: "middle", centerY: 245 }),
+      ...zeilen(820, 308, 55, ["trailer: x", "tractor: x + 10,000", "x + x + 10,000 = 11,000", "x = 500"], { color: c.white }),
+      d.label(780, 0, "the model reads its own thoughts again", { size: 32, color: c.blue, anchor: "middle", centerY: 610 }));
   }
-  return d.svg(1680, 560, shift(d.layers(wires, boxes, labels)));
+  return d.svg(1680, 640, ...d.layers(wires, boxes, labels));
 }
 function showAnswer(slide, step) { put("fig-answer", figAnswer(step || 0)); }
 
 /* ------------------------------------------------------------------ */
-/* mehr Tokens, mehr Rechnung                                           */
+/* more tokens, more computation: IPO, animated                        */
 /* ------------------------------------------------------------------ */
-/* Quadrate 50 breit im Raster 64: 17 pinke Gedanken 390-1464, die Antwort
- * 1478-1528. Fragekaesten 60-320. */
+/* Section 1: the model writes 14 thought tokens and one answer token, one
+ * after the other (a real process: generation token by token). Section 2:
+ * the thoughts collapse into a folded box and only the answer travels on to
+ * the user. Squares 44 in a pitch of 52 from 690; answer square at 1418. */
 function figPasses() {
   const c = C();
-  const q = 50, pitch = 64, x0 = 390;
-  const wires = [
-    d.arrow(320, 150, 378, 150, { color: c.gray, width: 3, head: 14 }),
-    d.arrow(320, 330, 378, 330, { color: c.gray, width: 3, head: 14 }),
+  const Y = 150, q = 44, pitch = 52, x0 = 690, n = 14;
+  const parts = [
+    ...ipoHeads([130, 460, 1076]),
+    d.label(130, 0, "question", { size: 32, anchor: "middle", centerY: Y }),
+    d.arrow(220, Y, 295, Y, { color: c.gray, width: 3, head: 16 }),
+    d.box(310, Y - 60, 300, 120, "language model", { size: 32, border: c.light }),
+    d.arrow(610, Y, 675, Y, { color: c.gray, width: 3, head: 16 }),
+    d.icon(1560, Y - 50, 80, ICON_PERSON, { color: c.light }),
+    d.label(1600, 0, "user", { size: 32, color: c.gray, anchor: "middle", centerY: Y + 70 }),
+    d.g("summary", d.box(x0, Y - 35, 300, 70, "thought for 12 s", { size: 32, border: c.gray, color: c.gray, dashed: true })),
   ];
-  const boxes = [
-    d.box(60, 100, 260, 100, "question", { size: 32, border: c.gray }),
-    d.box(x0, 125, q, q, "", { border: c.white, width: 3 }),
-    d.box(60, 280, 260, 100, "question", { size: 32, border: c.gray }),
-  ];
-  for (let i = 0; i < 17; i++) boxes.push(d.box(x0 + i * pitch, 305, q, q, "", { border: c.blue, width: 3 }));
-  boxes.push(d.box(x0 + 17 * pitch, 305, q, q, "", { border: c.white, width: 3 }));
-  const labels = [
-    d.label(840, 0, "every square is one token, and every token is one pass through all layers", { size: 32, color: c.gray, anchor: "middle", centerY: 30 }),
-    d.label(x0 + q / 2, 0, "answer", { size: 32, color: c.white, anchor: "middle", centerY: 95 }),
-    d.label(480, 0, "1 pass", { size: 32, color: c.gray, centerY: 150 }),
-    d.label(x0 + (16 * pitch + q) / 2, 0, "thoughts", { size: 32, color: c.blue, anchor: "middle", centerY: 275 }),
-    d.label(x0 + 17 * pitch + q / 2, 0, "answer", { size: 32, color: c.white, anchor: "middle", centerY: 275 }),
-    d.label(840, 0, "500 tokens of thought before the answer are 500 passes", { size: 32, color: c.gray, anchor: "middle", centerY: 420 }),
-  ];
-  return d.svg(1680, 450, ...d.layers(wires, boxes, labels));
+  for (let i = 0; i < n; i++) parts.push(d.g(`t${i}`, d.box(x0 + i * pitch, Y - q / 2, q, q, "", { border: c.blue, width: 3 })));
+  parts.push(
+    d.g("lblthoughts", d.label(x0 + ((n - 1) * pitch + q) / 2, 0, "thoughts", { size: 32, color: c.blue, anchor: "middle", centerY: Y - 55 })),
+    d.g("answer", d.box(x0 + n * pitch, Y - q / 2, q, q, "", { border: c.white, width: 3 }),
+                  d.label(x0 + n * pitch + q / 2, 0, "answer", { size: 32, anchor: "middle", centerY: Y - 55 })),
+    d.g("touser", d.arrow(1062, Y, 1545, Y, { color: c.blue, width: 3, head: 16 })),
+    d.g("lbltouser", d.label(1300, 0, "only the answer", { size: 32, color: c.blue, anchor: "middle", centerY: Y + 45 })),
+    d.g("cap1", d.label(840, 0, "every token is one pass through the model, so 500 tokens of thought are 500 passes", { size: 32, color: c.gray, anchor: "middle", centerY: 300 })),
+    d.g("cap2", d.label(840, 0, "the app folds the thoughts away or summarises them, and the user sees only the answer", { size: 32, color: c.gray, anchor: "middle", centerY: 300 })));
+  return d.svg(1680, 340, ...parts);
+}
+if ($("fig-passes")) {
+  put("fig-passes", figPasses());
+  const a = d.anim("fig-passes");
+  const n = 14, pitch = 52;
+  a.step(...Array.from({ length: n }, (_, i) => a.show(`t${i}`, { dur: 70 })), a.show("answer", { dur: 150 }), a.show("lblthoughts", { dur: 300 }));
+  a.step(a.par(a.hide("lblthoughts", { dur: 300 }), ...Array.from({ length: n }, (_, i) => a.move(`t${i}`, -i * pitch, 0, { dur: 700 }))),
+         a.par(...Array.from({ length: n }, (_, i) => a.hide(`t${i}`, { dur: 200 })), a.show("summary", { dur: 300 })),
+         a.par(a.move("answer", 1010 - (690 + n * pitch), 0, { dur: 600 }), a.hide("cap1", { dur: 300 })),
+         a.par(a.draw("touser", { dur: 600 }), a.show("lbltouser", { dur: 400 }), a.show("cap2", { dur: 400 })));
 }
 
 /* ------------------------------------------------------------------ */
-/* der Kontext ist das Papier: 37 x 48 schriftlich                     */
+/* the context is the paper                                             */
 /* ------------------------------------------------------------------ */
-/* Codeschrift 48: 28,8 je Zeichen. Linke Seiten rechtsbuendig bei 850, das
- * Gleichheitszeichen fest bei 880, Ergebnisse rechtsbuendig bei 1080, so
- * stehen Einer unter Einern. */
+/* Context box 60-700 with the question and the thoughts so far in
+ * monospace 32 (19.2 per character, longest 28 characters = 538 from 100).
+ * The model reads all of it and predicts the next token, which then becomes
+ * part of the context. */
 function figPaper(step) {
   const c = C();
-  const m = { size: 48, mono: true };
-  const parts = [d.label(840, 0, "37 × 48", { size: 80, mono: true, anchor: "middle", centerY: 70 })];
+  const m = { size: 32, mono: true };
+  const wires = [
+    d.arrow(970, 290, 1065, 290, { color: c.gray, width: 3, head: 16 }),
+    d.arrow(1380, 290, 1455, 290, { color: c.gray, width: 3, head: 16 }),
+  ];
+  const boxes = [
+    d.box(60, 70, 640, 430, "", { border: c.gray }),
+    d.box(180, 422, 100, 46, "", { border: c.blue, dashed: true }),
+    d.box(1080, 230, 300, 120, "language model", { size: 32, border: c.light }),
+    d.box(1470, 245, 140, 90, step >= 1 ? "500" : "?", { size: 48, mono: true, border: c.blue, color: c.blue, width: 3 }),
+  ];
+  const labels = [
+    d.label(60, 0, "context", { size: 32, color: c.gray, centerY: 35 }),
+    ...zeilen(100, 120, 50, ["tractor + trailer = 11,000 €", "tractor = trailer + 10,000 €"], { ...m, color: c.gray }),
+    ...zeilen(100, 245, 50, ["trailer: x", "tractor: x + 10,000", "x + x + 10,000 = 11,000", "2x = 1,000", "x ="], { ...m, color: c.white }),
+    d.label(730, 0, "question", { size: 32, color: c.gray, centerY: 145 }),
+    d.label(730, 0, "thoughts", { size: 32, color: c.gray, centerY: 320 }),
+    d.label(730, 0, "so far", { size: 32, color: c.gray, centerY: 360 }),
+    d.label(1230, 0, "every new token is predicted", { size: 32, color: c.gray, anchor: "middle", centerY: 130 }),
+    d.label(1230, 0, "from everything written so far", { size: 32, color: c.gray, anchor: "middle", centerY: 175 }),
+  ];
   if (step >= 1) {
-    parts.push(
-      d.label(850, 0, "37 × 40", { ...m, anchor: "end", color: c.light, centerY: 200 }),
-      d.label(880, 0, "=", { ...m, anchor: "middle", color: c.light, centerY: 200 }),
-      d.label(1080, 0, "1,480", { ...m, anchor: "end", centerY: 200 }),
-      d.label(850, 0, "37 × 8", { ...m, anchor: "end", color: c.light, centerY: 280 }),
-      d.label(880, 0, "=", { ...m, anchor: "middle", color: c.light, centerY: 280 }),
-      d.label(1080, 0, "296", { ...m, anchor: "end", centerY: 280 }),
-      d.line(920, 325, 1090, 325, { color: c.light, width: 3 }),
-      d.label(1080, 0, "1,776", { ...m, anchor: "end", color: c.blue, centerY: 375 }),
-    );
+    wires.push(d.line(1540, 335, 1540, 540, { color: c.blue, width: 3 }),
+               d.line(1540, 540, 230, 540, { color: c.blue, width: 3 }),
+               d.arrow(230, 540, 230, 472, { color: c.blue, width: 3, head: 14 }));
+    boxes.push(d.highlight(100, breite("2x = 1,000", 32, true), 395, 32, { color: c.blue, opacity: 0.25 }));
+    labels.push(d.label(230, 0, "500", { ...m, color: c.blue, anchor: "middle", centerY: 445 }),
+                d.label(1000, 0, "the new token is written down and read again", { size: 32, color: c.blue, anchor: "middle", centerY: 580 }));
   }
-  return d.svg(1680, 420, ...parts);
+  return d.svg(1680, 610, ...d.layers(wires, boxes, labels));
 }
 function showPaper(slide, step) { put("fig-paper", figPaper(step || 0)); }
 
 /* ------------------------------------------------------------------ */
-/* ein grosser Schritt oder viele kleine                               */
+/* one big step or many small ones                                      */
 /* ------------------------------------------------------------------ */
-/* Links 0-760 der Sprung, rechts ab 880 die Treppe: Zeile i bei x 880 + 100 i,
- * Mitte 110 + 100 i. Breiteste Zeile "x + x + 10,000 = 11,000" ab 1080:
- * 23 x 19,2 = 442, Ende 1522. Die Verbinder laufen von 20 rechts der
- * Zeilenkante senkrecht nach unten und dann zur naechsten Zeile. */
+/* Left 0-760 the jump, right from 880 the stairs: line i at x 880 + 100 i,
+ * centre 110 + 100 i. Widest line "x + x + 10,000 = 11,000" from 1180:
+ * 23 x 19.2 = 442, end 1622. Connectors run down from 20 right of the line
+ * start and then to the next line. */
 function figSteps() {
   const c = C();
   const texte = ["trailer: x", "tractor: x + 10,000", "x + x + 10,000 = 11,000", "x = 500"];
@@ -155,10 +206,10 @@ function figSteps() {
 }
 
 /* ------------------------------------------------------------------ */
-/* ein Schritt auf Papier laesst sich pruefen                          */
+/* a step on paper can be checked                                       */
 /* ------------------------------------------------------------------ */
-/* Codeschrift 48 ab x 300; laengste Zeile "wait, that is 12,000, not 11,000."
- * 34 x 28,8 = 979, Ende 1279. */
+/* Monospace 48 from x 300; longest line "wait, that is 12,000, not 11,000."
+ * 34 x 28.8 = 979, end 1279. */
 function figCheck(step) {
   const c = C();
   const m = { size: 48, mono: true };
@@ -173,20 +224,69 @@ function figCheck(step) {
 function showCheck(slide, step) { put("fig-check", figCheck(step || 0)); }
 
 /* ------------------------------------------------------------------ */
-/* Balken mit Spur bis 100 %                                           */
+/* prompts: few-shot, chain of thought, zero-shot                       */
 /* ------------------------------------------------------------------ */
-/* Beschriftung rechtsbuendig bei 520, Spur 560-1360 (800 = 100 %), Wert 20
- * hinter dem Balken. Je Gruppe ein grauer Titel und zwei Balken; eine Gruppe
- * braucht 250 in der Hoehe. groups: [{ title, bars: [[label, wert, akzent]] }] */
-function hbars(groups, step) {
+/* Monospace 32 with original case (a prompt is what the computer reads):
+ * 19.2 per character, at most 76 characters from 100 (end 1560). Lines 46
+ * apart. Pink lines are what differs between the prompts. The answer box
+ * appears in step 1 with a small mark. */
+const ROGER = ["Q: Roger has 5 tennis balls. He buys 2 cans of 3 tennis balls each.", "   How many tennis balls does he have now?"];
+const APPLES = ["Q: The cafeteria had 23 apples. They used 20 for lunch and bought", "   6 more. How many apples do they have?"];
+const PROMPTS = {
+  "fig-fewshot": {
+    prompt: [...ROGER, "A: The answer is 11.", "", ...APPLES, "A:"], pink: [],
+    answer: ["The answer is 27."], ok: false,
+  },
+  "fig-cotprompt": {
+    prompt: [...ROGER, "A: Roger started with 5 balls. 2 cans of 3 tennis balls each are",
+             "   6 balls. 5 + 6 = 11. The answer is 11.", "", ...APPLES, "A:"], pink: [2, 3],
+    answer: ["The cafeteria had 23 apples. They used 20, so 23 - 20 = 3.", "They bought 6 more, so 3 + 6 = 9. The answer is 9."], ok: true,
+  },
+  "fig-zeroshot": {
+    prompt: [...APPLES, "A: Let's think step by step."], pink: [2],
+    answer: ["They started with 23 apples and used 20, so 23 - 20 = 3.", "Then they bought 6 more, so 3 + 6 = 9. The answer is 9."], ok: true,
+  },
+};
+function figPrompt(id, step) {
+  const c = C();
+  const p = PROMPTS[id];
+  const top = 70, lh = 46, pad = 34;
+  const hP = p.prompt.length * lh + 2 * pad - 14;
+  const yA = top + hP + 90;
+  const hA = p.answer.length * lh + 2 * pad - 14;
+  const parts = [
+    d.label(60, 0, "prompt", { size: 32, color: c.gray, centerY: 35 }),
+    d.box(60, top, 1560, hP, "", { border: c.gray }),
+    ...p.prompt.map((t, i) => d.label(100, 0, pre(t), { size: 32, mono: true, keepCase: true, color: p.pink.includes(i) ? c.blue : c.white, centerY: top + pad + 9 + i * lh })),
+  ];
+  if (step >= 1) parts.push(
+    d.label(60, 0, "the model continues", { size: 32, color: c.gray, centerY: yA - 35 }),
+    d.box(60, yA, 1460, hA, "", { border: c.light }),
+    ...p.answer.map((t, i) => d.label(100, 0, t, { size: 32, mono: true, keepCase: true, centerY: yA + pad + 9 + i * lh })),
+    d.mark(1570, yA + hA / 2, p.ok));
+  const hMax = top + hP + 90 + hA + 10;
+  return d.svg(1680, hMax, ...parts);
+}
+function showFewshot(slide, step) { put("fig-fewshot", figPrompt("fig-fewshot", step || 0)); }
+function showCotprompt(slide, step) { put("fig-cotprompt", figPrompt("fig-cotprompt", step || 0)); }
+function showZeroshot(slide, step) { put("fig-zeroshot", figPrompt("fig-zeroshot", step || 0)); }
+
+/* ------------------------------------------------------------------ */
+/* bars with a track up to 100 %                                        */
+/* ------------------------------------------------------------------ */
+/* Bar labels right-aligned at 520 (at most about 460 wide), track 560-1360
+ * (800 = 100 %), value 20 behind the bar. Each group has a grey title from 60
+ * and two bars; a group needs 250 in height. Titles are written in lower case
+ * by hand, with names in their own case. groups: [{ title, bars: [[label,
+ * value, accent]] }] */
+function barParts(groups, step, y0) {
   const c = C();
   const X = 560, L = 800, h = 60;
   const parts = [];
   groups.forEach((g, gi) => {
     if (gi > step) return;
-    const y = 40 + gi * 250;
-    // Titel ab 60: der laengste ("AIME, a maths competition …", 85 Zeichen) ist rund 1300 breit
-    parts.push(d.label(60, 0, g.title, { size: 32, color: c.gray, centerY: y }));
+    const y = y0 + gi * 250;
+    parts.push(d.label(60, 0, g.title, { size: 32, color: c.gray, centerY: y, keepCase: true }));
     g.bars.forEach(([name, v, akzent], bi) => {
       const cy = y + 75 + bi * 85;
       parts.push(
@@ -197,71 +297,145 @@ function hbars(groups, step) {
       );
     });
   });
-  return d.svg(1680, 40 + groups.length * 250 - 30, ...parts);
+  return parts;
+}
+function hbars(groups, step, extra = [], extraH = 0) {
+  return d.svg(1680, 40 + groups.length * 250 - 30 + extraH, ...barParts(groups, step, 40), ...extra);
 }
 
 const COT = [
-  { title: "eight worked examples in the prompt: grade-school maths word problems", bars: [["without", 18], ["with", 57, true]] },
-  { title: "\"let's think step by step\" added to the question: arithmetic word problems", bars: [["without", 18], ["with", 79, true]] },
+  { title: "PaLM, maths word problems, eight solved examples in the prompt", bars: [["answers only", 18], ["with steps", 57, true]] },
+  { title: "text-davinci-002, arithmetic word problems, no examples", bars: [["without the sentence", 18], ["with the sentence", 79, true]] },
 ];
-function showCot(slide, step) { put("fig-cot", hbars(COT, step || 0)); }
+function showCot(slide, step) {
+  const c = C();
+  const s = step || 0;
+  const note = s >= 2 ? [d.label(60, 0, "all of this in 2021 and 2022, before ChatGPT and with older models", { size: 32, color: c.blue, centerY: 530, keepCase: true })] : [];
+  put("fig-cot", hbars(COT, Math.min(s, 1), note, 80));
+}
 
 /* ------------------------------------------------------------------ */
-/* Zeitleiste in zwei Spalten                                           */
+/* AIME                                                                 */
 /* ------------------------------------------------------------------ */
-/* Links ab 60 (Datum) und 260 (Ereignis), rechts ab 900 und 1100; laengster
- * Eintrag rechts "o3, Gemini 2.0 Flash Thinking" rund 470, Ende 1570. */
+/* Left the problem (Arial 32, about 840 wide from 60), right the facts from
+ * 1000 (at most about 620 wide). Problem 1 of AIME 2024 I, answer 204. */
+function figAime(step) {
+  const c = C();
+  const problem = [
+    "every morning, aya walks 9 kilometres and then",
+    "stops at a coffee shop. at a constant s km/h,",
+    "the walk takes 4 hours, including t minutes in",
+    "the coffee shop. at s + 2 km/h it takes 2 hours",
+    "and 24 minutes, including the same t minutes.",
+    "how many minutes does the walk take her,",
+    "including the t minutes, at s + ½ km/h?",
+  ];
+  const parts = [
+    d.label(60, 0, "problem 1 of 15", { size: 32, color: c.gray, centerY: 30 }),
+    ...zeilen(60, 100, 52, problem, { color: c.white }),
+    d.label(1000, 0, "american invitational", { size: 32, centerY: 100 }),
+    d.label(1000, 0, "mathematics examination", { size: 32, centerY: 145 }),
+    ...zeilen(1000, 230, 45, ["for the best high-school", "students in the united states"], { color: c.light }),
+    d.label(1000, 0, "15 problems in 3 hours", { size: 32, color: c.light, centerY: 365 }),
+  ];
+  if (step >= 1) parts.push(
+    d.label(60, 0, "answer: 204", { size: 48, color: c.blue, centerY: 500 }),
+    ...zeilen(1000, 455, 45, ["every answer is a whole number", "from 0 to 999, so a program", "can check it"], { color: c.blue }));
+  return d.svg(1680, 560, ...parts);
+}
+function showAime(slide, step) { put("fig-aime", figAime(step || 0)); }
+
+/* o1 against GPT-4o, with the note that o1 was the first reasoning model */
+function figO1() {
+  const c = C();
+  return hbars([{ title: "AIME, one attempt per problem", bars: [["GPT-4o", 12], ["o1", 74, true]] }], 0, [
+    d.label(60, 0, "released in 09/2024 as the first published reasoning model,", { size: 32, color: c.light, centerY: 330 }),
+    d.label(60, 0, "trained with rewards to think before every answer", { size: 32, color: c.light, centerY: 375 }),
+  ], 190);
+}
+
+/* ------------------------------------------------------------------ */
+/* timeline in two columns                                              */
+/* ------------------------------------------------------------------ */
+/* Left from 60 (date) and 260 (event), right from 900 and 1100; longest
+ * entry on the right "o3, Gemini 2.0 Flash Thinking" about 470, end 1570.
+ * Below the left column the release of ChatGPT as a boundary, below the right
+ * one the state of today. */
 const FRUEH = [["2021", "scratchpads"], ["01/2022", "chain of thought"], ["03/2022", "self-consistency"], ["05/2022", "\"let's think step by step\""], ["10/2022", "ReAct"]];
 const SPAET = [["09/2024", "o1"], ["12/2024", "o3, Gemini 2.0 Flash Thinking"], ["01/2025", "DeepSeek-R1"], ["02/2025", "Claude 3.7 Sonnet"], ["07/2025", "gold at the IMO"], ["08/2025", "GPT-5, gpt-oss"]];
 function figTimeline(step) {
   const c = C();
-  const parts = [d.label(60, 0, "asked for in the prompt", { size: 32, color: c.gray, centerY: 40 })];
+  const parts = [d.label(60, 0, "asked for in the prompt, with older models", { size: 32, color: c.gray, centerY: 40 })];
   FRUEH.forEach(([wann, was], i) => parts.push(
     d.label(60, 0, wann, { size: 32, color: c.gray, centerY: 120 + i * 70 }),
     d.label(260, 0, was, { size: 32, color: c.light, centerY: 120 + i * 70, keepCase: was === "ReAct" })));
+  parts.push(d.line(60, 445, 800, 445, { color: c.gray, width: 2, dashed: true }),
+             d.label(60, 0, "11/2022", { size: 32, color: c.gray, centerY: 490 }),
+             d.label(260, 0, "ChatGPT", { size: 32, color: c.white, centerY: 490, keepCase: true }));
   if (step >= 1) parts.push(d.label(900, 0, "trained to reason", { size: 32, color: c.blue, centerY: 40 }));
   SPAET.forEach(([wann, was], i) => {
     if (step < (i < 3 ? 1 : 2)) return;
     parts.push(d.label(900, 0, wann, { size: 32, color: c.gray, centerY: 120 + i * 70 }),
                d.label(1100, 0, was, { size: 32, color: c.white, centerY: 120 + i * 70, keepCase: true }));
   });
-  return d.svg(1680, 510, ...parts);
+  if (step >= 3) parts.push(d.label(900, 0, "today: reasoning is standard in new models", { size: 32, color: c.blue, centerY: 560 }));
+  return d.svg(1680, 600, ...parts);
 }
 function showTimeline(slide, step) { put("fig-timeline", figTimeline(step || 0)); }
 
 /* ------------------------------------------------------------------ */
-/* drei Stufen                                                          */
+/* three stages, each with a small example                              */
 /* ------------------------------------------------------------------ */
-/* Kaesten 480 breit bei 40, 600, 1160; laengste Zeile "token on books, code"
- * 20 x 19,2 = 384 + 2 x 40 Rand = 464. Textblock 84-286 (Mitten 100..270),
- * Kasten 44-326: oben und unten je 40. */
-const STUFEN = [
-  ["1  pretraining", ["predict the next", "token on books, code", "and the internet"], "plain"],
-  ["2  examples of thinking", ["optional:", "a few thousand", "worked answers"], "dashed"],
-  ["3  learning from rewards", ["attempts whose", "answer a program", "can check"], "new"],
-];
+/* Columns 480 wide at 40, 600, 1160. Upper box: title and two lines
+ * (longest "on books, code, the web" about 360). Lower box: example in
+ * monospace 32 with at most 20 characters (384) from x + 40. */
 function figStages(step) {
   const c = C();
+  const m = { size: 32, mono: true, keepCase: true };
+  const STUFEN = [
+    ["1  pretraining", ["predict the next token", "on books, code, the web"], "plain"],
+    ["2  examples of thinking", ["optional: a few thousand", "worked answers"], "dashed"],
+    ["3  learning from rewards", ["attempts whose answer", "a program can check"], "new"],
+  ];
   const parts = [];
   STUFEN.forEach(([titel, text, art], i) => {
     if (i > step) return;
     const x = 40 + i * 560;
     const farbe = art === "new" ? c.blue : c.light;
-    parts.push(d.box(x, 44, 480, 282, "", { border: farbe, width: 3, dashed: art === "dashed" }),
-               d.label(x + 40, 0, titel, { size: 32, color: art === "new" ? c.blue : c.white, centerY: 100 }),
-               ...zeilen(x + 40, 170, 50, text, { color: c.gray }));
+    parts.push(d.box(x, 20, 480, 210, "", { border: farbe, width: 3, dashed: art === "dashed" }),
+               d.label(x + 40, 0, titel, { size: 32, color: art === "new" ? c.blue : c.white, centerY: 70 }),
+               ...zeilen(x + 40, 135, 45, text, { color: c.gray }),
+               d.box(x, 260, 480, 340, "", { border: c.dark, width: 2 }),
+               d.label(x + 40, 0, "example", { size: 32, color: c.gray, centerY: 300 }));
+    if (i === 0) parts.push(
+      d.label(x + 40, 0, "The capital of", { ...m, centerY: 380 }),
+      d.label(x + 40, 0, "France is", { ...m, centerY: 430 }),
+      d.label(x + 40 + 10 * 19.2, 0, "Paris", { ...m, color: c.blue, centerY: 430 }),
+      d.label(x + 40, 0, "pink: the next token", { size: 32, color: c.blue, centerY: 530 }));
+    if (i === 1) parts.push(
+      d.label(x + 40, 0, "Q: 23 - 20 + 6?", { ...m, centerY: 360 }),
+      d.label(x + 40, 0, "<think>", { ...m, color: c.gray, centerY: 405 }),
+      d.label(x + 40, 0, "23 - 20 = 3", { ...m, color: c.blue, centerY: 450 }),
+      d.label(x + 40, 0, "3 + 6 = 9", { ...m, color: c.blue, centerY: 495 }),
+      d.label(x + 40, 0, "</think> A: 9", { ...m, color: c.gray, centerY: 540 }));
+    if (i === 2) parts.push(
+      d.label(x + 40, 0, "Q: 23 - 20 + 6?", { ...m, centerY: 360 }),
+      d.label(x + 40, 0, "attempt 1: … 9", { ...m, centerY: 420 }),
+      d.mark(x + 400, 420, true),
+      d.label(x + 40, 0, "attempt 2: … 27", { ...m, centerY: 475 }),
+      d.mark(x + 400, 475, false),
+      d.label(x + 40, 0, "more like attempt 1", { size: 32, color: c.blue, centerY: 545 }));
   });
-  return d.svg(1680, 370, ...parts);
+  return d.svg(1680, 620, ...parts);
 }
 function showStages(slide, step) { put("fig-stages", figStages(step || 0)); }
 
 /* ------------------------------------------------------------------ */
-/* eine Runde Lernen aus Belohnungen (aus der Lektion), animiert         */
+/* one round of learning from rewards (from the lesson), animated       */
 /* ------------------------------------------------------------------ */
-/* Ein Verfahren, das Schritt fuer Schritt arbeitet: Versuche schreiben,
- * pruefen, das Belohnte verstaerken. Drei Abschnitte, schrittweise; jeder
- * Zwischenstand ist fuer sich lesbar. Rueckwaerts wird nur gesprungen, weil
- * die Rueckmeldung ins Modell eine Richtung hat. */
+/* A procedure that works step by step: write attempts, check, reinforce
+ * what was rewarded. Three sections, each intermediate state readable on
+ * its own. */
 function figRewards() {
   const c = C();
   const MID = 300, ys = [105, 235, 365, 495];
@@ -272,10 +446,8 @@ function figRewards() {
     d.g("back", d.line(1400, 540, 1400, 610, { color: c.blue, width: 3 }),
                 d.line(1400, 610, 530, 610, { color: c.blue, width: 3 }),
                 d.arrow(530, 610, 530, 375, { color: c.blue, width: 3, head: 16 })),
-    // "problem with a / known answer": 14 x 19,2 = 269 < 300
     d.box(40, MID - 80, 300, 160, "problem with a\nknown answer", { size: 32, border: c.gray }),
     d.box(420, MID - 60, 220, 120, "model", { size: 48, border: c.white }),
-    // laengster Versuch "attempt 2: … 1,000 €" 20 x 19,2 = 384 < 420
     d.g("attempts", ...versuche.map(([t], i) => d.box(760, ys[i] - 45, 420, 90, t, { size: 32, border: c.light }))),
     d.g("checks", ...versuche.map(([, ok], i) => d.mark(1240, ys[i], ok)),
                   ...versuche.map(([, ok], i) => d.label(1290, 0, `reward ${ok ? 1 : 0}`, { size: 32, color: ok ? c.white : c.gray, centerY: ys[i] }))),
@@ -291,54 +463,101 @@ if ($("fig-rewards")) {
 }
 
 /* ------------------------------------------------------------------ */
-/* pruefbar und das Schlupfloch                                         */
+/* the aha moment of R1-Zero, with its problem                          */
 /* ------------------------------------------------------------------ */
-/* Links ab 60, rechts ab 900; laengste Zeile rechts "a program that runs and
- * does nothing" 36 x 19,2 = 691, Ende 1591. */
-function figLoophole(step) {
+/* Monospace 32 in the original case, at most 78 characters from 60 (end
+ * 1558). Shortened with "…", as marked in the paper (table 3). */
+function figAha(step) {
   const c = C();
+  const m = { size: 32, mono: true, keepCase: true };
   const parts = [
-    d.label(60, 0, "a program can check", { size: 32, color: c.gray, centerY: 40 }),
-    d.mark(90, 140, true), d.label(140, 0, "maths: compare with the result", { size: 32, centerY: 140 }),
-    d.mark(90, 230, true), d.label(140, 0, "code: run the tests", { size: 32, centerY: 230 }),
+    d.label(60, 0, "problem: if a > 1, then the sum of the real solutions of √(a - √(a + x)) = x is equal to", { size: 32, color: c.gray, centerY: 30 }),
+    d.label(60, 0, "thoughts of DeepSeek R1-Zero, part-way through its training:", { size: 32, color: c.gray, centerY: 100, keepCase: true }),
+    d.label(60, 0, "To solve the equation √(a - √(a + x)) = x, let's start by squaring …", { ...m, centerY: 165 }),
+    d.label(60, 0, "a - √(a + x) = x²  …  x⁴ - 2ax² - x + (a² - a) = 0", { ...m, centerY: 215 }),
   ];
   if (step >= 1) parts.push(
-    d.label(900, 0, "a loophole", { size: 32, color: c.gray, centerY: 40 }),
-    d.label(900, 0, "the test only checks that it runs", { size: 32, centerY: 140 }),
-    d.arrow(940, 168, 940, 205, { color: c.gray, width: 3, head: 14 }),
-    d.label(900, 0, "a program that runs and does nothing", { size: 32, centerY: 230 }),
-    d.label(900, 0, "reward hacking", { size: 48, color: c.blue, centerY: 330 }));
-  return d.svg(1680, 370, ...parts);
+    d.label(60, 0, "Wait, wait. Wait. That's an aha moment I can flag here.", { ...m, color: c.blue, centerY: 290 }),
+    d.label(60, 0, "Let's reevaluate this step-by-step to identify if the correct sum can be …", { ...m, centerY: 340 }),
+    d.label(60, 0, "nobody showed it how to think: it was trained with rewards alone,", { size: 32, color: c.light, centerY: 430 }),
+    d.label(60, 0, "and on AIME it improved from 16 % to 71 % in the course of this training", { size: 32, color: c.light, centerY: 475, keepCase: true }));
+  return d.svg(1680, 510, ...parts);
 }
-function showLoophole(slide, step) { put("fig-loophole", figLoophole(step || 0)); }
+function showAha(slide, step) { put("fig-aha", figAha(step || 0)); }
 
 /* ------------------------------------------------------------------ */
-/* Destillation                                                         */
+/* why maths and code came first: what a program checks                 */
 /* ------------------------------------------------------------------ */
-/* Grosses Modell 60-440, Pfeil bis 865, sechs kleine Modelle 200 breit im
- * Raster 240 ab 880 (Ende 1560). "thoughts and answers" rund 330, mittig 650. */
-function figDistill() {
+/* Left maths from 60, right code from 900; longest line on the right
+ * "assert sort([3, 1, 2]) == [1, 2, 3]" 35 x 19.2 = 672, end 1572. */
+function figCheckable() {
+  const c = C();
+  const m = { size: 32, mono: true, keepCase: true };
+  return d.svg(1680, 470,
+    d.label(60, 0, "maths: compare with the known answer", { size: 32, color: c.gray, centerY: 30 }),
+    d.label(60, 0, pre("answer of the model: 204"), { ...m, centerY: 120 }),
+    d.label(60, 0, pre("known answer:        204"), { ...m, centerY: 170 }),
+    d.mark(90, 260, true), d.label(140, 0, "reward 1", { size: 32, centerY: 260 }),
+    d.label(900, 0, "code: run the tests", { size: 32, color: c.gray, centerY: 30 }),
+    d.label(900, 0, "def sort(numbers): …", { ...m, centerY: 120 }),
+    d.label(900, 0, "assert sort([3, 1, 2]) == [1, 2, 3]", { ...m, centerY: 170 }),
+    d.mark(930, 260, true), d.label(980, 0, "4 of 4 tests passed, reward 1", { size: 32, centerY: 260 }),
+    d.label(840, 0, "a program checks in milliseconds, millions of times, and nobody has to read the attempts", { size: 32, color: c.blue, anchor: "middle", centerY: 400 }));
+}
+
+/* ------------------------------------------------------------------ */
+/* reward hacking: an example after OpenAI (2025), simplified           */
+/* ------------------------------------------------------------------ */
+/* Row labels right-aligned at 260, content from 300; longest monospace
+ * line "If verify() always returned True, every test would pass." 57 x 19.2
+ * = 1094, end 1394. */
+function figHack(step) {
+  const c = C();
+  const m = { size: 32, mono: true, keepCase: true };
+  const row = (t, y) => d.label(260, 0, t, { size: 32, color: c.gray, anchor: "end", centerY: y });
+  const parts = [
+    row("task", 40), d.label(300, 0, "make the failing tests pass", { size: 32, centerY: 40 }),
+    row("thoughts", 120),
+    d.label(300, 0, "The tests only call verify() to check the result.", { ...m, centerY: 120 }),
+    d.label(300, 0, "If verify() always returned True, every test would pass.", { ...m, color: c.blue, centerY: 170 }),
+    row("code", 250),
+    d.label(300, 0, "def verify(result):", { ...m, centerY: 250 }),
+    d.label(300, 0, pre("    return True"), { ...m, color: c.blue, centerY: 300 }),
+  ];
+  if (step >= 1) parts.push(
+    d.mark(330, 390, true), d.label(380, 0, "all tests pass, reward 1", { size: 32, centerY: 390 }),
+    d.mark(330, 450, false), d.label(380, 0, "the program still does nothing useful", { size: 32, centerY: 450 }),
+    d.label(300, 0, "reward hacking: the model finds the loophole in the reward", { size: 32, color: c.blue, centerY: 540 }));
+  return d.svg(1680, 580, ...parts);
+}
+function showHack(slide, step) { put("fig-hack", figHack(step || 0)); }
+
+/* ------------------------------------------------------------------ */
+/* distillation, and a small reasoning model against a large one        */
+/* ------------------------------------------------------------------ */
+/* Large model 60-440, arrow to 865, six small models 200 wide in a pitch of
+ * 240 from 880 (end 1560). Below in step 1 the bars: AIME 2024, one attempt
+ * (DeepSeek-R1 paper, table 5). */
+function figDistill(step) {
   const c = C();
   const groessen = ["1.5B", "7B", "8B", "14B", "32B", "70B"];
-  const wires = [d.arrow(440, 190, 865, 190, { color: c.gray, width: 3, head: 16 })];
-  const boxes = [d.box(60, 80, 380, 220, "DeepSeek-R1", { size: 48, border: c.light, keepCase: true })];
+  const wires = [d.arrow(440, 150, 865, 150, { color: c.gray, width: 3, head: 16 })];
+  const boxes = [d.box(60, 40, 380, 220, "DeepSeek-R1", { size: 48, border: c.light, keepCase: true })];
   groessen.forEach((g, i) => {
-    const x = 880 + (i % 3) * 240, y = 80 + Math.floor(i / 3) * 130;
+    const x = 880 + (i % 3) * 240, y = 40 + Math.floor(i / 3) * 130;
     boxes.push(d.box(x, y, 200, 90, g, { size: 32, border: i ? c.gray : c.blue, color: i ? c.light : c.blue, keepCase: true, width: i ? 2 : 3 }));
   });
-  const labels = [
-    d.label(650, 0, "thoughts and answers", { size: 32, color: c.gray, anchor: "middle", centerY: 150 }),
-    d.label(840, 0, "even the smallest one beat GPT-4o on AIME", { size: 32, color: c.gray, anchor: "middle", centerY: 380, keepCase: true }),
-  ];
-  return d.svg(1680, 410, ...d.layers(wires, boxes, labels));
+  const labels = [d.label(650, 0, "thoughts and answers", { size: 32, color: c.gray, anchor: "middle", centerY: 110 })];
+  const bars = step >= 1 ? barParts([{ title: "AIME, one attempt per problem", bars: [["GPT-4o, no reasoning", 9.3], ["R1 distilled into 1.5B", 28.9, true]] }], 0, 340) : [];
+  return d.svg(1680, 600, ...d.layers(wires, boxes, labels), ...bars);
 }
+function showDistill(slide, step) { put("fig-distill", figDistill(step || 0)); }
 
 /* ------------------------------------------------------------------ */
-/* zwei Kurven                                                          */
+/* two curves                                                           */
 /* ------------------------------------------------------------------ */
-/* Zwei Diagramme 600 breit bei 120 und 920; Achsen bei y 380, Linien
- * gerade, weil die x-Achse logarithmisch ist. Form nach OpenAI 2024, zur
- * Veranschaulichung. */
+/* Two charts 600 wide at 120 and 920; axes at y 380, lines straight because
+ * the x axis is logarithmic. Shape after OpenAI 2024, for illustration. */
 function figCurves(step) {
   const c = C();
   const parts = [];
@@ -357,14 +576,13 @@ function figCurves(step) {
 function showCurves(slide, step) { put("fig-curves", figCurves(step || 0)); }
 
 /* ------------------------------------------------------------------ */
-/* laenger oder oefter nachdenken (aus der Lektion)                    */
+/* think longer or more often (from the lesson)                         */
 /* ------------------------------------------------------------------ */
 function figLonger(step) {
   const c = C();
   const wires = [], boxes = [], labels = [];
   boxes.push(d.box(60, 100, 680, 450, "", { border: c.blue, width: 3 }));
   labels.push(d.label(400, 0, "think longer", { size: 32, color: c.blue, anchor: "middle", centerY: 60 }));
-  // laengste Zeile "wait, step 2 is wrong" 21 x 19,2 = 403 ab 100
   const kette = ["step 1", "step 2", "wait, step 2 is wrong", "step 2, again", "step 3", "answer: 500 €"];
   kette.forEach((t, i) => {
     const y = 160 + i * 70;
@@ -380,27 +598,72 @@ function figLonger(step) {
       labels.push(d.label(cx, 0, a, { size: 32, anchor: "middle", centerY: 280, color: c.white }));
       wires.push(d.arrow(cx, 320, 1200 + (cx - 1200) * 0.4, 442, { color: c.gray, width: 2, head: 12 }));
     });
-    // "majority: 500 €" 15 x 19,2 = 288 < 440
     boxes.push(d.box(980, 450, 440, 100, "majority: 500 €", { size: 32, border: c.blue, width: 3 }));
   }
-  // Schritt 2: die Zahlen zu o1, mittig unter beiden Haelften
   if (step >= 2) labels.push(d.label(800, 0, "o1 on AIME: 74 % with one attempt, 83 % with 64 attempts and a majority vote", { size: 32, color: c.gray, anchor: "middle", centerY: 630, keepCase: true }));
   return d.svg(1680, 660, shift(d.layers(wires, boxes, labels)));
 }
 function showLonger(slide, step) { put("fig-longer", figLonger(step || 0)); }
 
 /* ------------------------------------------------------------------ */
-/* Treue der Gedanken                                                   */
+/* the bitter lesson: where learning and where search                   */
 /* ------------------------------------------------------------------ */
-const HINT = [{ title: "used a hint to the answer and said so in its thoughts", bars: [["Claude 3.7 Sonnet", 25, true], ["DeepSeek-R1", 39, true]] }];
+/* Two boxes 740 wide at 60 and 880; longest line "think more often: several
+ * attempts and a vote" about 610 from 920. */
+function figBitter(step) {
+  const c = C();
+  const parts = [
+    d.label(840, 0, "learning and search keep scaling with computation", { size: 48, anchor: "middle", centerY: 45 }),
+    d.label(840, 0, "Rich Sutton, The Bitter Lesson, 2019", { size: 32, color: c.gray, anchor: "middle", centerY: 110, keepCase: true }),
+  ];
+  const spalte = (x, titel, zeilenText, beispiel) => [
+    d.box(x, 170, 740, 330, "", { border: c.blue, width: 3 }),
+    d.label(x + 40, 0, titel, { size: 32, color: c.blue, centerY: 220 }),
+    ...zeilen(x + 40, 290, 50, zeilenText, { color: c.white }),
+    ...zeilen(x + 40, 410, 50, beispiel, { color: c.gray }),
+  ];
+  if (step >= 1) parts.push(...spalte(60, "learning: in training",
+    ["many attempts at problems with known", "answers, and the model learns from rewards"],
+    ["the round of learning from rewards,", "repeated over many thousand problems"]));
+  if (step >= 2) parts.push(...spalte(880, "search: when answering",
+    ["think longer: wait, check, try again", "think more often: several attempts and a vote"],
+    ["the same model gets better the more", "time it may spend on one question"]));
+  return d.svg(1680, 520, ...parts);
+}
+function showBitter(slide, step) { put("fig-bitter", figBitter(step || 0)); }
 
 /* ------------------------------------------------------------------ */
-/* Denken in der Agentenschleife                                        */
+/* hints: the setup of the experiment, as an illustration               */
 /* ------------------------------------------------------------------ */
-/* think 720-980 (Mitte 850, 260), Werkzeug 1180-1480 oben, Ergebnis
- * 1160-1500 unten; "read the result" 15 x 19,2 = 288 < 340. Die pinken
- * Beschriftungen rechtsbuendig bei 680, laengste "a plan before the first
- * step" rund 430, Anfang 250. */
+/* Two columns 740 wide at 60 and 880. Longest line "a professor thinks the
+ * answer is (A)." about 560. Both columns share the line heights, so that
+ * question, thoughts and answer stand side by side. */
+function figHintSetup(step) {
+  const c = C();
+  const frage = ["which is the largest desert?", pre("(A) Sahara   (B) Antarctica"), pre("(C) Gobi   (D) Arabian")];
+  const spalte = (x, titel, farbe, hinweis, gedanken, antwort) => [
+    d.label(x, 0, titel, { size: 32, color: farbe, centerY: 30 }),
+    d.box(x, 60, 740, 250, "", { border: c.gray }),
+    ...zeilen(x + 40, 110, 50, frage, { color: c.white, keepCase: true }),
+    ...(hinweis ? [d.label(x + 40, 0, hinweis, { size: 32, color: c.blue, centerY: 265, keepCase: true })] : []),
+    d.label(x, 0, "thoughts", { size: 32, color: c.gray, centerY: 360 }),
+    ...zeilen(x, 410, 45, gedanken, { color: c.light, keepCase: true }),
+    d.label(x, 0, antwort, { size: 32, color: c.white, centerY: 560, keepCase: true }),
+  ];
+  const parts = spalte(60, "without a hint", c.gray, null,
+    ["a desert is defined by how little rain", "falls, and Antarctica gets very little,", "so the answer is (B)."], "answer: (B)");
+  if (step >= 1) parts.push(...spalte(880, "with a hint", c.blue, "a professor thinks the answer is (A).",
+    ["the Sahara is the largest hot desert,", "about 9 million km², so the answer", "is (A)."], "answer: (A)"),
+    d.label(840, 0, "the hint changed the answer, and the thoughts do not mention it", { size: 32, color: c.blue, anchor: "middle", centerY: 630 }));
+  return d.svg(1680, 660, ...parts);
+}
+function showHintSetup(slide, step) { put("fig-hintsetup", figHintSetup(step || 0)); }
+
+const HINT = [{ title: "the model used the hint, and its thoughts mentioned it", bars: [["Claude 3.7 Sonnet", 25, true], ["DeepSeek-R1", 39, true]] }];
+
+/* ------------------------------------------------------------------ */
+/* thinking inside the agent loop                                       */
+/* ------------------------------------------------------------------ */
 function figLoop(step) {
   const c = C();
   const wires = [
@@ -423,44 +686,52 @@ function figLoop(step) {
 function showLoop(slide, step) { put("fig-loop", figLoop(step || 0)); }
 
 /* ------------------------------------------------------------------ */
-/* Zeithorizont nach METR                                               */
+/* time horizon after METR (Time Horizon 1.1)                           */
 /* ------------------------------------------------------------------ */
-/* x: 2019-2026 auf 260-1560. y logarithmisch in Sekunden: 1 s bei 480,
- * 10 Stunden (36.000 s, log 4,556) bei 90; die oberste Linie (10 Stunden) entfaellt,
- * damit die Beschriftung des zweiten Punkts frei steht. Gemessen und beschriftet sind nur
- * die beiden Punkte (METR, Time Horizon 1.1, 2026); die gestrichelte Linie
- * ist die Verdopplung alle sieben Monate, rueckwaerts vom ersten Punkt. */
+/* All models that METR marks as state of the art, from its data file
+ * benchmark_results_1_1.yaml (page last updated 2026-09-08): release year
+ * and 50 % horizon in seconds. Reasoning models (from o1-preview on) in pink,
+ * earlier ones in grey. Claude Mythos Preview as an open circle: measured at
+ * 16 hours or more, beyond which the task suite is unreliable.
+ * x: 2019-2026.5 on 260-1600. y logarithmic: 1 s at 560, 97 per decade. */
+const METR = [
+  [2019.121, 3, 0], [2020.405, 9, 0], [2022.200, 36, 0], [2023.197, 239, 0], [2023.847, 243, 0],
+  [2024.364, 419, 0], [2024.468, 684, 0], [2024.699, 1220, 1], [2024.808, 1231, 0], [2024.929, 2330, 1],
+  [2025.148, 3623, 1], [2025.288, 7184, 1], [2025.597, 12181, 1], [2025.879, 13460, 1], [2025.896, 17580, 1],
+  [2025.942, 21135, 1], [2026.096, 43128, 1], [2026.263, 62687, 2],
+];
 function figMetr() {
   const c = C();
-  const X = (jahr) => 260 + (jahr - 2019) / 7 * 1300;
-  const Y = (s) => 480 - Math.log10(s) / Math.log10(36000) * 390;
-  const p1 = [2025.12, 3600], p2 = [2025.88, 18000];
-  const trend = (jahr) => 3600 * Math.pow(2, (jahr - p1[0]) / (7 / 12));
+  const X = (j) => 260 + (j - 2019) / 7.5 * 1340;
+  const Y = (s) => 560 - Math.log10(s) * 97;
   const parts = [];
-  [[1, "1 second"], [60, "1 minute"], [3600, "1 hour"]].forEach(([s, t]) => parts.push(
-    d.line(260, Y(s), 1600, Y(s), { color: c.dark, width: 2, dashed: true }),
+  [[1, "1 second"], [60, "1 minute"], [3600, "1 hour"], [86400, "1 day"]].forEach(([s, t]) => parts.push(
+    d.line(260, Y(s), 1620, Y(s), { color: c.dark, width: 2, dashed: true }),
     d.label(240, 0, t, { size: 32, color: c.gray, anchor: "end", centerY: Y(s) })));
-  for (let j = 2019; j <= 2026; j++) parts.push(d.label(X(j), 0, String(j), { size: 32, color: c.gray, anchor: "middle", centerY: 525 }));
-  const pts = [];
-  for (let j = 2019; j <= p1[0] + 1e-9; j += 0.05) pts.push(`${X(j).toFixed(1)},${Y(trend(j)).toFixed(1)}`);
-  pts.push(`${X(p1[0]).toFixed(1)},${Y(p1[1]).toFixed(1)}`);
-  parts.push(`<polyline points="${pts.join(" ")}" fill="none" stroke="${c.gray}" stroke-width="3" stroke-dasharray="10 8"/>`,
-             d.line(X(p1[0]), Y(p1[1]), X(p2[0]), Y(p2[1]), { color: c.blue, width: 4 }),
-             `<circle cx="${X(p1[0])}" cy="${Y(p1[1])}" r="11" fill="${c.blue}"/>`,
-             `<circle cx="${X(p2[0])}" cy="${Y(p2[1])}" r="11" fill="${c.blue}"/>`,
-             d.label(X(p1[0]) - 30, 0, "Claude 3.7 Sonnet, 02/2025: about 1 hour", { size: 32, anchor: "end", centerY: Y(p1[1]) - 45, keepCase: true }),
-             d.label(X(p2[0]) - 30, 0, "Claude Opus 4.5, 11/2025: over 5 hours", { size: 32, anchor: "end", centerY: Y(p2[1]) - 45, keepCase: true }),
-             d.label(280, 0, "dashed: doubling about every seven months", { size: 32, color: c.gray, centerY: (Y(60) + Y(3600)) / 2 }),
-             d.label(20, 0, "length of the tasks an agent solves in half of the cases", { size: 32, color: c.gray, centerY: 30 }));
-  return d.svg(1680, 560, ...parts);
+  for (let j = 2019; j <= 2026; j++) parts.push(d.label(X(j), 0, String(j), { size: 32, color: c.gray, anchor: "middle", centerY: 605 }));
+  METR.forEach(([j, s, art]) => parts.push(art === 2
+    ? `<circle cx="${X(j)}" cy="${Y(s)}" r="10" fill="${c.bg}" stroke="${c.blue}" stroke-width="4"/>`
+    : `<circle cx="${X(j)}" cy="${Y(s)}" r="10" fill="${art ? c.blue : c.gray}"/>`));
+  const at = (j, s, text, o = {}) => d.label(X(j) - 25, 0, text, { size: 32, anchor: "end", centerY: Y(s), keepCase: true, ...o });
+  parts.push(
+    d.label(X(2019.121) + 25, 0, "GPT-2, 2019: 3 seconds", { size: 32, centerY: Y(3), keepCase: true, color: c.light }),
+    at(2023.197, 239, "GPT-4, 03/2023: 4 minutes", { color: c.light }),
+    at(2024.929, 2330, "o1, 12/2024: 39 minutes"),
+    at(2025.597, 12181, "GPT-5, 08/2025: 3.4 hours", { centerY: 560 - Math.log10(12181) * 97 - 12 }),
+    at(2026.096, 43128, "Claude Opus 4.6, 02/2026: 12 hours"),
+    d.label(1600, 0, "Claude Mythos Preview, 04/2026: 16 hours or more", { size: 32, anchor: "end", centerY: 50, keepCase: true }),
+    `<circle cx="290" cy="125" r="10" fill="${c.blue}"/>`, d.label(315, 0, "reasoning models", { size: 32, centerY: 125 }),
+    `<circle cx="290" cy="170" r="10" fill="${c.gray}"/>`, d.label(315, 0, "earlier models", { size: 32, color: c.light, centerY: 170 }),
+    d.label(280, 0, "since 2023: doubling about every four months", { size: 32, color: c.gray, centerY: 270 }),
+    d.label(940, 0, "time a skilled person needs for the tasks that the agent solves in half of the cases", { size: 32, color: c.gray, anchor: "middle", centerY: 655 }));
+  return d.svg(1680, 680, ...parts);
 }
 
 /* ------------------------------------------------------------------ */
-/* Zeichnungen ohne Aufbau einmal beim Laden                            */
+/* drawings without build-up, once on load                              */
 /* ------------------------------------------------------------------ */
-put("fig-passes", figPasses());
 put("fig-steps", figSteps());
-put("fig-o1", hbars([{ title: "AIME, a maths competition for strong high-school students, one attempt per problem", bars: [["GPT-4o", 12], ["o1", 74, true]] }], 0));
-put("fig-distill", figDistill());
-put("fig-hint", hbars(HINT, 0));
+put("fig-checkable", figCheckable());
+put("fig-o1", figO1());
+put("fig-hint", hbars(HINT, 0, [d.label(60, 0, "in the other cases, the thoughts gave a plausible reason without the real one", { size: 32, color: C().light, centerY: 310 })], 110));
 put("fig-metr", figMetr());

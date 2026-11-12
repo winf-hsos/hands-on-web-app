@@ -60,13 +60,13 @@
     <h2>answer at once, or think first</h2>
     <div class="figure" id="fig-answer"></div>
     <span data-step="1"></span>
-    <aside class="notes">Oben das Modell, das die Antwort ins allernächste Token setzen muss: Es nimmt die naheliegende Zahl. Unten dasselbe Modell, das vorher seine Schritte aufschreibt; beim Antworten liest es seine eigenen Notizen mit, denn sie stehen jetzt im Kontext. Das heißt Reasoning, und Modelle, die darauf trainiert sind, heißen Reasoning-Modelle.</aside>
+    <aside class="notes">Das Bild folgt dem EVA-Prinzip: Eingabe, Verarbeitung, Ausgabe. Oben das Modell, das die Antwort ins allernächste Token setzen muss: Es nimmt die naheliegende Zahl. Unten dasselbe Modell, dessen Ausgabe zuerst Gedanken sind; der Pfeil darunter zeigt, dass diese Gedanken wieder in das Modell zurückgehen, weil jedes neue Token aus allem Geschriebenen vorhergesagt wird. Beim Antworten liest es seine eigenen Notizen mit, denn sie stehen jetzt im Kontext. Das heißt Reasoning, und Modelle, die darauf trainiert sind, heißen Reasoning-Modelle.</aside>
   </section>
 
   <section class="slide">
     <h2>nothing new inside</h2>
     <div class="content">
-      <div class="statement">a reasoning model is the same transformer predicting the same tokens, and what changed is what it has learned to write before the answer.</div>
+      <div class="statement">a reasoning model is <span class="b">the same transformer</span> predicting the same tokens, and what changed is <span class="b">what it has learned to write before the answer</span>.</div>
     </div>
     <aside class="notes">Es gibt keinen verborgenen Ort, an dem das Modell still nachdenkt. Was in der App hinter „Thinking…“ oder „Thought for 12 seconds“ zugeklappt ist, ist Text wie jeder andere. In LM Studio zeigen Reasoning-Modelle ihn in einem aufklappbaren Kasten über der Antwort.</aside>
   </section>
@@ -74,14 +74,14 @@
   <section class="slide">
     <h2>more tokens, more computation</h2>
     <div class="figure" id="fig-passes"></div>
-    <aside class="notes">Jedes Token kostet einen Durchgang durch alle Schichten des Modells, und der kostet ungefähr gleich viel, ob die Frage „2 + 2“ heißt oder ein schweres Rätsel ist. Wer in einem Token antworten muss, hat für die Frage genau diesen einen Durchgang. Jedes Token der Gedanken ist ein weiterer Durchgang: 500 Tokens vor der Antwort sind 500-mal so viel Rechnung für dieselbe Frage.</aside>
+    <aside class="notes">Animation in zwei Schritten. Erster Schritt: Das Modell schreibt Token für Token, erst die Gedanken, dann die Antwort. Jedes Token kostet einen Durchgang durch alle Schichten des Modells, und der kostet ungefähr gleich viel, ob die Frage „2 + 2“ heißt oder ein schweres Rätsel ist. Wer in einem Token antworten muss, hat für die Frage genau diesen einen Durchgang; 500 Tokens Gedanken sind 500-mal so viel Rechnung. Zweiter Schritt: Die Gedanken klappen zusammen, wie in ChatGPT oder Claude hinter „Thought for 12 s“, manche Anbieter zeigen nur eine Zusammenfassung. Bei der Nutzerin oder dem Nutzer kommt nur die Antwort an; das Denken passiert verdeckt, aber es ist trotzdem geschriebener Text.</aside>
   </section>
 
   <section class="slide" data-on-show="showPaper" data-on-step="showPaper">
     <h2>the context is the paper</h2>
     <div class="figure" id="fig-paper"></div>
     <span data-step="1"></span>
-    <aside class="notes">Erst fragen, wer das im Kopf rechnet. Auf Papier ist es leicht, weil die Zwischenergebnisse liegen bleiben. Für ein Sprachmodell ist der Kontext das Papier: Was es aufgeschrieben hat, liest es bei jedem späteren Token wieder, statt es neu ausrechnen zu müssen.</aside>
+    <aside class="notes">Auf Papier ist Rechnen leichter, weil die Zwischenergebnisse liegen bleiben. Für ein Sprachmodell ist der Kontext das Papier: Links steht, was im Kontext ist, die Frage und die Gedanken bis hierher. Das nächste Token sagt das Modell aus allem zusammen vorher; hier liest es „2x = 1,000“ und schreibt 500, statt die ganze Aufgabe neu zu rechnen. Danach steht die 500 selbst im Kontext und wird für das nächste Token wieder gelesen.</aside>
   </section>
 
   <section class="slide">
@@ -100,26 +100,58 @@
   <!-- ==================== 2 · from a trick to a skill ==================== -->
   <section class="slide part" data-part="from a trick to a skill"></section>
 
+  <section class="slide" data-on-show="showFewshot" data-on-step="showFewshot">
+    <h2>few-shot: solved examples in the prompt</h2>
+    <div class="figure" id="fig-fewshot"></div>
+    <span data-step="1"></span>
+    <div class="footnote">example after wei et al.: <a href="https://arxiv.org/abs/2201.11903" target="_blank" rel="noopener">chain-of-thought prompting elicits reasoning in large language models</a>, 2022</div>
+    <aside class="notes">Few-Shot-Prompting heißt: Vor die eigentliche Frage kommen ein paar gelöste Beispiele, hier eines, im Paper acht. Das Modell setzt das Muster fort. Weil das Beispiel nur die Antwort zeigt, antwortet das Modell auch nur mit einer Zahl, und die ist falsch: 23 - 20 + 6 sind 9, nicht 27.</aside>
+  </section>
+
+  <section class="slide" data-on-show="showCotprompt" data-on-step="showCotprompt">
+    <h2>chain of thought: the examples show the steps</h2>
+    <div class="figure" id="fig-cotprompt"></div>
+    <span data-step="1"></span>
+    <div class="footnote">example after wei et al.: <a href="https://arxiv.org/abs/2201.11903" target="_blank" rel="noopener">chain-of-thought prompting elicits reasoning in large language models</a>, 2022</div>
+    <aside class="notes">Derselbe Prompt, nur zeigt das Beispiel jetzt den Rechenweg (pink). Das Modell ahmt das nach: Es schreibt die Schritte auf und kommt auf 9. Das nannte ein Team bei Google im Januar 2022 Chain-of-Thought-Prompting, eine Kette von Gedanken.</aside>
+  </section>
+
+  <section class="slide" data-on-show="showZeroshot" data-on-step="showZeroshot">
+    <h2>zero-shot: one sentence instead of examples</h2>
+    <div class="figure" id="fig-zeroshot"></div>
+    <span data-step="1"></span>
+    <div class="footnote">kojima et al.: <a href="https://arxiv.org/abs/2205.11916" target="_blank" rel="noopener">large language models are zero-shot reasoners</a>, 2022</div>
+    <aside class="notes">Vier Monate später zeigte ein Team aus Tokio und von Google, dass es ganz ohne Beispiele geht: Ein einziger Satz vor der Antwort, „Let's think step by step“, bringt das Modell dazu, seine Schritte aufzuschreiben. Zero-Shot heißt: null Beispiele.</aside>
+  </section>
+
   <section class="slide" data-on-show="showCot" data-on-step="showCot">
     <h2>asking for steps already helped</h2>
     <div class="figure" id="fig-cot"></div>
-    <span data-step="1"></span>
+    <span data-step="1"></span><span data-step="2"></span>
     <div class="footnote">wei et al.: <a href="https://arxiv.org/abs/2201.11903" target="_blank" rel="noopener">chain-of-thought prompting elicits reasoning</a>, 2022 · kojima et al.: <a href="https://arxiv.org/abs/2205.11916" target="_blank" rel="noopener">large language models are zero-shot reasoners</a>, 2022</div>
-    <aside class="notes">2021 zeigten Forschende von MIT und Google, dass Modelle mit einem Notizblatt für Zwischenergebnisse besser rechnen. Anfang 2022 stellte ein Team bei Google acht vorgerechnete Beispiele vor die Frage und nannte das Chain-of-Thought: PaLM mit 540 Milliarden Parametern löste damit 57 statt 18 Prozent der Textaufgaben aus dem Grundschulrechnen (GSM8K). Vier Monate später reichte ein einziger Satz: Mit „Let's think step by step“ löste ein Modell von OpenAI 79 statt 18 Prozent einer Sammlung von Textaufgaben. Das Modell dachte aber nur, wenn man es darum bat, und so, wie die Beispiele es vormachten.</aside>
+    <aside class="notes">Die Zahlen zu den beiden Prompts. Oben: PaLM von Google mit 540 Milliarden Parametern und acht gelösten Beispielen im Prompt löste 57 statt 18 Prozent der Textaufgaben aus dem Grundschulrechnen (GSM8K), je nachdem, ob die Beispiele nur die Antwort oder auch die Schritte zeigten. Unten: text-davinci-002 von OpenAI, ganz ohne Beispiele, löste mit dem Satz „Let's think step by step“ 79 statt 18 Prozent einer Sammlung von Rechenaufgaben (MultiArith). Schon 2021 hatten Forschende von MIT und Google gezeigt, dass ein Notizblatt für Zwischenergebnisse hilft. Das alles geschah vor ChatGPT, das im November 2022 erschien, mit Modellen, die heute alt sind. Sie dachten aber nur, wenn man sie darum bat, und so, wie die Beispiele es vormachten.</aside>
+  </section>
+
+  <section class="slide" data-on-show="showAime" data-on-step="showAime">
+    <h2><span class="keep-case">AIME</span>, a maths competition</h2>
+    <div class="figure" id="fig-aime"></div>
+    <span data-step="1"></span>
+    <div class="footnote">problem 1 of <a href="https://artofproblemsolving.com/wiki/index.php/2024_AIME_I_Problems/Problem_1" target="_blank" rel="noopener">aime 2024 i</a>, shortened</div>
+    <aside class="notes">Fast jede Zahl zu Reasoning-Modellen stammt von AIME, der American Invitational Mathematics Examination. Wer bei einem Vorwettbewerb zu den Besten gehört, bekommt 15 Aufgaben in drei Stunden. Die Antwort ist immer eine ganze Zahl von 0 bis 999; deshalb kann ein Programm sie prüfen, und deshalb eignet sich AIME so gut zum Messen und zum Lernen aus Belohnungen. Hier die erste und leichteste Aufgabe von 2024. Lösungsweg, falls jemand fragt: 9/s + t/60 = 4 und 9/(s + 2) + t/60 = 2,4 ergeben s = 2,5 und t = 24; bei 3 km/h dauert der Weg 3 Stunden, mit Café 204 Minuten. Die späteren Aufgaben sind deutlich schwerer.</aside>
   </section>
 
   <section class="slide">
-    <h2>trained to think before every answer</h2>
+    <h2>o1, the first reasoning model</h2>
     <div class="figure" id="fig-o1"></div>
     <div class="footnote">openai: <a href="https://openai.com/index/learning-to-reason-with-llms/" target="_blank" rel="noopener">learning to reason with llms</a>, 2024</div>
-    <aside class="notes">Im September 2024 veröffentlichte OpenAI o1, das erste Modell, das mit Reinforcement Learning in großem Maßstab darauf trainiert war, vor jeder Antwort zu denken. Bei AIME, einem Mathematikwettbewerb für starke Schülerinnen und Schüler in den USA, löste GPT-4o 12 Prozent der Aufgaben, o1 mit einem Versuch 74 Prozent. Wie genau, verriet OpenAI nicht, und es zeigt nur eine Zusammenfassung der Gedanken. Im Januar 2025 legte DeepSeek mit R1 offene Gewichte und das Rezept vor.</aside>
+    <aside class="notes">Im September 2024 veröffentlichte OpenAI o1, das erste veröffentlichte Reasoning-Modell: mit Reinforcement Learning in großem Maßstab darauf trainiert, vor jeder Antwort zu denken, ohne dass der Prompt danach fragen muss. Bei AIME löste GPT-4o 12 Prozent der Aufgaben, o1 mit einem Versuch 74 Prozent. Wie genau, verriet OpenAI nicht, und es zeigt nur eine Zusammenfassung der Gedanken. Im Januar 2025 legte DeepSeek mit R1 offene Gewichte und das Rezept vor.</aside>
   </section>
 
   <section class="slide" data-on-show="showTimeline" data-on-step="showTimeline">
     <h2>milestones</h2>
     <div class="figure" id="fig-timeline"></div>
-    <span data-step="1"></span><span data-step="2"></span>
-    <aside class="notes">Links die Zeit des Tricks: Das Modell denkt, wenn der Prompt es verlangt. ReAct verband 2022 Gedanken mit Handlungen wie einer Suche; das ist die Schleife der Agenten. Rechts die trainierten Modelle: Die Lücke zwischen 2022 und 2024 ist der Unterschied zwischen einem Trick und einer Fähigkeit. Nach R1 bot binnen Wochen jedes große Labor ein denkendes Modell an; Claude 3.7 Sonnet war ein Modell mit und ohne erweitertes Denken, im Juli 2025 erreichten Modelle von OpenAI und Google DeepMind Goldniveau bei der Internationalen Mathematik-Olympiade, und GPT-5 entscheidet selbst, ob es denkt.</aside>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span>
+    <aside class="notes">Links die Zeit des Tricks: Das Modell denkt, wenn der Prompt es verlangt. Fast alles davon wurde vor ChatGPT entdeckt, mit älteren Modellen wie GPT-3 und PaLM. ReAct verband 2022 Gedanken mit Handlungen wie einer Suche; das ist die Schleife der Agenten. Rechts die trainierten Modelle: Die Lücke zwischen 2022 und 2024 ist der Unterschied zwischen einem Trick und einer Fähigkeit. Heute ist Reasoning Standard: Die großen neuen Modelle von OpenAI, Anthropic, Google und DeepSeek sind alle darauf trainiert, meist mit einer Einstellung, wie viel sie denken. Nach R1 bot binnen Wochen jedes große Labor ein denkendes Modell an; Claude 3.7 Sonnet war ein Modell mit und ohne erweitertes Denken, im Juli 2025 erreichten Modelle von OpenAI und Google DeepMind Goldniveau bei der Internationalen Mathematik-Olympiade, und GPT-5 entscheidet selbst, ob es denkt.</aside>
   </section>
 
   <!-- ==================== 3 · learning from rewards ==================== -->
@@ -129,7 +161,7 @@
     <h2>three stages, and only the last is new</h2>
     <div class="figure" id="fig-stages"></div>
     <span data-step="1"></span><span data-step="2"></span>
-    <aside class="notes">Ein Reasoning-Modell beginnt als gewöhnliches Sprachmodell. Beim Vortraining sieht es viele vorgerechnete Lösungen aus Lehrbüchern, Foren und Skripten; es weiß also schon, wie Denken auf Papier aussieht. Die zweite Stufe ist optional: ein paar tausend Texte mit sorgfältigen Gedanken und richtiger Antwort, damit es sich das Denken vor der Antwort angewöhnt. Neu ist die dritte.</aside>
+    <aside class="notes">Ein Reasoning-Modell beginnt als gewöhnliches Sprachmodell. Beim Vortraining sieht es viele vorgerechnete Lösungen aus Lehrbüchern, Foren und Skripten; es weiß also schon, wie Denken auf Papier aussieht. Die zweite Stufe ist optional: ein paar tausend Texte mit sorgfältigen Gedanken und richtiger Antwort, damit es sich das Denken vor der Antwort angewöhnt. Neu ist die dritte. Zu jeder Stufe ein Beispiel: Im Vortraining lernt das Modell, dass nach „The capital of France is“ „Paris“ kommt. In der zweiten Stufe sieht es Antworten, in denen zwischen &lt;think&gt; und &lt;/think&gt; der Rechenweg steht. In der dritten schreibt es selbst Versuche, und ein Programm vergibt eine Belohnung für die richtige 9 und keine für die 27.</aside>
   </section>
 
   <section class="slide">
@@ -149,28 +181,34 @@
     <aside class="notes">Auflösen: nur die Antwort. Niemand schreibt dem Modell vor, wie es denken soll; es findet durch Probieren heraus, welche Wege öfter ankommen.</aside>
   </section>
 
-  <section class="slide">
+  <section class="slide" data-on-show="showAha" data-on-step="showAha">
     <h2>nobody writes the thoughts</h2>
-    <div class="content">
-      <div class="statement mono">wait, wait. wait. that's an aha moment i can flag here.</div>
-      <div class="sidenote" style="margin-top: 60px"><span class="keep-case">DeepSeek R1-Zero</span>, trained with rewards alone, improved on <span class="keep-case">AIME</span> from 16 % to 71 %.</div>
-    </div>
-    <div class="footnote">deepseek-ai: <a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">deepseek-r1: incentivizing reasoning capability in llms via reinforcement learning</a>, 2025</div>
-    <aside class="notes">R1-Zero bekam keine Beispiele fürs Denken, nur Belohnungen. Seine Gedanken wurden im Training von selbst länger, und es fing an, die eigenen Schritte zu prüfen und zu hinterfragen. Das Zitat steht so im Paper: Das Modell unterbricht sich selbst und fängt neu an.</aside>
-  </section>
-
-  <section class="slide" data-on-show="showLoophole" data-on-step="showLoophole">
-    <h2>why maths and code came first</h2>
-    <div class="figure" id="fig-loophole"></div>
+    <div class="figure" id="fig-aha"></div>
     <span data-step="1"></span>
-    <aside class="notes">Mathematik und Code kamen zuerst, weil ein Programm ihre Antworten prüfen kann, schnell und millionenfach, ohne dass ein Mensch jeden Versuch lesen muss. Hat die Belohnung ein Schlupfloch, findet das Modell es: Prüft ein Test nur, dass ein Programm ohne Fehler läuft, lernt es womöglich, Programme zu schreiben, die laufen und nichts Nützliches tun. Das heißt Reward Hacking, und es ist ein Grund, warum Belohnungen, die ein Programm prüft, solchen vorgezogen werden, die ein anderes Modell schätzt.</aside>
+    <div class="footnote">deepseek-ai: <a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">deepseek-r1: incentivizing reasoning capability in llms via reinforcement learning</a>, 2025</div>
+    <aside class="notes">DeepSeek trainierte R1-Zero nur mit Belohnungen, ohne ein einziges Beispiel fürs Denken. Das Paper (Tabelle 3) zeigt die Gedanken einer Zwischenfassung mitten im Training zu einer Matheaufgabe: Das Modell quadriert, rechnet sich in eine Gleichung vierten Grades hinein, unterbricht sich dann selbst mit „Wait, wait. Wait. That's an aha moment I can flag here.“ und fängt den Rechenweg neu an. Niemand hat ihm diesen Satz beigebracht; Prüfen und Neuansetzen hat sich gelohnt, also wurde es häufiger. Seine Gedanken wurden im Training von selbst länger, und bei AIME stieg es von 16 auf 71 Prozent.</aside>
   </section>
 
   <section class="slide">
-    <h2>from a large model to your laptop</h2>
+    <h2>why maths and code came first</h2>
+    <div class="figure" id="fig-checkable"></div>
+    <aside class="notes">Lernen aus Belohnungen braucht eine Prüfung, die ohne Menschen auskommt, denn es geht um Millionen von Versuchen. Bei Mathematik vergleicht ein Programm die Antwort mit der bekannten Lösung, etwa 204 bei der AIME-Aufgabe von vorhin. Bei Code laufen Tests: Ein Test ruft die Funktion mit Beispielwerten auf und vergleicht das Ergebnis. Bei einem Aufsatz oder einer Beratung gibt es so eine Prüfung nicht; dort schätzt meist ein anderes Modell die Qualität, und das ist ungenauer.</aside>
+  </section>
+
+  <section class="slide" data-on-show="showHack" data-on-step="showHack">
+    <h2>a loophole in the reward</h2>
+    <div class="figure" id="fig-hack"></div>
+    <span data-step="1"></span>
+    <div class="footnote">simplified after openai: <a href="https://openai.com/index/chain-of-thought-monitoring/" target="_blank" rel="noopener">detecting misbehavior in frontier reasoning models</a>, 2025</div>
+    <aside class="notes">Die Belohnung ist nur so gut wie die Prüfung. OpenAI beschrieb 2025 Fälle, in denen ein Reasoning-Modell beim Programmieren die Tests las und in seinen Gedanken festhielt, dass es sie leichter bestehen kann, wenn die Prüffunktion immer „wahr“ zurückgibt. Die Tests sind grün, die Belohnung ist 1, aber das Programm erfüllt die Aufgabe nicht. Das heißt Reward Hacking. Aufgefallen ist es, weil man die Gedanken lesen konnte; ein zweites Modell las sie mit und schlug Alarm. Das Thema kommt bei den Agenten wieder.</aside>
+  </section>
+
+  <section class="slide" data-on-show="showDistill" data-on-step="showDistill">
+    <h2>a small model that reasons beats a large one that does not</h2>
     <div class="figure" id="fig-distill"></div>
+    <span data-step="1"></span>
     <div class="footnote">deepseek-ai: <a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">deepseek-r1</a>, 2025</div>
-    <aside class="notes">Ein großes Reasoning-Modell kann seine Fähigkeit weitergeben: Ein kleines Modell, das auf den Gedanken und Antworten eines großen nachtrainiert wird, denkt viel besser, als es allein lernen würde. Das heißt Destillation. DeepSeek gab R1 so an sechs kleinere Modelle weiter, und schon das kleinste mit 1,5 Milliarden Parametern schlug GPT-4o bei AIME. Deshalb gibt es Reasoning-Modelle, die in LM Studio auf dem Laptop laufen.</aside>
+    <aside class="notes">Ein großes Reasoning-Modell kann seine Fähigkeit weitergeben: Ein kleines Modell, das auf den Gedanken und Antworten eines großen nachtrainiert wird, denkt viel besser, als es allein lernen würde. Das heißt Destillation. DeepSeek gab R1 so an sechs kleinere Modelle weiter, von 1,5 bis 70 Milliarden Parametern. Zweiter Schritt: Schon das kleinste, mit 1,5 Milliarden Parametern klein genug für jedes Notebook, löste bei AIME 28,9 Prozent der Aufgaben, GPT-4o ohne Reasoning nur 9,3 Prozent, obwohl es um ein Vielfaches größer ist. Reasoning macht kleine Modelle stärker als große ohne. Deshalb gibt es Reasoning-Modelle, die in LM Studio auf dem Laptop laufen.</aside>
   </section>
 
   <!-- ==================== 4 · longer or more often ==================== -->
@@ -191,12 +229,11 @@
     <aside class="notes">Länger nachdenken heißt eine Kette mit mehr Schritten, mehr Prüfungen und mehr Korrekturen. Ein Team in Stanford zeigte 2025, wie einfach das sein kann: Wenn ihr Modell aufhören wollte, hängten sie das Wort „Wait“ an, und es prüfte seine Arbeit noch einmal. Öfter nachdenken heißt mehrere unabhängige Versuche und eine Entscheidung, per Mehrheit oder durch ein zweites Modell. Eine Studie von Google DeepMind und Berkeley fand, dass ein kleines Modell, das gut denken darf, bei passenden Aufgaben ein 14-mal größeres schlagen kann.</aside>
   </section>
 
-  <section class="slide">
+  <section class="slide" data-on-show="showBitter" data-on-step="showBitter">
     <h2>the bitter lesson, again</h2>
-    <div class="content">
-      <div class="statement">learning and search are the two methods that keep scaling with computation, and a reasoning model uses both.</div>
-    </div>
-    <aside class="notes">Rich Sutton nennt in „The Bitter Lesson“ genau diese zwei Methoden. Ein Reasoning-Modell lernt aus Belohnungen im Training und sucht im Moment der Antwort, indem es probiert und prüft.</aside>
+    <div class="figure" id="fig-bitter"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <aside class="notes">Rich Sutton schrieb 2019, dass sich in der KI auf lange Sicht zwei Methoden durchsetzen, weil sie mit mehr Rechenleistung immer besser werden: Lernen und Suchen. Ein Reasoning-Modell nutzt beide, an zwei verschiedenen Stellen. Gelernt wird im Training: die Runde aus Versuchen und Belohnungen, wiederholt über viele tausend Aufgaben. Gesucht wird beim Antworten: länger denken, also prüfen und neu ansetzen, oder öfter denken, also mehrere Versuche und eine Abstimmung. Beides lässt sich mit mehr Rechenleistung weiter treiben, das zeigten die zwei Kurven.</aside>
   </section>
 
   <section class="slide">
@@ -212,27 +249,23 @@
     <aside class="notes">Jedes Token der Gedanken kostet Zeit und bei bezahlten Modellen Geld. Reasoning-Modelle neigen außerdem dazu, zu viel nachzudenken; frühe schrieben lange Gedanken, bevor sie sagten, was 2 + 3 ist. Deshalb lässt sich in Apps und Programmierschnittstellen einstellen, wie viel ein Modell denken darf, oft als low, medium und high, und neuere Modelle wie GPT-5 oder Claude Opus 4.6 entscheiden je Frage selbst, wie viel Denken sie verdient.</aside>
   </section>
 
-  <section class="slide">
-    <h2 class="mitmachen"><!-- Bootstrap Icons "speedometer" 1.11.3 (MIT, (c) The Bootstrap Authors) --><svg class="icon" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" style="color: var(--blue)" aria-hidden="true"><path d="M8 2a.5.5 0 0 1 .5.5V4a.5.5 0 0 1-1 0V2.5A.5.5 0 0 1 8 2M3.732 3.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707M2 8a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 8m9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5m.754-4.246a.39.39 0 0 0-.527-.02L7.547 7.31A.91.91 0 1 0 8.85 8.569l3.434-4.297a.39.39 0 0 0-.029-.518z"/><path fill-rule="evenodd" d="M6.664 15.889A8 8 0 1 1 9.336.11a8 8 0 0 1-2.672 15.78zm-4.665-4.283A11.95 11.95 0 0 1 8 10c2.186 0 4.236.585 6.001 1.606a7 7 0 1 0-12.002 0"/></svg><span>low or high</span></h2>
-    <div class="content">
-      <div class="lines spaced">
-        <div>change the numbers of the tractor question.</div>
-        <div data-step="1">ask once with reasoning set to low and once with high.</div>
-        <div data-step="2">compare the time, the number of tokens and the thoughts.</div>
-      </div>
-      <div class="sidenote" style="margin-top: 40px">in <span class="keep-case">LM Studio</span> with <span class="keep-case">gpt-oss-20b</span>, the setting is under <span class="keep-case">Reasoning</span> in the panel on the right.</div>
-    </div>
-    <aside class="notes">Live in LM Studio mit gpt-oss-20b, am Beamer oder auf den Laptops, wo das Modell geladen ist. Geänderte Zahlen, damit das Modell die Lösung nicht auswendig kennt. Die Gedanken aufklappen und vorlesen. Zum Schluss fragen: Wo bemerkt das Modell einen Fehler, und liest es die geänderten Zahlen wirklich?</aside>
-  </section>
 
   <!-- ==================== 5 · what it is not ==================== -->
   <section class="slide part" data-part="what it is not"></section>
+
+  <section class="slide" data-on-show="showHintSetup" data-on-step="showHintSetup">
+    <h2>an experiment with hints</h2>
+    <div class="figure" id="fig-hintsetup"></div>
+    <span data-step="1"></span>
+    <div class="footnote">illustration of the setup after anthropic: <a href="https://www.anthropic.com/research/reasoning-models-dont-say-think" target="_blank" rel="noopener">reasoning models don't always say what they think</a>, 2025</div>
+    <aside class="notes">So lief das Experiment, hier mit einer ausgedachten Frage: Dieselbe Multiple-Choice-Frage einmal ohne, einmal mit einem Hinweis auf eine Antwort. Ohne Hinweis antwortet das Modell (B), mit dem Hinweis eines Professors (A). Der Hinweis hat die Antwort also verändert, aber die Gedanken erwähnen ihn nicht; sie liefern eine plausible Begründung für die Sahara. In der Studie gab es sechs Arten von Hinweisen, etwa die Meinung einer Professorin, die Lösung in versteckten Metadaten des Prompts oder einen Hinweis, wie die Bewertung prüft.</aside>
+  </section>
 
   <section class="slide">
     <h2>the thoughts are not always the reason</h2>
     <div class="figure" id="fig-hint"></div>
     <div class="footnote">anthropic: <a href="https://www.anthropic.com/research/reasoning-models-dont-say-think" target="_blank" rel="noopener">reasoning models don't always say what they think</a>, 2025</div>
-    <aside class="notes">Anthropic gab Reasoning-Modellen in der Frage einen Hinweis auf die Antwort und prüfte, ob die Gedanken ihn erwähnen, wenn das Modell ihn nutzte. Claude 3.7 Sonnet tat das in einem Viertel der Fälle, DeepSeek-R1 in 39 Prozent; sonst lieferten die Gedanken eine plausible Begründung, die den eigentlichen Grund wegließ. Die Gedanken helfen dem Modell zur Antwort, sie sind kein Fenster in sein Inneres. Dass man sie lesen kann, ist trotzdem eine Chance für die Sicherheit: Über vierzig Forschende mehrerer Labore schrieben 2025, man solle diese Lesbarkeit nicht wegtrainieren.</aside>
+    <aside class="notes">Gezählt wurden nur die Fälle, in denen der Hinweis die Antwort verändert hat; dann wurde geprüft, ob die Gedanken ihn erwähnen. Claude 3.7 Sonnet tat das in einem Viertel der Fälle, DeepSeek-R1 in 39 Prozent; sonst lieferten die Gedanken eine plausible Begründung, die den eigentlichen Grund wegließ. Die Gedanken helfen dem Modell zur Antwort, sie sind kein Fenster in sein Inneres. Dass man sie lesen kann, ist trotzdem eine Chance für die Sicherheit: Über vierzig Forschende mehrerer Labore schrieben 2025, man solle diese Lesbarkeit nicht wegtrainieren.</aside>
   </section>
 
   <section class="slide">
@@ -257,8 +290,8 @@
   <section class="slide">
     <h2>how long an agent can work</h2>
     <div class="figure" id="fig-metr"></div>
-    <div class="footnote">metr: <a href="https://arxiv.org/abs/2503.14499" target="_blank" rel="noopener">measuring ai ability to complete long tasks</a>, 2025, and <a href="https://metr.org/blog/2026-01-29-time-horizon-1-1/" target="_blank" rel="noopener">time horizon 1.1</a>, 2026</div>
-    <aside class="notes">METR gibt KI-Modellen Aufgaben aus der Softwareentwicklung und misst, wie lange die Aufgaben, die ein Modell in der Hälfte der Fälle löst, eine erfahrene Person brauchen würde. Diese Länge hat sich seit 2019 etwa alle sieben Monate verdoppelt, seit 2024 schneller. Gemessen und beschriftet sind die beiden Punkte: etwa eine Stunde für Claude 3.7 Sonnet, über fünf Stunden für Claude Opus 4.5. Die gestrichelte Linie zeigt nur die Verdopplung alle sieben Monate, rückwärts gerechnet.</aside>
+    <div class="footnote">metr: <a href="https://metr.org/time-horizons/" target="_blank" rel="noopener">task-completion time horizons of frontier ai models</a> (time horizon 1.1) and <a href="https://arxiv.org/abs/2503.14499" target="_blank" rel="noopener">measuring ai ability to complete long tasks</a>, 2025</div>
+    <aside class="notes">METR gibt KI-Modellen als Agenten Aufgaben aus der Softwareentwicklung und misst, wie lange die Aufgaben, die ein Modell in der Hälfte der Fälle löst, eine erfahrene Person brauchen würde. Jeder Punkt ist das beste Modell seiner Zeit, pink die Reasoning-Modelle ab o1. Von GPT-2 mit drei Sekunden ging es zu GPT-4 mit vier Minuten; mit den Reasoning-Modellen stieg die Kurve steiler, seit 2023 verdoppelt sich die Länge etwa alle vier Monate. Claude Opus 4.6 kam auf rund 12 Stunden, eine frühe Fassung von Claude Mythos Preview auf 16 Stunden oder mehr; darüber misst die Aufgabensammlung nicht mehr verlässlich, und METR führt die Seite seit September 2026 nicht mehr fort. Für GPT-5.6 Sol nannte METR keine verlässliche Zahl, weil das Modell die Tests zu oft austrickste, Reward Hacking wie vorhin. Für Fable 5.2 gibt es keine veröffentlichte Messung.</aside>
   </section>
 
   <section class="slide">
@@ -269,26 +302,12 @@
     <aside class="notes">Dasselbe Prinzip wie bei der Traktorfrage, zwei Zeilen vor der Antwort, trägt im Großen die Agenten.</aside>
   </section>
 
-  <section class="slide">
-    <h2>further reading</h2>
-    <div class="content">
-      <div class="lines quellen" style="font-size: var(--small)">
-        <div>j. wei et al.: <a href="https://arxiv.org/abs/2201.11903" target="_blank" rel="noopener">chain-of-thought prompting elicits reasoning in large language models</a>, 2022</div>
-        <div>t. kojima et al.: <a href="https://arxiv.org/abs/2205.11916" target="_blank" rel="noopener">large language models are zero-shot reasoners</a>, 2022</div>
-        <div>openai: <a href="https://openai.com/index/learning-to-reason-with-llms/" target="_blank" rel="noopener">learning to reason with llms</a>, 2024</div>
-        <div>deepseek-ai: <a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">deepseek-r1: incentivizing reasoning capability in llms via reinforcement learning</a>, 2025</div>
-        <div>anthropic: <a href="https://www.anthropic.com/research/reasoning-models-dont-say-think" target="_blank" rel="noopener">reasoning models don't always say what they think</a>, 2025</div>
-        <div>metr: <a href="https://arxiv.org/abs/2503.14499" target="_blank" rel="noopener">measuring ai ability to complete long tasks</a>, 2025</div>
-      </div>
-    </div>
-    <aside class="notes">Die vollständige Liste mit allen Quellen der Folien steht in der Lektion.</aside>
-  </section>
 
 </div>
 <!-- Reihenfolge ist Pflicht: deck.js VOR stagekit.js -->
 <script src="../../stagekit/draw.js?v=0.7.0-156254"></script>
 <script src="../../stagekit/anim.js?v=0.7.0-156254"></script>
-<script src="deck.js?v=20261112b"></script>
+<script src="deck.js?v=20261112d"></script>
 <script src="../../stagekit/stagekit.js?v=0.7.0-156254"></script>
 </body>
 </html>

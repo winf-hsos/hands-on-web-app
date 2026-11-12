@@ -8,7 +8,7 @@ alle Folien, Live-Moment wie beschrieben) und gebaut (`reasoning.html`,
 kleine Zeichen statt Urteilskästen und unter der falschen Antwort „then
 together: 12,000 €“; die METR-Folie zeigt nur die zwei gemessenen Punkte und
 die Verdopplungslinie; die Zahlen zu o1 auf Folie 25 stehen in der Zeichnung.
-Ab jetzt ist die HTML-Datei die Quelle.
+Am selben Tag nach Nicolas’ Durchsicht überarbeitet (40 Folien, 73 Frames): Antwort und Tokens nach dem EVA-Modell, die Tokens animiert mit zugeklappten Gedanken, neues Kontext-Beispiel, eigene Folien für Few-Shot-, Chain-of-Thought- und Zero-Shot-Prompts, eine Folie zu AIME, o1 als erstes Reasoning-Modell, ChatGPT als Grenze in der Zeitleiste, Beispiele zu den drei Stufen, das Aha-Zitat mit Aufgabe, Reward Hacking als eigenes Beispiel, Destillation mit Balken gegen GPT-4o, Lernen und Suchen in zwei Spalten, ein Beispiel zum Hinweis-Experiment, die METR-Folie mit allen Messpunkten bis Claude Mythos Preview; der Live-Moment und die Literaturfolie sind entfallen. Ab jetzt ist die HTML-Datei die Quelle.
 **Verortung:** Eigenes Folien-Item `reasoning-slides`, eingebettet oben in der
 Lektion „Reasoning“ (`knowledge/content/reasoning/en.md`, Code 6271). Das Deck
 folgt der Reihenfolge und dem Wortlaut der Lektion, und alle drei Zeichnungen
