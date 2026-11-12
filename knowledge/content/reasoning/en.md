@@ -28,7 +28,9 @@ status: draft
 updated: 2026-11-12
 ---
 
-Try this question on yourself before you read on: *A tractor and a trailer cost 11,000 € together, and the tractor costs 10,000 € more than the trailer. What does the trailer cost?* Most people answer 1,000 € at once, and they are wrong, because then the tractor would cost 11,000 € and both together 12,000 €. The trailer costs 500 €. Whoever writes down two lines of algebra before answering gets it right, and language models are no different: a model that has to put the answer into the very next token is tempted by the obvious number, while a model that first writes out its steps can work it out. Writing out steps before the answer is what **reasoning** means for a language model, and models trained to do it are called **reasoning models**. This page answers:
+![Slides: Reasoning](item:reasoning-slides)
+
+Try this question on yourself before you read on: *A tractor and a trailer cost 11,000 € together, and the tractor costs 10,000 € more than the trailer. What does the trailer cost?* Most people answer 1,000 € at once, and they are wrong, because then the tractor would cost 11,000 € and both together 12,000 €. The trailer costs 500 €. Whoever writes down two lines of algebra before answering gets it right, and language models are no different: a model that has to put the answer into the very next token is tempted by the obvious number, while a model that first writes out its steps can work it out. Writing out steps before the answer is what **reasoning** means for a language model, and models trained to do it are called **reasoning models**. This page follows the slides above and answers:
 
 - What does it mean for a language model to think, if all it does is predict the next token?
 - Why does writing out the steps lead to better answers?
