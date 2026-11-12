@@ -14,38 +14,56 @@
     return texts.map((text, i) => d.label(x, 0, text, { size: 32, centerY: firstCentre + i * step, ...o }));
   }
 
-  // The tractor question of the lesson, answered at once and after thinking.
-  // Columns: question 40-400, thinking 520-1100, answer 1220-1560. The
-  // longest line in the thinking box, "x + x + 10,000 = 11,000", is 23 x 19.2
-  // = 442 wide and starts at 560, ending at 1002. "1,000 €" in 48 is
-  // 7 x 28.8 = 202 wide in its box of 340.
+  // The tractor question of the lesson as an IPO picture, as on the slides:
+  // input, processing, output. Input centre 90, model 310-610, output from
+  // 720 to 1540; the answers sit in boxes 1340-1540 ("1,000 €" in 48 is about
+  // 160), with a small mark at 1575 instead of a verdict box. In the lower row
+  // the thoughts are the output, and the arrow below leads them back into the
+  // model, because every new token is predicted from everything written so
+  // far. The longest line, "x + x + 10,000 = 11,000", is about 360 wide from
+  // 760 in its box 720-1240.
   figure('answer-or-think', {
     draw(lang) {
       const t = p.say(lang);
       const c = d.colors();
-      const ROW_A = 95;
-      const ROW_B = 380;
+      const A = 130;
+      const B = 390;
+      const model = t('Sprachmodell', 'language model');
+      const question = t('Frage', 'question');
       const wires = [
-        d.arrow(400, ROW_A, 1205, ROW_A, { color: c.gray, width: 3, head: 16 }),
-        d.arrow(400, ROW_B, 505, ROW_B, { color: c.gray, width: 3, head: 16 }),
-        d.arrow(1100, ROW_B, 1205, ROW_B, { color: c.gray, width: 3, head: 16 }),
+        d.arrow(190, A, 295, A, { color: c.gray, width: 3, head: 16 }),
+        d.arrow(610, A, 1325, A, { color: c.gray, width: 3, head: 16 }),
+        d.arrow(190, B, 295, B, { color: c.gray, width: 3, head: 16 }),
+        d.arrow(610, B, 705, B, { color: c.gray, width: 3, head: 16 }),
+        d.arrow(1240, B, 1325, B, { color: c.gray, width: 3, head: 16 }),
+        d.line(980, 510, 980, 570, { color: c.blue, width: 3 }),
+        d.line(980, 570, 460, 570, { color: c.blue, width: 3 }),
+        d.arrow(460, 570, 460, 455, { color: c.blue, width: 3, head: 16 }),
       ];
       const boxes = [
-        d.box(40, ROW_A - 55, 360, 110, t('Frage', 'question'), { size: 48, border: c.gray }),
-        d.verdict(1220, ROW_A - 70, 340, 160, t('1.000 €', '1,000 €'), false, { size: 48 }),
-        d.box(40, ROW_B - 55, 360, 110, t('Frage', 'question'), { size: 48, border: c.gray }),
-        d.box(520, 240, 580, 280, '', { border: c.blue }),
-        d.verdict(1220, ROW_B - 70, 340, 160, t('500 €', '500 €'), true, { size: 48 }),
+        d.box(310, A - 60, 300, 120, model, { size: 32, border: c.light }),
+        d.box(1340, A - 55, 200, 110, t('1.000 €', '1,000 €'), { size: 48, border: c.light }),
+        d.mark(1575, A, false),
+        d.box(310, B - 60, 300, 120, model, { size: 32, border: c.light }),
+        d.box(720, 270, 520, 240, '', { border: c.blue, width: 3 }),
+        d.box(1340, B - 55, 200, 110, '500 €', { size: 48, border: c.light }),
+        d.mark(1575, B, true),
       ];
       const labels = [
-        d.label(802, 0, t('antwortet sofort', 'answers right away'), { size: 32, color: c.gray, anchor: 'middle', centerY: ROW_A - 32 }),
-        d.label(810, 0, t('denkt zuerst schriftlich nach', 'thinks in writing first'), { size: 32, color: c.blue, anchor: 'middle', centerY: 212 }),
-        ...lines(560, 290, 60, t(
+        ...[[90, t('Eingabe', 'input')], [460, t('Verarbeitung', 'processing')], [1130, t('Ausgabe', 'output')]]
+          .map(([x, text]) => d.label(x, 0, text, { size: 32, color: c.gray, anchor: 'middle', centerY: 30 })),
+        d.label(90, 0, question, { size: 32, anchor: 'middle', centerY: A }),
+        d.label(970, 0, t('antwortet sofort', 'answers right away'), { size: 32, color: c.gray, anchor: 'middle', centerY: A - 30 }),
+        d.label(1540, 0, t('dann zusammen: 12.000 €', 'then together: 12,000 €'), { size: 32, color: c.gray, anchor: 'end', centerY: A + 90 }),
+        d.label(90, 0, question, { size: 32, anchor: 'middle', centerY: B }),
+        d.label(980, 0, t('denkt zuerst schriftlich nach', 'thinks in writing first'), { size: 32, color: c.blue, anchor: 'middle', centerY: 245 }),
+        ...lines(760, 308, 55, t(
           ['Anhänger: x', 'Traktor: x + 10.000', 'x + x + 10.000 = 11.000', 'x = 500'],
           ['trailer: x', 'tractor: x + 10,000', 'x + x + 10,000 = 11,000', 'x = 500'],
         ), { color: c.white }),
+        d.label(720, 0, t('das Modell liest seine eigenen Gedanken wieder', 'the model reads its own thoughts again'), { size: 32, color: c.blue, anchor: 'middle', centerY: 610 }),
       ];
-      return d.svg(1600, 560, ...d.layers(wires, boxes, labels));
+      return d.svg(1600, 640, ...d.layers(wires, boxes, labels));
     },
   });
 
