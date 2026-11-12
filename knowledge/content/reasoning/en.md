@@ -25,7 +25,7 @@ relations:
 modules: [aai]
 areas: [ai]
 status: draft
-updated: 2026-11-07
+updated: 2026-11-12
 ---
 
 Try this question on yourself before you read on: *A tractor and a trailer cost 11,000 € together, and the tractor costs 10,000 € more than the trailer. What does the trailer cost?* Most people answer 1,000 € at once, and they are wrong, because then the tractor would cost 11,000 € and both together 12,000 €. The trailer costs 500 €. Whoever writes down two lines of algebra before answering gets it right, and language models are no different: a model that has to put the answer into the very next token is tempted by the obvious number, while a model that first writes out its steps can work it out. Writing out steps before the answer is what **reasoning** means for a language model, and models trained to do it are called **reasoning models**. This page answers:
@@ -67,19 +67,19 @@ In 2021, researchers from MIT and Google showed that models get much better at l
 
 All of this was a trick: the model reasoned when someone asked it to, and it reasoned the way the examples showed. On 12 September 2024, OpenAI released **o1**, the first model that had been trained to think before every answer, with reinforcement learning on a large scale. On AIME, an American maths competition for strong high-school students, GPT-4o had solved 12% of the problems; o1 solved 74% with a single attempt. OpenAI did not say how exactly it was done and shows only a summary of o1's thoughts. In January 2025, the Chinese lab DeepSeek published **DeepSeek-R1** with open weights and a paper that described the recipe, and within weeks every large lab offered a model that could think.
 
-| When | What | Who |
-|---|---|---|
-| 2021 | Scratchpads: write out intermediate results | Google |
-| January 2022 | Chain-of-thought prompting: worked examples in the prompt | Google |
-| March 2022 | Self-consistency: several attempts, majority vote | Google |
-| May 2022 | "Let's think step by step" | University of Tokyo, Google |
-| October 2022 | ReAct: thoughts alternate with actions such as a search | Princeton, Google |
-| September 2024 | o1, the first model trained to reason | OpenAI |
-| December 2024 | o3 and Gemini 2.0 Flash Thinking | OpenAI, Google |
-| January 2025 | DeepSeek-R1, open weights and the recipe | DeepSeek |
-| February 2025 | Claude 3.7 Sonnet, one model with and without extended thinking | Anthropic |
-| July 2025 | Gold-medal standard at the International Mathematical Olympiad | OpenAI, Google DeepMind |
-| August 2025 | GPT-5 decides itself whether to think; gpt-oss, open reasoning models | OpenAI |
+| When | What | Who | Source |
+|---|---|---|---|
+| 2021 | Scratchpads: write out intermediate results | MIT, Google | [paper](https://arxiv.org/abs/2112.00114) |
+| January 2022 | Chain-of-thought prompting: worked examples in the prompt | Google | [paper](https://arxiv.org/abs/2201.11903) |
+| March 2022 | Self-consistency: several attempts, majority vote | Google | [paper](https://arxiv.org/abs/2203.11171) |
+| May 2022 | "Let's think step by step" | University of Tokyo, Google | [paper](https://arxiv.org/abs/2205.11916) |
+| October 2022 | ReAct: thoughts alternate with actions such as a search | Princeton, Google | [paper](https://arxiv.org/abs/2210.03629) |
+| September 2024 | o1, the first model trained to reason | OpenAI | [announcement](https://openai.com/index/learning-to-reason-with-llms/) |
+| December 2024 | o3 and Gemini 2.0 Flash Thinking | OpenAI, Google | [o3](https://openai.com/12-days/), [Gemini](https://ai.google.dev/gemini-api/docs/changelog#12-19-2024) |
+| January 2025 | DeepSeek-R1, open weights and the recipe | DeepSeek | [paper](https://arxiv.org/abs/2501.12948) |
+| February 2025 | Claude 3.7 Sonnet, one model with and without extended thinking | Anthropic | [announcement](https://www.anthropic.com/news/claude-3-7-sonnet) |
+| July 2025 | Gold-medal standard at the International Mathematical Olympiad | OpenAI, Google DeepMind | [OpenAI](https://github.com/aw31/openai-imo-2025-proofs), [Google DeepMind](https://deepmind.google/discover/blog/advanced-version-of-gemini-with-deep-think-officially-achieves-gold-medal-standard-at-the-international-mathematical-olympiad/) |
+| August 2025 | GPT-5 decides itself whether to think; gpt-oss, open reasoning models | OpenAI | [GPT-5](https://openai.com/index/introducing-gpt-5/), [gpt-oss](https://openai.com/index/introducing-gpt-oss/) |
 
 ## How a model learns to reason
 
