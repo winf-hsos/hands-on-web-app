@@ -22,7 +22,7 @@ duration: 5
 topics: [representing-information, processing-information]
 relations:
   see_also: [morse-code, logic-gates, nand-gate, place-value-systems]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

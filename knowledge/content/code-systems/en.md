@@ -23,7 +23,7 @@ modules: [dup]
 relations:
   requires: [place-value-systems, symbols-and-information]
   see_also: [morse-code, byte, place-value-systems, petzold-code]
-status: draft
+status: published
 updated: 2026-11-06
 ---
 

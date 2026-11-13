@@ -39,7 +39,7 @@ test('a removed field disappears with all its lines', () => {
   const { relations, ...rest } = entry.file.data;
   const after = write(entry, rest);
   assert.ok(!after.includes('see_also'));
-  assert.ok(after.includes('topics: [representing-information, processing-information]\nstatus: draft'));
+  assert.ok(after.includes(`topics: [representing-information, processing-information]\nstatus: ${rest.status}`));
 });
 
 test('a new file is written in the canonical style', () => {

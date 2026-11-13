@@ -14,7 +14,7 @@ objectives:
 level: 1
 duration: 6
 topics: [representing-information, transferring-information]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

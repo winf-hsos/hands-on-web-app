@@ -25,7 +25,7 @@ topics: [representing-information, storing-information]
 modules: [dup]
 relations:
   see_also: [bit, byte, petzold-code, ifrah-universal-history-of-numbers]
-status: draft
+status: published
 updated: 2026-11-06
 ---
 

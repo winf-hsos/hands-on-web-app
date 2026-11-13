@@ -17,7 +17,7 @@ topics: [representing-information, storing-information]
 modules: [dup]
 relations:
   see_also: [bit, place-value-systems]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 
