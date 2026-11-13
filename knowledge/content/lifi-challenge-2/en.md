@@ -88,9 +88,12 @@ need it again in challenge 3.
 
 ## The acceptance test
 
-**What is measured** is first whether all ten characters are right, and only
-then the duration. At the acceptance test you send a word you have not seen
-before. As the live change you double your symbol rate.
+The acceptance test runs live in the session: your run appears on the
+projector through the course server, and as in every run the word only comes
+from the server at that moment, so you have not seen it before. What is
+measured is first whether all ten characters are right, and only then the
+duration. The ranking is on the
+[challenge board](https://lifi.hsos.uber.space/challenges).
 
 ## Pitfalls and more
 

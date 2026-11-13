@@ -97,9 +97,11 @@ Challenge 3 braucht ihr sie wieder.
 
 ## Abnahme
 
-**Gemessen wird** zuerst, ob alle zehn Zeichen stimmen, und erst dann die Dauer.
-Bei der Abnahme sendet ihr ein Wort, das ihr vorher nicht kennt. Als
-Live-Änderung verdoppelt ihr eure Symbolrate.
+Die Abnahme läuft live in der Sitzung: Euer Durchgang erscheint über den
+Kursserver auf dem Beamer, und das Wort kommt wie bei jedem Lauf erst in diesem
+Moment vom Server, sodass ihr es vorher nicht kennt. Gemessen wird zuerst, ob
+alle zehn Zeichen stimmen, und erst dann die Dauer. Die Rangliste steht auf der
+[Challenge-Tafel](https://lifi.hsos.uber.space/challenges).
 
 ## Stolpersteine und mehr
 
