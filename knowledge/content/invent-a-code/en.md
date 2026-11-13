@@ -19,7 +19,7 @@ topics: [representing-information]
 modules: [dup]
 relations:
   see_also: [code-systems, prefix-trap, morse-code]
-status: draft
+status: published
 updated: 2026-11-06
 ---
 

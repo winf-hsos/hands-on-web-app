@@ -11,7 +11,7 @@ topics: [representing-information]
 modules: [dup]
 relations:
   example_of: [place-value-systems]
-status: draft
+status: published
 updated: 2026-11-06
 ---
 

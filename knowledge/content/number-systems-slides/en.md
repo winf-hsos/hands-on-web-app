@@ -14,6 +14,6 @@ topics: [representing-information]
 modules: [dup]
 relations:
   see_also: [place-value-systems, hex-viewer]
-status: draft
+status: published
 updated: 2026-11-06
 ---

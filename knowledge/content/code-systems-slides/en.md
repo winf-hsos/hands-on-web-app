@@ -11,6 +11,6 @@ level: 1
 duration: 25
 topics: [representing-information]
 modules: [dup]
-status: draft
+status: published
 updated: 2026-11-06
 ---
