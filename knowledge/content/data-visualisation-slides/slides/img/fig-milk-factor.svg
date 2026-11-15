@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='1680.00pt' height='760.00pt' viewBox='0 0 1680.00 760.00'>
+<g class='svglite'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+    .svglite g.glyphgroup path {
+      fill: inherit;
+      stroke: none;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: none;'/>
+<defs>
+  <clipPath id='cpMC4wMHwxNjgwLjAwfDAuMDB8NzYwLjAw'>
+    <rect x='0.00' y='0.00' width='1680.00' height='760.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHwxNjgwLjAwfDAuMDB8NzYwLjAw)'>
+<rect x='0.00000000000013' y='0.00' width='1680.00' height='760.00' style='stroke-width: 3.10; stroke: none;' />
+</g>
+<defs>
+  <clipPath id='cpMTI0Ljg0fDE2NjQuMDZ8MTUuOTR8NjY4LjM4'>
+    <rect x='124.84' y='15.94' width='1539.22' height='652.44' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMTI0Ljg0fDE2NjQuMDZ8MTUuOTR8NjY4LjM4)'>
+<rect x='124.84' y='15.94' width='1539.22' height='652.44' style='stroke-width: 3.10; stroke: none;' />
+<polyline points='124.84,638.72 1664.06,638.72 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='124.84,434.34 1664.06,434.34 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='124.84,229.95 1664.06,229.95 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='124.84,25.57 1664.06,25.57 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='344.73,668.38 344.73,15.94 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='711.21,668.38 711.21,15.94 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='1077.69,668.38 1077.69,15.94 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='1444.17,668.38 1444.17,15.94 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<rect x='179.82' y='45.60' width='329.83' height='593.12' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #B6BEC6;' />
+<rect x='546.30' y='359.94' width='329.83' height='278.78' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #B6BEC6;' />
+<rect x='912.78' y='568.00' width='329.83' height='70.72' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #B6BEC6;' />
+<rect x='1279.26' y='606.43' width='329.83' height='32.29' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #B6BEC6;' />
+</g>
+<g clip-path='url(#cpMC4wMHwxNjgwLjAwfDAuMDB8NzYwLjAw)'>
+<text x='110.50' y='647.88' text-anchor='end' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='14.23px' lengthAdjust='spacingAndGlyphs'>0</text>
+<text x='110.50' y='443.50' text-anchor='end' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='42.70px' lengthAdjust='spacingAndGlyphs'>500</text>
+<text x='110.50' y='239.11' text-anchor='end' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='56.94px' lengthAdjust='spacingAndGlyphs'>1000</text>
+<text x='110.50' y='34.73' text-anchor='end' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='56.94px' lengthAdjust='spacingAndGlyphs'>1500</text>
+<text x='344.73' y='701.05' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='52.64px' lengthAdjust='spacingAndGlyphs'>daily</text>
+<text x='711.21' y='701.05' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='78.23px' lengthAdjust='spacingAndGlyphs'>weekly</text>
+<text x='1077.69' y='701.05' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='89.61px' lengthAdjust='spacingAndGlyphs'>monthly</text>
+<text x='1444.17' y='701.05' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='63.98px' lengthAdjust='spacingAndGlyphs'>rarely</text>
+<text x='894.45' y='737.32' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='455.30px' lengthAdjust='spacingAndGlyphs'>How often milk is drunk at home</text>
+<text transform='translate(38.85,342.16) rotate(-90)' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='334.41px' lengthAdjust='spacingAndGlyphs'>Number of respondents</text>
+</g>
+</g>
+</svg>

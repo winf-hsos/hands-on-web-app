@@ -63,7 +63,7 @@ function fileBar(name, text) {
 // Static blocks: the button sits in a wrapper, so that it stays in the corner
 // when a long line makes the block scroll sideways.
 for (const pre of document.querySelectorAll('.prose pre')) {
-  if (pre.closest('.runner, .verb-demo, .monty-hall, .data-table')) continue;
+  if (pre.closest('.runner, .verb-demo, .monty-hall, .data-table, .which-chart')) continue;
   const wrap = Object.assign(document.createElement('div'), { className: 'code-block' });
   const text = () => pre.textContent.replace(/\n$/, '');
   pre.replaceWith(wrap);

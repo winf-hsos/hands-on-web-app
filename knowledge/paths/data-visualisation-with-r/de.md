@@ -12,12 +12,15 @@ goal: >-
 audience: Alle, die Daten auswerten wollen, ohne Programmiererfahrung
 level: 1
 requires: [getting-started-with-r]
-sections: []
+sections:
+  - title: { de: "Teil 1: Das passende Diagramm", en: "Part 1: The fitting chart" }
+    steps:
+      - data-visualisation-basics
 status: published
-updated: 2026-11-03
+updated: 2026-11-15
 ---
 
 Dieser Pfad zeigt, wie aus einer Tabelle eine Grafik wird, die eine Frage
 beantwortet. Er arbeitet mit dem Paket ggplot2, das jede Grafik aus wenigen
 Bausteinen zusammensetzt: den Daten, der Zuordnung von Variablen zu Achsen
-und Farben und den Formen, die sie zeigen. Die Lektionen entstehen gerade.
+und Farben und den Formen, die sie zeigen.

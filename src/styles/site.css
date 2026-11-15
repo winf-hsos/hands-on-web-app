@@ -5088,6 +5088,266 @@ details.callout[open] > summary::before {
   }
 }
 
+/* The chart finder (client/which-chart.js): the answers so far as a quiet
+   line on top, then either the open question with its answers as a row of
+   large buttons, or the chart with a sketch, why it fits, what to watch out
+   for and its R code. "Back" and "Start over" below, and under a rule the
+   survey columns that lead straight to a chart. A new view only fades in. */
+.which-chart {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.75rem;
+}
+
+.prose .which-chart p {
+  margin: 0;
+}
+
+.wc-path {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.75rem;
+  margin-bottom: 0.9rem;
+}
+
+.wc-path[hidden] {
+  display: none;
+}
+
+.prose .wc-path ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.prose .wc-path li {
+  margin: 0;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: var(--paper-2);
+  font-size: 0.85rem;
+}
+
+.wc-path-key {
+  color: var(--quiet);
+}
+
+.wc-path-key::after {
+  content: ':';
+}
+
+.wc-stage:focus {
+  outline: none;
+}
+
+.wc-stage.is-new,
+.wc-result.is-new {
+  animation: fade 0.25s var(--ease);
+}
+
+.prose .wc-question {
+  margin-bottom: 0.75rem;
+  font-size: 1.15rem;
+  font-weight: 650;
+}
+
+.wc-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.6rem;
+}
+
+.wc-option {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.25rem;
+  min-height: 4.5rem;
+  padding: 0.8rem 1rem;
+  border: 2px solid var(--rule);
+  border-radius: 0.75rem;
+  background: var(--paper);
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.wc-option:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 7%, var(--paper));
+}
+
+.wc-option-text {
+  padding-right: 1.25rem;
+  font-weight: 650;
+  font-size: 1.05rem;
+}
+
+.wc-example {
+  font-size: 0.8rem;
+  color: var(--quiet);
+}
+
+.wc-key {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.7rem;
+  font: 0.75rem var(--mono);
+  color: var(--quiet);
+}
+
+.wc-result[hidden] {
+  display: none;
+}
+
+.wc-head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.wc-sketch {
+  flex: none;
+  width: 7.5rem;
+  height: 5rem;
+  padding: 0.35rem;
+  border-radius: 0.5rem;
+  background: var(--paper-2);
+  color: var(--accent);
+}
+
+.wc-axis {
+  fill: none;
+  stroke: var(--quiet);
+  stroke-width: 1.2;
+  opacity: 0.6;
+}
+
+.prose .wc-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.prose .wc-also {
+  margin-top: 0.3rem;
+  font-size: 0.85rem;
+  color: var(--quiet);
+}
+
+.wc-other,
+.wc-link {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--accent-ink);
+  font-size: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+
+.prose .wc-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 0.75rem 1.5rem;
+  margin: 1rem 0;
+}
+
+.prose .wc-facts dt {
+  font-size: 0.8rem;
+  color: var(--quiet);
+}
+
+.prose .wc-facts dd {
+  margin: 0.15rem 0 0;
+  font-size: 0.95rem;
+}
+
+.prose .wc-code-head {
+  margin-bottom: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--quiet);
+}
+
+.prose .which-chart .code-block {
+  margin: 0;
+}
+
+.wc-slot {
+  color: var(--accent-ink);
+  font-weight: 650;
+}
+
+.wc-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-top: 1rem;
+}
+
+.wc-nav .button:disabled {
+  opacity: 0.45;
+  cursor: default;
+  pointer-events: none;
+}
+
+.wc-nav .wc-link {
+  margin-left: auto;
+  font-size: 0.9rem;
+}
+
+.wc-survey {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+}
+
+.prose .wc-survey-head {
+  font-weight: 650;
+}
+
+.prose .wc-survey .dg-note {
+  margin: 0.25rem 0 0.75rem;
+  font-size: 0.85rem;
+}
+
+.wc-selects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.75rem;
+}
+
+.wc-selects select {
+  width: 100%;
+}
+
+.wc-selects select:disabled {
+  opacity: 0.55;
+}
+
+@media (max-width: 40rem) {
+  .which-chart {
+    padding: 0.75rem;
+  }
+
+  .wc-head {
+    align-items: flex-start;
+  }
+
+  .wc-sketch {
+    width: 5.5rem;
+    height: 3.7rem;
+  }
+}
+
 /* The byte switchboard (client/byte-switchboard.js): eight switches with
    their place values, the sum, and the byte in four readings. A switch that
    is on takes the accent colour, like a chosen quiz option. */

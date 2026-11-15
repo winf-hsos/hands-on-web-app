@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='1680.00pt' height='760.00pt' viewBox='0 0 1680.00 760.00'>
+<g class='svglite'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+    .svglite g.glyphgroup path {
+      fill: inherit;
+      stroke: none;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: none;'/>
+<defs>
+  <clipPath id='cpMC4wMHwxNjgwLjAwfDAuMDB8NzYwLjAw'>
+    <rect x='0.00' y='0.00' width='1680.00' height='760.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHwxNjgwLjAwfDAuMDB8NzYwLjAw)'>
+<rect x='0.00000000000013' y='0.00' width='1680.00' height='760.00' style='stroke-width: 3.10; stroke: none;' />
+</g>
+<defs>
+  <clipPath id='cpMTYyLjYwfDE2NjQuMDZ8MTUuOTR8NjY4LjM4'>
+    <rect x='162.60' y='15.94' width='1501.46' height='652.44' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMTYyLjYwfDE2NjQuMDZ8MTUuOTR8NjY4LjM4)'>
+<rect x='162.60' y='15.94' width='1501.46' height='652.44' style='stroke-width: 3.10; stroke: none;' />
+<polyline points='162.60,593.10 1664.06,593.10 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='162.60,467.63 1664.06,467.63 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='162.60,342.16 1664.06,342.16 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='162.60,216.69 1664.06,216.69 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='162.60,91.22 1664.06,91.22 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='230.85,668.38 230.85,15.94 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='604.61,668.38 604.61,15.94 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='978.36,668.38 978.36,15.94 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='1352.12,668.38 1352.12,15.94 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<rect x='230.85' y='536.64' width='26.91' height='112.92' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #B6BEC6;' />
+<rect x='230.85' y='411.17' width='26.91' height='112.92' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #B6BEC6;' />
+<rect x='230.85' y='285.70' width='100.17' height='112.92' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #B6BEC6;' />
+<rect x='230.85' y='160.23' width='559.89' height='112.92' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #B6BEC6;' />
+<rect x='230.85' y='34.76' width='1364.96' height='112.92' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #B6BEC6;' />
+</g>
+<g clip-path='url(#cpMC4wMHwxNjgwLjAwfDAuMDB8NzYwLjAw)'>
+<text x='148.25' y='602.26' text-anchor='end' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='69.73px' lengthAdjust='spacingAndGlyphs'>vegan</text>
+<text x='148.25' y='476.79' text-anchor='end' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='132.31px' lengthAdjust='spacingAndGlyphs'>pescetarian</text>
+<text x='148.25' y='351.32' text-anchor='end' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='119.52px' lengthAdjust='spacingAndGlyphs'>vegetarian</text>
+<text x='148.25' y='225.85' text-anchor='end' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='109.53px' lengthAdjust='spacingAndGlyphs'>flexitarian</text>
+<text x='148.25' y='100.38' text-anchor='end' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='105.25px' lengthAdjust='spacingAndGlyphs'>omnivore</text>
+<text x='230.85' y='701.05' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='14.23px' lengthAdjust='spacingAndGlyphs'>0</text>
+<text x='604.61' y='701.05' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='42.70px' lengthAdjust='spacingAndGlyphs'>500</text>
+<text x='978.36' y='701.05' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='56.94px' lengthAdjust='spacingAndGlyphs'>1000</text>
+<text x='1352.12' y='701.05' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='56.94px' lengthAdjust='spacingAndGlyphs'>1500</text>
+<text x='913.33' y='737.32' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='334.41px' lengthAdjust='spacingAndGlyphs'>Number of respondents</text>
+</g>
+</g>
+</svg>

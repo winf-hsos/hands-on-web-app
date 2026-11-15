@@ -1363,6 +1363,196 @@ export const dataTableLabels = {
   },
 };
 
+/** Labels of the chart finder (client/which-chart.js); the R code itself stays English. */
+export const whichChartLabels = {
+  de: {
+    questions: {
+      count: 'Wie viele Variablen willst du zeigen?',
+      scaleOne: 'Was für Werte hat sie?',
+      scaleFirst: 'Was für Werte hat die erste Variable?',
+      scaleSecond: 'Was für Werte hat die zweite Variable?',
+      measure: 'Geht es um Anzahlen oder um Anteile in jeder Gruppe?',
+      ties: 'Gibt es viele gleiche Werte, etwa bei einem Rating?',
+    },
+    options: {
+      count: { one: 'eine', two: 'zwei' },
+      scale: { nominal: 'Kategorien ohne Reihenfolge', ordinal: 'Kategorien mit Reihenfolge', number: 'Zahlen', time: 'Zeitpunkte' },
+      measure: { counts: 'Anzahlen', shares: 'Anteile' },
+      ties: { yes: 'ja', no: 'nein' },
+    },
+    examples: {
+      count: { one: 'wie sich die Antworten verteilen', two: 'wie zwei Antworten zusammenhängen' },
+      scale: { nominal: 'etwa Ernährung, Bundesland', ordinal: 'etwa Wohnortgröße, Rating', number: 'etwa Alter, Preis', time: 'etwa Jahr, Datum' },
+      measure: { counts: 'wie viele Befragte', shares: 'welcher Anteil je Gruppe' },
+      ties: { yes: 'etwa Rating, Haushaltsgröße', no: 'etwa Alter, Preis' },
+    },
+    path: { count: 'Variablen', scaleOne: 'Werte', scaleFirst: 'erste', scaleSecond: 'zweite', measure: 'gezeigt', ties: 'viele gleiche Werte' },
+    pathHead: 'Deine Antworten',
+    back: 'Zurück',
+    reset: 'Von vorn',
+    alsoPossible: 'Auch möglich:',
+    why: 'Warum es passt',
+    watch: 'Achte darauf',
+    codeHead: 'Vorlage für R: Ersetze, was in spitzen Klammern steht.',
+    codeHeadSurvey: 'Code für die Umfrage: Er läuft so, wie er ist, in jedem R-Codekasten mit survey.',
+    results: {
+      'bars-frequency': {
+        name: 'Balken, nach Häufigkeit sortiert',
+        why: 'Kategorien ohne Reihenfolge lassen sich frei anordnen, und nach Häufigkeit sortiert springt sofort ins Auge, was am häufigsten vorkommt.',
+        watch: 'Sortiere nach Häufigkeit mit fct_infreq() und leg die Kategorien auf die y-Achse, damit auch lange Namen lesbar bleiben.',
+      },
+      'bars-scale': {
+        name: 'Balken in der Reihenfolge der Skala',
+        why: 'Bei Kategorien mit Reihenfolge trägt die Anordnung selbst eine Information, deshalb stehen die Balken in der Reihenfolge der Skala.',
+        watch: 'Gib die Reihenfolge der Stufen mit factor(…, levels = …) vor, weil R Text sonst alphabetisch sortiert; Ratings, die als Zahlen vorliegen, behalten ihre Reihenfolge von selbst.',
+      },
+      histogram: {
+        name: 'Histogramm',
+        why: 'Ein Histogramm teilt die Zahlen in gleich breite Klassen und zeigt, wo die meisten Werte liegen, wie weit sie streuen und ob es Ausreißer gibt.',
+        watch: 'Probier mehrere Breiten mit binwidth aus, weil die Breite das Bild verändert, und sag dazu, was du weglässt, wenn du Ausreißer herausfilterst.',
+      },
+      boxplot: {
+        name: 'Boxplot',
+        why: 'Ein Boxplot fasst die Verteilung knapp zusammen: den Median als Strich, die mittlere Hälfte der Werte als Kasten und auffällige Werte als einzelne Punkte.',
+        watch: 'Gipfel und Lücken in den Daten verschwinden im Kasten, deshalb lohnt sich zusätzlich der Blick ins Histogramm.',
+      },
+      'stacked-counts': {
+        name: 'Gestapelte Balken mit Anzahlen',
+        why: 'Jeder Balken steht für eine Gruppe, und die Farben zeigen, wie viele Befragte darin auf jede Kategorie entfallen, sodass auch die Größe der Gruppen sichtbar bleibt.',
+        watch: 'Bei sehr ungleich großen Gruppen vergleichst du besser Anteile statt Anzahlen, weil sonst die größte Gruppe das Bild beherrscht.',
+      },
+      'stacked-shares': {
+        name: 'Gestapelte Balken bis 100 %',
+        why: 'Jeder Balken reicht bis 100 %, sodass sich die Zusammensetzung der Gruppen vergleichen lässt, auch wenn sie unterschiedlich groß sind.',
+        watch: 'Weil alle Balken gleich lang sind, sieht man nicht mehr, wie viele Befragte in jeder Gruppe stecken; nenn die Größe der Gruppen deshalb dazu.',
+      },
+      'boxplots-side': {
+        name: 'Boxplots nebeneinander',
+        why: 'Mit einem Boxplot je Gruppe und der Zahl auf der y-Achse lassen sich Median und Streuung der Gruppen direkt miteinander vergleichen.',
+        watch: 'Gib bei Kategorien mit Reihenfolge die Stufen mit factor(…, levels = …) vor, und tausch die Achsen, wenn es viele Gruppen mit langen Namen sind.',
+      },
+      scatter: {
+        name: 'Streudiagramm',
+        why: 'Jede befragte Person wird zu einem Punkt, und an der Punktwolke siehst du, ob die beiden Zahlen gemeinsam steigen, gegenläufig sind oder unabhängig voneinander streuen.',
+        watch: 'Ausreißer stauchen den Rest der Wolke; filterst du sie heraus, sag dazu, was du weglässt.',
+      },
+      'count-points': {
+        name: 'Gezählte Punkte',
+        why: 'Bei Ratings fallen viele Antworten auf dieselbe Stelle, und geom_count() zeigt mit der Größe des Punkts, wie viele es dort sind.',
+        watch: 'Nimm für solche Werte nicht geom_point(), denn dort sähe ein einzelner Punkt genauso aus wie hundert übereinanderliegende.',
+      },
+      line: {
+        name: 'Liniendiagramm',
+        why: 'Die Zeit läuft auf der x-Achse von links nach rechts, und die Linie verbindet aufeinanderfolgende Zeitpunkte zu einem Verlauf.',
+        watch: 'Eine Linie braucht einen Wert je Zeitpunkt; gibt es mehrere, fass sie vorher zusammen, etwa mit summarise().',
+      },
+    },
+    surveyHead: 'Mit der Umfrage ausprobieren',
+    surveyIntro: 'Wähl eine oder zwei Spalten der kompakten Milch-Umfrage, und der Demonstrator springt zum passenden Diagramm. Die erste Spalte kommt auf die x-Achse, wo das Diagramm die Wahl lässt.',
+    first: 'Erste Spalte',
+    second: 'Zweite Spalte',
+    choose: 'Spalte wählen …',
+    none: 'keine',
+    kinds: { number: 'Zahl', nominal: 'Kategorien', ordinal: 'Kategorien mit Reihenfolge', rating: 'Rating' },
+    keyAnswer: 'Antwort wählen',
+    keyBack: 'eine Frage zurück',
+    keyReset: 'von vorn',
+  },
+  en: {
+    questions: {
+      count: 'How many variables do you want to show?',
+      scaleOne: 'What kind of values does it have?',
+      scaleFirst: 'What kind of values does the first variable have?',
+      scaleSecond: 'What kind of values does the second variable have?',
+      measure: 'Is it about counts or about shares within each group?',
+      ties: 'Are there many equal values, as with a rating?',
+    },
+    options: {
+      count: { one: 'one', two: 'two' },
+      scale: { nominal: 'Categories without an order', ordinal: 'Categories with an order', number: 'Numbers', time: 'Points in time' },
+      measure: { counts: 'Counts', shares: 'Shares' },
+      ties: { yes: 'yes', no: 'no' },
+    },
+    examples: {
+      count: { one: 'how the answers are spread', two: 'how two answers are related' },
+      scale: { nominal: 'such as diet, federal state', ordinal: 'such as town size, rating', number: 'such as age, price', time: 'such as year, date' },
+      measure: { counts: 'how many respondents', shares: 'which share in each group' },
+      ties: { yes: 'such as rating, household size', no: 'such as age, price' },
+    },
+    path: { count: 'variables', scaleOne: 'values', scaleFirst: 'first', scaleSecond: 'second', measure: 'shown as', ties: 'many equal values' },
+    pathHead: 'Your answers',
+    back: 'Back',
+    reset: 'Start over',
+    alsoPossible: 'Also possible:',
+    why: 'Why it fits',
+    watch: 'Watch out',
+    codeHead: 'Template for R: replace what stands in angle brackets.',
+    codeHeadSurvey: 'Code for the survey: it runs as it is in every R code box with survey.',
+    results: {
+      'bars-frequency': {
+        name: 'Bars sorted by frequency',
+        why: 'Categories without an order can be arranged freely, and sorted by frequency the most common one stands out at once.',
+        watch: 'Sort by frequency with fct_infreq() and put the categories on the y-axis, so that long names stay readable too.',
+      },
+      'bars-scale': {
+        name: 'Bars in the order of the scale',
+        why: 'With ordered categories the arrangement itself carries information, which is why the bars keep the order of the scale.',
+        watch: 'Set the order of the levels with factor(…, levels = …), because R otherwise sorts text alphabetically; ratings stored as numbers keep their order by themselves.',
+      },
+      histogram: {
+        name: 'Histogram',
+        why: 'A histogram cuts the numbers into bins of equal width and shows where most values lie, how widely they spread and whether there are outliers.',
+        watch: 'Try several widths with binwidth, because the width changes the picture, and say what you leave out when you filter outliers.',
+      },
+      boxplot: {
+        name: 'Boxplot',
+        why: 'A boxplot sums up the distribution briefly: the median as a line, the middle half of the values as a box and unusual values as single points.',
+        watch: 'Peaks and gaps in the data disappear inside the box, so a look at the histogram is worth it as well.',
+      },
+      'stacked-counts': {
+        name: 'Stacked bars with counts',
+        why: 'Each bar stands for a group, and the colours show how many respondents in it fall into each category, so the size of the groups stays visible.',
+        watch: 'With groups of very different sizes, compare shares instead of counts, because otherwise the largest group dominates the picture.',
+      },
+      'stacked-shares': {
+        name: 'Stacked bars to 100 %',
+        why: 'Each bar reaches 100 %, so the make-up of the groups can be compared even when they differ in size.',
+        watch: 'Because all bars have the same length, you no longer see how many respondents are in each group, so state the group sizes alongside.',
+      },
+      'boxplots-side': {
+        name: 'Boxplots side by side',
+        why: 'With one boxplot per group and the number on the y-axis, median and spread of the groups can be compared directly.',
+        watch: 'For ordered categories set the levels with factor(…, levels = …), and swap the axes when there are many groups with long names.',
+      },
+      scatter: {
+        name: 'Scatter plot',
+        why: 'Each respondent becomes a point, and the cloud shows whether the two numbers rise together, move in opposite directions or scatter independently.',
+        watch: 'Outliers squeeze the rest of the cloud; if you filter them out, say what you leave out.',
+      },
+      'count-points': {
+        name: 'Counted points',
+        why: 'With ratings many answers land on the same spot, and geom_count() shows by the size of the point how many there are.',
+        watch: 'Do not use geom_point() for such values, because there a single point would look just like a hundred on top of each other.',
+      },
+      line: {
+        name: 'Line chart',
+        why: 'Time runs along the x-axis from left to right, and the line joins consecutive points in time into a course.',
+        watch: 'A line needs one value per point in time; if there are several, summarise them first, for example with summarise().',
+      },
+    },
+    surveyHead: 'Try it with the survey',
+    surveyIntro: 'Choose one or two columns of the compact milk survey, and the demo jumps to the matching chart. The first column goes on the x-axis wherever the chart leaves the choice.',
+    first: 'First column',
+    second: 'Second column',
+    choose: 'Choose a column …',
+    none: 'none',
+    kinds: { number: 'number', nominal: 'categories', ordinal: 'ordered categories', rating: 'rating' },
+    keyAnswer: 'choose an answer',
+    keyBack: 'one question back',
+    keyReset: 'start over',
+  },
+};
+
 /** Labels of the folder tree and command line (client/shell-demo.js). */
 export const shellDemoLabels = {
   de: {

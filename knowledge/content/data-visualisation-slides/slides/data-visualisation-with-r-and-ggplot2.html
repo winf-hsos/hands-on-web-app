@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>data visualisation with R and ggplot2</title>
+  <link rel="stylesheet" href="theme.css?v=1">
+  <link rel="stylesheet" href="../../stagekit/stagekit.css?v=0.7.0-156254">
+  <style>
+    .mono { font-family: var(--mono); text-transform: none; }
+    .code.small { font-size: var(--small); }
+    .below { margin-top: 48px; }
+    /* ggplot2 charts (scripts/data-visualisation-figures.R) keep their aspect */
+    .figure img { max-width: 100%; max-height: 100%; }
+    /* two charts side by side, 800 x 600 each, with a caption above */
+    .pair img { width: 800px; height: 600px; display: block; margin-top: 16px; }
+    /* code on the left, the chart that grows with it on the right */
+    .two.layers { grid-template-columns: 820px 760px; }
+    .two.layers img { width: 760px; height: 620px; }
+    .code [data-line].now { color: var(--blue); }
+    .code .comment { color: var(--gray); }
+    /* two code columns with their headers, aligned at the top */
+    .two.codes { align-items: start; top: 260px; grid-template-columns: 760px 760px; column-gap: 160px; justify-content: start; }
+    .two.codes .header { margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+<div class="deck"
+     data-title="data visualisation with <span class='keep-case'>R</span> and ggplot2"
+     data-subtitle="prof. dr. nicolas meseth"
+     data-parts='["which chart?", "a chart in layers"]'>
+
+  <section class="slide title">
+    <aside class="notes">Wie man aus einer Tabelle ein Diagramm macht, und vor allem welches. Zwei Teile: zuerst, welches Diagramm zu welcher Variable passt, dann, wie ggplot2 ein Diagramm in Schichten baut.</aside>
+  </section>
+
+  <section class="slide agenda">
+    <aside class="notes">Teil eins ist die Auswahl: Die Skala einer Variable entscheidet, welches Diagramm passt, für eine Variable und für zwei. Teil zwei ist das Werkzeug: Jedes ggplot2-Diagramm entsteht aus denselben drei Schichten.</aside>
+  </section>
+
+  <section class="slide">
+    <img class="photo" src="img/opening-questionnaires.jpg" alt="">
+    <div class="photo-text">2,809 people answered<br>21 questions, so<br>what do they eat?</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">Die kompakte Fassung der Milchbefragung: 2.809 Menschen, 21 Fragen. Die Tabelle beantwortet die Frage, wie sie sich ernähren, aber niemand liest 2.809 Zeilen. Fünf Balken beantworten sie auf einen Blick. Darum geht es heute: welches Bild zu welcher Frage passt, und wie man es in R baut.</aside>
+  </section>
+
+  <!-- ============================================================ -->
+  <section class="slide part" data-part="which chart?" data-subtitle="it depends on the scale">
+    <aside class="notes">Teil eins: welches Diagramm. Die Antwort hängt fast immer an einer einzigen Frage, nämlich welche Skala die Variable hat.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="figScales">
+    <h2>the scale decides</h2>
+    <div class="figure" id="fig-scales"></div>
+    <div class="punch">the scale decides the chart, not taste.</div>
+    <aside class="notes">Zur Auffrischung die vier Skalen, jetzt mit Spalten aus der kompakten Umfrage. Nominal und ordinal sind Kategorien, in R ein Faktor, beim ordinalen mit festgelegter Reihenfolge der Stufen. Intervall und Verhältnis sind Zahlen, in R double. Zu Kategorien passen Balken, zu Zahlen Histogramm und Boxplot. Das Geburtsjahr ist das Beispiel für Intervall, weil es keinen echten Nullpunkt hat; in der kompakten Umfrage steht dafür das Alter, das verhältnisskaliert ist.</aside>
+  </section>
+
+  <section class="slide" data-on-show="figMapOne">
+    <h2>the map of this part</h2>
+    <div class="figure" id="fig-map-one"></div>
+    <aside class="notes">Die Landkarte für diesen Teil: oben die Diagramme für eine Variable, unten für zwei. Wir gehen zuerst die obere Reihe durch, von links nach rechts, und die Karte kommt wieder, wenn wir in die zweite Reihe wechseln.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>nominal: bars, sorted by frequency</h2>
+    <div class="figure"><img src="img/fig-diet.svg" alt="horizontal bar chart of diet, most frequent on top"></div>
+    <div class="code figcode">survey |&gt;
+  filter(!is.na(diet)) |&gt;
+  ggplot() +
+  aes(y = fct_rev(fct_infreq(diet))) +
+  geom_bar() +
+  labs(x = "Number of respondents", y = NULL)</div>
+    <aside class="notes">Die Ernährung ist nominal, ihre Kategorien haben keine Reihenfolge. Also bestimmt die Häufigkeit die Ordnung: fct_infreq() stellt die häufigste Kategorie an den Anfang, fct_rev() dreht die Reihenfolge um, damit sie oben steht. Liegende Balken, weil die Namen lang sind und so lesbar bleiben. 1.826 Allesesser, je 36 Pescetarier und Veganer. Den Code holt ihr über den Kopierknopf oben rechts.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>ordinal as text: alphabetical</h2>
+    <div class="figure"><img src="img/fig-milk-text.svg" alt="bar chart of milk frequency in alphabetical order"></div>
+    <div class="code figcode">survey |&gt;
+  filter(!is.na(milk_freq)) |&gt;
+  ggplot() +
+  aes(x = milk_freq) +
+  geom_bar() +
+  labs(x = "How often milk is drunk at home", y = "Number of respondents")</div>
+    <aside class="notes">Wie oft zu Hause Milch getrunken wird, so wie die Spalte aus der Datei kommt, als Text. R sortiert Text alphabetisch: daily, monthly, rarely, weekly. Die Skala von täglich bis selten ist damit zerrissen, und wöchentlich steht ganz hinten. Nach Häufigkeit zu sortieren wäre genauso falsch, denn auch das zerreißt die Skala.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>ordinal: a factor keeps the order of the scale</h2>
+    <div class="content" style="top: 150px;">
+      <div class="code small">survey |&gt;
+  filter(!is.na(milk_freq)) |&gt;
+  mutate(milk_freq = <span class="hl">factor</span>(milk_freq, <span class="hl">levels</span> = c(
+    "daily", "weekly", "monthly", "rarely"
+  ))) |&gt;
+  ggplot() +
+  aes(x = milk_freq) +
+  geom_bar() +
+  labs(x = "How often milk is drunk at home", y = "Number of respondents")</div>
+      <div class="sidenote below">text sorts alphabetically. a factor keeps the order you give it.</div>
+    </div>
+    <aside class="notes">Die Lösung ist factor() mit levels: Ihr gebt die Reihenfolge der Skala vor. Die Werte schreibt ihr genau so, wie count(milk_freq) sie zeigt; ein Tippfehler macht aus einem Wert still ein NA. filter(!is.na()) lässt die 424 ohne Angabe weg, und das sagt man dazu.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>ordinal as factor: in the order of the scale</h2>
+    <div class="figure"><img src="img/fig-milk-factor.svg" alt="bar chart of milk frequency from daily to rarely"></div>
+    <div class="code figcode">survey |&gt;
+  filter(!is.na(milk_freq)) |&gt;
+  mutate(milk_freq = factor(milk_freq, levels = c(
+    "daily", "weekly", "monthly", "rarely"
+  ))) |&gt;
+  ggplot() +
+  aes(x = milk_freq) +
+  geom_bar() +
+  labs(x = "How often milk is drunk at home", y = "Number of respondents")</div>
+    <aside class="notes">Als Faktor, von täglich bis selten: Jetzt sieht man, dass die Balken mit der Skala abnehmen, mehr als die Hälfte trinkt täglich Milch. Bei einer ordinalen Variable sortiert man nach der Skala, nicht nach der Häufigkeit.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>a rating scale is ordinal, too</h2>
+    <div class="figure"><img src="img/fig-eco.svg" alt="bar chart of eco-consciousness from -2 to +2"></div>
+    <div class="code figcode">survey |&gt;
+  filter(!is.na(eco_conscious)) |&gt;
+  ggplot() +
+  aes(x = eco_conscious) +
+  geom_bar() +
+  labs(x = "\"I would call myself eco-conscious\" (-2 to +2)", y = "Number of respondents")</div>
+    <aside class="notes">Eine Bewertung von −2 bis +2 sieht aus wie eine Zahl und steht in R auch als Zahl in der Tabelle. Fünf Balken zeigen aber mehr als ein Mittelwert von 0,6: Die meisten liegen bei 0 und +1, nur wenige ganz unten. Ob man Ratings wie Intervalldaten behandeln darf, ist eine eigene Diskussion; für das Bild nimmt man Balken, eine Stufe je Balken.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>one number: a histogram</h2>
+    <div class="figure"><img src="img/fig-age-hist.svg" alt="histogram of age in classes of five years"></div>
+    <div class="code figcode">survey |&gt;
+  ggplot() +
+  aes(x = age) +
+  geom_histogram(binwidth = 5) +
+  labs(x = "Age in years", y = "Number of respondents")</div>
+    <aside class="notes">Das Alter ist eine Zahl. Das Histogramm teilt es in Klassen, hier je fünf Jahre, und zählt, wie viele Personen in jede fallen. So sieht man die Form der Verteilung: wo die meisten liegen, wie breit sie streut, wo sie endet. Die Befragung beginnt bei 18 und endet bei 80, der Median liegt bei 50. Die Klassenbreite probiert man aus, etwa binwidth = 1 und 10.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>one outlier can hide everything</h2>
+    <div class="figure"><img src="img/fig-price-all.svg" alt="histogram of prices with one bar on the left and nothing else"></div>
+    <div class="code figcode">survey |&gt;
+  filter(!is.na(price_too_expensive)) |&gt;
+  ggplot() +
+  aes(x = price_too_expensive) +
+  geom_histogram(bins = 30) +
+  labs(x = "Too expensive from (€)", y = "Number of respondents")</div>
+    <aside class="notes">Ab welchem Preis ist der Liter Milch zu teuer? 611 Antworten. Das Histogramm zeigt einen einzigen Balken links und sonst fast nichts, weil jemand 999 € eingetragen hat. Die Achse reicht bis zum größten Wert, und alles Interessante drängt sich in den ersten Balken.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>one number, filtered</h2>
+    <div class="figure"><img src="img/fig-price-filtered.svg" alt="histogram of prices up to 10 euros"></div>
+    <div class="code figcode">survey |&gt;
+  filter(price_too_expensive &lt;= 10) |&gt;
+  ggplot() +
+  aes(x = price_too_expensive) +
+  geom_histogram(binwidth = 0.25) +
+  labs(x = "Too expensive from (€)", y = "Number of respondents")</div>
+    <div class="punch">20 of 611 answers lie above 10 € and are left out, and that belongs next to the chart.</div>
+    <aside class="notes">Nur die Preise bis 10 €, mit filter(). Jetzt sieht man die Verteilung: die meisten zwischen 1,50 € und 2,50 €, mit Häufungen bei runden Beträgen. Was man weglässt, sagt man dazu, im Diagramm oder darunter. Hier sind es 20 von 611 Antworten, darunter die 999 €.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>one number, in short: a boxplot</h2>
+    <div class="figure"><img src="img/fig-price-box.svg" alt="horizontal boxplot of prices with median, middle half and unusual values labelled"></div>
+    <div class="code figcode">survey |&gt;
+  filter(price_too_expensive &lt;= 10) |&gt;
+  ggplot() +
+  aes(x = price_too_expensive) +
+  geom_boxplot() +
+  labs(x = "Too expensive from (€)", y = NULL)</div>
+    <aside class="notes">Dieselben Preise als Boxplot. Der Strich in der Box ist der Median, 1,99 €. Die Box umfasst die mittlere Hälfte der Antworten, vom ersten bis zum dritten Quartil. Die Linien reichen bis zum letzten Wert, der höchstens anderthalb Boxbreiten von der Box entfernt liegt, und alles darüber hinaus erscheint als einzelner Punkt. Der Boxplot verliert die Form, die das Histogramm zeigt, braucht dafür aber wenig Platz, und das macht ihn stark, sobald man Gruppen vergleicht.</aside>
+  </section>
+
+  <section class="slide" data-on-show="figMapTwo">
+    <h2>the map of this part</h2>
+    <div class="figure" id="fig-map-two"></div>
+    <aside class="notes">Die zweite Reihe: zwei Variablen. Zwei Kategorien, eine Zahl je Gruppe, zwei Zahlen. Die Skalen bestimmen wieder das Diagramm, jetzt die beiden zusammen.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>two categories: stacked bars to 100 %</h2>
+    <div class="figure"><img src="img/fig-diet-organic.svg" alt="stacked bars to 100 percent: share shopping in an organic store by diet"></div>
+    <div class="code figcode">survey |&gt;
+  filter(!is.na(diet)) |&gt;
+  ggplot() +
+  aes(y = fct_infreq(diet), fill = shops_organic) +
+  geom_bar(position = "fill") +
+  labs(x = "Share of respondents", y = NULL, fill = "Shops in an\norganic store")</div>
+    <aside class="notes">Ernährung und Einkauf im Bioladen, zwei Kategorien. Je Ernährungsform ein Balken, auf 100 % gestapelt mit position = "fill". 56 % der Veganer kaufen im Bioladen ein, aber nur 8 % der Allesesser. Auf 100 % gestapelt, weil die Gruppen sehr unterschiedlich groß sind, 1.826 zu 36; in Anzahlen sähe man die Veganer kaum. Der Preis dafür: Man sieht nicht mehr, dass hinter dem Veganer-Balken nur 36 Menschen stehen, und das gehört in die Beschriftung.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>a number by group: boxplots side by side</h2>
+    <div class="figure"><img src="img/fig-price-brand.svg" alt="boxplots of the price limit for two brands"></div>
+    <div class="code figcode">survey |&gt;
+  filter(price_too_expensive &lt;= 10) |&gt;
+  ggplot() +
+  aes(x = milk_brand, y = price_too_expensive) +
+  geom_boxplot() +
+  labs(x = "Brand shown", y = "Too expensive from (€)")</div>
+    <aside class="notes">Eine Zahl je Gruppe: die Preisgrenze je gezeigter Marke. Die Mediane liegen fast gleich, 1,99 € bei Weihenstephan und 2,00 € bei Alpro. Weil die Marke zufällig zugeteilt wurde, ist das ein echtes Experiment, und die Marke macht für die Preisgrenze kaum einen Unterschied. Boxplots nebeneinander sind das Werkzeug für genau diesen Vergleich.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>two numbers: a scatter plot</h2>
+    <div class="figure"><img src="img/fig-age-price.svg" alt="scatter plot of age and price limit"></div>
+    <div class="code figcode">survey |&gt;
+  filter(price_too_expensive &lt;= 10) |&gt;
+  ggplot() +
+  aes(x = age, y = price_too_expensive) +
+  geom_point(alpha = 0.6) +
+  labs(x = "Age in years", y = "Too expensive from (€)")</div>
+    <aside class="notes">Zwei Zahlen: Alter und Preisgrenze. Jeder Punkt ist eine Person. Ein leichter Trend nach unten, die Korrelation liegt bei −0,25: Wer älter ist, nennt etwas niedrigere Preise. alpha = 0.6 macht die Punkte durchscheinend, damit man sieht, wo sie sich überlagern.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>when points pile up</h2>
+    <div class="figure"><img src="img/fig-eco-organic-point.svg" alt="scatter plot of two rating scales, only 25 points visible"></div>
+    <div class="code figcode">survey |&gt;
+  ggplot() +
+  aes(x = eco_conscious, y = prefers_organic) +
+  geom_point() +
+  labs(x = "Eco-conscious (-2 to +2)", y = "Prefers organic (-2 to +2)")</div>
+    <aside class="notes">Zwei Bewertungen von −2 bis +2, als Streudiagramm. Man sieht 25 Punkte und sonst nichts, denn jede Kombination kommt vor. Dass auf dem Punkt in der Mitte 385 Personen liegen, verrät das Bild nicht.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>when points pile up: count them</h2>
+    <div class="figure"><img src="img/fig-eco-organic-count.svg" alt="the same two rating scales with circles sized by count"></div>
+    <div class="code figcode">survey |&gt;
+  ggplot() +
+  aes(x = eco_conscious, y = prefers_organic) +
+  geom_count() +
+  labs(x = "Eco-conscious (-2 to +2)", y = "Prefers organic (-2 to +2)", size = "Respondents")</div>
+    <aside class="notes">geom_count() zählt, wie viele Personen auf jedem Punkt liegen, und zeichnet die Kreise entsprechend groß. Jetzt sieht man den Zusammenhang, die Korrelation liegt bei 0,41: Wer sich als umweltbewusst bezeichnet, kauft eher Bio. Bei zwei Ratingskalen ist das die bessere Wahl als geom_point().</aside>
+  </section>
+
+  <section class="slide">
+    <h2>what to avoid: angles instead of lengths</h2>
+    <div class="two pair">
+      <div><div class="header">a pie: compare angles</div><img src="img/fig-avoid-pie.svg" alt="pie chart of diet"></div>
+      <div><div class="header">bars: compare lengths</div><img src="img/fig-avoid-bars.svg" alt="bar chart of diet"></div>
+    </div>
+    <aside class="notes">Dieselben Zahlen zweimal. Im Kreis muss man Winkel vergleichen, und das können Menschen schlecht: Sind Pescetarier und Veganer gleich viele? Im Balkendiagramm sieht man es sofort, denn Längen vergleichen wir gut. Noch schlechter ist ein Kreis in 3D, weil die Perspektive vorne liegende Stücke größer macht; ggplot2 zeichnet so etwas gar nicht erst.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>what to avoid: a cut axis under bars</h2>
+    <div class="two pair">
+      <div><div class="header">axis from 55 %: a big gap</div><img src="img/fig-avoid-cut.svg" alt="bar chart with axis starting at 55 percent"></div>
+      <div><div class="header">axis from 0: a small one</div><img src="img/fig-avoid-full.svg" alt="the same bar chart with axis starting at zero"></div>
+    </div>
+    <aside class="notes">Wer täglich Milch trinkt, nach Geschlecht: 64,7 % der Frauen und 56,3 % der Männer. Links beginnt die Achse bei 55 %, und der Unterschied sieht aus wie das Dreifache. Rechts beginnt sie bei null, wie es bei Balken sein muss, denn ein Balken zeigt seine Größe über seine Länge. ggplot2 beginnt Balken von selbst bei null; abschneiden muss man aktiv, etwa mit coord_cartesian().</aside>
+  </section>
+
+  <section class="slide">
+    <h2>which chart for my question?</h2>
+    <div class="content">
+      <div class="statement">three questions about your variables, then the chart and the code to build it.</div>
+      <div class="sidenote below"><a href="https://hands-on-computer-science.de/ds/en/items/which-chart/">hands-on-computer-science.de/ds/en/items/which-chart</a></div>
+    </div>
+    <aside class="notes">Der Demonstrator zur Lektion: Ihr beantwortet, wie viele Variablen ihr zeigen wollt und welche Skala sie haben, und bekommt das passende Diagramm samt R-Code als Vorlage. Mit der Umfrage ausprobieren setzt echte Spaltennamen der kompakten Umfrage ein, sodass der Code sofort läuft. Hier einmal live durchklicken: zwei Kategorien, Ernährung und Bioladen.</aside>
+  </section>
+
+  <!-- ============================================================ -->
+  <section class="slide part" data-part="a chart in layers" data-subtitle="the grammar of graphics">
+    <aside class="notes">Teil zwei: Wie ggplot2 ein Diagramm baut. Ihr habt den Code auf den Folien gesehen, jetzt kommt die Idee dahinter.</aside>
+  </section>
+
+  <section class="slide" data-on-show="figGrammar">
+    <h2>three layers make a chart</h2>
+    <div class="figure" id="fig-grammar"></div>
+    <aside class="notes">Jedes Diagramm in ggplot2 besteht aus denselben drei Schichten, übereinander wie Folien auf einem Projektor. Die Daten: eine Tabelle, eine Zeile je Person. Die Ästhetik: welche Spalte auf welche Achse oder in welche Farbe geht. Das Geom: die Form, also Balken, Punkte oder Boxen. Alles andere, Beschriftungen, Skalen, das Aussehen, verfeinert nur. Leland Wilkinson nannte das 1999 die Grammatik der Grafik, und Hadley Wickham hat sie mit ggplot2 nach R gebracht.</aside>
+  </section>
+
+  <section class="slide" data-on-show="layerStep" data-on-step="layerStep">
+    <h2>one layer at a time</h2>
+    <div class="two layers">
+      <div class="code small"><span data-line="0">survey |&gt;
+  ggplot()</span><span data-line="1"> +
+  aes(x = age)</span><span data-line="2"> +
+  geom_histogram(binwidth = 5)</span><span data-line="3"> +
+  labs(
+    x = "Age in years",
+    y = "Number of respondents"
+  )</span></div>
+      <img class="layer" src="img/fig-layer-1.svg" alt="the chart after each layer">
+    </div>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span>
+    <aside class="notes">Schicht für Schicht. ggplot() allein ergibt eine leere Fläche: Die Daten sind da, aber nichts sagt, was gezeichnet wird. aes(x = age) legt das Alter auf die x-Achse, und die Achse erscheint mit ihrem Wertebereich. geom_histogram() zeichnet die Balken, und labs() beschriftet für Menschen. Jede Zeile ist eine Schicht, und nach jeder Zeile ist das Ergebnis ein gültiges Diagramm. Wer einen Fehler sucht, nimmt die Schichten von unten wieder weg.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>pipe and plus</h2>
+    <div class="content">
+      <div class="statement"><span class="mono">|&gt;</span> passes the data on, <span class="mono">+</span> adds a layer.</div>
+      <div class="two codes" style="position: static; margin-top: 60px; grid-template-columns: 560px 560px; column-gap: 160px;">
+        <div><div class="header">works</div><div class="code small">survey |&gt;
+  ggplot() <span class="hl">+</span>
+  aes(x = age)</div></div>
+        <div><div class="header">draws nothing</div><div class="code small">survey |&gt;
+  ggplot() <span class="hl">|&gt;</span>
+  aes(x = age)</div></div>
+      </div>
+    </div>
+    <aside class="notes">Der häufigste Fehler am Anfang. Bis ggplot() fließen die Daten durch die Pipe, ab ggplot() kommen Schichten mit dem Plus dazu. Wer nach ggplot() weiter mit der Pipe schreibt, übergibt das Diagramm als Argument an aes(). R zeichnet dann gar nichts, sondern gibt nur eine Zuordnung aus, in der das Diagramm selbst als y gelandet ist; das ist schwerer zu finden als eine Fehlermeldung. Die Faustregel: Die Pipe gehört zu dplyr, das Plus zu ggplot2.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>geom_bar() counts, geom_col() shows values</h2>
+    <div class="two codes">
+      <div><div class="header">the rows are counted</div><div class="code small">survey |&gt;
+  filter(!is.na(diet)) |&gt;
+  ggplot() +
+  aes(x = diet) +
+  <span class="hl">geom_bar</span>()</div></div>
+      <div><div class="header">the counts are already there</div><div class="code small">survey |&gt;
+  filter(!is.na(diet)) |&gt;
+  <span class="hl">count</span>(diet) |&gt;
+  ggplot() +
+  aes(x = diet, y = n) +
+  <span class="hl">geom_col</span>()</div></div>
+    </div>
+    <aside class="notes">Dasselbe Bild auf zwei Wegen. geom_bar() bekommt die Rohdaten, eine Zeile je Person, und zählt selbst. geom_col() bekommt eine Tabelle, in der die Werte schon stehen, und zeichnet sie nur. Den zweiten Weg braucht ihr, wenn ihr vorher etwas ausrechnet, etwa Anteile oder Mittelwerte je Gruppe.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>aesthetics: more than x and y</h2>
+    <div class="two codes">
+      <div><div class="header">inside aes(): from a column</div><div class="code small">survey |&gt;
+  filter(!is.na(diet)) |&gt;
+  ggplot() +
+  aes(y = diet, <span class="hl">fill = shops_organic</span>) +
+  geom_bar()</div></div>
+      <div><div class="header">outside: the same for all</div><div class="code small">survey |&gt;
+  filter(!is.na(diet)) |&gt;
+  ggplot() +
+  aes(y = diet) +
+  geom_bar(<span class="hl">fill = "steelblue"</span>)</div></div>
+    </div>
+    <div class="sidenote" style="position: absolute; left: var(--margin); bottom: 120px;">more aesthetics: <span class="mono">colour</span>, <span class="mono">size</span>, <span class="mono">shape</span>, <span class="mono">alpha</span></div>
+    <aside class="notes">Eine Ästhetik verbindet eine Spalte mit einer Eigenschaft des Bildes: x, y, aber auch Füllfarbe, Linienfarbe, Größe, Form. Was in aes() steht, hängt an einer Spalte und ändert sich von Balken zu Balken. Was außerhalb im Geom steht, gilt für alle gleich. Dieser Unterschied verwirrt anfangs fast alle: fill = "steelblue" in aes() ergibt eine Legende mit dem Eintrag steelblue in einer ganz anderen Farbe.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>fill from a column</h2>
+    <div class="figure"><img src="img/fig-diet-organic-count.svg" alt="bars of diet, split by shopping in an organic store, in counts"></div>
+    <div class="code figcode">survey |&gt;
+  filter(!is.na(diet)) |&gt;
+  ggplot() +
+  aes(y = fct_rev(fct_infreq(diet)), fill = shops_organic) +
+  geom_bar() +
+  labs(x = "Number of respondents", y = NULL, fill = "Shops in an\norganic store")</div>
+    <aside class="notes">fill = shops_organic in Anzahlen, ohne position = "fill". Man sieht die Größe der Gruppen, aber die Anteile bei den kleinen Gruppen verschwinden. Das ist der Grund, warum wir bei zwei Kategorien meist auf 100 % stapeln.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>order is a factor</h2>
+    <div class="content" style="top: 150px;">
+      <div class="code small">fct_infreq(diet)           <span class="comment"># most frequent first</span>
+fct_rev(fct_infreq(diet))  <span class="comment"># turned around: most frequent on top</span>
+factor(milk_freq, levels = c("daily", "weekly", "monthly", "rarely"))</div>
+      <div class="sidenote below">nominal: by frequency. ordinal: by the scale. both live in the factor, not in the chart.</div>
+    </div>
+    <aside class="notes">Die Reihenfolge der Balken bestimmt nicht ggplot2, sondern der Faktor. fct_infreq() aus forcats sortiert nach Häufigkeit, fct_rev() dreht um, und factor() mit levels legt eine eigene Reihenfolge fest. Das sind die drei Werkzeuge von den Folien zur Ernährung und zur Milch.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>small multiples: facet_wrap()</h2>
+    <div class="figure"><img src="img/fig-age-facet.svg" alt="histograms of age, one panel per gender"></div>
+    <div class="code figcode">survey |&gt;
+  ggplot() +
+  aes(x = age) +
+  geom_histogram(binwidth = 5) +
+  facet_wrap(~ gender) +
+  labs(x = "Age in years", y = "Number of respondents")</div>
+    <aside class="notes">facet_wrap() zeichnet dasselbe Diagramm einmal je Gruppe, nebeneinander und mit denselben Achsen. So vergleicht man Verteilungen, ohne sie übereinanderzulegen. Die Tilde vor gender heißt: je Wert dieser Spalte ein Feld.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>labels are for people</h2>
+    <div class="figure"><img src="img/fig-diet-organic-labelled.svg" alt="stacked bars with title, axis in percent, legend and source"></div>
+    <div class="code figcode">survey |&gt;
+  filter(!is.na(diet)) |&gt;
+  ggplot() +
+  aes(y = fct_infreq(diet), fill = shops_organic) +
+  geom_bar(position = "fill") +
+  scale_x_continuous(labels = scales::percent) +
+  labs(
+    title = "Vegans shop in organic stores most often",
+    x = "Share of respondents", y = NULL, fill = "Organic store",
+    caption = "Source: milk survey, compact (n = 2,781 with a diet)"
+  )</div>
+    <aside class="notes">Spaltennamen sind für R, Beschriftungen für Menschen. labs() setzt Titel, Achsen, Legende und Quelle; der Titel sagt die Aussage, nicht nur das Thema. scale_x_continuous(labels = scales::percent) macht aus 0,5 die Angabe 50 %. Und die Quelle mit der Fallzahl gehört dazu, damit niemand fragt, über wen die Zahlen sprechen.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>saving a chart</h2>
+    <div class="content" style="top: 150px;">
+      <div class="code small">diet_plot &lt;- survey |&gt;
+  filter(!is.na(diet)) |&gt;
+  ggplot() +
+  aes(y = fct_rev(fct_infreq(diet))) +
+  geom_bar()
+
+<span class="hl">ggsave</span>("diet.png", diet_plot, width = 16, height = 10, units = "cm")</div>
+      <div class="sidenote below">in a <span class="keep-case">Quarto</span> report, the chunk draws the chart itself; its caption goes into <span class="mono">#| fig-cap</span>.</div>
+    </div>
+    <aside class="notes">ggsave() speichert ein Diagramm als Datei, die Größe gebt ihr in Zentimetern an, damit die Schrift im Bericht passt. Im Quarto-Bericht braucht ihr das nicht: Der Code-Chunk zeichnet das Diagramm selbst, und die Bildunterschrift kommt in die Chunk-Option fig-cap.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="statement">the scale decides the chart, and three layers build it: data, aesthetics and a geom.</div>
+    </div>
+    <aside class="notes">Das, was bleiben soll. In der Lektion auf der Plattform laufen alle Beispiele im Browser mit der kompakten Umfrage, ihr könnt jeden Code ändern und neu ausführen. Dazu drei Aufgaben und das Quiz.</aside>
+  </section>
+
+</div>
+<!-- order matters: deck.js BEFORE stagekit.js. stagekit calls the data-on-show
+     functions on first display; if they come later, they do not exist yet. -->
+<script src="../../stagekit/draw.js?v=0.7.0-156254"></script>
+<script src="deck.js?v=1"></script>
+<script src="../../stagekit/stagekit.js?v=0.7.0-156254"></script>
+</body>
+</html>
