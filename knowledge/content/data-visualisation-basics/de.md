@@ -21,7 +21,7 @@ topics: [visualising-data, programming-with-r]
 modules: [ea]
 areas: [ds]
 relations:
-  requires: [dplyr-filter]
+  requires: [dplyr-select, dplyr-filter, dplyr-arrange, dplyr-mutate, dplyr-summarize]
 status: draft
 updated: 2026-11-15
 ---

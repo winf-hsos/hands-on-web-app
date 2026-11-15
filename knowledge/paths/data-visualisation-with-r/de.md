@@ -11,7 +11,7 @@ goal: >-
   beantworten, und wählst für jede Variable eine passende Darstellung.
 audience: Alle, die Daten auswerten wollen, ohne Programmiererfahrung
 level: 1
-requires: [getting-started-with-r]
+requires: [getting-started-with-r, data-transformation-with-r]
 sections:
   - title: { de: "Teil 1: Das passende Diagramm", en: "Part 1: The fitting chart" }
     steps:

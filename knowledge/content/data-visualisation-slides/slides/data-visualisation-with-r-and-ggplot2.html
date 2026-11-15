@@ -18,6 +18,8 @@
     .two.layers img { width: 760px; height: 620px; }
     .code [data-line].now { color: var(--blue); }
     .code .comment { color: var(--gray); }
+    .pipe { color: var(--groups-g1); }
+    .plus { color: var(--groups-g2); }
     /* two code columns with their headers, aligned at the top */
     .two.codes { align-items: start; top: 260px; grid-template-columns: 760px 760px; column-gap: 160px; justify-content: start; }
     .two.codes .header { margin-bottom: 20px; }
@@ -49,11 +51,11 @@
     <aside class="notes">Teil eins: welches Diagramm. Die Antwort hängt fast immer an einer einzigen Frage, nämlich welche Skala die Variable hat.</aside>
   </section>
 
-  <section class="slide has-punch" data-on-show="figScales">
+  <section class="slide" data-on-show="figScales" data-on-step="figScales">
     <h2>the scale decides</h2>
     <div class="figure" id="fig-scales"></div>
-    <div class="punch">the scale decides the chart, not taste.</div>
-    <aside class="notes">Zur Auffrischung die vier Skalen, jetzt mit Spalten aus der kompakten Umfrage. Nominal und ordinal sind Kategorien, in R ein Faktor, beim ordinalen mit festgelegter Reihenfolge der Stufen. Intervall und Verhältnis sind Zahlen, in R double. Zu Kategorien passen Balken, zu Zahlen Histogramm und Boxplot. Das Geburtsjahr ist das Beispiel für Intervall, weil es keinen echten Nullpunkt hat; in der kompakten Umfrage steht dafür das Alter, das verhältnisskaliert ist.</aside>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span><span data-step="4"></span>
+    <aside class="notes">Zur Auffrischung die vier Skalen, Zeile für Zeile aufgebaut: erst die vier Skalen, dann je ein Beispiel aus der kompakten Umfrage, dann der Typ in R, die passende Kennzahl und zuletzt das Diagramm. Nominal und ordinal sind Kategorien, in R ein Faktor, beim ordinalen mit festgelegter Reihenfolge der Stufen. Intervall und Verhältnis sind Zahlen, in R double. Zu Kategorien passen Balken, zu Zahlen Histogramm und Boxplot. Das Geburtsjahr ist das Beispiel für Intervall, weil es keinen echten Nullpunkt hat; in der kompakten Umfrage steht dafür das Alter, das verhältnisskaliert ist. Die Wahl des Diagramms ist also keine Geschmacksfrage, sondern folgt aus der Skala.</aside>
   </section>
 
   <section class="slide" data-on-show="figMapOne">
@@ -300,17 +302,17 @@
   <section class="slide">
     <h2>pipe and plus</h2>
     <div class="content">
-      <div class="statement"><span class="mono">|&gt;</span> passes the data on, <span class="mono">+</span> adds a layer.</div>
+      <div class="statement"><span class="mono pipe">|&gt;</span> passes the data on, <span class="mono plus">+</span> adds a layer.</div>
       <div class="two codes" style="position: static; margin-top: 60px; grid-template-columns: 560px 560px; column-gap: 160px;">
-        <div><div class="header">works</div><div class="code small">survey |&gt;
-  ggplot() <span class="hl">+</span>
+        <div><div class="header">works</div><div class="code small">survey <span class="pipe">|&gt;</span>
+  ggplot() <span class="plus">+</span>
   aes(x = age)</div></div>
-        <div><div class="header">draws nothing</div><div class="code small">survey |&gt;
-  ggplot() <span class="hl">|&gt;</span>
+        <div><div class="header">draws nothing</div><div class="code small">survey <span class="pipe">|&gt;</span>
+  ggplot() <span class="pipe">|&gt;</span>
   aes(x = age)</div></div>
       </div>
     </div>
-    <aside class="notes">Der häufigste Fehler am Anfang. Bis ggplot() fließen die Daten durch die Pipe, ab ggplot() kommen Schichten mit dem Plus dazu. Wer nach ggplot() weiter mit der Pipe schreibt, übergibt das Diagramm als Argument an aes(). R zeichnet dann gar nichts, sondern gibt nur eine Zuordnung aus, in der das Diagramm selbst als y gelandet ist; das ist schwerer zu finden als eine Fehlermeldung. Die Faustregel: Die Pipe gehört zu dplyr, das Plus zu ggplot2.</aside>
+    <aside class="notes">Der häufigste Fehler am Anfang. Bis ggplot() fließen die Daten durch die Pipe, ab ggplot() kommen Schichten mit dem Plus dazu. Wer nach ggplot() weiter mit der Pipe schreibt, übergibt das Diagramm als Argument an aes(). R zeichnet dann gar nichts, sondern gibt nur eine Zuordnung aus, in der das Diagramm selbst als y gelandet ist; das ist schwerer zu finden als eine Fehlermeldung. Die Faustregel: Die Pipe gehört zu dplyr, das Plus zu ggplot2. Auf der Folie steht die Pipe deshalb immer orange und das Plus violett, so fällt die falsche Pipe rechts sofort auf.</aside>
   </section>
 
   <section class="slide">

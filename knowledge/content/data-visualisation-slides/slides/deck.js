@@ -49,7 +49,10 @@ const placed = (x, y, k, svg) => `<g transform="translate(${x} ${y}) scale(${k})
 /* Columns 345 wide from x = 300; longest entry "<fct> with levels" is  */
 /* 17 characters of 32 px code, about 326.                              */
 /* ------------------------------------------------------------------ */
-function figScales() {
+function figScales(slide, step) {
+  // rows appear one at a time: 0 the four scales, 1 example, 2 in R,
+  // 3 summary, 4 chart; hidden rows keep their place (opacity 0)
+  const s = step === undefined ? 0 : step;
   const c = C();
   const x0 = 300, cw = 345;
   const cx = (i) => x0 + i * cw + cw / 2;
@@ -59,33 +62,39 @@ function figScales() {
   const types = ["<fct>", "<fct> with levels", "<dbl>", "<dbl>"];
   const sums = ["count()", "count(), median()", "mean(), sd()", "mean(), sd()"];
   const plots = ["bars, by\nfrequency", "bars, in the\norder of the scale", "histogram,\nboxplot", "histogram,\nboxplot"];
-  const yEx = 180, yType = 290, ySum = 360, ySk = 405, yPlot = 560;
-  const parts = [
+  const yEx = 220, yType = 340, ySum = 430, ySk = 490, yPlot = 690;
+  const rows = [[], [], [], [], []];
+  rows[0].push(
     d.label(x0 + cw, 0, "categorical", { size: 32, color: c.gray, anchor: "middle", centerY: 20 }),
     d.label(x0 + 3 * cw, 0, "metric", { size: 32, color: c.gray, anchor: "middle", centerY: 20 }),
     d.line(x0 + 20, 46, x0 + 2 * cw - 20, 46, { color: c.dark, width: 2 }),
     d.line(x0 + 2 * cw + 20, 46, x0 + 4 * cw - 20, 46, { color: c.dark, width: 2 }),
-    d.line(0, 130, 1680, 130, { color: c.dark, width: 2 }),
-    d.label(0, 0, "example", { size: 32, color: c.gray, centerY: yEx }),
-    d.label(0, 0, "in R", { size: 32, color: c.gray, centerY: yType, keepCase: true }),
-    d.label(0, 0, "summary", { size: 32, color: c.gray, centerY: ySum }),
-    d.label(0, 0, "chart", { size: 32, color: c.gray, centerY: 480 }),
-  ];
+    d.line(0, 140, 1680, 140, { color: c.dark, width: 2 }));
+  rows[1].push(d.label(0, 0, "example", { size: 32, color: c.gray, centerY: yEx + 22 }));
+  rows[2].push(d.label(0, 0, "in R", { size: 32, color: c.gray, centerY: yType, keepCase: true }));
+  rows[3].push(d.label(0, 0, "summary", { size: 32, color: c.gray, centerY: ySum }));
+  rows[4].push(d.label(0, 0, "chart", { size: 32, color: c.gray, centerY: ySk + 63 }));
   cols.forEach((t, i) => {
-    parts.push(d.label(cx(i), 0, t, { size: 48, anchor: "middle", centerY: 88 }));
-    parts.push(d.label(cx(i), 0, examples[i][0], { size: 32, anchor: "middle", color: c.light, centerY: yEx, mono: i !== 2, keepCase: true }));
-    parts.push(d.label(cx(i), 0, examples[i][1], { size: 32, anchor: "middle", color: c.gray, centerY: yEx + 42 }));
-    parts.push(d.label(cx(i), 0, types[i], { size: 32, anchor: "middle", mono: true, keepCase: true, color: c.light, centerY: yType }));
-    parts.push(d.label(cx(i), 0, sums[i], { size: 32, anchor: "middle", mono: true, keepCase: true, color: c.light, centerY: ySum }));
-    parts.push(d.label(cx(i), 0, plots[i], { size: 32, anchor: "middle", color: c.light, centerY: yPlot, lineHeight: 1.3 }));
+    rows[0].push(d.label(cx(i), 0, t, { size: 48, anchor: "middle", centerY: 94 }));
+    rows[1].push(d.label(cx(i), 0, examples[i][0], { size: 32, anchor: "middle", color: c.light, centerY: yEx, mono: i !== 2, keepCase: true }));
+    rows[1].push(d.label(cx(i), 0, examples[i][1], { size: 32, anchor: "middle", color: c.gray, centerY: yEx + 44 }));
+    rows[2].push(d.label(cx(i), 0, types[i], { size: 32, anchor: "middle", mono: true, keepCase: true, color: c.light, centerY: yType }));
+    rows[3].push(d.label(cx(i), 0, sums[i], { size: 32, anchor: "middle", mono: true, keepCase: true, color: c.light, centerY: ySum }));
+    rows[4].push(d.label(cx(i), 0, plots[i], { size: 32, anchor: "middle", color: c.light, centerY: yPlot, lineHeight: 1.3 }));
   });
-  parts.push(placed(cx(0) - 97, ySk, 0.75, sketch.barsSorted(c)));
-  parts.push(placed(cx(1) - 97, ySk, 0.75, sketch.barsScale(c)));
+  // sketches 260 x 140: categorical ones at 0.9 (234 x 126), the metric pair
+  // at 0.6 (156 x 84), centred in the same band
+  rows[4].push(placed(cx(0) - 117, ySk, 0.9, sketch.barsSorted(c)));
+  rows[4].push(placed(cx(1) - 117, ySk, 0.9, sketch.barsScale(c)));
   [2, 3].forEach((i) => {
-    parts.push(placed(cx(i) - 150, ySk + 25, 0.55, sketch.hist(c)));
-    parts.push(placed(cx(i) + 7, ySk + 25, 0.55, sketch.box(c)));
+    rows[4].push(placed(cx(i) - 162, ySk + 21, 0.6, sketch.hist(c)));
+    rows[4].push(placed(cx(i) + 6, ySk + 21, 0.6, sketch.box(c)));
   });
-  return put("fig-scales", d.svg(1680, 620, ...parts));
+  const parts = rows.map((r, k) => `<g opacity="${s >= k ? 1 : 0}">${r.join("")}</g>`);
+  const el = slide ? slide.querySelector("#fig-scales") : $("fig-scales");
+  const svg = d.svg(1680, 760, ...parts);
+  if (el) el.innerHTML = svg;
+  return svg;
 }
 window.figScales = figScales;
 
@@ -129,37 +138,63 @@ function figMapTwo() { return put("fig-map-two", mapSvg(1)); }
 Object.assign(window, { figMap, figMapOne, figMapTwo });
 
 /* ------------------------------------------------------------------ */
-/* A chart in layers. Three sheets one above the other like slides on   */
-/* a projector, each a parallelogram 560 x 150 shifted by 70 to the     */
-/* right per layer: data (a small table), aesthetics (the axes), geom   */
-/* (bars). On the right in grey the layers that only refine.            */
+/* A chart in layers, as an exploded view: three sheets lying in the    */
+/* same oblique plane, one above the other, joined at their corners by  */
+/* dashed lines. Each sheet is drawn flat (640 x 320) and put into the  */
+/* plane by one matrix, so table, axes and bars share the perspective.  */
+/* Labels sit on the right, joined to their sheet by a thin line; what  */
+/* only refines stands in grey beyond a rule.                           */
+/* Widths: "which column goes where" 23 chars x 32 x 0.55 = 405, from   */
+/* x = 980 to 1385; "refined by:" 194 from 1470.                        */
 /* ------------------------------------------------------------------ */
 function figGrammar() {
   const c = C();
+  const W = 640, H = 320, k = 0.6, f = 0.42, X = 60;
+  const Ys = [40, 250, 460];
+  const plane = (Y, inner) => `<g transform="matrix(1 0 ${k} ${f} ${X} ${Y})">${inner}</g>`;
+  const P = (x, y, Y) => [X + x + k * y, Y + f * y];
+  const ns = 'vector-effect="non-scaling-stroke"';
+  const sheet = (Y, inner) => plane(Y,
+    `<rect x="0" y="0" width="${W}" height="${H}" rx="14" fill="${c.bg}" stroke="${c.light}" stroke-width="3" ${ns}/>` + inner);
+
+  // data: a header row and five rows of cells
+  const table = [0, 1, 2, 3].map((j) =>
+    `<rect x="${50 + j * 140}" y="34" width="124" height="34" rx="4" fill="${c.gray}"/>` +
+    [0, 1, 2, 3, 4].map((r) => `<rect x="${50 + j * 140}" y="${88 + r * 42}" width="124" height="28" rx="4" fill="${c.dark}"/>`).join("")).join("");
+  // aesthetics: two axes with ticks, the space the data will be mapped into
+  const axes =
+    `<line x1="70" y1="270" x2="590" y2="270" stroke="${c.light}" stroke-width="3" ${ns}/>` +
+    `<line x1="70" y1="270" x2="70" y2="40" stroke="${c.light}" stroke-width="3" ${ns}/>` +
+    [150, 250, 350, 450, 550].map((x) => `<line x1="${x}" y1="270" x2="${x}" y2="290" stroke="${c.light}" stroke-width="3" ${ns}/>`).join("") +
+    [200, 130, 60].map((y) => `<line x1="50" y1="${y}" x2="70" y2="${y}" stroke="${c.light}" stroke-width="3" ${ns}/>`).join("");
+  // geom: bars on a baseline
+  const bars = `<line x1="70" y1="270" x2="590" y2="270" stroke="${c.dark}" stroke-width="3" ${ns}/>` +
+    [120, 200, 160, 80, 230].map((h, i) => `<rect x="${110 + i * 100}" y="${270 - h}" width="70" height="${h}" fill="${c.blue}"/>`).join("");
+
   const parts = [];
-  const sheet = (x, y, inner, name, sub) => {
-    const sk = 90;  // horizontal skew of the sheet
-    parts.push(`<polygon points="${x + sk},${y} ${x + 560 + sk},${y} ${x + 560},${y + 150} ${x},${y + 150}" fill="${c.bg}" stroke="${c.light}" stroke-width="3"/>`);
-    parts.push(inner(x, y));
-    parts.push(d.label(x + 700, 0, name, { size: 48, centerY: y + 60, mono: true, keepCase: true }));
-    parts.push(d.label(x + 700, 0, sub, { size: 32, color: c.gray, centerY: y + 112 }));
-  };
-  // geom at the bottom, data on top, drawn bottom up so the upper sheets cover the lower
-  sheet(80, 470, (x, y) => [60, 100, 80, 40, 120].map((h, i) =>
-    `<rect x="${x + 150 + i * 70}" y="${y + 135 - h * 0.9}" width="44" height="${h * 0.9}" fill="${c.blue}"/>`).join(""),
-    "geom_bar()", "the form: bars, points, boxes");
-  sheet(80, 270, (x, y) =>
-    `<line x1="${x + 130}" y1="${y + 130}" x2="${x + 540}" y2="${y + 130}" stroke="${c.light}" stroke-width="3"/>` +
-    `<line x1="${x + 150}" y1="${y + 135}" x2="${x + 180}" y2="${y + 20}" stroke="${c.light}" stroke-width="3"/>` +
-    d.label(x + 470, 0, "x = diet", { size: 20, color: c.gray, mono: true, keepCase: true, centerY: y + 108 }),
-    "aes()", "which column goes where");
-  sheet(80, 70, (x, y) => [0, 1, 2, 3].map((r) =>
-    [0, 1, 2].map((k) => `<rect x="${x + 150 + k * 120 - r * 14}" y="${y + 22 + r * 28}" width="104" height="18" fill="${c.dark}"/>`).join("")).join(""),
-    "survey", "the data, one row per person");
-  // what only refines, in grey on the right
-  parts.push(d.line(1330, 90, 1330, 600, { color: c.dark, width: 2 }));
-  parts.push(d.label(1380, 0, "refined by:", { size: 32, color: c.gray, centerY: 250 }));
-  parts.push(d.label(1380, 0, "labs()\nscale_…()\ntheme()", { size: 32, color: c.gray, mono: true, keepCase: true, centerY: 380, lineHeight: 1.5 }));
+  // corner lines first, so the sheets cover them
+  [[0, 0], [W, 0], [0, H], [W, H]].forEach(([x, y]) => {
+    for (let i = 0; i < 2; i++) {
+      const [x1, y1] = P(x, y, Ys[i]), [x2, y2] = P(x, y, Ys[i + 1]);
+      parts.push(d.line(x1, y1, x2, y2, { color: c.dark, width: 2, dashed: true }));
+    }
+  });
+  parts.push(sheet(Ys[0], table), sheet(Ys[1], axes), sheet(Ys[2], bars));
+  // axis names in screen coordinates, so the text is not slanted
+  const [ax, ay] = P(600, 270, Ys[1]), [bx, by] = P(70, 30, Ys[1]);
+  parts.push(d.label(ax + 14, 0, "x", { size: 32, color: c.gray, mono: true, keepCase: true, centerY: ay }));
+  parts.push(d.label(bx - 64, 0, "y", { size: 32, color: c.gray, mono: true, keepCase: true, centerY: by }));
+
+  const names = [["survey", "one row per person"], ["aes()", "which column goes where"], ["geom_bar()", "bars, points, boxes"]];
+  names.forEach(([name, sub], i) => {
+    const [rx, ry] = P(W, H / 2, Ys[i]);
+    parts.push(d.line(rx + 16, ry, 950, ry, { color: c.dark, width: 2 }));
+    parts.push(d.label(980, 0, name, { size: 48, mono: true, keepCase: true, centerY: ry - 22 }));
+    parts.push(d.label(980, 0, sub, { size: 32, color: c.gray, centerY: ry + 30 }));
+  });
+  parts.push(d.line(1430, 60, 1430, 600, { color: c.dark, width: 2 }));
+  parts.push(d.label(1470, 0, "refined by:", { size: 32, color: c.gray, centerY: 250 }));
+  parts.push(d.label(1470, 0, "labs()\nscale_…()\ntheme()", { size: 32, color: c.gray, mono: true, keepCase: true, centerY: 375, lineHeight: 1.5 }));
   return put("fig-grammar", d.svg(1680, 640, ...parts));
 }
 window.figGrammar = figGrammar;
