@@ -5293,6 +5293,17 @@ details.callout[open] > summary::before {
   margin: 0;
 }
 
+/* the survey's code as a box to run (client/runner-box.js), the template
+   as a plain block to copy: only one of them is shown */
+.prose .which-chart .code-block[hidden],
+.wc-runner[hidden] {
+  display: none;
+}
+
+.prose .wc-runner .runner {
+  margin: 0;
+}
+
 .wc-slot {
   color: var(--accent-ink);
   font-weight: 650;

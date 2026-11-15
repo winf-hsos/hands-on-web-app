@@ -1394,7 +1394,7 @@ export const whichChartLabels = {
     why: 'Warum es passt',
     watch: 'Achte darauf',
     codeHead: 'Vorlage für R: Ersetze, was in spitzen Klammern steht.',
-    codeHeadSurvey: 'Code für die Umfrage: Er läuft so, wie er ist, in jedem R-Codekasten mit survey.',
+    codeHeadSurvey: 'Code für die Umfrage: Führ ihn hier aus, ändere ihn oder kopier ihn in jeden R-Codekasten mit survey.',
     results: {
       'bars-frequency': {
         name: 'Balken, nach Häufigkeit sortiert',
@@ -1487,7 +1487,7 @@ export const whichChartLabels = {
     why: 'Why it fits',
     watch: 'Watch out',
     codeHead: 'Template for R: replace what stands in angle brackets.',
-    codeHeadSurvey: 'Code for the survey: it runs as it is in every R code box with survey.',
+    codeHeadSurvey: 'Code for the survey: run it here, change it, or copy it into any R code box with survey.',
     results: {
       'bars-frequency': {
         name: 'Bars sorted by frequency',

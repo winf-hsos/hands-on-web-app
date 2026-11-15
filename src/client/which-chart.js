@@ -4,7 +4,9 @@
 // and what to watch out for, and hands out the R code with ggplot2. Below,
 // one or two columns of the compact milk survey can be chosen instead: the
 // finder jumps to their chart, shows the answers the questions would have
-// got, and fills the code with the real names so that it runs as it is.
+// got, and fills the code with the real names so that it runs as it is:
+// right here, in a code box with a Run button (client/runner-box.js), while
+// a template with placeholders stays a plain block to copy.
 // The logic lives in client/which-chart-model.js.
 //
 // Nothing jumps from one question to the next: the answers so far and the
@@ -19,6 +21,7 @@
 import { addCopyButton } from './copy.js';
 import { keys } from './demo-frame.js';
 import { highlight } from './highlight.js';
+import { setup as runnable } from './runner-box.js';
 import { COLUMNS, fromSurvey, nextQuestion, resultsFor, template } from './which-chart-model.js';
 
 const L = JSON.parse(document.body.dataset.whichChartLabels ?? '{}');
@@ -84,6 +87,7 @@ function setup(root) {
         <dl class="wc-facts"></dl>
         <p class="wc-code-head"></p>
         <div class="code-block"><pre class="code"><code class="language-r"></code></pre></div>
+        <div class="wc-runner" hidden></div>
       </div>
     </div>
     <section class="wc-survey" aria-label="${esc(L.surveyHead)}">
@@ -106,8 +110,11 @@ function setup(root) {
   const first = $('[data-col="1"]');
   const second = $('[data-col="2"]');
   const live = $('[data-out="live"]');
+  const codeBlock = $('.code-block');
+  const runner = $('.wc-runner');
   let codeText = '';
-  addCopyButton($('.code-block'), () => codeText);
+  let runnerCode = '';
+  addCopyButton(codeBlock, () => codeText);
 
   // the answers given, the chart shown among those they lead to, and the
   // survey columns when the answers came from there
@@ -154,7 +161,21 @@ function setup(root) {
     $('.wc-facts').innerHTML = `<div><dt>${L.why}</dt><dd>${esc(words.why)}</dd></div><div><dt>${L.watch}</dt><dd>${esc(words.watch)}</dd></div>`;
     $('.wc-code-head').textContent = survey ? L.codeHeadSurvey : L.codeHead;
     codeText = template(id, survey?.roles);
-    code.innerHTML = marked(codeText);
+    codeBlock.hidden = Boolean(survey);
+    runner.hidden = !survey;
+    if (!survey) code.innerHTML = marked(codeText);
+    // the survey's code runs here; a new box only for new code, so that a
+    // new width or another look at the same chart keeps what it drew
+    else if (codeText !== runnerCode) {
+      runnerCode = codeText;
+      const box = document.createElement('div');
+      box.className = 'runner';
+      box.dataset.lang = 'r';
+      box.innerHTML = '<pre class="code"><code class="language-r"></code></pre>';
+      box.querySelector('code').textContent = codeText;
+      runner.replaceChildren(box);
+      runnable(box, { remember: false });
+    }
     live.textContent = words.name;
   }
 
