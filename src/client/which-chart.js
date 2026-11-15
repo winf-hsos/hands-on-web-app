@@ -7,6 +7,13 @@
 // got, and fills the code with the real names so that it runs as it is.
 // The logic lives in client/which-chart-model.js.
 //
+// Nothing jumps from one question to the next: the answers so far and the
+// buttons "Back" and "Start over" sit in one row on top, and both that row
+// and the question below it keep the height of the tallest of their kind,
+// measured once for the current width (reserve()). Only the chart at the end
+// may be taller, and when a survey column is chosen, the page scrolls by as
+// much as the chart grew, so the select stays under the pointer.
+//
 // Written with ```which-chart in Markdown (remark-knowledge.mjs); the labels
 // come from the page (data-which-chart-labels on <body>).
 import { addCopyButton } from './copy.js';
@@ -60,20 +67,24 @@ const marked = (code) => highlight(code, 'r').replace(/&lt;([\w ]+)&gt;/g, '<spa
 function setup(root) {
   const optionList = (blank) => [`<option value="">${esc(blank)}</option>`, ...COLUMNS.map((c) => `<option value="${c.name}">${c.name} (${esc(L.kinds[c.kind])})</option>`)].join('');
   root.innerHTML = `
-    <div class="wc-path" hidden>
-      <p class="dg-label">${L.pathHead}</p>
-      <ol></ol>
+    <div class="wc-top">
+      <div class="wc-path">
+        <p class="dg-label">${L.pathHead}</p>
+        <ol></ol>
+      </div>
+      <div class="wc-nav">
+        <button type="button" class="button button-quiet" data-act="back">${L.back}</button>
+        <button type="button" class="wc-link" data-act="reset">${L.reset}</button>
+      </div>
     </div>
-    <div class="wc-stage" tabindex="-1"></div>
-    <div class="wc-result" hidden>
-      <div class="wc-head"></div>
-      <dl class="wc-facts"></dl>
-      <p class="wc-code-head"></p>
-      <div class="code-block"><pre class="code"><code class="language-r"></code></pre></div>
-    </div>
-    <div class="wc-nav">
-      <button type="button" class="button button-quiet" data-act="back">${L.back}</button>
-      <button type="button" class="wc-link" data-act="reset">${L.reset}</button>
+    <div class="wc-view">
+      <div class="wc-stage" tabindex="-1"></div>
+      <div class="wc-result" hidden>
+        <div class="wc-head"></div>
+        <dl class="wc-facts"></dl>
+        <p class="wc-code-head"></p>
+        <div class="code-block"><pre class="code"><code class="language-r"></code></pre></div>
+      </div>
     </div>
     <section class="wc-survey" aria-label="${esc(L.surveyHead)}">
       <p class="wc-survey-head">${L.surveyHead}</p>
@@ -87,6 +98,7 @@ function setup(root) {
 
   const $ = (selector) => root.querySelector(selector);
   const path = $('.wc-path');
+  const view = $('.wc-view');
   const stage = $('.wc-stage');
   const result = $('.wc-result');
   const code = $('code');
@@ -104,13 +116,15 @@ function setup(root) {
   let survey = null;
 
   function renderPath() {
-    path.hidden = answers.length === 0;
+    path.classList.toggle('is-empty', answers.length === 0);
     path.querySelector('ol').innerHTML = answers
       .map(([id, value], i) => {
         const q = question(id, answers.slice(0, i));
         return `<li><span class="wc-path-key">${q.path}</span> ${esc(q.option(value))}</li>`;
       })
       .join('');
+    // where the answers scroll sideways (on a phone), the latest one is in view
+    path.scrollLeft = path.scrollWidth;
   }
 
   function renderQuestion(q) {
@@ -121,7 +135,7 @@ function setup(root) {
         ${q.options.map((v, i) => `<button type="button" class="wc-option" data-value="${v}"><span class="wc-key" aria-hidden="true">${i + 1}</span><span class="wc-option-text">${esc(words.option(v))}</span><span class="wc-example">${esc(words.example(v))}</span></button>`).join('')}
       </div>`;
     result.hidden = true;
-    live.textContent = words.text;
+    return words.text;
   }
 
   function renderResult(list) {
@@ -129,6 +143,7 @@ function setup(root) {
     const words = L.results[id];
     const others = list.filter((r) => r !== id);
     stage.innerHTML = '';
+    stage.hidden = true;
     result.hidden = false;
     $('.wc-head').innerHTML = `
       ${sketch(id)}
@@ -150,7 +165,8 @@ function setup(root) {
     const q = nextQuestion(answers);
     if (q) {
       delete root.dataset.done;
-      renderQuestion(q);
+      stage.hidden = false;
+      live.textContent = renderQuestion(q);
     } else {
       renderResult(survey?.results ?? resultsFor(answers));
     }
@@ -160,6 +176,43 @@ function setup(root) {
       void el.offsetWidth;
       el.classList.add('is-new');
     }
+  }
+
+  // Every way through the questions, rendered once without being shown: the
+  // tallest row of answers, the tallest question text and the tallest
+  // question with its buttons become the minimum heights, so that neither
+  // the buttons nor what lies below them move.
+  let measuredWidth = 0;
+  function reserve() {
+    measuredWidth = root.clientWidth;
+    const kept = answers;
+    const height = (el) => Math.ceil(el.getBoundingClientRect().height);
+    let pathHeight = 0;
+    let textHeight = 0;
+    let questionHeight = 0;
+    path.style.minHeight = '';
+    view.style.minHeight = '';
+    root.style.removeProperty('--wc-question-height');
+    stage.hidden = false;
+    result.hidden = true;
+    const walk = (given) => {
+      answers = given;
+      renderPath();
+      pathHeight = Math.max(pathHeight, height(path));
+      const q = nextQuestion(given);
+      if (!q) return;
+      renderQuestion(q);
+      textHeight = Math.max(textHeight, height(stage.querySelector('.wc-question')));
+      questionHeight = Math.max(questionHeight, height(stage.querySelector('.wc-options')));
+      for (const value of q.options) walk([...given, [q.id, value]]);
+    };
+    walk([]);
+    answers = kept;
+    path.style.minHeight = `${pathHeight}px`;
+    root.style.setProperty('--wc-question-height', `${textHeight}px`);
+    // the margin below the question text belongs to the stage as well
+    const gap = parseFloat(getComputedStyle(stage.querySelector('.wc-question')).marginBottom);
+    view.style.minHeight = `${textHeight + gap + questionHeight}px`;
   }
 
   // leaving the survey: the questions take over again
@@ -204,7 +257,8 @@ function setup(root) {
     if (second.value && second.value === first.value) second.value = '';
   }
 
-  function fromSelects() {
+  function fromSelects(e) {
+    const before = e?.target.getBoundingClientRect().top;
     syncSelects();
     if (!first.value) {
       survey = null;
@@ -215,6 +269,8 @@ function setup(root) {
     }
     shown = 0;
     render();
+    // the select stays where it was, however much the chart above it grew
+    if (before !== undefined) window.scrollBy(0, e.target.getBoundingClientRect().top - before);
   }
 
   stage.addEventListener('click', (e) => {
@@ -252,7 +308,14 @@ function setup(root) {
   });
 
   syncSelects();
+  reserve();
   render();
+  // a new width wraps the texts differently, so the heights are measured again
+  new ResizeObserver(() => {
+    if (root.clientWidth === measuredWidth) return;
+    reserve();
+    render();
+  }).observe(root);
 }
 
 document.querySelectorAll('[data-which-chart]').forEach((root) => setup(root));

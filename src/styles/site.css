@@ -5088,11 +5088,13 @@ details.callout[open] > summary::before {
   }
 }
 
-/* The chart finder (client/which-chart.js): the answers so far as a quiet
-   line on top, then either the open question with its answers as a row of
-   large buttons, or the chart with a sketch, why it fits, what to watch out
-   for and its R code. "Back" and "Start over" below, and under a rule the
-   survey columns that lead straight to a chart. A new view only fades in. */
+/* The chart finder (client/which-chart.js): on top one row with the answers
+   so far and the buttons "Back" and "Start over", then either the open
+   question with its answers as a row of large buttons, or the chart with a
+   sketch, why it fits, what to watch out for and its R code; under a rule the
+   survey columns that lead straight to a chart. The row on top and the
+   question keep a measured minimum height, so nothing moves from one step to
+   the next, and a new view only fades in. */
 .which-chart {
   margin: 1.5rem 0;
   padding: 1rem;
@@ -5104,16 +5106,25 @@ details.callout[open] > summary::before {
   margin: 0;
 }
 
-.wc-path {
+.wc-top {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.25rem 0.75rem;
+  align-items: flex-start;
+  gap: 0.5rem 1rem;
   margin-bottom: 0.9rem;
 }
 
-.wc-path[hidden] {
-  display: none;
+.wc-path {
+  display: flex;
+  flex: 1 1 18rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+  align-content: flex-start;
+  gap: 0.25rem 0.75rem;
+}
+
+.wc-path.is-empty {
+  visibility: hidden;
 }
 
 .prose .wc-path ol {
@@ -5151,6 +5162,7 @@ details.callout[open] > summary::before {
 }
 
 .prose .wc-question {
+  min-height: var(--wc-question-height, 0);
   margin-bottom: 0.75rem;
   font-size: 1.15rem;
   font-weight: 650;
@@ -5202,6 +5214,7 @@ details.callout[open] > summary::before {
   color: var(--quiet);
 }
 
+.wc-stage[hidden],
 .wc-result[hidden] {
   display: none;
 }
@@ -5287,10 +5300,10 @@ details.callout[open] > summary::before {
 
 .wc-nav {
   display: flex;
-  flex-wrap: wrap;
+  flex: none;
   align-items: center;
   gap: 0.5rem 1rem;
-  margin-top: 1rem;
+  margin-left: auto;
 }
 
 .wc-nav .button:disabled {
@@ -5300,7 +5313,6 @@ details.callout[open] > summary::before {
 }
 
 .wc-nav .wc-link {
-  margin-left: auto;
   font-size: 0.9rem;
 }
 
@@ -5336,6 +5348,24 @@ details.callout[open] > summary::before {
 @media (max-width: 40rem) {
   .which-chart {
     padding: 0.75rem;
+  }
+
+  /* on a phone the answers stay in one line that scrolls sideways, so the
+     row on top does not reserve room for four wrapped lines */
+  .wc-path,
+  .prose .wc-path ol {
+    flex-wrap: nowrap;
+  }
+
+  .wc-path {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .wc-path .dg-label,
+  .prose .wc-path li {
+    flex: none;
+    white-space: nowrap;
   }
 
   .wc-head {
