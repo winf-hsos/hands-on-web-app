@@ -1,5 +1,5 @@
 ---
-title: Showing data with ggplot2
+title: Visualising data with ggplot2
 summary: >-
   Which chart fits a variable depends on its level of measurement, for one
   variable as for two. With ggplot2 every one of them is built from the same

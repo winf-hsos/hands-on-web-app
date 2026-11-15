@@ -1,7 +1,7 @@
 ---
 type: lesson
 code: 8921
-title: Daten zeigen mit ggplot2
+title: Daten visualisieren mit ggplot2
 summary: >-
   Welches Diagramm zu welcher Variable passt, hängt an ihrer Skala, für eine
   Variable wie für zwei. Mit ggplot2 entsteht jedes davon aus denselben drei
