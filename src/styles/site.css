@@ -5088,6 +5088,140 @@ details.callout[open] > summary::before {
   }
 }
 
+/* Same numbers, different pictures (client/same-stats.js): the shapes as
+   chips on top, then the square scatter plot with the summary beside it, the
+   buttons below. On a phone the summary moves under the plot. Hidden points
+   leave the plot empty with a question in its middle, for guessing in class. */
+.same-stats {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.75rem;
+}
+
+.prose .same-stats p {
+  margin: 0;
+}
+
+.ss-shapes,
+.ss-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.ss-shapes .dg-label {
+  margin-right: 0.25rem;
+}
+
+.ss-controls {
+  margin-top: 0.75rem;
+}
+
+.ss-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 15rem;
+  gap: 1.25rem;
+  align-items: center;
+  margin-top: 0.75rem;
+}
+
+.ss-plot-box {
+  position: relative;
+  max-width: 28rem;
+}
+
+.ss-plot {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.ss-grid line {
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+
+.ss-grid text {
+  fill: var(--quiet);
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.ss-grid .ss-axis {
+  font-style: italic;
+}
+
+.ss-dots circle {
+  fill: var(--accent);
+  fill-opacity: 0.85;
+  transition: opacity 0.3s ease;
+}
+
+.ss-plot-box.is-hidden .ss-dots circle {
+  opacity: 0;
+}
+
+.prose .ss-guess {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--quiet);
+  visibility: hidden;
+}
+
+.ss-plot-box.is-hidden .ss-guess {
+  visibility: visible;
+}
+
+.ss-stats {
+  margin: 0.4rem 0 0.9rem;
+}
+
+.ss-stat {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.9rem;
+}
+
+.ss-stat dt {
+  color: var(--quiet);
+}
+
+.ss-stat dd {
+  margin: 0;
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
+}
+
+.prose .ss-now {
+  display: flex;
+  gap: 0.5ch;
+  font-size: 0.85rem;
+  color: var(--quiet);
+}
+
+.ss-now b {
+  color: var(--ink);
+}
+
+@media (max-width: 40rem) {
+  .ss-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 /* The chart finder (client/which-chart.js): on top one row with the answers
    so far and the buttons "Back" and "Start over", then either the open
    question with its answers as a row of large buttons, or the chart with a

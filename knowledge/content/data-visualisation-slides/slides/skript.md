@@ -95,12 +95,13 @@ sieht das aus wie das Dreifache. Balken beginnen bei null.
 führt mit wenigen Fragen zur passenden Darstellung und gibt den R-Code als
 Vorlage aus, auf Wunsch mit Spalten der kompakten Umfrage.
 
-## Teil 2: Ein Diagramm in Schichten (29–43)
+## Teil 2: Ein Diagramm in Schichten (29–45)
 
 **Drei Schichten (30).** Jedes ggplot2-Diagramm besteht aus denselben drei
 Schichten: den Daten (eine Zeile je Person), der Ästhetik (`aes()`, welche
 Spalte auf welche Achse oder in welche Farbe geht) und dem Geom (der Form:
-Balken, Punkte, Boxen). `labs()`, die Skalen und `theme()` verfeinern nur.
+Balken, Punkte, Boxen). Daneben stehen die vier übrigen Schichten, die mit
+Voreinstellungen kommen.
 Leland Wilkinson hat das 1999 als Grammatik der Grafik beschrieben, Hadley
 Wickham hat sie mit ggplot2 nach R gebracht.
 
@@ -110,37 +111,50 @@ zeichnet die Balken, `labs()` beschriftet für Menschen. Nach jeder Zeile ist
 das Ergebnis ein gültiges Diagramm, und wer einen Fehler sucht, nimmt die
 Schichten von unten wieder weg.
 
-**Pipe und Plus (35).** Die Pipe `|>` reicht die Daten weiter, bis sie in
+**Sieben Schichten (35).** Die Grammatik kennt sieben Schichten. Drei
+schreibt man immer: Daten, Ästhetik (mit den Skalen, die aus Werten
+Positionen und Farben machen) und Geom. Die übrigen vier haben
+Voreinstellungen: Statistik (was vor dem Zeichnen gerechnet wird,
+`geom_bar()` zählt von selbst, `stat_summary()` rechnet, was man vorgibt),
+Facetten (ein Feld je Gruppe, sonst eines), Koordinaten (sonst rechtwinklig)
+und Theme (alles, was nicht von den Daten abhängt).
+
+**Andere Koordinaten (36).** Ein einzelner Balken, gestapelt nach
+Ernährungsweise, wird mit `coord_polar(theta = "y")` zum Kreisdiagramm.
+Daten, Ästhetik und Geom bleiben gleich, nur das Koordinatensystem ändert
+sich; deshalb hat ggplot2 kein eigenes Geom für Kreise.
+
+**Pipe und Plus (37).** Die Pipe `|>` reicht die Daten weiter, bis sie in
 `ggplot()` ankommen; danach kommen Schichten mit `+` dazu. Wer nach
 `ggplot()` weiter mit der Pipe schreibt, übergibt das Diagramm an `aes()`,
 und R zeichnet nichts, sondern gibt nur eine Zuordnung aus.
 
-**geom_bar() und geom_col() (36).** `geom_bar()` bekommt die Rohdaten und
+**geom_bar() und geom_col() (38).** `geom_bar()` bekommt die Rohdaten und
 zählt selbst, `geom_col()` bekommt eine Tabelle mit fertigen Werten, etwa aus
 `count()`, und zeichnet sie nur.
 
-**Ästhetik (37–38).** Was in `aes()` steht, hängt an einer Spalte und
+**Ästhetik (39–40).** Was in `aes()` steht, hängt an einer Spalte und
 ändert sich von Balken zu Balken (`fill = shops_organic`); was außerhalb im
 Geom steht, gilt für alle gleich (`fill = "steelblue"`). Weitere Ästhetiken
 sind `colour`, `size`, `shape` und `alpha`. In Anzahlen gestapelt zeigt
 `fill` die Gruppengröße, verliert aber die Anteile der kleinen Gruppen.
 
-**Die Reihenfolge ist ein Faktor (39).** Nicht ggplot2 bestimmt die
+**Die Reihenfolge ist ein Faktor (41).** Nicht ggplot2 bestimmt die
 Reihenfolge der Balken, sondern der Faktor: `fct_infreq()` sortiert nach
 Häufigkeit, `fct_rev()` dreht um, `factor()` mit `levels` legt eine eigene
 Reihenfolge fest.
 
-**Kleine Vielfache (40).** `facet_wrap(~ gender)` zeichnet dasselbe
+**Kleine Vielfache (42).** `facet_wrap(~ gender)` zeichnet dasselbe
 Diagramm je Gruppe, nebeneinander und mit denselben Achsen.
 
-**Beschriftungen (41).** `labs()` setzt Titel, Achsen, Legende und Quelle;
+**Beschriftungen (43).** `labs()` setzt Titel, Achsen, Legende und Quelle;
 der Titel nennt die Aussage, die Quelle die Fallzahl.
 `scale_x_continuous(labels = scales::percent)` schreibt Anteile als
 Prozent.
 
-**Speichern (42).** `ggsave()` schreibt ein Diagramm als Datei, mit einer
+**Speichern (44).** `ggsave()` schreibt ein Diagramm als Datei, mit einer
 Größe in Zentimetern. Im Quarto-Bericht zeichnet der Code-Chunk das
 Diagramm selbst, und die Bildunterschrift steht in `#| fig-cap`.
 
-**Schluss (43).** Die Skala entscheidet das Diagramm, und drei Schichten
+**Schluss (45).** Die Skala entscheidet das Diagramm, und drei Schichten
 bauen es: Daten, Ästhetik und ein Geom.

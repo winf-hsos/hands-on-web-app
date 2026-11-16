@@ -281,6 +281,34 @@ save(
   "fig-diet-organic-count"
 )
 
+# Slide 36: same chart, other coordinates (one stacked bar, then bent into a pie)
+save(
+  survey |>
+    filter(!is.na(diet)) |>
+    ggplot() +
+    aes(x = "", fill = diet) +
+    geom_bar(width = 1),
+  "fig-coord-bar", width = 800, height = 600,
+  extra = list(
+    scale_fill_manual(values = c(light, gray, dark, group1, group2)),
+    labs(x = NULL, y = "Number of respondents", fill = NULL)
+  )
+)
+save(
+  survey |>
+    filter(!is.na(diet)) |>
+    ggplot() +
+    aes(x = "", fill = diet) +
+    geom_bar(width = 1) +
+    coord_polar(theta = "y"),
+  "fig-coord-pie", width = 800, height = 600,
+  extra = list(
+    scale_fill_manual(values = c(light, gray, dark, group1, group2)),
+    labs(x = NULL, y = NULL, fill = NULL),
+    theme(axis.text.y = element_blank())
+  )
+)
+
 # Slide 27: small multiples
 save(
   survey |>

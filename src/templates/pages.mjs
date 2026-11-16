@@ -238,6 +238,7 @@ const scriptsFor = (body) =>
     body.includes('data-shell-demo') && 'shell-demo',
     body.includes('data-data-table') && 'data-table',
     body.includes('data-which-chart') && 'which-chart',
+    body.includes('data-same-stats') && 'same-stats',
     body.includes('data-gallery') && 'gallery',
     body.includes('data-figure') && 'figures',
     body.includes('data-model') && 'model',

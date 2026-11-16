@@ -13,17 +13,17 @@ objectives:
     - "für eine Variable aus ihrer Skala das passende Diagramm wählen: Balken nach Häufigkeit, Balken in der Reihenfolge der Skala, Histogramm oder Boxplot"
     - "für zwei Variablen zwischen gestapelten Balken auf 100 %, Boxplots nebeneinander, Streudiagramm und `geom_count()` wählen und die Wahl begründen"
     - "erkennen, wann ein Ausreißer, eine abgeschnittene Achse oder ein Kreisdiagramm ein Bild verzerrt, und sagen, was du weglässt"
-    - "ein Diagramm in ggplot2 Schicht für Schicht aus Daten, `aes()` und einem Geom aufbauen und `|>` von `+` unterscheiden"
+    - "ein Diagramm in ggplot2 Schicht für Schicht aus Daten, `aes()` und einem Geom aufbauen, die übrigen Schichten der Grammar of Graphics benennen und `|>` von `+` unterscheiden"
     - "die Reihenfolge der Balken über einen Faktor festlegen, mit `facet_wrap()` Gruppen nebeneinander zeigen, mit `labs()` beschriften und mit `ggsave()` speichern"
 level: 1
-duration: 50
+duration: 60
 topics: [visualising-data, programming-with-r]
 modules: [ea]
 areas: [ds]
 relations:
   requires: [dplyr-select, dplyr-filter, dplyr-arrange, dplyr-mutate, dplyr-summarize]
 status: draft
-updated: 2026-11-15
+updated: 2026-11-16
 ---
 
 ![Folien: Datenvisualisierung mit R und ggplot2](item:data-visualisation-slides)
@@ -79,7 +79,7 @@ zwischen nominal und ordinal.
 
 Die Ernährung hat keine natürliche Reihenfolge. Also bestimmt die
 Häufigkeit die Ordnung, denn dann liest man die Rangfolge direkt ab. Das
-Diagramm vom Anfang tut genau das: `fct_infreq()` aus dem Paket forcats
+Diagramm vom Anfang sortiert genau so: `fct_infreq()` aus dem Paket forcats
 stellt die häufigste Kategorie an den Anfang, `fct_rev()` dreht die
 Reihenfolge um, damit sie oben steht. Liegende Balken (`y` statt `x`) halten
 lange Namen lesbar.
@@ -302,7 +302,7 @@ vergleiche.
 - **Abgeschnittene Achsen unter Balken:** 64,7 % der Frauen und 56,3 % der
   Männer trinken täglich Milch. Beginnt die Achse bei 55 %, sieht der
   Unterschied aus wie das Dreifache. Ein Balken zeigt seine Größe über seine
-  Länge, deshalb beginnen Balken bei null; ggplot2 tut das von selbst.
+  Länge, deshalb beginnen Balken bei null, und ggplot2 lässt sie von selbst dort beginnen.
 - **Ausreißer ohne Hinweis:** Wer Werte weglässt, sagt, welche und wie
   viele.
 
@@ -325,9 +325,11 @@ Jedes Diagramm in ggplot2 entsteht aus denselben drei Schichten:
 - dem **Geom**, der Form, in der die Werte erscheinen: Balken, Punkte,
   Boxen.
 
-Alles Weitere, also Beschriftungen, Skalen und das Aussehen, verfeinert nur.
 Leland Wilkinson hat diese Zerlegung als *Grammar of Graphics* beschrieben,
-und Hadley Wickham hat sie mit ggplot2 nach R gebracht.
+und Hadley Wickham hat sie mit ggplot2 nach R gebracht. Die Grammatik kennt
+noch vier weitere Schichten, die jedes Diagramm auch hat, aber mit
+Voreinstellungen, sodass du sie erst schreibst, wenn du etwas ändern willst;
+sie stehen weiter unten unter „Die übrigen Schichten“.
 
 ### Schicht für Schicht
 
@@ -345,6 +347,90 @@ survey |>
     x = "Age in years",
     y = "Number of respondents"
   )
+```
+
+### Die übrigen Schichten
+
+Zu Daten, Ästhetik und Geom kommen in der *Grammar of Graphics* vier
+Schichten, die ggplot2 von selbst wählt, wenn du nichts angibst. Hier
+genügt es, sie einmal gesehen zu haben:
+
+| Schicht | was sie bestimmt | in ggplot2 | Voreinstellung |
+|---|---|---|---|
+| Daten | die Tabelle | `survey \|> ggplot()` | keine |
+| Ästhetik | welche Spalte auf welche Achse oder Farbe geht | `aes()`, dazu `scale_…()` | keine |
+| Geom | die Form der Werte | `geom_…()` | keine |
+| Statistik | was vor dem Zeichnen gerechnet wird | `stat = …`, `stat_summary()` | je Geom, etwa Zählen bei `geom_bar()` |
+| Facetten | ein Feld je Gruppe | `facet_wrap()` | ein einziges Feld |
+| Koordinaten | das Koordinatensystem | `coord_…()` | rechtwinklig, x waagerecht |
+| Theme | alles, was nicht von den Daten abhängt | `theme_…()`, `theme()` | grauer Hintergrund mit weißen Linien |
+
+**Statistik.** Jedes Geom rechnet, bevor es zeichnet: `geom_bar()` zählt,
+`geom_histogram()` teilt in Klassen, `geom_boxplot()` sucht Median und
+Quartile. Mit `stat_summary()` bestimmst du selbst, was gerechnet wird, hier
+der Median des Alters je Ernährungsweise, gezeichnet als Punkt:
+
+```r
+survey |>
+  filter(!is.na(diet)) |>
+  ggplot() +
+  aes(x = diet, y = age) +
+  stat_summary(fun = median, geom = "point", size = 4)
+```
+
+**Skalen.** Zur Ästhetik gehören die Skalen, die aus Werten Positionen und
+Farben machen und die Achse beschriften. `scale_x_continuous()` setzt hier
+die Striche der x-Achse auf jedes Jahrzehnt:
+
+```r
+survey |>
+  ggplot() +
+  aes(x = age) +
+  geom_histogram(binwidth = 5) +
+  scale_x_continuous(breaks = seq(20, 80, by = 10))
+```
+
+**Koordinaten.** Ein einzelner Balken, gestapelt nach Ernährungsweise, ist
+ein ganz gewöhnliches Balkendiagramm:
+
+```r
+survey |>
+  filter(!is.na(diet)) |>
+  ggplot() +
+  aes(x = "", fill = diet) +
+  geom_bar(width = 1)
+```
+
+Mit einer Zeile mehr, `coord_polar()`, biegt ggplot2 dieselbe y-Achse zu
+einem Kreis, und aus dem Balken wird ein Kreisdiagramm. Daten, Ästhetik und
+Geom sind dieselben geblieben, nur das Koordinatensystem hat sich geändert:
+
+```r
+survey |>
+  filter(!is.na(diet)) |>
+  ggplot() +
+  aes(x = "", fill = diet) +
+  geom_bar(width = 1) +
+  coord_polar(theta = "y")
+```
+
+**Facetten** zeigen dasselbe Diagramm für jede Gruppe in einem eigenen Feld;
+sie kommen unten unter „Kleine Vielfache“ ausführlich vor.
+
+**Theme.** Das Theme bestimmt alles, was nicht von den Daten abhängt:
+Hintergrund, Gitterlinien, Schrift, die Lage der Legende. `theme_minimal()`
+wechselt das ganze Aussehen, und `theme()` ändert danach Einzelheiten, hier
+die waagerechten Gitterlinien, die bei liegenden Balken nichts beitragen:
+
+```r
+survey |>
+  filter(!is.na(diet)) |>
+  ggplot() +
+  aes(y = fct_rev(fct_infreq(diet))) +
+  geom_bar() +
+  labs(x = "Number of respondents", y = NULL) +
+  theme_minimal() +
+  theme(panel.grid.major.y = element_blank())
 ```
 
 ### Pipe und Plus

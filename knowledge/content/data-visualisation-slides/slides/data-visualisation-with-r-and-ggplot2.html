@@ -23,6 +23,10 @@
     /* two code columns with their headers, aligned at the top */
     .two.codes { align-items: start; top: 260px; grid-template-columns: 760px 760px; column-gap: 160px; justify-content: start; }
     .two.codes .header { margin-bottom: 20px; }
+    /* the seven layers: the three that every chart needs in white, the four with defaults in grey */
+    table.layers-table td { text-align: left; color: var(--gray); }
+    table.layers-table th { text-align: left; }
+    table.layers-table tr.core td { color: var(--white); }
   </style>
 </head>
 <body>
@@ -279,7 +283,7 @@
   <section class="slide" data-on-show="figGrammar">
     <h2>three layers make a chart</h2>
     <div class="figure" id="fig-grammar"></div>
-    <aside class="notes">Jedes Diagramm in ggplot2 besteht aus denselben drei Schichten, übereinander wie Folien auf einem Projektor. Die Daten: eine Tabelle, eine Zeile je Person. Die Ästhetik: welche Spalte auf welche Achse oder in welche Farbe geht. Das Geom: die Form, also Balken, Punkte oder Boxen. Alles andere, Beschriftungen, Skalen, das Aussehen, verfeinert nur. Leland Wilkinson nannte das 1999 die Grammatik der Grafik, und Hadley Wickham hat sie mit ggplot2 nach R gebracht.</aside>
+    <aside class="notes">Jedes Diagramm in ggplot2 besteht aus denselben drei Schichten, übereinander wie Folien auf einem Projektor. Die Daten: eine Tabelle, eine Zeile je Person. Die Ästhetik: welche Spalte auf welche Achse oder in welche Farbe geht. Das Geom: die Form, also Balken, Punkte oder Boxen. Rechts stehen die übrigen Schichten, die mit Voreinstellungen kommen; zu ihnen gleich mehr. Leland Wilkinson nannte das 1999 die Grammatik der Grafik, und Hadley Wickham hat sie mit ggplot2 nach R gebracht.</aside>
   </section>
 
   <section class="slide" data-on-show="layerStep" data-on-step="layerStep">
@@ -297,6 +301,32 @@
     </div>
     <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span>
     <aside class="notes">Schicht für Schicht. ggplot() allein ergibt eine leere Fläche: Die Daten sind da, aber nichts sagt, was gezeichnet wird. aes(x = age) legt das Alter auf die x-Achse, und die Achse erscheint mit ihrem Wertebereich. geom_histogram() zeichnet die Balken, und labs() beschriftet für Menschen. Jede Zeile ist eine Schicht, und nach jeder Zeile ist das Ergebnis ein gültiges Diagramm. Wer einen Fehler sucht, nimmt die Schichten von unten wieder weg.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>seven layers, three you always write</h2>
+    <div class="content">
+      <table class="tt large keep-case layers-table">
+        <tr><th>layer</th><th>in ggplot2</th><th>if you write nothing</th></tr>
+        <tr class="core"><td>data</td><td>survey |&gt; ggplot()</td><td>&#8212;</td></tr>
+        <tr class="core"><td>aesthetics</td><td>aes(), scale_&#8230;()</td><td>&#8212;</td></tr>
+        <tr class="core"><td>geom</td><td>geom_&#8230;()</td><td>&#8212;</td></tr>
+        <tr><td>statistics</td><td>stat_summary()</td><td>per geom: geom_bar() counts</td></tr>
+        <tr><td>facets</td><td>facet_wrap()</td><td>one single panel</td></tr>
+        <tr><td>coordinates</td><td>coord_&#8230;()</td><td>Cartesian, x across</td></tr>
+        <tr><td>theme</td><td>theme_&#8230;(), theme()</td><td>grey panel, white grid</td></tr>
+      </table>
+    </div>
+    <aside class="notes">Die Grammatik der Grafik hat insgesamt sieben Schichten. Drei schreibt ihr immer: Daten, Ästhetik und Geom; zur Ästhetik gehören die Skalen, die aus Werten Positionen und Farben machen. Die übrigen vier hat jedes Diagramm auch, aber mit Voreinstellungen, deshalb seht ihr sie im Code erst, wenn ihr etwas ändern wollt. Die Statistik rechnet vor dem Zeichnen, geom_bar() zählt zum Beispiel von selbst. Facetten zeichnen ein Feld je Gruppe, die Koordinaten sind normalerweise rechtwinklig, und das Theme bestimmt alles, was nicht von den Daten abhängt. Details dazu stehen in der Lektion, hier reicht es, sie einmal gesehen zu haben.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>same chart, other coordinates</h2>
+    <div class="two pair">
+      <div><div class="header mono keep-case">geom_bar(width = 1)</div><img src="img/fig-coord-bar.svg" alt="one bar stacked by diet"></div>
+      <div><div class="header mono keep-case">+ coord_polar(theta = "y")</div><img src="img/fig-coord-pie.svg" alt="the same bar bent into a pie chart"></div>
+    </div>
+    <aside class="notes">Ein Beispiel für eine Schicht, die man sonst nicht sieht. Links ein einziger Balken, gestapelt nach Ernährungsweise, ein ganz gewöhnliches Balkendiagramm. Rechts derselbe Code mit einer Zeile mehr: coord_polar() biegt die y-Achse zu einem Kreis, und aus dem Balken wird ein Kreisdiagramm. Daten, Ästhetik und Geom sind gleich geblieben, nur das Koordinatensystem ist ein anderes. Deshalb gibt es in ggplot2 auch kein geom_pie().</aside>
   </section>
 
   <section class="slide">
@@ -429,7 +459,7 @@ factor(milk_freq, levels = c("daily", "weekly", "monthly", "rarely"))</div>
 <!-- order matters: deck.js BEFORE stagekit.js. stagekit calls the data-on-show
      functions on first display; if they come later, they do not exist yet. -->
 <script src="../../stagekit/draw.js?v=0.7.0-156254"></script>
-<script src="deck.js?v=1"></script>
+<script src="deck.js?v=2"></script>
 <script src="../../stagekit/stagekit.js?v=0.7.0-156254"></script>
 </body>
 </html>

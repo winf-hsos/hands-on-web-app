@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='800.00pt' height='600.00pt' viewBox='0 0 800.00 600.00'>
+<g class='svglite'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+    .svglite g.glyphgroup path {
+      fill: inherit;
+      stroke: none;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: none;'/>
+<defs>
+  <clipPath id='cpMC4wMHw4MDAuMDB8MC4wMHw2MDAuMDA='>
+    <rect x='0.00' y='0.00' width='800.00' height='600.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHw4MDAuMDB8MC4wMHw2MDAuMDA=)'>
+<rect x='0.00' y='0.00' width='800.00' height='600.00' style='stroke-width: 3.10; stroke: none;' />
+</g>
+<defs>
+  <clipPath id='cpMTUuOTR8Nzg0LjA2fDE1Ljk0fDUwOC4zOA=='>
+    <rect x='15.94' y='15.94' width='768.12' height='492.44' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMTUuOTR8Nzg0LjA2fDE1Ljk0fDUwOC4zOA==)'>
+<rect x='15.94' y='15.94' width='768.12' height='492.44' style='stroke-width: 3.10; stroke: none;' />
+<polyline points='125.67,508.38 125.67,15.94 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='308.56,508.38 308.56,15.94 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='491.44,508.38 491.44,15.94 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='674.33,508.38 674.33,15.94 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<circle cx='125.67' cy='262.16' r='54.38' style='stroke-width: 2.06; stroke: #B6BEC6; fill: #B6BEC6;' />
+<circle cx='491.44' cy='262.16' r='7.39' style='stroke-width: 2.06; stroke: #B6BEC6; fill: #B6BEC6;' />
+<circle cx='674.33' cy='262.16' r='3.94' style='stroke-width: 2.06; stroke: #B6BEC6; fill: #B6BEC6;' />
+<circle cx='308.56' cy='262.16' r='26.11' style='stroke-width: 2.06; stroke: #B6BEC6; fill: #B6BEC6;' />
+</g>
+<g clip-path='url(#cpMC4wMHw4MDAuMDB8MC4wMHw2MDAuMDA=)'>
+<text x='125.67' y='541.05' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='52.64px' lengthAdjust='spacingAndGlyphs'>daily</text>
+<text x='308.56' y='541.05' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='78.23px' lengthAdjust='spacingAndGlyphs'>weekly</text>
+<text x='491.44' y='541.05' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='89.61px' lengthAdjust='spacingAndGlyphs'>monthly</text>
+<text x='674.33' y='541.05' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='63.98px' lengthAdjust='spacingAndGlyphs'>rarely</text>
+<text x='400.00' y='577.32' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='455.30px' lengthAdjust='spacingAndGlyphs'>How often milk is drunk at home</text>
+</g>
+</g>
+</svg>

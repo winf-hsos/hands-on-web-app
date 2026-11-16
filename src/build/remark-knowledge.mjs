@@ -317,6 +317,7 @@ function fillableTables(tree, lang) {
 // ```distinguishability-lab a noisy channel as an oscilloscope, with alphabet and window as knobs (client/distinguishability-lab.js),
 // ```data-table an empty table to record observations in (client/data-table.js),
 // ```which-chart questions that lead to a chart for survey data, with its R code (client/which-chart.js),
+// ```same-stats one scatter plot that moves through shapes with the same summary statistics (client/same-stats.js),
 // ```shell-demo the folder tree and command line (client/shell-demo.js), whose
 // block holds its scenario in YAML (tree:, start:), checked by validate.mjs.
 // Each sits in a frame with buttons for its shortcuts and for full screen
@@ -339,6 +340,7 @@ const DEMOS = {
   'shell-demo': { className: 'shell-demo', dataShellDemo: '' },
   'data-table': { className: 'data-table', dataDataTable: '' },
   'which-chart': { className: 'which-chart', dataWhichChart: '' },
+  'same-stats': { className: 'same-stats', dataSameStats: '' },
 };
 
 /** The scenario in a ```shell-demo block, or null when it is not YAML. */

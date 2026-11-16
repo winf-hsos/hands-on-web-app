@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>misleading charts</title>
+  <link rel="stylesheet" href="theme.css?v=1">
+  <link rel="stylesheet" href="../../stagekit/stagekit.css?v=0.7.0-156254">
+  <style>
+    .mono { font-family: var(--mono); text-transform: none; }
+    /* ggplot2 charts (scripts/misleading-charts-figures.R): two side by side,
+       800 x 600 each, with a header above; the better one comes on step 1 */
+    .pair img { width: 800px; height: 600px; display: block; margin-top: 16px; }
+    /* the header of the better version in blue, the misleading one stays gray */
+    .header.better { color: var(--blue); }
+    .figure img { max-width: 100%; max-height: 100%; }
+  </style>
+</head>
+<body>
+<div class="deck"
+     data-title="misleading charts"
+     data-subtitle="prof. dr. nicolas meseth"
+     data-parts='["proportional ink", "two famous cases", "five tricks"]'>
+
+  <section class="slide title">
+    <aside class="notes">Diagramme, die täuschen, ohne dass eine Zahl darin falsch ist. Drei Teile: die eine Regel hinter fast allen Tricks, zwei berühmte Beispiele aus den Nachrichten und fünf Tricks an der Milchbefragung, jeweils mit der besseren Fassung daneben.</aside>
+  </section>
+
+  <section class="slide agenda">
+    <aside class="notes">Zuerst die Regel, die proportionale Tinte. Dann zwei Diagramme, die so oft als Warnung gezeigt wurden, dass sie fast zum Lehrstoff gehören, nachgebaut mit ihren Originalzahlen. Zum Schluss fünf Tricks an unseren eigenen Daten und eine Gruppenaktivität, in der ihr selbst täuscht.</aside>
+  </section>
+
+  <section class="slide">
+    <img class="photo" src="img/opening-magnifier.jpg" alt="">
+    <div class="photo-text">how big is the difference, really?</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">Ein Balken sieht sechsmal so hoch aus wie der andere. Unter der Lupe sieht man, dass die Achse unten abgeschnitten ist, und dann stimmt das Verhältnis nicht mehr. Um genau diesen Blick geht es: Die Zahlen können alle stimmen, und das Bild erzählt trotzdem etwas anderes.</aside>
+  </section>
+
+  <!-- ============================================================ -->
+  <section class="slide part" data-part="proportional ink" data-subtitle="the one rule behind the tricks">
+    <aside class="notes">Teil eins: die Regel. Fast jeder Trick in diesem Satz bricht dieselbe Regel.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="statement">the ink must be proportional to the value it shows.</div>
+    </div>
+    <div class="footnote">after <span class="keep-case">Claus O. Wilke</span>, fundamentals of data visualization, chapter 17, who takes the term from <span class="keep-case">Carl Bergstrom</span> and <span class="keep-case">Jevin West</span></div>
+    <aside class="notes">Das Prinzip der proportionalen Tinte: Wo eine Fläche oder eine Länge einen Wert darstellt, muss sie zu diesem Wert proportional sein. Ein doppelt so großer Wert bekommt doppelt so viel Tinte. Claus Wilke beschreibt das in Kapitel 17 seines Buchs Fundamentals of Data Visualization und übernimmt den Begriff von Carl Bergstrom und Jevin West, den Autoren von Calling Bullshit. Aus dieser einen Regel folgt fast alles, was jetzt kommt.</aside>
+  </section>
+
+  <section class="slide" data-on-show="figInk">
+    <h2>bars show length, points show position</h2>
+    <div class="figure" id="fig-ink"></div>
+    <aside class="notes">Dieselben zwei Werte dreimal, 35 und 39,6. Links Balken ab null: Der zweite Balken ist 1,13-mal so lang wie der erste, genau wie die Werte. In der Mitte beginnt die Achse bei 34: Vom ersten Balken bleibt eine Länge von 1, vom zweiten 5,6, und die Tinte erzählt vom Fünffachen. Rechts dieselbe Achse ab 34, aber mit Punkten: Ein Punkt hat keine Länge, er zeigt seinen Wert über die Lage, und die liest man an der Achse ab. Deshalb beginnen Balken bei null, Punkte und Linien dürfen woanders beginnen. Eine gefüllte Fläche unter einer Linie ist allerdings wieder Tinte.</aside>
+  </section>
+
+  <section class="slide" data-on-show="figBubbles">
+    <h2>bubbles: size the area, not the radius</h2>
+    <div class="figure" id="fig-bubbles"></div>
+    <aside class="notes">Bei Blasen trägt die Fläche den Wert. Wer den Radius nach dem Wert bemisst, verdoppelt den Radius und vervierfacht die Fläche, links. Rechts ist die Fläche proportional zum Wert, der Radius wächst nur um den Faktor Wurzel zwei, und die zweite Blase hat doppelt so viel Tinte wie die erste. In ggplot2 heißt das scale_size_area(); dazu gleich ein Beispiel an der Umfrage.</aside>
+  </section>
+
+  <!-- ============================================================ -->
+  <section class="slide part" data-part="two famous cases" data-subtitle="rebuilt with their original numbers">
+    <aside class="notes">Teil zwei: zwei Fälle aus den Nachrichten. Ich zeige keine Bildschirmfotos, sondern habe beide mit ihren Originalzahlen in ggplot2 nachgebaut. Den Code findet ihr in der Lektion.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>the top tax rate on <span class="keep-case">US</span> television</h2>
+    <div class="two pair">
+      <div><div class="header">misleading: axis from 34 %</div><img src="img/fig-tax-cut.svg" alt="two bars, 35 and 39.6 percent, on an axis from 34 percent"></div>
+      <div data-step="1"><div class="header better">better: axis from 0</div><img src="img/fig-tax-full.svg" alt="the same two bars on an axis from zero"></div>
+    </div>
+    <aside class="notes">Fox Business, Sommer 2012: Was passiert, wenn die Steuersenkungen aus der Zeit von Präsident Bush auslaufen? Der Spitzensteuersatz steigt von 35 auf 39,6 %. Die Achse begann bei 34 %, und der zweite Balken wirkte fast sechsmal so hoch. Im nächsten Schritt dieselben Zahlen mit der Achse ab null: Der zweite Balken ist 13 % höher, und das ist der Unterschied zwischen 35 und 39,6. Ob 4,6 Prozentpunkte viel sind, darüber kann man streiten, aber nicht mit einer verschobenen Achse.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>firearm murders in <span class="keep-case">Florida</span></h2>
+    <div class="two pair">
+      <div><div class="header">misleading: zero at the top</div><img src="img/fig-florida-reversed.svg" alt="area chart with an inverted y-axis that seems to fall after 2005"></div>
+      <div data-step="1"><div class="header better">better: zero at the bottom</div><img src="img/fig-florida-normal.svg" alt="the same series with a normal y-axis rising after 2005"></div>
+    </div>
+    <aside class="notes">Reuters, 2014: die Morde mit Schusswaffen in Florida, wo 2005 das Gesetz Stand Your Ground in Kraft trat. Die y-Achse lief von oben nach unten, mit der Null oben, und die Fläche hing wie ein Vorhang herab. Wer das Bild liest wie jedes andere, sieht nach 2005 einen Rückgang. Im nächsten Schritt dieselben Zahlen mit der Null unten: Die Morde stiegen von 521 im Jahr 2005 auf 825 im Jahr 2007. Ob das Gesetz die Ursache ist, zeigt keine der beiden Fassungen; dafür bräuchte es einen Vergleich mit Staaten ohne ein solches Gesetz. Die Zahlen stammen vom Florida Department of Law Enforcement.</aside>
+  </section>
+
+  <!-- ============================================================ -->
+  <section class="slide part" data-part="five tricks" data-subtitle="on the milk survey">
+    <aside class="notes">Teil drei: fünf Tricks an der kompakten Milchbefragung, jeweils links die täuschende und im nächsten Schritt rechts die bessere Fassung. Alle Diagramme könnt ihr in der Lektion selbst ausführen und ändern.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>trick 1: a cut axis</h2>
+    <div class="two pair">
+      <div><div class="header">misleading: axis from 1.98 €</div><img src="img/fig-brand-cut.svg" alt="median price limit per brand as bars on an axis from 1.98 euros"></div>
+      <div data-step="1"><div class="header better">better: bars from 0, with n</div><img src="img/fig-brand-full.svg" alt="the same medians as bars from zero, labelled 2.00 and 1.99"></div>
+    </div>
+    <aside class="notes">Im Preisexperiment sah die eine Hälfte Weihenstephan, die andere Alpro, zufällig zugeteilt. Ab welchem Preis wäre der Liter zu teuer? Der Median liegt bei 1,99 € und 2,00 €. Schneidet coord_cartesian() die Achse bei 1,98 € ab, ist der eine Balken doppelt so hoch wie der andere. Im nächsten Schritt die Balken ab null, mit den Medianen darüber und der Fallzahl darunter: Ein Cent bei Preisen um 2 € ist kein Unterschied, über den sich zu reden lohnt.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>trick 2: counts instead of shares</h2>
+    <div class="two pair">
+      <div><div class="header">misleading: counts</div><img src="img/fig-organic-count.svg" alt="number of organic store customers per diet, flexitarians and omnivores on top"></div>
+      <div data-step="1"><div class="header better">better: shares, with n</div><img src="img/fig-organic-share.svg" alt="share of organic store customers per diet, vegans on top with 56 percent"></div>
+    </div>
+    <aside class="notes">Welche Ernährungsweise kauft am ehesten im Bioladen? Links die Anzahl der Bioladen-Kunden: 150 Flexitarier, 147 Allesesser, nur 20 Veganer. Das zeigt vor allem, wie groß die Gruppen sind, denn es gibt 1.826 Allesesser und 36 Veganer. Im nächsten Schritt der Anteil je Gruppe: 56 % der Veganer, 8 % der Allesesser. Die Fallzahl steht in der Beschriftung, weil hinter dem längsten Balken nur 36 Menschen stehen. Falsch ist keines der beiden Bilder; täuschend wird es, wenn die Frage nach dem „am ehesten“ mit Anzahlen beantwortet wird.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>trick 3: radius instead of area</h2>
+    <div class="two pair">
+      <div><div class="header">misleading: <span class="mono">scale_radius()</span></div><img src="img/fig-milk-radius.svg" alt="bubbles for milk frequency sized by radius"></div>
+      <div data-step="1"><div class="header better">better: <span class="mono">scale_size_area()</span></div><img src="img/fig-milk-area.svg" alt="the same bubbles sized by area"></div>
+    </div>
+    <aside class="notes">1.451 Personen trinken täglich Milch, 682 wöchentlich, also etwas weniger als die Hälfte. Mit scale_radius() wächst der Radius mit der Anzahl, die Fläche also mit dem Quadrat: Die Blase für täglich wirkt rund viereinhalbmal so groß. Im nächsten Schritt scale_size_area(): Jetzt ist die Fläche proportional, und die Blase ist gut doppelt so groß. Noch leichter zu vergleichen wären Balken; Blasen lohnen sich erst, wenn x und y schon belegt sind.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>trick 4: the silent outlier</h2>
+    <div class="two pair">
+      <div><div class="header">misleading: means with 999 € inside</div><img src="img/fig-brand-mean.svg" alt="mean price limit per brand as bars, 9.07 and 7.25 euros"></div>
+      <div data-step="1"><div class="header better">better: a boxplot that says what is missing</div><img src="img/fig-brand-box.svg" alt="boxplots of the price limit up to 10 euros with a caption on what was left out"></div>
+    </div>
+    <aside class="notes">Die mittlere Preisgrenze: 7,25 € bei Weihenstephan, 9,07 € bei Alpro, als würden die Leute für Alpro ein Viertel mehr zahlen. Die Achse beginnt korrekt bei null, und trotzdem täuscht das Bild, denn in den Mittelwerten stecken Antworten wie 344 € und 999 € für einen Liter Milch. Im nächsten Schritt der Boxplot der Preise bis 10 €, mit den Medianen 1,99 € und 2,00 €, und die Beschriftung unten sagt, was fehlt: 20 von 611 Antworten über 10 €.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>trick 5: angles instead of lengths</h2>
+    <div class="two pair">
+      <div><div class="header">harder: a pie</div><img src="img/fig-diet-pie.svg" alt="pie chart of the five diets"></div>
+      <div data-step="1"><div class="header better">better: sorted bars</div><img src="img/fig-diet-bars.svg" alt="the five diets as sorted bars"></div>
+    </div>
+    <aside class="notes">Das Kreisdiagramm hält sich an die proportionale Tinte, jedes Stück ist so groß wie sein Anteil. Aber es verlangt, Winkel zu vergleichen: Sind Pescetarier und Veganer gleich viele? Im nächsten Schritt dieselben Zahlen als sortierte Balken. Längen sind leichter zu vergleichen als Winkel, und die beiden kleinsten Gruppen mit je 36 Personen sind sichtbar gleich lang.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>manipulation gallery</h2>
+    <div class="content">
+      <div class="lines">
+        <div>1&nbsp;&nbsp;draw a claim and check what the data say</div>
+        <div>2&nbsp;&nbsp;build a chart that seems to prove it</div>
+        <div>3&nbsp;&nbsp;the others name the trick</div>
+        <div>4&nbsp;&nbsp;build the honest version next to it</div>
+      </div>
+    </div>
+    <aside class="notes">Jetzt seid ihr dran. Jede Gruppe zieht eine falsche oder irreführende Aussage über die Umfrage, prüft zuerst mit count() und summarise(), was die Daten wirklich sagen, und baut dann ein Diagramm, das die Aussage scheinbar belegt, ohne eine Zahl zu fälschen. Die anderen Gruppen sehen nur das Diagramm, nicht den Code, und benennen den Trick. Zum Schluss baut jede Gruppe die ehrliche Fassung daneben. Das Codegerüst steht in der Lektion.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>the claims</h2>
+    <div class="content">
+      <div class="lines">
+        <div>vegans are the biggest organic shoppers in the country</div>
+        <div>people would pay far more for alpro than <span class="keep-case">Weihenstephan</span></div>
+        <div>women are far more eco-conscious than men</div>
+        <div><span class="keep-case">Oatly</span> has by far the worst reputation of all brands</div>
+        <div>older people drink milk daily far more often</div>
+        <div><span class="keep-case">TikTok</span> users hardly drink milk any more</div>
+      </div>
+    </div>
+    <aside class="notes">Sechs Aussagen, eine je Gruppe. Was die Daten wirklich sagen, steht aufgeklappt in der Lektion. Zur Orientierung für euch: Bei den Veganern helfen Anteile ohne Fallzahl, bei Alpro die Mittelwerte mit den Ausreißern, bei Frauen und Männern eine Achse, die bei 0,4 beginnt, bei Oatly eine Achse ab 0,45, bei den Älteren die Auswahl der Altersgruppen und bei TikTok die kleine Gruppe der monatlichen Nutzer mit 45 Personen.</aside>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="statement">the ink must be proportional to the value it shows, so read the axes before you believe the picture.</div>
+    </div>
+    <aside class="notes">Das, was bleiben soll: Die Tinte muss zum Wert passen. Balken beginnen bei null, Blasen werden nach der Fläche bemessen, und was man weglässt, sagt man dazu. Und wer ein Diagramm liest, schaut zuerst auf die Achsen. In der Lektion laufen alle Beispiele im Browser, dazu die Galerie und das Quiz.</aside>
+  </section>
+
+</div>
+<!-- order matters: deck.js BEFORE stagekit.js. stagekit calls the data-on-show
+     functions on first display; if they come later, they do not exist yet. -->
+<script src="../../stagekit/draw.js?v=0.7.0-156254"></script>
+<script src="deck.js?v=1"></script>
+<script src="../../stagekit/stagekit.js?v=0.7.0-156254"></script>
+</body>
+</html>

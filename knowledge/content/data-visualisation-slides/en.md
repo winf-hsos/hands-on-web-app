@@ -6,5 +6,5 @@ summary: >-
   to avoid; and how ggplot2 builds every chart from the same three layers:
   data, aesthetics and a geom.
 translation_of: de
-based_on: 2026-11-15
+based_on: 2026-11-16
 ---

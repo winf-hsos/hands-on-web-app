@@ -11,10 +11,10 @@ objectives:
     - "choose the chart for one variable from its level of measurement: bars by frequency, bars in the order of the scale, a histogram or a boxplot"
     - "choose between bars stacked to 100 %, boxplots side by side, a scatter plot and `geom_count()` for two variables, and justify the choice"
     - "recognise when an outlier, a cut axis or a pie chart distorts a picture, and say what you leave out"
-    - "build a chart in ggplot2 layer by layer from data, `aes()` and a geom, and tell `|>` from `+`"
+    - "build a chart in ggplot2 layer by layer from data, `aes()` and a geom, name the other layers of the Grammar of Graphics, and tell `|>` from `+`"
     - "set the order of bars with a factor, show groups side by side with `facet_wrap()`, label with `labs()` and save with `ggsave()`"
 translation_of: de
-based_on: 2026-11-15
+based_on: 2026-11-16
 ---
 
 ![Slides: Data visualisation with R and ggplot2](item:data-visualisation-slides)
@@ -309,9 +309,11 @@ Every chart in ggplot2 is built from the same three layers:
   into which colour,
 - the **geom**, the form in which the values appear: bars, points, boxes.
 
-Everything else, labels, scales and the look, only refines. Leland Wilkinson
-described this decomposition as the *Grammar of Graphics*, and Hadley
-Wickham brought it to R with ggplot2.
+Leland Wilkinson described this decomposition as the *Grammar of Graphics*,
+and Hadley Wickham brought it to R with ggplot2. The grammar knows four more
+layers, which every chart has as well, but with defaults, so that you only
+write them when you want to change something; they follow further down under
+"The other layers".
 
 ### Layer by layer
 
@@ -328,6 +330,90 @@ survey |>
     x = "Age in years",
     y = "Number of respondents"
   )
+```
+
+### The other layers
+
+Besides data, aesthetics and geom, the *Grammar of Graphics* has four
+layers that ggplot2 chooses by itself when you give none. Here it is enough
+to have seen them once:
+
+| Layer | what it decides | in ggplot2 | default |
+|---|---|---|---|
+| Data | the table | `survey \|> ggplot()` | none |
+| Aesthetics | which column goes on which axis or colour | `aes()`, with `scale_…()` | none |
+| Geom | the form of the values | `geom_…()` | none |
+| Statistics | what is computed before drawing | `stat = …`, `stat_summary()` | per geom, such as counting for `geom_bar()` |
+| Facets | one panel per group | `facet_wrap()` | a single panel |
+| Coordinates | the coordinate system | `coord_…()` | Cartesian, x horizontal |
+| Theme | everything that does not depend on the data | `theme_…()`, `theme()` | grey background with white lines |
+
+**Statistics.** Every geom computes before it draws: `geom_bar()` counts,
+`geom_histogram()` splits into classes, `geom_boxplot()` finds the median
+and quartiles. With `stat_summary()` you decide yourself what is computed,
+here the median age per diet, drawn as a point:
+
+```r
+survey |>
+  filter(!is.na(diet)) |>
+  ggplot() +
+  aes(x = diet, y = age) +
+  stat_summary(fun = median, geom = "point", size = 4)
+```
+
+**Scales.** The aesthetics come with scales, which turn values into
+positions and colours and label the axis. Here `scale_x_continuous()` puts
+the ticks of the x axis on every decade:
+
+```r
+survey |>
+  ggplot() +
+  aes(x = age) +
+  geom_histogram(binwidth = 5) +
+  scale_x_continuous(breaks = seq(20, 80, by = 10))
+```
+
+**Coordinates.** A single bar, stacked by diet, is an entirely ordinary bar
+chart:
+
+```r
+survey |>
+  filter(!is.na(diet)) |>
+  ggplot() +
+  aes(x = "", fill = diet) +
+  geom_bar(width = 1)
+```
+
+With one more line, `coord_polar()`, ggplot2 bends the same y axis into a
+circle, and the bar becomes a pie chart. Data, aesthetics and geom have
+stayed the same; only the coordinate system has changed:
+
+```r
+survey |>
+  filter(!is.na(diet)) |>
+  ggplot() +
+  aes(x = "", fill = diet) +
+  geom_bar(width = 1) +
+  coord_polar(theta = "y")
+```
+
+**Facets** show the same chart for each group in a panel of its own; they
+come in detail below under "Small multiples".
+
+**Theme.** The theme decides everything that does not depend on the data:
+background, grid lines, font, the position of the legend. `theme_minimal()`
+changes the whole look, and `theme()` then changes details, here the
+horizontal grid lines, which add nothing to lying bars:
+
+```r
+survey |>
+  filter(!is.na(diet)) |>
+  ggplot() +
+  aes(y = fct_rev(fct_infreq(diet))) +
+  geom_bar() +
+  labs(x = "Number of respondents", y = NULL) +
+  theme_minimal() +
+  theme(panel.grid.major.y = element_blank())
 ```
 
 ### Pipe and plus

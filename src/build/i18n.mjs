@@ -1363,6 +1363,54 @@ export const dataTableLabels = {
   },
 };
 
+/** Labels of "Same numbers, different pictures" (client/same-stats.js). */
+export const sameStatsLabels = {
+  de: {
+    shape: 'Form',
+    names: { cloud: 'Wolke', circle: 'Kreis', bullseye: 'Zielscheibe', star: 'Stern', heart: 'Herz', cross: 'Kreuz', 'h-lines': 'waagerechte Linien', 'v-lines': 'senkrechte Linien', slant: 'schräge Linien' },
+    plot: 'Streudiagramm von 142 Punkten',
+    guess: 'Wie sehen diese Daten aus?',
+    summary: 'Kennzahlen der 142 Punkte',
+    stats: { meanX: 'Mittelwert x', meanY: 'Mittelwert y', sdX: 'Standardabweichung x', sdY: 'Standardabweichung y', r: 'Korrelation' },
+    now: 'Zu sehen:',
+    prev: 'Zurück',
+    next: 'Nächste Form',
+    play: 'Alle nacheinander',
+    pause: 'Anhalten',
+    hide: 'Punkte verbergen',
+    show: 'Punkte zeigen',
+    note: 'Alle neun Formen bestehen aus denselben 142 Punkten, die nur verschoben werden, und haben bis auf die zweite Nachkommastelle dieselben Kennzahlen. Erzeugt nach dem Verfahren von Matejka und Fitzmaurice (2017), die so den „Datasaurus Dozen“ gebaut haben.',
+    keySpace: 'Leertaste',
+    keyNext: 'nächste Form',
+    keyPrev: 'vorige Form',
+    keyShape: 'eine Form wählen',
+    keyPlay: 'alle nacheinander zeigen oder anhalten',
+    keyPoints: 'Punkte verbergen oder zeigen',
+  },
+  en: {
+    shape: 'Shape',
+    names: { cloud: 'cloud', circle: 'circle', bullseye: 'bullseye', star: 'star', heart: 'heart', cross: 'cross', 'h-lines': 'horizontal lines', 'v-lines': 'vertical lines', slant: 'slanted lines' },
+    plot: 'Scatter plot of 142 points',
+    guess: 'What do these data look like?',
+    summary: 'Summary of the 142 points',
+    stats: { meanX: 'Mean of x', meanY: 'Mean of y', sdX: 'Standard deviation of x', sdY: 'Standard deviation of y', r: 'Correlation' },
+    now: 'Showing:',
+    prev: 'Back',
+    next: 'Next shape',
+    play: 'Play all',
+    pause: 'Pause',
+    hide: 'Hide the points',
+    show: 'Show the points',
+    note: 'All nine shapes are made of the same 142 points, only moved, and share their summary statistics to the second decimal. Made with the method of Matejka and Fitzmaurice (2017), who built the “Datasaurus Dozen” this way.',
+    keySpace: 'Space',
+    keyNext: 'next shape',
+    keyPrev: 'previous shape',
+    keyShape: 'choose a shape',
+    keyPlay: 'play all or pause',
+    keyPoints: 'hide or show the points',
+  },
+};
+
 /** Labels of the chart finder (client/which-chart.js); the R code itself stays English. */
 export const whichChartLabels = {
   de: {

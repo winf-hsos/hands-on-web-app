@@ -14,5 +14,5 @@ topics: [visualising-data, programming-with-r]
 modules: [ea]
 areas: [ds]
 status: draft
-updated: 2026-11-15
+updated: 2026-11-16
 ---
