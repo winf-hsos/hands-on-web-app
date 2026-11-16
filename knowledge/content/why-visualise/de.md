@@ -4,8 +4,8 @@ code: 1792
 title: Ein Plädoyer für die Datenvisualisierung
 summary: >-
   Mittelwert, Standardabweichung und Korrelation fassen Daten zusammen und
-  verlieren dabei ihre Form: Vier kleine Datensätze und neun Punktwolken mit
-  denselben Kennzahlen zeigen, warum man Daten ansehen muss, bevor man ihren
+  verlieren dabei ihre Form: Vier kleine Datensätze, neun Punktwolken und ein
+  Dinosaurier mit denselben Kennzahlen zeigen, warum man Daten ansehen muss, bevor man ihren
   Zahlen glaubt.
 objectives:
   intro: "In dieser Lektion siehst du, was Kennzahlen verschweigen, und kannst danach:"
@@ -14,13 +14,14 @@ objectives:
     - "am Quartett von Anscombe zeigen, dass gleiche Kennzahlen zu völlig verschiedenen Daten gehören können"
     - "begründen, warum eine Grafik vor und nach jeder Rechnung zum Erkunden gehört"
 level: 1
-duration: 20
+duration: 25
 topics: [visualising-data, exploring-data]
 modules: [ea]
 areas: [ds]
+r_datasets: { datasaurus_dozen: datasaurus_dozen.csv }
 relations:
   requires: [dplyr-summarize]
-  see_also: [exploratory-data-analysis-basics, anscombe-quartet, same-stats-shapes]
+  see_also: [exploratory-data-analysis-basics, anscombe-quartet, same-stats-shapes, datasaurus-dozen]
 status: published
 updated: 2026-11-16
 ---
@@ -118,6 +119,42 @@ keinen Zusammenhang gibt, sondern nur, dass er keine Gerade ist. Die Punkte
 aller Formen gibt es als Datensatz [[same-stats-shapes]], mit dem du die
 Kennzahlen selbst nachrechnen und die Formen zeichnen kannst.
 
+### Der Dinosaurier
+
+Das berühmteste Beispiel für dieses Verfahren ist der Datasaurus Dozen. Der
+Informationsdesigner Alberto Cairo hat 2016 einen Dinosaurier aus 142 Punkten
+gezeichnet, und Matejka und Fitzmaurice haben ihn in zwölf weitere Bilder
+verschoben. Die 13 Datensätze liegen als Tabelle `datasaurus_dozen` bereit,
+mit einer Spalte `dataset` für das Bild und den Spalten `x` und `y`; zum
+Herunterladen gibt es sie als Datensatz [[datasaurus-dozen]]. Zuerst wieder
+die Kennzahlen:
+
+```r
+datasaurus_dozen |>
+  group_by(dataset) |>
+  summarize(
+    mean_x = mean(x),
+    mean_y = mean(y),
+    sd_x = sd(x),
+    sd_y = sd(y),
+    r = cor(x, y)
+  )
+```
+
+Auf eine Nachkommastelle gerundet steht in jeder der 13 Zeilen dasselbe:
+54,3 und 47,8 für die Mittelwerte, 16,8 und 26,9 für die
+Standardabweichungen, und die Korrelation liegt zwischen −0,06 und −0,07.
+Nichts in dieser Tabelle verrät, dass in der Zeile `dino` ein Dinosaurier
+steckt:
+
+```r
+datasaurus_dozen |>
+  ggplot() +
+  aes(x = x, y = y) +
+  geom_point(size = 0.8) +
+  facet_wrap(vars(dataset))
+```
+
 ## Was daraus folgt
 
 Kennzahlen sind nicht falsch, sie beantworten nur eine engere Frage, als man
@@ -145,8 +182,8 @@ ggplot2 baut, zeigt die nächste Lektion
 - Die vier Datensätze von Anscombe haben dieselben Kennzahlen und sehen
   völlig verschieden aus: eine Wolke, ein Bogen, eine Gerade mit Ausreißer und
   ein einzelner Punkt, der die Korrelation erzeugt.
-- Zu denselben Kennzahlen passen beliebig viele Bilder, wie die Formen von
-  Matejka und Fitzmaurice zeigen.
+- Zu denselben Kennzahlen passen beliebig viele Bilder, wie der Datasaurus
+  Dozen und die Formen des Demonstrators zeigen.
 - Eine Grafik gehört vor und nach jede Rechnung, und eine Kennzahl steht nie
   ohne Streuung und Fallzahl.
 

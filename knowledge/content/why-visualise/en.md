@@ -2,8 +2,8 @@
 title: The case for data visualisation
 summary: >-
   Mean, standard deviation and correlation summarise data and lose their
-  shape on the way: four small data sets and nine point clouds with the same
-  statistics show why you have to look at data before you believe their
+  shape on the way: four small data sets, nine point clouds and a dinosaur
+  with the same statistics show why you have to look at data before you believe their
   numbers.
 objectives:
   intro: "In this lesson you see what summary statistics keep quiet about, and afterwards you can:"
@@ -103,6 +103,40 @@ mean that there is no relationship, only that it is not a straight line.
 The points of all shapes are available as the data set [[same-stats-shapes]],
 with which you can recompute the statistics and plot the shapes yourself.
 
+### The dinosaur
+
+The most famous example of this method is the Datasaurus Dozen. In 2016 the
+information designer Alberto Cairo drew a dinosaur from 142 points, and
+Matejka and Fitzmaurice moved it into twelve more pictures. The 13 data sets
+are ready as the table `datasaurus_dozen`, with a column `dataset` for the
+picture and the columns `x` and `y`; to download them, there is the data set
+[[datasaurus-dozen]]. First the statistics again:
+
+```r
+datasaurus_dozen |>
+  group_by(dataset) |>
+  summarize(
+    mean_x = mean(x),
+    mean_y = mean(y),
+    sd_x = sd(x),
+    sd_y = sd(y),
+    r = cor(x, y)
+  )
+```
+
+Rounded to one decimal, each of the 13 rows says the same: 54.3 and 47.8 for
+the means, 16.8 and 26.9 for the standard deviations, and the correlation
+lies between −0.06 and −0.07. Nothing in this table gives away that the row
+`dino` hides a dinosaur:
+
+```r
+datasaurus_dozen |>
+  ggplot() +
+  aes(x = x, y = y) +
+  geom_point(size = 0.8) +
+  facet_wrap(vars(dataset))
+```
+
 ## What follows from it
 
 Summary statistics are not wrong, they only answer a narrower question than
@@ -129,8 +163,8 @@ is shown by the next lesson, [[data-visualisation-basics]].
 - Anscombe's four data sets have the same statistics and look completely
   different: a cloud, a curve, a line with an outlier and a single point
   that creates the correlation.
-- Any number of pictures fit the same statistics, as the shapes of Matejka
-  and Fitzmaurice show.
+- Any number of pictures fit the same statistics, as the Datasaurus Dozen
+  and the shapes of the demonstrator show.
 - A chart belongs before and after every calculation, and a statistic never
   stands without spread and number of cases.
 
