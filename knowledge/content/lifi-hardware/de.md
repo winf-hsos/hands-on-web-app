@@ -249,6 +249,47 @@ des empfangenden Geräts vor der Kalibrierung ein; ein Laptop, der nur sendet,
 `GAIN` und `INTEGRATION_TIME` fest. Ohne die beiden Angaben misst der Sensor
 wie nach jedem Start mit 16 und 154 ms.
 
+### Der Test für Challenge 2
+
+Ab Version 0.9.0 führt dasselbe `run_test` auch den Test für
+[[lifi-challenge-2]] aus, und woran es das erkennt, ist das Codebuch. Die Datei
+bekommt dafür ein `CODEBOOK`, das jedem Zeichen eine Folge von Farbnamen
+zuordnet, und zwei Funktionen für ganzen Text, die in der letzten Zeile an die
+Stelle von `send_symbol` und `receive_symbol` treten:
+
+```python static
+CODEBOOK = {
+    " ": ["off", "off", "off", "off", "off"],
+    "A": ["off", "off", "off", "off", "white"],
+    # und so weiter, bis "Z"
+}
+
+def send_text(text):            # kodieren: jedes Zeichen als seine Farben senden
+    ...
+
+def receive_text(n_chars):      # dekodieren: so viele Zeichen empfangen
+    return ""
+
+run_test(send_text, receive_text, calibrate, symbols=COLORS, codebook=CODEBOOK,
+         gain=GAIN, integration_time=INTEGRATION_TIME)
+```
+
+Ein Lauf beginnt mit der Kalibrierung wie in Challenge 1. Danach schickt der
+Kursserver drei Sätze aus je drei Wörtern in Großbuchstaben, etwa
+`BUSY FROGS DANCE`, und für jeden Satz ruft `run_test` im selben Moment
+`send_text` auf dem sendenden und `receive_text` auf dem empfangenden Gerät
+auf; der Empfänger erfährt dabei nur die Zahl der Zeichen. Von da an hält
+allein euer Code den Takt. `run_test` misst, wie lange `send_text` braucht,
+und schaltet die LED aus, sobald es zurückkehrt. Daraus werden die Zeichen pro
+Sekunde und, aus allen gesendeten Farben, die gemessene Symbolrate und die Bit
+pro Sekunde. Gezählt wird ein Lauf, wenn alle drei Sätze ohne Fehler ankommen.
+
+Zwei Angaben helfen beim Üben, und Läufe mit ihnen zählen nie: `sentences=1`
+holt nur einen Satz vom Server, und `text="HELLO WORLD"` schickt ab Version
+0.9.1 euren eigenen Text, eine Liste von Texten nacheinander. Ein Lauf mit
+eigenem Text braucht beide Geräte an einem Laptop und fragt den Server nicht,
+und jedes Zeichen darin muss im `CODEBOOK` stehen.
+
 ## Das Messprotokoll und das Cockpit
 
 Alles, was euer Gerät macht, schreibt das Kursmodul in eine Datei namens

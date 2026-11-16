@@ -242,6 +242,48 @@ The template of Challenge 1 sets them at the top of the file as `GAIN` and
 `INTEGRATION_TIME`. Without the two, the sensor measures with 16 and 154 ms,
 as after every start.
 
+### The test for challenge 2
+
+From version 0.9.0 on, the same `run_test` also runs the test for
+[[lifi-challenge-2]], and what tells it so is the codebook. For that the file
+gets a `CODEBOOK`, which assigns every character a sequence of colour names,
+and two functions for whole texts, which take the place of `send_symbol` and
+`receive_symbol` in the last line:
+
+```python static
+CODEBOOK = {
+    " ": ["off", "off", "off", "off", "off"],
+    "A": ["off", "off", "off", "off", "white"],
+    # and so on, up to "Z"
+}
+
+def send_text(text):            # encoding: send every character as its colours
+    ...
+
+def receive_text(n_chars):      # decoding: receive that many characters
+    return ""
+
+run_test(send_text, receive_text, calibrate, symbols=COLORS, codebook=CODEBOOK,
+         gain=GAIN, integration_time=INTEGRATION_TIME)
+```
+
+A run begins with the calibration as in challenge 1. Then the course server
+sends three sentences of three words each in capital letters, such as
+`BUSY FROGS DANCE`, and for every sentence `run_test` calls `send_text` on
+the sending device and `receive_text` on the receiving one at the same moment;
+the receiver learns only the number of characters. From then on only your own
+code keeps the rhythm. `run_test` measures how long `send_text` takes and
+turns the LED off as soon as it returns. From this come the characters per
+second and, from all colours sent, the measured symbol rate and the bits per
+second. A run counts when all three sentences arrive without a mistake.
+
+Two arguments help with practising, and runs with them never count:
+`sentences=1` fetches only one sentence from the server, and
+`text="HELLO WORLD"` sends your own text from version 0.9.1 on, a list of texts
+one after the other. A run with your own text needs both devices on one laptop
+and does not ask the server, and every character in it has to be in the
+`CODEBOOK`.
+
 ## The measurement log and the cockpit
 
 Everything your device does, the course module writes to a file called
