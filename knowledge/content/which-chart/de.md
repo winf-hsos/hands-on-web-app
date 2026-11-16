@@ -15,17 +15,20 @@ areas: [ds]
 relations:
   see_also: [milk-survey-compact]
 status: published
-updated: 2026-11-15
+updated: 2026-11-16
 ---
 
 **Ziel:** Du findest für eine Frage an Umfragedaten das Diagramm, das sie
 beantwortet, und bekommst dazu eine Vorlage in R, die du nur noch mit deinen
 Spalten füllen musst.
 
-**Bedienung:** Beantworte die Fragen mit einem Klick auf eine der großen
-Schaltflächen oder mit den Zifferntasten. Oben sammeln sich deine Antworten,
-und mit „Zurück“ nimmst du die letzte zurück. Am Ende stehen das passende
-Diagramm mit einer Skizze, der Grund, warum es passt, worauf du achten solltest
+**Bedienung:** Oben stehen alle zehn Diagramme, zwischen denen die Fragen
+entscheiden. Beantworte die Fragen mit einem Klick auf eine der großen
+Schaltflächen oder mit den Zifferntasten: Mit jeder Antwort treten die
+Diagramme zurück, die nicht mehr passen, darunter sammeln sich deine Antworten,
+und mit „Zurück“ nimmst du die letzte zurück. Ein Klick auf eines der zehn
+Diagramme zeigt dir die Antworten, die dorthin führen. Am Ende stehen das
+passende Diagramm in groß, der Grund, warum es passt, worauf du achten solltest
 und der R-Code mit einem Knopf zum Kopieren. Darunter kannst du stattdessen
 eine oder zwei Spalten der Milch-Umfrage wählen: Der Demonstrator zeigt dann,
 wie die Fragen für sie ausgehen, und füllt den Code mit ihren Namen, sodass er

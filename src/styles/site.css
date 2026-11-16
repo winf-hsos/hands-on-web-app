@@ -5269,52 +5269,151 @@ details.callout[open] > summary::before {
   }
 }
 
-/* The chart finder (client/which-chart.js): on top one row with the answers
-   so far and the buttons "Back" and "Start over", then either the open
-   question with its answers as a row of large buttons, or the chart with a
-   sketch, why it fits, what to watch out for and its R code; under a rule the
-   survey columns that lead straight to a chart. The row on top and the
-   question keep a measured minimum height, so nothing moves from one step to
-   the next, and a new view only fades in. */
+/* The chart finder (client/which-chart.js): on top all ten charts as small
+   sketches, of which each answer dims those it rules out; then one row with
+   the answers so far and the buttons "Back" and "Start over", then either the
+   open question with its answers as large buttons with a symbol each, or the
+   chart large with why it fits, what to watch out for and its R code; under a
+   rule the survey columns that lead straight to a chart. The row of answers
+   and the question keep a measured minimum height, so nothing moves from one
+   step to the next, and a new view only fades in. Colours carry meaning: the
+   accent for bars and points, three hues for categories without an order. */
 .which-chart {
+  --wc-c3: color-mix(in srgb, var(--quiet) 65%, var(--paper));
   margin: 1.5rem 0;
-  padding: 1rem;
+  padding: 1.25rem;
   border: 1px solid var(--rule);
-  border-radius: 0.75rem;
+  border-radius: 1rem;
 }
 
 .prose .which-chart p {
   margin: 0;
 }
 
-.wc-top {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  gap: 0.5rem 1rem;
-  margin-bottom: 0.9rem;
+.wc-c1 {
+  fill: var(--accent);
 }
 
+.wc-c2 {
+  fill: var(--warn);
+}
+
+.wc-c3 {
+  fill: var(--wc-c3);
+}
+
+/* the ten charts */
+.wc-map {
+  margin-bottom: 1.1rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.wc-map-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.25rem 1rem;
+  margin-bottom: 0.6rem;
+  color: var(--quiet);
+  font-size: 0.85rem;
+}
+
+.wc-map-head strong {
+  color: var(--accent-ink);
+  font-size: 1rem;
+}
+
+.wc-gallery {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.wc-tile {
+  display: grid;
+  align-content: start;
+  gap: 0.3rem;
+  padding: 0.4rem 0.4rem 0.5rem;
+  border: 1.5px solid var(--rule);
+  border-radius: 0.6rem;
+  background: var(--paper);
+  color: var(--accent);
+  text-align: left;
+  cursor: pointer;
+  transition: opacity 0.35s var(--ease), filter 0.35s var(--ease), border-color 0.2s, background 0.2s;
+}
+
+.wc-tile-sketch {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+}
+
+.wc-tile-name {
+  min-height: 2.4em;
+  color: var(--ink);
+  font-size: 0.7rem;
+  line-height: 1.2;
+}
+
+.wc-tile:hover,
+.wc-tile:focus-visible {
+  border-color: var(--accent);
+}
+
+.wc-tile.is-out {
+  opacity: 0.28;
+  filter: grayscale(1);
+}
+
+.wc-tile.is-out:hover,
+.wc-tile.is-out:focus-visible {
+  opacity: 0.65;
+}
+
+.wc-tile.is-chosen {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, var(--paper));
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.wc-tile.is-chosen .wc-tile-name {
+  font-weight: 650;
+}
+
+/* the answers so far, in one line that scrolls sideways when it is full,
+   so that it reserves no room for wrapped lines */
 .wc-path {
   display: flex;
-  flex: 1 1 18rem;
-  flex-wrap: wrap;
   align-items: baseline;
-  align-content: flex-start;
   gap: 0.25rem 0.75rem;
+  margin-bottom: 0.9rem;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
 
 .wc-path.is-empty {
   visibility: hidden;
 }
 
+.wc-path.is-scrolled {
+  mask-image: linear-gradient(to right, transparent, #000 2.5rem);
+}
+
 .prose .wc-path ol {
   display: flex;
-  flex-wrap: wrap;
   gap: 0.35rem;
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.prose .wc-path li {
+  flex: none;
+  white-space: nowrap;
 }
 
 .prose .wc-path li {
@@ -5342,44 +5441,66 @@ details.callout[open] > summary::before {
   animation: fade 0.25s var(--ease);
 }
 
+/* the question and its answers */
 .prose .wc-question {
   min-height: var(--wc-question-height, 0);
   margin-bottom: 0.75rem;
-  font-size: 1.15rem;
-  font-weight: 650;
+  font-size: 1.2rem;
+  font-weight: 700;
 }
 
 .wc-options {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.6rem;
 }
 
 .wc-option {
   position: relative;
   display: grid;
-  align-content: start;
-  gap: 0.25rem;
-  min-height: 4.5rem;
-  padding: 0.8rem 1rem;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.9rem;
+  min-height: 4.75rem;
+  padding: 0.75rem 1.9rem 0.75rem 0.75rem;
   border: 2px solid var(--rule);
   border-radius: 0.75rem;
   background: var(--paper);
   color: var(--ink);
   text-align: left;
   cursor: pointer;
-  transition: border-color 0.15s, background 0.15s;
+  transition: border-color 0.15s, background 0.15s, transform 0.15s var(--ease);
 }
 
-.wc-option:hover {
+.wc-option:hover,
+.wc-option:focus-visible {
   border-color: var(--accent);
   background: color-mix(in srgb, var(--accent) 7%, var(--paper));
 }
 
+.wc-option:active {
+  transform: scale(0.985);
+}
+
+.wc-icon {
+  display: block;
+  width: 3.6rem;
+  height: 2.6rem;
+  padding: 0.3rem 0.35rem;
+  border-radius: 0.5rem;
+  background: var(--paper-2);
+  color: var(--accent);
+}
+
+.wc-option-words {
+  display: grid;
+  gap: 0.2rem;
+}
+
 .wc-option-text {
-  padding-right: 1.25rem;
   font-weight: 650;
   font-size: 1.05rem;
+  line-height: 1.25;
 }
 
 .wc-example {
@@ -5400,19 +5521,25 @@ details.callout[open] > summary::before {
   display: none;
 }
 
-.wc-head {
-  display: flex;
+/* the chart at the end */
+.wc-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 13rem) minmax(0, 1fr);
   align-items: center;
-  gap: 1rem;
+  gap: 1.25rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: var(--paper-2);
 }
 
 .wc-sketch {
-  flex: none;
-  width: 7.5rem;
-  height: 5rem;
-  padding: 0.35rem;
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  padding: 0.5rem;
   border-radius: 0.5rem;
-  background: var(--paper-2);
+  background: var(--paper);
   color: var(--accent);
 }
 
@@ -5423,14 +5550,23 @@ details.callout[open] > summary::before {
   opacity: 0.6;
 }
 
+.prose .wc-eyebrow {
+  color: var(--quiet);
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 .prose .wc-name {
-  font-size: 1.25rem;
+  margin-top: 0.15rem;
+  font-size: 1.45rem;
   font-weight: 700;
-  line-height: 1.25;
+  line-height: 1.2;
 }
 
 .prose .wc-also {
-  margin-top: 0.3rem;
+  margin-top: 0.5rem;
   font-size: 0.85rem;
   color: var(--quiet);
 }
@@ -5450,17 +5586,41 @@ details.callout[open] > summary::before {
 .prose .wc-facts {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-  gap: 0.75rem 1.5rem;
-  margin: 1rem 0;
+  gap: 0.75rem;
+  margin: 0.75rem 0 1.1rem;
+}
+
+.wc-fact {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.75rem;
+}
+
+.wc-fact-icon {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.1rem;
+}
+
+.wc-fact-icon.is-why {
+  color: var(--done);
+}
+
+.wc-fact-icon.is-watch {
+  color: var(--warn);
 }
 
 .prose .wc-facts dt {
-  font-size: 0.8rem;
-  color: var(--quiet);
+  font-size: 0.85rem;
+  font-weight: 650;
 }
 
 .prose .wc-facts dd {
-  margin: 0.15rem 0 0;
+  margin: 0.2rem 0 0;
   font-size: 0.95rem;
 }
 
@@ -5492,25 +5652,21 @@ details.callout[open] > summary::before {
 
 .wc-nav {
   display: flex;
-  flex: none;
-  align-items: center;
-  gap: 0.5rem 1rem;
+  align-items: baseline;
+  gap: 1rem;
   margin-left: auto;
 }
 
-.wc-nav .button:disabled {
-  opacity: 0.45;
+.wc-nav .wc-link:disabled {
+  opacity: 0.4;
   cursor: default;
-  pointer-events: none;
+  text-decoration: none;
 }
 
-.wc-nav .wc-link {
-  font-size: 0.9rem;
-}
-
+/* the survey */
 .wc-survey {
-  margin-top: 1rem;
-  padding-top: 1rem;
+  margin-top: 1.25rem;
+  padding-top: 1.1rem;
   border-top: 1px solid var(--rule);
 }
 
@@ -5537,36 +5693,54 @@ details.callout[open] > summary::before {
   opacity: 0.55;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .wc-tile,
+  .wc-option {
+    transition: none;
+  }
+}
+
 @media (max-width: 40rem) {
   .which-chart {
     padding: 0.75rem;
   }
 
-  /* on a phone the answers stay in one line that scrolls sideways, so the
-     row on top does not reserve room for four wrapped lines */
-  .wc-path,
-  .prose .wc-path ol {
-    flex-wrap: nowrap;
+  /* on a phone the sketches stand alone; their names are read out and
+     appear large once a chart is chosen */
+  .wc-gallery {
+    gap: 0.3rem;
   }
 
-  .wc-path {
-    overflow-x: auto;
-    scrollbar-width: none;
+  .wc-tile {
+    padding: 0.25rem;
+    border-radius: 0.45rem;
   }
 
-  .wc-path .dg-label,
-  .prose .wc-path li {
-    flex: none;
+  .wc-tile-name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
     white-space: nowrap;
   }
 
-  .wc-head {
-    align-items: flex-start;
+  .wc-options {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .wc-sketch {
-    width: 5.5rem;
-    height: 3.7rem;
+  .wc-option {
+    min-height: 4rem;
+  }
+
+  .wc-hero {
+    grid-template-columns: minmax(0, 8rem) minmax(0, 1fr);
+    gap: 0.9rem;
+    padding: 0.75rem;
+  }
+
+  .prose .wc-name {
+    font-size: 1.2rem;
   }
 }
 

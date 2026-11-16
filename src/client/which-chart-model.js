@@ -59,6 +59,39 @@ export function resultsFor(answers) {
   return ['boxplots-side'];
 }
 
+/** Every way through the questions that starts with `answers`, each ending in its charts. */
+function* ways(answers) {
+  const q = nextQuestion(answers);
+  if (!q) {
+    yield answers;
+    return;
+  }
+  for (const value of q.options) yield* ways([...answers, [q.id, value]]);
+}
+
+/**
+ * The charts the answers can still lead to, in the order of RESULTS: all ten
+ * before the first answer, the charts of the result once no question is open.
+ */
+export function reachable(answers) {
+  const found = new Set();
+  for (const way of ways(answers)) for (const r of resultsFor(way)) found.add(r);
+  return RESULTS.filter((r) => found.has(r));
+}
+
+/**
+ * The shortest answers that lead to a chart, with its place among the charts
+ * they lead to (the boxplot is the second chart for one number).
+ */
+export function pathTo(result) {
+  let best = null;
+  for (const way of ways([])) {
+    const index = resultsFor(way).indexOf(result);
+    if (index >= 0 && (!best || way.length < best.answers.length)) best = { answers: way, index };
+  }
+  return best;
+}
+
 // --- the compact survey ------------------------------------------------------------
 
 const RATING = '(-2 to +2)';

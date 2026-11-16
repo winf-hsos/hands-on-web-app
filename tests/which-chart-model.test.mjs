@@ -7,7 +7,7 @@
 // Usage: npm test
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { COLUMNS, RESULTS, column, fromSurvey, nextQuestion, resultsFor, template } from '../src/client/which-chart-model.js';
+import { COLUMNS, RESULTS, column, fromSurvey, nextQuestion, pathTo, reachable, resultsFor, template } from '../src/client/which-chart-model.js';
 
 /** Answers the questions with `values` in turn, checking each is offered. */
 function walk(...values) {
@@ -170,4 +170,17 @@ test('survey templates leave out what is missing, order the scales and set the i
   assert.match(code('state', 'diet'), /aes\(y = state, fill = diet\)[\s\S]*labs\(x = "Share", y = "Federal state", fill = "Diet"\)/);
   assert.match(code('eco_conscious', 'loves_meat'), /filter\(!is.na\(eco_conscious\), !is.na\(loves_meat\)\)[\s\S]*geom_count\(\)/);
   assert.match(code('age'), /geom_histogram\(binwidth = 5\)/);
+});
+
+test('each answer narrows the charts still in question, and every chart has a way to it', () => {
+  assert.deepEqual(reachable([]), RESULTS);
+  assert.deepEqual(reachable(walk('one')), ['bars-frequency', 'bars-scale', 'histogram', 'boxplot']);
+  assert.deepEqual(reachable(walk('two', 'number')), ['boxplots-side', 'scatter', 'count-points', 'line']);
+  assert.deepEqual(reachable(walk('one', 'number')), ['histogram', 'boxplot']);
+  for (const result of RESULTS) {
+    const { answers, index } = pathTo(result);
+    assert.equal(nextQuestion(answers), null);
+    assert.equal(resultsFor(answers)[index], result);
+  }
+  assert.deepEqual(pathTo('boxplot'), { answers: walk('one', 'number'), index: 1 });
 });
