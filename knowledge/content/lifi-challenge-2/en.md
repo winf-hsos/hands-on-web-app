@@ -53,7 +53,7 @@ along what you built there.
 | `run_test(...)` | the last line; it starts both sides together, and you do not change it |
 
 Only the argument `codebook=` in the last line turns `run_test` into the test
-of challenge 2. The course module can do that from version 0.9.0 on
+of challenge 2. The course module can do that from version 0.9.1 on
 ([[lifi-hardware]]), and you fetch an older one anew with the same
 `pip install` as at the installation. This is what the template looks like;
 replace `COLORS`, the settings, `calibrate` and `receive_symbol` with your
@@ -80,6 +80,9 @@ From the start on, the timing is yours: run_test starts both functions at
 the same moment and then does not help any more.
 
 Run it with:  python word.py   (on a Mac: python3)
+
+For a quick test with your own text and both devices on one laptop, add
+text="HELLO WORLD" to the last line; such a run never counts.
 """
 
 import time
@@ -210,8 +213,14 @@ A scored run is three sentences in a row without an error at the same symbol
 rate. The result appears with every mistake in the terminal and in your
 [[lifi-cockpit|team cockpit]]. For quick tries in between one sentence is
 enough if you add `sentences=1` to the call of `run_test` at the end of the
-file; only runs with three sentences count, though. Without the server, a run
-with both devices on one laptop works as a practice run that does not count.
+file; only runs with three sentences count, though. It is even simpler to
+practise with your own text: with `text="HELLO WORLD"` in the same line,
+`run_test` sends this text instead of the sentences from the server, and a
+list of texts it sends one after the other. That is a practice run with both
+devices on one laptop, which does not ask the server and never counts, and
+every character in it has to be in your `CODEBOOK`. Without the server, too,
+a run with both devices on one laptop works as a practice run that does not
+count.
 
 ## Task 1: The codebook
 
@@ -308,8 +317,8 @@ SYMBOL_RATE = 2
 ## Acceptance and scoring
 
 You run scored runs at your own place, with the boxes of sender and receiver
-touching wall to wall. Nicolas comes round, looks at your setup and ticks off
-passed runs. You pass with one scored run, that is three sentences in a row
+touching wall to wall. Nicolas accepts the runs live: he comes round, looks
+at your setup, asks to see your code now and then, and ticks off passed runs. You pass with one scored run, that is three sentences in a row
 without an error, at any symbol rate.
 
 The [challenge board](https://lifi.hsos.uber.space/challenges) shows for every

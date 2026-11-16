@@ -61,7 +61,7 @@ dort gebaut habt, übernehmt ihr.
 | `run_test(...)` | die letzte Zeile; sie startet beide Seiten gemeinsam, und ihr ändert sie nicht |
 
 Erst das Argument `codebook=` in der letzten Zeile macht aus `run_test` den
-Test für Challenge 2. Das kann das Kursmodul ab Version 0.9.0
+Test für Challenge 2. Das kann das Kursmodul ab Version 0.9.1
 ([[lifi-hardware]]), und ältere Fassungen holt ihr mit demselben `pip install`
 wie bei der Installation neu. So sieht die Vorlage aus; `COLORS`, die
 Einstellungen, `calibrate` und `receive_symbol` ersetzt ihr durch eure
@@ -87,6 +87,9 @@ From the start on, the timing is yours: run_test starts both functions at
 the same moment and then does not help any more.
 
 Run it with:  python word.py   (on a Mac: python3)
+
+For a quick test with your own text and both devices on one laptop, add
+text="HELLO WORLD" to the last line; such a run never counts.
 """
 
 import time
@@ -218,8 +221,13 @@ Ein gewerteter Lauf sind drei Sätze hintereinander ohne Fehler bei derselben
 Symbolrate. Das Ergebnis erscheint mit jedem Fehler im Terminal und in eurem
 [[lifi-cockpit|Team-Cockpit]]. Für schnelle Versuche zwischendurch genügt ein
 Satz, wenn ihr im Aufruf von `run_test` am Ende der Datei `sentences=1`
-dazusetzt; gewertet werden aber nur Läufe mit drei Sätzen. Ohne Server läuft
-mit beiden Geräten an einem Laptop ein Übungslauf, der nicht zählt.
+dazusetzt; gewertet werden aber nur Läufe mit drei Sätzen. Noch einfacher
+übt ihr mit einem eigenen Text: Mit `text="HELLO WORLD"` in derselben Zeile
+schickt `run_test` diesen Text statt der Sätze vom Server, und eine Liste von
+Texten schickt es nacheinander. Das ist ein Übungslauf mit beiden Geräten an
+einem Laptop, der den Server nicht fragt und nie zählt, und jedes Zeichen
+darin muss in eurem `CODEBOOK` stehen. Auch ohne Server läuft mit beiden
+Geräten an einem Laptop ein Übungslauf, der nicht zählt.
 
 ## Aufgabe 1: Das Codebuch
 
@@ -315,8 +323,9 @@ SYMBOL_RATE = 2
 ## Abnahme und Wertung
 
 Ihr lasst gewertete Läufe am eigenen Platz laufen, die Gehäuse von Sender und
-Empfänger Wand an Wand. Nicolas geht durch die Reihen, sieht sich euren Aufbau
-an und hakt bestandene Läufe ab. Bestanden habt ihr mit einem gewerteten Lauf,
+Empfänger Wand an Wand. Nicolas nimmt die Läufe live ab: Er geht durch die
+Reihen, sieht sich euren Aufbau an, lässt sich stichprobenartig euren Code
+zeigen und hakt bestandene Läufe ab. Bestanden habt ihr mit einem gewerteten Lauf,
 also drei Sätzen hintereinander ohne Fehler, bei beliebiger Symbolrate.
 
 Auf der [Challenge-Tafel](https://lifi.hsos.uber.space/challenges) steht zu
