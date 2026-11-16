@@ -329,8 +329,7 @@ export function item(site, doc, lang) {
         ${text.missing && html`<p class="notice">${t(lang, 'missing_translation')}</p>`}
         ${text.stale && html`<p class="notice">${t(lang, 'stale_translation')}</p>`}
         ${!hasType(lead, 'quiz') && objectivesBlock(site, text, lang)}
-        ${scriptBlock(site, doc, lang)}
-        ${datasetsBlock(site, doc, lang)}
+        ${downloadsBlock(site, doc, lang)}
         ${hasType(lead, 'slides') && slidesBlock(site, doc, lang)}
         ${hasType(lead, 'paper') && paperBlock(doc, lang)}
         ${hasType(lead, 'dataset') && datasetBlock(doc, lang)}
@@ -430,18 +429,6 @@ function embedBlock(site, doc, lang) {
 /** A demo's text without the paragraph that begins "Ziel:" or "Goal:". */
 const withoutGoal = (body) => body.replace(/<p><strong>(?:Ziel|Goal):<\/strong>[\s\S]*?<\/p>\s*/, '');
 
-/** An exercise as a script to download, next to its page (build/exercise-script.mjs). */
-function scriptBlock(site, doc, lang) {
-  const script = site.script(doc, lang);
-  return (
-    script &&
-    html`<p class="script-file">
-      <a class="button button-quiet" href="${script.name}" download="${script.name}">${icons.download}<span>${t(lang, 'script_download')}</span></a>
-      <span class="script-note"><code>${script.name}</code> ${t(lang, 'script_note')}</span>
-    </p>`
-  );
-}
-
 /** A quiz to download below it, with the answers, to learn with outside the page (build/quiz-export.mjs).
  * A published quiz also gets a quiet link that opens it as a live quiz in Classroom Live, for the lecture
  * hall (Nicolas, 2026-11-09); drafts are not in /quizzes.json, so they have none.
@@ -465,24 +452,34 @@ const formatNumber = (n, lang, digits = 0) => n.toLocaleString(lang === 'de' ? '
 const fileSize = (b, lang) => (b < 1e6 ? `${formatNumber(Math.max(1, b / 1e3), lang)} kB` : `${formatNumber(b / 1e6, lang, 1)} MB`);
 
 /**
- * The data sets a page works with, at its top, each with its file to download
- * (Nicolas, 2026-11-16); which ones they are, the site model finds out
- * (build/dataset.mjs, datasetsUsed). The title leads to the data set's page,
- * which describes the columns and shows the lines that load the file.
+ * Everything a page offers to download, at its top and in one box (Nicolas,
+ * 2026-11-16): first an exercise as a script, next to its page
+ * (build/exercise-script.mjs), then the data sets the page works with, which
+ * the site model finds out (build/dataset.mjs, datasetsUsed). A data set's
+ * title leads to its page, which describes the columns and shows the lines
+ * that load the file.
  */
-function datasetsBlock(site, doc, lang) {
+function downloadsBlock(site, doc, lang) {
+  const script = site.script(doc, lang);
   const sets = site.datasetsOf(doc, lang);
-  if (!sets.length) return '';
-  return html`<section class="page-datasets">
-      <p class="page-datasets-head">${t(lang, 'datasets_heading')}</p>
+  if (!script && !sets.length) return '';
+  const row = (href, name, title, facts) => html`<li>
+      <a class="button button-quiet" href="${href}" download="${name}">${icons.download}<span>${name}</span></a>
+      <span class="page-downloads-about">${title}<span class="page-downloads-facts">${facts}</span></span>
+    </li>`;
+  return html`<section class="page-downloads">
+      <p class="page-downloads-head">${t(lang, 'downloads_heading')}</p>
       <ul>
+        ${script && row(script.name, script.name, html`<span>${t(lang, 'script_title')}</span>`, t(lang, 'script_note'))}
         ${sets.map((d) => {
           const { file } = d.lead;
           const { bytes, rows, columns } = datasetInfo(d.dir, file);
-          return html`<li>
-            <a class="button button-quiet" href="/media/datasets/${file}" download="${file}">${icons.download}<span>${file}</span></a>
-            <span class="page-datasets-about"><a href="${site.url(d, lang)}">${site.localize(d, lang).titleHtml}</a><span>${formatNumber(rows, lang)} ${t(lang, 'dataset_rows')} · ${formatNumber(columns, lang)} ${t(lang, 'dataset_columns')} · ${fileSize(bytes, lang)}</span></span>
-          </li>`;
+          return row(
+            `/media/datasets/${file}`,
+            file,
+            html`<a href="${site.url(d, lang)}">${site.localize(d, lang).titleHtml}</a>`,
+            `${formatNumber(rows, lang)} ${t(lang, 'dataset_rows')} · ${formatNumber(columns, lang)} ${t(lang, 'dataset_columns')} · ${fileSize(bytes, lang)}`,
+          );
         })}
       </ul>
     </section>`;

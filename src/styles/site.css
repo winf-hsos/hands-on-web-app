@@ -3455,9 +3455,10 @@ details.callout[open] > summary::before {
   margin-bottom: 1.25rem;
 }
 
-/* The data sets a page works with, at its top (Nicolas, 2026-11-16): per data
-   set its file to download, the way to its page and how big it is. */
-.page-datasets {
+/* Everything a page offers to download, at its top and in one box (Nicolas,
+   2026-11-16): an exercise as a script, then per data set its file, the way to
+   its page and how big it is. */
+.page-downloads {
   max-width: var(--measure);
   margin: 0 0 2rem;
   padding: 1rem 1.25rem;
@@ -3465,7 +3466,7 @@ details.callout[open] > summary::before {
   border-radius: 0.75rem;
 }
 
-.page-datasets-head {
+.page-downloads-head {
   margin: 0 0 0.75rem;
   color: var(--quiet);
   font-size: 0.85rem;
@@ -3474,7 +3475,7 @@ details.callout[open] > summary::before {
 
 /* the buttons in one column and the titles beside them in another, so that the
    titles line up; on a phone each title goes below its button */
-.page-datasets ul {
+.page-downloads ul {
   display: grid;
   grid-template-columns: max-content minmax(0, 1fr);
   align-items: center;
@@ -3484,33 +3485,33 @@ details.callout[open] > summary::before {
   list-style: none;
 }
 
-.page-datasets li {
+.page-downloads li {
   display: contents;
 }
 
-.page-datasets .button {
+.page-downloads .button {
   justify-self: start;
 }
 
 @media (max-width: 560px) {
-  .page-datasets ul {
+  .page-downloads ul {
     grid-template-columns: minmax(0, 1fr);
     gap: 0.4rem;
   }
 
-  .page-datasets-about {
+  .page-downloads-about {
     margin-bottom: 0.6rem;
   }
 }
 
-.page-datasets-about {
+.page-downloads-about {
   display: flex;
   flex-direction: column;
   gap: 0.1rem;
   min-width: 0;
 }
 
-.page-datasets-about > span {
+.page-downloads-facts {
   color: var(--quiet);
   font-size: 0.85rem;
 }
@@ -3534,15 +3535,6 @@ details.callout[open] > summary::before {
   margin: 0;
   color: var(--quiet);
   font-size: 0.95rem;
-}
-
-.script-file {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem 0.9rem;
-  max-width: var(--measure);
-  margin: 0 0 1.5rem;
 }
 
 .quiz-files {
@@ -3586,11 +3578,6 @@ details.callout[open] > summary::before {
 .quiz-files .quiz-live:hover,
 .quiz-files .quiz-live:focus-visible {
   opacity: 1;
-}
-
-.script-note {
-  color: var(--quiet);
-  font-size: 0.9rem;
 }
 
 .prose .dataset-facts {
