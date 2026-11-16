@@ -17,16 +17,17 @@ based_on: 2026-11-16
 In Challenge 2 your sender sends text as colours, and your receiver turns
 the colours back into text. Before the clock comes in as well, you practise
 only the two translations here, with the smallest codebook that is still of
-any use: two colours, `off` and `on`, and the four letters A to D. Because
-2 × 2 = 4, every letter gets exactly two colours, as on the slide with the
-codes of fixed length ([[code-systems]]).
+any use: two colours, `off` and `on`, and the four letters T, E, A and M
+from the slide "perfect reception, perfect nonsense"
+([[symbols-and-information-slides]]). Because 2 × 2 = 4, every letter gets
+exactly two colours, a code of fixed length ([[code-systems]]).
 
 | Letter | Colours |
 |---|---|
-| A | off off |
-| B | off on |
-| C | on off |
-| D | on on |
+| T | off off |
+| E | off on |
+| A | on off |
+| M | on on |
 
 There is no clock and no course server: you press Enter for every colour,
 and everything stays on your laptop.
@@ -45,8 +46,9 @@ Warm-up for Challenge 2: encoding and decoding
 ==============================================
 
 Before you send whole sentences in Challenge 2, practise the two halves of
-it with a tiny codebook: two colours, "off" and "on", and four letters,
-A to D. Each letter becomes two colours, because 2 x 2 = 4.
+it with a tiny codebook: two colours, "off" and "on", and the four letters
+T, E, A and M from the slide "perfect reception, perfect nonsense". Each
+letter becomes two colours, because 2 x 2 = 4.
 
 You write two functions:
 
@@ -85,16 +87,16 @@ COLORS = {
 
 # Which colours stand for which letter: two positions, two colours each
 CODEBOOK = {
-    "A": ["off", "off"],
-    "B": ["off", "on"],
-    "C": ["on",  "off"],
-    "D": ["on",  "on"],
+    "T": ["off", "off"],
+    "E": ["off", "on"],
+    "A": ["on",  "off"],
+    "M": ["on",  "on"],
 }
 
 
 def encode(letter):
     """Encoding: returns the list of colours that stand for this letter,
-    for example ["off", "on"] for "B".
+    for example ["off", "on"] for "E".
 
     The sender calls it for every letter it is about to send.
     """
@@ -104,7 +106,7 @@ def encode(letter):
 
 def decode(colors):
     """Decoding: returns the letter whose colours are exactly `colors`, for
-    example "B" for ["off", "on"]. If no letter has these colours, it
+    example "E" for ["off", "on"]. If no letter has these colours, it
     returns "?".
 
     The receiver calls it as soon as it has measured the colours of one
@@ -291,7 +293,7 @@ four are right does it look for the devices. Then there are two cases:
 
 ## Task 1: Encoding
 
-Write `encode(letter)`. The function gets a letter, such as `"B"`, and
+Write `encode(letter)`. The function gets a letter, such as `"E"`, and
 returns its colours from the `CODEBOOK`, here `["off", "on"]`. The sender
 calls it for every letter before sending it.
 
@@ -309,7 +311,7 @@ def encode(letter):
 
 Write `decode(colors)`. The function gets the measured colours of one
 letter, such as `["off", "on"]`, and returns the letter that has exactly
-these colours, here `"B"`. If no letter fits, it returns `"?"`. The receiver
+these colours, here `"E"`. If no letter fits, it returns `"?"`. The receiver
 calls it as soon as it has measured two colours.
 
 ```python static
@@ -330,14 +332,19 @@ def decode(colors):
 
 ## Task 3: Send and receive
 
-First send single letters, then words made of A to D, such as `BAD`, `CAB`
-or `DAD`. If you work with two laptops, swap roles afterwards, so that
-everyone encodes once and decodes once.
+First send single letters, then words made of T, E, A and M, such as
+`TEAM`, `MEAT`, `MATE` or `TEA`. If you work with two laptops, swap roles
+afterwards, so that everyone encodes once and decodes once.
+
+Finally, rebuild the slide: on the receiving side only, swap the colours of
+T and M in the `CODEBOOK` and send `TEAM`. Every colour arrives correctly,
+and still the receiver shows `MEAT`.
 
 ## To think about
 
 - What does the receiver show when a colour is measured wrongly, and how do
-  you notice without asking the sender?
+  you notice without asking the sender? And how do you notice when the two
+  codebooks do not match?
 - How many positions would you need with `off` and `on` for all 26 letters
   and the space, and how many with four colours?
 - In this exercise, "now" says when to measure. What does your code have to

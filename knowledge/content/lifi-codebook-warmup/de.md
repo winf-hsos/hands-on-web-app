@@ -27,16 +27,17 @@ updated: 2026-11-16
 In Challenge 2 schickt euer Sender Text als Farben, und euer Empfänger macht
 aus den Farben wieder Text. Bevor dazu noch der Takt kommt, übt ihr hier nur
 die beiden Übersetzungen, mit dem kleinsten Codebuch, das noch etwas taugt:
-zwei Farben, `off` und `on`, und die vier Buchstaben A bis D. Weil
-2 × 2 = 4, bekommt jeder Buchstabe genau zwei Farben, so wie auf der Folie
-mit den Codes fester Länge ([[code-systems]]).
+zwei Farben, `off` und `on`, und die vier Buchstaben T, E, A und M von der
+Folie „perfect reception, perfect nonsense“ ([[symbols-and-information-slides]]).
+Weil 2 × 2 = 4, bekommt jeder Buchstabe genau zwei Farben, ein Code fester
+Länge ([[code-systems]]).
 
 | Buchstabe | Farben |
 |---|---|
-| A | off off |
-| B | off on |
-| C | on off |
-| D | on on |
+| T | off off |
+| E | off on |
+| A | on off |
+| M | on on |
 
 Es gibt keinen Takt und keinen Kursserver: Ihr drückt für jede Farbe die
 Eingabetaste, und alles bleibt auf eurem Laptop.
@@ -55,8 +56,9 @@ Warm-up for Challenge 2: encoding and decoding
 ==============================================
 
 Before you send whole sentences in Challenge 2, practise the two halves of
-it with a tiny codebook: two colours, "off" and "on", and four letters,
-A to D. Each letter becomes two colours, because 2 x 2 = 4.
+it with a tiny codebook: two colours, "off" and "on", and the four letters
+T, E, A and M from the slide "perfect reception, perfect nonsense". Each
+letter becomes two colours, because 2 x 2 = 4.
 
 You write two functions:
 
@@ -95,16 +97,16 @@ COLORS = {
 
 # Which colours stand for which letter: two positions, two colours each
 CODEBOOK = {
-    "A": ["off", "off"],
-    "B": ["off", "on"],
-    "C": ["on",  "off"],
-    "D": ["on",  "on"],
+    "T": ["off", "off"],
+    "E": ["off", "on"],
+    "A": ["on",  "off"],
+    "M": ["on",  "on"],
 }
 
 
 def encode(letter):
     """Encoding: returns the list of colours that stand for this letter,
-    for example ["off", "on"] for "B".
+    for example ["off", "on"] for "E".
 
     The sender calls it for every letter it is about to send.
     """
@@ -114,7 +116,7 @@ def encode(letter):
 
 def decode(colors):
     """Decoding: returns the letter whose colours are exactly `colors`, for
-    example "B" for ["off", "on"]. If no letter has these colours, it
+    example "E" for ["off", "on"]. If no letter has these colours, it
     returns "?".
 
     The receiver calls it as soon as it has measured the colours of one
@@ -302,7 +304,7 @@ stimmen, sucht sie die Geräte. Dann gibt es zwei Fälle:
 
 ## Aufgabe 1: Kodieren
 
-Schreibt `encode(letter)`. Die Funktion bekommt einen Buchstaben, etwa `"B"`,
+Schreibt `encode(letter)`. Die Funktion bekommt einen Buchstaben, etwa `"E"`,
 und gibt seine Farben aus dem `CODEBOOK` zurück, also `["off", "on"]`. Der
 Sender ruft sie für jeden Buchstaben auf, bevor er ihn sendet.
 
@@ -321,7 +323,7 @@ def encode(letter):
 
 Schreibt `decode(colors)`. Die Funktion bekommt die gemessenen Farben eines
 Buchstabens, etwa `["off", "on"]`, und gibt den Buchstaben zurück, zu dem
-genau diese Farben gehören, also `"B"`. Passt kein Buchstabe, gibt sie `"?"`
+genau diese Farben gehören, also `"E"`. Passt kein Buchstabe, gibt sie `"?"`
 zurück. Der Empfänger ruft sie auf, sobald er zwei Farben gemessen hat.
 
 ```python static
@@ -342,14 +344,19 @@ def decode(colors):
 
 ## Aufgabe 3: Senden und empfangen
 
-Sendet zuerst einzelne Buchstaben, dann Wörter aus A bis D, etwa `BAD`,
-`CAB` oder `DAD`. Wer mit zwei Laptops arbeitet, tauscht danach die Rollen,
-so dass jede Person einmal kodiert und einmal dekodiert.
+Sendet zuerst einzelne Buchstaben, dann Wörter aus T, E, A und M, etwa
+`TEAM`, `MEAT`, `MATE` oder `TEA`. Wer mit zwei Laptops arbeitet, tauscht
+danach die Rollen, so dass jede Person einmal kodiert und einmal dekodiert.
+
+Zum Schluss stellt ihr die Folie nach: Vertauscht nur auf der empfangenden
+Seite im `CODEBOOK` die Farben von T und M und sendet `TEAM`. Jede Farbe kommt
+richtig an, und trotzdem steht beim Empfänger `MEAT`.
 
 ## Zum Nachdenken
 
 - Was zeigt der Empfänger, wenn eine Farbe falsch gemessen wird, und woran
-  merkt ihr das, ohne den Sender zu fragen?
+  merkt ihr das, ohne den Sender zu fragen? Und woran merkt ihr es, wenn die
+  beiden Codebücher nicht übereinstimmen?
 - Wie viele Stellen bräuchtet ihr mit `off` und `on` für alle 26 Buchstaben
   und das Leerzeichen, und wie viele mit vier Farben?
 - In dieser Übung sagt „jetzt“, wann gemessen wird. Was muss euer Code in
