@@ -1,7 +1,7 @@
 ---
 type: slides
 code: 2731
-title: Diagramme, die täuschen
+title: Stolperfallen bei der Datenvisualisierung
 summary: >-
   Das Prinzip der proportionalen Tinte, zwei berühmte Beispiele mit ihren
   Originalzahlen nachgebaut und fünf Tricks an der kompakten Milchbefragung,

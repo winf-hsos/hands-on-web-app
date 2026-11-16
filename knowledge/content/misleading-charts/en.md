@@ -1,5 +1,5 @@
 ---
-title: Charts that mislead
+title: Pitfalls in data visualisation
 summary: >-
   A chart can draw a false picture from nothing but correct numbers when the
   ink does not match the value. Two famous examples and five tricks on the
@@ -16,7 +16,7 @@ translation_of: de
 based_on: 2026-11-16
 ---
 
-![Slides: Charts that mislead](item:misleading-charts-slides)
+![Slides: Pitfalls in data visualisation](item:misleading-charts-slides)
 
 A chart can mislead without a single wrong number in it. It is enough to
 cut the axis at the right place, to show counts where shares are asked for,
@@ -436,7 +436,7 @@ survey |>
 - What you leave out, or what distorts a mean, you state in the chart, for
   instance with `caption`.
 
-![Quiz: Charts that mislead](item:misleading-charts-quiz)
+![Quiz: Pitfalls in data visualisation](item:misleading-charts-quiz)
 
 ## Sources and further reading
 

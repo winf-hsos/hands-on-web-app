@@ -1,7 +1,7 @@
 ---
 type: quiz
 code: 8265
-title: "Quiz: Diagramme, die täuschen"
+title: "Quiz: Stolperfallen bei der Datenvisualisierung"
 summary: >-
   Acht Fragen zur proportionalen Tinte, zu abgeschnittenen und umgedrehten
   Achsen, zu Anzahlen und Anteilen, Blasen und Ausreißern, jede mit ihrer

@@ -7,7 +7,7 @@ summary: >-
 goal: >-
   You build charts with ggplot2 that answer a question about a data set,
   choose a fitting display for each variable, show survey data with their
-  case numbers and recognise charts that mislead.
+  case numbers and recognise the pitfalls through which a chart misleads.
 audience: Everyone who wants to analyse data, without programming experience
 translation_of: de
 based_on: 2026-11-16
@@ -20,6 +20,6 @@ with the package ggplot2, which builds every chart from a few layers, the
 data, the mapping of variables to axes and colours, and the shapes that show
 them. In an exercise you choose yourself which chart answers a question
 about the survey, then come item batteries and rating scales as they appear
-in almost every survey, and finally charts that mislead and how to do
-better. If you like, you learn at the end how to show uncertainty with error
+in almost every survey, and finally the pitfalls of data visualisation
+and how to do better. If you like, you learn at the end how to show uncertainty with error
 bars.

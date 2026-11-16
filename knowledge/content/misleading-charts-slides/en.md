@@ -1,5 +1,5 @@
 ---
-title: Charts that mislead
+title: Pitfalls in data visualisation
 summary: >-
   The principle of proportional ink, two famous examples rebuilt with their
   original numbers and five tricks on the compact milk survey, each with the

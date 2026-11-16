@@ -1,5 +1,5 @@
 ---
-title: "Quiz: Charts that mislead"
+title: "Quiz: Pitfalls in data visualisation"
 summary: >-
   Eight questions on proportional ink, cut and inverted axes, counts and
   shares, bubbles and outliers, each with its reasons.

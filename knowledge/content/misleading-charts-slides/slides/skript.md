@@ -1,6 +1,6 @@
-# Diagramme, die täuschen
+# Stolperfallen bei der Datenvisualisierung
 
-Skript zum Foliensatz „misleading charts“. Die Folien sind englisch, dieser
+Skript zum Foliensatz „pitfalls in data visualisation“. Die Folien sind englisch, dieser
 Text folgt ihnen in derselben Reihenfolge. Die Zahlen in Klammern sind
 Frames, also Folien samt Aufbauschritten. Alle Diagramme entstehen mit
 `scripts/misleading-charts-figures.R` aus genau dem Code, den die Lektion

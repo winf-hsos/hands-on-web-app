@@ -1,7 +1,7 @@
 ---
 type: lesson
 code: 3075
-title: Diagramme, die täuschen
+title: Stolperfallen bei der Datenvisualisierung
 summary: >-
   Ein Diagramm kann mit lauter richtigen Zahlen ein falsches Bild zeichnen,
   wenn die Tinte nicht zum Wert passt. Zwei berühmte Beispiele und fünf
@@ -26,7 +26,7 @@ status: draft
 updated: 2026-11-16
 ---
 
-![Folien: Diagramme, die täuschen](item:misleading-charts-slides)
+![Folien: Stolperfallen bei der Datenvisualisierung](item:misleading-charts-slides)
 
 Ein Diagramm kann täuschen, ohne dass eine einzige Zahl darin falsch ist. Es
 genügt, die Achse an der passenden Stelle abzuschneiden, Anzahlen zu zeigen,
@@ -454,7 +454,7 @@ survey |>
 - Was du weglässt oder was einen Mittelwert verzerrt, sagst du im Diagramm,
   etwa mit `caption`.
 
-![Quiz: Diagramme, die täuschen](item:misleading-charts-quiz)
+![Quiz: Stolperfallen bei der Datenvisualisierung](item:misleading-charts-quiz)
 
 ## Quellen und Weiterlesen
 

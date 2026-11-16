@@ -10,26 +10,19 @@ summary: >-
 goal: >-
   Du baust mit ggplot2 Grafiken, die eine Frage an einen Datensatz
   beantworten, wählst für jede Variable eine passende Darstellung, zeigst
-  Befragungsdaten mit ihren Fallzahlen und erkennst Grafiken, die täuschen.
+  Befragungsdaten mit ihren Fallzahlen und erkennst die Stolperfallen, durch
+  die eine Grafik täuscht.
 audience: Alle, die Daten auswerten wollen, ohne Programmiererfahrung
 level: 1
 requires: [getting-started-with-r, data-transformation-with-r]
-sections:
-  - title: { de: "Teil 1: Das passende Diagramm", en: "Part 1: The fitting chart" }
-    steps:
-      - why-visualise
-      - data-visualisation-basics
-  - title: { de: "Teil 2: Üben", en: "Part 2: Practice" }
-    steps:
-      - ggplot-exercise-survey
-  - title: { de: "Teil 3: Befragungsdaten zeigen", en: "Part 3: Showing survey data" }
-    steps:
-      - survey-charts
-  - title: { de: "Teil 4: Ehrlich zeigen", en: "Part 4: Showing honestly" }
-    steps:
-      - misleading-charts
-      - item: showing-uncertainty
-        optional: true
+steps:
+  - why-visualise
+  - data-visualisation-basics
+  - ggplot-exercise-survey
+  - survey-charts
+  - misleading-charts
+  - item: showing-uncertainty
+    optional: true
 status: published
 updated: 2026-11-16
 ---
@@ -42,5 +35,6 @@ Schichten zusammensetzt, den Daten, der Zuordnung von Variablen zu Achsen und
 Farben und den Formen, die sie zeigen. In einer Übung wählst du selbst, mit
 welchem Diagramm du eine Frage an die Umfrage beantwortest, danach geht es
 um Itembatterien und Ratingskalen, wie sie in fast jeder Befragung vorkommen,
-und zum Schluss um Grafiken, die täuschen, und wie es besser geht. Wer
+und zum Schluss um die Stolperfallen der Datenvisualisierung und wie es
+besser geht. Wer
 mag, lernt am Ende noch, Unsicherheit mit Fehlerbalken zu zeigen.

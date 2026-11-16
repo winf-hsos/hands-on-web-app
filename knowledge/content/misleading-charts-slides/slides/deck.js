@@ -1,4 +1,4 @@
-/* Drawings of the deck "misleading charts".
+/* Drawings of the deck "pitfalls in data visualisation".
  *
  * Font sizes only 20, 32, 48 and 80. Width estimate: 0.6 em per character.
  * Colours carry meaning: marks in gray_light, the word "honest" in blue
