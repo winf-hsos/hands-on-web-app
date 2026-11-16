@@ -99,6 +99,7 @@ import time
 from lifi_hardware import receiver, run_test, sender
 
 # Your alphabet from Challenge 1, one colour per line, each with a name
+# TODO: copy your own COLORS over from alphabet.py
 COLORS = {
     "off":     (0, 0, 0),
     "white":   (255, 255, 255),
