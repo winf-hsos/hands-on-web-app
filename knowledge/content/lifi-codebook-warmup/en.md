@@ -1,5 +1,5 @@
 ---
-title: "Warm-up for Challenge 2: encoding and decoding"
+title: Encoding and decoding
 summary: >-
   With two colours, four letters and a tiny codebook, practise the two halves
   of Challenge 2: turn a letter into colours and measured colours back into a

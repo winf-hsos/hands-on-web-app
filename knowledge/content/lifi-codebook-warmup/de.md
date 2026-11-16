@@ -1,7 +1,7 @@
 ---
 type: exercise
 code: 5142
-title: "Aufwärmen für Challenge 2: Kodieren und Dekodieren"
+title: Kodieren und Dekodieren
 summary: >-
   Mit zwei Farben, vier Buchstaben und einem winzigen Codebuch die beiden
   Hälften von Challenge 2 üben: einen Buchstaben in Farben übersetzen und
