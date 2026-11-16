@@ -463,7 +463,8 @@ function datasetBlock(doc, lang) {
   const { bytes, rows, columns } = datasetInfo(doc.dir, file);
   const rds = rdsFile(doc.dir, file);
   const number = (n, digits = 0) => n.toLocaleString(lang === 'de' ? 'de-DE' : 'en-GB', { maximumFractionDigits: digits });
-  const size = (b) => (b < 1e6 ? `${number(b / 1e3)} kB` : `${number(b / 1e6, 1)} MB`);
+  // a file under one kilobyte shows as 1 kB, not 0 kB
+  const size = (b) => (b < 1e6 ? `${number(Math.max(1, b / 1e3))} kB` : `${number(b / 1e6, 1)} MB`);
   const code = loadingCode(file, rds, t(lang, 'dataset_rds_comment'));
   return html`<section class="dataset prose">
       <div class="dataset-file">
