@@ -87,6 +87,7 @@ CODEBOOK = {
 def send_symbol(name):
     """Shows one colour for 1 / SYMBOL_RATE seconds."""
     led.set_color(*COLORS[name])
+    print(f"  {name}")
     time.sleep(1 / SYMBOL_RATE)
 
 
@@ -112,9 +113,13 @@ led.off()
 
 while True:
     text = input("\nText to send: ")
-    time.sleep(5 - time.time() % 5)     # start at the next full five seconds, as the receiver
+    wait = 5 - time.time() % 5          # start at the next full five seconds, as the receiver
+    print(f"Sending in {wait:.1f} s ...")
+    time.sleep(wait)
+    print("Sending")
     send_text(text)
     led.off()
+    print("Done")
 ```
 
 ### The receiver
@@ -165,10 +170,10 @@ def receive_symbol():
     (as in Challenge 1, your own version works here too) and waits until the
     next colour."""
     reading = sensor.read()
-    best, best_distance = None, None
+    best, best_distance = None, float("inf")
     for name, reference in REFERENCES.items():
         distance = sum((a - b) ** 2 for a, b in zip(reading, reference))
-        if best is None or distance < best_distance:
+        if distance < best_distance:
             best, best_distance = name, distance
     print(f"  {best}")
     time.sleep(1 / SYMBOL_RATE)
@@ -193,7 +198,10 @@ def receive_text(n_chars):
 
 while True:
     n_chars = int(input("\nHow many letters? "))
-    time.sleep(5 - time.time() % 5)     # start at the next full five seconds, as the sender
+    wait = 5 - time.time() % 5          # start at the next full five seconds, as the sender
+    print(f"Receiving in {wait:.1f} s ...")
+    time.sleep(wait)
+    print("Receiving")
     time.sleep(0.5 / SYMBOL_RATE)       # measure in the middle of each colour
     print(f"Received: {receive_text(n_chars)}")
 ```
@@ -221,7 +229,10 @@ types that number, and both press Enter. Both scripts begin at the next full
 five-second tick of the clock, the sender with the first colour and the
 receiver half a colour later, so that it measures in the middle of each
 colour. As long as you both press Enter within the same five seconds, the
-scripts run in step. With two laptops, the clocks of both computers have to
+scripts run in step. Until then, both show in how many seconds they
+begin, and at the same moment "Sending" appears on the sender and
+"Receiving" on the receiver; after that, both show every colour they send
+or recognise. With two laptops, the clocks of both computers have to
 agree for this; if every letter arrives wrong, one of the clocks is probably
 ahead.
 
