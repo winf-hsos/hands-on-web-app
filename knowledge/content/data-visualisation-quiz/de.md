@@ -13,7 +13,7 @@ areas: [ds]
 relations:
   checks: [data-visualisation-basics]
 questions: [hds-014, hds-015, hds-016, hds-017, hds-018, hds-019, hds-020, hds-021, hds-022, hds-023]
-status: draft
+status: published
 updated: 2026-11-15
 ---
 

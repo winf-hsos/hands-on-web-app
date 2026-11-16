@@ -22,7 +22,7 @@ modules: [ea]
 areas: [ds]
 relations:
   requires: [dplyr-select, dplyr-filter, dplyr-arrange, dplyr-mutate, dplyr-summarize]
-status: draft
+status: published
 updated: 2026-11-16
 ---
 

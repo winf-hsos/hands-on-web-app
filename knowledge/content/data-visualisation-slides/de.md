@@ -13,6 +13,6 @@ duration: 45
 topics: [visualising-data, programming-with-r]
 modules: [ea]
 areas: [ds]
-status: draft
+status: published
 updated: 2026-11-16
 ---

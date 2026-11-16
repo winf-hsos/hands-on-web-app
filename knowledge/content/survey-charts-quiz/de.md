@@ -14,7 +14,7 @@ areas: [ds]
 relations:
   checks: [survey-charts]
 questions: [hds-024, hds-025, hds-026, hds-027, hds-028, hds-029]
-status: draft
+status: published
 updated: 2026-11-16
 ---
 

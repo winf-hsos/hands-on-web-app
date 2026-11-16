@@ -21,7 +21,7 @@ areas: [ds]
 relations:
   requires: [dplyr-summarize]
   see_also: [exploratory-data-analysis-basics]
-status: draft
+status: published
 updated: 2026-11-16
 ---
 

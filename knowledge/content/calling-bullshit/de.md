@@ -27,7 +27,7 @@ modules: [ea]
 areas: [ds]
 relations:
   see_also: [fundamentals-of-data-visualization]
-status: draft
+status: published
 updated: 2026-11-16
 ---
 

@@ -15,7 +15,7 @@ duration: 15
 topics: [visualising-data, exploring-data]
 modules: [ea]
 areas: [ds]
-status: draft
+status: published
 updated: 2026-11-16
 ---
 

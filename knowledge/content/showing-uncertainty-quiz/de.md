@@ -14,7 +14,7 @@ areas: [ds]
 relations:
   checks: [showing-uncertainty]
 questions: [hds-038, hds-039, hds-040, hds-041, hds-042]
-status: draft
+status: published
 updated: 2026-11-16
 ---
 

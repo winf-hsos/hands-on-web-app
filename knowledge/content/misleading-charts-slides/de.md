@@ -13,6 +13,6 @@ duration: 30
 topics: [visualising-data, data-pitfalls]
 modules: [ea]
 areas: [ds]
-status: draft
+status: published
 updated: 2026-11-16
 ---

@@ -14,7 +14,7 @@ areas: [ds]
 relations:
   checks: [misleading-charts]
 questions: [hds-030, hds-031, hds-032, hds-033, hds-034, hds-035, hds-036, hds-037]
-status: draft
+status: published
 updated: 2026-11-16
 ---
 

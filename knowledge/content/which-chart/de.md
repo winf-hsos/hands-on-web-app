@@ -14,7 +14,7 @@ modules: [ea]
 areas: [ds]
 relations:
   see_also: [milk-survey-compact]
-status: draft
+status: published
 updated: 2026-11-15
 ---
 

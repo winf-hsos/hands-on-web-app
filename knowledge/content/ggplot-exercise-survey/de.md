@@ -23,7 +23,7 @@ areas: [ds]
 relations:
   requires: [data-visualisation-basics]
   see_also: [which-chart, milk-survey-compact]
-status: draft
+status: published
 updated: 2026-11-16
 ---
 

@@ -23,7 +23,7 @@ modules: [ea]
 areas: [ds]
 relations:
   requires: [data-visualisation-basics, tidy-data]
-status: draft
+status: published
 updated: 2026-11-16
 ---
 

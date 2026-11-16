@@ -13,7 +13,7 @@ modules: [ea]
 areas: [ds]
 relations:
   see_also: [matejka-same-stats-different-graphs, anscombe-graphs-in-statistical-analysis]
-status: draft
+status: published
 updated: 2026-11-16
 ---
 

@@ -22,7 +22,7 @@ areas: [ds]
 relations:
   requires: [data-visualisation-basics]
   see_also: [fundamentals-of-data-visualization, calling-bullshit]
-status: draft
+status: published
 updated: 2026-11-16
 ---
 
