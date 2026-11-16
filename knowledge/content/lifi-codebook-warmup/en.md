@@ -44,13 +44,13 @@ functions have the names of Challenge 2 and split the work the same way:
 |---|---|
 | `send_text(text)` sends the whole text, letter by letter | `receive_text(n_chars)` receives that many letters and returns the text |
 | `encode_letter(letter)` returns the colours of one letter | `decode_letter(colors)` returns the letter for some colours |
-| `send_symbol(name)` shows one colour for `1 / SYMBOL_RATE` seconds (done) | `receive_symbol()` measures one colour and returns the name of the most similar one in `REFERENCES` (done) |
+| `send_symbol(name)` shows one colour for `1 / SYMBOL_RATE` seconds (done) | `receive_symbol()` measures one colour and returns whether the LED is off or on |
 
-On each side you write the top two; `send_symbol` and `receive_symbol` are
-done. `receive_symbol` recognises a colour as in Challenge 1, by the most
-similar reading in `REFERENCES`, so the receiver also works with more
-colours in `COLORS`, and your own version from Challenge 1 fits in as
-well.
+On the sender you write the top two, and `send_symbol` is done. On the
+receiver you write all three, where `receive_symbol` already has the
+measuring, the printing and the waiting and only lacks the decision whether
+the LED is off or on. For that, `REFERENCES` holds the two readings from the
+calibration.
 
 ### The sender
 
@@ -166,18 +166,14 @@ for name in COLORS:
 
 
 def receive_symbol():
-    """Measures one colour, returns the name of the most similar reference
-    (as in Challenge 1, your own version works here too) and waits until the
-    next colour."""
+    """Measures one colour, decides whether the LED is off or on, and waits
+    until the next colour. Returns "off" or "on"."""
     reading = sensor.read()
-    best, best_distance = None, float("inf")
-    for name, reference in REFERENCES.items():
-        distance = sum((a - b) ** 2 for a, b in zip(reading, reference))
-        if distance < best_distance:
-            best, best_distance = name, distance
-    print(f"  {best}")
+    # TODO: decide from reading (and REFERENCES) whether the LED is off or on
+    name = "off"
+    print(f"  {name}")
     time.sleep(1 / SYMBOL_RATE)
-    return best
+    return name
 
 
 def decode_letter(colors):
@@ -254,12 +250,19 @@ with `send_symbol`.
 
 ## Task 2: Decoding
 
-In `receiver.py`, first write `decode_letter(colors)`: the function gets the
-measured colours of one letter, such as `["off", "on"]`, and returns the
+In `receiver.py`, first write `receive_symbol()`: the reading from
+`sensor.read()` is already there, and the function decides whether the LED
+is off or on and returns `"off"` or `"on"`. Then `decode_letter(colors)`:
+the function gets the measured colours of one letter, such as `["off", "on"]`, and returns the
 letter that has exactly these colours, here `"E"`. If no letter fits, it
 returns `"?"`. Then `receive_text(n_chars)`: for each of the `n_chars`
 letters it collects `LENGTH` colours with `receive_symbol`, decodes them
 with `decode_letter` and adds the letter to the text.
+
+> [!HINT]
+> Compare the reading with the two entries in `REFERENCES`, for example by
+> the brightness `reading.c`: if it is closer to that of `"on"` than to that
+> of `"off"`, the LED is on.
 
 > [!HINT]
 > The same codebook, only read the other way round: go through all entries
