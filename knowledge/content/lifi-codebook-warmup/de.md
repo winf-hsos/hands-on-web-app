@@ -4,17 +4,17 @@ code: 5142
 title: Kodieren und Dekodieren
 summary: >-
   Mit zwei Farben, vier Buchstaben und einem winzigen Codebuch die beiden
-  Hälften von Challenge 2 üben: einen Buchstaben in Farben übersetzen und
-  gemessene Farben wieder in einen Buchstaben, an einem Laptop oder an zwei,
-  ohne Takt und ohne Kursserver.
+  Hälften von Challenge 2 üben: Text Buchstabe für Buchstabe in Farben
+  übersetzen und gemessene Farben wieder in Text, mit einem Skript für den
+  Sender und einem für den Empfänger, ohne Takt und ohne Kursserver.
 objectives:
-  intro: "In dieser Übung schreibst du die beiden Funktionen, die ein Codebuch in beide Richtungen lesen, und kannst danach:"
+  intro: "In dieser Übung schreibst du die Funktionen, die ein Codebuch in beide Richtungen lesen, und kannst danach:"
   goals:
-    - "einen Buchstaben mit einem Codebuch in eine Folge von Farben übersetzen (kodieren)"
-    - "eine gemessene Folge von Farben im selben Codebuch wieder einem Buchstaben zuordnen (dekodieren)"
+    - "einen Buchstaben mit einem Codebuch in eine Folge von Farben übersetzen (kodieren) und eine gemessene Folge wieder einem Buchstaben zuordnen (dekodieren)"
+    - "das Senden eines ganzen Texts vom Kodieren eines einzelnen Buchstabens trennen, so wie in Challenge 2"
     - "begründen, warum zwei Farben für vier Buchstaben genau zwei Stellen brauchen"
 level: 1
-duration: 25
+duration: 30
 topics: [representing-information, transferring-information]
 modules: [dup]
 project: lifi
@@ -26,9 +26,9 @@ updated: 2026-11-16
 
 In Challenge 2 schickt euer Sender Text als Farben, und euer Empfänger macht
 aus den Farben wieder Text. Bevor dazu noch der Takt kommt, übt ihr hier nur
-die beiden Übersetzungen, mit dem kleinsten Codebuch, das noch etwas taugt:
-zwei Farben, `off` und `on`, und die vier Buchstaben T, E, A und M von der
-Folie „perfect reception, perfect nonsense“ ([[symbols-and-information-slides]]).
+die Übersetzungen, mit dem kleinsten Codebuch, das noch etwas taugt: zwei
+Farben, `off` und `on`, und die vier Buchstaben T, E, A und M von der Folie
+„perfect reception, perfect nonsense“ ([[symbols-and-information-slides]]).
 Weil 2 × 2 = 4, bekommt jeder Buchstabe genau zwei Farben, ein Code fester
 Länge ([[code-systems]]).
 
@@ -39,63 +39,58 @@ Länge ([[code-systems]]).
 | A | on off |
 | M | on on |
 
-Es gibt keinen Takt und keinen Kursserver: Ihr drückt für jede Farbe die
-Eingabetaste, und alles bleibt auf eurem Laptop.
+Es gibt keinen Takt und keinen Kursserver: Für jede Farbe drückt ihr die
+Eingabetaste, und alles bleibt auf euren Laptops.
 
-## Die Vorlage
+## Zwei Skripte, zwei Seiten
 
-Ladet die Datei herunter, öffnet sie in VS Code und startet sie mit
-`python codebook_warmup.py` (auf dem Mac `python3`). Ihr braucht nur das
-Kursmodul `lifi_hardware`, das ihr seit Challenge 1 installiert habt. Ihr
-schreibt zwei Funktionen, `encode` und `decode`; alles unterhalb der Zeile
-„Nothing to change below this line“ ist fertig.
+Der Sender und der Empfänger haben je ein eigenes Skript, und jedes hat sein
+eigenes `CODEBOOK`, so wie auf der Folie jede Seite ihre eigene Tabelle hat.
+Die Funktionen heißen wie in Challenge 2 und teilen die Arbeit genauso auf:
 
-```python static file=codebook_warmup.py
+| Sender | Empfänger |
+|---|---|
+| `send_text(text)` sendet den ganzen Text, Buchstabe für Buchstabe | `receive_text(n_chars)` empfängt so viele Buchstaben und gibt den Text zurück |
+| `encode_letter(letter)` gibt die Farben eines Buchstabens zurück | `decode_letter(colors)` gibt den Buchstaben zu einigen Farben zurück |
+| `send_symbol(name)` zeigt eine Farbe (fertig) | `receive_symbol()` misst eine Farbe und gibt sie zurück (fertig) |
+
+Ihr schreibt jeweils die oberen beiden. `send_symbol` und `receive_symbol`
+sind fertig und warten hier auf die Eingabetaste; in Challenge 2 entscheidet
+stattdessen euer eigener Takt.
+
+### Der Sender
+
+Das Skript für die sendende Seite; dort, wo `TODO` steht, fehlt euer Code:
+
+```python static file=sender.py
 """
-Warm-up for Challenge 2: encoding and decoding
-==============================================
+Encoding and decoding: the sender
+=================================
 
-Before you send whole sentences in Challenge 2, practise the two halves of
-it with a tiny codebook: two colours, "off" and "on", and the four letters
-T, E, A and M from the slide "perfect reception, perfect nonsense". Each
-letter becomes two colours, because 2 x 2 = 4.
+Sends words made of the letters T, E, A and M, two colours per letter and
+one colour per Enter. Its partner is receiver.py, started at the same time:
+on this computer in a second terminal, or on a second laptop.
 
-You write two functions:
+You write two functions, as in Challenge 2:
 
-  encode(letter)   the sender's half: looks up the colours of a letter
-  decode(colors)   the receiver's half: finds the letter for some colours
+  encode_letter(letter)   which colours stand for one letter (encoding)
+  send_text(text)         sends a whole text, letter by letter
 
-Everything below the line "Nothing to change below this line" is done for
-you. It sends one colour after the other and measures them, with no clock
-yet: you press Enter for every colour. The timing comes in Challenge 2.
-
-It works in both set-ups:
-
-  one laptop, both devices   the program sends, measures and decodes by itself
-  two laptops, one device    run this file on both; the sender types a
-                             letter, and both of you press Enter colour by
-                             colour, when the sender says "now"
-
-No course server is used: everything stays on your laptop.
-
-Run it with:  python codebook_warmup.py   (on a Mac: python3)
+Run it with:  python sender.py   (on a Mac: python3)
 """
 
-import os
-import time
+from lifi_hardware import LifiDevice
 
-# This exercise stays on your laptop and never talks to the course server.
-os.environ["LIFI_SERVER"] = "off"
+# Both devices on this computer: the UID of the SENDING device, for example
+# "6Dccqf" (the error message without it lists both). Two laptops: None.
+DEVICE = None
 
-from lifi_hardware import receiver, sender  # noqa: E402
-
-# The two colours of this warm-up
 COLORS = {
     "off": (0, 0, 0),
     "on":  (255, 255, 255),
 }
 
-# Which colours stand for which letter: two positions, two colours each
+# Which colours stand for which letter. receiver.py has its own copy.
 CODEBOOK = {
     "T": ["off", "off"],
     "E": ["off", "on"],
@@ -103,261 +98,208 @@ CODEBOOK = {
     "M": ["on",  "on"],
 }
 
-
-def encode(letter):
-    """Encoding: returns the list of colours that stand for this letter,
-    for example ["off", "on"] for "E".
-
-    The sender calls it for every letter it is about to send.
-    """
-    # TODO: look up the letter in CODEBOOK and return its colours
-    return []
-
-
-def decode(colors):
-    """Decoding: returns the letter whose colours are exactly `colors`, for
-    example "E" for ["off", "on"]. If no letter has these colours, it
-    returns "?".
-
-    The receiver calls it as soon as it has measured the colours of one
-    letter.
-    """
-    # TODO: find the letter in CODEBOOK whose colours are `colors`
-    return "?"
-
-
-# =============================================================================
-# Nothing to change below this line
-# =============================================================================
-
-LENGTH = len(next(iter(CODEBOOK.values())))   # colours per letter
-READINGS = 5                                  # readings per colour in the calibration
-THRESHOLD = None                              # set by calibrate()
+lifi = LifiDevice.connect(master=DEVICE, server=None, log_file=None)
 
 
 def send_symbol(name):
-    """Shows the colour with this name on the LED of the sending device."""
-    sender.led.set_color(*COLORS[name])
+    """Shows one colour and waits until the receiver has measured it.
+    In Challenge 2 your own clock decides when the next colour comes."""
+    lifi.led.set_color(*COLORS[name])
+    input(f"    {name:3}  say \"now\", Enter once the receiver has measured ")
 
 
-def read_clear():
-    """The clear channel (all light) of a fresh reading of the receiver."""
-    time.sleep(2 * receiver.sensor.integration_time / 1000 + 0.05)
-    return receiver.sensor.read().c
+def encode_letter(letter):
+    """Encoding: returns the colours of one letter, for example
+    ["off", "on"] for "E"."""
+    # TODO: look up the letter in CODEBOOK and return its colours
+    return []
+
+
+def send_text(text):
+    """Sends the text letter by letter: encode each letter with
+    encode_letter, then send each of its colours with send_symbol."""
+    # TODO: a loop over the letters of text
+    pass
+
+
+print("Calibration: the receiver measures off, then on.")
+for name in COLORS:
+    send_symbol(name)
+
+while text := input("\nText to send (Enter alone to stop): ").strip().upper():
+    if any(letter not in CODEBOOK for letter in text):
+        print(f"Only these letters are in the CODEBOOK: {', '.join(CODEBOOK)}")
+        continue
+    print(f"Tell the receiver: {len(text)} letters")
+    send_text(text)
+    lifi.led.off()
+lifi.close()
+```
+
+### Der Empfänger
+
+Das Skript für die empfangende Seite; `LENGTH` sagt, wie viele Farben zu
+einem Buchstaben gehören:
+
+```python static file=receiver.py
+"""
+Encoding and decoding: the receiver
+===================================
+
+Receives words made of the letters T, E, A and M, two colours per letter
+and one colour per Enter. Its partner is sender.py, started at the same
+time: on this computer in a second terminal, or on a second laptop.
+
+You write two functions, as in Challenge 2:
+
+  decode_letter(colors)   which letter some colours stand for (decoding)
+  receive_text(n_chars)   receives a whole text, letter by letter
+
+Run it with:  python receiver.py   (on a Mac: python3)
+"""
+
+import time
+
+from lifi_hardware import LifiDevice
+
+# Both devices on this computer: the UID of the RECEIVING device, for example
+# "6QkrXy" (the error message without it lists both). Two laptops: None.
+DEVICE = None
+
+# Which colours stand for which letter: a copy of the one in sender.py
+CODEBOOK = {
+    "T": ["off", "off"],
+    "E": ["off", "on"],
+    "A": ["on",  "off"],
+    "M": ["on",  "on"],
+}
+
+# Colours per letter: two colours and two positions give 2 x 2 = 4 letters
+LENGTH = 2
+
+lifi = LifiDevice.connect(master=DEVICE, server=None, log_file=None)
+BORDER = None   # brightness between off and on, set by calibrate()
+
+
+def brightness():
+    """The clear channel (all light) of a fresh reading."""
+    time.sleep(2 * lifi.sensor.integration_time / 1000 + 0.05)
+    return lifi.sensor.read().c
+
+
+def calibrate():
+    """Measures off and on once and puts the border halfway between."""
+    global BORDER
+    input("Calibration: Enter when the sender says \"now\" for off ")
+    off = brightness()
+    input("Enter when the sender says \"now\" for on ")
+    on = brightness()
+    BORDER = (off + on) / 2
+    print(f"off is about {off}, on about {on}: above {BORDER:.0f} counts as on")
 
 
 def receive_symbol():
-    """Measures and returns "on" or "off"."""
-    return "on" if read_clear() > THRESHOLD else "off"
+    """Waits for Enter, measures and returns "on" or "off".
+    In Challenge 2 your own clock decides when to measure."""
+    input("    Enter to measure ")
+    name = "on" if brightness() > BORDER else "off"
+    print(f"    {name}")
+    return name
 
 
-def calibrate(off_values, on_values):
-    """The receiver learns where "off" ends and "on" begins: halfway between
-    the mean brightness of both."""
-    global THRESHOLD
-    off = sum(off_values) / len(off_values)
-    on = sum(on_values) / len(on_values)
-    THRESHOLD = (off + on) / 2
-    print(f"Calibrated: off is about {off:.0f}, on about {on:.0f}, "
-          f"the border lies at {THRESHOLD:.0f}.")
-    if on - off < 50:
-        print("Careful: off and on hardly differ. Do LED and sensor face each other?")
+def decode_letter(colors):
+    """Decoding: returns the letter whose colours are exactly `colors`, for
+    example "E" for ["off", "on"], and "?" if no letter has these colours."""
+    # TODO: find the letter in CODEBOOK whose colours are colors
+    return "?"
 
 
-def has(role):
-    """Whether the sending or receiving device is on this laptop; the
-    first call finds the devices and asks which one sends."""
-    try:
-        role.led
-        return True
-    except Exception as error:      # the other laptop's role, or no device at all
-        has.reason = error
-        return False
-
-
-def check_without_device():
-    """Encodes and decodes every letter once, without any device."""
-    print("Check without device: encode, then decode")
-    ok = True
-    for letter in CODEBOOK:
-        colors = encode(letter)
-        back = decode(colors)
-        good = colors == CODEBOOK[letter] and back == letter
-        ok = ok and good
-        print(f"  {letter} -> {' '.join(colors) or '(nothing)':8} -> {back}"
-              f"   {'ok' if good else 'wrong'}")
-    if not ok:
-        print("Not yet: write encode and decode first (see TODO above).")
-    print()
-    return ok
-
-
-def letters_to_send():
-    """Asks for letters until an empty line; keeps only those in CODEBOOK."""
-    while True:
-        text = input(f"Letters to send ({', '.join(CODEBOOK)}), Enter alone to stop: ")
-        text = text.strip().upper()
-        if not text:
-            return None
-        unknown = sorted({c for c in text if c not in CODEBOOK})
-        if unknown:
-            print(f"Not in the codebook: {', '.join(unknown)}")
-            continue
-        return text
-
-
-def one_laptop():
-    """Both devices here: send, measure and decode in one go."""
-    values = {}
-    for name in COLORS:
-        send_symbol(name)
-        values[name] = [read_clear() for _ in range(READINGS)]
-    sender.led.off()
-    calibrate(values["off"], values["on"])
-    while (text := letters_to_send()) is not None:
-        received_text = ""
-        for letter in text:
-            colors = encode(letter)
-            measured = []
-            for name in colors:
-                send_symbol(name)
-                measured.append(receive_symbol())
-            sender.led.off()
-            got = decode(measured)
-            received_text += got
-            print(f"  {letter}: sent {' '.join(colors):8}  measured "
-                  f"{' '.join(measured):8}  decoded {got}"
-                  f"   {'ok' if got == letter else 'wrong'}")
-        print(f"Sent {text}, received {received_text}\n")
-
-
-def sending_laptop():
-    """Only the sender here: show one colour per Enter."""
-    print("\nCalibration: the receiver measures off and on once.")
-    for name in COLORS:
-        send_symbol(name)
-        input(f"  The LED shows {name}. Say \"now\", and press Enter when "
-              f"the receiver has measured it. ")
-    sender.led.off()
-    while (text := letters_to_send()) is not None:
-        for letter in text:
-            colors = encode(letter)
-            print(f"  {letter} is {' '.join(colors)}")
-            for i, name in enumerate(colors, start=1):
-                send_symbol(name)
-                input(f"    colour {i} of {len(colors)}: {name}. Say \"now\", "
-                      f"press Enter once the receiver has measured it. ")
-        sender.led.off()
-        print()
-
-
-def receiving_laptop():
-    """Only the receiver here: measure one colour per Enter."""
-    print("\nCalibration: the sender shows off and on once.")
-    values = {}
-    for name in COLORS:
-        input(f"  Press Enter when the sender says the LED shows {name}. ")
-        values[name] = [read_clear() for _ in range(READINGS)]
-    calibrate(values["off"], values["on"])
-    print(f"\nEach letter has {LENGTH} colours. Press Enter on every \"now\", "
-          f"Ctrl+C to stop.")
+def receive_text(n_chars):
+    """Receives n_chars letters: for each one, collect LENGTH colours with
+    receive_symbol, decode them with decode_letter and add the letter to
+    the text. Returns the text."""
     text = ""
-    try:
-        while True:
-            measured = []
-            for i in range(1, LENGTH + 1):
-                input(f"  colour {i} of {LENGTH}: Enter to measure ")
-                measured.append(receive_symbol())
-                print(f"    measured {measured[-1]}")
-            text += decode(measured)
-            print(f"  {' '.join(measured)} is {text[-1]}, received so far: {text}")
-    except (KeyboardInterrupt, EOFError):
-        print(f"\nReceived: {text}")
+    # TODO: a loop over the letters to come
+    return text
 
 
-if __name__ == "__main__":
-    if check_without_device():
-        here_sender, here_receiver = has(sender), has(receiver)
-        if here_sender and here_receiver:
-            one_laptop()
-        elif here_sender:
-            sending_laptop()
-        elif here_receiver:
-            receiving_laptop()
-        else:
-            print(f"No device to work with: {has.reason}")
+calibrate()
+while (n := input("\nHow many letters? (Enter alone to stop): ").strip()).isdigit():
+    print(f"Received: {receive_text(int(n))}")
+lifi.close()
 ```
 
-Die Vorlage prüft beim Start zuerst ohne Gerät, ob eure beiden Funktionen
-jeden Buchstaben hin und zurück richtig übersetzen. Erst wenn alle vier
-stimmen, sucht sie die Geräte. Dann gibt es zwei Fälle:
+## Starten
 
-- **Ein Laptop, beide Geräte:** Die Vorlage fragt, welches Gerät sendet,
-  misst `off` und `on` einmal zum Kalibrieren und sendet danach jeden
-  Buchstaben, den ihr eintippt. Sie misst die Farben, dekodiert sie und
-  zeigt, ob derselbe Buchstabe ankam.
-- **Zwei Laptops, je ein Gerät:** Ihr startet die Datei auf beiden und sagt
-  jeweils, ob dieser Laptop sendet oder empfängt. Beim Kalibrieren und bei
-  jeder Farbe ruft die sendende Person „jetzt“, die empfangende drückt Enter
-  und misst, und erst danach geht es auf der sendenden Seite mit Enter zur
-  nächsten Farbe.
+Ihr startet beide Skripte gleichzeitig, mit `python sender.py` und
+`python receiver.py` (auf dem Mac `python3`):
+
+- **Ein Rechner, beide Geräte:** Öffnet in VS Code zwei Terminals, in jedem
+  läuft eines der Skripte. Damit jedes Skript sein Gerät findet, tragt ihr
+  bei `DEVICE` die UID des sendenden bzw. empfangenden Geräts ein; startet
+  ihr ein Skript ohne, nennt die Fehlermeldung beide UIDs.
+- **Zwei Laptops, je ein Gerät:** Auf dem einen läuft `sender.py`, auf dem
+  anderen `receiver.py`, und `DEVICE` bleibt `None`.
+
+Zuerst kalibriert der Empfänger: Der Sender zeigt `off` und ruft „jetzt“,
+der Empfänger drückt Enter und misst, dann dasselbe für `on`. Danach tippt
+der Sender ein Wort ein und sagt, wie viele Buchstaben es hat, und der
+Empfänger tippt diese Zahl ein. Bei jeder Farbe ruft der Sender „jetzt“, der
+Empfänger drückt Enter, und erst dann geht der Sender mit Enter zur nächsten
+Farbe.
 
 ## Aufgabe 1: Kodieren
 
-Schreibt `encode(letter)`. Die Funktion bekommt einen Buchstaben, etwa `"E"`,
-und gibt seine Farben aus dem `CODEBOOK` zurück, also `["off", "on"]`. Der
-Sender ruft sie für jeden Buchstaben auf, bevor er ihn sendet.
-
-```python static
-def encode(letter):
-    # TODO: look up the letter in CODEBOOK and return its colours
-    return []
-```
+Schreibt in `sender.py` zuerst `encode_letter(letter)`: Die Funktion bekommt
+einen Buchstaben, etwa `"E"`, und gibt seine Farben aus dem `CODEBOOK`
+zurück, also `["off", "on"]`. Danach `send_text(text)`: Sie geht den Text
+Buchstabe für Buchstabe durch, kodiert jeden mit `encode_letter` und sendet
+jede seiner Farben mit `send_symbol`.
 
 > [!HINT]
 > Das `CODEBOOK` ist ein Dictionary: Der Buchstabe ist der Schlüssel, die
 > Liste der Farben der Wert. Kodieren heißt hier, mit dem Schlüssel
 > nachzuschlagen.
 
+> [!HINT]
+> `send_text` braucht zwei Schleifen ineinander, außen über die Buchstaben
+> des Texts und innen über die Farben eines Buchstabens.
+
 ## Aufgabe 2: Dekodieren
 
-Schreibt `decode(colors)`. Die Funktion bekommt die gemessenen Farben eines
-Buchstabens, etwa `["off", "on"]`, und gibt den Buchstaben zurück, zu dem
-genau diese Farben gehören, also `"E"`. Passt kein Buchstabe, gibt sie `"?"`
-zurück. Der Empfänger ruft sie auf, sobald er zwei Farben gemessen hat.
-
-```python static
-def decode(colors):
-    # TODO: find the letter in CODEBOOK whose colours are `colors`
-    return "?"
-```
+Schreibt in `receiver.py` zuerst `decode_letter(colors)`: Die Funktion
+bekommt die gemessenen Farben eines Buchstabens, etwa `["off", "on"]`, und
+gibt den Buchstaben zurück, zu dem genau diese Farben gehören, also `"E"`.
+Passt kein Buchstabe, gibt sie `"?"` zurück. Danach `receive_text(n_chars)`:
+Für jeden der `n_chars` Buchstaben sammelt sie `LENGTH` Farben mit
+`receive_symbol`, dekodiert sie mit `decode_letter` und hängt den Buchstaben
+an den Text an.
 
 > [!HINT]
 > Dasselbe Codebuch, nur andersherum gelesen: Geht mit
 > `for letter, code in CODEBOOK.items():` durch alle Einträge und vergleicht
-> `code` mit den gemessenen Farben.
+> `code` mit den gemessenen Farben. Zwei Listen vergleicht Python mit `==`
+> Stelle für Stelle.
 
 > [!HINT]
-> Zwei Listen vergleicht Python mit `==` Stelle für Stelle:
-> `["off", "on"] == ["off", "on"]` ist `True`, `["on", "off"]` ist etwas
-> anderes.
+> Eine Liste wächst mit `colors.append(receive_symbol())`, ein Text mit
+> `text += letter`.
 
 ## Aufgabe 3: Senden und empfangen
 
-Sendet zuerst einzelne Buchstaben, dann Wörter aus T, E, A und M, etwa
-`TEAM`, `MEAT`, `MATE` oder `TEA`. Wer mit zwei Laptops arbeitet, tauscht
-danach die Rollen, so dass jede Person einmal kodiert und einmal dekodiert.
+Sendet zuerst einzelne Buchstaben, dann Wörter wie `TEAM`, `MEAT`, `MATE`
+oder `TEA`. Danach tauscht ihr die Rollen, so dass jede Person einmal
+kodiert und einmal dekodiert.
 
-Zum Schluss stellt ihr die Folie nach: Vertauscht nur auf der empfangenden
-Seite im `CODEBOOK` die Farben von T und M und sendet `TEAM`. Jede Farbe kommt
+Zum Schluss stellt ihr die Folie nach: Vertauscht nur in `receiver.py` im
+`CODEBOOK` die Farben von T und M und sendet `TEAM`. Jede Farbe kommt
 richtig an, und trotzdem steht beim Empfänger `MEAT`.
 
 ## Zum Nachdenken
 
 - Was zeigt der Empfänger, wenn eine Farbe falsch gemessen wird, und woran
-  merkt ihr das, ohne den Sender zu fragen? Und woran merkt ihr es, wenn die
-  beiden Codebücher nicht übereinstimmen?
-- Wie viele Stellen bräuchtet ihr mit `off` und `on` für alle 26 Buchstaben
-  und das Leerzeichen, und wie viele mit vier Farben?
-- In dieser Übung sagt „jetzt“, wann gemessen wird. Was muss euer Code in
-  Challenge 2 stattdessen leisten?
+  merkt ihr es, wenn die beiden Codebücher nicht übereinstimmen?
+- In Challenge 2 braucht das Codebuch 26 Buchstaben und das Leerzeichen.
+  Wie groß wird `LENGTH` mit `off` und `on`, und wie groß mit vier Farben?
+- Hier sagt „jetzt“, wann gemessen wird. Was müssen `send_text` und
+  `receive_text` in Challenge 2 stattdessen leisten?
