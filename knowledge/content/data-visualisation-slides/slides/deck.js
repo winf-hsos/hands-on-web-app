@@ -145,7 +145,7 @@ Object.assign(window, { figMap, figMapOne, figMapTwo });
 /* dashed lines. Each sheet is drawn flat (640 x 320) and put into the  */
 /* plane by one matrix, so table, axes and bars share the perspective.  */
 /* Labels sit on the right, joined to their sheet by a thin line; what  */
-/* has defaults (the other four layers) stands in grey beyond a rule.  */
+/* has defaults (the other five layers) stands in grey beyond a rule.  */
 /* Widths: "which column goes where" 23 chars x 32 x 0.55 = 405, from   */
 /* x = 980 to 1385; "more layers:" 211 from 1470.                       */
 /* ------------------------------------------------------------------ */
@@ -196,7 +196,7 @@ function figGrammar() {
   });
   parts.push(d.line(1430, 60, 1430, 600, { color: c.dark, width: 2 }));
   parts.push(d.label(1470, 0, "more layers:", { size: 32, color: c.gray, centerY: 230 }));
-  parts.push(d.label(1470, 0, "stat_…()\nfacet_…()\ncoord_…()\ntheme()", { size: 32, color: c.gray, mono: true, keepCase: true, centerY: 380, lineHeight: 1.5 }));
+  parts.push(d.label(1470, 0, "stat_…()\nscale_…()\nfacet_…()\ncoord_…()\ntheme()", { size: 32, color: c.gray, mono: true, keepCase: true, centerY: 404, lineHeight: 1.5 }));
   return put("fig-grammar", d.svg(1680, 640, ...parts));
 }
 window.figGrammar = figGrammar;

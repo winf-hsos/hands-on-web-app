@@ -345,7 +345,7 @@ Jedes Diagramm in ggplot2 entsteht aus denselben drei Schichten:
 
 Leland Wilkinson hat diese Zerlegung als *Grammar of Graphics* beschrieben,
 und Hadley Wickham hat sie mit ggplot2 nach R gebracht. Die Grammatik kennt
-noch vier weitere Schichten, die jedes Diagramm auch hat, aber mit
+in ggplot2 noch fünf weitere Schichten, die jedes Diagramm auch hat, aber mit
 Voreinstellungen, sodass du sie erst schreibst, wenn du etwas ändern willst;
 sie stehen weiter unten unter „Die übrigen Schichten“.
 
@@ -369,16 +369,17 @@ survey |>
 
 ### Die übrigen Schichten
 
-Zu Daten, Ästhetik und Geom kommen in der *Grammar of Graphics* vier
+Zu Daten, Ästhetik und Geom kommen in der *Grammar of Graphics* fünf
 Schichten, die ggplot2 von selbst wählt, wenn du nichts angibst. Hier
 genügt es, sie einmal gesehen zu haben:
 
 | Schicht | was sie bestimmt | in ggplot2 | Voreinstellung |
 |---|---|---|---|
 | Daten | die Tabelle | `survey \|> ggplot()` | keine |
-| Ästhetik | welche Spalte auf welche Achse oder Farbe geht | `aes()`, dazu `scale_…()` | keine |
+| Ästhetik | welche Spalte auf welche Achse oder Farbe geht | `aes()` | keine |
 | Geom | die Form der Werte | `geom_…()` | keine |
 | Statistik | was vor dem Zeichnen gerechnet wird | `stat = …`, `stat_summary()` | je Geom, etwa Zählen bei `geom_bar()` |
+| Skalen | wie aus Werten Positionen, Farben und Achsenbeschriftungen werden | `scale_…()` | je Ästhetik eine, passend zum Datentyp |
 | Facetten | ein Feld je Gruppe | `facet_wrap()` | ein einziges Feld |
 | Koordinaten | das Koordinatensystem | `coord_…()` | rechtwinklig, x waagerecht |
 | Theme | alles, was nicht von den Daten abhängt | `theme_…()`, `theme()` | grauer Hintergrund mit weißen Linien |
@@ -396,8 +397,9 @@ survey |>
   stat_summary(fun = median, geom = "point", size = 4)
 ```
 
-**Skalen.** Zur Ästhetik gehören die Skalen, die aus Werten Positionen und
-Farben machen und die Achse beschriften. `scale_x_continuous()` setzt hier
+**Skalen.** `aes()` sagt nur, welche Spalte auf welche Achse geht; die
+Skala entscheidet, wie aus den Werten Positionen und Farben werden und wie
+die Achse beschriftet ist. `scale_x_continuous()` setzt hier
 die Striche der x-Achse auf jedes Jahrzehnt:
 
 ```r
@@ -527,15 +529,17 @@ survey |>
 ### Die Reihenfolge ist ein Faktor
 
 Die Reihenfolge der Balken bestimmt nicht ggplot2, sondern der Faktor
-dahinter. Drei Werkzeuge aus dem Paket forcats und aus R selbst genügen:
+dahinter. Vier Werkzeuge aus dem Paket forcats und aus R selbst genügen:
 
 | Ausdruck | Reihenfolge |
 |---|---|
 | `fct_infreq(diet)` | häufigste zuerst |
+| `fct_reorder(diet, n)` | nach einer anderen Spalte, etwa `n` aus `count()` für `geom_col()` |
 | `fct_rev(fct_infreq(diet))` | umgedreht, häufigste oben in liegenden Balken |
 | `factor(milk_freq, levels = c(…))` | die Reihenfolge, die du vorgibst |
 
-Nominale Variablen sortierst du nach Häufigkeit, ordinale nach der Skala.
+Nominale Variablen sortierst du nach Häufigkeit oder nach einem Wert,
+ordinale nach der Skala.
 
 ### Kleine Vielfache mit `facet_wrap()`
 

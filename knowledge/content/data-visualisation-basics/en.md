@@ -328,8 +328,8 @@ Every chart in ggplot2 is built from the same three layers:
 - the **geom**, the form in which the values appear: bars, points, boxes.
 
 Leland Wilkinson described this decomposition as the *Grammar of Graphics*,
-and Hadley Wickham brought it to R with ggplot2. The grammar knows four more
-layers, which every chart has as well, but with defaults, so that you only
+and Hadley Wickham brought it to R with ggplot2. In ggplot2 the grammar knows
+five more layers, which every chart has as well, but with defaults, so that you only
 write them when you want to change something; they follow further down under
 "The other layers".
 
@@ -352,16 +352,17 @@ survey |>
 
 ### The other layers
 
-Besides data, aesthetics and geom, the *Grammar of Graphics* has four
+Besides data, aesthetics and geom, the *Grammar of Graphics* has five
 layers that ggplot2 chooses by itself when you give none. Here it is enough
 to have seen them once:
 
 | Layer | what it decides | in ggplot2 | default |
 |---|---|---|---|
 | Data | the table | `survey \|> ggplot()` | none |
-| Aesthetics | which column goes on which axis or colour | `aes()`, with `scale_…()` | none |
+| Aesthetics | which column goes on which axis or colour | `aes()` | none |
 | Geom | the form of the values | `geom_…()` | none |
 | Statistics | what is computed before drawing | `stat = …`, `stat_summary()` | per geom, such as counting for `geom_bar()` |
+| Scales | how values become positions, colours and axis labels | `scale_…()` | one per aesthetic, suited to the data type |
 | Facets | one panel per group | `facet_wrap()` | a single panel |
 | Coordinates | the coordinate system | `coord_…()` | Cartesian, x horizontal |
 | Theme | everything that does not depend on the data | `theme_…()`, `theme()` | grey background with white lines |
@@ -379,8 +380,9 @@ survey |>
   stat_summary(fun = median, geom = "point", size = 4)
 ```
 
-**Scales.** The aesthetics come with scales, which turn values into
-positions and colours and label the axis. Here `scale_x_continuous()` puts
+**Scales.** `aes()` only says which column goes on which axis; the scale
+decides how the values become positions and colours and how the axis is
+labelled. Here `scale_x_continuous()` puts
 the ticks of the x axis on every decade:
 
 ```r
@@ -507,15 +509,17 @@ survey |>
 ### Order is a factor
 
 The order of the bars is not set by ggplot2 but by the factor behind it.
-Three tools from the package forcats and from R itself are enough:
+Four tools from the package forcats and from R itself are enough:
 
 | Expression | Order |
 |---|---|
 | `fct_infreq(diet)` | most frequent first |
+| `fct_reorder(diet, n)` | by another column, such as `n` from `count()` for `geom_col()` |
 | `fct_rev(fct_infreq(diet))` | turned around, most frequent on top in horizontal bars |
 | `factor(milk_freq, levels = c(…))` | the order you set |
 
-You sort nominal variables by frequency and ordinal ones by the scale.
+You sort nominal variables by frequency or by a value, and ordinal ones by
+the scale.
 
 ### Small multiples with `facet_wrap()`
 

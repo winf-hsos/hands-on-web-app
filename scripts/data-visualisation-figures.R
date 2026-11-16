@@ -251,27 +251,6 @@ save(
     labs(x = "number of respondents", y = NULL),
   "fig-avoid-bars", width = 800, height = 600
 )
-milk_daily <- survey |>
-  filter(!is.na(milk_freq)) |>
-  group_by(gender) |>
-  summarise(pct_daily = 100 * mean(milk_freq == "daily"))
-save(
-  milk_daily |>
-    ggplot() +
-    aes(x = gender, y = pct_daily) +
-    geom_col(width = 0.6) +
-    coord_cartesian(ylim = c(55, 66)) +
-    labs(x = NULL, y = "drink milk daily (%)"),
-  "fig-avoid-cut", width = 800, height = 600
-)
-save(
-  milk_daily |>
-    ggplot() +
-    aes(x = gender, y = pct_daily) +
-    geom_col(width = 0.6) +
-    labs(x = NULL, y = "drink milk daily (%)"),
-  "fig-avoid-full", width = 800, height = 600
-)
 
 # --- a chart in layers -----------------------------------------------------
 
@@ -302,34 +281,6 @@ save(
     scale_fill_manual(values = c(`FALSE` = dark, `TRUE` = blue)) +
     labs(x = "number of respondents", y = NULL, fill = "shops in an\norganic store"),
   "fig-diet-organic-count"
-)
-
-# Slide 36: same chart, other coordinates (one stacked bar, then bent into a pie)
-save(
-  survey |>
-    filter(!is.na(diet)) |>
-    ggplot() +
-    aes(x = "", fill = diet) +
-    geom_bar(width = 1),
-  "fig-coord-bar", width = 800, height = 600,
-  extra = list(
-    scale_fill_manual(values = c(light, gray, dark, group1, group2)),
-    labs(x = NULL, y = "number of respondents", fill = NULL)
-  )
-)
-save(
-  survey |>
-    filter(!is.na(diet)) |>
-    ggplot() +
-    aes(x = "", fill = diet) +
-    geom_bar(width = 1) +
-    coord_polar(theta = "y"),
-  "fig-coord-pie", width = 800, height = 600,
-  extra = list(
-    scale_fill_manual(values = c(light, gray, dark, group1, group2)),
-    labs(x = NULL, y = NULL, fill = NULL),
-    theme(axis.text.y = element_blank())
-  )
 )
 
 # Slide 27: small multiples

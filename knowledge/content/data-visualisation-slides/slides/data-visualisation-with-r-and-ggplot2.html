@@ -23,7 +23,7 @@
     /* two code columns with their headers, aligned at the top */
     .two.codes { align-items: start; top: 260px; grid-template-columns: 760px 760px; column-gap: 160px; justify-content: start; }
     .two.codes .header { margin-bottom: 20px; }
-    /* the seven layers: the three that every chart needs in white, the four with defaults in grey */
+    /* the eight layers: the three that every chart needs in white, the five with defaults in grey */
     table.layers-table td { text-align: left; color: var(--gray); }
     table.layers-table th { text-align: left; }
     table.layers-table tr.core td { color: var(--white); }
@@ -272,15 +272,6 @@
   </section>
 
   <section class="slide">
-    <h2>what to avoid: a cut axis under bars</h2>
-    <div class="two pair">
-      <div><div class="header">axis from 55 %: a big gap</div><img src="img/fig-avoid-cut.svg" alt="bar chart with axis starting at 55 percent"></div>
-      <div><div class="header">axis from 0: a small one</div><img src="img/fig-avoid-full.svg" alt="the same bar chart with axis starting at zero"></div>
-    </div>
-    <aside class="notes">Wer täglich Milch trinkt, nach Geschlecht: 64,7 % der Frauen und 56,3 % der Männer. Links beginnt die Achse bei 55 %, und der Unterschied sieht aus wie das Dreifache. Rechts beginnt sie bei null, wie es bei Balken sein muss, denn ein Balken zeigt seine Größe über seine Länge. ggplot2 beginnt Balken von selbst bei null; abschneiden muss man aktiv, etwa mit coord_cartesian().</aside>
-  </section>
-
-  <section class="slide">
     <h2>which chart for my question?</h2>
     <div class="content">
       <div class="statement">three questions about your variables, then the chart and the code to build it.</div>
@@ -297,7 +288,7 @@
   <section class="slide" data-on-show="figGrammar">
     <h2>three layers make a chart</h2>
     <div class="figure" id="fig-grammar"></div>
-    <aside class="notes">Jedes Diagramm in ggplot2 besteht aus denselben drei Schichten, übereinander wie Folien auf einem Projektor. Die Daten: eine Tabelle, eine Zeile je Person. Die Ästhetik: welche Spalte auf welche Achse oder in welche Farbe geht. Das Geom: die Form, also Balken, Punkte oder Boxen. Rechts stehen die übrigen Schichten, die mit Voreinstellungen kommen; zu ihnen gleich mehr. Leland Wilkinson nannte das 1999 die Grammatik der Grafik, und Hadley Wickham hat sie mit ggplot2 nach R gebracht.</aside>
+    <aside class="notes">Jedes Diagramm in ggplot2 besteht aus denselben drei Schichten, übereinander wie Folien auf einem Projektor. Die Daten: eine Tabelle, eine Zeile je Person. Die Ästhetik: welche Spalte auf welche Achse oder in welche Farbe geht. Das Geom: die Form, also Balken, Punkte oder Boxen. Rechts stehen die übrigen fünf Schichten, die mit Voreinstellungen kommen; zu ihnen gleich mehr. Leland Wilkinson nannte das 1999 die Grammatik der Grafik, und Hadley Wickham hat sie mit ggplot2 nach R gebracht.</aside>
   </section>
 
   <section class="slide" data-on-show="layerStep" data-on-step="layerStep">
@@ -318,29 +309,21 @@
   </section>
 
   <section class="slide">
-    <h2>seven layers, three you always write</h2>
+    <h2>eight layers, three you always write</h2>
     <div class="content">
-      <table class="tt large keep-case layers-table">
+      <table class="tt keep-case layers-table">
         <tr><th>layer</th><th>in ggplot2</th><th>if you write nothing</th></tr>
         <tr class="core"><td>data</td><td>survey |&gt; ggplot()</td><td>&#8212;</td></tr>
-        <tr class="core"><td>aesthetics</td><td>aes(), scale_&#8230;()</td><td>&#8212;</td></tr>
+        <tr class="core"><td>aesthetics</td><td>aes()</td><td>&#8212;</td></tr>
         <tr class="core"><td>geom</td><td>geom_&#8230;()</td><td>&#8212;</td></tr>
         <tr><td>statistics</td><td>stat_summary()</td><td>per geom: geom_bar() counts</td></tr>
+        <tr><td>scales</td><td>scale_&#8230;()</td><td>one per aesthetic, from the data</td></tr>
         <tr><td>facets</td><td>facet_wrap()</td><td>one single panel</td></tr>
         <tr><td>coordinates</td><td>coord_&#8230;()</td><td>Cartesian, x across</td></tr>
         <tr><td>theme</td><td>theme_&#8230;(), theme()</td><td>grey panel, white grid</td></tr>
       </table>
     </div>
-    <aside class="notes">Die Grammatik der Grafik hat insgesamt sieben Schichten. Drei schreibt ihr immer: Daten, Ästhetik und Geom; zur Ästhetik gehören die Skalen, die aus Werten Positionen und Farben machen. Die übrigen vier hat jedes Diagramm auch, aber mit Voreinstellungen, deshalb seht ihr sie im Code erst, wenn ihr etwas ändern wollt. Die Statistik rechnet vor dem Zeichnen, geom_bar() zählt zum Beispiel von selbst. Facetten zeichnen ein Feld je Gruppe, die Koordinaten sind normalerweise rechtwinklig, und das Theme bestimmt alles, was nicht von den Daten abhängt. Details dazu stehen in der Lektion, hier reicht es, sie einmal gesehen zu haben.</aside>
-  </section>
-
-  <section class="slide">
-    <h2>same chart, other coordinates</h2>
-    <div class="two pair">
-      <div><div class="header mono keep-case">geom_bar(width = 1)</div><img src="img/fig-coord-bar.svg" alt="one bar stacked by diet"></div>
-      <div><div class="header mono keep-case">+ coord_polar(theta = "y")</div><img src="img/fig-coord-pie.svg" alt="the same bar bent into a pie chart"></div>
-    </div>
-    <aside class="notes">Ein Beispiel für eine Schicht, die man sonst nicht sieht. Links ein einziger Balken, gestapelt nach Ernährungsweise, ein ganz gewöhnliches Balkendiagramm. Rechts derselbe Code mit einer Zeile mehr: coord_polar() biegt die y-Achse zu einem Kreis, und aus dem Balken wird ein Kreisdiagramm. Daten, Ästhetik und Geom sind gleich geblieben, nur das Koordinatensystem ist ein anderes. Deshalb gibt es in ggplot2 auch kein geom_pie().</aside>
+    <aside class="notes">Die Grammatik der Grafik hat in ggplot2 acht Schichten. Drei schreibt ihr immer: Daten, Ästhetik und Geom. Die übrigen fünf hat jedes Diagramm auch, aber mit Voreinstellungen, deshalb seht ihr sie im Code erst, wenn ihr etwas ändern wollt. Die Statistik rechnet vor dem Zeichnen, geom_bar() zählt zum Beispiel von selbst. Die Skalen sind eine eigene Schicht: aes() sagt nur, dass das Alter auf die x-Achse geht, die Skala entscheidet, wie aus Werten Positionen, Farben und Achsenbeschriftungen werden, und ggplot2 wählt je Ästhetik eine passend zum Datentyp. Facetten zeichnen ein Feld je Gruppe, die Koordinaten sind normalerweise rechtwinklig, und das Theme bestimmt alles, was nicht von den Daten abhängt. Details dazu stehen in der Lektion, hier reicht es, sie einmal gesehen zu haben.</aside>
   </section>
 
   <section class="slide">
@@ -411,11 +394,12 @@
     <h2>order is a factor</h2>
     <div class="content" style="top: 150px;">
       <div class="code small">fct_infreq(diet)           <span class="comment"># most frequent first</span>
+fct_reorder(diet, n)       <span class="comment"># by another column: n from count()</span>
 fct_rev(fct_infreq(diet))  <span class="comment"># turned around: most frequent on top</span>
 factor(milk_freq, levels = c("daily", "weekly", "monthly", "rarely"))</div>
-      <div class="sidenote below">nominal: by frequency. ordinal: by the scale. both live in the factor, not in the chart.</div>
+      <div class="sidenote below">nominal: by frequency or by a value. ordinal: by the scale. both live in the factor, not in the chart.</div>
     </div>
-    <aside class="notes">Die Reihenfolge der Balken bestimmt nicht ggplot2, sondern der Faktor. fct_infreq() aus forcats sortiert nach Häufigkeit, fct_rev() dreht um, und factor() mit levels legt eine eigene Reihenfolge fest. Das sind die drei Werkzeuge von den Folien zur Ernährung und zur Milch.</aside>
+    <aside class="notes">Die Reihenfolge der Balken bestimmt nicht ggplot2, sondern der Faktor. fct_infreq() aus forcats sortiert nach Häufigkeit, fct_reorder() nach den Werten einer anderen Spalte, etwa nach n aus count() für geom_col() oder mit median nach dem Median des Alters für Boxplots, fct_rev() dreht um, und factor() mit levels legt eine eigene Reihenfolge fest.</aside>
   </section>
 
   <section class="slide">
