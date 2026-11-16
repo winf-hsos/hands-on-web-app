@@ -48,11 +48,141 @@ along what you built there.
 | `send_symbol(name)`, `receive_symbol()` | from challenge 1; from now on only your own code calls them |
 | `CODEBOOK` | new: which sequence of colours stands for which character |
 | `SYMBOL_RATE` | new: how many colours you send per second |
-| `send_text(text)` | new: splits the text into colours with the codebook and sends them in rhythm |
-| `receive_text(n_chars)` | new: receives that many characters and returns them as text |
+| `send_text(text)` | new: splits the text into colours with the codebook and sends them in rhythm; already done |
+| `receive_text(n_chars)` | new: receives that many characters and returns them as text; this one you write |
 | `run_test(...)` | the last line; it starts both sides together, and you do not change it |
 
-<!-- The template word.py follows as soon as the LiFi agent has built it. -->
+Only the argument `codebook=` in the last line turns `run_test` into the test
+of challenge 2. The course module can do that from version 0.9.0 on
+([[lifi-hardware]]), and you fetch an older one anew with the same
+`pip install` as at the installation. This is what the template looks like;
+replace `COLORS`, the settings, `calibrate` and `receive_symbol` with your
+version from `alphabet.py`, and wherever else it says `TODO`, your code is
+missing:
+
+```python static file=word.py
+"""
+Challenge 2: The Word
+=====================
+
+How fast can you get three sentences across without a single mistake?
+
+This is your file from Challenge 1, one level up. COLORS, the sensor
+settings, calibrate, send_symbol and receive_symbol stay as they were (copy
+yours over from alphabet.py). New are the CODEBOOK, which says which colours
+stand for which character, SYMBOL_RATE, and the two functions send_text and
+receive_text. run_test at the bottom hands a sentence to send_text and only
+the number of characters to receive_text, and compares what arrives.
+
+From the start on, the timing is yours: run_test starts both functions at
+the same moment and then does not help any more.
+
+Run it with:  python word.py   (on a Mac: python3)
+"""
+
+import time
+
+from lifi_hardware import receiver, run_test, sender
+
+# Your alphabet from Challenge 1, one colour per line, each with a name
+COLORS = {
+    "off":     (0, 0, 0),
+    "white":   (255, 255, 255),
+    # "red":     (255, 0, 0),
+    # "blue":    (0, 0, 255),
+}
+
+# The two settings of the receiving sensor, as in Challenge 1
+GAIN = 16
+INTEGRATION_TIME = 154
+
+# How many colours you send per second. Start slowly and go up step by step.
+SYMBOL_RATE = 2
+
+# Which colours stand for which character. Every letter from A to Z and the
+# space need an entry. With two colours, five of them make 32 combinations,
+# enough for 27 characters. With more colours, fewer per character will do;
+# that is the point of Challenge 2.
+CODEBOOK = {
+    " ": ["off",   "off",   "off",   "off",   "off"],
+    "A": ["off",   "off",   "off",   "off",   "white"],
+    "B": ["off",   "off",   "off",   "white", "off"],
+    "C": ["off",   "off",   "off",   "white", "white"],
+    "D": ["off",   "off",   "white", "off",   "off"],
+    "E": ["off",   "off",   "white", "off",   "white"],
+    "F": ["off",   "off",   "white", "white", "off"],
+    "G": ["off",   "off",   "white", "white", "white"],
+    "H": ["off",   "white", "off",   "off",   "off"],
+    "I": ["off",   "white", "off",   "off",   "white"],
+    "J": ["off",   "white", "off",   "white", "off"],
+    "K": ["off",   "white", "off",   "white", "white"],
+    "L": ["off",   "white", "white", "off",   "off"],
+    "M": ["off",   "white", "white", "off",   "white"],
+    "N": ["off",   "white", "white", "white", "off"],
+    "O": ["off",   "white", "white", "white", "white"],
+    "P": ["white", "off",   "off",   "off",   "off"],
+    "Q": ["white", "off",   "off",   "off",   "white"],
+    "R": ["white", "off",   "off",   "white", "off"],
+    "S": ["white", "off",   "off",   "white", "white"],
+    "T": ["white", "off",   "white", "off",   "off"],
+    "U": ["white", "off",   "white", "off",   "white"],
+    "V": ["white", "off",   "white", "white", "off"],
+    "W": ["white", "off",   "white", "white", "white"],
+    "X": ["white", "white", "off",   "off",   "off"],
+    "Y": ["white", "white", "off",   "off",   "white"],
+    "Z": ["white", "white", "off",   "white", "off"],
+}
+
+# What the receiver learns during calibration, one entry per colour name
+REFERENCES = {}
+
+
+def calibrate(readings):
+    """Your calibrate from Challenge 1: readings[name] is a list of a few
+    readings, each one Reading(r, g, b, c), taken while that colour showed."""
+    for name in readings:
+        # TODO: copy your own version over from alphabet.py
+        REFERENCES[name] = readings[name][0]
+
+
+def send_symbol(name):
+    """Shows the colour with this name on the LED of the sending device."""
+    r, g, b = COLORS[name]
+    sender.led.set_color(r, g, b)
+
+
+def receive_symbol():
+    """Your receive_symbol from Challenge 1: measures and returns the name of
+    the colour it recognised."""
+    r, g, b, c = receiver.sensor.read()
+    # TODO: copy your own version over from alphabet.py
+    return "off"
+
+
+def send_text(text):
+    """Sends the text, character by character, in the rhythm of SYMBOL_RATE."""
+    for char in text:
+        for name in CODEBOOK[char]:
+            send_symbol(name)
+            time.sleep(1 / SYMBOL_RATE)
+
+
+def receive_text(n_chars):
+    """Receives n_chars characters and returns them as one text.
+
+    It starts at the same moment as send_text. The sender shows a new colour
+    every 1 / SYMBOL_RATE seconds, so the receiver has to read each colour
+    in the same rhythm, collect as many colours as one character has, and
+    look up which character they stand for in CODEBOOK.
+    """
+    text = ""
+    # TODO: receive n_chars characters and add each one to text
+    return text
+
+
+run_test(send_text, receive_text, calibrate, symbols=COLORS, codebook=CODEBOOK,
+         gain=GAIN, integration_time=INTEGRATION_TIME)
+```
 
 ## Running the test
 
@@ -62,21 +192,40 @@ python word.py
 
 On a Mac the command is `python3`. If you work with two laptops, you start the
 file on both, and the course server gives both a shared start time; on one
-laptop the receiver runs alongside the sender. From the start your sender gets
-the sentence through `send_text(text)`, and your receiver learns through
-`receive_text(n_chars)` only how many characters are coming, never the
-sentence itself.
+laptop the receiver runs alongside the sender. As in challenge 1, a run begins
+with the calibration, in which `run_test` shows every colour of `COLORS` once
+and calls your `calibrate`. Then come three sentences of three words each,
+such as `BUSY FROGS DANCE`, fresh from the course server for every run. For
+each sentence `send_text(text)` and `receive_text(n_chars)` start at the same
+moment, and your receiver learns only how many characters are coming, never
+the sentence itself. As soon as `send_text` returns, the LED goes off.
 
 A scored run is three sentences in a row without an error at the same symbol
 rate. The result appears with every mistake in the terminal and in your
-[[lifi-cockpit|team cockpit]].
+[[lifi-cockpit|team cockpit]]. For quick tries in between one sentence is
+enough if you add `sentences=1` to the call of `run_test` at the end of the
+file; only runs with three sentences count, though. Without the server, a run
+with both devices on one laptop works as a practice run that does not count.
 
 ## Task 1: The codebook
 
 Decide which sequence of your colours stands for which character. Sender and
 receiver read the same `CODEBOOK`, so it is written only once in the file.
+The template gives every character five colours out of off and white; with
+more colours fewer places will do, and that is what this challenge is about.
 
-**File:** `word.py`, the codebook `CODEBOOK`
+**File:** `word.py`, the codebook `CODEBOOK`; in the template it begins like
+this:
+
+```python static
+CODEBOOK = {
+    " ": ["off",   "off",   "off",   "off",   "off"],
+    "A": ["off",   "off",   "off",   "off",   "white"],
+    "B": ["off",   "off",   "off",   "white", "off"],
+    "C": ["off",   "off",   "off",   "white", "white"],
+    # ... and so on, up to "Z"
+}
+```
 
 > [!HINT]
 > With *k* colours and *n* places you can tell *k*ⁿ codewords apart ([[place-value-systems]]). For 26 letters and the space, four colours need three places, because 4³ = 64; with two colours you need five, because 2⁵ = 32.
@@ -86,15 +235,29 @@ receiver read the same `CODEBOOK`, so it is written only once in the file.
 
 ## Task 2: Get it running slowly
 
-`send_text(text)` splits the text into colours with your codebook and shows
-them one after the other, each for `1 / SYMBOL_RATE` seconds.
-`receive_text(n_chars)` measures in the same rhythm, turns every sequence of
-colours back into a character and returns the text as soon as all characters
-have arrived. Start slowly, with one colour per second, and do not stop until
+`send_text(text)` is already done in the template: it splits the text into
+colours with your codebook and shows them one after the other, each for
+`1 / SYMBOL_RATE` seconds. Your task is `receive_text(n_chars)`, which
+measures in the same rhythm, turns every sequence of colours back into a
+character and returns the text as soon as all characters have arrived. Start
+slowly, with the two colours per second of the template, and do not stop until
 three sentences in a row arrive without an error.
 
-**File:** `word.py`, the functions `send_text` and `receive_text`, together
-with `SYMBOL_RATE`
+**File:** `word.py`, the function `receive_text(n_chars)`; in the template:
+
+```python static
+def receive_text(n_chars):
+    """Receives n_chars characters and returns them as one text.
+
+    It starts at the same moment as send_text. The sender shows a new colour
+    every 1 / SYMBOL_RATE seconds, so the receiver has to read each colour
+    in the same rhythm, collect as many colours as one character has, and
+    look up which character they stand for in CODEBOOK.
+    """
+    text = ""
+    # TODO: receive n_chars characters and add each one to text
+    return text
+```
 
 > [!HINT]
 > You bring along your functions from challenge 1 that send one colour and recognise one. Only what lies above them is new: splitting text into colours and turning colours back into text.
@@ -103,7 +266,7 @@ with `SYMBOL_RATE`
 > Work out how long one colour shines at your rate, and think about the moment within that time at which the receiver measures best.
 
 > [!HINT]
-> Both sides start together, but each has its own clock, and `time.sleep()` never waits exactly as long as asked. So work out for every colour when it begins, counted from the start, instead of stringing short pauses together whose small errors add up.
+> Both sides start together, but each has its own clock, and `time.sleep()` never waits exactly as long as asked. The template strings short pauses together in `send_text`, and their small errors add up. At the latest when you want to go faster, work out on both sides for every colour when it begins, counted from the start.
 
 ## Task 3: Raise the speed
 
@@ -111,7 +274,12 @@ Raise `SYMBOL_RATE` step by step and note at every step whether three
 sentences still arrive without an error. Keep this series of measurements,
 because you will need it again in challenge 3.
 
-**File:** `word.py`, the value `SYMBOL_RATE`
+**File:** `word.py`, the value `SYMBOL_RATE`; in the template:
+
+```python static
+# How many colours you send per second. Start slowly and go up step by step.
+SYMBOL_RATE = 2
+```
 
 > [!HINT]
 > Only ever change one thing, either the rate or the size of the alphabet. If you change both at once, you will not know afterwards what caused the error.
@@ -127,8 +295,12 @@ passed runs. You pass with one scored run, that is three sentences in a row
 without an error, at any symbol rate.
 
 The [challenge board](https://lifi.hsos.uber.space/challenges) shows for every
-team how many characters and how many bits per second it transmits. The
-ranking goes by characters per second, and in a tie the team that reached the
+team how many characters and how many bits per second it transmits. For every
+sentence the clock runs from the shared start until `send_text` returns.
+Characters per second are the characters of the three sentences divided by
+this time, and bits per second are all colours sent divided by the same time,
+times log2 of the number of your colours in `COLORS`. The ranking goes by
+characters per second, and in a tie the team that reached the
 value first comes first. In the competition the best teams show their run
 live; there is no live change in challenge 2.
 
