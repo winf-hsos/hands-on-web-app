@@ -18,7 +18,7 @@ areas: [ds]
 r_datasets: { datasaurus_dozen: datasaurus_dozen.csv }
 relations:
   see_also: [why-visualise, matejka-same-stats-different-graphs, same-stats-shapes, anscombe-quartet]
-status: draft
+status: published
 updated: 2026-11-16
 ---
 
