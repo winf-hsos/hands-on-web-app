@@ -4,7 +4,7 @@ summary: >-
   With two colours, four letters and a tiny codebook, practise the two halves
   of Challenge 2: turn text into colours letter by letter and measured
   colours back into text, with one script for the sender and one for the
-  receiver, with no clock and no course server.
+  receiver, at a fixed symbol rate and with no course server.
 objectives:
   intro: "In this exercise you write the functions that read a codebook in both directions, and afterwards you can:"
   goals:
@@ -16,8 +16,8 @@ based_on: 2026-11-16
 ---
 
 In Challenge 2 your sender sends text as colours, and your receiver turns
-the colours back into text. Before the clock comes in as well, you practise
-only the translations here, with the smallest codebook that is still of any
+the colours back into text. Here you practise the translations at a slow,
+fixed pace, with the smallest codebook that is still of any
 use: two colours, `off` and `on`, and the four letters T, E, A and M from
 the slide "perfect reception, perfect nonsense"
 ([[symbols-and-information-slides]]). Because 2 × 2 = 4, every letter gets
@@ -30,8 +30,8 @@ exactly two colours, a code of fixed length ([[code-systems]]).
 | A | on off |
 | M | on on |
 
-There is no clock and no course server: you press Enter for every colour,
-and everything stays on your laptops.
+Every colour shows for `1 / SYMBOL_RATE` seconds, one second in the
+template, and there is no course server: everything stays on your laptops.
 
 ## Two scripts, two sides
 
@@ -43,10 +43,13 @@ functions have the names of Challenge 2 and split the work the same way:
 |---|---|
 | `send_text(text)` sends the whole text, letter by letter | `receive_text(n_chars)` receives that many letters and returns the text |
 | `encode_letter(letter)` returns the colours of one letter | `decode_letter(colors)` returns the letter for some colours |
-| `send_symbol(name)` shows one colour (done) | `receive_symbol()` measures one colour and returns it (done) |
+| `send_symbol(name)` shows one colour for `1 / SYMBOL_RATE` seconds (done) | `receive_symbol()` measures one colour and returns the name of the most similar one in `REFERENCES` (done) |
 
-On each side you write the top two. `send_symbol` and `receive_symbol` are
-done and wait for Enter here; in Challenge 2 your own clock decides instead.
+On each side you write the top two; `send_symbol` and `receive_symbol` are
+done. `receive_symbol` recognises a colour as in Challenge 1, by the most
+similar reading in `REFERENCES`, so the receiver also works with more
+colours in `COLORS`, and your own version from Challenge 1 fits in as
+well.
 
 ### The sender
 
@@ -58,9 +61,9 @@ missing:
 Encoding and decoding: the sender
 =================================
 
-Sends words made of the letters T, E, A and M, two colours per letter and
-one colour per Enter. Its partner is receiver.py, started at the same time:
-on this computer in a second terminal, or on a second laptop.
+Sends words made of the letters T, E, A and M, two colours per letter, at
+SYMBOL_RATE colours per second. Its partner is receiver.py, started at the
+same time: on this computer in a second terminal, or on a second laptop.
 
 You write two functions, as in Challenge 2:
 
@@ -70,11 +73,17 @@ You write two functions, as in Challenge 2:
 Run it with:  python sender.py   (on a Mac: python3)
 """
 
+import time
+
 from lifi_hardware import LifiDevice
 
 # Both devices on this computer: the UID of the SENDING device, for example
 # "6Dccqf" (the error message without it lists both). Two laptops: None.
 DEVICE = None
+
+# Colours per second: each colour shows for 1 / SYMBOL_RATE seconds.
+# receiver.py needs the same value.
+SYMBOL_RATE = 1
 
 COLORS = {
     "off": (0, 0, 0),
@@ -93,10 +102,9 @@ lifi = LifiDevice.connect(master=DEVICE, server=None, log_file=None)
 
 
 def send_symbol(name):
-    """Shows one colour and waits until the receiver has measured it.
-    In Challenge 2 your own clock decides when the next colour comes."""
+    """Shows one colour for 1 / SYMBOL_RATE seconds."""
     lifi.led.set_color(*COLORS[name])
-    input(f"    {name:3}  say \"now\", Enter once the receiver has measured ")
+    time.sleep(1 / SYMBOL_RATE)
 
 
 def encode_letter(letter):
@@ -115,16 +123,15 @@ def send_text(text):
 
 print("Calibration: the receiver measures off, then on.")
 for name in COLORS:
-    send_symbol(name)
+    lifi.led.set_color(*COLORS[name])
+    input(f"The LED shows {name}. Say \"now\", Enter once the receiver has measured ")
+lifi.led.off()
 
-while text := input("\nText to send (Enter alone to stop): ").strip().upper():
-    if any(letter not in CODEBOOK for letter in text):
-        print(f"Only these letters are in the CODEBOOK: {', '.join(CODEBOOK)}")
-        continue
-    print(f"Tell the receiver: {len(text)} letters")
+while True:
+    text = input("\nText to send: ")
+    time.sleep(5 - time.time() % 5)     # start at the next full five seconds, as the receiver
     send_text(text)
     lifi.led.off()
-lifi.close()
 ```
 
 ### The receiver
@@ -137,9 +144,9 @@ one letter:
 Encoding and decoding: the receiver
 ===================================
 
-Receives words made of the letters T, E, A and M, two colours per letter
-and one colour per Enter. Its partner is sender.py, started at the same
-time: on this computer in a second terminal, or on a second laptop.
+Receives words made of the letters T, E, A and M, two colours per letter, at
+SYMBOL_RATE colours per second. Its partner is sender.py, started at the
+same time: on this computer in a second terminal, or on a second laptop.
 
 You write two functions, as in Challenge 2:
 
@@ -157,6 +164,15 @@ from lifi_hardware import LifiDevice
 # "6QkrXy" (the error message without it lists both). Two laptops: None.
 DEVICE = None
 
+# Colours per second, the same value as in sender.py
+SYMBOL_RATE = 1
+
+# The colours, the same names as in sender.py
+COLORS = {
+    "off": (0, 0, 0),
+    "on":  (255, 255, 255),
+}
+
 # Which colours stand for which letter: a copy of the one in sender.py
 CODEBOOK = {
     "T": ["off", "off"],
@@ -168,34 +184,30 @@ CODEBOOK = {
 # Colours per letter: two colours and two positions give 2 x 2 = 4 letters
 LENGTH = 2
 
+# What each colour looks like to the sensor, learnt in the calibration
+REFERENCES = {}
+
 lifi = LifiDevice.connect(master=DEVICE, server=None, log_file=None)
-BORDER = None   # brightness between off and on, set by calibrate()
 
-
-def brightness():
-    """The clear channel (all light) of a fresh reading."""
-    time.sleep(2 * lifi.sensor.integration_time / 1000 + 0.05)
-    return lifi.sensor.read().c
-
-
-def calibrate():
-    """Measures off and on once and puts the border halfway between."""
-    global BORDER
-    input("Calibration: Enter when the sender says \"now\" for off ")
-    off = brightness()
-    input("Enter when the sender says \"now\" for on ")
-    on = brightness()
-    BORDER = (off + on) / 2
-    print(f"off is about {off}, on about {on}: above {BORDER:.0f} counts as on")
+for name in COLORS:
+    input(f"Calibration: Enter when the sender says \"now\" for {name} ")
+    REFERENCES[name] = lifi.sensor.read()
+    print(f"  {name}: {REFERENCES[name]}")
 
 
 def receive_symbol():
-    """Waits for Enter, measures and returns "on" or "off".
-    In Challenge 2 your own clock decides when to measure."""
-    input("    Enter to measure ")
-    name = "on" if brightness() > BORDER else "off"
-    print(f"    {name}")
-    return name
+    """Measures one colour, returns the name of the most similar reference
+    (as in Challenge 1, your own version works here too) and waits until the
+    next colour."""
+    reading = lifi.sensor.read()
+    best, best_distance = None, None
+    for name, reference in REFERENCES.items():
+        distance = sum((a - b) ** 2 for a, b in zip(reading, reference))
+        if best is None or distance < best_distance:
+            best, best_distance = name, distance
+    print(f"  {best}")
+    time.sleep(1 / SYMBOL_RATE)
+    return best
 
 
 def decode_letter(colors):
@@ -214,10 +226,11 @@ def receive_text(n_chars):
     return text
 
 
-calibrate()
-while (n := input("\nHow many letters? (Enter alone to stop): ").strip()).isdigit():
-    print(f"Received: {receive_text(int(n))}")
-lifi.close()
+while True:
+    n_chars = int(input("\nHow many letters? "))
+    time.sleep(5 - time.time() % 5)     # start at the next full five seconds, as the sender
+    time.sleep(0.5 / SYMBOL_RATE)       # measure in the middle of each colour
+    print(f"Received: {receive_text(n_chars)}")
 ```
 
 ## Starting
@@ -232,11 +245,18 @@ You start both scripts at the same time, with `python sender.py` and
 - **Two laptops, one device each:** `sender.py` runs on one, `receiver.py`
   on the other, and `DEVICE` stays `None`.
 
-The receiver calibrates first: the sender shows `off` and calls "now", the
-receiver presses Enter and measures, then the same for `on`. After that the
-sender types a word and says how many letters it has, and the receiver types
-that number. For every colour the sender calls "now", the receiver presses
-Enter, and only then does the sender press Enter for the next colour.
+The receiver calibrates first: the sender shows every colour of `COLORS`
+in turn and calls "now", the receiver presses Enter and stores the reading
+in `REFERENCES`, and then the sender presses Enter for the next colour.
+
+Then the sender types a word and says how many letters it has, the receiver
+types that number, and both press Enter. Both scripts begin at the next full
+five-second tick of the clock, the sender with the first colour and the
+receiver half a colour later, so that it measures in the middle of each
+colour. As long as you both press Enter within the same five seconds, the
+scripts run in step. With two laptops, the clocks of both computers have to
+agree for this; if every letter arrives wrong, one of the clocks is probably
+ahead.
 
 ## Task 1: Encoding
 
@@ -282,11 +302,18 @@ Finally, rebuild the slide: in `receiver.py` only, swap the colours of T and
 M in the `CODEBOOK` and send `TEAM`. Every colour arrives correctly, and
 still the receiver shows `MEAT`.
 
+## Task 4: Faster
+
+Raise `SYMBOL_RATE` in both scripts to 2, then to 4 and 8, and send the same
+words each time. Note from which rate on letters arrive wrong.
+
 ## To think about
 
 - What does the receiver show when a colour is measured wrongly, and how do
   you notice when the two codebooks do not match?
 - In Challenge 2 the codebook needs 26 letters and the space. How large does
   `LENGTH` get with `off` and `on`, and how large with four colours?
-- Here "now" says when to measure. What do `send_text` and `receive_text`
-  have to do instead in Challenge 2?
+- What happens if you type `team` in small letters or send a word with a
+  B, and where in the code does the error arise?
+- Why do letters get lost from a certain symbol rate on, although the
+  sensor recognises every single colour reliably?
