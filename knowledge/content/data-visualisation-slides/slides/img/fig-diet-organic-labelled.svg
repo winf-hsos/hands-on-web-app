@@ -29,32 +29,32 @@
 <rect x='0.00000000000013' y='0.00' width='1680.00' height='760.00' style='stroke-width: 3.10; stroke: none;' />
 </g>
 <defs>
-  <clipPath id='cpMTYyLjYwfDE0MDguMjJ8NjcuNDV8NjI4Ljcy'>
-    <rect x='162.60' y='67.45' width='1245.62' height='561.27' />
+  <clipPath id='cpMTYyLjYwfDE0MTUuMzF8NjcuNDV8NjI4Ljcy'>
+    <rect x='162.60' y='67.45' width='1252.72' height='561.27' />
   </clipPath>
 </defs>
-<g clip-path='url(#cpMTYyLjYwfDE0MDguMjJ8NjcuNDV8NjI4Ljcy)'>
-<rect x='162.60' y='67.45' width='1245.62' height='561.27' style='stroke-width: 3.10; stroke: none;' />
-<polyline points='162.60,563.96 1408.22,563.96 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
-<polyline points='162.60,456.02 1408.22,456.02 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
-<polyline points='162.60,348.08 1408.22,348.08 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
-<polyline points='162.60,240.15 1408.22,240.15 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
-<polyline points='162.60,132.21 1408.22,132.21 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
-<polyline points='219.22,628.72 219.22,67.45 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
-<polyline points='502.31,628.72 502.31,67.45 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
-<polyline points='785.41,628.72 785.41,67.45 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
-<polyline points='1068.51,628.72 1068.51,67.45 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
-<polyline points='1351.60,628.72 1351.60,67.45 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
-<rect x='310.38' y='515.39' width='1041.22' height='97.14' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #4A5259;' />
-<rect x='219.22' y='515.39' width='91.16' height='97.14' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #3D8FC4;' />
-<rect x='446.00' y='407.45' width='905.60' height='97.14' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #4A5259;' />
-<rect x='219.22' y='407.45' width='226.78' height='97.14' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #3D8FC4;' />
-<rect x='455.84' y='299.51' width='895.77' height='97.14' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #4A5259;' />
-<rect x='219.22' y='299.51' width='236.62' height='97.14' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #3D8FC4;' />
-<rect x='533.77' y='191.58' width='817.83' height='97.14' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #4A5259;' />
-<rect x='219.22' y='191.58' width='314.55' height='97.14' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #3D8FC4;' />
-<rect x='848.32' y='83.64' width='503.28' height='97.14' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #4A5259;' />
-<rect x='219.22' y='83.64' width='629.10' height='97.14' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #3D8FC4;' />
+<g clip-path='url(#cpMTYyLjYwfDE0MTUuMzF8NjcuNDV8NjI4Ljcy)'>
+<rect x='162.60' y='67.45' width='1252.72' height='561.27' style='stroke-width: 3.10; stroke: none;' />
+<polyline points='162.60,563.96 1415.31,563.96 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='162.60,456.02 1415.31,456.02 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='162.60,348.08 1415.31,348.08 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='162.60,240.15 1415.31,240.15 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='162.60,132.21 1415.31,132.21 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='219.54,628.72 219.54,67.45 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='504.25,628.72 504.25,67.45 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='788.96,628.72 788.96,67.45 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='1073.66,628.72 1073.66,67.45 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<polyline points='1358.37,628.72 1358.37,67.45 ' style='stroke-width: 1.28; stroke: #4A5259; stroke-linecap: butt;' />
+<rect x='311.22' y='515.39' width='1047.15' height='97.14' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #4A5259;' />
+<rect x='219.54' y='515.39' width='91.68' height='97.14' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #3D8FC4;' />
+<rect x='447.61' y='407.45' width='910.76' height='97.14' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #4A5259;' />
+<rect x='219.54' y='407.45' width='228.07' height='97.14' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #3D8FC4;' />
+<rect x='457.51' y='299.51' width='900.87' height='97.14' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #4A5259;' />
+<rect x='219.54' y='299.51' width='237.96' height='97.14' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #3D8FC4;' />
+<rect x='535.88' y='191.58' width='822.49' height='97.14' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #4A5259;' />
+<rect x='219.54' y='191.58' width='316.34' height='97.14' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #3D8FC4;' />
+<rect x='852.23' y='83.64' width='506.15' height='97.14' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #4A5259;' />
+<rect x='219.54' y='83.64' width='632.68' height='97.14' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #3D8FC4;' />
 </g>
 <g clip-path='url(#cpMC4wMHwxNjgwLjAwfDAuMDB8NzYwLjAw)'>
 <text x='148.25' y='573.12' text-anchor='end' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='105.25px' lengthAdjust='spacingAndGlyphs'>omnivore</text>
@@ -62,19 +62,19 @@
 <text x='148.25' y='357.25' text-anchor='end' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='119.52px' lengthAdjust='spacingAndGlyphs'>vegetarian</text>
 <text x='148.25' y='249.31' text-anchor='end' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='132.31px' lengthAdjust='spacingAndGlyphs'>pescetarian</text>
 <text x='148.25' y='141.37' text-anchor='end' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='69.73px' lengthAdjust='spacingAndGlyphs'>vegan</text>
-<text x='219.22' y='661.39' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='36.98px' lengthAdjust='spacingAndGlyphs'>0%</text>
-<text x='502.31' y='661.39' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='51.22px' lengthAdjust='spacingAndGlyphs'>25%</text>
-<text x='785.41' y='661.39' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='51.22px' lengthAdjust='spacingAndGlyphs'>50%</text>
-<text x='1068.51' y='661.39' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='51.22px' lengthAdjust='spacingAndGlyphs'>75%</text>
-<text x='1351.60' y='661.39' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='65.45px' lengthAdjust='spacingAndGlyphs'>100%</text>
-<text x='785.41' y='697.66' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='305.98px' lengthAdjust='spacingAndGlyphs'>Share of respondents</text>
-<text x='1456.04' y='327.85' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='192.08px' lengthAdjust='spacingAndGlyphs'>Organic store</text>
-<rect x='1458.10' y='349.22' width='13.16' height='19.59' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #4A5259;' />
-<rect x='1458.10' y='372.94' width='13.16' height='19.59' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #3D8FC4;' />
-<text x='1489.26' y='368.18' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='28.47px' lengthAdjust='spacingAndGlyphs'>no</text>
-<text x='1489.26' y='391.90' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='39.83px' lengthAdjust='spacingAndGlyphs'>yes</text>
-<text x='162.60' y='43.42' style='font-size: 38.40px;fill: #B6BEC6; font-family: "Arial";' textLength='704.22px' lengthAdjust='spacingAndGlyphs'>Vegans shop in organic stores most often</text>
-<text x='1408.22' y='738.67' text-anchor='end' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='586.25px' lengthAdjust='spacingAndGlyphs'>Source: milk survey, compact (n = 2,781 with a diet)</text>
+<text x='219.54' y='661.39' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='36.98px' lengthAdjust='spacingAndGlyphs'>0%</text>
+<text x='504.25' y='661.39' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='51.22px' lengthAdjust='spacingAndGlyphs'>25%</text>
+<text x='788.96' y='661.39' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='51.22px' lengthAdjust='spacingAndGlyphs'>50%</text>
+<text x='1073.66' y='661.39' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='51.22px' lengthAdjust='spacingAndGlyphs'>75%</text>
+<text x='1358.37' y='661.39' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='65.45px' lengthAdjust='spacingAndGlyphs'>100%</text>
+<text x='788.96' y='697.66' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='300.64px' lengthAdjust='spacingAndGlyphs'>share of respondents</text>
+<text x='1463.14' y='327.85' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='184.98px' lengthAdjust='spacingAndGlyphs'>organic store</text>
+<rect x='1465.20' y='349.22' width='13.16' height='19.59' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #4A5259;' />
+<rect x='1465.20' y='372.94' width='13.16' height='19.59' style='stroke-width: 3.10; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #3D8FC4;' />
+<text x='1496.36' y='368.18' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='28.47px' lengthAdjust='spacingAndGlyphs'>no</text>
+<text x='1496.36' y='391.90' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='39.83px' lengthAdjust='spacingAndGlyphs'>yes</text>
+<text x='162.60' y='43.42' style='font-size: 38.40px;fill: #B6BEC6; font-family: "Arial";' textLength='699.94px' lengthAdjust='spacingAndGlyphs'>vegans shop in organic stores most often</text>
+<text x='1415.31' y='738.67' text-anchor='end' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='581.97px' lengthAdjust='spacingAndGlyphs'>source: milk survey, compact (n = 2,781 with a diet)</text>
 </g>
 </g>
 </svg>

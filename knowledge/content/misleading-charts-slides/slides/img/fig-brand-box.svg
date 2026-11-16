@@ -82,9 +82,9 @@
 <text x='67.79' y='45.68' text-anchor='end' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='14.23px' lengthAdjust='spacingAndGlyphs'>5</text>
 <text x='273.57' y='501.39' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='56.91px' lengthAdjust='spacingAndGlyphs'>alpro</text>
 <text x='592.63' y='501.39' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='177.39px' lengthAdjust='spacingAndGlyphs'>Weihenstephan</text>
-<text x='433.10' y='537.66' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='186.78px' lengthAdjust='spacingAndGlyphs'>Brand shown</text>
-<text transform='translate(38.85,242.33) rotate(-90)' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='325.47px' lengthAdjust='spacingAndGlyphs'>Too expensive from (€)</text>
-<text x='784.06' y='578.67' text-anchor='end' style='font-size: 25.60px;fill: #7D868F; font-family: "Arial";' textLength='582.89px' lengthAdjust='spacingAndGlyphs'>Left out: 20 of 611 answers above 10 €, up to 999 €</text>
+<text x='433.10' y='537.66' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='183.23px' lengthAdjust='spacingAndGlyphs'>brand shown</text>
+<text transform='translate(38.85,242.33) rotate(-90)' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='318.36px' lengthAdjust='spacingAndGlyphs'>too expensive from (€)</text>
+<text x='784.06' y='578.67' text-anchor='end' style='font-size: 25.60px;fill: #7D868F; font-family: "Arial";' textLength='574.34px' lengthAdjust='spacingAndGlyphs'>left out: 20 of 611 answers above 10 €, up to 999 €</text>
 </g>
 </g>
 </svg>

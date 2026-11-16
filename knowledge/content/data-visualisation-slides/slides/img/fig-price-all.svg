@@ -85,8 +85,8 @@
 <text x='888.02' y='701.05' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='42.70px' lengthAdjust='spacingAndGlyphs'>500</text>
 <text x='1229.65' y='701.05' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='42.70px' lengthAdjust='spacingAndGlyphs'>750</text>
 <text x='1571.28' y='701.05' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='56.94px' lengthAdjust='spacingAndGlyphs'>1000</text>
-<text x='887.33' y='737.32' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='325.47px' lengthAdjust='spacingAndGlyphs'>Too expensive from (€)</text>
-<text transform='translate(38.85,342.16) rotate(-90)' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='334.41px' lengthAdjust='spacingAndGlyphs'>Number of respondents</text>
+<text x='887.33' y='737.32' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='318.36px' lengthAdjust='spacingAndGlyphs'>too expensive from (€)</text>
+<text transform='translate(38.85,342.16) rotate(-90)' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='329.09px' lengthAdjust='spacingAndGlyphs'>number of respondents</text>
 </g>
 </g>
 </svg>

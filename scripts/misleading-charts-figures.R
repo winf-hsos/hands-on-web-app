@@ -86,7 +86,7 @@ save(
     aes(x = fct_inorder(when), y = top_rate) +
     geom_col() +
     coord_cartesian(ylim = c(34, 42)) +
-    labs(x = NULL, y = "Top tax rate (%)"),
+    labs(x = NULL, y = "top tax rate (%)"),
   "fig-tax-cut"
 )
 save(
@@ -98,7 +98,7 @@ save(
     ggplot() +
     aes(x = fct_inorder(when), y = top_rate) +
     geom_col() +
-    labs(x = NULL, y = "Top tax rate (%)"),
+    labs(x = NULL, y = "top tax rate (%)"),
   "fig-tax-full"
 )
 
@@ -115,7 +115,7 @@ save(
     geom_vline(xintercept = 2005) +
     annotate("text", x = 2004.5, y = 950, label = "2005: \"Stand Your Ground\"", hjust = 1) +
     scale_y_reverse() +
-    labs(x = NULL, y = "Murders using firearms"),
+    labs(x = NULL, y = "murders using firearms"),
   "fig-florida-reversed"
 )
 save(
@@ -129,7 +129,7 @@ save(
     geom_area() +
     geom_vline(xintercept = 2005) +
     annotate("text", x = 2004.5, y = 950, label = "2005: \"Stand Your Ground\"", hjust = 1) +
-    labs(x = NULL, y = "Murders using firearms"),
+    labs(x = NULL, y = "murders using firearms"),
   "fig-florida-normal"
 )
 
@@ -145,7 +145,7 @@ save(
     aes(x = milk_brand, y = median_price) +
     geom_col() +
     coord_cartesian(ylim = c(1.98, 2.01)) +
-    labs(x = "Brand shown", y = "Median: too expensive from (€)"),
+    labs(x = "brand shown", y = "median: too expensive from (€)"),
   "fig-brand-cut"
 )
 save(
@@ -158,7 +158,7 @@ save(
     geom_col() +
     geom_text(aes(label = format(median_price, nsmall = 2)), vjust = -0.5) +
     coord_cartesian(ylim = c(0, 2.2)) +
-    labs(x = "Brand shown", y = "Median: too expensive from (€)"),
+    labs(x = "brand shown", y = "median: too expensive from (€)"),
   "fig-brand-full"
 )
 
@@ -169,7 +169,7 @@ save(
     ggplot() +
     aes(y = fct_rev(fct_infreq(diet))) +
     geom_bar() +
-    labs(x = "People who shop in an organic store", y = NULL),
+    labs(x = "people who shop in an organic store", y = NULL),
   "fig-organic-count"
 )
 save(
@@ -180,7 +180,7 @@ save(
     ggplot() +
     aes(x = share, y = fct_reorder(paste0(diet, " (n = ", n, ")"), share)) +
     geom_col() +
-    labs(x = "Shop in an organic store (%)", y = NULL),
+    labs(x = "shop in an organic store (%)", y = NULL),
   "fig-organic-share"
 )
 
@@ -197,7 +197,7 @@ save(
     geom_point() +
     scale_radius(limits = c(0, NA), range = c(0, 50)) +
     scale_y_continuous(breaks = NULL) +
-    labs(x = "How often milk is drunk at home", y = NULL),
+    labs(x = "how often milk is drunk at home", y = NULL),
   "fig-milk-radius",
   extra = theme(legend.position = "none")
 )
@@ -213,7 +213,7 @@ save(
     geom_point() +
     scale_size_area(max_size = 50) +
     scale_y_continuous(breaks = NULL) +
-    labs(x = "How often milk is drunk at home", y = NULL),
+    labs(x = "how often milk is drunk at home", y = NULL),
   "fig-milk-area",
   extra = theme(legend.position = "none")
 )
@@ -228,7 +228,7 @@ save(
     ggplot() +
     aes(x = milk_brand, y = mean_price) +
     geom_col() +
-    labs(x = "Brand shown", y = "Mean: too expensive from (€)"),
+    labs(x = "brand shown", y = "mean: too expensive from (€)"),
   "fig-brand-mean"
 )
 save(
@@ -238,8 +238,8 @@ save(
     aes(x = milk_brand, y = price_too_expensive) +
     geom_boxplot() +
     labs(
-      x = "Brand shown", y = "Too expensive from (€)",
-      caption = "Left out: 20 of 611 answers above 10 €, up to 999 €"
+      x = "brand shown", y = "too expensive from (€)",
+      caption = "left out: 20 of 611 answers above 10 €, up to 999 €"
     ),
   "fig-brand-box"
 )
@@ -265,7 +265,7 @@ save(
     ggplot() +
     aes(x = n, y = fct_reorder(diet, n)) +
     geom_col() +
-    labs(x = "Number of respondents", y = NULL),
+    labs(x = "number of respondents", y = NULL),
   "fig-diet-bars"
 )
 

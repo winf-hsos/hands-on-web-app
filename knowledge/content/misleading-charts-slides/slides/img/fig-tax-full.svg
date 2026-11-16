@@ -53,7 +53,7 @@
 <text x='82.03' y='44.33' text-anchor='end' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='28.47px' lengthAdjust='spacingAndGlyphs'>40</text>
 <text x='283.93' y='578.67' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='51.20px' lengthAdjust='spacingAndGlyphs'>Now</text>
 <text x='596.51' y='578.67' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='133.77px' lengthAdjust='spacingAndGlyphs'>Jan 1, 2013</text>
-<text transform='translate(38.85,280.97) rotate(-90)' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='225.86px' lengthAdjust='spacingAndGlyphs'>Top tax rate (%)</text>
+<text transform='translate(38.85,280.97) rotate(-90)' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='218.75px' lengthAdjust='spacingAndGlyphs'>top tax rate (%)</text>
 </g>
 </g>
 </svg>

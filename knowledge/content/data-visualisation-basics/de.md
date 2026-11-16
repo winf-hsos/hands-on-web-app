@@ -292,6 +292,24 @@ Jetzt sieht man den Zusammenhang (r = 0,41): Wer sich als umweltbewusst
 bezeichnet, kauft eher Bio. Ersetze `geom_count()` durch `geom_point()` und
 vergleiche.
 
+Eine Alternative ist die Heatmap: `count()` zählt zuerst die Kombinationen,
+`geom_tile()` zeichnet je Kombination eine Kachel, deren Farbe die Anzahl
+zeigt, und `geom_text()` schreibt die Zahl hinein. Farben lassen sich schlecht
+genau vergleichen, deshalb gehören die Zahlen dazu; dafür füllt die Heatmap
+das Raster lückenlos, und sie passt genauso zu zwei Kategorien mit
+Reihenfolge, etwa Wohnortgröße und Milchkonsum.
+
+```r
+survey |>
+  filter(!is.na(eco_conscious), !is.na(prefers_organic)) |>
+  count(eco_conscious, prefers_organic) |>
+  ggplot() +
+  aes(x = eco_conscious, y = prefers_organic, fill = n, label = n) +
+  geom_tile() +
+  geom_text() +
+  labs(x = "Eco-conscious (-2 to +2)", y = "Prefers organic (-2 to +2)", fill = "Respondents")
+```
+
 ### Was man vermeidet
 
 - **Kreisdiagramme:** Sie verlangen, Winkel zu vergleichen, und das können

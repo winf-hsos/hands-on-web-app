@@ -67,7 +67,7 @@ save(
     ggplot() +
     aes(y = fct_rev(fct_infreq(diet))) +
     geom_bar() +
-    labs(x = "Number of respondents", y = NULL),
+    labs(x = "number of respondents", y = NULL),
   "fig-diet"
 )
 
@@ -78,7 +78,7 @@ save(
     ggplot() +
     aes(x = milk_freq) +
     geom_bar() +
-    labs(x = "How often milk is drunk at home", y = "Number of respondents"),
+    labs(x = "how often milk is drunk at home", y = "number of respondents"),
   "fig-milk-text"
 )
 save(
@@ -88,7 +88,7 @@ save(
     ggplot() +
     aes(x = milk_freq) +
     geom_bar() +
-    labs(x = "How often milk is drunk at home", y = "Number of respondents"),
+    labs(x = "how often milk is drunk at home", y = "number of respondents"),
   "fig-milk-factor"
 )
 
@@ -99,7 +99,7 @@ save(
     ggplot() +
     aes(x = eco_conscious) +
     geom_bar() +
-    labs(x = "\"I would call myself eco-conscious\" (-2 to +2)", y = "Number of respondents"),
+    labs(x = "\"I would call myself eco-conscious\" (-2 to +2)", y = "number of respondents"),
   "fig-eco"
 )
 
@@ -109,7 +109,7 @@ save(
     ggplot() +
     aes(x = age) +
     geom_histogram(binwidth = 5, fill = light, colour = "black") +
-    labs(x = "Age in years", y = "Number of respondents"),
+    labs(x = "age in years", y = "number of respondents"),
   "fig-age-hist"
 )
 
@@ -120,7 +120,7 @@ save(
     ggplot() +
     aes(x = price_too_expensive) +
     geom_histogram(bins = 30, fill = light, colour = "black") +
-    labs(x = "Too expensive from (€)", y = "Number of respondents"),
+    labs(x = "too expensive from (€)", y = "number of respondents"),
   "fig-price-all"
 )
 save(
@@ -129,13 +129,19 @@ save(
     ggplot() +
     aes(x = price_too_expensive) +
     geom_histogram(binwidth = 0.25, fill = light, colour = "black") +
-    labs(x = "Too expensive from (€)", y = "Number of respondents"),
+    labs(x = "too expensive from (€)", y = "number of respondents"),
   "fig-price-filtered"
 )
 
-# Slide 12: the same prices as a boxplot, with the parts named
+# Slide 12: the same prices as a boxplot, with the parts named; a whisker
+# reaches the last value within 1.5 box lengths of the box
 price <- survey |> filter(price_too_expensive <= 10) |> pull(price_too_expensive)
 q <- quantile(price, c(0.25, 0.5, 0.75))
+reach <- 1.5 * (q[3] - q[1])
+whisker_low <- min(price[price >= q[1] - reach])
+whisker_high <- max(price[price <= q[3] + reach])
+whisker_label <- "whisker: values within
+1.5 box lengths"
 save(
   survey |>
     filter(price_too_expensive <= 10) |>
@@ -145,8 +151,10 @@ save(
     annotate("text", x = q[2], y = 0.32, label = "median", colour = blue, size = 32 / .pt, family = "Arial") +
     annotate("text", x = (q[1] + q[3]) / 2, y = -0.32, label = "middle half", colour = blue, size = 32 / .pt, family = "Arial") +
     annotate("text", x = max(price), y = 0.15, label = "unusual values", colour = blue, size = 32 / .pt, family = "Arial", hjust = 1) +
+    annotate("text", x = (whisker_low + q[1]) / 2 - 0.15, y = -0.34, label = whisker_label, colour = blue, size = 32 / .pt, family = "Arial", lineheight = 0.9) +
+    annotate("text", x = (q[3] + whisker_high) / 2 + 0.15, y = -0.34, label = whisker_label, colour = blue, size = 32 / .pt, family = "Arial", lineheight = 0.9) +
     scale_y_continuous(limits = c(-0.45, 0.45), breaks = NULL) +
-    labs(x = "Too expensive from (€)", y = NULL),
+    labs(x = "too expensive from (€)", y = NULL),
   "fig-price-box"
 )
 
@@ -160,7 +168,7 @@ save(
     aes(y = fct_infreq(diet), fill = shops_organic) +
     geom_bar(position = "fill") +
     scale_fill_manual(values = c(`FALSE` = dark, `TRUE` = blue)) +
-    labs(x = "Share of respondents", y = NULL, fill = "Shops in an\norganic store"),
+    labs(x = "share of respondents", y = NULL, fill = "shops in an\norganic store"),
   "fig-diet-organic"
 )
 
@@ -171,7 +179,7 @@ save(
     ggplot() +
     aes(x = milk_brand, y = price_too_expensive) +
     geom_boxplot(width = 0.5, outlier.size = 3) +
-    labs(x = "Brand shown", y = "Too expensive from (€)"),
+    labs(x = "brand shown", y = "too expensive from (€)"),
   "fig-price-brand"
 )
 
@@ -182,7 +190,7 @@ save(
     ggplot() +
     aes(x = age, y = price_too_expensive) +
     geom_point(alpha = 0.6) +
-    labs(x = "Age in years", y = "Too expensive from (€)"),
+    labs(x = "age in years", y = "too expensive from (€)"),
   "fig-age-price"
 )
 
@@ -192,7 +200,7 @@ save(
     ggplot() +
     aes(x = eco_conscious, y = prefers_organic) +
     geom_point() +
-    labs(x = "Eco-conscious (-2 to +2)", y = "Prefers organic (-2 to +2)"),
+    labs(x = "eco-conscious (-2 to +2)", y = "prefers organic (-2 to +2)"),
   "fig-eco-organic-point"
 )
 save(
@@ -201,8 +209,23 @@ save(
     aes(x = eco_conscious, y = prefers_organic) +
     geom_count(colour = light) +
     scale_size_area(max_size = 22) +
-    labs(x = "Eco-conscious (-2 to +2)", y = "Prefers organic (-2 to +2)", size = "Respondents"),
+    labs(x = "eco-conscious (-2 to +2)", y = "prefers organic (-2 to +2)", size = "respondents"),
   "fig-eco-organic-count"
+)
+
+# Slide 17b: the same counts as a heatmap, the number in every cell
+save(
+  survey |>
+    filter(!is.na(eco_conscious), !is.na(prefers_organic)) |>
+    count(eco_conscious, prefers_organic) |>
+    ggplot() +
+    aes(x = eco_conscious, y = prefers_organic, fill = n, label = n) +
+    geom_tile(colour = "black", linewidth = 1.5) +
+    geom_text(colour = "white", size = 32 / .pt, family = "Arial") +
+    scale_fill_gradient(low = dark, high = blue) +
+    labs(x = "eco-conscious (-2 to +2)", y = "prefers organic (-2 to +2)", fill = "respondents"),
+  "fig-eco-organic-tile",
+  extra = theme(panel.grid.major = element_blank(), legend.key.height = unit(90, "pt"), legend.key.width = unit(24, "pt"))
 )
 
 # Slide 18: what to avoid, small charts side by side
@@ -225,7 +248,7 @@ save(
     ggplot() +
     aes(x = n, y = fct_reorder(diet, n)) +
     geom_col() +
-    labs(x = "Number of respondents", y = NULL),
+    labs(x = "number of respondents", y = NULL),
   "fig-avoid-bars", width = 800, height = 600
 )
 milk_daily <- survey |>
@@ -238,7 +261,7 @@ save(
     aes(x = gender, y = pct_daily) +
     geom_col(width = 0.6) +
     coord_cartesian(ylim = c(55, 66)) +
-    labs(x = NULL, y = "Drink milk daily (%)"),
+    labs(x = NULL, y = "drink milk daily (%)"),
   "fig-avoid-cut", width = 800, height = 600
 )
 save(
@@ -246,7 +269,7 @@ save(
     ggplot() +
     aes(x = gender, y = pct_daily) +
     geom_col(width = 0.6) +
-    labs(x = NULL, y = "Drink milk daily (%)"),
+    labs(x = NULL, y = "drink milk daily (%)"),
   "fig-avoid-full", width = 800, height = 600
 )
 
@@ -265,7 +288,7 @@ save(
     ggplot() +
     aes(x = age) +
     geom_histogram(binwidth = 5, fill = light, colour = "black") +
-    labs(x = "Age in years", y = "Number of respondents"),
+    labs(x = "age in years", y = "number of respondents"),
   "fig-layer-4", layer_size[1], layer_size[2]
 )
 
@@ -277,7 +300,7 @@ save(
     aes(y = fct_rev(fct_infreq(diet)), fill = shops_organic) +
     geom_bar() +
     scale_fill_manual(values = c(`FALSE` = dark, `TRUE` = blue)) +
-    labs(x = "Number of respondents", y = NULL, fill = "Shops in an\norganic store"),
+    labs(x = "number of respondents", y = NULL, fill = "shops in an\norganic store"),
   "fig-diet-organic-count"
 )
 
@@ -291,7 +314,7 @@ save(
   "fig-coord-bar", width = 800, height = 600,
   extra = list(
     scale_fill_manual(values = c(light, gray, dark, group1, group2)),
-    labs(x = NULL, y = "Number of respondents", fill = NULL)
+    labs(x = NULL, y = "number of respondents", fill = NULL)
   )
 )
 save(
@@ -316,7 +339,7 @@ save(
     aes(x = age) +
     geom_histogram(binwidth = 5, fill = light, colour = "black") +
     facet_wrap(~ gender) +
-    labs(x = "Age in years", y = "Number of respondents"),
+    labs(x = "age in years", y = "number of respondents"),
   "fig-age-facet"
 )
 
@@ -330,9 +353,9 @@ save(
     scale_x_continuous(labels = scales::percent) +
     scale_fill_manual(values = c(`FALSE` = dark, `TRUE` = blue), labels = c("no", "yes")) +
     labs(
-      title = "Vegans shop in organic stores most often",
-      x = "Share of respondents", y = NULL, fill = "Organic store",
-      caption = "Source: milk survey, compact (n = 2,781 with a diet)"
+      title = "vegans shop in organic stores most often",
+      x = "share of respondents", y = NULL, fill = "organic store",
+      caption = "source: milk survey, compact (n = 2,781 with a diet)"
     ),
   "fig-diet-organic-labelled"
 )

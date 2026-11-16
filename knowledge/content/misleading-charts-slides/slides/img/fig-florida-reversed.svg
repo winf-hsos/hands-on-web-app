@@ -59,7 +59,7 @@
 <text x='419.51' y='578.67' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='56.94px' lengthAdjust='spacingAndGlyphs'>2000</text>
 <text x='558.65' y='578.67' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='56.94px' lengthAdjust='spacingAndGlyphs'>2005</text>
 <text x='697.79' y='578.67' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='56.94px' lengthAdjust='spacingAndGlyphs'>2010</text>
-<text transform='translate(38.85,280.97) rotate(-90)' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='327.20px' lengthAdjust='spacingAndGlyphs'>Murders using firearms</text>
+<text transform='translate(38.85,280.97) rotate(-90)' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='327.20px' lengthAdjust='spacingAndGlyphs'>murders using firearms</text>
 </g>
 </g>
 </svg>

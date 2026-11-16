@@ -45,7 +45,9 @@ const placed = (x, y, k, svg) => `<g transform="translate(${x} ${y}) scale(${k})
 /* ------------------------------------------------------------------ */
 /* The scale decides. Four columns (nominal, ordinal, interval, ratio), */
 /* above every two the group (categorical, metric), rows: example from  */
-/* the survey, type in R, summary, chart as a sketch with its name.     */
+/* the survey (every one a column: the birth year only in the full    */
+/* survey, the compact one turned it into age), type in R, summary,   */
+/* chart as a sketch with its name.                                    */
 /* Columns 345 wide from x = 300; longest entry "<fct> with levels" is  */
 /* 17 characters of 32 px code, about 326.                              */
 /* ------------------------------------------------------------------ */
@@ -58,7 +60,7 @@ function figScales(slide, step) {
   const cx = (i) => x0 + i * cw + cw / 2;
   const cols = ["nominal", "ordinal", "interval", "ratio"];
   const examples = [["diet", "omnivore, vegan, …"], ["milk_freq", "daily … rarely"],
-                    ["year of birth", "1958, 1987, …"], ["age", "23, 67, …"]];
+                    ["q002geburt", "1958, 1987, …"], ["age", "23, 67, …"]];
   const types = ["<fct>", "<fct> with levels", "<dbl>", "<dbl>"];
   const sums = ["count()", "count(), median()", "mean(), sd()", "mean(), sd()"];
   const plots = ["bars, by\nfrequency", "bars, in the\norder of the scale", "histogram,\nboxplot", "histogram,\nboxplot"];
@@ -76,7 +78,7 @@ function figScales(slide, step) {
   rows[4].push(d.label(0, 0, "chart", { size: 32, color: c.gray, centerY: ySk + 63 }));
   cols.forEach((t, i) => {
     rows[0].push(d.label(cx(i), 0, t, { size: 48, anchor: "middle", centerY: 94 }));
-    rows[1].push(d.label(cx(i), 0, examples[i][0], { size: 32, anchor: "middle", color: c.light, centerY: yEx, mono: i !== 2, keepCase: true }));
+    rows[1].push(d.label(cx(i), 0, examples[i][0], { size: 32, anchor: "middle", color: c.light, centerY: yEx, mono: true, keepCase: true }));
     rows[1].push(d.label(cx(i), 0, examples[i][1], { size: 32, anchor: "middle", color: c.gray, centerY: yEx + 44 }));
     rows[2].push(d.label(cx(i), 0, types[i], { size: 32, anchor: "middle", mono: true, keepCase: true, color: c.light, centerY: yType }));
     rows[3].push(d.label(cx(i), 0, sums[i], { size: 32, anchor: "middle", mono: true, keepCase: true, color: c.light, centerY: ySum }));

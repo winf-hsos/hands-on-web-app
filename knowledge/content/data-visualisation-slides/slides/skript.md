@@ -13,13 +13,16 @@ Blick zeigen. Darum geht es: welches Bild zu welcher Frage passt und wie man
 es in R baut. Der Satz hat zwei Teile, zuerst die Auswahl des Diagramms, dann
 das Werkzeug ggplot2.
 
-## Teil 1: Welches Diagramm? (4–28)
+## Teil 1: Welches Diagramm? (4–29)
 
 **Die Skala entscheidet (5–9).** Die vier Skalenniveaus bestimmen das
 Diagramm; die Folie baut sich Zeile für Zeile auf, von den Skalen über
 Beispiel, Typ in R und Kennzahl bis zum Diagramm. Nominal und ordinal sind Kategorien, in R ein Faktor, beim
 ordinalen mit festgelegter Reihenfolge der Stufen. Intervall und Verhältnis
-sind Zahlen, in R `<dbl>`. Zu Kategorien passen Balken, zu Zahlen Histogramm
+sind Zahlen, in R `<dbl>`. Jedes Beispiel ist eine Spalte: Das Geburtsjahr
+(`q002geburt`) steht nur in der vollständigen Umfrage und ist intervallskaliert,
+weil es keinen echten Nullpunkt hat; die kompakte Umfrage hat daraus das Alter
+(`age`) gemacht, das verhältnisskaliert ist. Zu Kategorien passen Balken, zu Zahlen Histogramm
 und Boxplot. Die Wahl ist also keine Geschmacksfrage, sondern folgt aus der
 Skala.
 
@@ -58,7 +61,8 @@ von 611 Antworten.
 
 **Der Boxplot (19).** Dieselben Preise als Boxplot: Der Strich in der Box
 ist der Median (1,99 €), die Box umfasst die mittlere Hälfte der Antworten,
-die Linien reichen bis zum letzten Wert innerhalb von anderthalb Boxbreiten,
+die Linien links und rechts, die Whisker, reichen bis zum letzten Wert
+innerhalb von anderthalb Boxbreiten,
 und was darüber hinausgeht, erscheint als einzelner Punkt. Der Boxplot
 verliert die Form der Verteilung, braucht aber wenig Platz, und das macht
 ihn stark, sobald man Gruppen vergleicht.
@@ -79,25 +83,28 @@ Marke macht für die Preisgrenze kaum einen Unterschied.
 eine Person. Ein leichter Trend nach unten (r = −0,25): Wer älter ist, nennt
 etwas niedrigere Preise. `alpha` macht die Punkte durchscheinend.
 
-**Wenn Punkte sich stapeln (24–25).** Zwei Ratingskalen ergeben nur 25
+**Wenn Punkte sich stapeln (24–26).** Zwei Ratingskalen ergeben nur 25
 mögliche Punkte, und auf dem in der Mitte liegen 385 Personen. Das
 Streudiagramm verrät das nicht. `geom_count()` zeichnet Kreise nach Anzahl
-und macht den Zusammenhang sichtbar (r = 0,41).
+und macht den Zusammenhang sichtbar (r = 0,41). Eine Alternative ist die
+Heatmap: `count()` zählt die Kombinationen, `geom_tile()` zeichnet je
+Kombination eine Kachel, deren Farbe die Anzahl zeigt, und `geom_text()`
+schreibt die Zahl hinein, weil sich Farben schlecht genau vergleichen lassen.
 
-**Was man vermeidet (26–27).** Ein Kreisdiagramm verlangt, Winkel zu
+**Was man vermeidet (27–28).** Ein Kreisdiagramm verlangt, Winkel zu
 vergleichen, was Menschen schlecht können, während Balken Längen zeigen, die
 wir gut vergleichen. Noch schlechter ist ein Kreis in 3D. Eine
 abgeschnittene Achse unter Balken übertreibt Unterschiede: 64,7 % der Frauen
 und 56,3 % der Männer trinken täglich Milch, und mit einer Achse ab 55 %
 sieht das aus wie das Dreifache. Balken beginnen bei null.
 
-**Welches Diagramm passt? (28).** Der Demonstrator „Welches Diagramm passt?“
+**Welches Diagramm passt? (29).** Der Demonstrator „Welches Diagramm passt?“
 führt mit wenigen Fragen zur passenden Darstellung und gibt den R-Code als
 Vorlage aus, auf Wunsch mit Spalten der kompakten Umfrage.
 
-## Teil 2: Ein Diagramm in Schichten (29–45)
+## Teil 2: Ein Diagramm in Schichten (30–46)
 
-**Drei Schichten (30).** Jedes ggplot2-Diagramm besteht aus denselben drei
+**Drei Schichten (31).** Jedes ggplot2-Diagramm besteht aus denselben drei
 Schichten: den Daten (eine Zeile je Person), der Ästhetik (`aes()`, welche
 Spalte auf welche Achse oder in welche Farbe geht) und dem Geom (der Form:
 Balken, Punkte, Boxen). Daneben stehen die vier übrigen Schichten, die mit
@@ -105,13 +112,13 @@ Voreinstellungen kommen.
 Leland Wilkinson hat das 1999 als Grammatik der Grafik beschrieben, Hadley
 Wickham hat sie mit ggplot2 nach R gebracht.
 
-**Schicht für Schicht (31–34).** `ggplot()` allein ergibt eine leere
+**Schicht für Schicht (32–35).** `ggplot()` allein ergibt eine leere
 Fläche. `aes(x = age)` legt das Alter auf die x-Achse, `geom_histogram()`
 zeichnet die Balken, `labs()` beschriftet für Menschen. Nach jeder Zeile ist
 das Ergebnis ein gültiges Diagramm, und wer einen Fehler sucht, nimmt die
 Schichten von unten wieder weg.
 
-**Sieben Schichten (35).** Die Grammatik kennt sieben Schichten. Drei
+**Sieben Schichten (36).** Die Grammatik kennt sieben Schichten. Drei
 schreibt man immer: Daten, Ästhetik (mit den Skalen, die aus Werten
 Positionen und Farben machen) und Geom. Die übrigen vier haben
 Voreinstellungen: Statistik (was vor dem Zeichnen gerechnet wird,
@@ -119,42 +126,42 @@ Voreinstellungen: Statistik (was vor dem Zeichnen gerechnet wird,
 Facetten (ein Feld je Gruppe, sonst eines), Koordinaten (sonst rechtwinklig)
 und Theme (alles, was nicht von den Daten abhängt).
 
-**Andere Koordinaten (36).** Ein einzelner Balken, gestapelt nach
+**Andere Koordinaten (37).** Ein einzelner Balken, gestapelt nach
 Ernährungsweise, wird mit `coord_polar(theta = "y")` zum Kreisdiagramm.
 Daten, Ästhetik und Geom bleiben gleich, nur das Koordinatensystem ändert
 sich; deshalb hat ggplot2 kein eigenes Geom für Kreise.
 
-**Pipe und Plus (37).** Die Pipe `|>` reicht die Daten weiter, bis sie in
+**Pipe und Plus (38).** Die Pipe `|>` reicht die Daten weiter, bis sie in
 `ggplot()` ankommen; danach kommen Schichten mit `+` dazu. Wer nach
 `ggplot()` weiter mit der Pipe schreibt, übergibt das Diagramm an `aes()`,
 und R zeichnet nichts, sondern gibt nur eine Zuordnung aus.
 
-**geom_bar() und geom_col() (38).** `geom_bar()` bekommt die Rohdaten und
+**geom_bar() und geom_col() (39).** `geom_bar()` bekommt die Rohdaten und
 zählt selbst, `geom_col()` bekommt eine Tabelle mit fertigen Werten, etwa aus
 `count()`, und zeichnet sie nur.
 
-**Ästhetik (39–40).** Was in `aes()` steht, hängt an einer Spalte und
+**Ästhetik (40–41).** Was in `aes()` steht, hängt an einer Spalte und
 ändert sich von Balken zu Balken (`fill = shops_organic`); was außerhalb im
 Geom steht, gilt für alle gleich (`fill = "steelblue"`). Weitere Ästhetiken
 sind `colour`, `size`, `shape` und `alpha`. In Anzahlen gestapelt zeigt
 `fill` die Gruppengröße, verliert aber die Anteile der kleinen Gruppen.
 
-**Die Reihenfolge ist ein Faktor (41).** Nicht ggplot2 bestimmt die
+**Die Reihenfolge ist ein Faktor (42).** Nicht ggplot2 bestimmt die
 Reihenfolge der Balken, sondern der Faktor: `fct_infreq()` sortiert nach
 Häufigkeit, `fct_rev()` dreht um, `factor()` mit `levels` legt eine eigene
 Reihenfolge fest.
 
-**Kleine Vielfache (42).** `facet_wrap(~ gender)` zeichnet dasselbe
+**Kleine Vielfache (43).** `facet_wrap(~ gender)` zeichnet dasselbe
 Diagramm je Gruppe, nebeneinander und mit denselben Achsen.
 
-**Beschriftungen (43).** `labs()` setzt Titel, Achsen, Legende und Quelle;
+**Beschriftungen (44).** `labs()` setzt Titel, Achsen, Legende und Quelle;
 der Titel nennt die Aussage, die Quelle die Fallzahl.
 `scale_x_continuous(labels = scales::percent)` schreibt Anteile als
 Prozent.
 
-**Speichern (44).** `ggsave()` schreibt ein Diagramm als Datei, mit einer
+**Speichern (45).** `ggsave()` schreibt ein Diagramm als Datei, mit einer
 Größe in Zentimetern. Im Quarto-Bericht zeichnet der Code-Chunk das
 Diagramm selbst, und die Bildunterschrift steht in `#| fig-cap`.
 
-**Schluss (45).** Die Skala entscheidet das Diagramm, und drei Schichten
+**Schluss (46).** Die Skala entscheidet das Diagramm, und drei Schichten
 bauen es: Daten, Ästhetik und ein Geom.

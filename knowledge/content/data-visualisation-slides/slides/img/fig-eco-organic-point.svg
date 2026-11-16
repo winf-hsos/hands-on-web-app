@@ -2851,8 +2851,8 @@
 <text x='877.36' y='701.05' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='14.23px' lengthAdjust='spacingAndGlyphs'>0</text>
 <text x='1234.95' y='701.05' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='14.23px' lengthAdjust='spacingAndGlyphs'>1</text>
 <text x='1592.54' y='701.05' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='14.23px' lengthAdjust='spacingAndGlyphs'>2</text>
-<text x='877.36' y='737.32' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='347.70px' lengthAdjust='spacingAndGlyphs'>Eco-conscious (-2 to +2)</text>
-<text transform='translate(38.85,342.16) rotate(-90)' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='356.59px' lengthAdjust='spacingAndGlyphs'>Prefers organic (-2 to +2)</text>
+<text x='877.36' y='737.32' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='344.16px' lengthAdjust='spacingAndGlyphs'>eco-conscious (-2 to +2)</text>
+<text transform='translate(38.85,342.16) rotate(-90)' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='353.05px' lengthAdjust='spacingAndGlyphs'>prefers organic (-2 to +2)</text>
 </g>
 </g>
 </svg>

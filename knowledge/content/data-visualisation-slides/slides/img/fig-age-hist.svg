@@ -66,8 +66,8 @@
 <text x='670.07' y='701.05' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='28.47px' lengthAdjust='spacingAndGlyphs'>40</text>
 <text x='1104.60' y='701.05' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='28.47px' lengthAdjust='spacingAndGlyphs'>60</text>
 <text x='1539.13' y='701.05' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='28.47px' lengthAdjust='spacingAndGlyphs'>80</text>
-<text x='887.33' y='737.32' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='177.88px' lengthAdjust='spacingAndGlyphs'>Age in years</text>
-<text transform='translate(38.85,342.16) rotate(-90)' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='334.41px' lengthAdjust='spacingAndGlyphs'>Number of respondents</text>
+<text x='887.33' y='737.32' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='174.33px' lengthAdjust='spacingAndGlyphs'>age in years</text>
+<text transform='translate(38.85,342.16) rotate(-90)' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='329.09px' lengthAdjust='spacingAndGlyphs'>number of respondents</text>
 </g>
 </g>
 </svg>

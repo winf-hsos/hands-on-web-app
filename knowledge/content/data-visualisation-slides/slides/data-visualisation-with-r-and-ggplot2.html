@@ -59,7 +59,7 @@
     <h2>the scale decides</h2>
     <div class="figure" id="fig-scales"></div>
     <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span><span data-step="4"></span>
-    <aside class="notes">Zur Auffrischung die vier Skalen, Zeile für Zeile aufgebaut: erst die vier Skalen, dann je ein Beispiel aus der kompakten Umfrage, dann der Typ in R, die passende Kennzahl und zuletzt das Diagramm. Nominal und ordinal sind Kategorien, in R ein Faktor, beim ordinalen mit festgelegter Reihenfolge der Stufen. Intervall und Verhältnis sind Zahlen, in R double. Zu Kategorien passen Balken, zu Zahlen Histogramm und Boxplot. Das Geburtsjahr ist das Beispiel für Intervall, weil es keinen echten Nullpunkt hat; in der kompakten Umfrage steht dafür das Alter, das verhältnisskaliert ist. Die Wahl des Diagramms ist also keine Geschmacksfrage, sondern folgt aus der Skala.</aside>
+    <aside class="notes">Zur Auffrischung die vier Skalen, Zeile für Zeile aufgebaut: erst die vier Skalen, dann je ein Beispiel aus der kompakten Umfrage, dann der Typ in R, die passende Kennzahl und zuletzt das Diagramm. Nominal und ordinal sind Kategorien, in R ein Faktor, beim ordinalen mit festgelegter Reihenfolge der Stufen. Intervall und Verhältnis sind Zahlen, in R double. Zu Kategorien passen Balken, zu Zahlen Histogramm und Boxplot. Das Geburtsjahr ist das Beispiel für Intervall, weil es keinen echten Nullpunkt hat: Es steht in der vollständigen Umfrage als q002geburt, und die kompakte Umfrage hat daraus das Alter gemacht, das verhältnisskaliert ist, weil null Jahre wirklich nichts bedeutet. Die Wahl des Diagramms ist also keine Geschmacksfrage, sondern folgt aus der Skala.</aside>
   </section>
 
   <section class="slide" data-on-show="figMapOne">
@@ -76,7 +76,7 @@
   ggplot() +
   aes(y = fct_rev(fct_infreq(diet))) +
   geom_bar() +
-  labs(x = "Number of respondents", y = NULL)</div>
+  labs(x = "number of respondents", y = NULL)</div>
     <aside class="notes">Die Ernährung ist nominal, ihre Kategorien haben keine Reihenfolge. Also bestimmt die Häufigkeit die Ordnung: fct_infreq() stellt die häufigste Kategorie an den Anfang, fct_rev() dreht die Reihenfolge um, damit sie oben steht. Liegende Balken, weil die Namen lang sind und so lesbar bleiben. 1.826 Allesesser, je 36 Pescetarier und Veganer. Den Code holt ihr über den Kopierknopf oben rechts.</aside>
   </section>
 
@@ -88,7 +88,7 @@
   ggplot() +
   aes(x = milk_freq) +
   geom_bar() +
-  labs(x = "How often milk is drunk at home", y = "Number of respondents")</div>
+  labs(x = "how often milk is drunk at home", y = "number of respondents")</div>
     <aside class="notes">Wie oft zu Hause Milch getrunken wird, so wie die Spalte aus der Datei kommt, als Text. R sortiert Text alphabetisch: daily, monthly, rarely, weekly. Die Skala von täglich bis selten ist damit zerrissen, und wöchentlich steht ganz hinten. Nach Häufigkeit zu sortieren wäre genauso falsch, denn auch das zerreißt die Skala.</aside>
   </section>
 
@@ -103,7 +103,7 @@
   ggplot() +
   aes(x = milk_freq) +
   geom_bar() +
-  labs(x = "How often milk is drunk at home", y = "Number of respondents")</div>
+  labs(x = "how often milk is drunk at home", y = "number of respondents")</div>
       <div class="sidenote below">text sorts alphabetically. a factor keeps the order you give it.</div>
     </div>
     <aside class="notes">Die Lösung ist factor() mit levels: Ihr gebt die Reihenfolge der Skala vor. Die Werte schreibt ihr genau so, wie count(milk_freq) sie zeigt; ein Tippfehler macht aus einem Wert still ein NA. filter(!is.na()) lässt die 424 ohne Angabe weg, und das sagt man dazu.</aside>
@@ -120,7 +120,7 @@
   ggplot() +
   aes(x = milk_freq) +
   geom_bar() +
-  labs(x = "How often milk is drunk at home", y = "Number of respondents")</div>
+  labs(x = "how often milk is drunk at home", y = "number of respondents")</div>
     <aside class="notes">Als Faktor, von täglich bis selten: Jetzt sieht man, dass die Balken mit der Skala abnehmen, mehr als die Hälfte trinkt täglich Milch. Bei einer ordinalen Variable sortiert man nach der Skala, nicht nach der Häufigkeit.</aside>
   </section>
 
@@ -132,7 +132,7 @@
   ggplot() +
   aes(x = eco_conscious) +
   geom_bar() +
-  labs(x = "\"I would call myself eco-conscious\" (-2 to +2)", y = "Number of respondents")</div>
+  labs(x = "\"I would call myself eco-conscious\" (-2 to +2)", y = "number of respondents")</div>
     <aside class="notes">Eine Bewertung von −2 bis +2 sieht aus wie eine Zahl und steht in R auch als Zahl in der Tabelle. Fünf Balken zeigen aber mehr als ein Mittelwert von 0,6: Die meisten liegen bei 0 und +1, nur wenige ganz unten. Ob man Ratings wie Intervalldaten behandeln darf, ist eine eigene Diskussion; für das Bild nimmt man Balken, eine Stufe je Balken.</aside>
   </section>
 
@@ -143,7 +143,7 @@
   ggplot() +
   aes(x = age) +
   geom_histogram(binwidth = 5) +
-  labs(x = "Age in years", y = "Number of respondents")</div>
+  labs(x = "age in years", y = "number of respondents")</div>
     <aside class="notes">Das Alter ist eine Zahl. Das Histogramm teilt es in Klassen, hier je fünf Jahre, und zählt, wie viele Personen in jede fallen. So sieht man die Form der Verteilung: wo die meisten liegen, wie breit sie streut, wo sie endet. Die Befragung beginnt bei 18 und endet bei 80, der Median liegt bei 50. Die Klassenbreite probiert man aus, etwa binwidth = 1 und 10.</aside>
   </section>
 
@@ -155,7 +155,7 @@
   ggplot() +
   aes(x = price_too_expensive) +
   geom_histogram(bins = 30) +
-  labs(x = "Too expensive from (€)", y = "Number of respondents")</div>
+  labs(x = "too expensive from (€)", y = "number of respondents")</div>
     <aside class="notes">Ab welchem Preis ist der Liter Milch zu teuer? 611 Antworten. Das Histogramm zeigt einen einzigen Balken links und sonst fast nichts, weil jemand 999 € eingetragen hat. Die Achse reicht bis zum größten Wert, und alles Interessante drängt sich in den ersten Balken.</aside>
   </section>
 
@@ -167,21 +167,21 @@
   ggplot() +
   aes(x = price_too_expensive) +
   geom_histogram(binwidth = 0.25) +
-  labs(x = "Too expensive from (€)", y = "Number of respondents")</div>
+  labs(x = "too expensive from (€)", y = "number of respondents")</div>
     <div class="punch">20 of 611 answers lie above 10 € and are left out, and that belongs next to the chart.</div>
     <aside class="notes">Nur die Preise bis 10 €, mit filter(). Jetzt sieht man die Verteilung: die meisten zwischen 1,50 € und 2,50 €, mit Häufungen bei runden Beträgen. Was man weglässt, sagt man dazu, im Diagramm oder darunter. Hier sind es 20 von 611 Antworten, darunter die 999 €.</aside>
   </section>
 
   <section class="slide">
     <h2>one number, in short: a boxplot</h2>
-    <div class="figure"><img src="img/fig-price-box.svg" alt="horizontal boxplot of prices with median, middle half and unusual values labelled"></div>
+    <div class="figure"><img src="img/fig-price-box.svg" alt="horizontal boxplot of prices with median, middle half, whiskers and unusual values labelled"></div>
     <div class="code figcode">survey |&gt;
   filter(price_too_expensive &lt;= 10) |&gt;
   ggplot() +
   aes(x = price_too_expensive) +
   geom_boxplot() +
-  labs(x = "Too expensive from (€)", y = NULL)</div>
-    <aside class="notes">Dieselben Preise als Boxplot. Der Strich in der Box ist der Median, 1,99 €. Die Box umfasst die mittlere Hälfte der Antworten, vom ersten bis zum dritten Quartil. Die Linien reichen bis zum letzten Wert, der höchstens anderthalb Boxbreiten von der Box entfernt liegt, und alles darüber hinaus erscheint als einzelner Punkt. Der Boxplot verliert die Form, die das Histogramm zeigt, braucht dafür aber wenig Platz, und das macht ihn stark, sobald man Gruppen vergleicht.</aside>
+  labs(x = "too expensive from (€)", y = NULL)</div>
+    <aside class="notes">Dieselben Preise als Boxplot. Der Strich in der Box ist der Median, 1,99 €. Die Box umfasst die mittlere Hälfte der Antworten, vom ersten bis zum dritten Quartil. Die Linien links und rechts, die Whisker, reichen bis zum letzten Wert, der höchstens anderthalb Boxbreiten von der Box entfernt liegt, hier von 0,30 € bis 3,50 €, und alles darüber hinaus erscheint als einzelner Punkt. Der Boxplot verliert die Form, die das Histogramm zeigt, braucht dafür aber wenig Platz, und das macht ihn stark, sobald man Gruppen vergleicht.</aside>
   </section>
 
   <section class="slide" data-on-show="figMapTwo">
@@ -198,7 +198,7 @@
   ggplot() +
   aes(y = fct_infreq(diet), fill = shops_organic) +
   geom_bar(position = "fill") +
-  labs(x = "Share of respondents", y = NULL, fill = "Shops in an\norganic store")</div>
+  labs(x = "share of respondents", y = NULL, fill = "shops in an\norganic store")</div>
     <aside class="notes">Ernährung und Einkauf im Bioladen, zwei Kategorien. Je Ernährungsform ein Balken, auf 100 % gestapelt mit position = "fill". 56 % der Veganer kaufen im Bioladen ein, aber nur 8 % der Allesesser. Auf 100 % gestapelt, weil die Gruppen sehr unterschiedlich groß sind, 1.826 zu 36; in Anzahlen sähe man die Veganer kaum. Der Preis dafür: Man sieht nicht mehr, dass hinter dem Veganer-Balken nur 36 Menschen stehen, und das gehört in die Beschriftung.</aside>
   </section>
 
@@ -210,7 +210,7 @@
   ggplot() +
   aes(x = milk_brand, y = price_too_expensive) +
   geom_boxplot() +
-  labs(x = "Brand shown", y = "Too expensive from (€)")</div>
+  labs(x = "brand shown", y = "too expensive from (€)")</div>
     <aside class="notes">Eine Zahl je Gruppe: die Preisgrenze je gezeigter Marke. Die Mediane liegen fast gleich, 1,99 € bei Weihenstephan und 2,00 € bei Alpro. Weil die Marke zufällig zugeteilt wurde, ist das ein echtes Experiment, und die Marke macht für die Preisgrenze kaum einen Unterschied. Boxplots nebeneinander sind das Werkzeug für genau diesen Vergleich.</aside>
   </section>
 
@@ -222,7 +222,7 @@
   ggplot() +
   aes(x = age, y = price_too_expensive) +
   geom_point(alpha = 0.6) +
-  labs(x = "Age in years", y = "Too expensive from (€)")</div>
+  labs(x = "age in years", y = "too expensive from (€)")</div>
     <aside class="notes">Zwei Zahlen: Alter und Preisgrenze. Jeder Punkt ist eine Person. Ein leichter Trend nach unten, die Korrelation liegt bei −0,25: Wer älter ist, nennt etwas niedrigere Preise. alpha = 0.6 macht die Punkte durchscheinend, damit man sieht, wo sie sich überlagern.</aside>
   </section>
 
@@ -233,7 +233,7 @@
   ggplot() +
   aes(x = eco_conscious, y = prefers_organic) +
   geom_point() +
-  labs(x = "Eco-conscious (-2 to +2)", y = "Prefers organic (-2 to +2)")</div>
+  labs(x = "eco-conscious (-2 to +2)", y = "prefers organic (-2 to +2)")</div>
     <aside class="notes">Zwei Bewertungen von −2 bis +2, als Streudiagramm. Man sieht 25 Punkte und sonst nichts, denn jede Kombination kommt vor. Dass auf dem Punkt in der Mitte 385 Personen liegen, verrät das Bild nicht.</aside>
   </section>
 
@@ -244,8 +244,22 @@
   ggplot() +
   aes(x = eco_conscious, y = prefers_organic) +
   geom_count() +
-  labs(x = "Eco-conscious (-2 to +2)", y = "Prefers organic (-2 to +2)", size = "Respondents")</div>
+  labs(x = "eco-conscious (-2 to +2)", y = "prefers organic (-2 to +2)", size = "respondents")</div>
     <aside class="notes">geom_count() zählt, wie viele Personen auf jedem Punkt liegen, und zeichnet die Kreise entsprechend groß. Jetzt sieht man den Zusammenhang, die Korrelation liegt bei 0,41: Wer sich als umweltbewusst bezeichnet, kauft eher Bio. Bei zwei Ratingskalen ist das die bessere Wahl als geom_point().</aside>
+  </section>
+
+  <section class="slide">
+    <h2>an alternative: a heatmap with one cell per combination</h2>
+    <div class="figure"><img src="img/fig-eco-organic-tile.svg" alt="heatmap of the two rating scales, every cell coloured and labelled with its count"></div>
+    <div class="code figcode">survey |&gt;
+  filter(!is.na(eco_conscious), !is.na(prefers_organic)) |&gt;
+  count(eco_conscious, prefers_organic) |&gt;
+  ggplot() +
+  aes(x = eco_conscious, y = prefers_organic, fill = n, label = n) +
+  geom_tile() +
+  geom_text() +
+  labs(x = "eco-conscious (-2 to +2)", y = "prefers organic (-2 to +2)", fill = "respondents")</div>
+    <aside class="notes">Dieselben Anzahlen als Heatmap. count() zählt zuerst die Kombinationen, geom_tile() zeichnet je Kombination eine Kachel, deren Farbe die Anzahl zeigt, und geom_text() schreibt die Zahl hinein. Farben lassen sich schlecht genau vergleichen, deshalb gehören die Zahlen dazu; dafür füllt die Heatmap das Raster lückenlos, auch kleine Anzahlen bleiben lesbar, und sie passt genauso zu zwei Kategorien mit Reihenfolge, etwa Wohnortgröße und Milchkonsum. geom_count() behält die Achsen eines Streudiagramms, die Heatmap zeigt eine Tabelle in Farbe; welche man nimmt, ist hier Geschmack.</aside>
   </section>
 
   <section class="slide">
@@ -294,8 +308,8 @@
   aes(x = age)</span><span data-line="2"> +
   geom_histogram(binwidth = 5)</span><span data-line="3"> +
   labs(
-    x = "Age in years",
-    y = "Number of respondents"
+    x = "age in years",
+    y = "number of respondents"
   )</span></div>
       <img class="layer" src="img/fig-layer-1.svg" alt="the chart after each layer">
     </div>
@@ -389,7 +403,7 @@
   ggplot() +
   aes(y = fct_rev(fct_infreq(diet)), fill = shops_organic) +
   geom_bar() +
-  labs(x = "Number of respondents", y = NULL, fill = "Shops in an\norganic store")</div>
+  labs(x = "number of respondents", y = NULL, fill = "shops in an\norganic store")</div>
     <aside class="notes">fill = shops_organic in Anzahlen, ohne position = "fill". Man sieht die Größe der Gruppen, aber die Anteile bei den kleinen Gruppen verschwinden. Das ist der Grund, warum wir bei zwei Kategorien meist auf 100 % stapeln.</aside>
   </section>
 
@@ -412,7 +426,7 @@ factor(milk_freq, levels = c("daily", "weekly", "monthly", "rarely"))</div>
   aes(x = age) +
   geom_histogram(binwidth = 5) +
   facet_wrap(~ gender) +
-  labs(x = "Age in years", y = "Number of respondents")</div>
+  labs(x = "age in years", y = "number of respondents")</div>
     <aside class="notes">facet_wrap() zeichnet dasselbe Diagramm einmal je Gruppe, nebeneinander und mit denselben Achsen. So vergleicht man Verteilungen, ohne sie übereinanderzulegen. Die Tilde vor gender heißt: je Wert dieser Spalte ein Feld.</aside>
   </section>
 
@@ -426,9 +440,9 @@ factor(milk_freq, levels = c("daily", "weekly", "monthly", "rarely"))</div>
   geom_bar(position = "fill") +
   scale_x_continuous(labels = scales::percent) +
   labs(
-    title = "Vegans shop in organic stores most often",
-    x = "Share of respondents", y = NULL, fill = "Organic store",
-    caption = "Source: milk survey, compact (n = 2,781 with a diet)"
+    title = "vegans shop in organic stores most often",
+    x = "share of respondents", y = NULL, fill = "organic store",
+    caption = "source: milk survey, compact (n = 2,781 with a diet)"
   )</div>
     <aside class="notes">Spaltennamen sind für R, Beschriftungen für Menschen. labs() setzt Titel, Achsen, Legende und Quelle; der Titel sagt die Aussage, nicht nur das Thema. scale_x_continuous(labels = scales::percent) macht aus 0,5 die Angabe 50 %. Und die Quelle mit der Fallzahl gehört dazu, damit niemand fragt, über wen die Zahlen sprechen.</aside>
   </section>

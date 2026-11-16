@@ -57,8 +57,8 @@
 <text x='289.10' y='541.05' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='103.14px' lengthAdjust='spacingAndGlyphs'>(n = 293)</text>
 <text x='598.45' y='513.40' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='177.39px' lengthAdjust='spacingAndGlyphs'>Weihenstephan</text>
 <text x='598.45' y='541.05' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='103.14px' lengthAdjust='spacingAndGlyphs'>(n = 318)</text>
-<text x='443.77' y='577.32' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='186.78px' lengthAdjust='spacingAndGlyphs'>Brand shown</text>
-<text transform='translate(38.85,248.33) rotate(-90)' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='441.09px' lengthAdjust='spacingAndGlyphs'>Median: too expensive from (€)</text>
+<text x='443.77' y='577.32' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='183.23px' lengthAdjust='spacingAndGlyphs'>brand shown</text>
+<text transform='translate(38.85,248.33) rotate(-90)' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='441.09px' lengthAdjust='spacingAndGlyphs'>median: too expensive from (€)</text>
 </g>
 </g>
 </svg>

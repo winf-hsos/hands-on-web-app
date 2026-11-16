@@ -278,6 +278,24 @@ Now the relationship shows (r = 0.41): people who call themselves
 eco-conscious are more likely to buy organic. Replace `geom_count()` with
 `geom_point()` and compare.
 
+An alternative is the heatmap: `count()` first counts the combinations,
+`geom_tile()` draws one cell per combination whose colour shows the count,
+and `geom_text()` writes the number into it. Colours are hard to compare
+precisely, which is why the numbers belong in the cells; in return the
+heatmap fills the grid without gaps, and it suits two ordered categories just
+as well, such as town size and milk consumption.
+
+```r
+survey |>
+  filter(!is.na(eco_conscious), !is.na(prefers_organic)) |>
+  count(eco_conscious, prefers_organic) |>
+  ggplot() +
+  aes(x = eco_conscious, y = prefers_organic, fill = n, label = n) +
+  geom_tile() +
+  geom_text() +
+  labs(x = "Eco-conscious (-2 to +2)", y = "Prefers organic (-2 to +2)", fill = "Respondents")
+```
+
 ### What to avoid
 
 - **Pie charts:** they ask you to compare angles, which people do badly. Are

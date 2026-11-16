@@ -51,7 +51,7 @@
 <text x='82.03' y='49.20' text-anchor='end' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='28.47px' lengthAdjust='spacingAndGlyphs'>66</text>
 <text x='283.93' y='578.67' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='76.81px' lengthAdjust='spacingAndGlyphs'>female</text>
 <text x='596.51' y='578.67' text-anchor='middle' style='font-size: 25.60px;fill: #B6BEC6; font-family: "Arial";' textLength='55.47px' lengthAdjust='spacingAndGlyphs'>male</text>
-<text transform='translate(38.85,280.97) rotate(-90)' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='273.80px' lengthAdjust='spacingAndGlyphs'>Drink milk daily (%)</text>
+<text transform='translate(38.85,280.97) rotate(-90)' text-anchor='middle' style='font-size: 32.00px;fill: #B6BEC6; font-family: "Arial";' textLength='268.48px' lengthAdjust='spacingAndGlyphs'>drink milk daily (%)</text>
 </g>
 </g>
 </svg>
