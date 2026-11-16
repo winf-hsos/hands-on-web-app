@@ -6,8 +6,8 @@ summary: >-
   Mit zwei Farben, vier Buchstaben und einem winzigen Codebuch die beiden
   Hälften von Challenge 2 üben: Text Buchstabe für Buchstabe in Farben
   übersetzen und gemessene Farben wieder in Text, mit einem Skript für den
-  Sender und einem für den Empfänger, mit fester Symbolrate und ohne
-  Kursserver.
+  Sender und einem für den Empfänger, mit fester Symbolrate und ohne Test
+  und Wertung.
 objectives:
   intro: "In dieser Übung schreibst du die Funktionen, die ein Codebuch in beide Richtungen lesen, und kannst danach:"
   goals:
@@ -41,7 +41,8 @@ Länge ([[code-systems]]).
 | M | on on |
 
 Jede Farbe steht `1 / SYMBOL_RATE` Sekunden, in der Vorlage also eine
-Sekunde, und es gibt keinen Kursserver: Alles bleibt auf euren Laptops.
+Sekunde. Anders als in den Challenges gibt es weder `run_test` noch eine
+Wertung, denn beide Skripte steuern ihr Gerät direkt.
 
 ## Zwei Skripte, zwei Seiten
 
@@ -68,11 +69,11 @@ Das Skript für die sendende Seite; dort, wo `TODO` steht, fehlt euer Code:
 ```python static file=sender.py
 import time
 
-from lifi_hardware import LifiDevice
+from lifi_hardware import led, use_device
 
-# Both devices on this computer: the UID of the SENDING device, for example
-# "6Dccqf" (the error message without it lists both). Two laptops: None.
-DEVICE = None
+# Both devices on this laptop: the UID of the SENDING device instead of
+# XXXXXX (the error message lists both). Two laptops: comment this line out.
+use_device("XXXXXX")
 
 # Colours per second: each colour shows for 1 / SYMBOL_RATE seconds.
 # receiver.py needs the same value.
@@ -91,12 +92,10 @@ CODEBOOK = {
     "M": ["on",  "on"],
 }
 
-lifi = LifiDevice.connect(master=DEVICE, server=None, log_file=None)
-
 
 def send_symbol(name):
     """Shows one colour for 1 / SYMBOL_RATE seconds."""
-    lifi.led.set_color(*COLORS[name])
+    led.set_color(*COLORS[name])
     time.sleep(1 / SYMBOL_RATE)
 
 
@@ -116,15 +115,15 @@ def send_text(text):
 
 print("Calibration: the receiver measures off, then on.")
 for name in COLORS:
-    lifi.led.set_color(*COLORS[name])
+    led.set_color(*COLORS[name])
     input(f"The LED shows {name}. Say \"now\", Enter once the receiver has measured ")
-lifi.led.off()
+led.off()
 
 while True:
     text = input("\nText to send: ")
     time.sleep(5 - time.time() % 5)     # start at the next full five seconds, as the receiver
     send_text(text)
-    lifi.led.off()
+    led.off()
 ```
 
 ### Der Empfänger
@@ -135,11 +134,11 @@ einem Buchstaben gehören:
 ```python static file=receiver.py
 import time
 
-from lifi_hardware import LifiDevice
+from lifi_hardware import sensor, use_device
 
-# Both devices on this computer: the UID of the RECEIVING device, for example
-# "6QkrXy" (the error message without it lists both). Two laptops: None.
-DEVICE = None
+# Both devices on this laptop: the UID of the RECEIVING device instead of
+# XXXXXX (the error message lists both). Two laptops: comment this line out.
+use_device("XXXXXX")
 
 # Colours per second, the same value as in sender.py
 SYMBOL_RATE = 1
@@ -164,11 +163,9 @@ LENGTH = 2
 # What each colour looks like to the sensor, learnt in the calibration
 REFERENCES = {}
 
-lifi = LifiDevice.connect(master=DEVICE, server=None, log_file=None)
-
 for name in COLORS:
     input(f"Calibration: Enter when the sender says \"now\" for {name} ")
-    REFERENCES[name] = lifi.sensor.read()
+    REFERENCES[name] = sensor.read()
     print(f"  {name}: {REFERENCES[name]}")
 
 
@@ -176,7 +173,7 @@ def receive_symbol():
     """Measures one colour, returns the name of the most similar reference
     (as in Challenge 1, your own version works here too) and waits until the
     next colour."""
-    reading = lifi.sensor.read()
+    reading = sensor.read()
     best, best_distance = None, None
     for name, reference in REFERENCES.items():
         distance = sum((a - b) ** 2 for a, b in zip(reading, reference))
@@ -216,11 +213,13 @@ Ihr startet beide Skripte gleichzeitig, mit `python sender.py` und
 `python receiver.py` (auf dem Mac `python3`):
 
 - **Ein Rechner, beide Geräte:** Öffnet in VS Code zwei Terminals, in jedem
-  läuft eines der Skripte. Damit jedes Skript sein Gerät findet, tragt ihr
-  bei `DEVICE` die UID des sendenden bzw. empfangenden Geräts ein; startet
-  ihr ein Skript ohne, nennt die Fehlermeldung beide UIDs.
+  läuft eines der Skripte. Damit jedes Skript sein Gerät findet, ersetzt
+  ihr in `use_device("XXXXXX")` den Platzhalter durch die UID des sendenden
+  bzw. empfangenden Geräts. Die UIDs zeigt der Brick Viewer, und solange
+  der Platzhalter dasteht, nennt auch die Fehlermeldung beide.
 - **Zwei Laptops, je ein Gerät:** Auf dem einen läuft `sender.py`, auf dem
-  anderen `receiver.py`, und `DEVICE` bleibt `None`.
+  anderen `receiver.py`, und in beiden kommentiert ihr die Zeile mit
+  `use_device` aus, denn jeder Laptop findet sein einziges Gerät von selbst.
 
 Zuerst kalibriert der Empfänger: Der Sender zeigt nacheinander jede Farbe
 aus `COLORS` und ruft „jetzt“, der Empfänger drückt Enter und speichert die
