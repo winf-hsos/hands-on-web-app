@@ -9,7 +9,7 @@ objectives:
     - "keep sender and receiver in step with a fixed symbol rate, without a shared clock"
     - "explain why a transmission fails beyond a certain symbol rate"
 translation_of: de
-based_on: 2026-11-13
+based_on: 2026-11-16
 ---
 
 With an alphabet of colours you can send words as soon as two things are
@@ -33,7 +33,7 @@ see colours.
 running slowly, and finally you raise the speed until it breaks. Each task has
 hints to unfold; a sample solution comes at the earliest after the
 competition. You practise encoding and decoding on their own beforehand, with
-two colours, four letters and no clock, in [[lifi-codebook-warmup]].
+two colours, four letters and at a slow pace, in [[lifi-codebook-warmup]].
 
 ## One file for everything
 
@@ -49,8 +49,11 @@ along what you built there.
 | `send_symbol(name)`, `receive_symbol()` | from challenge 1; from now on only your own code calls them |
 | `CODEBOOK` | new: which sequence of colours stands for which character |
 | `SYMBOL_RATE` | new: how many colours you send per second |
-| `send_text(text)` | new: splits the text into colours with the codebook and sends them in rhythm, that is the encoding |
-| `receive_text(n_chars)` | new: receives that many characters and returns them as text, that is the decoding |
+| `LENGTH` | new: how many colours one character has in your codebook |
+| `encode_letter(letter)` | new: returns the colours of one character from the codebook, that is the encoding |
+| `send_text(text)` | new: goes through the text character by character and sends the colours from `encode_letter` in rhythm |
+| `decode_letter(colors)` | new: returns the character for a sequence of colours, that is the decoding |
+| `receive_text(n_chars)` | new: collects `LENGTH` colours per character, decodes them with `decode_letter` and returns the text |
 | `run_test(...)` | the last line; it starts both sides together, and you do not change it |
 
 Only the argument `codebook=` in the last line turns `run_test` into the test
@@ -71,11 +74,14 @@ How fast can you get three sentences across without a single mistake?
 This is your file from Challenge 1, one level up. COLORS, the sensor
 settings, calibrate, send_symbol and receive_symbol stay as they were (copy
 yours over from alphabet.py). New are the CODEBOOK, which says which colours
-stand for which character, SYMBOL_RATE, and the two functions you write:
-send_text turns a text into colours (encoding), receive_text turns colours
-back into text (decoding). run_test at the bottom hands a sentence to
-send_text and only the number of characters to receive_text, and compares
-what arrives.
+stand for which character, SYMBOL_RATE, LENGTH, and four functions you
+write. Two of them handle one letter: encode_letter turns a letter into its
+colours (encoding), decode_letter turns colours back into a letter
+(decoding). The other two handle a whole text by going through it letter by
+letter: send_text sends every letter with encode_letter and send_symbol,
+receive_text collects colours with receive_symbol and decodes them with
+decode_letter. run_test at the bottom hands a sentence to send_text and only
+the number of characters to receive_text, and compares what arrives.
 
 From the start on, the timing is yours: run_test starts both functions at
 the same moment and then does not help any more.
@@ -143,6 +149,9 @@ CODEBOOK = {
     "Z": ["white", "white", "off",   "white", "off"],
 }
 
+# How many colours one character has in your CODEBOOK
+LENGTH = 5
+
 # What the receiver learns during calibration, one entry per colour name
 REFERENCES = {}
 
@@ -169,28 +178,41 @@ def receive_symbol():
     return "off"
 
 
-def send_text(text):
-    """Sends the text, character by character: this is the encoding.
+def encode_letter(letter):
+    """Encoding: returns the colours of one letter, for example
+    ["off", "off", "white", "off", "white"] for "E". Sends nothing."""
+    # TODO: look up the colours of letter in CODEBOOK and return them
+    return []
 
-    For every character, look up its colours in CODEBOOK and show them one
-    after the other, each one for 1 / SYMBOL_RATE seconds. As soon as this
+
+def send_text(text):
+    """Sends the text letter by letter.
+
+    Encode each letter with encode_letter, then send each of its colours with
+    send_symbol and keep it on for 1 / SYMBOL_RATE seconds. As soon as this
     function returns, run_test turns the LED off and stops the clock.
     """
-    # TODO: send every character of text as its colours from CODEBOOK
+    # TODO: for every letter of text, send the colours from encode_letter
     pass
 
 
+def decode_letter(colors):
+    """Decoding: returns the letter whose colours in CODEBOOK are exactly
+    colors, or "?" if there is none."""
+    # TODO: find the letter in CODEBOOK whose colours are colors
+    return "?"
+
+
 def receive_text(n_chars):
-    """Receives n_chars characters and returns them as one text: this is the
-    decoding.
+    """Receives n_chars letters and returns them as one text.
 
     It starts at the same moment as send_text. The sender shows a new colour
-    every 1 / SYMBOL_RATE seconds, so the receiver has to read each colour
-    in the same rhythm, collect as many colours as one character has, and
-    look up which character they stand for in CODEBOOK.
+    every 1 / SYMBOL_RATE seconds, so read in the same rhythm: for each
+    letter, collect LENGTH colours with receive_symbol, decode them with
+    decode_letter and add the letter to the text.
     """
     text = ""
-    # TODO: receive n_chars characters and add each one to text
+    # TODO: receive n_chars letters and add each one to text
     return text
 
 
@@ -255,39 +277,56 @@ CODEBOOK = {
 
 ## Task 2: Get it running slowly
 
-You write both new functions. `send_text(text)` is the encoding: it splits
-the text into colours with your codebook and shows them one after the other,
-each for `1 / SYMBOL_RATE` seconds. `receive_text(n_chars)` is the decoding:
-it measures in the same rhythm, turns every sequence of colours back into a
-character and returns the text as soon as all characters have arrived. Start
+You write the four new functions. `encode_letter(letter)` is the encoding
+of one character: it looks up its colours in the codebook. `send_text(text)`
+goes through the text character by character and shows the colours from
+`encode_letter` one after the other, each for `1 / SYMBOL_RATE` seconds.
+`decode_letter(colors)` is the decoding: it finds the character for a
+sequence of colours. `receive_text(n_chars)` measures in the same rhythm,
+collects `LENGTH` colours per character, turns them back into a character
+with `decode_letter` and returns the text as soon as all characters have
+arrived. Start
 slowly, with the two colours per second of the template, and do not stop until
 three sentences in a row arrive without an error.
 
-**File:** `word.py`, the functions `send_text(text)` and `receive_text(n_chars)`; in the template:
+**File:** `word.py`, the functions `encode_letter`, `send_text`, `decode_letter` and `receive_text`; in the template:
 
 ```python static
-def send_text(text):
-    """Sends the text, character by character: this is the encoding.
+def encode_letter(letter):
+    """Encoding: returns the colours of one letter, for example
+    ["off", "off", "white", "off", "white"] for "E". Sends nothing."""
+    # TODO: look up the colours of letter in CODEBOOK and return them
+    return []
 
-    For every character, look up its colours in CODEBOOK and show them one
-    after the other, each one for 1 / SYMBOL_RATE seconds. As soon as this
+
+def send_text(text):
+    """Sends the text letter by letter.
+
+    Encode each letter with encode_letter, then send each of its colours with
+    send_symbol and keep it on for 1 / SYMBOL_RATE seconds. As soon as this
     function returns, run_test turns the LED off and stops the clock.
     """
-    # TODO: send every character of text as its colours from CODEBOOK
+    # TODO: for every letter of text, send the colours from encode_letter
     pass
 
 
+def decode_letter(colors):
+    """Decoding: returns the letter whose colours in CODEBOOK are exactly
+    colors, or "?" if there is none."""
+    # TODO: find the letter in CODEBOOK whose colours are colors
+    return "?"
+
+
 def receive_text(n_chars):
-    """Receives n_chars characters and returns them as one text: this is the
-    decoding.
+    """Receives n_chars letters and returns them as one text.
 
     It starts at the same moment as send_text. The sender shows a new colour
-    every 1 / SYMBOL_RATE seconds, so the receiver has to read each colour
-    in the same rhythm, collect as many colours as one character has, and
-    look up which character they stand for in CODEBOOK.
+    every 1 / SYMBOL_RATE seconds, so read in the same rhythm: for each
+    letter, collect LENGTH colours with receive_symbol, decode them with
+    decode_letter and add the letter to the text.
     """
     text = ""
-    # TODO: receive n_chars characters and add each one to text
+    # TODO: receive n_chars letters and add each one to text
     return text
 ```
 
