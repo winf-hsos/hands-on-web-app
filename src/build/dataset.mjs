@@ -50,9 +50,42 @@ export const datasetBytes = (itemDir, file) => statSync(datasetPath(itemDir, fil
     file's name. With an RDS file, R also gets the line that reads it, after
     the comment `rdsComment`. */
 export function loadingCode(file, rds = null, rdsComment = '') {
-  const name = file.replace(/\.csv$/, '').replace(/[^\w]/g, '_').replace(/^(\d)/, 'd_$1');
+  const name = tableName(file);
   return {
     r: `library(readr)\n\n${name} <- read_csv("${file}")${rds ? `\n\n# ${rdsComment}\n${name} <- readRDS("${rds}")` : ''}`,
     python: `import pandas as pd\n\n${name} = pd.read_csv("${file}", low_memory=False)`,
   };
+}
+
+/** The name a table goes by when it is read from `file`: the file's name as an R name. */
+export function tableName(file) {
+  return file.replace(/\.csv$/, '').replace(/[^\w]/g, '_').replace(/^(\d)/, 'd_$1');
+}
+
+/**
+ * The data sets a page works with, as ids in the order they first come up in
+ * its text, so that the page can offer them at its top (Nicolas, 2026-11-16).
+ * A data set counts when the page lists it (`listed`, its `datasets:`) or when
+ * an R box of the page, runnable or not, uses its table. A table goes by its
+ * own name, as `anscombe` for anscombe.csv, and by the names in `names`, which
+ * map a table name to a file (client/r-datasets.js and the page's r_datasets;
+ * the page's own win). `files` maps the file of every data set to its id.
+ */
+export function datasetsUsed(body, { files, names = {}, listed = [] }) {
+  const known = { ...Object.fromEntries([...files.keys()].map((file) => [tableName(file), file])), ...names };
+  const boxes = [...body.matchAll(/^```[ \t]*r\b[^\n]*\n([\s\S]*?)^```/gm)].map((m) => ({ at: m.index, code: m[1] }));
+  const found = new Map();
+  const note = (id, at) => {
+    if (id && !(found.get(id) <= at)) found.set(id, at);
+  };
+  for (const [name, file] of Object.entries(known)) {
+    const word = new RegExp(`(?<![\\w.])${name.replace(/\./g, '\\.')}(?![\\w.])`);
+    const box = boxes.find((b) => word.test(b.code));
+    if (box) note(files.get(file), box.at);
+  }
+  for (const id of listed) {
+    const at = [`[[${id}`, `item:${id}`].map((s) => body.indexOf(s)).filter((i) => i >= 0);
+    note(id, at.length ? Math.min(...at) : Infinity);
+  }
+  return [...found].sort((a, b) => a[1] - b[1]).map(([id]) => id);
 }

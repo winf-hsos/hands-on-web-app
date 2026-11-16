@@ -10,6 +10,8 @@ import { quizAnki, quizCsv } from './quiz-export.mjs';
 import { hasType } from './types.mjs';
 import { splitEmbeds, embedsIn } from './embed.mjs';
 import { inlineCode, plainText } from './html.mjs';
+import { datasetsUsed } from './dataset.mjs';
+import { DATASETS } from '../client/r-datasets.js';
 
 // Courses are called modules on the site (Nicolas, 2026-11-01) and live under
 // /modules/; the knowledge base keeps `courses`, since `module:` already names
@@ -63,6 +65,18 @@ export function createSite({ vocabulary, sections, hidden = new Map() }, area, b
     };
     return exerciseScript({ id: doc.id, title: text.title, body: text.file.body, lang, url: docUrl(doc, lang), titleOf, datasets: doc.lead.r_datasets });
   };
+
+  // the file of every data set, to its id; drafts are not among them on the published site
+  const datasetFiles = new Map(sections.content.filter((d) => hasType(d.lead, 'dataset') && typeof d.lead.file === 'string').map((d) => [d.lead.file, d.id]));
+
+  /** The data sets a page works with, to offer at its top (build/dataset.mjs, datasetsUsed). */
+  const datasetsOf = (doc, lang) =>
+    // a quiz shows R code in its questions, but nobody works with the data there
+    hasType(doc.lead, 'dataset') || hasType(doc.lead, 'quiz')
+      ? []
+      : datasetsUsed(localize(doc, lang).file.body, { files: datasetFiles, names: { ...DATASETS, ...doc.lead.r_datasets }, listed: doc.lead.datasets })
+          .map((id) => item.get(id))
+          .filter(Boolean);
 
   /** A quiz as a CSV and as cards for Anki to download (build/quiz-export.mjs), or null. */
   const quizFiles = (doc, lang) => {
@@ -222,6 +236,7 @@ export function createSite({ vocabulary, sections, hidden = new Map() }, area, b
     lessonsOf,
     markdown,
     script,
+    datasetsOf,
     quizFiles,
     projectText,
     inProjects,

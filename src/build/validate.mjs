@@ -169,6 +169,8 @@ function shapes(vocabulary) {
           formerly: list(id),
           // a quiz's questions from the pools, in order (scripts/pool-to-quiz.mjs)
           questions: list(id, 1),
+          // data sets the page works with beyond those its R boxes name, offered at its top (build/dataset.mjs)
+          datasets: list(id, 1),
           // the file an R table name means on this page, as `survey` for the full survey (client/r-engine.js)
           r_datasets: (v) => {
             if (!v || typeof v !== 'object' || Array.isArray(v)) return 'expected { name: file.csv }';
@@ -595,8 +597,14 @@ export function validate({ vocabulary, sections, problems, media = [] }) {
     if (info.error) errors.push(`${where}: file: ${info.error}`);
   }
 
-  // R data sets of a page: each file lies in media/datasets/.
+  // R data sets of a page: each file lies in media/datasets/. The data sets it
+  // lists are data sets.
   for (const item of content) {
+    for (const target of item.lead.datasets ?? []) {
+      const set = content.find((c) => c.id === target);
+      if (!set) errors.push(`content/${item.id}: datasets: ${target} does not exist`);
+      else if (!hasType(set.lead, 'dataset')) errors.push(`content/${item.id}: datasets: ${target} is not a dataset`);
+    }
     for (const [name, file] of Object.entries(item.lead.r_datasets ?? {})) {
       if (!existsSync(join(item.dir, '..', '..', 'media', 'datasets', file))) errors.push(`content/${item.id}: r_datasets: ${name}: media/datasets/${file} does not exist`);
     }

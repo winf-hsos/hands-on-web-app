@@ -13,7 +13,7 @@ const ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 // --- writing front matter ------------------------------------------------------
 
 const ORDER = {
-  content: ['type', 'code', 'formerly', 'title', 'summary', 'objectives', 'authors', 'year', 'publisher', 'isbn', 'buy', 'url', 'doi', 'venue', 'license', 'when', 'born', 'died', 'file', 'level', 'duration', 'topics', 'modules', 'relations', 'access', 'status', 'updated'],
+  content: ['type', 'code', 'formerly', 'title', 'summary', 'objectives', 'authors', 'year', 'publisher', 'isbn', 'buy', 'url', 'doi', 'venue', 'license', 'when', 'born', 'died', 'file', 'level', 'duration', 'topics', 'modules', 'datasets', 'relations', 'access', 'status', 'updated'],
   paths: ['kind', 'code', 'title', 'summary', 'goal', 'audience', 'level', 'requires', 'steps', 'sections', 'status', 'updated'],
   courses: ['kind', 'code', 'module', 'institution', 'formerly', 'title', 'subtitle', 'summary', 'sections', 'status', 'updated'],
   projects: ['kind', 'code', 'title', 'summary', 'level', 'modules', 'phases', 'status', 'updated'],

@@ -17,6 +17,7 @@ level: 1
 duration: 25
 topics: [visualising-data, exploring-data]
 modules: [ea]
+datasets: [same-stats-shapes]
 areas: [ds]
 r_datasets: { datasaurus_dozen: datasaurus_dozen.csv }
 relations:

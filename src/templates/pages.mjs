@@ -330,6 +330,7 @@ export function item(site, doc, lang) {
         ${text.stale && html`<p class="notice">${t(lang, 'stale_translation')}</p>`}
         ${!hasType(lead, 'quiz') && objectivesBlock(site, text, lang)}
         ${scriptBlock(site, doc, lang)}
+        ${datasetsBlock(site, doc, lang)}
         ${hasType(lead, 'slides') && slidesBlock(site, doc, lang)}
         ${hasType(lead, 'paper') && paperBlock(doc, lang)}
         ${hasType(lead, 'dataset') && datasetBlock(doc, lang)}
@@ -457,14 +458,43 @@ function quizFilesBlock(site, doc, lang, base = '') {
     </p>`;
 }
 
+/** A number as the page's language writes it. */
+const formatNumber = (n, lang, digits = 0) => n.toLocaleString(lang === 'de' ? 'de-DE' : 'en-GB', { maximumFractionDigits: digits });
+
+/** The size of a file; one under one kilobyte shows as 1 kB, not 0 kB. */
+const fileSize = (b, lang) => (b < 1e6 ? `${formatNumber(Math.max(1, b / 1e3), lang)} kB` : `${formatNumber(b / 1e6, lang, 1)} MB`);
+
+/**
+ * The data sets a page works with, at its top, each with its file to download
+ * (Nicolas, 2026-11-16); which ones they are, the site model finds out
+ * (build/dataset.mjs, datasetsUsed). The title leads to the data set's page,
+ * which describes the columns and shows the lines that load the file.
+ */
+function datasetsBlock(site, doc, lang) {
+  const sets = site.datasetsOf(doc, lang);
+  if (!sets.length) return '';
+  return html`<section class="page-datasets">
+      <p class="page-datasets-head">${t(lang, 'datasets_heading')}</p>
+      <ul>
+        ${sets.map((d) => {
+          const { file } = d.lead;
+          const { bytes, rows, columns } = datasetInfo(d.dir, file);
+          return html`<li>
+            <a class="button button-quiet" href="/media/datasets/${file}" download="${file}">${icons.download}<span>${file}</span></a>
+            <span class="page-datasets-about"><a href="${site.url(d, lang)}">${site.localize(d, lang).titleHtml}</a><span>${formatNumber(rows, lang)} ${t(lang, 'dataset_rows')} · ${formatNumber(columns, lang)} ${t(lang, 'dataset_columns')} · ${fileSize(bytes, lang)}</span></span>
+          </li>`;
+        })}
+      </ul>
+    </section>`;
+}
+
 /** A data set: its file to download, how big it is, and the lines that load it. */
 function datasetBlock(doc, lang) {
   const { file } = doc.lead;
   const { bytes, rows, columns } = datasetInfo(doc.dir, file);
   const rds = rdsFile(doc.dir, file);
-  const number = (n, digits = 0) => n.toLocaleString(lang === 'de' ? 'de-DE' : 'en-GB', { maximumFractionDigits: digits });
-  // a file under one kilobyte shows as 1 kB, not 0 kB
-  const size = (b) => (b < 1e6 ? `${number(Math.max(1, b / 1e3))} kB` : `${number(b / 1e6, 1)} MB`);
+  const number = (n, digits = 0) => formatNumber(n, lang, digits);
+  const size = (b) => fileSize(b, lang);
   const code = loadingCode(file, rds, t(lang, 'dataset_rds_comment'));
   return html`<section class="dataset prose">
       <div class="dataset-file">
