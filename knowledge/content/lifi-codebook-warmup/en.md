@@ -57,22 +57,6 @@ The script for the sending side; wherever it says `TODO`, your code is
 missing:
 
 ```python static file=sender.py
-"""
-Encoding and decoding: the sender
-=================================
-
-Sends words made of the letters T, E, A and M, two colours per letter, at
-SYMBOL_RATE colours per second. Its partner is receiver.py, started at the
-same time: on this computer in a second terminal, or on a second laptop.
-
-You write two functions, as in Challenge 2:
-
-  encode_letter(letter)   which colours stand for one letter (encoding)
-  send_text(text)         sends a whole text, letter by letter
-
-Run it with:  python sender.py   (on a Mac: python3)
-"""
-
 import time
 
 from lifi_hardware import LifiDevice
@@ -140,22 +124,6 @@ The script for the receiving side; `LENGTH` says how many colours belong to
 one letter:
 
 ```python static file=receiver.py
-"""
-Encoding and decoding: the receiver
-===================================
-
-Receives words made of the letters T, E, A and M, two colours per letter, at
-SYMBOL_RATE colours per second. Its partner is sender.py, started at the
-same time: on this computer in a second terminal, or on a second laptop.
-
-You write two functions, as in Challenge 2:
-
-  decode_letter(colors)   which letter some colours stand for (decoding)
-  receive_text(n_chars)   receives a whole text, letter by letter
-
-Run it with:  python receiver.py   (on a Mac: python3)
-"""
-
 import time
 
 from lifi_hardware import LifiDevice
