@@ -25,7 +25,8 @@ safety margin.
 thin restless curve is the raw signal. At the end of every window the receiver
 averages what arrived into one bar and decides for the nearest level; the
 symbol it recognised stands above the band and in the record below, red when
-it is wrong. Click a level or press a digit to send that symbol. Then give the
+it is wrong. Click a level or press a digit to send that symbol
+from the next window on; until then its level is dashed. Then give the
 alphabet more symbols until errors appear, and lengthen the window until they
 disappear again, keeping an eye on the symbol rate and the throughput. Disturb
 shows what stray light or mains hum does to a link, and Measure once goes

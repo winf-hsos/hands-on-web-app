@@ -18,7 +18,8 @@ unruhige Kurve ist das Rohsignal. Am Ende jedes Fensters mittelt der
 Empfänger, was angekommen ist, zu einem Balken und entscheidet sich für den
 nächstgelegenen Pegel; das erkannte Zeichen steht über dem Band und im
 Protokoll darunter, rot, wenn es falsch ist. Klick auf einen Pegel oder drück
-eine Ziffer, um dieses Zeichen zu senden. Gib dem Alphabet dann so lange mehr
+eine Ziffer, um dieses Zeichen zu senden; es gilt ab dem nächsten Fenster,
+bis dahin ist sein Pegel gestrichelt. Gib dem Alphabet dann so lange mehr
 Zeichen, bis Fehler auftauchen, und verlängere das Fenster, bis sie wieder
 verschwinden, und behalte dabei Zeichenrate und Durchsatz im Blick. „Stören“
 zeigt, was Fremdlicht oder ein Netzbrummen mit einer Strecke macht, und

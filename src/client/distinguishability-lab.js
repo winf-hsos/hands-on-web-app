@@ -10,8 +10,10 @@
 //      recognised stands above each band and runs along below the picture as
 //      the record of what was received; errors are red.
 //
-// The reader sends: a click on a level, a digit or the arrow keys. A change of
-// symbol in the middle of a band honestly gives a mixed reading. The
+// The reader sends: a click on a level, a digit or the arrow keys. A new
+// symbol waits, its level dashed, until the window in progress ends, so that
+// every window carries exactly one symbol and a change never mixes two into
+// one reading (Nicolas, 2026-11-16); only an empty window takes it at once. The
 // disturbance adds a decaying drift to the signal, like stray light or mains
 // hum. The signal could be light, voltage or sound; the real numbers come from
 // one's own link. Taken over from the LiFi concept demos
@@ -71,6 +73,7 @@ function setup(box, id) {
     windowMs: WIN.start,
     speed: SPEED.start / 100, // slow motion: share of real time
     current: 1, // the symbol being sent
+    pending: null, // the symbol chosen next, sent from the next window on
     paused: reduced,
     results: [], // true = recognised correctly
     received: [], // { digit, ok }
@@ -192,6 +195,7 @@ function setup(box, id) {
         state.received.push({ digit, ok });
         if (state.received.length > TRANSCRIPT) state.received.shift();
         newWindow(t);
+        take();
         stats();
       }
     }
@@ -259,21 +263,25 @@ function setup(box, id) {
     }
     ctx.setLineDash([]);
 
-    // the levels sent with their digits on the left; the one being sent in the accent colour
+    // the levels sent with their digits on the left; the one being sent in the
+    // accent colour, the one waiting for the next window dashed in it
     ctx.font = `13px ${mono}`;
     ctx.textBaseline = 'middle';
     lv.forEach((level, i) => {
       const y = yOf(level);
       const active = i === state.current;
-      ctx.strokeStyle = active ? css('--accent') : css('--quiet');
-      ctx.globalAlpha = active ? 1 : 0.6;
-      ctx.lineWidth = active ? 2 : 1;
+      const waiting = i === state.pending;
+      ctx.strokeStyle = active || waiting ? css('--accent') : css('--quiet');
+      ctx.globalAlpha = active || waiting ? 1 : 0.6;
+      ctx.lineWidth = active || waiting ? 2 : 1;
+      ctx.setLineDash(waiting ? [6, 5] : []);
       ctx.beginPath();
       ctx.moveTo(PAD_LEFT, y);
       ctx.lineTo(right, y);
       ctx.stroke();
+      ctx.setLineDash([]);
       ctx.globalAlpha = 1;
-      ctx.fillStyle = active ? css('--accent') : css('--quiet');
+      ctx.fillStyle = active || waiting ? css('--accent') : css('--quiet');
       ctx.fillText(DIGITS[i], 16, y);
     });
 
@@ -375,6 +383,8 @@ function setup(box, id) {
     state.k = Number(knobs.k.value);
     state.windowMs = Number(knobs.win.value);
     state.speed = Number(knobs.speed.value) / 100;
+    if (state.pending !== null) state.current = Math.min(state.pending, state.k - 1);
+    state.pending = null;
     if (state.current >= state.k) state.current = state.k - 1;
     show.k(kText(state.k));
     show.win(winText(state.windowMs));
@@ -389,12 +399,21 @@ function setup(box, id) {
     draw();
   }
 
+  // the chosen symbol becomes the one sent: at once into an empty window,
+  // otherwise when the window in progress ends (take() in step())
   function select(i) {
     if (i < 0 || i >= state.k) return;
-    state.current = i;
-    show.sending(DIGITS[i]);
-    state.results.length = 0;
+    state.pending = i === state.current ? null : i;
+    if (!win.n) take();
     draw();
+  }
+
+  function take() {
+    if (state.pending === null) return;
+    state.current = state.pending;
+    state.pending = null;
+    show.sending(DIGITS[state.current]);
+    state.results.length = 0; // a new symbol, a new error rate
   }
 
   function setPaused(paused) {
@@ -452,8 +471,8 @@ function setup(box, id) {
       if (key === ' ') setPaused(!state.paused);
       else if (key === 'm' || key === 'M') stepOnce();
       else if (key === 'd' || key === 'D') disturb();
-      else if (key === 'ArrowUp') select(state.current + 1);
-      else if (key === 'ArrowDown') select(state.current - 1);
+      else if (key === 'ArrowUp') select((state.pending ?? state.current) + 1);
+      else if (key === 'ArrowDown') select((state.pending ?? state.current) - 1);
       else if (digit >= 0 && digit < state.k) select(digit);
       else return false;
       return true;
