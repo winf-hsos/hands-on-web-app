@@ -123,7 +123,7 @@ test('project phases and challenges must match the headings in every language', 
 
 test('items linked in a project must exist', () => {
   const { errors } = check(({ find }) => {
-    lead(find('projects', 'lifi')).phases[2].items = ['nowhere'];
+    lead(find('projects', 'lifi')).phases[2].items.push('nowhere');
   });
   assert.deepEqual(errors, ['projects/lifi word: unknown item "nowhere"']);
 });

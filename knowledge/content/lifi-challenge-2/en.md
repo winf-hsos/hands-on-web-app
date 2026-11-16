@@ -32,7 +32,8 @@ see colours.
 **Three tasks:** first you define the codebook, then you get the transmission
 running slowly, and finally you raise the speed until it breaks. Each task has
 hints to unfold; a sample solution comes at the earliest after the
-competition.
+competition. You practise encoding and decoding on their own beforehand, with
+two colours, four letters and no clock, in [[lifi-codebook-warmup]].
 
 ## One file for everything
 
@@ -108,6 +109,9 @@ SYMBOL_RATE = 2
 # space need an entry. With two colours, five of them make 32 combinations,
 # enough for 27 characters. With more colours, fewer per character will do;
 # that is the point of Challenge 2.
+# TODO: make the CODEBOOK fit your own alphabet: use only the colour names
+# from your COLORS, give every character its own sequence, and let more
+# colours make the sequences shorter.
 CODEBOOK = {
     " ": ["off",   "off",   "off",   "off",   "off"],
     "A": ["off",   "off",   "off",   "off",   "white"],

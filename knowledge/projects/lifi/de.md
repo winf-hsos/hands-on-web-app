@@ -21,7 +21,7 @@ phases:
       - measuring-your-noise
   - id: word
     challenge: lifi-challenge-2
-    items: [place-value-systems, code-systems, invent-a-code, morse-code]
+    items: [place-value-systems, code-systems, invent-a-code, lifi-codebook-warmup, morse-code]
   - id: protocol
     challenge: lifi-challenge-3
     items: [morse-code]

@@ -40,7 +40,9 @@ Text, von innen Farben.
 **Drei Aufgaben:** Zuerst legt ihr das Codebuch fest, dann bringt ihr die
 Übertragung langsam zum Laufen, und zuletzt erhöht ihr das Tempo, bis sie
 bricht. Zu jeder Aufgabe gibt es Tipps zum Aufklappen; eine Musterlösung gibt
-es frühestens nach dem Wettbewerb.
+es frühestens nach dem Wettbewerb. Kodieren und Dekodieren allein, mit zwei
+Farben, vier Buchstaben und ohne Takt, übt ihr vorher in
+[[lifi-codebook-warmup]].
 
 ## Eine Datei für alles
 
@@ -115,6 +117,9 @@ SYMBOL_RATE = 2
 # space need an entry. With two colours, five of them make 32 combinations,
 # enough for 27 characters. With more colours, fewer per character will do;
 # that is the point of Challenge 2.
+# TODO: make the CODEBOOK fit your own alphabet: use only the colour names
+# from your COLORS, give every character its own sequence, and let more
+# colours make the sequences shorter.
 CODEBOOK = {
     " ": ["off",   "off",   "off",   "off",   "off"],
     "A": ["off",   "off",   "off",   "off",   "white"],
