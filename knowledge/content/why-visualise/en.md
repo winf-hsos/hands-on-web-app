@@ -10,7 +10,7 @@ objectives:
   goals:
     - "explain which information mean, standard deviation and correlation keep and which they lose"
     - "show with Anscombe's quartet that the same statistics can belong to completely different data"
-    - "argue why a chart belongs before and after every calculation when exploring data"
+    - "explain why you should visualise data before you believe its statistics"
 translation_of: de
 based_on: 2026-11-16
 ---
@@ -165,8 +165,8 @@ is shown by the next lesson, [[data-visualisation-basics]].
   that creates the correlation.
 - Any number of pictures fit the same statistics, as the Datasaurus Dozen
   and the shapes of the demonstrator show.
-- A chart belongs before and after every calculation, and a statistic never
-  stands without spread and number of cases.
+- Visualise data before you believe its statistics, and never report a
+  statistic without its spread and the number of cases.
 
 ## Further reading
 

@@ -12,7 +12,7 @@ objectives:
   goals:
     - "erklären, welche Information Mittelwert, Standardabweichung und Korrelation behalten und welche sie verlieren"
     - "am Quartett von Anscombe zeigen, dass gleiche Kennzahlen zu völlig verschiedenen Daten gehören können"
-    - "begründen, warum eine Grafik vor und nach jeder Rechnung zum Erkunden gehört"
+    - "begründen, warum du Daten visualisieren solltest, bevor du ihren Kennzahlen glaubst"
 level: 1
 duration: 25
 topics: [visualising-data, exploring-data]
@@ -185,8 +185,8 @@ ggplot2 baut, zeigt die nächste Lektion
   ein einzelner Punkt, der die Korrelation erzeugt.
 - Zu denselben Kennzahlen passen beliebig viele Bilder, wie der Datasaurus
   Dozen und die Formen des Demonstrators zeigen.
-- Eine Grafik gehört vor und nach jede Rechnung, und eine Kennzahl steht nie
-  ohne Streuung und Fallzahl.
+- Visualisiere Daten, bevor du ihren Kennzahlen glaubst, und nenne eine
+  Kennzahl nie ohne Streuung und Fallzahl.
 
 ## Zum Weiterlesen
 
