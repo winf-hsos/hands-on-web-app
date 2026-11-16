@@ -20,7 +20,7 @@ modules: [dup]
 project: lifi
 relations:
   see_also: [code-systems, lifi-challenge-2]
-status: draft
+status: published
 updated: 2026-11-16
 ---
 
