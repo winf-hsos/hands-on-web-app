@@ -16,7 +16,7 @@ modules: [ea]
 areas: [ds]
 relations:
   see_also: [why-visualise, anscombe-graphs-in-statistical-analysis, same-stats-shapes]
-status: draft
+status: published
 updated: 2026-11-16
 ---
 

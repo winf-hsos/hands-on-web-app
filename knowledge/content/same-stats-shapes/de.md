@@ -15,7 +15,7 @@ areas: [ds]
 relations:
   see_also: [why-visualise, same-stats-demo, matejka-same-stats-different-graphs, anscombe-quartet]
 r_datasets: { same_stats_shapes: same_stats_shapes.csv }
-status: draft
+status: published
 updated: 2026-11-16
 ---
 
