@@ -48,8 +48,8 @@ along what you built there.
 | `send_symbol(name)`, `receive_symbol()` | from challenge 1; from now on only your own code calls them |
 | `CODEBOOK` | new: which sequence of colours stands for which character |
 | `SYMBOL_RATE` | new: how many colours you send per second |
-| `send_text(text)` | new: splits the text into colours with the codebook and sends them in rhythm; already done |
-| `receive_text(n_chars)` | new: receives that many characters and returns them as text; this one you write |
+| `send_text(text)` | new: splits the text into colours with the codebook and sends them in rhythm, that is the encoding |
+| `receive_text(n_chars)` | new: receives that many characters and returns them as text, that is the decoding |
 | `run_test(...)` | the last line; it starts both sides together, and you do not change it |
 
 Only the argument `codebook=` in the last line turns `run_test` into the test
@@ -70,9 +70,11 @@ How fast can you get three sentences across without a single mistake?
 This is your file from Challenge 1, one level up. COLORS, the sensor
 settings, calibrate, send_symbol and receive_symbol stay as they were (copy
 yours over from alphabet.py). New are the CODEBOOK, which says which colours
-stand for which character, SYMBOL_RATE, and the two functions send_text and
-receive_text. run_test at the bottom hands a sentence to send_text and only
-the number of characters to receive_text, and compares what arrives.
+stand for which character, SYMBOL_RATE, and the two functions you write:
+send_text turns a text into colours (encoding), receive_text turns colours
+back into text (decoding). run_test at the bottom hands a sentence to
+send_text and only the number of characters to receive_text, and compares
+what arrives.
 
 From the start on, the timing is yours: run_test starts both functions at
 the same moment and then does not help any more.
@@ -160,15 +162,19 @@ def receive_symbol():
 
 
 def send_text(text):
-    """Sends the text, character by character, in the rhythm of SYMBOL_RATE."""
-    for char in text:
-        for name in CODEBOOK[char]:
-            send_symbol(name)
-            time.sleep(1 / SYMBOL_RATE)
+    """Sends the text, character by character: this is the encoding.
+
+    For every character, look up its colours in CODEBOOK and show them one
+    after the other, each one for 1 / SYMBOL_RATE seconds. As soon as this
+    function returns, run_test turns the LED off and stops the clock.
+    """
+    # TODO: send every character of text as its colours from CODEBOOK
+    pass
 
 
 def receive_text(n_chars):
-    """Receives n_chars characters and returns them as one text.
+    """Receives n_chars characters and returns them as one text: this is the
+    decoding.
 
     It starts at the same moment as send_text. The sender shows a new colour
     every 1 / SYMBOL_RATE seconds, so the receiver has to read each colour
@@ -235,19 +241,31 @@ CODEBOOK = {
 
 ## Task 2: Get it running slowly
 
-`send_text(text)` is already done in the template: it splits the text into
-colours with your codebook and shows them one after the other, each for
-`1 / SYMBOL_RATE` seconds. Your task is `receive_text(n_chars)`, which
-measures in the same rhythm, turns every sequence of colours back into a
+You write both new functions. `send_text(text)` is the encoding: it splits
+the text into colours with your codebook and shows them one after the other,
+each for `1 / SYMBOL_RATE` seconds. `receive_text(n_chars)` is the decoding:
+it measures in the same rhythm, turns every sequence of colours back into a
 character and returns the text as soon as all characters have arrived. Start
 slowly, with the two colours per second of the template, and do not stop until
 three sentences in a row arrive without an error.
 
-**File:** `word.py`, the function `receive_text(n_chars)`; in the template:
+**File:** `word.py`, the functions `send_text(text)` and `receive_text(n_chars)`; in the template:
 
 ```python static
+def send_text(text):
+    """Sends the text, character by character: this is the encoding.
+
+    For every character, look up its colours in CODEBOOK and show them one
+    after the other, each one for 1 / SYMBOL_RATE seconds. As soon as this
+    function returns, run_test turns the LED off and stops the clock.
+    """
+    # TODO: send every character of text as its colours from CODEBOOK
+    pass
+
+
 def receive_text(n_chars):
-    """Receives n_chars characters and returns them as one text.
+    """Receives n_chars characters and returns them as one text: this is the
+    decoding.
 
     It starts at the same moment as send_text. The sender shows a new colour
     every 1 / SYMBOL_RATE seconds, so the receiver has to read each colour
@@ -266,7 +284,7 @@ def receive_text(n_chars):
 > Work out how long one colour shines at your rate, and think about the moment within that time at which the receiver measures best.
 
 > [!HINT]
-> Both sides start together, but each has its own clock, and `time.sleep()` never waits exactly as long as asked. The template strings short pauses together in `send_text`, and their small errors add up. At the latest when you want to go faster, work out on both sides for every colour when it begins, counted from the start.
+> Both sides start together, but each has its own clock, and `time.sleep()` never waits exactly as long as asked. So work out for every colour when it begins, counted from the start, instead of stringing short pauses together whose small errors add up.
 
 ## Task 3: Raise the speed
 
