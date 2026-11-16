@@ -29,7 +29,8 @@ instead of only describing them.
 In 1973 the statistician Francis Anscombe published four small data sets of
 eleven points each to convince his colleagues that they should plot their
 data. They are ready in R as the table `anscombe`, with the columns `x1` to
-`x4` and `y1` to `y4`. The first lines of the code bring them into the long
+`x4` and `y1` to `y4`; for other tools you can download them as the data set
+[[anscombe-quartet]]. The first lines of the code bring them into the long
 form with a column `set` for the data set, as you know it from the lesson on
 tidy data; then `summarize()` computes means, standard deviations and the
 correlation for each of the four data sets.
@@ -99,6 +100,8 @@ The statistics stay put while the cloud turns into a circle, a star or a
 heart. A mean and a standard deviation therefore cannot tell whether data
 form a cloud, two lines or a bullseye, and a correlation near zero does not
 mean that there is no relationship, only that it is not a straight line.
+The points of all shapes are available as the data set [[same-stats-shapes]],
+with which you can recompute the statistics and plot the shapes yourself.
 
 ## What follows from it
 

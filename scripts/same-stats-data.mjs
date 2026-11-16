@@ -176,3 +176,13 @@ ${lines.join('\n')}
 `,
 );
 console.log(`written to ${out}`);
+
+// The same points as a data set for R and download (item same-stats-shapes):
+// one row per point and shape, in units of the plot (0 to 100), and `point`
+// says which points belong together across the shapes.
+const rows = Object.entries(shapes).flatMap(([name, { xs, ys }]) =>
+  xs.map((x, i) => `${name},${i + 1},${(x / 100).toFixed(2)},${(ys[i] / 100).toFixed(2)}`),
+);
+const csv = join(import.meta.dirname, '..', 'knowledge', 'media', 'datasets', 'same_stats_shapes.csv');
+writeFileSync(csv, `shape,point,x,y\n${rows.join('\n')}\n`);
+console.log(`written to ${csv}`);

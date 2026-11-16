@@ -12,7 +12,7 @@ topics: [visualising-data, exploring-data]
 modules: [ea]
 areas: [ds]
 relations:
-  see_also: [matejka-same-stats-different-graphs, anscombe-graphs-in-statistical-analysis]
+  see_also: [matejka-same-stats-different-graphs, anscombe-graphs-in-statistical-analysis, same-stats-shapes]
 status: published
 updated: 2026-11-16
 ---

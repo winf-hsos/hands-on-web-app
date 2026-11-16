@@ -20,7 +20,7 @@ modules: [ea]
 areas: [ds]
 relations:
   requires: [dplyr-summarize]
-  see_also: [exploratory-data-analysis-basics]
+  see_also: [exploratory-data-analysis-basics, anscombe-quartet, same-stats-shapes]
 status: published
 updated: 2026-11-16
 ---
@@ -40,7 +40,8 @@ beschreiben.
 Der Statistiker Francis Anscombe hat 1973 vier kleine Datensätze mit je elf
 Punkten veröffentlicht, um seine Kollegen zu überzeugen, dass sie ihre Daten
 zeichnen sollten. Sie liegen in R als Tabelle `anscombe` bereit, mit den
-Spalten `x1` bis `x4` und `y1` bis `y4`. Die ersten Zeilen des Codes bringen
+Spalten `x1` bis `x4` und `y1` bis `y4`; für andere Werkzeuge gibt es sie
+als Datensatz [[anscombe-quartet]] zum Herunterladen. Die ersten Zeilen des Codes bringen
 sie in die lange Form mit einer Spalte `set` für den Datensatz, wie du sie aus
 der Lektion zu Tidy Data kennst; danach rechnet `summarize()` für jeden der
 vier Datensätze Mittelwerte, Standardabweichungen und die Korrelation aus.
@@ -113,7 +114,9 @@ Die Kennzahlen bleiben stehen, während aus der Wolke ein Kreis, ein Stern
 oder ein Herz wird. Mit einem Mittelwert und einer Standardabweichung lässt
 sich also nicht unterscheiden, ob Daten eine Wolke, zwei Linien oder eine
 Zielscheibe bilden, und eine Korrelation nahe null heißt nicht, dass es
-keinen Zusammenhang gibt, sondern nur, dass er keine Gerade ist.
+keinen Zusammenhang gibt, sondern nur, dass er keine Gerade ist. Die Punkte
+aller Formen gibt es als Datensatz [[same-stats-shapes]], mit dem du die
+Kennzahlen selbst nachrechnen und die Formen zeichnen kannst.
 
 ## Was daraus folgt
 
