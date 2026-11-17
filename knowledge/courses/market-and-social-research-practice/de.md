@@ -17,8 +17,10 @@ sections:
     items: [data-analysis-with-r-slides, survey-self-test, survey-exercise-first-look, survey-exercise-describing-variables, survey-exercise-comparing-groups, survey-exercise-figures, survey-exercise-own-question]
   - title: { de: "Forschungsfragen, wissenschaftliche Paper und Quarto", en: "Research questions, scientific papers and Quarto" }
     items: [quarto-first-steps, research-questions, research-question-exercise, paper-structure, quarto-paper-exercise, milk-chocolate-survey]
+  - title: { de: KI-Agenten in der empirischen Forschung, en: AI agents in empirical research }
+    items: [ai-research-support, text-for-ai, ai-agents-in-research]
 status: published
-updated: 2026-11-11
+updated: 2026-11-17
 ---
 
 Diese Sammlung begleitet den Teil von Nicolas Meseth im Bachelormodul Praxis
@@ -40,6 +42,11 @@ zur Antwort auf eine eigene Frage.
 Der Abschnitt danach legt das Fundament für die Ausarbeitung: wie ein
 Quarto-Dokument aufgebaut ist, was eine gute Forschungsfrage ausmacht und wie
 sie zu Daten passt, die schon erhoben sind, und wie ein wissenschaftliches
-Paper gegliedert ist. Die Abschnitte zu KI-Agenten in der empirischen
-Forschung und zum Präsentieren der Ergebnisse kommen vor den jeweiligen
-Sitzungen dazu.
+Paper gegliedert ist.
+
+Im Abschnitt „KI-Agenten in der empirischen Forschung“ geht es darum, wie du
+KI in den Schritten einer Studie einsetzt und dabei Autorin oder Autor
+bleibst, warum ein Bericht als Text für die Arbeit mit KI besser geeignet ist
+als eine Word-Datei und was einen KI-Agenten wie den Kursassistenten vom
+Chatbot unterscheidet. Der Abschnitt zum Präsentieren der Ergebnisse kommt vor
+der jeweiligen Sitzung dazu.

@@ -5,7 +5,7 @@ summary: >-
   Turning your own research question about a real survey into a scientific
   paper: with R, Quarto and an AI agent whose results you answer for.
 translation_of: de
-based_on: 2026-11-11
+based_on: 2026-11-17
 ---
 
 This collection accompanies Nicolas Meseth's part of the bachelor's module
@@ -26,6 +26,10 @@ own.
 
 The section after it lays the foundation for the paper: how a Quarto document
 is built, what makes a good research question and how it fits data that have
-already been collected, and how a scientific paper is structured. The
-sections on AI agents in empirical research and on presenting the results
-are added before the respective sessions.
+already been collected, and how a scientific paper is structured.
+
+The section "AI agents in empirical research" covers how to use AI in the
+steps of a study and stay the author, why a report written as text suits
+working with AI better than a Word file, and what sets an AI agent such as
+the course assistant apart from a chatbot. The section on presenting the
+results is added before its session.
