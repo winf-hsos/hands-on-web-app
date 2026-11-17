@@ -31,7 +31,7 @@ In academic work, "AI" means three rather different things.
 
 | Kind | What it does | Examples | Works with |
 |---|---|---|---|
-| **Chatbots** | answer in a chat, on almost any topic | ChatGPT, Claude, Gemini, Chat AI (GWDG) | what you type or upload |
+| **Chatbots** | answer in a chat, on almost any topic | ChatGPT, Claude, Gemini, Chat AI (GWDG), HAWKI (Osnabrück University of Applied Sciences) | what you type or upload |
 | **Research tools** | do one job in research and do it well | Consensus, Elicit, SciSpace, Litmaps, Research Rabbit, NotebookLM | a database of papers and your PDFs |
 | **Agents** | act on their own, on almost any task | OpenCode, Claude Code, Codex | your files, programs and the web |
 
@@ -58,7 +58,8 @@ University of Applied Sciences.
 
 Chat AI of the GWDG is free for members of many German universities and
 processes data in line with the GDPR, as long as you choose one of its own
-models.
+models. At Osnabrück University of Applied Sciences,
+[HAWKI](https://hawki.hs-osnabrueck.de) offers such access.
 
 ## Nine phases of a study
 
@@ -85,10 +86,13 @@ real question is how much you want to hand over.
 
 ## What is possible: three levels
 
-How much an AI takes on can be described in three levels. On level 1 you do
+How much an AI takes on can be described in three levels. The slides show
+each level as a timeline on which you, the AI and, on level 3, its tools work
+in turn. On level 1 you do
 the work, and the AI explains, suggests and gives feedback. On level 2 the AI
-makes a draft, and you review, change and decide. On level 3 an agent does
-the whole step, and you check the result. For five phases of a secondary
+makes a draft, and you review, change and decide. On level 3 you give an agent
+a goal; it plans, uses its tools and stays in its loop until the goal is
+reached, and you check the result. For five phases of a secondary
 analysis it looks like this:
 
 | Phase | 1 AI advises | 2 AI drafts, you review | 3 AI does it, you check |
@@ -118,6 +122,17 @@ frontier is jagged, so tasks that look alike lie on different sides of it,
 and from the inside you cannot see which side you are on. What looks possible
 therefore still has to be checked.
 
+**The frontier moves.** With every generation of models the frontier moves
+out and takes in tasks that were outside before: first polishing a text or
+explaining an error message, then writing R code and summarizing a paper,
+then running a whole analysis or searching the literature as an agent. The
+shape stays jagged, though, and some tasks remain in a notch however far the
+frontier grows, such as citing only sources that really exist or judging
+what matters in a study. This is a simplified picture of the idea, not a
+measurement, but it explains why the question is never only whether AI can
+do a task in general, but whether this very task lies inside the frontier of
+the model you are using.
+
 **References that do not exist.** Walters and Wilder (2023) had GPT-3.5 and
 GPT-4 write short literature reviews on 42 topics and checked all 636
 references. With GPT-3.5, 55 % of the sources did not exist at all, with
@@ -146,9 +161,12 @@ Three rules apply, whatever tool and level you work with:
 
 1. You answer for every sentence, also for the one an AI wrote.
 2. You record what you used AI for and how you checked the result.
-3. Nothing personal goes into the chat: no names of respondents and no
-   free-text answers with personal details, because what you type or upload
-   leaves your computer.
+3. You watch for bias: an AI repeats what is frequent in its data, not what
+   is true for the people you study. A summary of studies, a coding of
+   free-text answers or a description of a group can therefore be skewed;
+   ask whom a result leaves out and compare it with your data. Fairness is
+   one of the core requirements of the European Commission's ethics
+   guidelines for trustworthy AI.
 
 For the second rule, a table in the appendix of your paper is enough, with
 one row per use:
@@ -188,6 +206,8 @@ Filled in as you go, each row costs a minute.
   effects of AI on knowledge worker productivity and quality.* Harvard
   Business School Working Paper 24-013.
   [SSRN 4573321](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4573321)
+- Mollick, E. (2024). *Co-Intelligence: Living and working with AI.*
+  Portfolio.
 - Mollick, E. (2026). *Co-Existence: The next phase of AI.* Penguin Random
   House.
 - Walters, W. H. & Wilder, E. I. (2023). Fabrication and errors in the
@@ -200,3 +220,6 @@ Filled in as you go, each row costs a minute.
   reference hallucinations in commercial LLMs and deep research agents.*
   arXiv 2604.03173.
   [doi:10.48550/arXiv.2604.03173](https://doi.org/10.48550/arXiv.2604.03173)
+- European Commission, High-Level Expert Group on AI (2019). *Ethics
+  guidelines for trustworthy AI.*
+  [digital-strategy.ec.europa.eu](https://digital-strategy.ec.europa.eu/en/library/ethics-guidelines-trustworthy-ai)

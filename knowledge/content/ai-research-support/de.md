@@ -41,7 +41,7 @@ heute möglich ist, und fragt danach, was davon funktioniert und sinnvoll ist.
 
 | Art | Was sie leistet | Beispiele | Arbeitet mit |
 |---|---|---|---|
-| **Chatbots** | antworten im Chat, zu fast jedem Thema | ChatGPT, Claude, Gemini, Chat AI (GWDG) | dem, was du eintippst oder hochlädst |
+| **Chatbots** | antworten im Chat, zu fast jedem Thema | ChatGPT, Claude, Gemini, Chat AI (GWDG), HAWKI (Hochschule Osnabrück) | dem, was du eintippst oder hochlädst |
 | **Recherchewerkzeuge** | übernehmen eine Aufgabe der Forschung und erledigen sie gut | Consensus, Elicit, SciSpace, Litmaps, Research Rabbit, NotebookLM | einer Datenbank von Papers und deinen PDFs |
 | **Agenten** | handeln selbstständig, bei fast jeder Aufgabe | OpenCode, Claude Code, Codex | deinen Dateien, Programmen und dem Web |
 
@@ -70,7 +70,8 @@ wurden.
 
 Chat AI der GWDG steht Angehörigen vieler deutscher Hochschulen kostenlos zur
 Verfügung und verarbeitet Daten DSGVO-konform, solange du eines ihrer eigenen
-Modelle wählst.
+Modelle wählst. An der Hochschule Osnabrück bietet
+[HAWKI](https://hawki.hs-osnabrueck.de) einen solchen Zugang.
 
 ## Neun Phasen einer Studie
 
@@ -98,11 +99,14 @@ Phase viel übernehmen. Die eigentliche Frage ist, wie viel du abgeben willst.
 
 ## Was möglich ist: drei Stufen
 
-Wie viel eine KI übernimmt, lässt sich in drei Stufen beschreiben. Auf
+Wie viel eine KI übernimmt, lässt sich in drei Stufen beschreiben. Die Folien
+zeigen jede Stufe als Zeitleiste, auf der nacheinander du, die KI und auf
+Stufe 3 ihre Werkzeuge arbeiten. Auf
 Stufe 1 machst du die Arbeit, und die KI erklärt, schlägt vor und gibt
 Rückmeldung. Auf Stufe 2 macht die KI einen Entwurf, und du prüfst, änderst
-und entscheidest. Auf Stufe 3 erledigt ein Agent den ganzen Schritt, und du
-prüfst das Ergebnis. Für fünf Phasen einer Sekundäranalyse sieht das so aus:
+und entscheidest. Auf Stufe 3 gibst du einem Agenten ein Ziel; er plant, nutzt
+seine Werkzeuge und bleibt in seiner Schleife, bis das Ziel erreicht ist, und
+du prüfst das Ergebnis. Für fünf Phasen einer Sekundäranalyse sieht das so aus:
 
 | Phase | 1 KI berät | 2 KI entwirft, du prüfst | 3 KI erledigt, du kontrollierst |
 |---|---|---|---|
@@ -132,6 +136,18 @@ Mollick hat das Bild der „jagged frontier“ aus dieser Studie in
 ähneln, auf verschiedenen Seiten liegen, und von innen siehst du nicht, auf
 welcher du gerade bist. Was möglich aussieht, musst du deshalb trotzdem
 prüfen.
+
+**Die Grenze wandert.** Mit jeder Generation von Modellen rückt die Grenze
+nach außen und schließt Aufgaben ein, die vorher draußen lagen: erst einen
+Text glätten oder eine Fehlermeldung erklären, dann R-Code schreiben und ein
+Paper zusammenfassen, dann als Agent eine ganze Analyse rechnen oder die
+Literatur durchsuchen. Die Form bleibt aber zerklüftet, und manche Aufgaben
+liegen weiter in einer Einbuchtung, so weit die Grenze auch wächst, etwa nur
+Quellen zu zitieren, die es wirklich gibt, oder zu beurteilen, worauf es in
+einer Studie ankommt. Das ist ein vereinfachtes Bild der Idee, keine Messung,
+aber es erklärt, warum die Frage nie nur lautet, ob KI eine Aufgabe
+grundsätzlich kann, sondern ob genau diese Aufgabe innerhalb der Grenze des
+Modells liegt, das du gerade nutzt.
 
 **Quellen, die es nicht gibt.** Walters und Wilder (2023) ließen GPT-3.5 und
 GPT-4 kurze Literaturüberblicke zu 42 Themen schreiben und prüften alle 636
@@ -163,9 +179,13 @@ arbeitest:
 1. Du stehst für jeden Satz ein, auch für den, den eine KI geschrieben hat.
 2. Du hältst fest, wofür du KI eingesetzt und wie du das Ergebnis geprüft
    hast.
-3. Nichts Persönliches geht in den Chat: keine Namen von Befragten und keine
-   Freitextantworten mit persönlichen Angaben, denn was du eintippst oder
-   hochlädst, verlässt deinen Rechner.
+3. Du achtest auf Verzerrungen: Eine KI gibt wieder, was in ihren Daten
+   häufig ist, nicht, was für die Menschen gilt, die du untersuchst. Eine
+   Zusammenfassung von Studien, eine Kodierung von Freitextantworten oder die
+   Beschreibung einer Gruppe kann deshalb schief sein; frag dich, wen ein
+   Ergebnis auslässt, und vergleiche es mit deinen Daten. Fairness gehört zu
+   den Kernanforderungen der Ethik-Leitlinien der EU-Kommission für
+   vertrauenswürdige KI.
 
 Für die zweite Regel genügt eine Tabelle im Anhang deines Papers, mit einer
 Zeile je Einsatz:
@@ -207,6 +227,8 @@ eine Minute.
   effects of AI on knowledge worker productivity and quality.* Harvard
   Business School Working Paper 24-013.
   [SSRN 4573321](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4573321)
+- Mollick, E. (2024). *Co-Intelligence: Living and working with AI.*
+  Portfolio.
 - Mollick, E. (2026). *Co-Existence: The next phase of AI.* Penguin Random
   House.
 - Walters, W. H. & Wilder, E. I. (2023). Fabrication and errors in the
@@ -219,3 +241,6 @@ eine Minute.
   reference hallucinations in commercial LLMs and deep research agents.*
   arXiv 2604.03173.
   [doi:10.48550/arXiv.2604.03173](https://doi.org/10.48550/arXiv.2604.03173)
+- Europäische Kommission, Hochrangige Expertengruppe für KI (2019).
+  *Ethik-Leitlinien für eine vertrauenswürdige KI.*
+  [digital-strategy.ec.europa.eu](https://digital-strategy.ec.europa.eu/en/library/ethics-guidelines-trustworthy-ai)
