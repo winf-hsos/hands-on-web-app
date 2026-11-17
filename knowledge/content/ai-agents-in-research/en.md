@@ -58,7 +58,7 @@ only produce text and cannot open a file. Then come:
 |---|---|
 | Tools | `read`, `edit`, `write`, `bash` for programs such as R or Quarto, `web search`; the model only writes down which tool it wants to call with which arguments, and the program around the model carries out the call |
 | Loop | every result goes back to the model, which thinks, acts and observes again (in research this pattern is called ReAct) |
-| Context window | everything the agent knows during a run: the goal, every file it has read, every result; it fills up with each file, and when it is full, the agent has to summarise or forget |
+| Context window | everything the agent knows during a run: the goal, every file it has read, every result; it fills up with each file, and when it is full, the agent has to summarize or forget |
 | Plan | a list the agent writes and ticks off itself, a tool like any other |
 | Instructions | text files loaded at the start: `AGENTS.md` says what the agent should know about the project, and commands are prepared instructions for recurring tasks, such as how to give feedback on a paper |
 
@@ -110,7 +110,7 @@ what it intends before you agree.
 
 ## What studies found
 
-**Feeling faster, measured slower.** In a randomised trial by METR, 16
+**Feeling faster, measured slower.** In a randomized trial by METR, 16
 experienced software developers worked on 246 real tasks in their own
 projects, each task randomly with or without AI tools as of early 2025
 (Becker et al., 2025). Beforehand they expected to be 24 % faster with AI,

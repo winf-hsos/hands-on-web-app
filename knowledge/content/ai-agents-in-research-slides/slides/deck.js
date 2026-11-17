@@ -7,7 +7,7 @@
 // "ai agents" (ai-agents-slides); here the example is a research paper in
 // Quarto instead of a knowledge base on the history of AI.
 //
-// Colours: grey for context, white for what is new on a step, blue for the
+// Colors: gray for context, white for what is new on a step, blue for the
 // language model, yellow for the loop and for what happens now, green and
 // red only for measured gains and losses.
 //
@@ -72,9 +72,9 @@ function showChatAgent(slide, step) { put("fig-chat-agent", figChatAgent(step ||
 /* ------------------------------------------------------------------ */
 /* inside an agent: one drawing, seven stages                           */
 /*   0 goal + LLM · 1 tools · 2 loop · 3 context · 4 plan              */
-/*   5 instructions · 6 everything (grey, only the loop yellow)        */
+/*   5 instructions · 6 everything (gray, only the loop yellow)        */
 /* Every stage draws all earlier ones in the same place; the new part  */
-/* is bright, the known parts are grey.                                 */
+/* is bright, the known parts are gray.                                 */
 /* ------------------------------------------------------------------ */
 function figAnatomy(stage) {
   const c = C();

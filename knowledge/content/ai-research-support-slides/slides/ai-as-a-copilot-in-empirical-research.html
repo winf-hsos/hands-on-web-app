@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="theme.css?v=1">
   <link rel="stylesheet" href="../../stagekit/stagekit.css?v=0.7.0-156254">
   <style>
-    /* deck-specific layout, colours and sizes only from the theme */
+    /* deck-specific layout, colors and sizes only from the theme */
     /* photos with a sentence on the left: photo at 64 % height */
     .slide img.photo.side { height: 64%; top: 18%; }
     .slide .photo-text.side { width: 30%; font-size: var(--normal); line-height: 1.25; }
@@ -18,14 +18,14 @@
 <body>
 <div class="deck" data-title="ai as a copilot in empirical research"
      data-subtitle="prof. dr. nicolas meseth"
-     data-parts='["where ai can help", "step by step", "where it goes wrong", "you stay the author"]'
+     data-parts='["kinds of ai", "the research process", "what is possible", "what works", "you stay the author"]'
      data-live-url="https://live.hsos.uber.space" data-live-series="ai-as-a-copilot-in-empirical-research">
 
   <section class="slide title">
-    <aside class="notes">This input is about using AI in an empirical study, from the research question to the finished paper. The one sentence to take home: an AI can do much of the work in almost every step, as long as you decide what is done and check what comes back.</aside>
+    <aside class="notes">This input is about using AI in an empirical study, from the research question to the finished paper. The one sentence to take home: AI can take on work in every phase of a study, from giving advice to doing a whole step, and what works and makes sense you decide and check yourself.</aside>
   </section>
   <section class="slide agenda">
-    <aside class="notes">Four parts: a map of the steps of a study and where AI fits in, then the steps one by one with what you ask and what you check, then what research says about where AI goes wrong, and finally the rules that keep you the author of your paper.</aside>
+    <aside class="notes">Five parts: what we mean by AI, the phases of an empirical study after a standard textbook, three levels of AI use for each phase, what studies found about what actually works, and the rules that keep you the author of your paper.</aside>
   </section>
 
   <section class="slide">
@@ -43,67 +43,115 @@
       <li>writing and polishing</li>
       <li>code and analysis</li>
     </ol>
-    <aside class="notes">Anonymous, there is no right answer. Most will have used a chat app to explain or to polish text; fewer have let it write code. Pick up the result: today covers all four, and the code part is where the checking matters most.</aside>
+    <aside class="notes">Anonymous, there is no right answer. Most will have used a chatbot to explain or to polish text; fewer have let it write code. Pick up the result: today covers all four.</aside>
   </section>
 
-  <!-- ===== part 1: where ai can help ===== -->
-  <section class="slide part" data-part="where ai can help" data-subtitle="the steps of a study">
-    <aside class="notes">First the map: the steps of a study with data that someone else has already collected, as in a secondary analysis of a survey.</aside>
+  <!-- ===== part 1: kinds of ai ===== -->
+  <section class="slide part" data-part="kinds of ai" data-subtitle="chatbots, research tools, agents">
+    <aside class="notes">First, what do we mean when we say AI? Three kinds of tools, which differ in how broad they are and what they can reach.</aside>
   </section>
 
-  <section class="slide" data-on-show="showMap" data-on-step="showMap">
-    <h2>seven steps of a study</h2>
-    <div class="figure" id="fig-map"></div>
+  <section class="slide" data-on-show="showKinds" data-on-step="showKinds">
+    <h2>three kinds of ai</h2>
+    <div class="figure" id="fig-kinds"></div>
     <span data-step="1"></span><span data-step="2"></span>
-    <aside class="notes">The first row plans the study: you find a question, read what is known about it and check which data and which columns of the codebook can answer it. The second row works with the data: you analyse, draw figures, write the paper and present it. In the last step the colours show the division of labour. In the blue steps an AI can do much of the work, such as searching, writing R code, drawing a chart or polishing a paragraph, and your job is to check it. In the white steps you decide, and an AI is at best a sparring partner: the question, the choice of data and what you stand up and say are yours. Alongside all of this there is housekeeping, such as references, file names and formatting, where an AI saves a lot of time.</aside>
+    <div class="footnote">selection after the <a href="https://www.uni-due.de/ub/ki-tools.php" target="_blank" rel="noopener">overview of ai tools of the university library duisburg-essen</a></div>
+    <aside class="notes">Chatbots such as ChatGPT, Claude, Gemini or Chat AI, the free and GDPR-compliant service of the GWDG for German universities, answer in a chat on almost any topic, and many of them can now also search the web or run a deep research. They work with what you type or upload. Research tools do one job in research and often do it better than a chatbot: Consensus and Elicit search scientific papers and summarize them, SciSpace helps you read them, Research Rabbit and Litmaps draw networks of citations, and NotebookLM answers questions about the PDFs you give it. They work with their database of papers and with your PDFs. Agents are as broad as chatbots but act on their own: OpenCode, Claude Code or Codex read and change your files, run programs and search the web until a task is done; the next input explains how. The library of the University of Duisburg-Essen keeps an overview of such tools, and the selection here follows it.</aside>
   </section>
 
-  <!-- ===== part 2: step by step ===== -->
-  <section class="slide part" data-part="step by step" data-subtitle="what you ask and what you check">
-    <aside class="notes">Now five of the steps one by one. Each slide shows one request as you could type it, on the milk survey, and the checks that turn an answer into something you can use. The requests are written so that the AI helps without taking the decision away from you.</aside>
+  <!-- ===== part 2: the research process ===== -->
+  <section class="slide part" data-part="the research process" data-subtitle="nine phases of an empirical study">
+    <aside class="notes">Where can these tools help? To answer that, we need the steps of a study first, and we take them from a standard textbook rather than inventing our own.</aside>
   </section>
 
-  <section class="slide">
+  <section class="slide" data-on-show="showPhases" data-on-step="showPhases">
+    <h2>nine phases of a study</h2>
+    <div class="figure" id="fig-phases"></div>
+    <span data-step="1"></span>
+    <div class="footnote"><a href="https://doi.org/10.1007/978-3-662-64762-2" target="_blank" rel="noopener"><span class="keep-case">Döring</span> (2023), forschungsmethoden und evaluation</a>, section 1.3.1 and chapters 5 to 13</div>
+    <aside class="notes">Nicola Döring's textbook, the German standard for research methods in the social sciences, divides a quantitative study into nine phases and gives each one a chapter. You plan the study: a topic and a question, the state of research, and the study design. You collect data: you decide how to measure each concept, whom to ask, and you collect the answers. Then you prepare and analyze the data and present the results in a paper and a talk. In a secondary analysis, as with the survey in this course, the middle row was done by the people who ran the survey; you inherit their questionnaire, sample and data, and the codebook tells you how. Your work lies in the first and the last row.</aside>
+  </section>
+
+  <section class="slide poll" data-poll="where-ai-helps-most">
+    <div class="poll-q">in which part of a study could ai take on the most work?</div>
+    <ol class="poll-opts">
+      <li>finding a question</li>
+      <li>state of research</li>
+      <li>data analysis</li>
+      <li>writing the paper</li>
+    </ol>
+    <aside class="notes">An open question, there is no right answer. Collect the result and ask two or three people why they voted as they did. The honest answer is that AI can take on a lot in every one of these, and the next part shows how much.</aside>
+  </section>
+
+  <!-- ===== part 3: what is possible ===== -->
+  <section class="slide part" data-part="what is possible" data-subtitle="three levels of ai use">
+    <aside class="notes">Now what is possible today, phase by phase. For each phase there are three levels of AI use, from an AI that only advises to an agent that does the whole step.</aside>
+  </section>
+
+  <section class="slide" data-on-show="showLevels" data-on-step="showLevels">
+    <h2>three levels of ai use</h2>
+    <div class="figure" data-levels="general"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <aside class="notes">On the first level you do the work yourself and the AI explains, suggests and gives feedback, much like a tutor. On the second level the AI makes a draft, a list of studies, a piece of code or a paragraph, and you review it, change it and decide. On the third level an agent does the whole step on its own, and your job is to check the result. The blue bar shows how much of the work moves to the AI. All three levels are possible today; whether they work and make sense is the question of the next part.</aside>
+  </section>
+
+  <section class="slide" data-on-show="showLevels" data-on-step="showLevels">
     <h2>research question</h2>
-    <div class="figure" id="fig-ask-question"></div>
-    <aside class="notes">The AI knows the codebook only if you give it to it, and then it is good at matching a question to columns. Ask it to look, not to rewrite: the last sentence of the request keeps the question yours. Then check that the columns it names really exist, and that the question still asks what you wanted to know and not what is easiest to answer.</aside>
+    <div class="figure" data-levels="question"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <aside class="notes">With the codebook at hand, an AI can say which columns fit your question, suggest questions the data can answer, or as an agent read codebook and data itself and test whether a question can be answered at all. The risk grows with the level: the more the AI picks, the more likely the question becomes the one that is easiest to answer rather than the one you wanted to ask.</aside>
   </section>
 
-  <section class="slide">
+  <section class="slide" data-on-show="showLevels" data-on-step="showLevels">
     <h2>literature</h2>
-    <div class="figure" id="fig-ask-literature"></div>
-    <aside class="notes">For the literature, ask for search terms and places to look rather than for finished references, and then search the library catalogue and a scholarly database yourself. A reference that a chat app writes down can look perfect and still not exist; part three shows how often that happened. Only what you have opened and read goes into your paper.</aside>
+    <div class="figure" data-levels="literature"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <aside class="notes">On the first level a chatbot suggests search terms and you search the library catalog and a scholarly database yourself. On the second, a research tool such as Consensus or Elicit finds studies and summarizes them, and you read the best ones. On the third, an agent searches the databases itself, if need be by steering a browser, reads the papers and writes a draft of the state of research. Whatever the level, only what you have opened and read goes into your paper.</aside>
   </section>
 
-  <section class="slide">
+  <section class="slide" data-on-show="showLevels" data-on-step="showLevels">
     <h2>analysis</h2>
-    <div class="figure" id="fig-ask-analysis"></div>
-    <aside class="notes">Writing R code is where AI helps most, and where a mistake is easiest to miss, because wrong code often runs without an error. Run the code yourself and look at what it filters: does it drop missing values, does it keep answers you meant to exclude? Then count one group by hand, for example with count(), and compare. If the numbers match, you can trust the rest a little more.</aside>
+    <div class="figure" data-levels="analysis"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <aside class="notes">You can write the R code yourself and ask an AI to explain an error, let it write the code and run it yourself, or let an agent write, run and fix the code and report the results. Wrong code often runs without an error, so at every level you look at what the code filters and how it treats missing values, and you count one group by hand.</aside>
   </section>
 
-  <section class="slide">
+  <section class="slide" data-on-show="showLevels" data-on-step="showLevels">
     <h2>figures</h2>
-    <div class="figure" id="fig-ask-figures"></div>
-    <aside class="notes">An AI is good at the craft of a chart: sorting, labelling, colours. The request says what to change and that the data stay as they are. Check that the chart still shows the answer to your question, that bars start at zero, and that the labels say what you mean, in words your readers understand.</aside>
+    <div class="figure" data-levels="figures"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <aside class="notes">An AI is good at the craft of a chart: sorting, labeling, colors. It can comment on your chart, write the ggplot2 code for you, or as an agent draw all charts and put them into the paper. You check that each chart still answers your question, that bars start at zero and that the labels are in your words.</aside>
   </section>
 
-  <section class="slide">
+  <section class="slide" data-on-show="showLevels" data-on-step="showLevels">
     <h2>writing</h2>
-    <div class="figure" id="fig-ask-writing"></div>
-    <aside class="notes">For writing, ask for feedback rather than for text. A list of what is missing in your methods section is something you can check point by point, accept or reject. If you let it rewrite, read every sentence as if you had written it, because you will answer for it, and watch for claims it added without a source.</aside>
+    <div class="figure" data-levels="writing"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <aside class="notes">An AI can give feedback on your text, draft a section from your notes, or as an agent write the whole paper from data and sources. The third level is possible today, and it is exactly where the question "what makes sense?" is most pressing: a paper is the record of your thinking, and you answer for every sentence in it.</aside>
   </section>
 
-  <!-- ===== part 3: where it goes wrong ===== -->
-  <section class="slide part" data-part="where it goes wrong" data-subtitle="what studies found">
-    <aside class="notes">Why all this checking? Two studies show where AI goes wrong, and both found it in places where the answers looked convincing.</aside>
+  <section class="slide poll" data-poll="level-for-analysis">
+    <div class="poll-q">how far would you go with ai for the analysis in your paper?</div>
+    <ol class="poll-opts">
+      <li>no ai</li>
+      <li>ai advises</li>
+      <li>ai drafts, i review</li>
+      <li>ai does it, i check</li>
+    </ol>
+    <aside class="notes">Again an open question. Ask someone who chose level three how they would check the result, and someone who chose no AI what would change their mind. This leads straight to the next part: what is possible is one question, and what works and makes sense is another.</aside>
+  </section>
+
+  <!-- ===== part 4: what works ===== -->
+  <section class="slide part" data-part="what works" data-subtitle="what studies found">
+    <aside class="notes">What is possible is not the same as what works. Studies show where AI goes wrong, and they found it in places where the answers looked convincing.</aside>
   </section>
 
   <section class="slide has-punch">
     <h2>the jagged frontier</h2>
     <div class="figure" id="fig-frontier"></div>
-    <div class="footnote"><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4573321" target="_blank" rel="noopener"><span class="keep-case">Dell'Acqua et al.</span> (2023), navigating the jagged technological frontier, <span class="keep-case">HBS</span> working paper 24-013</a>: 758 consultants, <span class="keep-case">GPT-4</span></div>
-    <div class="punch">from the inside you cannot see where the frontier runs, so you check every answer, the convincing ones too.</div>
-    <aside class="notes">In a field experiment at the Boston Consulting Group, 758 consultants worked on realistic tasks, some with GPT-4 and some without. On tasks the model handles well, inside the frontier, the group with AI finished 12.2 percent more tasks, was 25.1 percent faster and delivered work of more than 40 percent higher quality. On a task just outside the frontier, which looked similar, the group with AI was 19 percentage points less likely to reach the correct answer than the group without. The frontier is jagged: tasks that look alike can lie on different sides of it, and nothing tells you on which side you are.</aside>
+    <div class="footnote"><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4573321" target="_blank" rel="noopener"><span class="keep-case">Dell'Acqua, Mollick et al.</span> (2023), <span class="keep-case">HBS</span> working paper 24-013</a>: 758 consultants, <span class="keep-case">GPT-4</span>; the term also in <span class="keep-case">Mollick, Co-Existence</span> (2026)</div>
+    <div class="punch">from the inside you cannot see where the frontier runs, so what looks possible still has to be checked.</div>
+    <aside class="notes">In a field experiment at the Boston Consulting Group, 758 consultants worked on realistic tasks, some with GPT-4 and some without. On tasks inside the frontier of what the model handles well, the group with AI finished 12.2 percent more tasks, was 25.1 percent faster and delivered work of more than 40 percent higher quality. On a similar-looking task just outside the frontier, the group with AI was 19 percentage points less likely to reach the correct answer. Ethan Mollick, one of the authors, coined the term jagged frontier for this and builds on it in his books Co-Intelligence and Co-Existence: AI is sometimes, but not always, better than you, and tasks that look alike can lie on different sides of the line. The frontier has moved a lot since 2023, but it is still jagged.</aside>
   </section>
 
   <section class="slide has-punch">
@@ -111,7 +159,15 @@
     <div class="figure" id="fig-references"></div>
     <div class="footnote"><a href="https://doi.org/10.1038/s41598-023-41032-5" target="_blank" rel="noopener"><span class="keep-case">Walters &amp; Wilder</span> (2023), <span class="keep-case">Scientific Reports</span> 13, 14045</a>: 636 references in 84 short literature reviews</div>
     <div class="punch">a reference that looks real is not a reference you have read.</div>
-    <aside class="notes">Walters and Wilder had two models write short literature reviews on 42 topics and checked all 636 references. With GPT-3.5, 55 percent did not exist at all; with GPT-4 it was 18 percent. Of the references that did exist, many had wrong authors, years or pages. Newer models and agents that search the web make fewer such mistakes, but the problem has not gone away, and a made-up reference is one of the clearest signs that nobody checked.</aside>
+    <aside class="notes">Walters and Wilder had two models write short literature reviews on 42 topics and checked all 636 references. With GPT-3.5, 55 percent did not exist at all; with GPT-4 it was 18 percent. Of the references that did exist, many had wrong authors, years or pages. These are the models of 2023, and for the newest models no comparable measurement has been published yet, so the next slide shows what we know from 2026.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>made-up references in 2026</h2>
+    <div class="figure" id="fig-refs-2026"></div>
+    <div class="footnote"><a href="https://doi.org/10.1016/S0140-6736(26)00603-3" target="_blank" rel="noopener"><span class="keep-case">Topaz et al.</span> (2026), <span class="keep-case">The Lancet</span> 407</a>: 2.5 million papers · <a href="https://arxiv.org/abs/2604.03173" target="_blank" rel="noopener"><span class="keep-case">Rao et al.</span> (2026)</a>: 221,000 cited links</div>
+    <div class="punch">made-up references still turn up, in ai answers and in published papers, so you open every one you cite.</div>
+    <aside class="notes">Two studies from 2026. An audit of 2.5 million biomedical papers in The Lancet checked their references against PubMed, Crossref and other databases: in 2023, one paper in 2,828 cited a reference that does not exist, in 2025 one in 458, and in the first seven weeks of 2026 one in 277. The authors cannot prove that AI wrote these references, but the rise follows the spread of chatbots. A second study checked more than 200,000 links that AI systems cited as sources: of the links from two deep research agents, 10.7 percent led nowhere and had never existed, from eight models with web search 4.8 percent. These two numbers come from systems of 2025 such as GPT-4.1, Claude 3.7 Sonnet and Gemini 2.5; for GPT-5.1 and Claude Sonnet 4.5 the same study found 8 to 9 percent of cited links that did not resolve, without separating made-up links from merely dead ones. For the very newest models there are no such numbers yet. The models got better, but the problem did not go away, and a deep research mode that cites more sources also invents more of them.</aside>
   </section>
 
   <section class="slide poll" data-poll="doi-from-ai">
@@ -125,9 +181,9 @@
     <aside class="notes">Open it through the DOI and read it. A DOI can be made up as well, or lead to a different paper. Asking the AI whether the study is real tells you nothing, because it answers just as confidently either way. Leaving it out is safe but wastes a possibly good source.</aside>
   </section>
 
-  <!-- ===== part 4: you stay the author ===== -->
+  <!-- ===== part 5: you stay the author ===== -->
   <section class="slide part" data-part="you stay the author" data-subtitle="three rules">
-    <aside class="notes">Last part: three rules that hold whatever tool you use, and a simple way to document how you used it.</aside>
+    <aside class="notes">Last part: three rules that hold whatever tool and whatever level you choose, and a simple way to document how you used AI.</aside>
   </section>
 
   <section class="slide">
@@ -139,33 +195,26 @@
         <div data-step="2">nothing personal goes into the chat: no names, no free-text answers with personal details.</div>
       </div>
     </div>
-    <aside class="notes">First: your name is on the paper, so every sentence, number and figure is yours, including those an AI produced. Second: say how you used AI, for which parts and how you checked the results; the next slide shows a simple table for it. Third: what you type or upload leaves your computer and goes to the provider's servers. Names of respondents, free-text answers with personal details and anything else that identifies a person stay out, and so do PDFs whose licence does not allow it.</aside>
+    <aside class="notes">First: your name is on the paper, so every sentence, number and figure is yours, including those an AI produced, whatever the level. Second: say how you used AI, for which parts and how you checked the results; the next slide shows a simple table for it. Third: what you type or upload leaves your computer and goes to the provider's servers. Names of respondents, free-text answers with personal details and anything else that identifies a person stay out, and so do PDFs whose license does not allow it.</aside>
   </section>
 
   <section class="slide">
     <h2>write down how you used ai</h2>
-    <div class="content">
-      <table class="tt keep-case">
-        <tr><th>tool and model</th><th>what for</th><th>where</th><th>how checked</th></tr>
-        <tr><td>agent (model)</td><td>r code for figure 2</td><td>results</td><td>ran it, counted n by hand</td></tr>
-        <tr><td>chat app (model)</td><td>search terms</td><td>introduction</td><td>searched the library</td></tr>
-        <tr><td>agent (model)</td><td>feedback on structure</td><td>methods</td><td>took 2 of 5 points</td></tr>
-      </table>
-    </div>
-    <aside class="notes">One row per use: which tool with which model, what for, in which section, and how you checked the result. The last column is the important one, because it shows that you stayed the author. Such a table fits in an appendix of your paper and takes a minute per row if you fill it in as you go.</aside>
+    <div class="figure" id="fig-use-table"></div>
+    <aside class="notes">One row per use: which tool with which model, what for, in which section, and how you checked the result. The last column is the one that counts, because it shows that you stayed the author. Such a table fits in an appendix of your paper and takes a minute per row if you fill it in as you go.</aside>
   </section>
 
   <section class="slide">
     <div class="content">
-      <div class="statement">an ai can do much of the work in almost every step of a study, as long as you decide what is done and check what comes back.</div>
+      <div class="statement">ai can take on work in every phase of a study, from advice to the whole step, and what works and makes sense you decide and check yourself.</div>
     </div>
-    <aside class="notes">That is the whole message in one sentence. The map shows where AI fits in, the requests show how to ask so that the decision stays with you, and the checks turn an answer into something you can put your name under.</aside>
+    <aside class="notes">That is the whole message in one sentence. The three kinds of AI and the three levels show what is possible, the studies show that possible is not the same as reliable, and the rules keep you the author.</aside>
   </section>
 
 </div>
 <script src="../../stagekit/draw.js?v=0.7.0-156254"></script>
 <script src="../../stagekit/anim.js?v=0.7.0-156254"></script>
-<script src="deck.js?v=1"></script>
+<script src="deck.js?v=2"></script>
 <script src="../../stagekit/stagekit.js?v=0.7.0-156254"></script>
 </body>
 </html>

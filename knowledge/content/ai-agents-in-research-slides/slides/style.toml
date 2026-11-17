@@ -1,6 +1,6 @@
 # Style of the decks of Hands-on Data Science: black slides, the area's dark
 # blue (#3d8fc4 on dark, #0b6aa2 on light, as on the platform) for references
-# and accents. [colors.groups] are the colours of R's vector types in this
+# and accents. [colors.groups] are the colors of R's vector types in this
 # deck: double orange, character purple, integer teal; logical is yellow.
 [colors]
 background = "000000"

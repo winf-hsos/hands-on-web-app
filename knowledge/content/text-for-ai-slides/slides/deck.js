@@ -3,7 +3,7 @@
 // so text sizes come out as written (20, 32, 48, 80). Figures are 660 high on
 // slides with a punchline and 804 without.
 //
-// Colours: grey for context, white for what you read first, blue for the
+// Colors: gray for context, white for what you read first, blue for the
 // language model and for text files, yellow for the line that matters now.
 // Green and red judge (pros and cons, checks and crosses) and, in the diff,
 // mark the added and the removed line as every diff tool does.

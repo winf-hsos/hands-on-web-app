@@ -35,7 +35,7 @@ environment in a loop.
 
 One drawing is built up in seven stages, with the goal of getting feedback on
 the introduction of a paper. The new part of each stage is bright, the known
-parts are grey.
+parts are gray.
 
 **The goal and the model (frames 9–11).** At the start there is a goal and a
 language model, which on its own can only produce text. Then come the tools
@@ -76,7 +76,7 @@ start is to let it ask and to read what it wants to do before you say yes.
 
 ## Part 4: what studies found (frames 25–31)
 
-**Feeling faster, measured slower (frame 26).** In a randomised trial by METR
+**Feeling faster, measured slower (frame 26).** In a randomized trial by METR
 (Becker et al., 2025), 16 experienced developers worked on 246 real tasks in
 their own projects, each task randomly with or without early-2025 AI tools.
 Beforehand they expected to be 24 percent faster with AI, afterwards they

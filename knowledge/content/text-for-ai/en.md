@@ -9,7 +9,7 @@ objectives:
   goals:
     - "explain why a language model can read a text file directly but has to unpack a Word file first"
     - "read a change as a diff and say why this works for text and not for Word"
-    - "recognise heading, bold, formula and citation in Quarto, Typst and LaTeX"
+    - "recognize heading, bold, formula and citation in Quarto, Typst and LaTeX"
     - "describe how a text source becomes a PDF, HTML or Word file"
     - "explain why a number from code cannot slip into the text wrongly, neither by you nor by an AI"
 translation_of: de
