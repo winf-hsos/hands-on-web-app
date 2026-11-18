@@ -35,6 +35,11 @@ ChatGPT works inside, but the question it answers and the way it writes, one
 word at a time drawn from a distribution, are the same, and so are several of
 its problems.
 
+The slides follow the experiment step by step and explain each idea at the
+place where you meet it.
+
+![Slides: Word distributions](item:a-language-model-by-counting-slides)
+
 ## What you need
 
 - The [word cards](media/word-cards.pdf), printed and cut, and an envelope or
