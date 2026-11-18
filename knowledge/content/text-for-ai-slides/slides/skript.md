@@ -105,7 +105,7 @@ Typst into one PDF. Every file is text, so an agent can read the whole
 report, check one section against another and change a single line, and you
 see every change before it is made.
 
-## Part 5: meet the AI where it lives (frames 30–32)
+## Part 5: meet the AI where it lives (frames 30–33)
 
 **An agent works in the terminal (frame 31).** An AI agent types a command,
 reads what comes back and decides on the next step. Quarto, Typst and LaTeX
@@ -125,10 +125,21 @@ writes a diagram as text, which GitHub, Quarto and Excalidraw draw. FFmpeg
 cuts, converts and joins videos and audio with a single command, without an
 editing program, which is why an agent can prepare a video as easily as a
 paper. A CSV file is a table as plain text, while an .xlsx file is a packed
-bundle like a .docx. And this deck is itself an HTML file and a script, so an
-AI can build and change it like a paper in Quarto.
+bundle like a .docx. An SVG file is a vector graphic as text, which an AI can
+write and change line by line. And this deck is itself an HTML file and a
+script, so an AI can build and change it like a paper in Quarto.
 
-**Closing (frame 33).** The picture closes the circle of the opening: the
+**A drawing is text too (frame 33).** One small drawing, a box "paper.qmd"
+with an arrow to a box "paper.pdf", appears in two text formats. On the left
+it is an Excalidraw file: JSON with one entry per element, a rectangle with
+its position and size, a text that sits in the rectangle and an arrow with
+its points. Real files add colors, a seed for the hand-drawn look and a
+version to every element, which the slide leaves out. On the right the same
+drawing is SVG, the vector format of the web, with a rectangle, a text and a
+line with an arrowhead; every figure in this deck is SVG, written by a
+script. An agent can draw by writing text, and you can read what it drew.
+
+**Closing (frame 34).** The picture closes the circle of the opening: the
 parcel is open and empty, and a human hand and a robotic hand write in the
 same open notebook. Write your report as text, because then an AI can read,
 change and check it the same way you do.

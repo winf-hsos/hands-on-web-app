@@ -204,8 +204,42 @@ bringen eine Kommandozeile mit:
   Audio mit einem einzigen Befehl, ohne Schnittprogramm.
 - Eine .csv-Datei ist eine Tabelle als reiner Text, während eine .xlsx-Datei
   ein gepacktes Bündel ist wie eine .docx.
+- Eine .svg-Datei ist eine Vektorgrafik als Text, die eine KI Zeile für
+  Zeile schreiben und ändern kann.
 - Die Folien dieser Lektion sind eine HTML-Datei und ein Skript, also kann
   eine KI sie bauen und ändern wie ein Paper in Quarto.
+
+Auch eine Zeichnung ist Text. Hier eine kleine Zeichnung, ein Kasten
+„paper.qmd“ mit einem Pfeil zu einem Kasten „paper.pdf“, als
+Excalidraw-Datei, gekürzt, weil echte Dateien jedem Element noch Farben,
+einen Startwert für den handgezeichneten Strich und eine Version mitgeben:
+
+```json
+{
+  "type": "excalidraw",
+  "elements": [
+    { "id": "box-1", "type": "rectangle",
+      "x": 0, "y": 0, "width": 240, "height": 100 },
+    { "type": "text", "text": "paper.qmd", "containerId": "box-1" },
+    { "type": "arrow", "x": 240, "y": 50, "points": [[0, 0], [160, 0]] }
+  ]
+}
+```
+
+Und dieselbe Zeichnung als SVG, ohne die Definition der Pfeilspitze:
+
+```xml
+<svg viewBox="0 0 640 100">
+  <rect x="0" y="0" width="240" height="100"/>
+  <text x="120" y="58">paper.qmd</text>
+  <line x1="240" y1="50" x2="400" y2="50" marker-end="url(#arrow)"/>
+  <rect x="400" y="0" width="240" height="100"/>
+  <text x="520" y="58">paper.pdf</text>
+</svg>
+```
+
+Ein Agent kann also ein Diagramm zeichnen, indem er diese Zeilen schreibt,
+und du kannst lesen und ändern, was er gezeichnet hat.
 
 ## Zum Mitnehmen
 

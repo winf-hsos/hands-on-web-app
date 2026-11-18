@@ -190,8 +190,42 @@ bring a command line:
   with a single command, without an editing program.
 - A .csv file is a table as plain text, while an .xlsx file is a packed
   bundle like a .docx.
+- An .svg file is a vector graphic as text, which an AI can write and change
+  line by line.
 - The slides of this lesson are an HTML file and a script, so an AI can
   build and change them like a paper in Quarto.
+
+A drawing is text too. Here is a small drawing, a box "paper.qmd" with an
+arrow to a box "paper.pdf", as an Excalidraw file, shortened, because real
+files add colors, a seed for the hand-drawn look and a version to every
+element:
+
+```json
+{
+  "type": "excalidraw",
+  "elements": [
+    { "id": "box-1", "type": "rectangle",
+      "x": 0, "y": 0, "width": 240, "height": 100 },
+    { "type": "text", "text": "paper.qmd", "containerId": "box-1" },
+    { "type": "arrow", "x": 240, "y": 50, "points": [[0, 0], [160, 0]] }
+  ]
+}
+```
+
+And the same drawing as SVG, without the definition of the arrowhead:
+
+```xml
+<svg viewBox="0 0 640 100">
+  <rect x="0" y="0" width="240" height="100"/>
+  <text x="120" y="58">paper.qmd</text>
+  <line x1="240" y1="50" x2="400" y2="50" marker-end="url(#arrow)"/>
+  <rect x="400" y="0" width="240" height="100"/>
+  <text x="520" y="58">paper.pdf</text>
+</svg>
+```
+
+An agent can therefore draw a diagram by writing these lines, and you can
+read and change what it drew.
 
 ## Takeaways
 

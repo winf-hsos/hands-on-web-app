@@ -127,7 +127,14 @@
   <section class="slide">
     <h2>the same idea elsewhere</h2>
     <div class="figure" id="fig-elsewhere"></div>
-    <aside class="notes">More and more tools follow the same idea. Excalidraw keeps every drawing as JSON text and publishes an official command line interface "for humans and agents", which renders drawings and turns Mermaid text into editable drawings. Mermaid writes a diagram as text, and GitHub, Quarto and Excalidraw draw it. Marimo saves a notebook as a plain Python file instead of a JSON file with outputs and images inside. The GitHub CLI brings issues, pull requests and releases to the terminal. A CSV file is a table as plain text, while an .xlsx file is a packed bundle like a .docx. And this deck itself is an HTML file and a script, so an AI can build and change it in the same way as a paper in Quarto.</aside>
+    <aside class="notes">More and more tools follow the same idea. Excalidraw keeps every drawing as JSON text and publishes an official command line interface "for humans and agents", which renders drawings and turns Mermaid text into editable drawings. Mermaid writes a diagram as text, and GitHub, Quarto and Excalidraw draw it. Marimo saves a notebook as a plain Python file instead of a JSON file with outputs and images inside. The GitHub CLI brings issues, pull requests and releases to the terminal. A CSV file is a table as plain text, while an .xlsx file is a packed bundle like a .docx. An SVG file is a vector graphic as text, which an AI can write and change line by line. And this deck itself is an HTML file and a script, so an AI can build and change it in the same way as a paper in Quarto.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>a drawing is text too</h2>
+    <div class="figure" id="fig-drawing-text"></div>
+    <div class="punch">an agent can draw by writing text, and you can read what it drew.</div>
+    <aside class="notes">One small drawing, two text formats. On the left the drawing as an Excalidraw file: JSON with one entry per element, a rectangle with its position and size, a text that sits in the rectangle, an arrow with its points. Real files add colors, a seed for the hand-drawn look and a version to every element, which is left out here. On the right the same drawing as SVG, the vector format of the web: a rectangle, a text, a line with an arrowhead. Every figure in this deck is SVG, written by a script. Both formats are text, so an agent can draw a diagram by writing these lines, Excalidraw's command line renders the file, and you can read and change what it drew.</aside>
   </section>
 
   <section class="slide">
@@ -140,7 +147,7 @@
 </div>
 <script src="../../stagekit/draw.js?v=0.7.0-156254"></script>
 <script src="../../stagekit/anim.js?v=0.7.0-156254"></script>
-<script src="deck.js?v=3"></script>
+<script src="deck.js?v=4"></script>
 <script src="../../stagekit/stagekit.js?v=0.7.0-156254"></script>
 </body>
 </html>

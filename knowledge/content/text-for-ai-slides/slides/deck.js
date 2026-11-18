@@ -410,6 +410,7 @@ const ELSEWHERE = [
   ["mermaid", "https://mermaid.js.org", "a diagram written as text, drawn by\ngithub, quarto and excalidraw"],
   ["ffmpeg", "https://ffmpeg.org", "videos and audio cut, converted and\njoined with one command"],
   [".csv", null, "a table as plain text\ninstead of a packed .xlsx file"],
+  [".svg", null, "a vector graphic as text, which an ai\ncan write and change line by line"],
   ["this deck", null, "slides as an html file and a script,\nso an ai can build and change them"],
 ];
 function figElsewhere() {
@@ -423,6 +424,55 @@ function figElsewhere() {
     parts.push(d.label(x, 0, what, { size: 32, color: c.light, centerY: y + 100 }));
   });
   return d.svg(1680, 720, ...parts);
+}
+
+/* ------------------------------------------------------------------ */
+/* A drawing is text too: one small drawing, then the same drawing as   */
+/* an Excalidraw file (shortened: real files add styles, seeds and      */
+/* versions to every element) and as SVG. The coordinates in both texts */
+/* are the ones of the drawing above, shifted to start at 0.            */
+/* ------------------------------------------------------------------ */
+const EXCALIDRAW_JSON = [
+  '{',
+  '  "type": "excalidraw",',
+  '  "elements": [',
+  '    { "id": "box-1", "type": "rectangle",',
+  '      "x": 0, "y": 0, "width": 240, "height": 100 },',
+  '    { "type": "text", "text": "paper.qmd",',
+  '      "containerId": "box-1" },',
+  '    { "type": "arrow", "x": 240, "y": 50,',
+  '      "points": [[0, 0], [160, 0]] },',
+  '    …',
+  '  ]',
+  '}',
+];
+const SVG_TEXT = [
+  '<svg viewBox="0 0 640 100">',
+  '  <defs>…</defs>',
+  '  <rect x="0" y="0" width="240" height="100"/>',
+  '  <text x="120" y="58">paper.qmd</text>',
+  '  <line x1="240" y1="50" x2="400" y2="50"',
+  '        marker-end="url(#arrow)"/>',
+  '  <rect x="400" y="0" width="240" height="100"/>',
+  '  <text x="520" y="58">paper.pdf</text>',
+  '</svg>',
+];
+function figDrawingText() {
+  const c = C();
+  const wires = [], boxes = [], labels = [];
+  const X = 520;   // the drawing, 640 wide, centered
+  boxes.push(d.box(X, 10, 240, 100, "paper.qmd", { border: c.white, mono: true, keepCase: true }));
+  boxes.push(d.box(X + 400, 10, 240, 100, "paper.pdf", { border: c.white, mono: true, keepCase: true }));
+  wires.push(d.arrow(X + 240, 60, X + 396, 60, { color: c.white, width: 2 }));
+  const col = (x, title, sub, lines) => {
+    labels.push(d.label(x, 0, title, { size: 32, color: c.blue, mono: true, keepCase: true, centerY: 190 }));
+    labels.push(d.label(x + title.length * 19.2 + 24, 0, sub, { size: 20, color: c.gray, centerY: 192 }));
+    // monoLine keeps the leading spaces, so the indentation shows
+    lines.forEach((l, i) => labels.push(monoLine(x, 250 + i * 30, 20, [[l, c.light]])));
+  };
+  col(0, ".excalidraw", "json, shortened", EXCALIDRAW_JSON);
+  col(900, ".svg", "shortened", SVG_TEXT);
+  return d.svg(1680, 620, ...d.layers(wires, boxes, labels));
 }
 
 // drawn at once, before stagekit.js builds the frames
@@ -439,4 +489,5 @@ put("fig-inline", figInline(0));
 put("fig-report", figReport(0));
 put("fig-cli", figCli());
 put("fig-elsewhere", figElsewhere());
+put("fig-drawing-text", figDrawingText());
 Object.assign(window, { showDocx, showInline, showReport });
