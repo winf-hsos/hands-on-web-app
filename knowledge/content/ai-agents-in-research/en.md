@@ -3,18 +3,18 @@ title: What is an AI agent?
 summary: >-
   What sets an AI agent apart from a chatbot, what it is made of, how it gives
   feedback on the introduction of a paper in Quarto step by step and asks
-  before every change, what studies found about benefits and risks, and which
-  rules apply when you work with one.
+  before every change, how long the tasks are that agents finish today, and
+  which risks working with one brings and what helps against each.
 objectives:
   intro: "In this lesson you learn what makes an AI agent and how to work with one on a paper, and afterwards you can:"
   goals:
     - "explain the difference between a chatbot and an agent with the working definition of an agent that runs tools in a loop to achieve a goal"
     - "name the parts of an agent and say what the harness around the language model takes care of"
     - "read the log of an agent run and tell when it only reads and when it wants to change something"
-    - "use three studies to explain why you judge an agent by what it delivers and make analysis decisions yourself"
-    - "apply five rules for working with an agent on a paper"
+    - "use METR's time horizon to judge how long the tasks are that agents finish today and how often they fail at them"
+    - "name the risks of working with an agent and apply a countermeasure to each"
 translation_of: de
-based_on: 2026-11-17
+based_on: 2026-11-18
 ---
 
 ![Slides: What is an AI agent?](item:ai-agents-in-research-slides)
@@ -60,14 +60,14 @@ only produce text and cannot open a file. Then come:
 | Loop | every result goes back to the model, which thinks, acts and observes again (in research this pattern is called ReAct) |
 | Context window | everything the agent knows during a run: the goal, every file it has read, every result; it fills up with each file, and when it is full, the agent has to summarize or forget |
 | Plan | a list the agent writes and ticks off itself, a tool like any other |
-| Instructions | text files loaded at the start: `AGENTS.md` says what the agent should know about the project, and commands are prepared instructions for recurring tasks, such as how to give feedback on a paper |
+| Instructions | text files loaded at the start: `AGENTS.md` says what the agent should know about the project, skills say how you want certain things done and are loaded only when a task needs them, and commands are prepared instructions for what you often need, such as feedback on a paper |
 
 What turns a language model into an agent is the loop.
 
 Everything around the model is called the **harness**, like the harness that
 hitches a horse to a cart: the model provides the power, the harness steers
 it. The harness runs the loop, carries out the tool calls, manages the
-context window, loads the plan, `AGENTS.md` and commands, and asks you for
+context window, loads `AGENTS.md`, skills and commands, and asks you for
 permission. OpenCode, Claude Code and Codex are harnesses, and many of them
 let you choose the model. An AI agent is therefore a language model plus a
 harness.
@@ -108,52 +108,45 @@ changes a file or runs a command in the shell. You can loosen this, for
 example always allow R, but the safest start is to let it ask and to read
 what it intends before you agree.
 
-## What studies found
+## How far agents get
 
-**Feeling faster, measured slower.** In a randomized trial by METR, 16
-experienced software developers worked on 246 real tasks in their own
-projects, each task randomly with or without AI tools as of early 2025
-(Becker et al., 2025). Beforehand they expected to be 24 % faster with AI,
-afterwards they believed they had been 20 % faster, and measured they took
-19 % longer. The tools have improved since, and in February 2026 METR wrote
-that newer data hint at a speed-up but can no longer be measured reliably
-with this study design (METR, 2026). What remains is the gap between feeling
-and measuring: judge an agent by what it delivers.
+**How long the tasks are that agents finish.** METR measures the time
+horizon of agents: the length of a task, measured as the time a human expert
+needs, at which an agent succeeds half the time, and the shorter length at
+which it succeeds four times out of five (METR, 2026).
 
-**Agents stop at simple analyses.** The BLADE benchmark (Gu et al., 2024)
-gives models and agents 12 data sets with questions from published studies
-and compares their analysis decisions with those of experts: which
-variables, how they are transformed, which model. The models mostly chose
-basic analyses; agents that could work with the data did better but still
-made fewer and less varied decisions than the experts. So let an agent write
-and run the code, but decide yourself which variables, which groups and
-which method.
+| Model | released | succeeds half the time | succeeds four out of five |
+|---|---|---|---|
+| GPT-4 | March 2023 | 4 min | 1 min |
+| Claude 3.7 Sonnet | February 2025 | 1 h | 12 min |
+| GPT-5 | August 2025 | 3.4 h | 38 min |
+| Claude Opus 4.6 | February 2026 | 12 h | 70 min |
+| Claude Mythos Preview | April 2026 | 17 h | 3.1 h |
 
-**Instructions hidden in what it reads.** A language model cannot reliably
-tell your instructions apart from text it reads along the way. Greshake et
-al. (2023) showed that a web page or a document can contain hidden
-instructions that make an assistant do something else, such as sending data
-somewhere. This is called indirect prompt injection, and there is no
-complete protection against it yet. That is one more reason to keep the
-permissions strict and to read what an agent intends before you allow it.
+Since 2023 the time horizon has doubled about every four months. The tasks
+come from software engineering, machine learning and IT security, are well
+specified and scored automatically, and METR itself calls values above 16
+hours unreliable with its current tasks. For your paper this means that an
+agent can do long stretches of work on its own but fails at a good share of
+them, so what it delivers is a draft you check.
 
-So when an agent reports "I fixed the analysis, everything runs", you read
-the change and run the code yourself. That code runs says nothing about
-whether it computes the right thing, and asking the agent whether it is sure
-only gets you another confident answer.
+**What can go wrong, and what helps.**
 
-## Five rules
+| Risk | What helps |
+|---|---|
+| It deletes or overwrites files. | Work in a Git repository or on a copy. |
+| It runs a harmful command. | Approve every command it runs. |
+| It follows instructions hidden in a web page or a file (indirect prompt injection, Greshake et al., 2023), and there is no complete protection against this yet. | Read what it wants to do before you allow it. |
+| Its code runs but computes the wrong thing. | Check one number by hand. |
+| It cites sources that do not exist. | Open every reference you cite. |
+| Personal data leave your computer, because what it reads goes to the provider of the model. | Keep personal data out of the folder. |
+| It settles for basic analyses (Gu et al., 2024). | Decide on variables and method yourself. |
+| You no longer know your own paper. | Read every change before you accept it. |
 
-1. Give the agent a goal and the context it needs: what the paper is about,
-   which file, what you want back.
-2. Let it ask before it changes a file or runs a program.
-3. Read every change before you accept it.
-4. Run the code yourself and check one number by hand.
-5. Keep personal data out, and answer for the result yourself.
-
-Whatever an agent does in your folder, it does on your behalf: names,
-free-text answers with personal details and files you may not share stay
-out, and the paper stays yours.
+When an agent reports "I fixed the analysis, everything runs", you therefore
+read the change and run the code yourself, because running code says nothing
+about whether it computes the right thing. Whatever an agent does in your
+folder, it does on your behalf, and the paper stays yours.
 
 ## Takeaways
 
@@ -161,22 +154,20 @@ out, and the paper stays yours.
   answers, and the next step is yours.
 - An agent is a language model plus a harness, and the harness decides what
   the agent may do without asking.
-- Reading may be free, while changing and running should wait for your yes.
-- Feeling faster is not the same as being faster, and which analysis is run
-  is your decision.
-- What an agent reads can steer it, so you read what it intends.
+- Reading is free, while changing and running should wait for your yes.
+- Agents now finish tasks that take an expert many hours, but only half the
+  time, so you check what they deliver.
+- Every risk has a countermeasure, and the most important one is to read
+  every change before you accept it.
 
 ## Sources
 
 - Anthropic (2024). [Building effective agents](https://www.anthropic.com/engineering/building-effective-agents).
-- Becker, J. et al. (2025). *Measuring the impact of early-2025 AI on
-  experienced open-source developer productivity.* METR.
-  [arXiv:2507.09089](https://arxiv.org/abs/2507.09089)
 - Greshake, K. et al. (2023). *Not what you've signed up for: Compromising
   real-world LLM-integrated applications with indirect prompt injection.*
   [arXiv:2302.12173](https://arxiv.org/abs/2302.12173)
 - Gu, K. et al. (2024). BLADE: Benchmarking language model agents for
   data-driven science. *Findings of EMNLP 2024.*
   [arXiv:2408.09667](https://arxiv.org/abs/2408.09667)
-- METR (2026). [Update on the productivity study, 24 February 2026](https://metr.org/blog/2026-02-24-uplift-update/).
+- METR (2026). [Task-completion time horizons of frontier AI models](https://metr.org/time-horizons/), Time Horizon 1.1, last updated 8 September 2026; values from the [raw data](https://metr.org/assets/benchmark_results_1_1.yaml).
 - Willison, S. (2025). [I think "agent" may finally have a widely enough agreed upon definition to be useful jargon now](https://simonwillison.net/2025/Sep/18/agents/).

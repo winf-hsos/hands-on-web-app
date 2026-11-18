@@ -18,14 +18,13 @@
 <body>
 <div class="deck" data-title="what is an <span class='keep-case'>AI</span> agent?"
      data-subtitle="prof. dr. nicolas meseth"
-     data-parts='["chatbot or agent", "inside an agent", "an agent at work", "what studies found", "working with an agent"]'
-     data-live-url="https://live.hsos.uber.space" data-live-series="what-is-an-ai-agent">
+     data-parts='["chatbot or agent", "inside an agent", "an agent at work", "how far agents get"]'>
 
   <section class="slide title">
     <aside class="notes">What an AI agent is, how it differs from a chatbot such as ChatGPT or Claude in the browser, and what that means when it works on your research paper. The one sentence to take home: an agent is a language model that runs tools in a loop until a goal is reached, so it can act in your folder, and that makes it useful and makes you responsible for every step it takes.</aside>
   </section>
   <section class="slide agenda">
-    <aside class="notes">Five parts: the difference to a chatbot, what an agent is made of, one run of an agent on a paper in Quarto, what studies found about working with agents, and the rules for working with one.</aside>
+    <aside class="notes">Four parts: the difference to a chatbot, what an agent is made of, one run of an agent on a paper in Quarto, and how far agents get today, with the risks of working with one and what helps against each.</aside>
   </section>
 
   <section class="slide">
@@ -44,7 +43,7 @@
     <h2>chatbot and agent</h2>
     <div class="figure" id="fig-chat-agent"></div>
     <span data-step="1"></span>
-    <aside class="notes">With a chatbot you write a prompt, the model writes an answer, and the next step is yours: you copy the R code into your script, run it, and paste the error message back. With an agent you give a goal, and the model calls tools itself, looks at the results and carries on until the goal is reached: it reads your script, runs it, sees the error and fixes it. Under the hood it can be the same language model; the difference is what is built around it.</aside>
+    <aside class="notes">With a chatbot you write a prompt, the model writes an answer, and the next step is yours: you copy the R code into your script, run it, and paste the error message back. With an agent you give a goal, and the model calls tools itself, looks at the results and carries on until the goal is reached: it reads your script, runs it, sees the error and fixes it. The loop between model and tools sits below the model, and at the end there is a result, as at the end of the chatbot there is an answer. Under the hood it can be the same language model; the difference is what is built around it.</aside>
   </section>
 
   <section class="slide">
@@ -71,14 +70,14 @@
   <section class="slide" data-on-show="showAnatomy" data-on-step="showAnatomy">
     <h2>memory, plan and instructions</h2>
     <div class="figure" data-stage="3"></div>
-    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span>
-    <aside class="notes">Everything the agent knows during a run sits in its context window: the goal, every file it has read and every result. It fills up with each file, and when it is full, the agent has to summarize or forget. The plan is a list the agent writes and ticks off, a tool like any other. Instructions in text files are loaded at the start: a file called AGENTS.md says what the agent should know about the project, and commands are prepared instructions for recurring tasks, such as how to give feedback on a paper. In the last step everything is together, and only the loop is highlighted, because it is what makes the model an agent.</aside>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span><span data-step="4"></span>
+    <aside class="notes">Everything the agent knows during a run sits in its context window: the goal, every file it has read and every result. It fills up with each file, and when it is full, the agent has to summarize or forget. The plan is a list the agent writes and ticks off, a tool like any other. Instructions in text files are loaded at the start: a file called AGENTS.md says what the agent should know about the project, skills describe how you want certain things done and are loaded only when a task needs them, and commands are prepared instructions for what you often need, such as feedback on a paper. Then everything is together, and only the loop is highlighted, because it is what makes the model an agent. The last step shows the whole picture in full color.</aside>
   </section>
 
   <section class="slide">
     <h2>the harness</h2>
     <div class="figure" id="fig-harness"></div>
-    <aside class="notes">Everything around the model is called the harness, like the harness that hitches a horse to a cart: the model provides the power, the harness steers it. It runs the loop, carries out the tool calls, manages the context window, loads AGENTS.md and the commands, and asks you for permission. OpenCode, Claude Code and Codex are harnesses, and many of them let you choose the model. An AI agent is a language model plus a harness.</aside>
+    <aside class="notes">Everything around the model is called the harness, like the harness that hitches a horse to a cart: the model provides the power, the harness steers it. It runs the loop, carries out the tool calls, manages the context window, loads AGENTS.md, skills and commands, and asks you for permission. OpenCode, Claude Code and Codex are harnesses, and many of them let you choose the model. An AI agent is a language model plus a harness.</aside>
   </section>
 
   <!-- ===== part 3 ===== -->
@@ -90,7 +89,7 @@
     <h2>one run, as the log shows it</h2>
     <div class="figure" id="fig-run"></div>
     <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span><span data-step="4"></span><span data-step="5"></span>
-    <aside class="notes">You give a goal in one sentence. The agent reads the central file of the paper and finds that the sections live in files of their own, so it reads the introduction. Then it answers: the research question stands in the second paragraph instead of at the end. Nothing has changed in your files so far. Only when you ask it to move the question does it want to edit the file, and the harness stops and asks you: allow once, allow always, or reject. Before you allow, you see the change as a diff, line by line.</aside>
+    <aside class="notes">You give a goal in one sentence. Every tool call is marked with the tools icon. The agent reads the central file of the paper and finds that the sections live in files of their own, so it reads the introduction. Then it answers: the research question stands in the second paragraph instead of at the end. Nothing has changed in your files so far. Only when you ask it to move the question does it want to edit the file, and the harness stops and asks you: allow once, allow always, or reject. Before you allow, you see the change as a diff, line by line.</aside>
   </section>
 
   <section class="slide has-punch">
@@ -107,66 +106,22 @@
   </section>
 
   <!-- ===== part 4 ===== -->
-  <section class="slide part" data-part="what studies found" data-subtitle="benefits and risks with sources">
-    <aside class="notes">What do studies say about working with agents? Three findings, each with its source, and each with a lesson for your own work.</aside>
+  <section class="slide part" data-part="how far agents get" data-subtitle="what they can do, what can go wrong">
+    <aside class="notes">How long are the tasks agents can finish today, and what can go wrong when one works in your folder?</aside>
   </section>
 
   <section class="slide has-punch">
-    <h2>feeling faster, measured slower</h2>
-    <div class="figure" id="fig-metr"></div>
-    <div class="footnote"><a href="https://arxiv.org/abs/2507.09089" target="_blank" rel="noopener"><span class="keep-case">Becker et al.</span> (2025), <span class="keep-case">METR</span></a>: 16 experienced developers, 246 tasks in their own projects, early-2025 tools</div>
-    <div class="punch">feeling faster is not the same as being faster, so judge an agent by what it delivers.</div>
-    <aside class="notes">In a randomized trial by METR, experienced software developers worked on real tasks in their own projects, each task randomly with or without AI tools, mostly Cursor with Claude. Before, they expected to be 24 percent faster with AI; afterwards they believed they had been 20 percent faster. Measured, they took 19 percent longer. The tools have improved since, and in February 2026 METR wrote that its newer data hint at a speed-up but that it can no longer measure it reliably with this design. What remains is the gap between feeling and measuring.</aside>
-  </section>
-
-  <section class="slide has-punch">
-    <h2>agents stop at simple analyses</h2>
-    <div class="content">
-      <div class="statement">on 12 data sets with questions from published studies, language models and agents mostly chose basic analyses, and fewer different ones than expert analysts.</div>
-    </div>
-    <div class="footnote"><a href="https://arxiv.org/abs/2408.09667" target="_blank" rel="noopener"><span class="keep-case">Gu et al.</span> (2024), <span class="keep-case">BLADE</span>: benchmarking language model agents for data-driven science</a>, <span class="keep-case">Findings of EMNLP</span> 2024</div>
-    <div class="punch">which variables, which groups and which method stay your decisions.</div>
-    <aside class="notes">The BLADE benchmark gives models and agents a data set and a research question from a published study and compares their analysis decisions with those of expert analysts: which variables, how they are transformed, which model. The models knew a lot about the subject, but they mostly stopped at basic analyses; agents that could work with the data did better but still made fewer and less varied decisions than the experts. For your paper this means: let an agent write and run the code, but decide yourself what is analysed and how.</aside>
-  </section>
-
-  <section class="slide has-punch">
-    <h2>instructions hidden in what it reads</h2>
-    <div class="content">
-      <div class="statement">an agent treats text in a web page or a file as possible instructions, and an attacker can hide some there.</div>
-    </div>
-    <div class="footnote"><a href="https://arxiv.org/abs/2302.12173" target="_blank" rel="noopener"><span class="keep-case">Greshake et al.</span> (2023), not what you've signed up for: indirect prompt injection</a></div>
-    <div class="punch">what an agent reads can steer it, so let it ask before it acts.</div>
-    <aside class="notes">A language model cannot reliably tell your instructions apart from text it reads along the way. Greshake and colleagues showed that a web page or a document can contain hidden instructions that make an assistant do something else, for example send data somewhere. This is called indirect prompt injection, and there is no complete protection against it yet. That is one more reason to keep the permission settings strict and to read what an agent wants to do before you allow it.</aside>
-  </section>
-
-  <section class="slide poll" data-poll="agent-says-done">
-    <div class="poll-q">the agent reports: “i fixed the analysis, everything runs.” what do you do?</div>
-    <ol class="poll-opts">
-      <li>trust it and go on</li>
-      <li data-correct>read the change, run it</li>
-      <li>ask it if it is sure</li>
-      <li>start again without ai</li>
-    </ol>
-    <aside class="notes">Read the change and run it yourself. That the code runs says nothing about whether it computes the right thing, and asking the agent whether it is sure only gets you another confident answer. Starting again without AI throws away work that may well be good.</aside>
-  </section>
-
-  <!-- ===== part 5 ===== -->
-  <section class="slide part" data-part="working with an agent" data-subtitle="five rules">
-    <aside class="notes">To finish, five rules for working with an agent on a research paper.</aside>
+    <h2>how long the tasks are that agents finish</h2>
+    <div class="figure" id="fig-horizon"></div>
+    <div class="footnote"><a href="https://metr.org/time-horizons/" target="_blank" rel="noopener"><span class="keep-case">METR</span>, time horizon 1.1</a>: software, machine learning and security tasks; above 16 h the measurement is unreliable</div>
+    <div class="punch">agents now finish tasks that take an expert many hours, but only half the time, so you check what they deliver.</div>
+    <aside class="notes">METR measures how long a task may be before an agent fails at it. The length is the time a human expert needs; the time horizon is the length at which the agent succeeds half the time (blue) or four times out of five (light). GPT-4 managed tasks of about 4 minutes in 2023, Claude 3.7 Sonnet about an hour in early 2025, Claude Opus 4.6 about 12 hours and Claude Mythos Preview about 17 hours in spring 2026. Since 2023 the time horizon has doubled about every four months. At 80 percent success the tasks are much shorter, about 3 hours for the best model. Two caveats: the tasks come from software, machine learning and IT security, are well specified and scored automatically, and METR itself says that values above 16 hours are unreliable with its current tasks. For your paper this means: an agent can do long stretches of work on its own, and it fails on a good share of them, so its results are drafts you check.</aside>
   </section>
 
   <section class="slide">
-    <h2>five rules</h2>
-    <div class="content">
-      <div class="lines spaced">
-        <div>give it a goal and the context it needs.</div>
-        <div data-step="1">let it ask before it changes a file or runs a program.</div>
-        <div data-step="2">read every change before you accept it.</div>
-        <div data-step="3">run the code yourself and check one number by hand.</div>
-        <div data-step="4">keep personal data out, and answer for the result yourself.</div>
-      </div>
-    </div>
-    <aside class="notes">A goal and context: what the paper is about, which file, what you want back. Permissions: reading is fine, changing waits for your yes. Every change is a diff you read. The code you run yourself, and one number you count by hand. And whatever an agent does in your folder, it does on your behalf: names, free-text answers with personal details and files you may not share stay out, and the paper is yours.</aside>
+    <h2>what can go wrong, and what helps</h2>
+    <div class="figure" id="fig-risks"></div>
+    <aside class="notes">Eight risks, each with what helps against it. An agent can delete or overwrite files, so work in a Git repository or on a copy. It can run a harmful command, so let it ask and approve every command. It treats text it reads in a web page or a file as possible instructions, which is called indirect prompt injection (Greshake et al., 2023) and has no complete protection yet, so read what it wants to do before you allow it. Its code can run and still compute the wrong thing, so check one number by hand. It can cite sources that do not exist, so open every reference you cite. Whatever it reads goes to the provider of the model, so keep personal data out of the folder. It tends to settle for basic analyses (Gu et al., 2024), so decide on variables and method yourself. And if it writes most of the paper, you lose track of your own work, so read every change before you accept it, because you answer for the paper.</aside>
   </section>
 
   <section class="slide">
@@ -179,7 +134,7 @@
 </div>
 <script src="../../stagekit/draw.js?v=0.7.0-156254"></script>
 <script src="../../stagekit/anim.js?v=0.7.0-156254"></script>
-<script src="deck.js?v=1"></script>
+<script src="deck.js?v=2"></script>
 <script src="../../stagekit/stagekit.js?v=0.7.0-156254"></script>
 </body>
 </html>

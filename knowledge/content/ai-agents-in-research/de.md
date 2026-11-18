@@ -5,16 +5,17 @@ title: Was ist ein KI-Agent?
 summary: >-
   Was einen KI-Agenten vom Chatbot unterscheidet, woraus er besteht, wie er
   Schritt für Schritt eine Rückmeldung zur Einleitung eines Papers in Quarto
-  gibt und vor jeder Änderung fragt, was Studien über Nutzen und Risiken
-  gefunden haben und welche Regeln für die Arbeit mit ihm gelten.
+  gibt und vor jeder Änderung fragt, wie lange die Aufgaben sind, die Agenten
+  heute schaffen, und welche Risiken die Arbeit mit ihm hat und was jeweils
+  dagegen hilft.
 objectives:
   intro: "In dieser Lektion lernst du, was einen KI-Agenten ausmacht und wie du mit ihm an einem Paper arbeitest, und kannst danach:"
   goals:
     - "den Unterschied zwischen Chatbot und Agent mit der Arbeitsdefinition erklären, nach der ein Agent Werkzeuge in einer Schleife ausführt, um ein Ziel zu erreichen"
     - "die Teile eines Agenten benennen und sagen, was der Harness rund um das Sprachmodell übernimmt"
     - "das Protokoll eines Agentenlaufs lesen und erkennen, wann er nur liest und wann er etwas ändern will"
-    - "mit drei Studien begründen, warum du einen Agenten an dem misst, was er liefert, und Analyseentscheidungen selbst triffst"
-    - "fünf Regeln für die Arbeit mit einem Agenten an einem Paper anwenden"
+    - "mit dem Zeithorizont von METR einschätzen, wie lange die Aufgaben sind, die Agenten heute schaffen, und wie oft sie dabei scheitern"
+    - "die Risiken der Arbeit mit einem Agenten benennen und zu jedem eine Gegenmaßnahme anwenden"
 level: 1
 duration: 25
 topics: [ai-agents-as-tools]
@@ -23,7 +24,7 @@ areas: [ds]
 relations:
   see_also: [opencode-course-assistant, ai-research-support, text-for-ai]
 status: draft
-updated: 2026-11-17
+updated: 2026-11-18
 ---
 
 ![Folien: Was ist ein KI-Agent?](item:ai-agents-in-research-slides)
@@ -71,14 +72,14 @@ kann und keine Datei öffnet. Dazu kommen:
 | Schleife | jedes Ergebnis geht zurück an das Modell, das wieder denkt, handelt und beobachtet (in der Forschung heißt das Muster ReAct) |
 | Kontextfenster | alles, was der Agent während eines Laufs weiß: das Ziel, jede gelesene Datei, jedes Ergebnis; es füllt sich mit jeder Datei, und ist es voll, muss der Agent zusammenfassen oder vergessen |
 | Plan | eine Liste, die der Agent selbst schreibt und abhakt, ein Werkzeug wie jedes andere |
-| Anweisungen | Textdateien, die zu Beginn geladen werden: `AGENTS.md` sagt, was der Agent über das Projekt wissen soll, Befehle sind vorbereitete Anweisungen für wiederkehrende Aufgaben, etwa wie er eine Rückmeldung zu einem Paper gibt |
+| Anweisungen | Textdateien, die zu Beginn geladen werden: `AGENTS.md` sagt, was der Agent über das Projekt wissen soll, Skills beschreiben, wie du bestimmte Dinge erledigt haben willst, und werden erst geladen, wenn eine Aufgabe sie braucht, Befehle sind vorbereitete Anweisungen für das, was du oft brauchst, etwa eine Rückmeldung zu einem Paper |
 
 Was ein Sprachmodell zum Agenten macht, ist die Schleife.
 
 Alles rund um das Modell heißt **Harness**, wie das Geschirr, mit dem ein
 Pferd vor den Wagen gespannt wird: Das Modell liefert die Kraft, das Geschirr
 lenkt sie. Der Harness führt die Schleife aus, setzt die Werkzeugaufrufe um,
-verwaltet das Kontextfenster, lädt Plan, `AGENTS.md` und Befehle und fragt
+verwaltet das Kontextfenster, lädt `AGENTS.md`, Skills und Befehle und fragt
 dich um Erlaubnis. OpenCode, Claude Code und Codex sind solche Harnesses, und
 bei vielen kannst du das Modell wählen. Ein KI-Agent ist also ein
 Sprachmodell plus Harness.
@@ -120,55 +121,47 @@ er eine Datei ändert oder einen Befehl in der Shell ausführt. Du kannst das
 lockern, etwa R immer erlauben, aber der sicherste Anfang ist, ihn fragen zu
 lassen und zu lesen, was er vorhat, bevor du zustimmst.
 
-## Was Studien gefunden haben
+## Wie weit Agenten kommen
 
-**Gefühlt schneller, gemessen langsamer.** In einer randomisierten Studie von
-METR arbeiteten 16 erfahrene Softwareentwicklerinnen und -entwickler an 246
-echten Aufgaben in ihren eigenen Projekten, jede Aufgabe per Zufall mit oder
-ohne KI-Werkzeuge vom Stand Anfang 2025 (Becker et al., 2025). Vorher
-erwarteten sie, mit KI 24 % schneller zu sein, hinterher glaubten sie, 20 %
-schneller gewesen zu sein, gemessen brauchten sie 19 % länger. Die Werkzeuge
-sind seitdem besser geworden, und im Februar 2026 schrieb METR, neuere Daten
-deuteten auf einen Zeitgewinn hin, ließen sich mit diesem Studiendesign aber
-nicht mehr verlässlich messen (METR, 2026). Was bleibt, ist die Lücke
-zwischen Gefühl und Messung: Miss einen Agenten an dem, was er liefert.
+**Wie lang die Aufgaben sind, die Agenten schaffen.** METR misst den
+Zeithorizont von Agenten: die Länge einer Aufgabe, gemessen an der Zeit, die
+eine Fachperson dafür braucht, bei der ein Agent sie in der Hälfte der Fälle
+löst, und die kürzere Länge, bei der er vier von fünf Aufgaben löst (METR,
+2026).
 
-**Agenten bleiben bei einfachen Analysen.** Der Benchmark BLADE (Gu et al.,
-2024) gibt Modellen und Agenten 12 Datensätze mit Fragen aus
-veröffentlichten Studien und vergleicht ihre Analyseentscheidungen mit denen
-von Fachleuten: welche Variablen, wie sie umgeformt werden, welches Modell.
-Die Modelle wählten meist einfache Analysen; Agenten, die mit den Daten
-arbeiten konnten, schnitten besser ab, trafen aber immer noch weniger und
-weniger vielfältige Entscheidungen als die Fachleute. Lass einen Agenten
-also den Code schreiben und ausführen, aber entscheide selbst, welche
-Variablen, welche Gruppen und welche Methode.
+| Modell | erschienen | löst die Hälfte | löst vier von fünf |
+|---|---|---|---|
+| GPT-4 | März 2023 | 4 min | 1 min |
+| Claude 3.7 Sonnet | Februar 2025 | 1 h | 12 min |
+| GPT-5 | August 2025 | 3,4 h | 38 min |
+| Claude Opus 4.6 | Februar 2026 | 12 h | 70 min |
+| Claude Mythos Preview | April 2026 | 17 h | 3,1 h |
 
-**Anweisungen, versteckt im Gelesenen.** Ein Sprachmodell kann deine
-Anweisungen nicht zuverlässig von Text unterscheiden, den es unterwegs
-liest. Greshake et al. (2023) haben gezeigt, dass eine Webseite oder ein
-Dokument versteckte Anweisungen enthalten kann, die einen Assistenten etwas
-anderes ausführen lassen, etwa Daten weiterzuschicken. Das heißt indirekte
-Prompt-Injection, und einen vollständigen Schutz dagegen gibt es bisher
-nicht. Ein Grund mehr, die Berechtigungen streng zu halten und zu lesen, was
-ein Agent vorhat, bevor du es erlaubst.
+Seit 2023 hat sich der Zeithorizont etwa alle vier Monate verdoppelt. Die
+Aufgaben stammen aus Softwareentwicklung, maschinellem Lernen und
+IT-Sicherheit, sind klar beschrieben und werden automatisch bewertet, und
+Werte über 16 Stunden hält METR mit seinen derzeitigen Aufgaben selbst für
+unzuverlässig. Für dein Paper heißt das: Ein Agent schafft lange Arbeitsstrecken
+allein, scheitert aber an einem guten Teil davon, und was er liefert, ist ein
+Entwurf, den du prüfst.
+
+**Was schiefgehen kann und was hilft.**
+
+| Risiko | Was hilft |
+|---|---|
+| Er löscht oder überschreibt Dateien. | Arbeite in einem Git-Repository oder auf einer Kopie. |
+| Er führt einen schädlichen Befehl aus. | Lass dich jeden Befehl bestätigen, den er ausführt. |
+| Er folgt Anweisungen, die in einer Webseite oder Datei versteckt sind (indirekte Prompt-Injection, Greshake et al., 2023); einen vollständigen Schutz dagegen gibt es bisher nicht. | Lies, was er vorhat, bevor du es erlaubst. |
+| Sein Code läuft, berechnet aber das Falsche. | Prüf eine Zahl von Hand. |
+| Er nennt Quellen, die es nicht gibt. | Öffne jede Quelle, die du zitierst. |
+| Persönliche Daten verlassen deinen Rechner, denn was er liest, geht an den Anbieter des Modells. | Halte persönliche Daten aus dem Ordner heraus. |
+| Er bleibt bei einfachen Analysen stehen (Gu et al., 2024). | Entscheide selbst über Variablen und Methode. |
+| Du kennst dein eigenes Paper nicht mehr. | Lies jede Änderung, bevor du sie annimmst. |
 
 Meldet ein Agent „ich habe die Analyse repariert, alles läuft“, liest du
-deshalb die Änderung und führst den Code selbst aus. Dass Code läuft, sagt
-nichts darüber, ob er das Richtige berechnet, und auf die Frage, ob er sicher
-sei, bekommst du nur eine weitere überzeugte Antwort.
-
-## Fünf Regeln
-
-1. Gib dem Agenten ein Ziel und den Kontext, den er braucht: worum es im
-   Paper geht, welche Datei, was du zurückhaben willst.
-2. Lass ihn fragen, bevor er eine Datei ändert oder ein Programm ausführt.
-3. Lies jede Änderung, bevor du sie annimmst.
-4. Führ den Code selbst aus und prüf eine Zahl von Hand.
-5. Halte persönliche Daten heraus, und steh selbst für das Ergebnis ein.
-
-Was ein Agent in deinem Ordner ausführt, geschieht in deinem Auftrag: Namen,
-Freitextantworten mit persönlichen Angaben und Dateien, die du nicht teilen
-darfst, bleiben draußen, und das Paper bleibt deins.
+deshalb die Änderung und führst den Code selbst aus, denn dass Code läuft,
+sagt nichts darüber, ob er das Richtige berechnet. Was ein Agent in deinem
+Ordner ausführt, geschieht in deinem Auftrag, und das Paper bleibt deins.
 
 ## Zum Mitnehmen
 
@@ -177,21 +170,20 @@ darfst, bleiben draußen, und das Paper bleibt deins.
 - Ein Agent ist ein Sprachmodell plus Harness, und der Harness entscheidet,
   was der Agent ohne Nachfrage darf.
 - Lesen darf er frei, Ändern und Ausführen sollten auf dein Ja warten.
-- Gefühlt schneller ist nicht dasselbe wie schneller; welche Analyse gerechnet
-  wird, entscheidest du.
-- Was ein Agent liest, kann ihn steuern, deshalb liest du, was er vorhat.
+- Agenten schaffen inzwischen Aufgaben, für die eine Fachperson viele Stunden
+  braucht, aber nur in der Hälfte der Fälle, deshalb prüfst du, was sie
+  liefern.
+- Zu jedem Risiko gibt es eine Gegenmaßnahme, und die wichtigste ist, jede
+  Änderung zu lesen, bevor du sie annimmst.
 
 ## Quellen
 
 - Anthropic (2024). [Building effective agents](https://www.anthropic.com/engineering/building-effective-agents).
-- Becker, J. et al. (2025). *Measuring the impact of early-2025 AI on
-  experienced open-source developer productivity.* METR.
-  [arXiv:2507.09089](https://arxiv.org/abs/2507.09089)
 - Greshake, K. et al. (2023). *Not what you've signed up for: Compromising
   real-world LLM-integrated applications with indirect prompt injection.*
   [arXiv:2302.12173](https://arxiv.org/abs/2302.12173)
 - Gu, K. et al. (2024). BLADE: Benchmarking language model agents for
   data-driven science. *Findings of EMNLP 2024.*
   [arXiv:2408.09667](https://arxiv.org/abs/2408.09667)
-- METR (2026). [Update zur Produktivitätsstudie vom 24. Februar 2026](https://metr.org/blog/2026-02-24-uplift-update/).
+- METR (2026). [Task-completion time horizons of frontier AI models](https://metr.org/time-horizons/), Time Horizon 1.1, Stand 8. September 2026; Werte aus den [Rohdaten](https://metr.org/assets/benchmark_results_1_1.yaml).
 - Willison, S. (2025). [I think “agent” may finally have a widely enough agreed upon definition to be useful jargon now](https://simonwillison.net/2025/Sep/18/agents/).
