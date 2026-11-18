@@ -16,8 +16,7 @@
 <body>
 <div class="deck" data-title="why text is better for ai"
      data-subtitle="prof. dr. nicolas meseth"
-     data-parts='["what you write with", "what a model sees", "three text formats", "your report as text", "meet the ai where it lives"]'
-     data-live-url="https://live.hsos.uber.space" data-live-series="why-text-is-better-for-ai">
+     data-parts='["word and the alternative", "what a model sees", "three text formats", "your report as text and code", "meet the ai where it lives"]'>
 
   <section class="slide title">
     <aside class="notes">A plea for writing a paper as text, in Quarto, Typst or LaTeX, instead of in Word. The one sentence to take home: a language model reads and writes text, so a report that is text can be read, changed and checked by a model in the same way as by you.</aside>
@@ -33,20 +32,9 @@
     <aside class="notes">Two ways to hand over the same words. In the notebook everyone can read every line at once, point at a sentence and change it with a pencil. The parcel holds the same text, but before anyone can read or change a word, it has to be unpacked, and afterwards packed again so that nothing gets lost. For a language model, a Word file is the parcel and a text file is the notebook.</aside>
   </section>
 
-  <section class="slide poll" data-poll="writing-tool">
-    <div class="poll-q">what do you write your texts for your studies with?</div>
-    <ol class="poll-opts">
-      <li>word</li>
-      <li>google docs</li>
-      <li>latex or typst</li>
-      <li>markdown or quarto</li>
-    </ol>
-    <aside class="notes">Anonymous. Most likely almost everyone writes in Word or Google Docs, which is no mistake; the question is whether it is the right tool once a model is meant to write along.</aside>
-  </section>
-
   <!-- ===== part 1 ===== -->
-  <section class="slide part" data-part="what you write with" data-subtitle="word and the alternative">
-    <aside class="notes">First a fair look at Word, then at what text files do differently.</aside>
+  <section class="slide part" data-part="word and the alternative" data-subtitle="for and against">
+    <aside class="notes">First a fair look at Word, its strengths and its weaknesses, then at what text files do differently.</aside>
   </section>
 
   <section class="slide">
@@ -57,17 +45,9 @@
 
   <section class="slide has-punch">
     <h2>text files</h2>
-    <div class="content">
-      <div class="lines">
-        <div>the source is plain text that any program and any model can read</div>
-        <div>content and layout are separate: a template sets the layout</div>
-        <div>numbers, tables and figures come from code</div>
-        <div>citations come from a .bib file in any style</div>
-        <div>one source gives pdf, html or docx</div>
-      </div>
-    </div>
-    <div class="punch">text files are not new, but with ai they gain a strength they did not have before.</div>
-    <aside class="notes">Quarto, Typst and LaTeX all work with plain text files. You write the content, a template decides how it looks. Numbers, tables and figures are computed by code in the same document, so they update when the data change. Citations come from a .bib file and are formatted in whatever style the journal or the guidelines ask for. And one source gives a PDF, a web page or a Word file. All of this has been true for years; what is new is that a language model can work with such files directly, which the next part shows.</aside>
+    <div class="figure" id="fig-text-files"></div>
+    <div class="punch" data-step="2">text files are not new, but with ai they gain a strength they did not have before.</div>
+    <aside class="notes">Quarto, Typst and LaTeX work with plain text files. The first click shows a paper.qmd open in Positron, where you and an AI agent write in the same file at the same time: your lines in white, the agent's in blue, text and an R chunk and a citation side by side. Only the content is written here, nothing about fonts or margins. The second click brings in the layout: a template decides how it looks, and Quarto renders the same source to a PDF, a Word file or a web page, runs the code on the way, takes the citations from a .bib file in whatever style is needed. All of this has been true for years; what is new is that a language model can work in such files directly, which the next part shows.</aside>
   </section>
 
   <!-- ===== part 2 ===== -->
@@ -78,7 +58,7 @@
   <section class="slide">
     <h2>a language model reads and writes text</h2>
     <div class="figure" id="fig-model"></div>
-    <aside class="notes">A language model takes text and gives text back, nothing else. Everything else, a picture, a table, a file, has to be turned into text first, by a program around the model. A text file needs no such step: the model reads it as it is.</aside>
+    <aside class="notes">A language model takes text and gives text back, nothing else. The first click sends a prompt with paper.qmd attached: the file is text, so the model reads it at once and answers. The second click sends the same prompt with paper.docx. The model cannot read the packed file, so an agent first writes a small Python script that opens the archive with the package python-docx and prints the paragraphs, runs it and only then reads the text. Chat tools do the same behind the scenes, with a converter that turns the file into text first, and what gets lost on the way, such as comments, tracked changes or the position of a figure, the model never sees.</aside>
   </section>
 
   <section class="slide" data-on-show="showDocx" data-on-step="showDocx">
@@ -92,7 +72,7 @@
     <h2>a change you can read</h2>
     <div class="figure" id="fig-diff"></div>
     <div class="punch">in a text file every change by an ai is a line you can read before you accept it.</div>
-    <aside class="notes">When an AI changes a text file, the change can be shown as a diff: the line that goes in red with a minus, the new lines in green with a plus. An AI agent shows you exactly this before it writes to your file, and you accept or reject it. In a Word file the same change happens inside the packed XML, and you see the result, not the change.</aside>
+    <aside class="notes">When an AI changes a text file, the change can be shown as a diff: the line that goes in red with a minus, the new lines in green with a plus. An AI agent shows you exactly this before it writes to your file, and you accept or reject it. In a Word file the same change happens inside the packed XML, and you see the result, not the change. The same diffs are what version control works with: git keeps every change to a text file as a version you can compare and go back to, while for a .docx it only knows that the file has changed.</aside>
   </section>
 
   <!-- ===== part 3 ===== -->
@@ -113,8 +93,8 @@
   </section>
 
   <!-- ===== part 4 ===== -->
-  <section class="slide part" data-part="your report as text" data-subtitle="quarto in practice">
-    <aside class="notes">Last part: what this means for a report in Quarto.</aside>
+  <section class="slide part" data-part="your report as text and code" data-subtitle="quarto in practice">
+    <aside class="notes">What this means for a report in Quarto, where text and code live in the same document.</aside>
   </section>
 
   <section class="slide has-punch" data-on-show="showInline" data-on-step="showInline">
@@ -125,10 +105,11 @@
     <aside class="notes">In Quarto a number in the text can come straight from R: the chunk computes the median and formats it with two decimals, and the inline expression writes it into the sentence. The second click shows a real cut-out of the PDF that Quarto and Typst make of it, with the number marked. When the data change, the number changes with it. For working with AI this matters twice: an AI that edits your text cannot invent or mistype the number, because the number is not in the text but in the code, and when you check the code, you check the number.</aside>
   </section>
 
-  <section class="slide">
+  <section class="slide" data-on-show="showReport" data-on-step="showReport">
     <h2>a report as a folder of text files</h2>
     <div class="figure" id="fig-report"></div>
-    <aside class="notes">A paper in Quarto can be a small folder: a central file with the settings that pulls in the sections, one file per section and the references in a .bib file. Quarto runs the code, and Typst sets the PDF. Every file is text, so an agent can read the whole report, check one section against another and change a single line, and you see every change before it is made.</aside>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span><span data-step="4"></span>
+    <aside class="notes">A paper in Quarto can be a small folder, and the clicks walk through it. paper.qmd is the main document: it holds the settings and pulls in the sections in their order. references.bib is your literature, one entry per source, from which Quarto formats every citation. The folder sections holds one file per section, with text and code. The last click renders the whole folder into one PDF. Quarto runs the code, and Typst sets the PDF. Every file is text, so an agent can read the whole report, check one section against another and change a single line, and you see every change before it is made.</aside>
   </section>
 
   <!-- ===== part 5 ===== -->
@@ -150,16 +131,16 @@
   </section>
 
   <section class="slide">
-    <div class="content">
-      <div class="statement">write your report as text, because then an ai can read, change and check it the same way you do.</div>
-    </div>
-    <aside class="notes">That is the whole plea. Word stays a good tool for many texts, but for a report that grows with an analysis and that an AI helps to write, text is the better material.</aside>
+    <img class="photo side" src="img/closing-shared-notebook.jpg" alt="An open notebook with handwritten lines on a dark desk; a human hand and a white robotic hand each hold a pencil on one of its pages, behind them an empty, opened parcel">
+    <div class="photo-text side">write your report as text, because then an ai can read, change and check it the same way you do.</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">That is the whole plea, and the picture closes the circle of the opening: the parcel is open and empty, and you and the AI write in the same open notebook. Word stays a good tool for many texts, but for a report that grows with an analysis and that an AI helps to write, text is the better material.</aside>
   </section>
 
 </div>
 <script src="../../stagekit/draw.js?v=0.7.0-156254"></script>
 <script src="../../stagekit/anim.js?v=0.7.0-156254"></script>
-<script src="deck.js?v=2"></script>
+<script src="deck.js?v=3"></script>
 <script src="../../stagekit/stagekit.js?v=0.7.0-156254"></script>
 </body>
 </html>

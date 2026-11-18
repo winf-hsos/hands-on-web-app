@@ -56,13 +56,21 @@ Quarto, Typst und LaTeX arbeiten dagegen mit reinen Textdateien:
 - Aus einer Quelle entstehen PDF, HTML oder Word.
 
 Das gilt seit Jahren; neu ist, dass ein Sprachmodell direkt mit solchen
-Dateien arbeiten kann.
+Dateien arbeiten kann. In einem Editor wie Positron können du und ein
+KI-Agent gleichzeitig in derselben .qmd-Datei schreiben, beide nur am
+Inhalt, und das Layout kommt erst hinzu, wenn Quarto die Datei setzt.
 
 ## Was ein Sprachmodell sieht
 
 Ein Sprachmodell nimmt Text und gibt Text zurück, sonst nichts. Ein Bild,
 eine Tabelle oder eine Word-Datei muss erst ein Programm rund um das Modell
 in Text umwandeln, während eine Textdatei so gelesen wird, wie sie ist.
+Hängst du eine .qmd-Datei an einen Prompt, liest das Modell sie sofort.
+Hängst du eine .docx an, muss ein Agent erst ein kleines Python-Skript
+schreiben und ausführen, das die Datei entpackt, etwa mit dem Paket
+python-docx, bevor er einen einzigen Satz lesen kann; Chat-Werkzeuge machen
+dasselbe im Hintergrund mit einem Konverter, und was dabei verloren geht,
+etwa Kommentare oder nachverfolgte Änderungen, sieht das Modell nie.
 
 Wie groß der Unterschied ist, zeigt ein einziger Satz. In einer Quarto-Datei
 steht er in einer Zeile mit 62 Bytes, die beiden Sternchen setzen das Wort
@@ -95,7 +103,10 @@ die alte Zeile mit Minus, die neuen Zeilen mit Plus.
 Ein KI-Agent zeigt dir genau das, bevor er in deine Datei schreibt, und du
 nimmst die Änderung an oder lehnst sie ab. In einer Word-Datei geschieht
 dieselbe Änderung im gepackten XML, und du siehst das Ergebnis, nicht die
-Änderung.
+Änderung. Mit denselben Diffs arbeitet auch die Versionsverwaltung: Git hält
+jede Änderung an einer Textdatei als Version fest, die du vergleichen und
+zurückholen kannst, während es bei einer .docx nur weiß, dass sich die Datei
+geändert hat.
 
 ## Drei Textformate
 
@@ -189,10 +200,8 @@ bringen eine Kommandozeile mit:
   Zeichnungen.
 - [Mermaid](https://mermaid.js.org) schreibt ein Diagramm als Text, und
   GitHub, Quarto und Excalidraw zeichnen es.
-- [marimo](https://marimo.io) speichert ein Notebook als einfache
-  Python-Datei, ohne Ausgaben und Bilder darin.
-- Die [GitHub CLI](https://cli.github.com) holt Issues, Pull Requests und
-  Releases ins Terminal.
+- [FFmpeg](https://ffmpeg.org) schneidet, wandelt und verbindet Videos und
+  Audio mit einem einzigen Befehl, ohne Schnittprogramm.
 - Eine .csv-Datei ist eine Tabelle als reiner Text, während eine .xlsx-Datei
   ein gepacktes Bündel ist wie eine .docx.
 - Die Folien dieser Lektion sind eine HTML-Datei und ein Skript, also kann

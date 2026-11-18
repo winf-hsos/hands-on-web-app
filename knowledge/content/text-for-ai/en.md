@@ -45,13 +45,20 @@ Quarto, Typst and LaTeX work with plain text files instead:
 - One source gives PDF, HTML or Word.
 
 All of this has been true for years; what is new is that a language model
-can work with such files directly.
+can work with such files directly. In an editor such as Positron you and an
+AI agent can write in the same .qmd file at the same time, both only on the
+content, and the layout comes in when Quarto renders the file.
 
 ## What a language model sees
 
 A language model takes text and gives text back, nothing else. A picture, a
 table or a Word file has to be turned into text first by a program around
-the model, while a text file is read as it is.
+the model, while a text file is read as it is. Attach a .qmd file to a
+prompt, and the model reads it at once. Attach a .docx, and an agent first
+has to write and run a small Python script that unpacks the file, for
+example with the package python-docx, before it can read a single sentence;
+chat tools do the same behind the scenes with a converter, and what gets lost
+on the way, such as comments or tracked changes, the model never sees.
 
 A single sentence shows how big the difference is. In a Quarto file it is
 one line of 62 bytes, and the two stars make the word bold:
@@ -83,7 +90,10 @@ old line with a minus, the new lines with a plus.
 
 An AI agent shows you exactly this before it writes to your file, and you
 accept or reject the change. In a Word file the same change happens inside
-the packed XML, and you see the result, not the change.
+the packed XML, and you see the result, not the change. The same diffs are
+what version control works with: git keeps every change to a text file as a
+version you can compare and go back to, while for a .docx it only knows that
+the file has changed.
 
 ## Three text formats
 
@@ -176,10 +186,8 @@ bring a command line:
   agents", renders drawings and turns Mermaid text into editable drawings.
 - [Mermaid](https://mermaid.js.org) writes a diagram as text, and GitHub,
   Quarto and Excalidraw draw it.
-- [marimo](https://marimo.io) saves a notebook as a plain Python file,
-  without outputs and images inside.
-- The [GitHub CLI](https://cli.github.com) brings issues, pull requests and
-  releases to the terminal.
+- [FFmpeg](https://ffmpeg.org) cuts, converts and joins videos and audio
+  with a single command, without an editing program.
 - A .csv file is a table as plain text, while an .xlsx file is a packed
   bundle like a .docx.
 - The slides of this lesson are an HTML file and a script, so an AI can
