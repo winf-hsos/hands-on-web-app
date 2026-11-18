@@ -22,7 +22,7 @@ modules: [pmg]
 areas: [ds]
 relations:
   see_also: [opencode-course-assistant, paper-structure, ai-agents-in-research]
-status: draft
+status: published
 updated: 2026-11-18
 ---
 

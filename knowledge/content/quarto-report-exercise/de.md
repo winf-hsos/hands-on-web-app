@@ -24,7 +24,7 @@ datasets: [milk-chocolate-survey]
 relations:
   requires: [quarto-first-steps]
   see_also: [quarto-first-steps-slides, quarto-paper-exercise, milk-chocolate-survey]
-status: draft
+status: published
 updated: 2026-11-18
 ---
 

@@ -23,7 +23,7 @@ modules: [pmg]
 areas: [ds]
 relations:
   see_also: [opencode-course-assistant, ai-research-support, text-for-ai]
-status: draft
+status: published
 updated: 2026-11-18
 ---
 
