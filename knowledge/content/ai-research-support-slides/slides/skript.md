@@ -54,24 +54,25 @@ the people who ran the survey did it for you.
 
 ## Part 3: what is possible (frames 11–17)
 
-**Four levels of AI use (frames 12–15).** Each level stands on the one below
-and adds something, so the stack on the left grows with every click, and the
-scene on the right shows what is new. On level 1 the AI answers your
-questions, as the first chatbots did: you ask in the chat, get an answer and
-carry it into your work by hand. On level 2 the AI also writes documents: from
-a prompt in the chat it makes a draft of your methods section, a summary or a
-table, so it now makes content, but still in the chat and apart from your
-work, and you still copy it over. On level 3 an agent moves into your work and
-acts in your files with your programs. You give it a goal and not the way, it
-shows you results, you give feedback, and that goes round in a loop until the
-result fits. On level 4 the agent runs its own loop and delivers a result that
-nobody checks, perhaps because nobody could follow it any more; you are grayed
-out. In mathematics this has started: in November 2026 a committee chaired by
-the physicist David Gross reviewed an AI proof of the existence half of the
-Yang-Mills problem, which a computer had checked in the proof language Lean,
-and wrote that they did not claim to fully understand the proof yet. All four
-levels are possible today; whether they work and make sense is the question of
-part 4.
+**Four levels of AI use (frames 12–15).** Each click adds one row, and each
+level adds something to the one above it. Every row shows the same places:
+your work, a folder; you; and on the right the chat or what comes out. On
+level 1 the AI answers questions, as the first chatbots did: you ask in the
+chat, get an answer and carry it into your work by hand. On level 2 the AI
+also writes documents: from a prompt in the chat it makes a draft of your
+methods section, a summary or a table, so it now makes content, but still in
+the chat and apart from your work, and you still copy it over. On level 3 the
+AI also acts in your files: an agent works inside your folder with your files
+and programs. You give it a goal and not the way, it shows you results, you
+give feedback, and that goes round in a loop until the result fits. On level 4
+the AI also works on its own: the agent runs its own loop, you no longer
+appear in the row, and the result goes out without anybody checking it,
+perhaps because nobody could follow it any more. In mathematics this has
+started: in November 2026 a committee chaired by the physicist David Gross
+reviewed an AI proof of the existence half of the Yang-Mills problem, which a
+computer had checked in the proof language Lean, and wrote that they did not
+claim to fully understand the proof yet. All four levels are possible today;
+whether they work and make sense is the question of part 4.
 
 **The four levels at a glance (frame 16).** The same levels as a table: where
 the AI works, what your part is, and what each level adds. On levels 1 and 2

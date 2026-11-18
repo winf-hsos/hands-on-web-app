@@ -262,96 +262,88 @@ function figPhases(task) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Four levels of AI use. Left a stack: each level stands on the one    */
-/* below and adds something ("+ ..."), the current block is yellow.     */
-/* Right one scene that changes from level to level (animated, one     */
-/* section per level): 1 a question and an answer in the chat; 2 a      */
-/* prompt and a document in the chat, which you still carry over by     */
-/* hand; 3 the agent works inside your work, you in a loop with it      */
-/* (goal and feedback in, results out); 4 the agent alone with its own  */
-/* loop and a result that nobody checks, you grayed out.                */
-/* Stack x 0..540, blocks 120 high, 136 apart; scene x 620..1680.       */
+/* Four levels of AI use, one row each, appearing one by one; each      */
+/* level adds something to the one above it ("also"). Every row has     */
+/* the same places: your work (a folder), you, and on the right the     */
+/* chat or what comes out.                                              */
+/*   1  you ask in the chat and carry the answer into your work,        */
+/*   2  from a prompt in the chat the AI writes a document,             */
+/*   3  an agent works inside your folder; you give the goal and        */
+/*      feedback, it shows results, in a loop,                          */
+/*   4  the agent works on its own, and nobody checks the result.      */
+/* Rows 200 apart, 160 high; the current number is yellow. Places:      */
+/* folder x 500..610, you x 760..816, the right place x 940..1676.      */
 /* ------------------------------------------------------------------ */
-const LEVEL_STACK = [
-  ["answers questions", "in the chat"],
-  ["+ writes documents", "from a prompt in the chat"],
-  ["+ acts in your files", "you give the goal and feedback"],
-  ["+ works on its own", "nobody checks the result"],
+const LEVELS = [
+  "ai answers\nquestions",
+  "ai also writes\ndocuments",
+  "ai also acts\nin your files",
+  "ai also works\non its own",
 ];
-function figLevels() {
-  const c = C(), g = d.g;
+function figLevels(step) {
+  const c = C();
   const wires = [], boxes = [], labels = [];
-  // the stack
-  labels.push(d.label(0, 0, "each level adds to the one below", { size: 20, color: c.gray, centerY: 790 }));
-  const block = (k, now) => {
-    const y = 640 - k * 136;
-    return d.box(1, y, 538, 120, "", { border: now ? c.yellow : c.gray, rx: 12, width: 2 }) +
-      d.label(28, 0, String(k + 1), { size: 48, color: now ? c.yellow : c.gray, centerY: y + 60 }) +
-      d.label(90, 0, LEVEL_STACK[k][0], { size: 32, color: now ? c.white : c.light, centerY: y + 44 }) +
-      d.label(90, 0, LEVEL_STACK[k][1], { size: 20, color: c.gray, centerY: y + 88 });
-  };
-  for (let k = 0; k < 4; k++) {
-    if (k < 3) labels.push(g(`b${k}-past`, block(k, false)));
-    labels.push(g(`b${k}-now`, block(k, true)));
-  }
-  // you, bright and grayed out
-  const you = (col) => d.icon(640, 215, 90, ICON_PERSON_FILL, { color: col }) +
-    d.label(685, 0, "you", { size: 20, color: col === c.light ? c.gray : col, anchor: "middle", centerY: 330 });
-  labels.push(g("you", you(c.light)), g("you-dim", you(c.dark)));
-  // the chat in the browser, bright on levels 1 and 2, grayed out later
-  const bubble = (y, t, mine, dim) => {
+  const bubble = (y, t, mine) => {
     const w = t.length * 17 + 60;
-    return d.box(mine ? 1652 - w : 844, y, w, 50, t, mine ? { border: dim || c.light, color: dim || c.white, size: 32, rx: 25 } : { border: null, fill: c.blue, size: 32, rx: 25 });
+    return d.box(mine ? 1652 - w : 964, y, w, 46, t, mine ? { border: c.light, size: 32, rx: 23 } : { border: null, fill: c.blue, size: 32, rx: 23 });
   };
-  const browser = (dim) => {
-    const col = dim ? c.dark : c.light;
-    return d.box(820, 40, 858, 290, "", { border: col, rx: 14 }) +
-      d.line(821, 80, 1677, 80, { color: c.dark, width: 2 }) +
-      [0, 1, 2].map((k) => `<circle cx="${844 + k * 18}" cy="60" r="5" fill="${dim ? c.dark : c.gray}"/>`).join("") +
-      d.label(900, 0, "chat", { size: 20, color: dim ? c.dark : c.gray, centerY: 60 }) +
-      d.arrow(742, 245, 814, 245, { color: col, width: 2, head: 12 }) +
-      d.arrow(814, 275, 742, 275, { color: dim ? c.dark : c.blue, width: 2, head: 12 }) +
-      // grayed out, the chat keeps its last exchange
-      (dim ? bubble(110, "write a draft of my methods section", true, c.dark) +
-        d.icon(844, 180, 64, ICON_FILE_TEXT, { color: c.dark }) +
-        d.label(924, 0, "methods.docx", { size: 32, color: c.dark, keepCase: true, centerY: 212 }) : "");
-  };
-  boxes.push(g("br", browser(false)), g("br-dim", browser(true)));
-  labels.push(g("c1", bubble(110, "which test fits my data?", true), bubble(190, "a t-test for two groups", false)));
-  labels.push(g("c2a", bubble(110, "write a draft of my methods section", true)));
-  labels.push(g("c2b", d.icon(844, 180, 64, ICON_FILE_TEXT, { color: c.blue }),
-    d.label(924, 0, "methods.docx", { size: 32, color: c.blue, keepCase: true, centerY: 212 })));
-  // your work, a folder; on levels 1 and 2 you carry the result over by hand
-  labels.push(d.icon(1040, 420, 220, ICON_FOLDER, { color: c.light }));
-  labels.push(d.label(1150, 0, "your work", { size: 20, color: c.gray, anchor: "middle", centerY: 664 }));
-  wires.push(g("hand", `<path d="M690 352 V 580 H 1000" fill="none" stroke="${c.gray}" stroke-width="2" stroke-dasharray="8 8"/>`,
-    d.arrow(996, 580, 1034, 580, { color: c.gray, width: 2, head: 12 }),
-    d.label(860, 0, "you copy it over by hand", { size: 20, color: c.gray, anchor: "middle", centerY: 552 })));
-  // level 3: the agent inside your work, you in a loop with it
-  labels.push(g("agent", d.icon(1105, 512, 90, ICON_ROBOT, { color: c.blue })));
-  wires.push(g("loopA", d.line(670, 352, 670, 560, { color: c.light, width: 2 }), d.arrow(670, 560, 1034, 560, { color: c.light, width: 2, head: 12 })));
-  wires.push(g("loopB", d.line(1034, 604, 712, 604, { color: c.blue, width: 2 }), d.arrow(712, 604, 712, 356, { color: c.blue, width: 2, head: 12 })));
-  labels.push(g("loop-labels",
-    d.label(860, 0, "goal and feedback", { size: 20, color: c.light, anchor: "middle", centerY: 536 }),
-    d.label(860, 0, "results", { size: 20, color: c.blue, anchor: "middle", centerY: 628 })));
-  // level 4: the agent alone, a result nobody checks
-  labels.push(g("self", d.icon(1196, 432, 44, ICON_ARROW_REPEAT, { color: c.blue })));
-  wires.push(g("res-arrow", d.arrow(1264, 560, 1318, 560, { color: c.blue, width: 2, head: 12 })));
-  labels.push(g("result", d.icon(1330, 528, 64, ICON_FILE_TEXT, { color: c.light }),
-    d.label(1410, 0, "a result", { size: 32, color: c.light, centerY: 548 }),
-    d.label(1410, 0, "nobody checks it", { size: 20, color: c.gray, centerY: 588 })));
+  for (let i = 0; i <= Math.min(step, 3); i++) {
+    const y0 = i * 200, cy = y0 + 90, now = i === step, agent = i >= 2;
+    if (i) wires.push(d.line(0, y0 - 15, 1676, y0 - 15, { color: c.dark, width: 2 }));
+    labels.push(d.label(0, 0, String(i + 1), { size: 48, color: now ? c.yellow : c.gray, centerY: cy }));
+    labels.push(d.label(56, 0, LEVELS[i], { size: 32, color: now ? c.white : c.light, centerY: cy, lineHeight: 1.3 }));
+    // your work: a folder, with the agent inside from level 3 on
+    labels.push(d.icon(500, y0 + 8, 110, ICON_FOLDER, { color: c.light }));
+    labels.push(d.label(555, 0, "your work", { size: 20, color: c.gray, anchor: "middle", centerY: y0 + 148 }));
+    if (agent) labels.push(d.icon(533, y0 + 53, 44, ICON_ROBOT, { color: c.blue }));
+    if (i === 3) labels.push(d.icon(616, y0 + 8, 28, ICON_ARROW_REPEAT, { color: c.blue }));
+    // you, not in the last row: there nobody takes part any more
+    if (i < 3) {
+      labels.push(d.icon(760, cy - 38, 56, ICON_PERSON_FILL, { color: c.light }));
+      labels.push(d.label(788, 0, "you", { size: 20, color: c.gray, anchor: "middle", centerY: y0 + 148 }));
+    }
+    if (i < 2) {
+      // you carry the result into your work by hand
+      wires.push(d.arrow(748, cy - 10, 622, cy - 10, { color: c.light, width: 2, head: 12 }));
+      // the chat: a window apart from your work
+      boxes.push(d.box(940, y0 + 10, 736, 160, "", { border: c.light, rx: 14 }));
+      labels.push(d.line(941, y0 + 46, 1675, y0 + 46, { color: c.dark, width: 2 }));
+      [0, 1, 2].forEach((k) => labels.push(`<circle cx="${962 + k * 18}" cy="${y0 + 28}" r="5" fill="${c.gray}"/>`));
+      labels.push(d.label(1016, 0, "chat", { size: 20, color: c.gray, centerY: y0 + 28 }));
+      wires.push(d.arrow(828, cy - 26, 934, cy - 26, { color: c.light, width: 2, head: 12 }));
+      wires.push(d.arrow(934, cy + 6, 828, cy + 6, { color: c.blue, width: 2, head: 12 }));
+    }
+    if (i === 0) {
+      labels.push(bubble(y0 + 58, "which test fits my data?", true));
+      labels.push(bubble(y0 + 114, "a t-test for two groups", false));
+    }
+    if (i === 1) {
+      // a prompt goes in, a document comes out
+      labels.push(bubble(y0 + 58, "write a draft of my methods section", true));
+      labels.push(d.icon(964, y0 + 112, 48, ICON_FILE_TEXT, { color: c.blue }));
+      labels.push(d.label(1022, 0, "methods.docx", { size: 32, color: c.blue, keepCase: true, centerY: y0 + 136 }));
+    }
+    if (i === 2) {
+      // you and the agent in a loop: goal and feedback in, results out
+      wires.push(d.arrow(748, cy - 26, 622, cy - 26, { color: c.light, width: 2, head: 12 }));
+      wires.push(d.arrow(622, cy + 6, 748, cy + 6, { color: c.blue, width: 2, head: 12 }));
+      labels.push(d.label(940, 0, "you: the goal and feedback", { size: 32, color: c.light, centerY: y0 + 46 }));
+      labels.push(d.label(940, 0, "agent: the work and results", { size: 32, color: c.blue, centerY: y0 + 94 }));
+      labels.push(d.icon(940, y0 + 128, 28, ICON_ARROW_REPEAT, { color: c.gray }));
+      labels.push(d.label(980, 0, "in a loop until it fits", { size: 20, color: c.gray, centerY: y0 + 142 }));
+    }
+    if (i === 3) {
+      // straight from the agent to a result, past where you used to be
+      wires.push(d.arrow(622, cy - 10, 916, cy - 10, { color: c.blue, width: 2, head: 12 }));
+      labels.push(d.label(788, 0, "nobody checks", { size: 20, color: c.gray, anchor: "middle", centerY: cy - 38 }));
+      labels.push(d.icon(940, cy - 42, 64, ICON_FILE_TEXT, { color: c.light }));
+      labels.push(d.label(1020, 0, "a result", { size: 32, color: c.light, centerY: cy - 24 }));
+      labels.push(d.label(1020, 0, "perhaps because nobody can follow it any more", { size: 20, color: c.gray, centerY: cy + 14 }));
+    }
+  }
   return d.svg(1680, 804, ...d.layers(wires, boxes, labels));
 }
-function playLevels(a) {
-  const S = (t, dur = 300) => a.show(t, { dur });
-  const H = (t, dur = 300) => a.hide(t, { dur });
-  const next = (k) => [a.swap(`b${k}-now`, `b${k}-past`, { dur: 300 }), S(`b${k + 1}-now`)];
-  a.step(...next(0), H("c1"), S("c2a"), S("c2b", 400));
-  a.step(...next(1), a.par(a.swap("br", "br-dim", { dur: 400 }), H("c2a", 400), H("c2b", 400), H("hand", 400)),
-    S("agent", 400), a.par(a.draw("loopA", { dur: 500 }), a.draw("loopB", { dur: 500 })), S("loop-labels"));
-  a.step(...next(2), a.par(H("loopA", 400), H("loopB", 400), H("loop-labels", 400), a.swap("you", "you-dim", { dur: 400 })),
-    S("self"), a.draw("res-arrow", { dur: 300 }), S("result", 400));
-}
+function showLevels(slide, step) { put("fig-levels", figLevels(step || 0)); }
 
 /* ------------------------------------------------------------------ */
 /* The four levels at a glance: where the AI works, your part, and what */
@@ -575,12 +567,11 @@ put("fig-kinds", figKinds(0));
 put("fig-tools", figTools());
 put("fig-phases", figPhases(false));
 put("fig-phases-task", figPhases(true));
-const fl = document.getElementById("fig-levels");
-if (fl) { fl.innerHTML = figLevels(); playLevels(d.anim("fig-levels")); }
+put("fig-levels", figLevels(0));
 put("fig-levels-table", figLevelsTable());
 put("fig-frontier", figFrontier());
 put("fig-growth", figGrowth(0));
 put("fig-references", figReferences());
 put("fig-refs-2026", figRefs2026());
 put("fig-use-table", figUseTable());
-Object.assign(window, { showKinds, showGrowth });
+Object.assign(window, { showKinds, showLevels, showGrowth });
