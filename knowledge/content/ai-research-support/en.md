@@ -34,7 +34,7 @@ In academic work, "AI" means three rather different things.
 |---|---|---|---|
 | **Chatbots** | answer your questions in a chat window | ChatGPT, Claude, Gemini, Chat AI (GWDG), HAWKI (Osnabrück University of Applied Sciences) | what you type or upload |
 | **Specialized tools** | use AI for one specific job | Consensus, Elicit, Research Rabbit, NotebookLM, Napkin, Gamma | a database of papers, your PDFs or your text |
-| **Agents** | get a goal and reach it on their own | Claude Code, Codex, Gemini CLI, OpenCode | your files, programs and the web |
+| **Agents** | get a goal and reach it on their own | Claude Code, Codex, Antigravity (Google), OpenCode, Bionic (LM Studio) | your files, programs and the web |
 
 Chatbots are the all-rounders: they explain, phrase and write code, but they
 only know what you give them, and everything happens in the browser, apart
@@ -89,16 +89,17 @@ your study begins with the codebook.
 
 ## What is possible: four levels
 
-How we work with AI has developed in four levels. The slides show each level
-with the same three places: your work, a folder with paper, data and code;
-you; and the place where the AI works.
+How we work with AI has developed in four levels, and each level builds on the
+one below: what the AI can do on level 1 it can still do on level 4, and each
+level adds something. With every level you hand over more of the work and see
+less of it.
 
-| Level | What happens | Where the AI works |
-|---|---|---|
-| **1 AI answers your questions** | a question goes in, an answer comes out, as with the first chatbots; you carry the answer into your work by hand | in the browser, apart from your work |
-| **2 AI reads and writes documents** | you upload a PDF and get a summary or a draft back; the AI now makes content | still in the browser, still apart |
-| **3 An agent works, you give feedback** | you give a goal and not the way, the agent does the work and shows you the result, you give feedback, and that goes round in a loop until it fits | in your folder, with your files and programs |
-| **4 AI does it all, nobody checks** | the agent works alone, and no human looks at the result, perhaps because nobody can follow it any more | in your folder, without you |
+| Level | Where the AI works | Your part | What it adds |
+|---|---|---|---|
+| **1 answers questions** | in the chat | ask, and carry the answer over by hand | the basis |
+| **2 writes documents** | in the chat | write a prompt and carry the document over, such as a draft of your methods section | documents |
+| **3 acts in your files** | in your folder, with tools | set the goal and give feedback, in a loop until it fits | tools, your files, a loop |
+| **4 works on its own** | in your folder, with tools | none: nobody checks the result, perhaps because nobody can follow it any more | no human in the loop |
 
 Level 4 sounds like the future, but in mathematics it has begun: in November
 2026 a committee chaired by the physicist David Gross reviewed a proof that
@@ -209,9 +210,9 @@ Filled in as you go, each row costs a minute.
 
 - Chatbots answer questions in the browser, specialized tools use AI for one
   specific job, and agents get a goal and reach it on their own in a loop.
-- Working with AI has four levels: answering questions, reading and writing
-  documents, an agent with your feedback, and an AI whose result nobody
-  checks any more.
+- Working with AI has four levels, each building on the one below: answering
+  questions, writing documents, acting in your files with your feedback, and
+  working on its own while nobody checks the result.
 - What is possible does not work equally well everywhere, and from the inside
   you cannot see the frontier, so you check every result.
 - Made-up references still occur, in AI answers and in published papers;

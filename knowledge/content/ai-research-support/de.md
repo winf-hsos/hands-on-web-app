@@ -43,7 +43,7 @@ heute möglich ist, und fragt danach, was davon funktioniert und sinnvoll ist.
 |---|---|---|---|
 | **Chatbots** | beantworten deine Fragen in einem Chatfenster | ChatGPT, Claude, Gemini, Chat AI (GWDG), HAWKI (Hochschule Osnabrück) | dem, was du eintippst oder hochlädst |
 | **Spezialisierte Werkzeuge** | nutzen KI für eine bestimmte Aufgabe | Consensus, Elicit, Research Rabbit, NotebookLM, Napkin, Gamma | einer Datenbank von Papers, deinen PDFs oder deinem Text |
-| **Agenten** | bekommen ein Ziel und erreichen es selbstständig | Claude Code, Codex, Gemini CLI, OpenCode | deinen Dateien, Programmen und dem Web |
+| **Agenten** | bekommen ein Ziel und erreichen es selbstständig | Claude Code, Codex, Antigravity (Google), OpenCode, Bionic (LM Studio) | deinen Dateien, Programmen und dem Web |
 
 Chatbots sind die Allrounder: Sie erklären, formulieren und schreiben Code,
 kennen aber nur, was du ihnen gibst, und alles geschieht im Browser, getrennt
@@ -101,16 +101,17 @@ Phasen 4 bis 6 übernommen, und deine Studie beginnt mit dem Codebuch.
 
 ## Was möglich ist: vier Stufen
 
-Wie wir mit KI arbeiten, hat sich in vier Stufen entwickelt. Die Folien
-zeigen jede Stufe mit denselben drei Orten: deiner Arbeit, also einem Ordner
-mit Paper, Daten und Code, dir selbst und dem Ort, an dem die KI arbeitet.
+Wie wir mit KI arbeiten, hat sich in vier Stufen entwickelt, und jede Stufe
+baut auf der vorigen auf: Was die KI auf Stufe 1 kann, kann sie auf Stufe 4
+immer noch, es kommt jeweils etwas dazu. Mit jeder Stufe gibst du mehr von der
+Arbeit ab und siehst weniger davon.
 
-| Stufe | Was geschieht | Wo die KI arbeitet |
-|---|---|---|
-| **1 KI beantwortet deine Fragen** | Frage rein, Antwort raus, so wie mit den ersten Chatbots; du trägst die Antwort von Hand in deine Arbeit | im Browser, getrennt von deiner Arbeit |
-| **2 KI liest und schreibt Dokumente** | du lädst ein PDF hoch und bekommst eine Zusammenfassung oder einen Entwurf; die KI erzeugt jetzt Inhalte | weiter im Browser, weiter getrennt |
-| **3 Ein Agent arbeitet, du gibst Rückmeldung** | du gibst ein Ziel und nicht den Weg, der Agent erledigt die Arbeit und zeigt dir das Ergebnis, du gibst Rückmeldung, und das läuft in einer Schleife, bis es passt | in deinem Ordner, mit deinen Dateien und Programmen |
-| **4 KI erledigt alles, niemand prüft** | der Agent arbeitet allein, und kein Mensch sieht sich das Ergebnis an, vielleicht weil es niemand mehr nachvollziehen kann | in deinem Ordner, ohne dich |
+| Stufe | Wo die KI arbeitet | Dein Teil | Was neu dazukommt |
+|---|---|---|---|
+| **1 beantwortet Fragen** | im Chat | fragen und die Antwort von Hand übertragen | die Grundlage |
+| **2 schreibt Dokumente** | im Chat | einen Prompt schreiben und das Dokument übertragen, etwa den Entwurf deines Methodenteils | Dokumente |
+| **3 handelt in deinen Dateien** | in deinem Ordner, mit Werkzeugen | das Ziel setzen und Rückmeldung geben, in einer Schleife, bis es passt | Werkzeuge, deine Dateien, eine Schleife |
+| **4 arbeitet allein** | in deinem Ordner, mit Werkzeugen | keiner: niemand prüft das Ergebnis, vielleicht weil es niemand mehr nachvollziehen kann | kein Mensch mehr in der Schleife |
 
 Stufe 4 klingt nach Zukunft, hat in der Mathematik aber schon begonnen: Im
 November 2026 begutachtete ein Komitee unter dem Physiker David Gross einen
@@ -232,9 +233,10 @@ eine Minute.
 - Chatbots beantworten Fragen im Browser, spezialisierte Werkzeuge nutzen KI
   für eine bestimmte Aufgabe, Agenten bekommen ein Ziel und erreichen es
   selbstständig in einer Schleife.
-- Die Arbeit mit KI hat vier Stufen: Fragen beantworten, Dokumente lesen und
-  schreiben, ein Agent mit deiner Rückmeldung, und eine KI, deren Ergebnis
-  niemand mehr prüft.
+- Die Arbeit mit KI hat vier Stufen, und jede baut auf der vorigen auf:
+  Fragen beantworten, Dokumente schreiben, in deinen Dateien handeln mit
+  deiner Rückmeldung, und allein arbeiten, ohne dass jemand das Ergebnis
+  prüft.
 - Was möglich ist, funktioniert nicht überall gleich gut, und von innen
   siehst du die Grenze nicht, deshalb prüfst du jedes Ergebnis.
 - Erfundene Quellen kommen weiter vor, in Antworten von KI wie in

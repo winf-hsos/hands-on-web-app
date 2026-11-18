@@ -10,6 +10,8 @@
     /* photos with a sentence on the left: photo at 64 % height */
     .slide img.photo.side { height: 64%; top: 18%; }
     .slide .photo-text.side { width: 30%; font-size: var(--normal); line-height: 1.25; }
+    /* closing photo over the full slide, the sentence on its black left side */
+    .slide .photo-text.closing { width: 34%; }
     .keep-case { text-transform: none; }
     /* rules that appear one after the other, the key term of each highlighted */
     .lines.spaced > div { margin-bottom: 40px; }
@@ -74,12 +76,19 @@
     <aside class="notes">Now what is possible today. How we work with AI has changed in four levels, from a chatbot that answers questions to an AI that does everything on its own.</aside>
   </section>
 
-  <section class="slide" data-on-show="showLevels" data-on-step="showLevels">
+  <section class="slide">
     <h2>four levels of ai use</h2>
     <div class="figure" id="fig-levels"></div>
     <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span>
     <div class="footnote" data-step="3">level 4: the reviewers of an ai proof in mathematics, checked in <span class="keep-case">Lean</span>: “we do not claim to fully understand the proof yet” (<a href="https://www.science.org/content/article/ai-rivals-tackle-one-physics-deepest-mathematical-challenges" target="_blank" rel="noopener"><span class="keep-case">Science</span>, 2026</a>)</div>
-    <aside class="notes">Each row has the same three places: your work, a folder with your paper, data and code; you; and on the right what the AI works in. Level 1, AI answers your questions: this is how we worked with the first chatbots. A question goes in, an answer comes out, but in the browser, apart from your work, and you carry the answer over by hand. Level 2, AI reads and writes documents: you upload a PDF and get a summary or a draft back. The AI now makes content, but it is still in the browser and still apart from your work. Level 3, an agent works and you give feedback: the agent sits in your folder, with your files and programs. You give it a goal, not the way; it does the work, shows you the result, you give feedback, and that goes round in a loop until the result fits. Level 4, AI does it all and nobody checks: the agent works on its own, and no human looks at the result, perhaps because nobody could follow it any more. In mathematics this has started: in November 2026, a committee chaired by the physicist David Gross reviewed an AI proof of the existence half of the Yang-Mills problem, which a computer had checked in the proof language Lean, and wrote that they do not claim to fully understand the proof yet. All four levels are possible today; whether they work and make sense is the question of the next part.</aside>
+    <aside class="notes">Four levels, and each one stands on the one below and adds something; the stack on the left grows with every click, and the scene on the right shows what is new. Level 1, AI answers your questions, as with the first chatbots: you ask in the chat and get an answer, and you carry it into your work by hand. Level 2, AI also writes documents: from a prompt in the chat it makes a draft, a summary or a table, so it now makes content, but still in the chat and apart from your work, and you still carry it over. Level 3, AI acts in your files: the agent moves into your folder and works there with your files and programs. You give it a goal, not the way, it shows you results, you give feedback, and that goes round in a loop until the result fits. Level 4, AI works on its own: the agent runs its own loop and delivers a result that nobody checks, perhaps because nobody could follow it any more. In mathematics this has started: in November 2026, a committee chaired by the physicist David Gross reviewed an AI proof of the existence half of the Yang-Mills problem, which a computer had checked in the proof language Lean, and wrote that they do not claim to fully understand the proof yet. All four levels are possible today; whether they work and make sense is the question of the next part.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>the four levels at a glance</h2>
+    <div class="figure" id="fig-levels-table"></div>
+    <div class="punch">each level adds something to the one below, and with every level you hand over more of the work and see less of it.</div>
+    <aside class="notes">The same four levels as a table. On levels 1 and 2 the AI works in the chat, and you ask or prompt and carry the answer or the document into your work. On level 3 it works in your folder with tools, and your part is to set the goal and give feedback. On level 4 it works there too, and nobody checks the result. The last column says what each level adds: documents on level 2, tools, your files and a loop on level 3, and on level 4 that no human is in the loop any more. The higher the level, the more work the AI takes over, and the less of that work you see.</aside>
   </section>
 
   <section class="slide has-punch">
@@ -153,16 +162,16 @@
   </section>
 
   <section class="slide">
-    <div class="content">
-      <div class="statement">you only learn what works by working with ai yourself, because all of us are exploring the jagged frontier and pushing it out.</div>
-    </div>
-    <aside class="notes">That is the message to take home. What is possible changes with every model, and no study can tell you where the frontier runs for your task with your tool. You find that out only by using AI yourself, checking what comes out and keeping what works. Nobody has the full map yet; all of us, researchers, teachers and students, are exploring the jagged frontier, and every use that works pushes it a little further out.</aside>
+    <img class="photo" src="img/closing-map.jpg" alt="On a dark desk under a lamp an old hand-drawn map with a jagged coastline; a fountain pen extends the coastline in fresh blue ink into the blank paper, next to it a laptop">
+    <div class="photo-text closing">you only learn what works by working with ai yourself, because all of us are exploring the jagged frontier and pushing it out.</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">That is the message to take home. What is possible changes with every model, and no study can tell you where the frontier runs for your task with your tool. You find that out only by using AI yourself, checking what comes out and keeping what works. Nobody has the full map yet, as the picture shows: all of us, researchers, teachers and students, are exploring the jagged frontier, and every use that works draws the coastline a little further out.</aside>
   </section>
 
 </div>
 <script src="../../stagekit/draw.js?v=0.7.0-156254"></script>
 <script src="../../stagekit/anim.js?v=0.7.0-156254"></script>
-<script src="deck.js?v=4"></script>
+<script src="deck.js?v=5"></script>
 <script src="../../stagekit/stagekit.js?v=0.7.0-156254"></script>
 </body>
 </html>
