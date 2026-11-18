@@ -285,8 +285,8 @@ and "To the end" keeps rolling until the model draws the end of the sentence.
 
 > [!SOLUTION]
 > Typical sentences are "the hen lays eggs" (copied), "the bee lives in the
-> barn" (new, and plausible) and "the sheep gives milk", "the cow is sweet"
-> or "the farmer milks the hen" (new, fluent and false). Some run on, such as
+> barn" (new, and plausible) and "the milk is green" or "the farmer milks the
+> hen" (new, fluent and false). Some run on, such as
 > "the farmer milks the cow eats grass", because after "cow" the model no
 > longer knows that the cow was the object of the sentence.
 
@@ -355,8 +355,9 @@ tokens |>
     word from the corpus. Compare it with one word of context.
 
 > [!SOLUTION]
-> After "cow gives" only "milk" remains, so "the sheep gives milk" is gone,
-> and after "milks the" only "cow". But after "in the" come barn, field, nest
+> After "cow gives" only "milk" remains and after "milk is" only "white", so
+> "the milk is green" is gone, and after "milks the" only "cow", so "the
+> farmer milks the hen" is gone, too. But after "in the" come barn, field, nest
 > and hive (twice), so "the cow sleeps in the hive" is still possible: two
 > words do not say who is sleeping. With one word of context about one
 > sentence in six is copied from the corpus, with two words about two in
@@ -371,7 +372,7 @@ table. Real language models have all of them in a weaker form.
 
 ### It writes false sentences that sound right
 
-"The sheep gives milk" consists of pairs that all occur in the corpus, so
+"The milk is green" consists of pairs that all occur in the corpus, so
 the model finds nothing wrong with it. It has never checked a fact, it only
 knows which words follow which. When a real model writes a fluent, false
 statement, this is called a **hallucination**.
@@ -478,8 +479,8 @@ tokens |>
     under "How large is the table of the model?".
 
 > [!SOLUTION]
-> Grammatical and false: "the sheep gives milk", "the farmer milks the hen",
-> "the cow is green". Ungrammatical: "the farmer milks the cow eats grass".
+> Grammatical and false: "the milk is green", "the farmer milks the hen",
+> "the cow is small". Ungrammatical: "the farmer milks the cow eats grass".
 > The copy rate with one word of context is about 0.16, with two words about
 > 0.66. Copying matters because a model can reproduce training text word for
 > word, including what is protected by copyright or was meant to stay
