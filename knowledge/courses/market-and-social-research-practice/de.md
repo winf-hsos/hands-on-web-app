@@ -16,11 +16,11 @@ sections:
   - title: { de: Einstieg in die Datenanalyse mit R, en: Getting started with data analysis in R }
     items: [data-analysis-with-r-slides, survey-self-test, survey-exercise-first-look, survey-exercise-describing-variables, survey-exercise-comparing-groups, survey-exercise-figures, survey-exercise-own-question]
   - title: { de: "Forschungsfragen, wissenschaftliche Paper und Quarto", en: "Research questions, scientific papers and Quarto" }
-    items: [quarto-first-steps, research-questions, research-question-exercise, paper-structure, quarto-paper-exercise, milk-chocolate-survey]
+    items: [quarto-first-steps, quarto-report-exercise, research-questions, research-question-exercise, paper-structure, quarto-paper-exercise, milk-chocolate-survey]
   - title: { de: KI-Agenten in der empirischen Forschung, en: AI agents in empirical research }
     items: [ai-research-support, text-for-ai, ai-agents-in-research]
 status: published
-updated: 2026-11-17
+updated: 2026-11-18
 ---
 
 Diese Sammlung begleitet den Teil von Nicolas Meseth im Bachelormodul Praxis
@@ -40,9 +40,9 @@ eigenen Tempo mit der ganzen Umfrage, vom ersten Blick auf den Datensatz bis
 zur Antwort auf eine eigene Frage.
 
 Der Abschnitt danach legt das Fundament für die Ausarbeitung: wie ein
-Quarto-Dokument aufgebaut ist, was eine gute Forschungsfrage ausmacht und wie
-sie zu Daten passt, die schon erhoben sind, und wie ein wissenschaftliches
-Paper gegliedert ist.
+Quarto-Dokument aufgebaut ist und wie du in einer kleinen Übung selbst eines
+füllst, was eine gute Forschungsfrage ausmacht und wie sie zu Daten passt, die
+schon erhoben sind, und wie ein wissenschaftliches Paper gegliedert ist.
 
 Im Abschnitt „KI-Agenten in der empirischen Forschung“ geht es darum, wie du
 KI in den Schritten einer Studie einsetzt und dabei Autorin oder Autor

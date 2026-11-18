@@ -1,0 +1,9 @@
+---
+title: "Wer hat an der Umfrage teilgenommen?"
+author: "Dein Name"
+date: today
+lang: de
+format:
+  typst:
+    papersize: a4
+---
