@@ -6,7 +6,8 @@ summary: >-
   Ein Plädoyer dafür, einen Bericht in Quarto, Typst oder LaTeX zu schreiben
   statt in Word: was ein Sprachmodell in einer Datei sieht, warum eine
   Änderung in Text lesbar bleibt, wie die drei Formate aussehen und was das
-  für einen Bericht in Quarto bedeutet.
+  für einen Bericht in Quarto bedeutet, und warum Werkzeuge mit Kommandozeile
+  zu einem KI-Agenten passen.
 objectives:
   intro: "In dieser Lektion lernst du, warum ein Bericht als Text für die Arbeit mit KI besser geeignet ist, und kannst danach:"
   goals:
@@ -15,6 +16,7 @@ objectives:
     - "Überschrift, Fettdruck, Formel und Zitat in Quarto, Typst und LaTeX erkennen"
     - "beschreiben, wie aus einer Textquelle eine PDF-, HTML- oder Word-Datei wird"
     - "begründen, warum eine Zahl aus Code im Text weder dir noch einer KI falsch hineinrutschen kann"
+    - "erklären, warum ein Werkzeug mit Kommandozeile zu einem KI-Agenten passt, und Beispiele über das Schreiben hinaus nennen"
 level: 1
 duration: 20
 topics: [reproducible-work, communicating-results]
@@ -73,7 +75,8 @@ Women name a **higher** price than men.
 Mit Quarto 1.10 als Word-Datei ausgegeben, wird daraus ein Zip-Archiv aus 16
 Dateien mit gut zehn Kilobyte. Der Satz selbst steht in `word/document.xml`,
 zerlegt in Stücke, weil jeder Wechsel der Formatierung ein neues Stück
-beginnt. Um dort ein Wort zu ändern, muss ein Programm das Archiv entpacken,
+beginnt: „Women name a“, „higher“ und „price than men.“ stehen alle da, aber
+verstreut zwischen Tags. Um dort ein Wort zu ändern, muss ein Programm das Archiv entpacken,
 das richtige Stück im XML finden, es ändern, ohne die Struktur zu zerstören,
 und alles wieder packen. Eine Datei, die Word selbst speichert, ist noch
 größer. Eine Textdatei liest und ändert das Modell dagegen Zeile für Zeile.
@@ -121,11 +124,12 @@ Kommentieren, erzeugt Quarto sie aus derselben Quelle.
 ## Dein Bericht als Text
 
 In Quarto kann eine Zahl im Text direkt aus R kommen. Ein Chunk berechnet
-den Median, und ein Inline-Ausdruck schreibt ihn in den Satz:
+den Median und formatiert ihn mit zwei Nachkommastellen, und ein
+Inline-Ausdruck schreibt ihn in den Satz:
 
 ````markdown
 ```{r}
-med_w <- median(women$price)
+med_w <- sprintf("%.2f", median(women$price))
 ```
 
 Women name a median of `{r} med_w` €.
@@ -158,6 +162,42 @@ setzt das PDF. Jede Datei ist Text, also kann ein Agent den ganzen Bericht
 lesen, einen Abschnitt mit einem anderen abgleichen und eine einzelne Zeile
 ändern, und du siehst jede Änderung, bevor sie geschieht.
 
+## Die KI dort abholen, wo sie arbeitet
+
+Ein KI-Agent arbeitet im Terminal: Er tippt einen Befehl, liest, was
+zurückkommt, und entscheidet über den nächsten Schritt. Ein Werkzeug, das
+eine Kommandozeile mitbringt, kann eine KI deshalb genauso bedienen wie du,
+und Quarto, Typst und LaTeX bringen jeweils eine mit:
+
+```bash
+quarto render paper.qmd --to pdf
+typst compile paper.typ
+latexmk -pdf paper.tex
+```
+
+Ein Agent kann dein Paper also selbst setzen, die Fehlermeldungen lesen und
+die Quelle korrigieren. Word hat Menüs und Knöpfe, aber keinen Befehl, der
+ein Dokument setzt oder ändert; es gibt Umwege wie Pandoc oder Skripte, die
+Word fernsteuern, doch Word selbst ist für einen Menschen mit Maus gebaut.
+
+Immer mehr Werkzeuge folgen derselben Idee, halten ihre Dateien als Text und
+bringen eine Kommandozeile mit:
+
+- [Excalidraw](https://github.com/excalidraw/cli) speichert jede Zeichnung
+  als JSON-Text, und seine offizielle Kommandozeile, gemacht „for humans and
+  agents“, rendert Zeichnungen und macht aus Mermaid-Text bearbeitbare
+  Zeichnungen.
+- [Mermaid](https://mermaid.js.org) schreibt ein Diagramm als Text, und
+  GitHub, Quarto und Excalidraw zeichnen es.
+- [marimo](https://marimo.io) speichert ein Notebook als einfache
+  Python-Datei, ohne Ausgaben und Bilder darin.
+- Die [GitHub CLI](https://cli.github.com) holt Issues, Pull Requests und
+  Releases ins Terminal.
+- Eine .csv-Datei ist eine Tabelle als reiner Text, während eine .xlsx-Datei
+  ein gepacktes Bündel ist wie eine .docx.
+- Die Folien dieser Lektion sind eine HTML-Datei und ein Skript, also kann
+  eine KI sie bauen und ändern wie ein Paper in Quarto.
+
 ## Zum Mitnehmen
 
 - Ein Sprachmodell liest und schreibt Text; eine Textdatei braucht keinen
@@ -169,3 +209,5 @@ lesen, einen Abschnitt mit einem anderen abgleichen und eine einzelne Zeile
 - Aus einer Quelle in Quarto entstehen PDF, HTML und, wenn nötig, Word.
 - Eine Zahl, die aus Code kommt, kann weder dir noch einer KI falsch in den
   Text rutschen.
+- Ein KI-Agent arbeitet im Terminal, deshalb passen Werkzeuge mit
+  Textdateien und Kommandozeile zu ihm, Word dagegen nicht.

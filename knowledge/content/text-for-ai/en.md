@@ -3,7 +3,8 @@ title: Why text is better for AI
 summary: >-
   A plea for writing a report in Quarto, Typst or LaTeX instead of Word: what
   a language model sees in a file, why a change in text stays readable, what
-  the three formats look like and what this means for a report in Quarto.
+  the three formats look like, what this means for a report in Quarto and why
+  tools with a command line suit an AI agent.
 objectives:
   intro: "In this lesson you learn why a report written as text suits working with AI better, and afterwards you can:"
   goals:
@@ -12,6 +13,7 @@ objectives:
     - "recognize heading, bold, formula and citation in Quarto, Typst and LaTeX"
     - "describe how a text source becomes a PDF, HTML or Word file"
     - "explain why a number from code cannot slip into the text wrongly, neither by you nor by an AI"
+    - "explain why a tool with a command line suits an AI agent and name examples beyond writing"
 translation_of: de
 based_on: 2026-11-17
 ---
@@ -60,7 +62,9 @@ Women name a **higher** price than men.
 
 Rendered to Word with Quarto 1.10, this becomes a zip archive of 16 files and
 just over ten kilobytes. The sentence itself sits in `word/document.xml`, cut
-into pieces, because every change of formatting starts a new piece. To change
+into pieces, because every change of formatting starts a new piece: "Women
+name a", "higher" and "price than men." are all there, but scattered
+between tags. To change
 one word there, a program has to unpack the archive, find the right piece in
 the XML, change it without breaking the structure and pack everything again.
 A file saved by Word itself is larger still. A text file, in contrast, the
@@ -108,11 +112,12 @@ source.
 ## Your report as text
 
 In Quarto a number in the text can come straight from R. A chunk computes
-the median, and an inline expression writes it into the sentence:
+the median and formats it with two decimals, and an inline expression
+writes it into the sentence:
 
 ````markdown
 ```{r}
-med_w <- median(women$price)
+med_w <- sprintf("%.2f", median(women$price))
 ```
 
 Women name a median of `{r} med_w` €.
@@ -145,6 +150,41 @@ text, so an agent can read the whole report, check one section against
 another and change a single line, and you see every change before it
 happens.
 
+## Meet the AI where it lives
+
+An AI agent works in a terminal: it types a command, reads what comes back
+and decides on the next step. A tool that brings a command line can
+therefore be used by an AI the same way as by you, and Quarto, Typst and
+LaTeX each bring one:
+
+```bash
+quarto render paper.qmd --to pdf
+typst compile paper.typ
+latexmk -pdf paper.tex
+```
+
+An agent can render your paper, read the error messages and fix the source
+on its own. Word has menus and buttons but no command to render or change a
+document; there are detours such as Pandoc or scripts that remote-control
+Word, but Word itself is built for a person with a mouse.
+
+More and more tools follow the same idea and keep their files as text and
+bring a command line:
+
+- [Excalidraw](https://github.com/excalidraw/cli) keeps every drawing as
+  JSON text, and its official command line interface, made "for humans and
+  agents", renders drawings and turns Mermaid text into editable drawings.
+- [Mermaid](https://mermaid.js.org) writes a diagram as text, and GitHub,
+  Quarto and Excalidraw draw it.
+- [marimo](https://marimo.io) saves a notebook as a plain Python file,
+  without outputs and images inside.
+- The [GitHub CLI](https://cli.github.com) brings issues, pull requests and
+  releases to the terminal.
+- A .csv file is a table as plain text, while an .xlsx file is a packed
+  bundle like a .docx.
+- The slides of this lesson are an HTML file and a script, so an AI can
+  build and change them like a paper in Quarto.
+
 ## Takeaways
 
 - A language model reads and writes text; a text file needs no intermediate
@@ -156,3 +196,5 @@ happens.
 - One Quarto source gives PDF, HTML and, when needed, Word.
 - A number that comes from code cannot slip into the text wrongly, neither
   by you nor by an AI.
+- An AI agent works in the terminal, so tools that keep text files and bring
+  a command line suit it, while Word does not.

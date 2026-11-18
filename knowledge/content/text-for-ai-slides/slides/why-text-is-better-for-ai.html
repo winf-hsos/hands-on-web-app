@@ -16,7 +16,7 @@
 <body>
 <div class="deck" data-title="why text is better for ai"
      data-subtitle="prof. dr. nicolas meseth"
-     data-parts='["what you write with", "what a model sees", "three text formats", "your report as text"]'
+     data-parts='["what you write with", "what a model sees", "three text formats", "your report as text", "meet the ai where it lives"]'
      data-live-url="https://live.hsos.uber.space" data-live-series="why-text-is-better-for-ai">
 
   <section class="slide title">
@@ -84,8 +84,8 @@
   <section class="slide" data-on-show="showDocx" data-on-step="showDocx">
     <h2>one sentence, two files</h2>
     <div class="figure" id="fig-docx"></div>
-    <span data-step="1"></span>
-    <aside class="notes">On the left the sentence as it stands in a Quarto file: one line, 62 bytes, the two stars make the word bold. On the right the same sentence rendered to Word: a zip archive of 16 files and more than ten kilobytes. The sentence itself sits in word/document.xml, cut into five pieces, because every change of formatting starts a new piece. To change one word there, a program has to unpack the archive, find the right piece in the XML, change it without breaking the structure, and pack everything again. A file saved by Word itself is larger still. A text file the model reads and changes line by line.</aside>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span><span data-step="4"></span>
+    <aside class="notes">On the left the sentence as it stands in a Quarto file: one line, 62 bytes, the two stars make the word bold. On the right the same sentence rendered to Word: a zip archive of 16 files and more than ten kilobytes. The sentence itself sits in word/document.xml, cut into five pieces, because every change of formatting starts a new piece. To change one word there, a program has to unpack the archive, find the right piece in the XML, change it without breaking the structure, and pack everything again. A file saved by Word itself is larger still. The next three clicks mark the three pieces of the sentence on both sides: "Women name a", then "higher", then "price than men.". Everything is there, but scattered between tags, so a model has to read the markup around every word to find the sentence, while in the text file it simply reads the line.</aside>
   </section>
 
   <section class="slide has-punch">
@@ -122,13 +122,31 @@
     <div class="figure" id="fig-inline"></div>
     <span data-step="1"></span>
     <div class="punch">a number that comes from code can be mistyped neither by you nor by an ai.</div>
-    <aside class="notes">In Quarto a number in the text can come straight from R: the chunk computes the median, and the inline expression writes it into the sentence. When the data change, the number changes with it. For working with AI this matters twice: an AI that edits your text cannot invent or mistype the number, because the number is not in the text but in the code, and when you check the code, you check the number.</aside>
+    <aside class="notes">In Quarto a number in the text can come straight from R: the chunk computes the median and formats it with two decimals, and the inline expression writes it into the sentence. The second click shows a real cut-out of the PDF that Quarto and Typst make of it, with the number marked. When the data change, the number changes with it. For working with AI this matters twice: an AI that edits your text cannot invent or mistype the number, because the number is not in the text but in the code, and when you check the code, you check the number.</aside>
   </section>
 
   <section class="slide">
     <h2>a report as a folder of text files</h2>
     <div class="figure" id="fig-report"></div>
     <aside class="notes">A paper in Quarto can be a small folder: a central file with the settings that pulls in the sections, one file per section and the references in a .bib file. Quarto runs the code, and Typst sets the PDF. Every file is text, so an agent can read the whole report, check one section against another and change a single line, and you see every change before it is made.</aside>
+  </section>
+
+  <!-- ===== part 5 ===== -->
+  <section class="slide part" data-part="meet the ai where it lives" data-subtitle="text files and the command line">
+    <aside class="notes">One step further: not only the file has to be text, the tool should also bring a command line, because that is where an agent works.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>an agent works in the terminal</h2>
+    <div class="figure" id="fig-cli"></div>
+    <div class="punch">an ai uses a tool with a command line the same way you do, and quarto, typst and latex all bring one.</div>
+    <aside class="notes">An AI agent works in a terminal: it types a command, reads what comes back and decides on the next step. Quarto, Typst and LaTeX each bring such a command, so an agent can render the paper, read the error messages and fix the source on its own. Word has menus and buttons but no command to render or change a document; there are detours such as Pandoc or scripts that remote-control Word, but Word itself is built for a person with a mouse. "Meet the AI where it lives" means: a tool that wants to be used by AI comes to the terminal and to text files.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>the same idea elsewhere</h2>
+    <div class="figure" id="fig-elsewhere"></div>
+    <aside class="notes">More and more tools follow the same idea. Excalidraw keeps every drawing as JSON text and publishes an official command line interface "for humans and agents", which renders drawings and turns Mermaid text into editable drawings. Mermaid writes a diagram as text, and GitHub, Quarto and Excalidraw draw it. Marimo saves a notebook as a plain Python file instead of a JSON file with outputs and images inside. The GitHub CLI brings issues, pull requests and releases to the terminal. A CSV file is a table as plain text, while an .xlsx file is a packed bundle like a .docx. And this deck itself is an HTML file and a script, so an AI can build and change it in the same way as a paper in Quarto.</aside>
   </section>
 
   <section class="slide">
@@ -141,7 +159,7 @@
 </div>
 <script src="../../stagekit/draw.js?v=0.7.0-156254"></script>
 <script src="../../stagekit/anim.js?v=0.7.0-156254"></script>
-<script src="deck.js?v=1"></script>
+<script src="deck.js?v=2"></script>
 <script src="../../stagekit/stagekit.js?v=0.7.0-156254"></script>
 </body>
 </html>

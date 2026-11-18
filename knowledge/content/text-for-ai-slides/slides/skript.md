@@ -36,56 +36,96 @@ citations come from a .bib file in any style, and one source gives PDF, HTML
 or Word. None of this is new, but with AI text files gain a strength they did
 not have before.
 
-## Part 2: what a model sees (frames 9–13)
+## Part 2: what a model sees (frames 9–16)
 
 **A language model reads and writes text (frame 10).** A language model takes
-text and gives text back, nothing else. A picture, a table or a Word file has
+text and gives text back, nothing else; prompt, model and answer stand in
+three boxes of the same size. A picture, a table or a Word file has
 to be turned into text first by a program around the model, while a text
 file needs no such step.
 
-**One sentence, two files (frames 11–12).** The sentence "Women name a
+**One sentence, two files (frames 11–15).** The sentence "Women name a
 **higher** price than men." in a Quarto file is one line of 62 bytes; the two
 stars make the word bold. Rendered to Word with Quarto 1.10, the same
 sentence becomes a zip archive of 16 files and more than ten kilobytes, and
 in `word/document.xml` it is cut into pieces wherever the formatting changes.
 To change one word there, a program has to unpack the archive, find the right
 piece, change it without breaking the structure and pack everything again. A
-text file the model reads and changes line by line.
+text file the model reads and changes line by line. Frames 13 to 15 mark the
+three pieces of the sentence on both sides, first "Women name a", then
+"higher", then "price than men.": everything is there, but scattered between
+tags, so a model has to read the markup around every word to find the
+sentence.
 
-**A change you can read (frame 13).** When an AI changes a text file, the
+**A change you can read (frame 16).** When an AI changes a text file, the
 change can be shown as a diff, with the old line in red and the new lines in
 green. An AI agent shows exactly this before it writes to a file, and you
 accept or reject it; in a Word file you only see the result, not the change.
 
-## Part 3: three text formats (frames 14–16)
+## Part 3: three text formats (frames 17–19)
 
-**The same four things, three times (frame 15).** A heading, a bold word, a
+**The same four things, three times (frame 18).** A heading, a bold word, a
 formula and a citation in Quarto, Typst and LaTeX. Quarto uses Markdown, the
 lightest syntax. Typst is a newer typesetting system with its own short
 syntax and very fast output. LaTeX has been the standard in mathematics and
 physics for decades and is the most verbose of the three. All three keep
 formulas as text and take citations from a .bib file.
 
-**From text to the file you hand in (frame 16).** An engine sets the text
-into the format you hand in. Quarto reads Markdown with code, runs the code
+**From text to the file you hand in (frame 19).** An engine sets the text
+into the format you hand in. The figure has three rows: each source sits
+level with its engine, HTML with Quarto, PDF with LaTeX and the Word file in
+the middle. Quarto reads Markdown with code, runs the code
 and produces HTML, Word or PDF, handing the text on to Typst or LaTeX for the
 PDF; Typst and LaTeX set PDF directly. Writing in text therefore does not
 mean giving up Word, because Quarto produces a .docx from the same source
 when a supervisor wants to comment in Word.
 
-## Part 4: your report as text (frames 17–21)
+## Part 4: your report as text (frames 20–23)
 
-**Numbers from code (frames 18–19).** In Quarto a number in the text can come
-straight from R: a chunk computes the median and an inline expression writes
-it into the sentence, so it changes with the data. An AI that edits the text
+**Numbers from code (frames 21–22).** In Quarto a number in the text can come
+straight from R: a chunk computes the median and formats it with two
+decimals, and an inline expression writes it into the sentence, so it changes
+with the data. Frame 22 shows a real cut-out of the PDF that Quarto and Typst
+make of it, with the number marked. An AI that edits the text
 can neither invent nor mistype that number, because the number lives in the
 code, and when you check the code you check the number.
 
-**A report as a folder of text files (frame 20).** A paper in Quarto can be a
+**A report as a folder of text files (frame 23).** A paper in Quarto can be a
 small folder: a central file with the settings that pulls in the sections,
 one file per section and the references in a .bib file. Every file is text,
 so an agent can read the whole report, check one section against another and
 change a single line, and you see every change before it is made.
 
-**Closing (frame 21).** Write your report as text, because then an AI can
+## Part 5: meet the AI where it lives (frames 24–26)
+
+**An agent works in the terminal (frame 25).** An AI agent types a command,
+reads what comes back and decides on the next step. Quarto, Typst and LaTeX
+each bring such a command (`quarto render`, `typst compile`, `latexmk`), so
+an agent can render the paper, read the error messages and fix the source on
+its own. Word has menus and buttons but no command to render or change a
+document; there are detours such as Pandoc or scripts that remote-control
+Word, but Word itself is built for a person with a mouse. An AI uses a tool
+with a command line the same way you do, and Quarto, Typst and LaTeX all
+bring one.
+
+**The same idea elsewhere (frame 26).** More and more tools keep their files
+as text and bring a command line. Excalidraw keeps every drawing as JSON
+text, and its official command line interface, made "for humans and agents",
+renders drawings and turns Mermaid text into editable drawings. Mermaid
+writes a diagram as text, which GitHub, Quarto and Excalidraw draw. Marimo
+saves a notebook as a plain Python file without outputs and images inside.
+The GitHub CLI brings issues, pull requests and releases to the terminal. A
+CSV file is a table as plain text, while an .xlsx file is a packed bundle
+like a .docx. And this deck is itself an HTML file and a script, so an AI
+can build and change it like a paper in Quarto.
+
+**Closing (frame 27).** Write your report as text, because then an AI can
 read, change and check it the same way you do.
+
+## Sources
+
+- Excalidraw CLI, official command line interface for humans and agents.
+  https://github.com/excalidraw/cli
+- Mermaid. https://mermaid.js.org
+- marimo. https://marimo.io
+- GitHub CLI. https://cli.github.com
