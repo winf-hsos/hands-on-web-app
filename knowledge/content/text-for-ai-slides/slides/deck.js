@@ -23,6 +23,9 @@ const ICON_FILE_ZIP = '<path d="M5 7.5a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v.938l.4 1.5
 // Bootstrap Icons 1.11.3 (MIT): robot
 const ICON_ROBOT = '<path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5M3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.6 26.6 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.93.93 0 0 1-.765.935c-.845.147-2.34.346-4.235.346s-3.39-.2-4.235-.346A.93.93 0 0 1 3 9.219zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a25 25 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.710a.25.25 0 0 0 .404.062l.932-.97a25 25 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.980.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.700a.25.25 0 0 0-.182-.135"/><path d="M8.5 1.866a1 1 0 1 0-1 0V3h-2A4.5 4.5 0 0 0 1 7.5V8a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1v-.5A4.5 4.5 0 0 0 10.5 3h-2zM14 7.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5A3.5 3.5 0 0 1 5.5 4h5A3.5 3.5 0 0 1 14 7.5"/>';
 
+// Bootstrap Icons 1.11.3 (MIT): lightbulb
+const ICON_LIGHTBULB = '<path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13a.5.5 0 0 1 0 1 .5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1 0-1 .5.5 0 0 1 0-1 .5.5 0 0 1-.46-.302l-.761-1.77a2 2 0 0 0-.453-.618A5.98 5.98 0 0 1 2 6m6-5a5 5 0 0 0-3.479 8.592c.263.254.514.564.676.941L5.83 12h4.342l.632-1.467c.162-.377.413-.687.676-.941A5 5 0 0 0 8 1"/>';
+
 // Bootstrap Icons 1.11.3 (MIT): person-fill, file-earmark-pdf, -word, -code
 const ICON_PERSON = '<path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>';
 const ICON_PDF = '<path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/><path d="M4.603 14.087a.8.8 0 0 1-.438-.42c-.195-.388-.13-.776.08-1.102.198-.307.526-.568.897-.787a7.7 7.7 0 0 1 1.482-.645 20 20 0 0 0 1.062-2.227 7.3 7.3 0 0 1-.43-1.295c-.086-.4-.119-.796-.046-1.136.075-.354.274-.672.65-.823.192-.077.4-.12.602-.077a.7.7 0 0 1 .477.365c.088.164.12.356.127.538.007.188-.012.396-.047.614-.084.51-.27 1.134-.52 1.794a11 11 0 0 0 .98 1.686 5.8 5.8 0 0 1 1.334.05c.364.066.734.195.96.465.12.144.193.32.2.518.007.192-.047.382-.138.563a1.040 1.040 0 0 1-.354.416.86.86 0 0 1-.51.138c-.331-.014-.654-.196-.933-.417a5.7 5.7 0 0 1-.911-.95 11.7 11.7 0 0 0-1.997.406 11.3 11.3 0 0 1-1.020 1.510c-.292.35-.609.656-.927.787a.8.8 0 0 1-.58.029m1.379-1.901q-.25.115-.459.238c-.328.194-.541.383-.647.547-.094.145-.096.25-.04.361q.016.032.026.044l.035-.012c.137-.056.355-.235.635-.572a8 8 0 0 0 .45-.606m1.64-1.33a13 13 0 0 1 1.01-.193 12 12 0 0 1-.51-.858 21 21 0 0 1-.5 1.05zm2.446.45q.226.245.435.41c.24.19.407.253.498.256a.1.1 0 0 0 .07-.015.3.3 0 0 0 .094-.125.44.44 0 0 0 .059-.2.1.1 0 0 0-.026-.063c-.052-.062-.2-.152-.518-.209a4 4 0 0 0-.612-.053zM8.078 7.8a7 7 0 0 0 .2-.828q.046-.282.038-.465a.6.6 0 0 0-.032-.198.5.5 0 0 0-.145.04c-.087.035-.158.106-.196.283-.04.192-.03.469.046.822q.036.167.09.346z"/>';
@@ -47,7 +50,7 @@ function positronIcon(x, y, size) {
 function figWord() {
   const c = C();
   const parts = [];
-  const pros = ["familiar to everyone", "comments and track changes", "often good enough"];
+  const pros = ["familiar to everyone", "on every computer, standard in companies", "comments and track changes", "often good enough"];
   const cons = ["text and layout in one", "numbers typed by hand", "a binary package, not text", "formulas are hard work"];
   parts.push(d.label(0, 0, "for word", { size: 48, color: c.white, centerY: 50 }));
   pros.forEach((t, i) => {
@@ -377,27 +380,30 @@ function showReport(slide, step) { put("fig-report", figReport(step || 0)); }
 
 /* ------------------------------------------------------------------ */
 /* Meet the ai where it lives: an agent works in the terminal, and the  */
-/* three text formats each bring a command; word has none.              */
+/* three text formats each bring a command; word has none, but an ai   */
+/* can now operate a user interface too (the hint with the lightbulb).  */
 /* ------------------------------------------------------------------ */
 function figCli() {
   const c = C();
   const parts = [];
   parts.push(d.icon(0, 0, 80, ICON_ROBOT, { color: c.blue }));
   parts.push(d.label(110, 0, "an agent types the command and reads what comes back", { size: 32, color: c.gray, centerY: 40 }));
-  parts.push(d.box(1, 110, 1678, 300, "", { border: c.light, fill: "none" }));
+  parts.push(d.box(1, 100, 1678, 270, "", { border: c.light, fill: "none" }));
   const cmds = [
     ["quarto render paper.qmd --to pdf", "paper.pdf"],
     ["typst compile paper.typ", "paper.pdf"],
     ["latexmk -pdf paper.tex", "paper.pdf"],
   ];
   cmds.forEach(([cmd, out], i) => {
-    const cy = 180 + i * 80;
+    const cy = 165 + i * 70;
     parts.push(d.label(40, 0, "$", { size: 32, color: c.gray, mono: true, centerY: cy }));
     parts.push(d.label(90, 0, cmd, { size: 32, color: c.white, mono: true, keepCase: true, centerY: cy }));
     parts.push(d.label(1100, 0, "→ " + out, { size: 32, color: c.gray, mono: true, keepCase: true, centerY: cy }));
   });
-  parts.push(d.mark(22, 520, false));
-  parts.push(d.label(80, 0, "word: menus and buttons, but no command to render or change a document", { size: 32, color: c.light, centerY: 520 }));
+  parts.push(d.mark(22, 450, false));
+  parts.push(d.label(80, 0, "word: menus and buttons, but no command to render or change a document", { size: 32, color: c.light, centerY: 450 }));
+  parts.push(d.icon(4, 532, 36, ICON_LIGHTBULB, { color: c.yellow }));
+  parts.push(d.label(80, 0, "but an ai can now also click and type in a user interface", { size: 32, color: c.light, centerY: 550 }));
   return d.svg(1680, 600, ...parts);
 }
 
@@ -457,22 +463,56 @@ const SVG_TEXT = [
   '  <text x="520" y="58">paper.pdf</text>',
   '</svg>',
 ];
+// which lines of the two texts describe which part of the drawing
+const DRAWING_PARTS = [
+  { json: [3, 4], svg: [2] },     // the first rectangle
+  { json: [5, 6], svg: [3] },     // its text
+  { json: [7, 8], svg: [4, 5] },  // the arrow
+  { json: [9], svg: [6, 7] },     // the second rectangle and its text
+];
+const DT_JSON_X = 0, DT_SVG_X = 900, DT_X = 520;   // the drawing, 640 wide, centered
 function figDrawingText() {
   const c = C();
-  const wires = [], boxes = [], labels = [];
-  const X = 520;   // the drawing, 640 wide, centered
-  boxes.push(d.box(X, 10, 240, 100, "paper.qmd", { border: c.white, mono: true, keepCase: true }));
-  boxes.push(d.box(X + 400, 10, 240, 100, "paper.pdf", { border: c.white, mono: true, keepCase: true }));
-  wires.push(d.arrow(X + 240, 60, X + 396, 60, { color: c.white, width: 2 }));
+  const g = d.g;
+  const wires = [], boxes = [], marks = [], labels = [];
+  const X = DT_X;
+  const name = (x, t) => d.label(x + 120, 0, t, { size: 32, color: c.white, mono: true, keepCase: true, anchor: "middle", centerY: 60 });
+  boxes.push(g("dt-p0", d.box(X, 10, 240, 100, "", { border: c.white })));
+  labels.push(g("dt-p1", name(X, "paper.qmd")));
+  wires.push(g("dt-p2", d.arrow(X + 240, 60, X + 396, 60, { color: c.white, width: 2 })));
+  boxes.push(g("dt-p3", d.box(X + 400, 10, 240, 100, "", { border: c.white })));
+  labels.push(g("dt-p3t", name(X + 400, "paper.pdf")));
+  labels.push(g("dt-ask", d.label(840, 0, "what do these two texts draw?", { size: 32, color: c.gray, anchor: "middle", centerY: 60 })));
+  labels.push(g("dt-answer", d.label(X - 40, 0, "both texts draw this:", { size: 32, color: c.gray, anchor: "end", centerY: 60 })));
+  // a yellow mark on the lines that describe the part being drawn
+  const hl = (x, lines, rows) => rows.map((r) => {
+    const l = lines[r], lead = l.length - l.trimStart().length;
+    return d.highlight(x + lead * 12, l.trim().length * 12, 250 + r * 30, 20);
+  }).join("");
+  DRAWING_PARTS.forEach((p, k) => marks.push(g("dt-hl" + k,
+    hl(DT_JSON_X, EXCALIDRAW_JSON, p.json), hl(DT_SVG_X, SVG_TEXT, p.svg))));
   const col = (x, title, sub, lines) => {
     labels.push(d.label(x, 0, title, { size: 32, color: c.blue, mono: true, keepCase: true, centerY: 190 }));
     labels.push(d.label(x + title.length * 19.2 + 24, 0, sub, { size: 20, color: c.gray, centerY: 192 }));
     // monoLine keeps the leading spaces, so the indentation shows
     lines.forEach((l, i) => labels.push(monoLine(x, 250 + i * 30, 20, [[l, c.light]])));
   };
-  col(0, ".excalidraw", "json, shortened", EXCALIDRAW_JSON);
-  col(900, ".svg", "shortened", SVG_TEXT);
-  return d.svg(1680, 620, ...d.layers(wires, boxes, labels));
+  col(DT_JSON_X, ".excalidraw", "json, shortened", EXCALIDRAW_JSON);
+  col(DT_SVG_X, ".svg", "shortened", SVG_TEXT);
+  return d.svg(1680, 620, ...wires, ...boxes, ...marks, ...labels);
+}
+// one section: the question goes, then each part of the drawing appears
+// while the lines that describe it light up in both texts
+function playDrawingText(a) {
+  const on = (k) => a.show("dt-hl" + k, { dur: 120 });
+  const off = (k) => a.hide("dt-hl" + k, { dur: 120 });
+  a.step(
+    a.hide("dt-ask", { dur: 200 }), a.show("dt-answer", { dur: 200 }),
+    on(0), a.draw("dt-p0", { dur: 360 }), off(0),
+    on(1), a.show("dt-p1", { dur: 360 }), off(1),
+    on(2), a.draw("dt-p2", { dur: 360 }), off(2),
+    on(3), a.par(a.draw("dt-p3", { dur: 360 }), a.show("dt-p3t", { dur: 360 })), off(3),
+  );
 }
 
 // drawn at once, before stagekit.js builds the frames
@@ -489,5 +529,6 @@ put("fig-inline", figInline(0));
 put("fig-report", figReport(0));
 put("fig-cli", figCli());
 put("fig-elsewhere", figElsewhere());
-put("fig-drawing-text", figDrawingText());
+const fd = document.getElementById("fig-drawing-text");
+if (fd) { fd.innerHTML = figDrawingText(); playDrawingText(d.anim("fig-drawing-text")); }
 Object.assign(window, { showDocx, showInline, showReport });

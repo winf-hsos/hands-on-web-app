@@ -40,7 +40,7 @@
   <section class="slide">
     <h2>word</h2>
     <div class="figure" id="fig-word"></div>
-    <aside class="notes">Word is familiar, it has comments and track changes that supervisors use, and for many texts it is good enough. Against it: text and layout live in one file, so moving a figure can break the page; numbers from an analysis are typed or copied by hand and go stale when the data change; formulas are tedious. The point in yellow is the one this deck is about: a .docx file is not text but a packed bundle of files, and that matters as soon as a model is meant to read and change it.</aside>
+    <aside class="notes">Word is familiar, it is on every computer and the standard in almost every company, it has comments and track changes that supervisors use, and for many texts it is good enough. Against it: text and layout live in one file, so moving a figure can break the page; numbers from an analysis are typed or copied by hand and go stale when the data change; formulas are tedious. The point in yellow is the one this deck is about: a .docx file is not text but a packed bundle of files, and that matters as soon as a model is meant to read and change it.</aside>
   </section>
 
   <section class="slide has-punch">
@@ -121,7 +121,7 @@
     <h2>an agent works in the terminal</h2>
     <div class="figure" id="fig-cli"></div>
     <div class="punch">an ai uses a tool with a command line the same way you do, and quarto, typst and latex all bring one.</div>
-    <aside class="notes">An AI agent works in a terminal: it types a command, reads what comes back and decides on the next step. Quarto, Typst and LaTeX each bring such a command, so an agent can render the paper, read the error messages and fix the source on its own. Word has menus and buttons but no command to render or change a document; there are detours such as Pandoc or scripts that remote-control Word, but Word itself is built for a person with a mouse. "Meet the AI where it lives" means: a tool that wants to be used by AI comes to the terminal and to text files.</aside>
+    <aside class="notes">An AI agent works in a terminal: it types a command, reads what comes back and decides on the next step. Quarto, Typst and LaTeX each bring such a command, so an agent can render the paper, read the error messages and fix the source on its own. Word has menus and buttons but no command to render or change a document; there are detours such as Pandoc or scripts that remote-control Word, but Word itself is built for a person with a mouse. The lightbulb is the exception that is catching up: agents can now also operate a user interface, take screenshots, click and type, which is shown here in a short demo; it works, but slower and less reliably than a command. "Meet the AI where it lives" means: a tool that wants to be used by AI comes to the terminal and to text files.</aside>
   </section>
 
   <section class="slide">
@@ -133,8 +133,8 @@
   <section class="slide has-punch">
     <h2>a drawing is text too</h2>
     <div class="figure" id="fig-drawing-text"></div>
-    <div class="punch">an agent can draw by writing text, and you can read what it drew.</div>
-    <aside class="notes">One small drawing, two text formats. On the left the drawing as an Excalidraw file: JSON with one entry per element, a rectangle with its position and size, a text that sits in the rectangle, an arrow with its points. Real files add colors, a seed for the hand-drawn look and a version to every element, which is left out here. On the right the same drawing as SVG, the vector format of the web: a rectangle, a text, a line with an arrowhead. Every figure in this deck is SVG, written by a script. Both formats are text, so an agent can draw a diagram by writing these lines, Excalidraw's command line renders the file, and you can read and change what it drew.</aside>
+    <div class="punch" data-step="1">an agent can draw by writing text, and you can read what it drew.</div>
+    <aside class="notes">Two texts and the question what they draw. The click builds the drawing part by part, and each time the lines that describe that part light up in both texts: the first rectangle, its text, the arrow, the second rectangle with its text. On the left the drawing as an Excalidraw file: JSON with one entry per element, a rectangle with its position and size, a text that sits in the rectangle, an arrow with its points. Real files add colors, a seed for the hand-drawn look and a version to every element, which is left out here. On the right the same drawing as SVG, the vector format of the web: a rectangle, a text, a line with an arrowhead. Every figure in this deck is SVG, written by a script. Both formats are text, so an agent can draw a diagram by writing these lines, Excalidraw's command line renders the file, and you can read and change what it drew.</aside>
   </section>
 
   <section class="slide">
@@ -147,7 +147,7 @@
 </div>
 <script src="../../stagekit/draw.js?v=0.7.0-156254"></script>
 <script src="../../stagekit/anim.js?v=0.7.0-156254"></script>
-<script src="deck.js?v=4"></script>
+<script src="deck.js?v=5"></script>
 <script src="../../stagekit/stagekit.js?v=0.7.0-156254"></script>
 </body>
 </html>

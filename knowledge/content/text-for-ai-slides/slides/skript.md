@@ -18,7 +18,8 @@ the notebook.
 
 ## Part 1: Word and the alternative (frames 4–8)
 
-**Word (frame 5).** Word is familiar, it has comments and track changes that
+**Word (frame 5).** Word is familiar, it is on every computer and the
+standard in almost every company, it has comments and track changes that
 supervisors use, and for many texts it is good enough. Against it: text and
 layout live in one file, numbers from an analysis are copied by hand and go
 stale when the data change, and formulas are tedious. The point this input is
@@ -105,7 +106,7 @@ Typst into one PDF. Every file is text, so an agent can read the whole
 report, check one section against another and change a single line, and you
 see every change before it is made.
 
-## Part 5: meet the AI where it lives (frames 30–33)
+## Part 5: meet the AI where it lives (frames 30–34)
 
 **An agent works in the terminal (frame 31).** An AI agent types a command,
 reads what comes back and decides on the next step. Quarto, Typst and LaTeX
@@ -113,9 +114,11 @@ each bring such a command (`quarto render`, `typst compile`, `latexmk`), so
 an agent can render the paper, read the error messages and fix the source on
 its own. Word has menus and buttons but no command to render or change a
 document; there are detours such as Pandoc or scripts that remote-control
-Word, but Word itself is built for a person with a mouse. An AI uses a tool
-with a command line the same way you do, and Quarto, Typst and LaTeX all
-bring one.
+Word, but Word itself is built for a person with a mouse. The hint with the
+lightbulb is the exception that is catching up: agents can now also operate
+a user interface, take screenshots, click and type, which works, but slower
+and less reliably than a command. An AI uses a tool with a command line the
+same way you do, and Quarto, Typst and LaTeX all bring one.
 
 **The same idea elsewhere (frame 32).** More and more tools keep their files
 as text and bring a command line. Excalidraw keeps every drawing as JSON
@@ -129,8 +132,10 @@ bundle like a .docx. An SVG file is a vector graphic as text, which an AI can
 write and change line by line. And this deck is itself an HTML file and a
 script, so an AI can build and change it like a paper in Quarto.
 
-**A drawing is text too (frame 33).** One small drawing, a box "paper.qmd"
-with an arrow to a box "paper.pdf", appears in two text formats. On the left
+**A drawing is text too (frames 33–34).** Frame 33 shows two texts and
+asks what they draw. Frame 34 builds the drawing part by part, a box
+"paper.qmd" with an arrow to a box "paper.pdf", and each time the lines that
+describe the part light up in both texts. On the left
 it is an Excalidraw file: JSON with one entry per element, a rectangle with
 its position and size, a text that sits in the rectangle and an arrow with
 its points. Real files add colors, a seed for the hand-drawn look and a
@@ -139,7 +144,7 @@ drawing is SVG, the vector format of the web, with a rectangle, a text and a
 line with an arrowhead; every figure in this deck is SVG, written by a
 script. An agent can draw by writing text, and you can read what it drew.
 
-**Closing (frame 34).** The picture closes the circle of the opening: the
+**Closing (frame 35).** The picture closes the circle of the opening: the
 parcel is open and empty, and a human hand and a robotic hand write in the
 same open notebook. Write your report as text, because then an AI can read,
 change and check it the same way you do.

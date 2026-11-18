@@ -25,7 +25,7 @@ areas: [ds]
 relations:
   see_also: [quarto-first-steps, quarto-paper-exercise, ai-agents-in-research]
 status: draft
-updated: 2026-11-17
+updated: 2026-11-18
 ---
 
 ![Folien: Warum Text für KI besser ist](item:text-for-ai-slides)
@@ -40,7 +40,8 @@ Diese Lektion zeigt, warum das für die Arbeit mit KI den Unterschied macht.
 
 ## Word und die Alternative
 
-Word ist vertraut, es hat Kommentare und Änderungsverfolgung, die viele
+Word ist vertraut, es ist auf jedem Rechner installiert und in fast jeder
+Firma der Standard, es hat Kommentare und Änderungsverfolgung, die viele
 Betreuende nutzen, und für viele Texte genügt es. Dagegen spricht, dass Text
 und Layout in einer Datei stecken, dass Zahlen aus einer Analyse von Hand
 übertragen werden und veralten, sobald sich die Daten ändern, und dass
@@ -190,6 +191,9 @@ Ein Agent kann dein Paper also selbst setzen, die Fehlermeldungen lesen und
 die Quelle korrigieren. Word hat Menüs und Knöpfe, aber keinen Befehl, der
 ein Dokument setzt oder ändert; es gibt Umwege wie Pandoc oder Skripte, die
 Word fernsteuern, doch Word selbst ist für einen Menschen mit Maus gebaut.
+Inzwischen holen die Agenten hier auf: Sie können auch eine Oberfläche
+bedienen, also Bildschirmfotos machen, klicken und tippen. Das funktioniert,
+ist aber langsamer und unzuverlässiger als ein Befehl.
 
 Immer mehr Werkzeuge folgen derselben Idee, halten ihre Dateien als Text und
 bringen eine Kommandozeile mit:

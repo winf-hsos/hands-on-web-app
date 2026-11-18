@@ -15,7 +15,7 @@ objectives:
     - "explain why a number from code cannot slip into the text wrongly, neither by you nor by an AI"
     - "explain why a tool with a command line suits an AI agent and name examples beyond writing"
 translation_of: de
-based_on: 2026-11-17
+based_on: 2026-11-18
 ---
 
 ![Slides: Why text is better for AI](item:text-for-ai-slides)
@@ -30,8 +30,9 @@ the difference when you work with AI.
 
 ## Word and the alternative
 
-Word is familiar, it has comments and track changes that many supervisors
-use, and for many texts it is good enough. Against it: text and layout live
+Word is familiar, it is on every computer and the standard in almost every
+company, it has comments and track changes that many supervisors use, and
+for many texts it is good enough. Against it: text and layout live
 in one file, numbers from an analysis are copied by hand and go stale as
 soon as the data change, and formulas are tedious. For this lesson one point
 matters most: a .docx file is not text but a packed bundle of files.
@@ -176,7 +177,10 @@ latexmk -pdf paper.tex
 An agent can render your paper, read the error messages and fix the source
 on its own. Word has menus and buttons but no command to render or change a
 document; there are detours such as Pandoc or scripts that remote-control
-Word, but Word itself is built for a person with a mouse.
+Word, but Word itself is built for a person with a mouse. Agents are
+catching up here: they can now also operate a user interface, take
+screenshots, click and type, which works, but slower and less reliably than
+a command.
 
 More and more tools follow the same idea and keep their files as text and
 bring a command line:
