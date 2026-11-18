@@ -11,8 +11,9 @@
     .slide img.photo.side { height: 64%; top: 18%; }
     .slide .photo-text.side { width: 30%; font-size: var(--normal); line-height: 1.25; }
     .keep-case { text-transform: none; }
-    /* rules that appear one after the other */
+    /* rules that appear one after the other, the key term of each highlighted */
     .lines.spaced > div { margin-bottom: 40px; }
+    .lines .key { color: var(--yellow); }
   </style>
 </head>
 <body>
@@ -25,7 +26,7 @@
     <aside class="notes">This input is about using AI in an empirical study, from the research question to the finished paper. The one sentence to take home: AI can take on work in every phase of a study, from giving advice to doing a whole step, and what works and makes sense you decide and check yourself.</aside>
   </section>
   <section class="slide agenda">
-    <aside class="notes">Five parts: what we mean by AI, the phases of an empirical study after a standard textbook, three levels of AI use for each phase, what studies found about what actually works, and the rules that keep you the author of your paper.</aside>
+    <aside class="notes">Five parts: what we mean by AI, the phases of an empirical study after a standard textbook, four levels of AI use, what studies found about what actually works, and the rules that keep you the author of your paper.</aside>
   </section>
 
   <section class="slide">
@@ -37,16 +38,22 @@
 
 
   <!-- ===== part 1: kinds of ai ===== -->
-  <section class="slide part" data-part="kinds of ai" data-subtitle="chatbots, research tools, agents">
-    <aside class="notes">First, what do we mean when we say AI? Three kinds of tools, which differ in how broad they are and what they can reach.</aside>
+  <section class="slide part" data-part="kinds of ai" data-subtitle="chatbots, specialized tools, agents">
+    <aside class="notes">First, what do we mean when we say AI? Three kinds, which differ in what they do and how much they do on their own.</aside>
   </section>
 
   <section class="slide" data-on-show="showKinds" data-on-step="showKinds">
     <h2>three kinds of ai</h2>
     <div class="figure" id="fig-kinds"></div>
     <span data-step="1"></span><span data-step="2"></span>
-    <div class="footnote">selection after the <a href="https://www.uni-due.de/ub/ki-tools.php" target="_blank" rel="noopener">overview of ai tools of the university library <span class="keep-case">Duisburg-Essen</span></a>, plus <a href="https://hawki.hs-osnabrueck.de" target="_blank" rel="noopener"><span class="keep-case">HAWKI</span></a></div>
-    <aside class="notes">Chatbots such as ChatGPT, Claude, Gemini, Chat AI, the free and GDPR-compliant service of the GWDG for German universities, or HAWKI, the chat interface of Osnabrück University of Applied Sciences, answer in a chat on almost any topic, and many of them can now also search the web or run a deep research. They work with what you type or upload. Research tools do one job in research and often do it better than a chatbot: Consensus and Elicit search scientific papers and summarize them, SciSpace helps you read them, Research Rabbit and Litmaps draw networks of citations, and NotebookLM answers questions about the PDFs you give it. They work with their database of papers and with your PDFs. Agents are as broad as chatbots but act on their own: OpenCode, Claude Code or Codex read and change your files, run programs and search the web until a task is done; the next input explains how. The small drawing in each column shows how the kind works: a chat with questions and answers, a search in a database of papers, and an agent that works with your files, programs and the web in a loop. Every tool name is a link. The library of the University of Duisburg-Essen keeps an overview of such tools, and the selection here follows it.</aside>
+    <aside class="notes">Each click adds one kind. Chatbots answer your questions in a chat window: a question goes in, an answer comes out, and everything happens in the browser, apart from your own files. Specialized tools use AI for one specific job and often do it better than a chatbot: they find studies, read your PDFs with you, turn a text into a diagram or an outline into slides. Agents are different in kind: you give them a goal, not the way, and they reach it on their own in a loop. They plan, act and check what came out, and to act they use tools, above all your files, programs and the web. They keep going until the goal is reached; the next input explains how.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>tools to try</h2>
+    <div class="figure" id="fig-tools"></div>
+    <div class="footnote">selection after the <a href="https://www.uni-due.de/ub/ki-tools.php" target="_blank" rel="noopener">overview of ai tools of the university library <span class="keep-case">Duisburg-Essen</span></a>, plus <a href="https://hawki.hs-osnabrueck.de" target="_blank" rel="noopener"><span class="keep-case">HAWKI</span></a>, <span class="keep-case">Napkin</span> and <span class="keep-case">Gamma</span></div>
+    <aside class="notes">The same three kinds with concrete tools, every name a link. Chatbots: ChatGPT, Claude and Gemini, Chat AI, the free and GDPR-compliant service of the GWDG for German universities, and HAWKI, the chat interface of Osnabrück University of Applied Sciences. Specialized tools: Consensus and Elicit search scientific papers and summarize them, Research Rabbit draws networks of papers that cite each other, NotebookLM answers questions about the PDFs you give it, Napkin turns a text into a diagram and Gamma turns an outline into slides. Agents: Claude Code, Codex, Gemini CLI and OpenCode, the last two open source. The library of the University of Duisburg-Essen keeps a longer overview of such tools.</aside>
   </section>
 
   <!-- ===== part 2: the research process ===== -->
@@ -54,54 +61,32 @@
     <aside class="notes">Where can these tools help? To answer that, we need the steps of a study first, and we take them from a standard textbook rather than inventing our own.</aside>
   </section>
 
-  <section class="slide" data-on-show="showPhases" data-on-step="showPhases">
+  <section class="slide">
     <h2>nine phases of a study</h2>
     <div class="figure" id="fig-phases"></div>
-    <span data-step="1"></span>
     <div class="footnote"><a href="https://doi.org/10.1007/978-3-662-64762-2" target="_blank" rel="noopener"><span class="keep-case">Döring (2023), Forschungsmethoden und Evaluation in den Sozial- und Humanwissenschaften</span></a>, section 1.3.1 and chapters 5 to 13</div>
-    <aside class="notes">Nicola Döring's textbook, the German standard for research methods in the social sciences, divides a quantitative study into nine phases and gives each one a chapter. You plan the study: a topic and a question, the state of research, and the study design. You collect data: you decide how to measure each concept, whom to ask, and you collect the answers. Then you prepare and analyze the data and present the results in a paper and a talk. In a secondary analysis, as with the survey in this course, the middle row was done by the people who ran the survey; you inherit their questionnaire, sample and data, and the codebook tells you how. Your work lies in the first and the last row.</aside>
+    <aside class="notes">Nicola Döring's textbook, the German standard for research methods in the social sciences, divides a quantitative study into nine phases and gives each one a chapter. You plan the study: a topic and a question, the state of research, and the study design. You collect data: you decide how to measure each concept, whom to ask, and you collect the answers. Then you prepare and analyze the data and present the results in a paper and a talk. The middle row only matters when you collect your own data; in a secondary analysis the people who ran the survey did it for you.</aside>
   </section>
 
 
   <!-- ===== part 3: what is possible ===== -->
-  <section class="slide part" data-part="what is possible" data-subtitle="three levels of ai use">
-    <aside class="notes">Now what is possible today, phase by phase. For each phase there are three levels of AI use, from an AI that only advises to an agent that does the whole step.</aside>
+  <section class="slide part" data-part="what is possible" data-subtitle="four levels of ai use">
+    <aside class="notes">Now what is possible today. How we work with AI has changed in four levels, from a chatbot that answers questions to an AI that does everything on its own.</aside>
   </section>
 
-  <section class="slide">
-    <h2>three levels of ai use</h2>
-    <div class="figure" data-levels="general"></div>
-    <aside class="notes">Each row is one level, and time runs from left to right: white bars are your work, blue bars the work of the AI, gray bars the tools an agent uses, and the green bar is the moment you check a result. On the first level you do the work yourself and ask the AI in between, much like a tutor. On the second level you give the AI a task, it makes a draft, and you review it. On the third level you give an agent a goal, and it works on its own, uses tools and stays in its loop until the goal is reached; then you check the result. Each click plays one level. All three levels are possible today; whether they work and make sense is the question of the next part.</aside>
+  <section class="slide" data-on-show="showLevels" data-on-step="showLevels">
+    <h2>four levels of ai use</h2>
+    <div class="figure" id="fig-levels"></div>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span>
+    <div class="footnote" data-step="3">level 4: the reviewers of an ai proof in mathematics, checked in <span class="keep-case">Lean</span>: “we do not claim to fully understand the proof yet” (<a href="https://www.science.org/content/article/ai-rivals-tackle-one-physics-deepest-mathematical-challenges" target="_blank" rel="noopener"><span class="keep-case">Science</span>, 2026</a>)</div>
+    <aside class="notes">Each row has the same three places: your work, a folder with your paper, data and code; you; and on the right what the AI works in. Level 1, AI answers your questions: this is how we worked with the first chatbots. A question goes in, an answer comes out, but in the browser, apart from your work, and you carry the answer over by hand. Level 2, AI reads and writes documents: you upload a PDF and get a summary or a draft back. The AI now makes content, but it is still in the browser and still apart from your work. Level 3, an agent works and you give feedback: the agent sits in your folder, with your files and programs. You give it a goal, not the way; it does the work, shows you the result, you give feedback, and that goes round in a loop until the result fits. Level 4, AI does it all and nobody checks: the agent works on its own, and no human looks at the result, perhaps because nobody could follow it any more. In mathematics this has started: in November 2026, a committee chaired by the physicist David Gross reviewed an AI proof of the existence half of the Yang-Mills problem, which a computer had checked in the proof language Lean, and wrote that they do not claim to fully understand the proof yet. All four levels are possible today; whether they work and make sense is the question of the next part.</aside>
   </section>
 
-  <section class="slide">
-    <h2>research question</h2>
-    <div class="figure" data-levels="question"></div>
-    <aside class="notes">With the codebook at hand, an AI can say which columns fit your question, suggest questions the data can answer, or as an agent read codebook and data itself and test whether a question can be answered at all. The risk grows with the level: the more the AI picks, the more likely the question becomes the one that is easiest to answer rather than the one you wanted to ask.</aside>
-  </section>
-
-  <section class="slide">
-    <h2>literature</h2>
-    <div class="figure" data-levels="literature"></div>
-    <aside class="notes">On the first level a chatbot suggests search terms and you search the library catalog and a scholarly database yourself. On the second, a research tool such as Consensus or Elicit finds studies and summarizes them, and you read the best ones. On the third, an agent searches the databases itself, if need be by steering a browser, reads the papers and writes a draft of the state of research. Whatever the level, only what you have opened and read goes into your paper.</aside>
-  </section>
-
-  <section class="slide">
-    <h2>analysis</h2>
-    <div class="figure" data-levels="analysis"></div>
-    <aside class="notes">You can write the R code yourself and ask an AI to explain an error, let it write the code and run it yourself, or let an agent write, run and fix the code and report the results. Wrong code often runs without an error, so at every level you look at what the code filters and how it treats missing values, and you count one group by hand.</aside>
-  </section>
-
-  <section class="slide">
-    <h2>figures</h2>
-    <div class="figure" data-levels="figures"></div>
-    <aside class="notes">An AI is good at the craft of a chart: sorting, labeling, colors. It can comment on your chart, write the ggplot2 code for you, or as an agent draw all charts and put them into the paper. You check that each chart still answers your question, that bars start at zero and that the labels are in your words.</aside>
-  </section>
-
-  <section class="slide">
-    <h2>writing</h2>
-    <div class="figure" data-levels="writing"></div>
-    <aside class="notes">An AI can give feedback on your text, draft a section from your notes, or as an agent write the whole paper from data and sources. The third level is possible today, and it is exactly where the question "what makes sense?" is most pressing: a paper is the record of your thinking, and you answer for every sentence in it.</aside>
+  <section class="slide has-punch">
+    <h2>phases and levels</h2>
+    <div class="figure" id="fig-phases-task"></div>
+    <div class="punch">which level fits which phase, and which have you used yourself?</div>
+    <aside class="notes">A task to think about with your neighbor: go through the nine phases and say which level of AI use fits, and where you have already used AI and at which level. Some ideas for the discussion. Research question: a chatbot can say which columns of the codebook fit your question, an agent can read codebook and data and test whether a question can be answered at all, but the more the AI picks, the more likely the question becomes the one that is easiest to answer. State of research: a specialized tool such as Consensus or Elicit finds and summarizes studies, an agent can search databases and draft the state of research, but only what you have opened and read goes into your paper. Data analysis: an agent writes, runs and fixes R code, and since wrong code often runs without an error, you check what it filters and count one group by hand. Presentation: a chatbot comments on your chart or text, an agent can draw all charts and even write the paper, and that is exactly where the question what makes sense is most pressing, because you answer for every sentence.</aside>
   </section>
 
 
@@ -115,15 +100,16 @@
     <div class="figure" id="fig-frontier"></div>
     <div class="footnote"><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4573321" target="_blank" rel="noopener"><span class="keep-case">Dell'Acqua, Mollick et al.</span> (2023), <span class="keep-case">HBS</span> working paper 24-013</a>: 758 consultants, <span class="keep-case">GPT-4</span>; the term also in <span class="keep-case">Mollick, Co-Existence</span> (2026)</div>
     <div class="punch">from the inside you cannot see where the frontier runs, so what looks possible still has to be checked.</div>
-    <aside class="notes">In a field experiment at the Boston Consulting Group, 758 consultants worked on realistic tasks, some with GPT-4 and some without. On tasks inside the frontier of what the model handles well, the group with AI finished 12.2 percent more tasks, was 25.1 percent faster and delivered work of more than 40 percent higher quality. On a similar-looking task just outside the frontier, the group with AI was 19 percentage points less likely to reach the correct answer. Ethan Mollick, one of the authors, coined the term jagged frontier for this and builds on it in his books Co-Intelligence and Co-Existence: AI is sometimes, but not always, better than you, and tasks that look alike can lie on different sides of the line. Drawn as a closed shape, the frontier has an inside and an outside, and the yellow dot sits in a notch: a task that looks like those inside, but lies outside.</aside>
+    <aside class="notes">In a field experiment at the Boston Consulting Group, 758 consultants worked on realistic tasks, some with GPT-4 and some without. On tasks inside the frontier of what the model handles well, the group with AI finished 12.2 percent more tasks, was 25.1 percent faster and delivered work of more than 40 percent higher quality. On a similar-looking task just outside the frontier, the group with AI was 19 percentage points less likely to reach the correct answer. Ethan Mollick, one of the authors, coined the term jagged frontier for this and builds on it in his books Co-Intelligence and Co-Existence: AI is sometimes, but not always, better than you, and tasks that look alike can lie on different sides of the line. The frontier is the blue shape in the middle, and everything around it is outside. The yellow dot sits in a notch: a task that looks like those inside, but lies outside.</aside>
   </section>
 
-  <section class="slide has-punch">
+  <section class="slide has-punch" data-on-show="showGrowth" data-on-step="showGrowth">
     <h2>the frontier moves</h2>
     <div class="figure" id="fig-growth"></div>
-    <div class="footnote">a simplified picture of the idea, not a measurement; after <span class="keep-case">Mollick, Co-Intelligence</span> (2024) and <span class="keep-case">Co-Existence</span> (2026)</div>
-    <div class="punch" data-step="2">the frontier keeps moving out, but it stays jagged, so a task can lie outside however easy it looks.</div>
-    <aside class="notes">A simplified picture of the idea, not a measurement. With every generation of models the frontier moves out and takes in tasks that were outside before: polishing a text and explaining an error message early on, then writing R code and summarizing a paper, then running a whole analysis or searching the literature as an agent. Yellow marks what has just come inside. But the shape stays jagged, and some tasks remain in a notch however far the frontier grows: citing only sources that really exist, as the next two slides show, and judging what matters in a study, which is your job anyway. So the question is never only whether AI can do a task in general, but whether this task lies inside the frontier of the model you use right now.</aside>
+    <span data-step="1"></span><span data-step="2"></span>
+    <div class="footnote">a simplified picture of the idea, not a measurement; after <span class="keep-case">Mollick, Co-Intelligence</span> (2024) and <span class="keep-case">Co-Existence</span> (2026); 2027 as a hypothesis, as in <a href="https://ai-2027.com" target="_blank" rel="noopener"><span class="keep-case">Kokotajlo et al. (2025), AI 2027</span></a></div>
+    <div class="punch" data-step="3">the frontier grows and changes its shape, so with every new model you test again what lies inside.</div>
+    <aside class="notes">A simplified picture of the idea, not a measurement. The frontier and the notch are the same as on the last slide, and around it are tasks from a study. In 2023 polishing a text and explaining an error message were inside. With every generation of models the frontier grows, but it does not simply get bigger: it changes its shape, some corners move far out, others shift sideways, and the notches move with them. In 2025 writing R code and summarizing a paper came inside, in 2026 running a whole analysis or searching the literature as an agent; yellow marks what has just come inside. Judging what matters in a study and citing only sources that really exist were still outside in 2026, as the next two slides show for the sources. The last step is a hypothesis, not a forecast: some, such as the authors of the scenario AI 2027 or the head of Anthropic, Dario Amodei, expect that around 2027 AI can do everything humans can, and better. Whether that comes true or not, the frontier keeps changing, and so the question is never only whether AI can do a task in general, but whether this task lies inside the frontier of the model you use right now.</aside>
   </section>
 
   <section class="slide has-punch">
@@ -152,9 +138,9 @@
     <h2>three rules</h2>
     <div class="content">
       <div class="lines spaced">
-        <div>you answer for every sentence, also for what an ai wrote.</div>
-        <div data-step="1">you write down what you used ai for and how you checked it.</div>
-        <div data-step="2">you watch for bias: ai repeats what is frequent in its data, not what is true for the people you study.</div>
+        <div><span class="key">you answer</span> for every sentence, also for what an ai wrote.</div>
+        <div data-step="1">you write down what you used ai for and <span class="key">how you checked it</span>.</div>
+        <div data-step="2">you <span class="key">watch for bias</span>: ai repeats what is frequent in its data, not what is true for the people you study.</div>
       </div>
     </div>
     <aside class="notes">First: your name is on the paper, so every sentence, number and figure is yours, including those an AI produced, whatever the level. Second: say how you used AI, for which parts and how you checked the results; the next slide shows a simple table for it. Third: an AI learned from texts in which some groups, languages and views are frequent and others are rare, and it repeats that picture. A summary of studies, a coding of free-text answers or a description of a group can therefore be skewed, so you ask whom a result might leave out and compare it with your data. Fairness is one of the core requirements in the European Commission's ethics guidelines for trustworthy AI.</aside>
@@ -168,15 +154,15 @@
 
   <section class="slide">
     <div class="content">
-      <div class="statement">ai can take on work in every phase of a study, from advice to the whole step, and what works and makes sense you decide and check yourself.</div>
+      <div class="statement">you only learn what works by working with ai yourself, because all of us are exploring the jagged frontier and pushing it out.</div>
     </div>
-    <aside class="notes">That is the whole message in one sentence. The three kinds of AI and the three levels show what is possible, the studies show that possible is not the same as reliable, and the rules keep you the author.</aside>
+    <aside class="notes">That is the message to take home. What is possible changes with every model, and no study can tell you where the frontier runs for your task with your tool. You find that out only by using AI yourself, checking what comes out and keeping what works. Nobody has the full map yet; all of us, researchers, teachers and students, are exploring the jagged frontier, and every use that works pushes it a little further out.</aside>
   </section>
 
 </div>
 <script src="../../stagekit/draw.js?v=0.7.0-156254"></script>
 <script src="../../stagekit/anim.js?v=0.7.0-156254"></script>
-<script src="deck.js?v=3"></script>
+<script src="deck.js?v=4"></script>
 <script src="../../stagekit/stagekit.js?v=0.7.0-156254"></script>
 </body>
 </html>

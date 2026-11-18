@@ -9,16 +9,22 @@
 // measured loss outside the frontier.
 //
 // Sources:
-// - Kinds of AI: selection after the overview of the university library
+// - Tools: selection after the overview of the university library
 //   Duisburg-Essen, "KI-Tools" (as of November 2026),
 //   https://www.uni-due.de/ub/ki-tools.php, plus HAWKI of Osnabrück
-//   University of Applied Sciences.
+//   University of Applied Sciences, Napkin and Gamma.
+// - Level 4: the committee chaired by David Gross on OpenAI's Lean proof of
+//   the existence half of the Yang-Mills problem, November 2026, as reported
+//   by Science and others: "We do not claim to fully understand the proof
+//   yet."
 // - Phases: Döring (2023), Forschungsmethoden und Evaluation, 6th ed.,
 //   section 1.3.1 (p. 23) and chapters 5 to 13, one per phase.
 // - Dell'Acqua et al. (2023), HBS Working Paper 24-013: 758 BCG consultants,
 //   GPT-4. Inside the frontier 12.2 % more tasks, 25.1 % faster, more than
 //   40 % higher quality; outside it 19 percentage points less often correct.
-//   The growing frontier is a schematic picture of the idea, not a measurement.
+//   The growing frontier is a schematic picture of the idea, not a
+//   measurement; 2027 is a hypothesis, as in Kokotajlo et al. (2025), AI 2027,
+//   https://ai-2027.com, and Amodei at Davos (January 2025).
 // - Walters & Wilder (2023), Scientific Reports 13, 14045: 636 references;
 //   fabricated 55 % (GPT-3.5) and 18 % (GPT-4); of the real ones, 43 % and
 //   24 % had substantive errors.
@@ -48,6 +54,15 @@ const ICON_TERMINAL = '<path d="M6 9a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3A.5.5 0
 const ICON_GLOBE = '<path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855A8 8 0 0 0 5.145 4H7.5zM4.09 4a9.3 9.3 0 0 1 .64-1.539 7 7 0 0 1 .597-.933A7.03 7.03 0 0 0 2.255 4zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a7 7 0 0 0-.656 2.5zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5zM8.5 5v2.5h2.99a12.5 12.5 0 0 0-.337-2.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5zM5.145 12q.208.58.468 1.068c.552 1.035 1.218 1.65 1.887 1.855V12zm.182 2.472a7 7 0 0 1-.597-.933A9.3 9.3 0 0 1 4.09 12H2.255a7 7 0 0 0 3.072 2.472M3.82 11a13.7 13.7 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5zm6.853 3.472A7 7 0 0 0 13.745 12H11.91a9.3 9.3 0 0 1-.64 1.539 7 7 0 0 1-.597.933M8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855q.26-.487.468-1.068zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.7 13.7 0 0 1-.312 2.5m2.802-3.5a7 7 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7 7 0 0 0-3.072-2.472c.218.284.418.598.597.933M10.855 4a8 8 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4z"/>';
 const ICON_ARROW_REPEAT = '<path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/><path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>';
 
+// Bootstrap Icons "diagram-3" 1.11.3 (MIT, (c) The Bootstrap Authors)
+const ICON_DIAGRAM_3 = '<path fill-rule="evenodd" d="M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5zM8.5 5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5zM0 11.5A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm4.5.5A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm4.5.5a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>';
+// Bootstrap Icons "easel" 1.11.3 (MIT, (c) The Bootstrap Authors)
+const ICON_EASEL = '<path d="M8 0a.5.5 0 0 1 .473.337L9.046 2H14a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1.85l1.323 3.837a.5.5 0 1 1-.946.326L11.092 11H8.5v3a.5.5 0 0 1-1 0v-3H4.908l-1.435 4.163a.5.5 0 1 1-.946-.326L3.85 11H2a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h4.954L7.527.337A.5.5 0 0 1 8 0M2 3v7h12V3z"/>';
+// Bootstrap Icons "file-earmark-pdf" 1.11.3 (MIT, (c) The Bootstrap Authors)
+const ICON_FILE_EARMARK_PDF = '<path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/><path d="M4.603 14.087a.8.8 0 0 1-.438-.42c-.195-.388-.13-.776.08-1.102.198-.307.526-.568.897-.787a7.7 7.7 0 0 1 1.482-.645 20 20 0 0 0 1.062-2.227 7.3 7.3 0 0 1-.43-1.295c-.086-.4-.119-.796-.046-1.136.075-.354.274-.672.65-.823.192-.077.4-.12.602-.077a.7.7 0 0 1 .477.365c.088.164.12.356.127.538.007.188-.012.396-.047.614-.084.51-.27 1.134-.52 1.794a11 11 0 0 0 .98 1.686 5.8 5.8 0 0 1 1.334.05c.364.066.734.195.96.465.12.144.193.32.2.518.007.192-.047.382-.138.563a1.04 1.04 0 0 1-.354.416.86.86 0 0 1-.51.138c-.331-.014-.654-.196-.933-.417a5.7 5.7 0 0 1-.911-.95 11.7 11.7 0 0 0-1.997.406 11.3 11.3 0 0 1-1.02 1.51c-.292.35-.609.656-.927.787a.8.8 0 0 1-.58.029m1.379-1.901q-.25.115-.459.238c-.328.194-.541.383-.647.547-.094.145-.096.25-.04.361q.016.032.026.044l.035-.012c.137-.056.355-.235.635-.572a8 8 0 0 0 .45-.606m1.64-1.33a13 13 0 0 1 1.01-.193 12 12 0 0 1-.51-.858 21 21 0 0 1-.5 1.05zm2.446.45q.226.245.435.41c.24.19.407.253.498.256a.1.1 0 0 0 .07-.015.3.3 0 0 0 .094-.125.44.44 0 0 0 .059-.2.1.1 0 0 0-.026-.063c-.052-.062-.2-.152-.518-.209a4 4 0 0 0-.612-.053zM8.078 7.8a7 7 0 0 0 .2-.828q.046-.282.038-.465a.6.6 0 0 0-.032-.198.5.5 0 0 0-.145.04c-.087.035-.158.106-.196.283-.04.192-.03.469.046.822q.036.167.09.346z"/>';
+// Bootstrap Icons "tools" 1.11.3 (MIT, (c) The Bootstrap Authors)
+const ICON_TOOLS = '<path d="M1 0 0 1l2.2 3.081a1 1 0 0 0 .815.419h.07a1 1 0 0 1 .708.293l2.675 2.675-2.617 2.654A3.003 3.003 0 0 0 0 13a3 3 0 1 0 5.878-.851l2.654-2.617.968.968-.305.914a1 1 0 0 0 .242 1.023l3.27 3.27a.997.997 0 0 0 1.414 0l1.586-1.586a.997.997 0 0 0 0-1.414l-3.27-3.27a1 1 0 0 0-1.023-.242L10.5 9.5l-.96-.96 2.68-2.643A3.005 3.005 0 0 0 16 3q0-.405-.102-.777l-2.14 2.141L12 4l-.364-1.757L13.777.102a3 3 0 0 0-3.675 3.68L7.462 6.46 4.793 3.793a1 1 0 0 1-.293-.707v-.071a1 1 0 0 0-.419-.814zm9.646 10.646a.5.5 0 0 1 .708 0l2.914 2.915a.5.5 0 0 1-.707.707l-2.915-2.914a.5.5 0 0 1 0-.708M3 11l.471.242.529.026.287.445.445.287.026.529L5 13l-.242.471-.026.529-.445.287-.287.445-.529.026L3 15l-.471-.242L2 14.732l-.287-.445L1.268 14l-.026-.529L1 13l.242-.471.026-.529.445-.287.287-.445.529-.026z"/>';
+
 // A label that is a link: blue, opens in a new tab, and a click on it does
 // not advance the slide (stagekit skips clicks on a).
 const link = (x, cy, text, url, o = {}) =>
@@ -55,388 +70,380 @@ const link = (x, cy, text, url, o = {}) =>
 
 /* ------------------------------------------------------------------ */
 /* Three kinds of AI, one column each, appearing one by one. Each       */
-/* column: symbol and name, one sentence, a small schematic of how the  */
-/* kind works (y 220..440), and the tools as links.                     */
-/* Column 520 wide; text at 32 px holds 23 characters per line.         */
+/* column, centered: symbol, name, one sentence, a schematic of how the */
+/* kind works (y 318..740) and a gray line under it.                    */
+/* Columns 540 wide, 30 apart; text at 32 px holds 26 characters, at 48 */
+/* px 17 ("specialized tools" is 490 wide).                             */
 /* ------------------------------------------------------------------ */
+const COL_W = 540, COL_G = 30;
+const colX = (i) => i * (COL_W + COL_G);
 const KINDS = [
-  { name: "chatbots", icon: ICON_CHAT_DOTS, what: "answer in a chat, on\nalmost any topic", tools: [
-    ["ChatGPT", "https://chatgpt.com"], ["Claude", "https://claude.ai"], ["Gemini", "https://gemini.google.com"],
-    ["Chat AI (GWDG)", "https://chat-ai.academiccloud.de"], ["HAWKI (HS Osnabrück)", "https://hawki.hs-osnabrueck.de"]] },
-  { name: "research tools", icon: ICON_SEARCH, what: "do one job in research\nand do it well", tools: [
-    ["Consensus", "https://consensus.app"], ["Elicit", "https://elicit.com"], ["SciSpace", "https://scispace.com"],
-    ["Research Rabbit", "https://www.researchrabbit.ai"], ["Litmaps", "https://www.litmaps.com"], ["NotebookLM", "https://notebooklm.google.com"]] },
-  { name: "agents", icon: ICON_ROBOT, what: "act on their own, on\nalmost any task", tools: [
-    ["OpenCode", "https://opencode.ai"], ["Claude Code", "https://www.anthropic.com/claude-code"], ["Codex", "https://openai.com/codex"]] },
+  { name: "chatbots", icon: ICON_CHAT_DOTS, what: "answer your questions\nin a chat window", note: "question in, answer out, in the browser" },
+  { name: "specialized tools", icon: ICON_TOOLS, what: "use ai for one\nspecific job", note: "often better at it than a chatbot" },
+  { name: "agents", icon: ICON_ROBOT, what: "get a goal and reach it\non their own", note: "in a loop until the goal is reached" },
 ];
 
-// chatbot: you ask (white), the model answers (blue), and so on
+// an arc of the circle (cx, cy, r) from angle a0 to a1 in degrees,
+// clockwise (0 right, 90 down), with an arrowhead at a1 along the tangent
+function arc(cx, cy, r, a0, a1, o = {}) {
+  const c = C(), col = o.color || c.light, w = o.width || 3, head = o.head || 14;
+  const rad = (a) => (a * Math.PI) / 180;
+  const P = (a) => [cx + r * Math.cos(rad(a)), cy + r * Math.sin(rad(a))];
+  const back = (head / r) * 180 / Math.PI;
+  const [x0, y0] = P(a0), [xb, yb] = P(a1 - back), [x2, y2] = P(a1);
+  const large = a1 - back - a0 > 180 ? 1 : 0;
+  const tx = -Math.sin(rad(a1)), ty = Math.cos(rad(a1));
+  const bx = x2 - tx * head, by = y2 - ty * head, px = -ty * head * 0.45, py = tx * head * 0.45;
+  const f = (v) => +v.toFixed(1);
+  return `<path d="M${f(x0)},${f(y0)} A${r},${r} 0 ${large} 1 ${f(xb)},${f(yb)}" fill="none" stroke="${col}" stroke-width="${w}"/>` +
+    `<polygon points="${f(x2)},${f(y2)} ${f(bx + px)},${f(by + py)} ${f(bx - px)},${f(by - py)}" fill="${col}"/>`;
+}
+// a pill with text, centered at cx, cy
+const pill = (cx, cy, t, o) => {
+  const w = t.length * 19.2 + 40;
+  return d.box(cx - w / 2, cy - 24, w, 48, t, { rx: 24, size: 32, ...o });
+};
+
+// chatbot: a browser window with a chat, your questions and its answers
 function schemaChat(x) {
-  const c = C(), out = [];
-  const rows = [["you", "your question", 228], ["ai", "an answer", 298], ["you", "a follow-up", 368]];
-  rows.forEach(([who, t, y]) => {
+  const c = C(), wires = [], parts = [];
+  parts.push(d.box(x + 50, 320, 440, 370, "", { border: c.light, rx: 14 }));
+  parts.push(d.line(x + 51, 360, x + 489, 360, { color: c.dark, width: 2 }));
+  [0, 1, 2].forEach((k) => parts.push(`<circle cx="${x + 76 + k * 20}" cy="340" r="6" fill="${c.gray}"/>`));
+  parts.push(d.label(x + 148, 0, "browser", { size: 20, color: c.gray, centerY: 340 }));
+  [["you", "your question", 384], ["ai", "an answer", 456], ["you", "a follow-up", 528], ["ai", "an answer", 600]].forEach(([who, t, y]) => {
+    const w = t.length * 19.2 + 48;
     if (who === "you") {
-      out.push(d.icon(x + 32, y + 8, 40, ICON_PERSON_FILL, { color: c.light }));
-      out.push(d.box(x + 88, y, 290, 56, t, { border: c.light, size: 32 }));
+      parts.push(d.box(x + 430 - w, y, w, 56, t, { border: c.light, size: 32, rx: 28 }));
+      parts.push(d.icon(x + 440, y + 10, 36, ICON_PERSON_FILL, { color: c.light }));
     } else {
-      out.push(d.box(x + 142, y, 290, 56, t, { border: null, fill: c.blue, size: 32 }));
-      out.push(d.icon(x + 448, y + 8, 40, ICON_ROBOT, { color: c.blue }));
+      parts.push(d.icon(x + 66, y + 10, 36, ICON_ROBOT, { color: c.blue }));
+      parts.push(d.box(x + 112, y, w, 56, t, { border: null, fill: c.blue, size: 32, rx: 28 }));
     }
   });
-  out.push(d.label(x + 32, 0, "works with what you type or upload", { size: 20, color: c.gray, centerY: 452 }));
-  return out;
+  return { wires, parts };
 }
 
-// research tool: a database of papers, a search, a list of studies
-function schemaResearch(x) {
+// specialized tools: one job each
+const JOBS = [[ICON_SEARCH, "finds studies"], [ICON_FILE_TEXT, "reads your PDFs"], [ICON_DIAGRAM_3, "draws a diagram"], [ICON_EASEL, "builds slides"]];
+function schemaTools(x) {
   const c = C(), wires = [], parts = [];
-  parts.push(d.icon(x + 32, 264, 72, ICON_DATABASE, { color: c.light }));
-  wires.push(d.arrow(x + 116, 300, x + 168, 300, { color: c.gray, head: 12 }));
-  parts.push(d.icon(x + 180, 268, 64, ICON_SEARCH, { color: c.blue }));
-  wires.push(d.arrow(x + 256, 300, x + 300, 300, { color: c.gray, head: 12 }));
-  [0, 1, 2].forEach((k) => {
-    const y = 230 + k * 50;
-    parts.push(d.box(x + 312, y, 176, 40, "", { border: c.light }));
-    parts.push(d.icon(x + 322, y + 8, 24, ICON_FILE_TEXT, { color: c.light }));
-    parts.push(d.label(x + 356, 0, "study " + (k + 1), { size: 20, color: c.white, centerY: y + 20 }));
+  JOBS.forEach(([ic, t], k) => {
+    const y = 330 + k * 88;
+    parts.push(d.box(x + 50, y, 440, 72, "", { border: c.gray, rx: 14 }));
+    parts.push(d.icon(x + 80, y + 16, 40, ic, { color: c.blue }));
+    parts.push(d.label(x + 144, 0, t, { size: 32, color: c.light, centerY: y + 36, keepCase: true }));
   });
-  parts.push(d.label(x + 32, 0, "works with a database of papers\nand with your PDFs", { size: 20, color: c.gray, centerY: 432, lineHeight: 1.3, keepCase: true }));
-  return [...wires, ...parts];
+  return { wires, parts };
 }
 
-// agent: works in a loop with your files, programs and the web
+// agent: your goal goes in, then plan, act and check in a loop, with
+// your files, programs and the web as its tools
 function schemaAgent(x) {
   const c = C(), wires = [], parts = [];
-  const tools = [[ICON_FOLDER, "files", 226], [ICON_TERMINAL, "programs", 282], [ICON_GLOBE, "the web", 338]];
-  tools.forEach(([ic, t, y]) => {
-    parts.push(d.icon(x + 32, y, 40, ic, { color: c.light }));
-    parts.push(d.label(x + 84, 0, t, { size: 20, color: c.light, centerY: y + 20 }));
-    wires.push(d.line(x + 190, y + 20, x + 318, 302, { color: c.gray, width: 2 }));
+  const cx = x + COL_W / 2, cy = 536, r = 104;
+  parts.push(d.box(cx - 110, 318, 220, 56, "your goal", { border: c.light, size: 32 }));
+  wires.push(d.arrow(cx, 378, cx, 404, { color: c.light, width: 2, head: 12 }));
+  wires.push(arc(cx, cy, r, -52, 4), arc(cx, cy, r, 58, 122), arc(cx, cy, r, 176, 228));
+  parts.push(pill(cx, cy - r, "plan", { border: null, fill: c.blue }));
+  parts.push(pill(cx + 90, cy + 52, "act", { border: null, fill: c.blue }));
+  parts.push(pill(cx - 90, cy + 52, "check", { border: null, fill: c.blue }));
+  parts.push(d.icon(cx - 30, cy - 34, 60, ICON_ROBOT, { color: c.blue }));
+  [[ICON_FOLDER, "your files", -170], [ICON_TERMINAL, "programs", 0], [ICON_GLOBE, "the web", 170]].forEach(([ic, t, dx]) => {
+    wires.push(d.line(cx, 646, cx + dx, 674, { color: c.gray, width: 2 }));
+    parts.push(d.icon(cx + dx - 18, 676, 36, ic, { color: c.light }));
+    parts.push(d.label(cx + dx, 0, t, { size: 20, color: c.light, anchor: "middle", centerY: 730 }));
   });
-  parts.push(d.icon(x + 322, 258, 88, ICON_ROBOT, { color: c.blue }));
-  parts.push(d.icon(x + 424, 282, 40, ICON_ARROW_REPEAT, { color: c.gray }));
-  parts.push(d.label(x + 32, 0, "works with your files, programs\nand the web, in a loop", { size: 20, color: c.gray, centerY: 432, lineHeight: 1.3 }));
-  return [...wires, ...parts];
+  return { wires, parts };
 }
 
 function figKinds(step) {
   const c = C();
   const wires = [], boxes = [], labels = [];
-  const W = 520, G = 60;
-  const schemas = [schemaChat, schemaResearch, schemaAgent];
+  const schemas = [schemaChat, schemaTools, schemaAgent];
   KINDS.forEach((k, i) => {
     if (i > step) return;
-    const x = i * (W + G), now = i === step;
+    const x = colX(i), cx = x + COL_W / 2, now = i === step;
     // inset by 2 for the stroke width of 2
-    boxes.push(d.box(x + 2, 2, W - 4, 800, "", { border: now ? c.white : c.dark, width: 2 }));
-    labels.push(d.icon(x + 32, 32, 48, k.icon, { color: c.blue }));
-    labels.push(d.label(x + 100, 0, k.name, { size: 48, color: c.white, centerY: 56 }));
-    labels.push(d.label(x + 32, 0, k.what, { size: 32, color: c.light, centerY: 152, lineHeight: 1.3 }));
-    labels.push(...schemas[i](x));
-    labels.push(d.label(x + 32, 0, "for example", { size: 20, color: c.gray, centerY: 500 }));
-    k.tools.forEach(([t, url], j) => labels.push(link(x + 32, 544 + j * 44, t, url)));
+    boxes.push(d.box(x + 2, 2, COL_W - 4, 800, "", { border: now ? c.white : c.dark, width: 2, rx: 16 }));
+    labels.push(d.icon(cx - 32, 30, 64, k.icon, { color: c.blue }));
+    labels.push(d.label(cx, 0, k.name, { size: 48, color: c.white, anchor: "middle", centerY: 142 }));
+    labels.push(d.label(cx, 0, k.what, { size: 32, color: c.light, anchor: "middle", centerY: 228, lineHeight: 1.3 }));
+    const s = schemas[i](x);
+    wires.push(...s.wires);
+    labels.push(...s.parts);
+    labels.push(d.label(cx, 0, k.note, { size: 20, color: c.gray, anchor: "middle", centerY: 772 }));
   });
-  return d.svg(1680, 804, ...d.layers(wires, boxes, labels));
+  return d.svg(1680, 804, ...d.layers(boxes, wires, labels));
 }
 function showKinds(slide, step) { put("fig-kinds", figKinds(step || 0)); }
 
 /* ------------------------------------------------------------------ */
-/* The nine phases of an empirical study after Döring (2023), in three  */
-/* rows of three. Step 1 marks the middle row, which a secondary        */
-/* analysis takes over from the people who ran the survey.              */
+/* Tools to try, in the same three columns: one card per tool with its  */
+/* name as a link and what it is for. Cards 100 high, 12 apart; a line  */
+/* at 20 px holds 40 characters.                                        */
 /* ------------------------------------------------------------------ */
-function figPhases(step) {
+const TOOLS = [
+  { name: "chatbots", items: [
+    ["ChatGPT", "https://chatgpt.com", "by OpenAI"],
+    ["Claude", "https://claude.ai", "by Anthropic"],
+    ["Gemini", "https://gemini.google.com", "by Google"],
+    ["Chat AI", "https://chat-ai.academiccloud.de", "by the GWDG, free for universities"],
+    ["HAWKI", "https://hawki.hs-osnabrueck.de", "the chat of HS Osnabrück"]] },
+  { name: "specialized tools", items: [
+    ["Consensus", "https://consensus.app", "finds studies and sums up what they say"],
+    ["Elicit", "https://elicit.com", "searches papers and pulls out their data"],
+    ["Research Rabbit", "https://www.researchrabbit.ai", "maps papers that cite each other"],
+    ["NotebookLM", "https://notebooklm.google.com", "answers questions about your PDFs"],
+    ["Napkin", "https://www.napkin.ai", "turns a text into a diagram"],
+    ["Gamma", "https://gamma.app", "turns an outline into slides"]] },
+  { name: "agents", items: [
+    ["Claude Code", "https://www.anthropic.com/claude-code", "by Anthropic"],
+    ["Codex", "https://openai.com/codex", "by OpenAI"],
+    ["Gemini CLI", "https://github.com/google-gemini/gemini-cli", "by Google, open source"],
+    ["OpenCode", "https://opencode.ai", "open source, works with many models"]] },
+];
+function figTools() {
+  const c = C();
+  const boxes = [], labels = [];
+  TOOLS.forEach((g, i) => {
+    const x = colX(i), cx = x + COL_W / 2;
+    labels.push(d.label(cx, 0, g.name, { size: 48, color: c.white, anchor: "middle", centerY: 44 }));
+    g.items.forEach(([t, url, what], j) => {
+      const y = 104 + j * 112;
+      boxes.push(d.box(x + 2, y, COL_W - 4, 100, "", { border: c.dark, rx: 12 }));
+      labels.push(link(x + 28, y + 36, t, url));
+      labels.push(d.label(x + 28, 0, what, { size: 20, color: c.gray, keepCase: true, centerY: y + 74 }));
+    });
+  });
+  return d.svg(1680, 804, ...d.layers(boxes, labels));
+}
+
+/* ------------------------------------------------------------------ */
+/* The nine phases of an empirical study after Döring (2023), in three  */
+/* rows of three. On the task slide the same grid comes again, more     */
+/* compact, with the four levels of AI use as a legend beneath.         */
+/* ------------------------------------------------------------------ */
+const LEVEL_NAMES = ["answers your questions", "reads and writes documents", "agent with your feedback", "does it all, nobody checks"];
+function figPhases(task) {
   const c = C();
   const wires = [], boxes = [], labels = [];
-  const W = 520, G = 60, H = 110;
+  const W = 520, G = 60, H = task ? 100 : 110;
+  const ys = task ? [50, 230, 410] : [60, 310, 560];
   const rows = [
-    { y: 60, title: "plan", phases: ["research topic", "state of research", "study design"] },
-    { y: 310, title: "collect data", phases: ["operationalization", "sampling", "data collection"] },
-    { y: 560, title: "analyze and report", phases: ["data preparation", "data analysis", "presentation"] },
+    { title: "plan", phases: ["research topic", "state of research", "study design"] },
+    { title: "collect data", phases: ["operationalization", "sampling", "data collection"] },
+    { title: "analyze and report", phases: ["data preparation", "data analysis", "presentation"] },
   ];
   let n = 0;
   rows.forEach((r, ri) => {
-    const other = step >= 1 && ri === 1;
-    labels.push(d.label(0, 0, r.title, { size: 32, color: c.gray, centerY: r.y - 30 }));
+    const y = ys[ri];
+    labels.push(d.label(0, 0, r.title, { size: 32, color: c.gray, centerY: y - 30 }));
     r.phases.forEach((t, i) => {
       n += 1;
       const x = i * (W + G);
-      boxes.push(d.box(x + 2, r.y, W - 4, H, "", { border: other ? c.dark : c.light, dashed: other }));
-      labels.push(d.label(x + 32, 0, String(n), { size: 32, color: c.gray, mono: true, centerY: r.y + H / 2 }));
-      labels.push(d.label(x + 90, 0, t, { size: 32, color: other ? c.gray : c.white, centerY: r.y + H / 2 }));
-      if (i) wires.push(d.arrow(x - G + 6, r.y + H / 2, x - 4, r.y + H / 2, { color: c.gray, width: 3 }));
+      boxes.push(d.box(x + 2, y, W - 4, H, "", { border: c.light }));
+      labels.push(d.label(x + 32, 0, String(n), { size: 32, color: c.gray, mono: true, centerY: y + H / 2 }));
+      labels.push(d.label(x + 90, 0, t, { size: 32, color: c.white, centerY: y + H / 2 }));
+      if (i) wires.push(d.arrow(x - G + 6, y + H / 2, x - 4, y + H / 2, { color: c.gray, width: 3 }));
     });
   });
-  if (step >= 1) labels.push(d.label(0, 0, "in a secondary analysis, the people who ran the survey did these", { size: 32, color: c.gray, centerY: 450 }));
-  return d.svg(1680, 700, ...d.layers(wires, boxes, labels));
-}
-function showPhases(slide, step) { put("fig-phases", figPhases(step || 0)); }
-
-/* ------------------------------------------------------------------ */
-/* Three levels of AI use as timelines. Each level is a row of lanes:   */
-/* you, the ai (an agent on level 3) and, on level 3, its tools. Time   */
-/* runs from left to right; a bar is a stretch of work, a short arrow   */
-/* a handover. Each build-up step plays one level from left to right:   */
-/*   1  you work and ask the ai in between,                             */
-/*   2  you give a task, the ai drafts, you check,                      */
-/*   3  you give a goal, the agent works with its tools in a loop until */
-/*      the goal is reached, and you check the result.                  */
-/* Geometry: the timeline runs from x 440 to 1676 (100 units = 1236);   */
-/* lanes are 56 high, 80 apart. Bar labels at 32 px fit when            */
-/* chars * 19.2 + 24 <= width; agent and tool bars use 20 px (12 per    */
-/* character). Bars of you: dark with a light frame; ai and agent:      */
-/* blue; tools: gray, an error red; your check: green frame and symbol. */
-/* ------------------------------------------------------------------ */
-const TL = { x0: 440, x1: 1676, lh: 56, step: 80 };
-const tx = (t) => TL.x0 + t * (TL.x1 - TL.x0) / 100;
-const ROWS = [
-  { y: 14, name: "ai advises", lanes: ["you", "ai"] },
-  { y: 204, name: "ai drafts,\nyou review", lanes: ["you", "ai"] },
-  { y: 394, name: "ai does it,\nyou check", lanes: ["you", "agent", "tools"] },
-];
-const laneY = (r, l) => ROWS[r].y + l * TL.step;
-
-// labels per phase: level 1 [you, ai, you], level 2 [task, ai, check],
-// level 3 [goal, agent x3, tools x2]; a tool label starting with "!" is an error
-const LEVELS = {
-  general: {
-    l1: ["you do the work", "ai advises", "you go on"],
-    l2: ["a task", "ai makes a draft", "you review"],
-    l3: ["a goal", ["plans", "acts", "reports"], ["files, web", "programs"]],
-  },
-  question: {
-    l1: ["you draft a question", "fitting columns", "you sharpen it"],
-    l2: ["the data", "suggests five questions", "you pick one"],
-    l3: ["a topic", ["reads", "drafts", "tests"], ["codebook", "data"]],
-  },
-  literature: {
-    l1: ["you search the library", "search terms", "you read studies"],
-    l2: ["a topic", "finds and summarizes", "you read the best"],
-    l3: ["a topic", ["searches", "reads", "writes"], ["browser", "pdfs"]],
-  },
-  analysis: {
-    l1: ["you write the r code", "explains errors", "you run it"],
-    l2: ["a task", "writes the r code", "you run and check"],
-    l3: ["question", ["writes", "fixes", "reports"], ["!error", "runs r"]],
-  },
-  figures: {
-    l1: ["you draw the chart", "suggestions", "you improve it"],
-    l2: ["a sketch", "writes ggplot2 code", "you fix the labels"],
-    l3: ["question", ["plans", "draws", "inserts"], ["data", "r"]],
-  },
-  writing: {
-    l1: ["you write a section", "feedback", "you revise"],
-    l2: ["your notes", "drafts the section", "you rewrite it"],
-    l3: ["sources", ["outlines", "writes", "revises"], ["pdfs", "data"]],
-  },
-};
-
-function bar(name, row, lane, t0, t1, text, kind) {
-  const c = C();
-  const x = tx(t0) + 2, w = tx(t1) - tx(t0) - 4, y = laneY(row, lane);
-  if (kind === "check") {
-    return d.g(name,
-      d.box(x, y, w, TL.lh, "", { border: c.green, width: 3, fill: "none" }),
-      d.icon(x + 18, y + 10, 36, ICON_PERSON_CHECK_FILL, { color: c.green }),
-      d.label(x + 68, 0, text, { size: 32, color: c.white, centerY: y + TL.lh / 2 }));
+  if (task) {
+    labels.push(d.label(0, 0, "four levels of ai use", { size: 20, color: c.gray, centerY: 560 }));
+    LEVEL_NAMES.forEach((t, i) => {
+      const x = i * 420;
+      boxes.push(d.box(x + 2, 584, 40, 40, "", { border: c.blue, rx: 20 }));
+      labels.push(d.label(x + 22, 0, String(i + 1), { size: 20, color: c.white, anchor: "middle", centerY: 604 }));
+      labels.push(d.label(x + 56, 0, t, { size: 20, color: c.light, centerY: 604 }));
+    });
   }
-  const style = {
-    you: { border: c.light, fill: c.dark, size: 32 },
-    ai: { border: null, fill: c.blue, size: 32 },
-    agent: { border: null, fill: c.blue, size: 20 },
-    tool: { border: null, fill: c.gray, size: 20 },
-    error: { border: null, fill: c.red, size: 20 },
-  }[kind];
-  return d.g(name, d.box(x, y, w, TL.lh, text, { ...style, color: c.white }));
-}
-// a handover: a short arrow from one lane to another at time t
-function hand(name, row, from, to, t) {
-  const c = C(), x = tx(t);
-  const down = to > from;
-  const y1 = down ? laneY(row, from) + TL.lh + 3 : laneY(row, from) - 3;
-  const y2 = down ? laneY(row, to) - 3 : laneY(row, to) + TL.lh + 3;
-  return d.g(name, d.arrow(x, y1, x, y2, { color: c.light, width: 2, head: 10 }));
+  return d.svg(1680, task ? 660 : 700, ...d.layers(wires, boxes, labels));
 }
 
-function figLevels(topic) {
+/* ------------------------------------------------------------------ */
+/* Four levels of AI use, one row each, appearing one by one. Every row */
+/* has the same three places: your work (a folder with paper, data and  */
+/* code), you, and on the right the browser or what comes out.          */
+/*   1  you ask in the browser and carry the answer into your work,     */
+/*   2  the AI in the browser reads and writes whole documents,         */
+/*   3  an agent works inside your folder; you give the goal and        */
+/*      feedback, it shows results, in a loop,                          */
+/*   4  the agent does it all, and nobody checks the result.           */
+/* Rows 200 apart, 160 high. Places: your work x 460..880, you at       */
+/* 978..1034, the right place x 1100..1676 (30 characters at 32 px).    */
+/* ------------------------------------------------------------------ */
+const LEVELS = [
+  "ai answers\nyour questions",
+  "ai reads and\nwrites documents",
+  "an agent works,\nyou give feedback",
+  "ai does it all,\nnobody checks",
+];
+function figLevels(step) {
   const c = C();
-  const L = LEVELS[topic] || LEVELS.general;
-  const statics = [], bars = [], hands = [];
-  // left column: level number and name, lane names
-  ROWS.forEach((r, i) => {
-    const h = (r.lanes.length - 1) * TL.step + TL.lh, cy = r.y + h / 2;
-    statics.push(d.label(0, 0, String(i + 1), { size: 48, color: c.gray, centerY: cy }));
-    statics.push(d.label(56, 0, r.name, { size: 32, color: c.white, centerY: cy, lineHeight: 1.3 }));
-    r.lanes.forEach((ln, l) => statics.push(d.label(420, 0, ln, { size: 20, color: c.gray, anchor: "end", centerY: laneY(i, l) + TL.lh / 2 })));
-    if (i) statics.push(d.line(0, r.y - 34, 1676, r.y - 34, { color: c.dark, width: 2 }));
-  });
-  // level 1: you work, ask, get advice, go on
-  bars.push(bar("a1", 0, 0, 0, 40, L.l1[0], "you"));
-  hands.push(hand("a2", 0, 0, 1, 40.5));
-  bars.push(bar("a3", 0, 1, 41, 67, L.l1[1], "ai"));
-  hands.push(hand("a4", 0, 1, 0, 67.5));
-  bars.push(bar("a5", 0, 0, 68, 100, L.l1[2], "you"));
-  // level 2: you give a task, the ai drafts, you check
-  bars.push(bar("b1", 1, 0, 0, 20, L.l2[0], "you"));
-  hands.push(hand("b2", 1, 0, 1, 20.5));
-  bars.push(bar("b3", 1, 1, 21, 63, L.l2[1], "ai"));
-  hands.push(hand("b4", 1, 1, 0, 63.5));
-  bars.push(bar("b5", 1, 0, 64, 100, L.l2[2], "check"));
-  // level 3: a goal, then agent and tools in turns, then your check
-  const [goal, acts, tools] = L.l3;
-  bars.push(bar("c1", 2, 0, 0, 16, goal, "you"));
-  hands.push(hand("c2", 2, 0, 1, 16.5));
-  // agent and tools take turns: agent 17-29, tool 30-42, agent 43-55,
-  // tool 56-68, agent 69-79 (12 units = 148 px, 11 characters at 20 px;
-  // the last agent bar 10 units, 8 characters)
-  for (let k = 0; k < 3; k++) {
-    const t = 17 + k * 26;
-    bars.push(bar("ca" + k, 2, 1, t, k < 2 ? t + 12 : t + 10, acts[k], "agent"));
-    if (k < 2) {
-      const err = tools[k].startsWith("!");
-      hands.push(hand("cd" + k, 2, 1, 2, t + 12.5));
-      bars.push(bar("ct" + k, 2, 2, t + 13, t + 25, tools[k].replace("!", ""), err ? "error" : "tool"));
-      hands.push(hand("cu" + k, 2, 2, 1, t + 25.5));
+  const wires = [], boxes = [], labels = [];
+  for (let i = 0; i <= Math.min(step, 3); i++) {
+    const y0 = i * 200, cy = y0 + 90, now = i === step, agent = i >= 2;
+    if (i) wires.push(d.line(0, y0 - 15, 1676, y0 - 15, { color: c.dark, width: 2 }));
+    labels.push(d.label(0, 0, String(i + 1), { size: 48, color: c.gray, centerY: cy }));
+    labels.push(d.label(56, 0, LEVELS[i], { size: 32, color: now ? c.white : c.light, centerY: cy, lineHeight: 1.3 }));
+    // your work
+    boxes.push(d.box(460, y0 + 10, 420, 160, "", { border: c.gray, rx: 14 }));
+    labels.push(d.icon(478, y0 + 24, 28, ICON_FOLDER, { color: c.gray }));
+    labels.push(d.label(516, 0, "your work", { size: 20, color: c.gray, centerY: y0 + 38 }));
+    ["paper", "data", "code"].forEach((t, k) => {
+      const x = 490 + k * 80;
+      labels.push(d.icon(x, y0 + 66, 44, ICON_FILE_TEXT, { color: c.light }));
+      labels.push(d.label(x + 22, 0, t, { size: 20, color: c.light, anchor: "middle", centerY: y0 + 136 }));
+    });
+    if (agent) labels.push(d.icon(770, y0 + 62, 64, ICON_ROBOT, { color: c.blue }));
+    if (i === 3) labels.push(d.icon(838, y0 + 22, 28, ICON_ARROW_REPEAT, { color: c.gray }));
+    // you
+    if (i < 3) {
+      labels.push(d.icon(978, cy - 28, 56, i === 2 ? ICON_PERSON_CHECK_FILL : ICON_PERSON_FILL, { color: i === 2 ? c.green : c.light }));
+      labels.push(d.label(1006, 0, "you", { size: 20, color: c.gray, anchor: "middle", centerY: y0 + 144 }));
+    }
+    if (i < 2) {
+      // you carry the result into your work by hand
+      wires.push(d.arrow(966, cy, 888, cy, { color: c.light, width: 2, head: 12 }));
+      // the browser: a window apart from your work
+      boxes.push(d.box(1100, y0 + 10, 576, 160, "", { border: c.light, rx: 14 }));
+      labels.push(d.line(1101, y0 + 46, 1675, y0 + 46, { color: c.dark, width: 2 }));
+      [0, 1, 2].forEach((k) => labels.push(`<circle cx="${1122 + k * 18}" cy="${y0 + 28}" r="5" fill="${c.gray}"/>`));
+      labels.push(d.label(1176, 0, "browser", { size: 20, color: c.gray, centerY: y0 + 28 }));
+      wires.push(d.arrow(1042, cy - 16, 1096, cy - 16, { color: c.light, width: 2, head: 12 }));
+      wires.push(d.arrow(1096, cy + 16, 1042, cy + 16, { color: c.blue, width: 2, head: 12 }));
+    }
+    if (i === 0) {
+      labels.push(d.box(1652 - 298, y0 + 58, 298, 46, "your question", { border: c.light, size: 32, rx: 23 }));
+      labels.push(d.box(1124, y0 + 114, 221, 46, "an answer", { border: null, fill: c.blue, size: 32, rx: 23 }));
+    }
+    if (i === 1) {
+      labels.push(d.icon(1124, y0 + 84, 44, ICON_FILE_EARMARK_PDF, { color: c.light }));
+      labels.push(d.label(1180, 0, "your PDF", { size: 32, color: c.light, keepCase: true, centerY: y0 + 106 }));
+      labels.push(d.arrow(1352, y0 + 106, 1424, y0 + 106, { color: c.blue, width: 2, head: 12 }));
+      labels.push(d.icon(1440, y0 + 84, 44, ICON_FILE_TEXT, { color: c.blue }));
+      labels.push(d.label(1496, 0, "a draft", { size: 32, color: c.blue, centerY: y0 + 106 }));
+    }
+    if (i === 2) {
+      // you and the agent in a loop: goal and feedback in, results out
+      wires.push(d.arrow(966, cy - 16, 888, cy - 16, { color: c.light, width: 2, head: 12 }));
+      wires.push(d.arrow(888, cy + 16, 966, cy + 16, { color: c.blue, width: 2, head: 12 }));
+      labels.push(d.label(1100, 0, "you: the goal and feedback", { size: 32, color: c.light, centerY: y0 + 46 }));
+      labels.push(d.label(1100, 0, "agent: the work and results", { size: 32, color: c.blue, centerY: y0 + 94 }));
+      labels.push(d.icon(1100, y0 + 128, 28, ICON_ARROW_REPEAT, { color: c.gray }));
+      labels.push(d.label(1140, 0, "in a loop until it fits", { size: 20, color: c.gray, centerY: y0 + 142 }));
+    }
+    if (i === 3) {
+      wires.push(d.arrow(888, cy, 1096, cy, { color: c.blue, width: 2, head: 12 }));
+      labels.push(d.label(992, 0, "nobody checks", { size: 20, color: c.gray, anchor: "middle", centerY: cy - 28 }));
+      labels.push(d.verdict(1100, y0 + 20, 280, 140, "a result", "caution"));
+      labels.push(d.label(1412, 0, "perhaps because\nnobody can follow\nit any more", { size: 20, color: c.gray, centerY: cy, lineHeight: 1.3 }));
     }
   }
-  hands.push(hand("c3", 2, 1, 0, 79.5));
-  bars.push(bar("c4", 2, 0, 80, 100, "you check", "check"));
-  // loop label under the tools lane
-  const loopLabel = d.g("loop",
-    d.icon(tx(17), 626, 36, ICON_ARROW_REPEAT, { color: c.gray }),
-    d.label(tx(17) + 48, 0, "in a loop until the goal is reached", { size: 32, color: c.gray, centerY: 644 }));
-  // time axis and legend
-  statics.push(d.arrow(TL.x0, 712, TL.x1 - 2, 712, { color: c.dark, width: 2, head: 12 }));
-  statics.push(d.label(TL.x1 - 2, 0, "time", { size: 20, color: c.gray, anchor: "end", centerY: 738 }));
-  const leg = [["you work", c.dark, c.light], ["ai works", c.blue, null], ["tools", c.gray, null], ["you check", "none", c.green]];
-  let lx = TL.x0;
-  leg.forEach(([t, fill, border]) => {
-    statics.push(d.box(lx, 770, 28, 20, "", { fill, border, width: border === c.green ? 3 : 2, rx: 3 }));
-    statics.push(d.label(lx + 40, 0, t, { size: 20, color: c.gray, centerY: 780 }));
-    lx += 40 + t.length * 12 + 48;
-  });
-  const svg = d.svg(1680, 804, ...statics, ...hands, ...bars, loopLabel);
-
-  // animation: one step per level, played from left to right
-  const id = "fig-levels-" + topic;
-  return { svg, id, play: (a) => {
-    const S = (n) => a.show(n, { dur: 220 });
-    const D = (n) => a.draw(n, { dur: 160 });
-    a.step(S("a1"), D("a2"), S("a3"), D("a4"), S("a5"));
-    a.step(S("b1"), D("b2"), S("b3"), D("b4"), S("b5"));
-    a.step(S("c1"), D("c2"), a.par(S("loop"), S("ca0")),
-      D("cd0"), S("ct0"), D("cu0"), S("ca1"), D("cd1"), S("ct1"), D("cu1"), S("ca2"),
-      D("c3"), S("c4"));
-  } };
+  return d.svg(1680, 804, ...d.layers(wires, boxes, labels));
 }
+function showLevels(slide, step) { put("fig-levels", figLevels(step || 0)); }
 
 /* ------------------------------------------------------------------ */
-/* The jagged frontier as a closed shape: inside it the model does a    */
-/* task well, outside it badly. A deep notch at the bottom holds a      */
-/* task that looks like those inside but lies outside.                  */
-/* 24 corners, one every 15 degrees, stretched 1.5 wide and 0.95 high.  */
+/* The jagged frontier as a closed shape in the middle: inside it the   */
+/* model does a task well, everything around it is outside. 24 corners, */
+/* one every 15 degrees (0 right, 90 down) around (840, 330), stretched */
+/* 1.8 wide. The same shape opens the next slide, where it grows year   */
+/* by year and changes its form: some corners move far out, others      */
+/* shift sideways or stay, and the notches move with them. The shapes   */
+/* are a simplified picture of the idea, not a measurement; 2027 is a   */
+/* hypothesis. Each shape: [shift of the angle in degrees, distance].   */
 /* ------------------------------------------------------------------ */
-function jagged(cx, cy, sx, sy, radii) {
-  const n = radii.length;
-  return radii.map((r, k) => {
-    const a = (k / n) * 2 * Math.PI;
-    return [cx + r * Math.cos(a) * sx, cy + r * Math.sin(a) * sy];
+const F = { cx: 840, cy: 330, hx: 1.8 };
+const FRONTIER_YEARS = ["2023", "2025", "2026", "2027?"];
+const FRONTIER_SHAPES = [
+  // 2023
+  [230, 205, 232, 198, 226, 205, 140, 205, 228, 196, 232, 204, 230, 206, 228, 198, 226, 204, 214, 204, 230, 200, 232, 206],
+  // 2025: far out to the upper left and upper right
+  [300, 260, 300, 230, 270, 220, 150, 225, 265, 225, 290, 270, 320, [-3, 360], 410, 300, 270, 240, 225, 245, 280, 300, [4, 420], 370],
+  // 2026: out to the left, the right and the bottom corners
+  [420, 400, 420, 260, 300, 250, 150, 250, 300, 280, 420, 400, 420, 380, [6, 420], 320, 300, 250, 225, 260, 280, 330, 440, [-5, 400]],
+  // 2027?: around everything
+  [455, 430, 450, 400, 360, 320, 305, 325, 355, 410, 440, 420, 455, 430, 400, 330, 300, 290, 300, 320, 355, 410, 445, 425],
+];
+function frontierPoints(s) {
+  return FRONTIER_SHAPES[s].map((v, k) => {
+    const [shift, r] = Array.isArray(v) ? v : [0, v];
+    const a = ((k * 15 + shift) * Math.PI) / 180;
+    return [F.cx + r * Math.cos(a) * F.hx, F.cy + r * Math.sin(a)];
   });
 }
 const pointsAttr = (pts) => pts.map((p) => p.map((v) => +v.toFixed(1)).join(",")).join(" ");
-
-const FRONTIER_RADII = [300, 250, 305, 240, 295, 260, 100, 260, 300, 245, 310, 250, 300, 240, 295, 255, 305, 245, 300, 250, 310, 240, 295, 260];
-function figFrontier() {
+// the frontier, blue because inside it the AI does the work; with `from`
+// it morphs from that shape to this one (only when stepping forward live)
+function frontierPolygon(pts, from) {
   const c = C();
-  const parts = [];
-  const pts = jagged(470, 330, 1.5, 0.95, FRONTIER_RADII);
-  parts.push(`<polygon points="${pointsAttr(pts)}" fill="${c.dark}" fill-opacity="0.45" stroke="${c.light}" stroke-width="3" stroke-linejoin="round"/>`);
-  parts.push(d.label(230, 0, "inside the frontier", { size: 48, color: c.white, centerY: 205 }));
-  ["12.2 % more tasks done", "25.1 % faster", "over 40 % higher quality"].forEach((t, i) => {
-    parts.push(d.label(230, 0, t, { size: 32, color: c.green, centerY: 280 + i * 46 }));
-  });
-  parts.push(d.label(230, 0, "with ai than without", { size: 20, color: c.gray, centerY: 410 }));
-  // the notch: a task that looks alike but lies outside
-  parts.push(`<circle cx="470" cy="500" r="12" fill="${c.yellow}"/>`);
-  parts.push(d.label(470, 0, "a task that looks alike", { size: 20, color: c.yellow, anchor: "middle", centerY: 610 }));
-  parts.push(d.label(1080, 0, "outside the frontier", { size: 48, color: c.white, centerY: 190 }));
-  parts.push(d.label(1080, 0, "19 percentage points\nless often correct", { size: 32, color: c.red, centerY: 295, lineHeight: 1.3 }));
-  parts.push(d.label(1080, 0, "with ai than without", { size: 20, color: c.gray, centerY: 415 }));
-  return d.svg(1680, 660, ...parts);
-}
-
-/* ------------------------------------------------------------------ */
-/* The frontier grows: a schematic, not a measurement. The same jagged  */
-/* shape is scaled about its own centre (as anim.js does) by 1, 1.6 and */
-/* 2.5; tasks sit along rays from that centre, at a multiple m of the   */
-/* distance to the edge, so a task is inside once the scale exceeds m.  */
-/* Two tasks sit in deep notches at the top and the bottom and stay     */
-/* outside, however far the frontier grows. Tasks that have just come   */
-/* inside turn yellow, earlier ones white, those outside stay gray.     */
-/* ------------------------------------------------------------------ */
-const GROW_RADII = [1, 0.86, 0.97, 0.84, 0.95, 0.88, 0.42, 0.88, 0.98, 0.85, 1, 0.87, 0.96, 0.84, 0.97, 0.86, 0.95, 0.88, 0.48, 0.88, 0.97, 0.85, 1, 0.86].map((v) => v * 120);
-const GROW_SCALES = [1, 1.6, 2.5];
-const GROW_YEARS = ["2023", "2025", "2026"];
-// [label, angle in degrees (0 right, 90 down), m, step it comes inside, label to the left]
-const GROW_TASKS = [
-  ["polish text", 180, 0.55, 0, true],
-  ["explain an error", 0, 0.55, 0, false],
-  ["write r code", 205, 1.3, 1, true],
-  ["summarize a paper", -25, 1.3, 1, false],
-  ["run an analysis", 155, 1.95, 2, true],
-  ["search literature", 25, 1.95, 2, false],
-];
-// distance from b along angle a to the first edge of the polygon
-function rayToEdge(pts, b, a) {
-  const dx = Math.cos(a), dy = Math.sin(a);
-  let best = Infinity;
-  for (let i = 0; i < pts.length; i++) {
-    const [x1, y1] = pts[i], [x2, y2] = pts[(i + 1) % pts.length];
-    const ex = x2 - x1, ey = y2 - y1, den = dx * ey - dy * ex;
-    if (Math.abs(den) < 1e-9) continue;
-    const t = ((x1 - b.x) * ey - (y1 - b.y) * ex) / den;
-    const u = ((x1 - b.x) * dy - (y1 - b.y) * dx) / den;
-    if (t > 0 && u >= 0 && u <= 1) best = Math.min(best, t);
-  }
-  return best;
+  const morph = from ? `<animate attributeName="points" from="${pointsAttr(from)}" to="${pointsAttr(pts)}" dur="1.8s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.42 0 0.58 1"/>` : "";
+  return `<polygon points="${pointsAttr(pts)}" fill="${c.blue}" fill-opacity="0.2" stroke="${c.blue}" stroke-width="3" stroke-linejoin="round">${morph}</polygon>`;
 }
 // a dark outline behind the letters, so an edge of the frontier passing
 // behind a label does not run through its text
-const halo = (svgText) => svgText.replace("<text ", `<text paint-order="stroke" stroke="${C().bg}" stroke-width="10" stroke-linejoin="round" `);
-function figGrowth() {
+const halo = (svgText) => svgText.replace(/<text /g, `<text paint-order="stroke" stroke="${C().bg}" stroke-width="10" stroke-linejoin="round" `);
+const dot = (x, y, col, r = 10) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${col}"/>`;
+
+function figFrontier() {
   const c = C();
-  const pts = jagged(840, 330, 2.2, 0.9, GROW_RADII);
-  const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
-  const b = { x: (Math.min(...xs) + Math.max(...xs)) / 2, y: (Math.min(...ys) + Math.max(...ys)) / 2 };
-  const parts = [];
-  parts.push(d.g("frontier", `<polygon points="${pointsAttr(pts)}" fill="${c.dark}" fill-opacity="0.45" stroke="${c.light}" stroke-width="3" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>`));
-  GROW_YEARS.forEach((y, i) => parts.push(d.g("year" + i, d.label(0, 0, y, { size: 48, color: c.white, centerY: 40 }))));
-  GROW_TASKS.forEach(([t, deg, m, k, left], i) => {
-    const a = (deg * Math.PI) / 180, r = rayToEdge(pts, b, a) * m;
-    const x = b.x + r * Math.cos(a), y = b.y + r * Math.sin(a);
-    const col = k === 0 ? c.white : c.gray;
-    parts.push(d.g("dot" + i, `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="10" fill="${col}"/>`));
-    parts.push(d.g("lab" + i, halo(d.label(left ? x - 22 : x + 22, 0, t, { size: 32, color: col, anchor: left ? "end" : "start", centerY: y }))));
+  const parts = [frontierPolygon(frontierPoints(0))];
+  parts.push(d.label(F.cx, 0, "inside the frontier", { size: 48, color: c.white, anchor: "middle", centerY: 245 }));
+  ["12.2 % more tasks done", "25.1 % faster", "over 40 % higher quality"].forEach((t, i) => {
+    parts.push(d.label(F.cx, 0, t, { size: 32, color: c.green, anchor: "middle", centerY: 310 + i * 46 }));
   });
-  // the two notches, at 270 degrees (top) and 90 degrees (bottom)
-  [["judge what matters", -90, 34], ["cite only real sources", 90, 630]].forEach(([t, deg, ly]) => {
-    const a = (deg * Math.PI) / 180, tip = rayToEdge(pts, b, a) * GROW_SCALES[2];
-    const y = b.y + (tip + 56) * Math.sin(a);
-    const y1 = deg < 0 ? ly + 22 : ly - 22;
-    parts.push(d.line(b.x, y1, b.x, y + (deg < 0 ? -14 : 14), { color: c.gray, width: 2, dashed: true }));
-    parts.push(`<circle cx="${b.x.toFixed(1)}" cy="${y.toFixed(1)}" r="10" fill="${c.gray}"/>`);
-    parts.push(d.label(b.x, 0, t, { size: 32, color: c.light, anchor: "middle", centerY: ly }));
+  parts.push(d.label(F.cx, 0, "with ai than without", { size: 20, color: c.gray, anchor: "middle", centerY: 444 }));
+  // the notch: a task that looks alike but lies outside
+  parts.push(dot(F.cx, 500, c.yellow, 12));
+  parts.push(d.label(F.cx, 0, "a task that looks alike", { size: 32, color: c.yellow, anchor: "middle", centerY: 600 }));
+  // outside: everything around the shape
+  parts.push(d.label(0, 0, "outside\nthe frontier", { size: 48, color: c.white, centerY: 300 }));
+  parts.push(d.label(1290, 0, "19 percentage points\nless often correct", { size: 32, color: c.red, centerY: 300, lineHeight: 1.3 }));
+  parts.push(d.label(1290, 0, "with ai than without", { size: 20, color: c.gray, centerY: 376 }));
+  return d.svg(1680, 660, ...parts);
+}
+
+/* ------------------------------------------------------------------ */
+/* The frontier moves: tasks as dots, each coming inside in one year    */
+/* (step 0: 2023). Outside gray, just come inside yellow, inside white. */
+/* [label, x, y, step it comes inside, where the label sits]            */
+/* ------------------------------------------------------------------ */
+const GROW_TASKS = [
+  ["polish text", 600, 340, 0, "right"],
+  ["explain an error", 1080, 420, 0, "left"],
+  ["write r code", 250, 180, 1, "below"],
+  ["summarize a paper", 1440, 180, 1, "below"],
+  ["run an analysis", 200, 470, 2, "below"],
+  ["search literature", 1470, 470, 2, "below"],
+  ["judge what matters", 840, 60, 3, "right"],
+  ["cite only real sources", 840, 500, 3, "far below"],
+];
+const PRINT = /[?&]print/.test(location.search);
+function figGrowth(step, from) {
+  const c = C();
+  const parts = [frontierPolygon(frontierPoints(step), from === undefined ? null : frontierPoints(from))];
+  parts.push(d.label(F.cx, 0, "inside the frontier", { size: 48, color: c.white, anchor: "middle", centerY: 245 }));
+  parts.push(d.label(0, 0, FRONTIER_YEARS[step], { size: 48, color: step === 3 ? c.yellow : c.white, centerY: 40 }));
+  if (step === 3) parts.push(d.label(170, 0, "a hypothesis: ai can do everything\nhumans can, and better", { size: 20, color: c.yellow, centerY: 40, lineHeight: 1.3 }));
+  GROW_TASKS.forEach(([t, x, y, k, at]) => {
+    const col = k > step ? c.gray : (k === step && step > 0 ? c.yellow : c.white);
+    parts.push(dot(x, y, col));
+    const o = { size: 32, color: col, centerY: y };
+    const lab = at === "right" ? d.label(x + 22, 0, t, o)
+      : at === "left" ? d.label(x - 22, 0, t, { ...o, anchor: "end" })
+      : d.label(x, 0, t, { ...o, anchor: "middle", centerY: y + (at === "below" ? 42 : 100) });
+    parts.push(halo(lab));
   });
   return d.svg(1680, 660, ...parts);
 }
-function playGrowth(a) {
-  const turn = (k, col) => GROW_TASKS.map(([, , , kk], i) => [i, kk]).filter(([, kk]) => kk === k)
-    .flatMap(([i]) => [a.color("dot" + i, col, { part: "fill", dur: 400 }), a.color("lab" + i, col, { part: "text", dur: 400 })]);
-  for (let s = 1; s < GROW_SCALES.length; s++) {
-    a.step(
-      a.par(a.scale("frontier", GROW_SCALES[s], { dur: 1600 }), a.swap("year" + (s - 1), "year" + s, { dur: 600 }), ...turn(s - 1, "white")),
-      a.par(...turn(s, "yellow")));
-  }
+let growthShown = null;
+function showGrowth(slide, step) {
+  step = step || 0;
+  // morph only when stepping forward live, never in print or export
+  const from = !PRINT && growthShown === step - 1 ? step - 1 : undefined;
+  put("fig-growth", figGrowth(step, from));
+  growthShown = step;
 }
 
 /* ------------------------------------------------------------------ */
@@ -526,17 +533,13 @@ function figUseTable() {
 
 // drawn at once, before stagekit.js builds the frames
 put("fig-kinds", figKinds(0));
-put("fig-phases", figPhases(0));
-document.querySelectorAll(".figure[data-levels]").forEach((el) => {
-  const f = figLevels(el.dataset.levels);
-  el.id = f.id;
-  el.innerHTML = f.svg;
-  f.play(d.anim(f.id));
-});
+put("fig-tools", figTools());
+put("fig-phases", figPhases(false));
+put("fig-phases-task", figPhases(true));
+put("fig-levels", figLevels(0));
 put("fig-frontier", figFrontier());
-put("fig-growth", figGrowth());
-if (document.getElementById("fig-growth")) playGrowth(d.anim("fig-growth"));
+put("fig-growth", figGrowth(0));
 put("fig-references", figReferences());
 put("fig-refs-2026", figRefs2026());
 put("fig-use-table", figUseTable());
-Object.assign(window, { showKinds, showPhases });
+Object.assign(window, { showKinds, showLevels, showGrowth });

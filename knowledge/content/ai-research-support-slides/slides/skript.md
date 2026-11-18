@@ -3,9 +3,9 @@
 Script to the deck `ai-as-a-copilot-in-empirical-research.html`, in the order
 of the slides. Frame numbers count every build-up step, as in the PDF.
 
-The message of this input fits into one sentence: AI can take on work in
-every phase of a study, from advice to the whole step, and what works and
-makes sense you decide and check yourself.
+The message of this input fits into one sentence: you only learn what works
+by working with AI yourself, because all of us are exploring the jagged
+frontier and pushing it out.
 
 ## Opening (frames 1–3)
 
@@ -15,116 +15,114 @@ landing. That is the role an AI can take in an empirical study: it can do a
 lot, often fast and well, but you set the course and you answer for what ends
 up in the paper.
 
-## Part 1: kinds of AI (frames 4–7)
+## Part 1: kinds of AI (frames 4–8)
 
 **Three kinds of AI (frames 5–7).** "AI" means three rather different things,
-which the slide adds one column at a time, each with a small drawing of how
-it works and its tools as links. Chatbots such as ChatGPT, Claude, Gemini,
-Chat AI of the GWDG or HAWKI of Osnabrück University of Applied Sciences
-answer in a chat on almost any topic and work with what you type or upload:
-a question, an answer, a follow-up. Research tools such as Consensus, Elicit,
-SciSpace, Research Rabbit, Litmaps or NotebookLM do one job in research and
-do it well, because they search a database of papers or your own PDFs and
-return real studies. Agents such as OpenCode, Claude Code or Codex act on
-their own on almost any task: they open your files, run programs and use the
-web in a loop until the goal is reached. The selection follows the overview
-of AI tools by the university library of Duisburg-Essen and the tools that a
-block week on AI as a copilot at Osnabrück University of Applied Sciences
-used in each phase of academic work. Chat AI of the GWDG is free for members
-of many German universities and processes data in line with the GDPR, as
-long as you choose one of its own models.
+which the slide adds one column at a time, each with a drawing of how it
+works. Chatbots answer your questions in a chat window: a question goes in,
+an answer comes out, and everything happens in the browser, apart from your
+own files. Specialized tools use AI for one specific job and often do it
+better than a chatbot: they find studies, read your PDFs with you, draw a
+diagram from a text or build slides from an outline. Agents are different in
+kind: you give them a goal, not the way, and they reach it on their own. They
+plan, act and check what came out, in a loop until the goal is reached, and
+to act they use tools, above all your files, programs and the web.
 
-## Part 2: the research process (frames 8–10)
+**Tools to try (frame 8).** The same three columns with concrete tools, each
+name a link. Chatbots: ChatGPT, Claude, Gemini, Chat AI of the GWDG and HAWKI
+of Osnabrück University of Applied Sciences. Specialized tools: Consensus and
+Elicit search scientific papers and summarize them, Research Rabbit maps
+papers that cite each other, NotebookLM answers questions about your PDFs,
+Napkin turns a text into a diagram and Gamma turns an outline into slides.
+Agents: Claude Code, Codex, Gemini CLI and OpenCode. The selection follows
+the overview of AI tools by the university library of Duisburg-Essen. Chat AI
+of the GWDG is free for members of many German universities and processes
+data in line with the GDPR, as long as you choose one of its own models.
 
-**Nine phases of a study (frames 9–10).** Döring (2023, section 1.3.1)
+## Part 2: the research process (frames 9–10)
+
+**Nine phases of a study (frame 10).** Döring (2023, section 1.3.1)
 describes the quantitative research process in nine phases and gives each of
 them a chapter: research topic, state of research and theoretical background,
 study design, operationalization, sampling, data collection, data
 preparation, data analysis and presentation of results. The slide groups them
-into three rows: plan, collect data, analyze and report. Qualitative studies
-run through similar phases, but at least in part in a circle, because the
-analysis can send you back to collect more data. In the second build-up step
-the middle row turns gray: in a secondary analysis of a survey, the people
-who ran the survey did these three phases, and your study begins with the
-codebook.
+into three rows: plan, collect data, analyze and report. The middle row only
+matters when you collect your own data; in a secondary analysis of a survey,
+the people who ran the survey did it for you.
 
-## Part 3: what is possible (frames 11–35)
+## Part 3: what is possible (frames 11–16)
 
-**Three levels of AI use (frames 12–15).** The figure shows three levels as
-timelines, one row each, with time running from left to right. White bars
-are your work, blue bars the work of the AI, gray bars the tools an agent
-uses, and a green bar with a person is the moment you check a result. Each
-click plays one level. On level 1 you do the work, ask the AI in between and
-go on with its advice. On level 2 you give the AI a task, it makes a draft,
-and you review it. On level 3 you give an agent a goal; it plans, uses its
-tools, acts again and stays in its loop until the goal is reached, and then
-reports back, and you check the result. The levels describe what is possible
-today, not what is advisable; that question comes in part 4.
+**Four levels of AI use (frames 12–15).** Each click adds one level, and
+every row shows the same three places: your work, a folder with paper, data
+and code; you; and on the right what the AI works in. On level 1 the AI
+answers your questions, as the first chatbots did: a question goes in and an
+answer comes out, but in the browser, apart from your work, and you carry
+the answer over by hand. On level 2 the AI reads and writes documents: you
+upload a PDF and get a summary or a draft back, so the AI now makes content,
+but still in the browser and still apart from your work. On level 3 an agent
+works inside your folder with your files and programs. You give it a goal and
+not the way, it does the work and shows you the result, you give feedback,
+and that goes round in a loop until the result fits. On level 4 the AI does
+it all, and nobody checks the result, perhaps because nobody could follow it
+any more. In mathematics this has started: in November 2026 a committee
+chaired by the physicist David Gross reviewed an AI proof of the existence
+half of the Yang-Mills problem, which a computer had checked in the proof
+language Lean, and wrote that they did not claim to fully understand the
+proof yet. All four levels are possible today; whether they work and make
+sense is the question of part 4.
 
-The five slides that follow play the same three levels for one phase each,
-with four frames per slide.
+**Phases and levels (frame 16).** The nine phases come back, with the four
+levels as a legend, and the task is to say which level fits which phase and
+which you have used yourself. Some ideas for the discussion: for the research
+question, a chatbot can say which columns of the codebook fit, and an agent
+can test whether a question can be answered at all, but the more the AI
+picks, the more likely the question becomes the one that is easiest to
+answer. For the state of research, a specialized tool such as Consensus or
+Elicit finds and summarizes studies, but only what you have opened and read
+goes into your paper. For the analysis, an agent writes, runs and fixes R
+code, and since wrong code often runs without an error, you check what it
+filters and count one group by hand. For the presentation, an agent can draw
+all charts and even write the paper, and that is where the question of what
+makes sense is most pressing, because you answer for every sentence.
 
-**Research question (frames 16–19).** On level 1 you draft a question, the
-AI names the columns of the codebook that fit, and you sharpen the question.
-On level 2 you hand over the data, the AI suggests five questions, and you
-pick one. On level 3 you give a topic, and an agent reads the codebook,
-drafts a question, tests it on the data and reports.
+## Part 4: what works (frames 17–24)
 
-**Literature (frames 20–23).** On level 1 you search the library, the AI
-suggests search terms, and you read the studies. On level 2 a research tool
-finds and summarizes studies on your topic, and you read the best ones. On
-level 3 an agent searches databases in the browser, reads the PDFs and writes
-the state of research.
-
-**Analysis (frames 24–27).** On level 1 you write the R code, the AI explains
-errors, and you run it. On level 2 the AI writes the R code from your task,
-and you run it and check the numbers. On level 3 an agent writes the code,
-runs into an error (the red bar), fixes it, runs R again and reports the
-results.
-
-**Figures (frames 28–31).** On level 1 you draw the chart, and the AI
-suggests what to improve. On level 2 the AI writes the ggplot2 code from your
-sketch, and you fix the labels. On level 3 an agent plans the charts, draws
-them with the data and R and inserts them into the paper.
-
-**Writing (frames 32–35).** On level 1 you write a section, the AI gives
-feedback, and you revise it. On level 2 the AI drafts the section from your
-notes, and you rewrite it. On level 3 an agent outlines, writes and revises
-the paper from your sources and data.
-
-## Part 4: what works (frames 36–42)
-
-**The jagged frontier (frame 37).** In a field experiment at the Boston
+**The jagged frontier (frame 18).** In a field experiment at the Boston
 Consulting Group, 758 consultants worked on realistic tasks with or without
 GPT-4 (Dell'Acqua, Mollick et al., 2023). On tasks inside the frontier of what
 the model handles well, the group with AI finished 12.2 percent more tasks,
 was 25.1 percent faster and delivered work of more than 40 percent higher
 quality. On a similar-looking task just outside the frontier, the group with
-AI was 19 percentage points less likely to reach the correct answer. Drawn as
-a closed shape, the frontier has an inside and an outside, and the yellow dot
-in a notch is a task that looks like those inside but lies outside. The image
-of the jagged frontier comes from this study; Ethan Mollick used it in
-Co-Intelligence (2024) and carries it on in Co-Existence (2026). From the
-inside you cannot see where the frontier runs, so what looks possible still
-has to be checked.
+AI was 19 percentage points less likely to reach the correct answer. The
+frontier is the blue shape in the middle and everything around it is outside;
+the yellow dot in a notch is a task that looks like those inside but lies
+outside. The image of the jagged frontier comes from this study; Ethan
+Mollick used it in Co-Intelligence (2024) and carries it on in Co-Existence
+(2026). From the inside you cannot see where the frontier runs, so what looks
+possible still has to be checked.
 
-**The frontier moves (frames 38–40).** A simplified picture of the idea, not
-a measurement. In three steps, labeled 2023, 2025 and 2026, the frontier
-grows and takes in tasks that were outside before: polishing a text and
-explaining an error first, then writing R code and summarizing a paper, then
-running a whole analysis and searching the literature. What has just come
-inside turns yellow. The shape stays jagged, though, and two tasks remain in
-its notches however far it grows: citing only sources that really exist and
-judging what matters in a study. The frontier keeps moving out, but it stays
-jagged, so a task can lie outside however easy it looks.
+**The frontier moves (frames 19–22).** A simplified picture of the idea, not
+a measurement. The slide starts with the same frontier, and around it are
+tasks from a study. In 2023 polishing a text and explaining an error were
+inside. With each step, labeled 2025, 2026 and 2027, the frontier grows, but
+it does not simply get bigger: it changes its shape, some corners move far
+out, others shift sideways, and the notches move with them. In 2025 writing R
+code and summarizing a paper come inside, in 2026 running a whole analysis
+and searching the literature; what has just come inside turns yellow. Judging
+what matters and citing only real sources are still outside in 2026. The
+last step is a hypothesis: some, such as the authors of the scenario AI 2027
+or Dario Amodei, the head of Anthropic, expect that around 2027 AI can do
+everything humans can, and better. Whether or not that comes true, the
+frontier grows and changes its shape, so with every new model you test again
+what lies inside.
 
-**References that do not exist (frame 41).** Walters and Wilder (2023) had
+**References that do not exist (frame 23).** Walters and Wilder (2023) had
 GPT-3.5 and GPT-4 write short literature reviews on 42 topics and checked all
 636 references. With GPT-3.5, 55 percent did not exist at all, with GPT-4 it
 was 18 percent, and many of the real ones had wrong authors, years or pages
 (43 and 24 percent).
 
-**Made-up references in 2026 (frame 42).** The problem has not gone away with
+**Made-up references in 2026 (frame 24).** The problem has not gone away with
 newer models. Topaz et al. (2026) checked the references of 2.5 million
 biomedical papers: in 2023 one paper in 2,828 cited at least one reference
 that does not exist, in 2025 one in 458, and in the first seven weeks of 2026
@@ -136,35 +134,44 @@ models in this study are GPT-5.1 and Claude Sonnet 4.5, and between 4 and 10
 percent of the links they gave did not resolve. Made-up references still turn
 up, in AI answers and in published papers, so you open every one you cite.
 
-## Part 5: you stay the author (frames 43–48)
+## Part 5: you stay the author (frames 25–30)
 
-**Three rules (frames 44–46).** You answer for every sentence, also for what
+**Three rules (frames 26–28).** You answer for every sentence, also for what
 an AI wrote. You write down what you used AI for and how you checked it. And
 you watch for bias: an AI learned from texts in which some groups, languages
 and views are frequent and others rare, and it repeats that picture, so a
 summary of studies, a coding of free-text answers or a description of a group
 can be skewed. You ask whom a result might leave out and compare it with your
-data. Fairness is one of the core requirements in the European Commission's
-ethics guidelines for trustworthy AI.
+data. The key term of each rule is highlighted. Fairness is one of the core
+requirements in the European Commission's ethics guidelines for trustworthy
+AI.
 
-**Write down how you used AI (frame 47).** A table with one row per use
+**Write down how you used AI (frame 29).** A table with one row per use
 records the tool and model, what it was used for, in which section, and how
 the result was checked. The last column is highlighted because it shows that
 you stayed the author; filled in as you go, it costs a minute per row and
 fits in an appendix.
 
-**Closing (frame 48).** AI can take on work in every phase of a study, from
-advice to the whole step, and what works and makes sense you decide and check
-yourself.
+**Closing (frame 30).** You only learn what works by working with AI
+yourself, because all of us are exploring the jagged frontier and pushing it
+out. No study can tell you where the frontier runs for your task with your
+tool; you find out by using AI, checking what comes out and keeping what
+works.
 
 ## Sources
 
 - Universitätsbibliothek Duisburg-Essen (2026). KI-Tools.
   https://www.uni-due.de/ub/ki-tools.php
 - HAWKI, Hochschule Osnabrück. https://hawki.hs-osnabrueck.de
+- Napkin. https://www.napkin.ai · Gamma. https://gamma.app
 - Döring, N. (2023). Forschungsmethoden und Evaluation in den Sozial- und
   Humanwissenschaften (6th ed.). Springer.
   https://doi.org/10.1007/978-3-662-64762-2
+- Science (2026). AI rivals tackle one of physics' deepest mathematical
+  challenges. Report on the review of OpenAI's Lean proof of Yang-Mills
+  existence; the committee chaired by David Gross: "We do not claim to fully
+  understand the proof yet."
+  https://www.science.org/content/article/ai-rivals-tackle-one-physics-deepest-mathematical-challenges
 - Dell'Acqua, F., McFowland, E., Mollick, E. R. et al. (2023). Navigating the
   jagged technological frontier: Field experimental evidence of the effects
   of AI on knowledge worker productivity and quality. Harvard Business School
@@ -173,6 +180,8 @@ yourself.
 - Mollick, E. (2024). Co-Intelligence: Living and working with AI. Portfolio.
 - Mollick, E. (2026). Co-Existence: The next phase of AI. Penguin Random
   House.
+- Kokotajlo, D., Alexander, S., Larsen, T., Lifland, E. & Dean, R. (2025).
+  AI 2027. https://ai-2027.com
 - Walters, W. H. & Wilder, E. I. (2023). Fabrication and errors in the
   bibliographic citations generated by ChatGPT. Scientific Reports 13, 14045.
   https://doi.org/10.1038/s41598-023-41032-5

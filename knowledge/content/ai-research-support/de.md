@@ -3,16 +3,16 @@ type: lesson
 code: 7990
 title: KI-Unterstützung in der empirischen Forschung
 summary: >-
-  Welche Arten von KI es für wissenschaftliches Arbeiten gibt, in welchen
-  Phasen einer Studie sie Arbeit übernehmen können, von der Beratung bis zum
-  ganzen Schritt, was davon nach heutigen Studien funktioniert und wie du
-  dokumentierst, wofür du sie eingesetzt hast.
+  Welche Arten von KI es für wissenschaftliches Arbeiten gibt, in welchen vier
+  Stufen sich die Arbeit mit ihr entwickelt hat, von der Antwort im Chat bis
+  zum Agenten, der alles allein erledigt, was davon nach heutigen Studien
+  funktioniert und wie du dokumentierst, wofür du sie eingesetzt hast.
 objectives:
   intro: "In dieser Lektion lernst du, wie du KI in einer empirischen Studie sinnvoll einsetzt, und kannst danach:"
   goals:
-    - "Chatbots, spezialisierte Recherchewerkzeuge und KI-Agenten unterscheiden und zu jeder Art Beispiele nennen"
+    - "Chatbots, spezialisierte Werkzeuge und KI-Agenten unterscheiden und zu jeder Art Beispiele nennen"
     - "die neun Phasen einer empirischen Studie nach Döring benennen"
-    - "für eine Phase drei Stufen der KI-Nutzung beschreiben, von der Beratung bis zum ganzen Schritt"
+    - "vier Stufen der KI-Nutzung beschreiben und den Phasen einer Studie zuordnen"
     - "an Studien erklären, warum auch überzeugende Antworten falsch sein können und erfundene Quellen weiter vorkommen"
     - "in einer Tabelle festhalten, wofür du KI eingesetzt und wie du das Ergebnis geprüft hast"
 level: 1
@@ -23,7 +23,7 @@ areas: [ds]
 relations:
   see_also: [opencode-course-assistant, paper-structure, ai-agents-in-research]
 status: draft
-updated: 2026-11-17
+updated: 2026-11-18
 ---
 
 ![Folien: KI als Kopilot in der empirischen Forschung](item:ai-research-support-slides)
@@ -41,18 +41,23 @@ heute möglich ist, und fragt danach, was davon funktioniert und sinnvoll ist.
 
 | Art | Was sie leistet | Beispiele | Arbeitet mit |
 |---|---|---|---|
-| **Chatbots** | antworten im Chat, zu fast jedem Thema | ChatGPT, Claude, Gemini, Chat AI (GWDG), HAWKI (Hochschule Osnabrück) | dem, was du eintippst oder hochlädst |
-| **Recherchewerkzeuge** | übernehmen eine Aufgabe der Forschung und erledigen sie gut | Consensus, Elicit, SciSpace, Litmaps, Research Rabbit, NotebookLM | einer Datenbank von Papers und deinen PDFs |
-| **Agenten** | handeln selbstständig, bei fast jeder Aufgabe | OpenCode, Claude Code, Codex | deinen Dateien, Programmen und dem Web |
+| **Chatbots** | beantworten deine Fragen in einem Chatfenster | ChatGPT, Claude, Gemini, Chat AI (GWDG), HAWKI (Hochschule Osnabrück) | dem, was du eintippst oder hochlädst |
+| **Spezialisierte Werkzeuge** | nutzen KI für eine bestimmte Aufgabe | Consensus, Elicit, Research Rabbit, NotebookLM, Napkin, Gamma | einer Datenbank von Papers, deinen PDFs oder deinem Text |
+| **Agenten** | bekommen ein Ziel und erreichen es selbstständig | Claude Code, Codex, Gemini CLI, OpenCode | deinen Dateien, Programmen und dem Web |
 
 Chatbots sind die Allrounder: Sie erklären, formulieren und schreiben Code,
-kennen aber nur, was du ihnen gibst, und was sie aus dem Gedächtnis zitieren,
-kann erfunden sein. Recherchewerkzeuge suchen in echten Literaturdatenbanken
-und verweisen auf echte Papers, decken aber meist nur einen Ausschnitt ab,
-etwa das Finden von Studien oder das Lesen eines PDFs. Agenten gehen einen
-Schritt weiter: Sie lesen deine Dateien, führen Code aus, steuern einen
-Browser und arbeiten so lange, bis das Ziel erreicht ist (siehe die Lektion
-„Was ist ein KI-Agent“).
+kennen aber nur, was du ihnen gibst, und alles geschieht im Browser, getrennt
+von deinen eigenen Dateien. Spezialisierte Werkzeuge nutzen KI für eine
+bestimmte Aufgabe und erledigen sie oft besser als ein Chatbot: Consensus
+und Elicit suchen in echten Literaturdatenbanken, Research Rabbit zeigt, wie
+Papers einander zitieren, NotebookLM beantwortet Fragen zu deinen PDFs,
+[Napkin](https://www.napkin.ai) macht aus einem Text ein Diagramm und
+[Gamma](https://gamma.app) aus einer Gliederung Folien. Agenten sind von
+anderer Art: Du gibst ihnen ein Ziel und nicht den Weg, und sie erreichen es
+selbstständig in einer Schleife aus Planen, Handeln und Prüfen. Zum Handeln
+nutzen sie Werkzeuge, vor allem deine Dateien, Programme und das Web, und
+sie arbeiten so lange, bis das Ziel erreicht ist (siehe die Lektion „Was ist
+ein KI-Agent“).
 
 Welche Werkzeuge sich für welche Arbeit anbieten, zeigt die folgende
 Übersicht. Sie folgt der Liste der Universitätsbibliothek Duisburg-Essen und
@@ -66,6 +71,7 @@ wurden.
 | Literatur finden und prüfen | Elicit, Consensus, Semantic Scholar, scienceOS, Scite, Research Rabbit, Litmaps |
 | Papers verstehen und Wissen ordnen | NotebookLM, SciSpace, Explainpaper |
 | Daten analysieren und darstellen | ChatGPT, Gemini, Julius AI, Agenten wie Claude Code oder OpenCode |
+| Diagramme und Folien | Napkin, Gamma |
 | Schreiben und überarbeiten | ChatGPT Canvas, Claude, DeepL Write, Paperpal |
 
 Chat AI der GWDG steht Angehörigen vieler deutscher Hochschulen kostenlos zur
@@ -88,37 +94,53 @@ Gruppiert man sie, ergeben sich drei Abschnitte:
 | auswerten und berichten | 7 Datenaufbereitung · 8 Datenanalyse · 9 Ergebnispräsentation |
 
 Qualitative Studien durchlaufen ähnliche Phasen, aber zumindest teilweise im
-Kreis, weil die Auswertung zurück in die Erhebung führen kann. Bei einer
-Sekundäranalyse, etwa einer Umfrage, die schon jemand durchgeführt hat, haben
-andere die Phasen 4 bis 6 übernommen, und deine Studie beginnt mit dem
-Codebuch.
+Kreis, weil die Auswertung zurück in die Erhebung führen kann. Die mittlere
+Zeile zählt nur, wenn du selbst Daten erhebst; bei einer Sekundäranalyse,
+etwa einer Umfrage, die schon jemand durchgeführt hat, haben andere die
+Phasen 4 bis 6 übernommen, und deine Studie beginnt mit dem Codebuch.
 
-In welcher dieser Phasen könnte eine KI die meiste Arbeit übernehmen? Auf
-diese Frage gibt es keine richtige Antwort, denn eine KI kann heute in jeder
-Phase viel übernehmen. Die eigentliche Frage ist, wie viel du abgeben willst.
+## Was möglich ist: vier Stufen
 
-## Was möglich ist: drei Stufen
+Wie wir mit KI arbeiten, hat sich in vier Stufen entwickelt. Die Folien
+zeigen jede Stufe mit denselben drei Orten: deiner Arbeit, also einem Ordner
+mit Paper, Daten und Code, dir selbst und dem Ort, an dem die KI arbeitet.
 
-Wie viel eine KI übernimmt, lässt sich in drei Stufen beschreiben. Die Folien
-zeigen jede Stufe als Zeitleiste, auf der nacheinander du, die KI und auf
-Stufe 3 ihre Werkzeuge arbeiten. Auf
-Stufe 1 machst du die Arbeit, und die KI erklärt, schlägt vor und gibt
-Rückmeldung. Auf Stufe 2 macht die KI einen Entwurf, und du prüfst, änderst
-und entscheidest. Auf Stufe 3 gibst du einem Agenten ein Ziel; er plant, nutzt
-seine Werkzeuge und bleibt in seiner Schleife, bis das Ziel erreicht ist, und
-du prüfst das Ergebnis. Für fünf Phasen einer Sekundäranalyse sieht das so aus:
+| Stufe | Was geschieht | Wo die KI arbeitet |
+|---|---|---|
+| **1 KI beantwortet deine Fragen** | Frage rein, Antwort raus, so wie mit den ersten Chatbots; du trägst die Antwort von Hand in deine Arbeit | im Browser, getrennt von deiner Arbeit |
+| **2 KI liest und schreibt Dokumente** | du lädst ein PDF hoch und bekommst eine Zusammenfassung oder einen Entwurf; die KI erzeugt jetzt Inhalte | weiter im Browser, weiter getrennt |
+| **3 Ein Agent arbeitet, du gibst Rückmeldung** | du gibst ein Ziel und nicht den Weg, der Agent erledigt die Arbeit und zeigt dir das Ergebnis, du gibst Rückmeldung, und das läuft in einer Schleife, bis es passt | in deinem Ordner, mit deinen Dateien und Programmen |
+| **4 KI erledigt alles, niemand prüft** | der Agent arbeitet allein, und kein Mensch sieht sich das Ergebnis an, vielleicht weil es niemand mehr nachvollziehen kann | in deinem Ordner, ohne dich |
 
-| Phase | 1 KI berät | 2 KI entwirft, du prüfst | 3 KI erledigt, du kontrollierst |
-|---|---|---|---|
-| Forschungsfrage | du schreibst die Frage, die KI sagt, welche Spalten des Codebuchs passen | die KI schlägt fünf Fragen zu den Daten vor, du wählst eine und schärfst sie | ein Agent liest Codebuch und Daten, wählt eine Frage und prüft, ob die Daten sie beantworten |
-| Literatur | die KI schlägt Suchbegriffe vor, du suchst in der Bibliothek und liest | ein Recherchewerkzeug findet und fasst Studien zusammen, du liest die besten | ein Agent durchsucht Datenbanken im Browser, liest die Papers und schreibt den Forschungsstand |
-| Analyse | du schreibst den R-Code, die KI erklärt Fehler und Funktionen | die KI schreibt den R-Code, du führst ihn aus und prüfst die Zahlen | ein Agent schreibt, startet und korrigiert den Code und berichtet die Ergebnisse |
-| Abbildungen | du zeichnest die Abbildung, die KI schlägt Verbesserungen vor | die KI schreibt den ggplot2-Code, du passt Beschriftung und Reihenfolge an | ein Agent zeichnet alle Abbildungen und fügt sie ins Paper ein |
-| Schreiben | du schreibst, die KI gibt Rückmeldung zu Aufbau und Sprache | die KI entwirft einen Abschnitt aus deinen Notizen, du schreibst ihn um | ein Agent schreibt das ganze Paper aus Daten und Quellen |
+Stufe 4 klingt nach Zukunft, hat in der Mathematik aber schon begonnen: Im
+November 2026 begutachtete ein Komitee unter dem Physiker David Gross einen
+Beweis, den eine KI für den Existenzteil des Yang-Mills-Problems gefunden und
+in der Beweissprache Lean hatte prüfen lassen, und schrieb dazu, es behaupte
+noch nicht, den Beweis vollständig zu verstehen (Science, 2026).
 
-Alles in dieser Tabelle ist heute technisch möglich. Ob es auch funktioniert
-und ob es sinnvoll ist, ist eine andere Frage: Wie weit würdest du bei der
-Analyse für dein Paper gehen?
+Alle vier Stufen sind heute möglich. Ob sie auch funktionieren und ob sie
+sinnvoll sind, ist eine andere Frage, und sie stellt sich für jede Phase
+einer Studie neu.
+
+**Denkaufgabe.** Geh die neun Phasen durch: Welche Stufe passt zu welcher
+Phase, und wo hast du KI schon eingesetzt, auf welcher Stufe? Einige
+Anregungen:
+
+- Forschungsfrage: Ein Chatbot kann sagen, welche Spalten des Codebuchs zu
+  deiner Frage passen, ein Agent kann Codebuch und Daten lesen und prüfen, ob
+  eine Frage überhaupt beantwortbar ist. Je mehr die KI auswählt, desto eher
+  wird die Frage die, die sich am leichtesten beantworten lässt.
+- Forschungsstand: Ein spezialisiertes Werkzeug wie Consensus oder Elicit
+  findet und fasst Studien zusammen, ein Agent kann Datenbanken durchsuchen
+  und den Forschungsstand entwerfen. In dein Paper kommt nur, was du geöffnet
+  und gelesen hast.
+- Datenanalyse: Ein Agent schreibt, startet und korrigiert R-Code. Falscher
+  Code läuft oft ohne Fehlermeldung, deshalb prüfst du, was er filtert und
+  wie er fehlende Werte behandelt, und zählst eine Gruppe von Hand nach.
+- Ergebnispräsentation: Ein Chatbot kommentiert deine Abbildung oder deinen
+  Text, ein Agent kann alle Abbildungen zeichnen und sogar das ganze Paper
+  schreiben. Gerade hier stellt sich die Frage nach dem Sinn am
+  dringendsten, denn du stehst für jeden Satz ein.
 
 ## Was funktioniert
 
@@ -137,17 +159,21 @@ Mollick hat das Bild der „jagged frontier“ aus dieser Studie in
 welcher du gerade bist. Was möglich aussieht, musst du deshalb trotzdem
 prüfen.
 
-**Die Grenze wandert.** Mit jeder Generation von Modellen rückt die Grenze
-nach außen und schließt Aufgaben ein, die vorher draußen lagen: erst einen
-Text glätten oder eine Fehlermeldung erklären, dann R-Code schreiben und ein
-Paper zusammenfassen, dann als Agent eine ganze Analyse rechnen oder die
-Literatur durchsuchen. Die Form bleibt aber zerklüftet, und manche Aufgaben
-liegen weiter in einer Einbuchtung, so weit die Grenze auch wächst, etwa nur
-Quellen zu zitieren, die es wirklich gibt, oder zu beurteilen, worauf es in
-einer Studie ankommt. Das ist ein vereinfachtes Bild der Idee, keine Messung,
-aber es erklärt, warum die Frage nie nur lautet, ob KI eine Aufgabe
-grundsätzlich kann, sondern ob genau diese Aufgabe innerhalb der Grenze des
-Modells liegt, das du gerade nutzt.
+**Die Grenze wandert.** Mit jeder Generation von Modellen wächst die Grenze,
+aber sie wird nicht einfach größer, sondern ändert ihre Form: Manche Ecken
+rücken weit nach außen, andere verschieben sich zur Seite, und die
+Einbuchtungen wandern mit. So kamen erst Aufgaben wie einen Text glätten oder
+eine Fehlermeldung erklären hinein, dann R-Code schreiben und ein Paper
+zusammenfassen, dann als Agent eine ganze Analyse rechnen oder die Literatur
+durchsuchen. Zu beurteilen, worauf es in einer Studie ankommt, und nur
+Quellen zu zitieren, die es wirklich gibt, lag 2026 noch draußen. Manche, etwa
+die Autoren des Szenarios *AI 2027* oder Anthropic-Chef Dario Amodei, halten
+es für möglich, dass KI um 2027 alles kann, was Menschen können, und das
+besser; das ist eine Hypothese, keine Vorhersage. Das Bild ist vereinfacht und
+keine Messung, aber es erklärt, warum die Frage nie nur lautet, ob KI eine
+Aufgabe grundsätzlich kann, sondern ob genau diese Aufgabe innerhalb der
+Grenze des Modells liegt, das du gerade nutzt. Mit jedem neuen Modell prüfst
+du das neu.
 
 **Quellen, die es nicht gibt.** Walters und Wilder (2023) ließen GPT-3.5 und
 GPT-4 kurze Literaturüberblicke zu 42 Themen schreiben und prüften alle 636
@@ -203,17 +229,20 @@ eine Minute.
 
 ## Zum Mitnehmen
 
-- Chatbots können fast alles, kennen aber nur, was du ihnen gibst;
-  Recherchewerkzeuge arbeiten auf echter Literatur, decken aber nur einen
-  Ausschnitt ab; Agenten erledigen ganze Schritte selbstständig.
-- In jeder der neun Phasen einer Studie kann eine KI Arbeit übernehmen, von
-  der Beratung bis zum ganzen Schritt.
+- Chatbots beantworten Fragen im Browser, spezialisierte Werkzeuge nutzen KI
+  für eine bestimmte Aufgabe, Agenten bekommen ein Ziel und erreichen es
+  selbstständig in einer Schleife.
+- Die Arbeit mit KI hat vier Stufen: Fragen beantworten, Dokumente lesen und
+  schreiben, ein Agent mit deiner Rückmeldung, und eine KI, deren Ergebnis
+  niemand mehr prüft.
 - Was möglich ist, funktioniert nicht überall gleich gut, und von innen
   siehst du die Grenze nicht, deshalb prüfst du jedes Ergebnis.
 - Erfundene Quellen kommen weiter vor, in Antworten von KI wie in
   veröffentlichten Papers; zitiere nur, was du geöffnet und gelesen hast.
 - Halte in einer Tabelle fest, wofür du KI eingesetzt und wie du geprüft
   hast.
+- Was funktioniert, lernst du nur, indem du selbst mit KI arbeitest, denn wir
+  alle erkunden die zerklüftete Grenze gerade und schieben sie nach außen.
 
 ## Quellen
 
@@ -231,6 +260,11 @@ eine Minute.
   Portfolio.
 - Mollick, E. (2026). *Co-Existence: The next phase of AI.* Penguin Random
   House.
+- Kokotajlo, D., Alexander, S., Larsen, T., Lifland, E. & Dean, R. (2025).
+  *AI 2027.* [ai-2027.com](https://ai-2027.com)
+- *Science* (2026). AI rivals tackle one of physics' deepest mathematical
+  challenges.
+  [science.org](https://www.science.org/content/article/ai-rivals-tackle-one-physics-deepest-mathematical-challenges)
 - Walters, W. H. & Wilder, E. I. (2023). Fabrication and errors in the
   bibliographic citations generated by ChatGPT. *Scientific Reports* 13,
   14045. [doi:10.1038/s41598-023-41032-5](https://doi.org/10.1038/s41598-023-41032-5)
