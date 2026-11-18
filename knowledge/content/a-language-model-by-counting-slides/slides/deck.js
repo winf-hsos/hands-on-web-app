@@ -82,14 +82,45 @@ function figGuess(step) {
     d.label(660, 0, "you", { size: 32, color: c.gray, anchor: "end", centerY: 370 }),
     mono(720, 370, "barn", { size: 48 }));
   if (step >= 2) parts.push(
-    d.label(660, 0, "a counting model", { size: 32, color: c.gray, anchor: "end", centerY: 480 }),
-    mono(720, 480, "hive", { size: 48, color: c.blue }),
-    // the reason, as the model counted it after "in the"
-    rich(840, 620, [["in the → ", c.gray], ["hive 2", c.blue], ["  ·  barn 1  ·  field 1  ·  nest 1", c.gray]],
+    d.label(660, 0, "the training data", { size: 32, color: c.gray, anchor: "end", centerY: 480 }),
+    mono(720, 480, "hive", { size: 48 }),
+    // the reason: what followed "in the" in the 22 sentences
+    rich(840, 620, [["in the", c.blue], [" → hive 2  ·  barn 1  ·  field 1  ·  nest 1", c.gray]],
       { size: 32, mono: true, anchor: "middle" }));
   return d.svg(1680, 700, ...parts);
 }
 function showGuess(slide, step) { put("fig-guess", figGuess(step)); }
+
+/* ------------------------------------------------------------------ */
+/* the naive idea: count what followed the context                     */
+/* ------------------------------------------------------------------ */
+// Context, counting and distribution as three frames in a row: 360 at 40,
+// 600 at 540 and 360 at 1280, joined by arrows; the formula below.
+function figCount() {
+  const c = C();
+  const bag = [["hive", 2], ["barn", 1], ["field", 1], ["nest", 1]];
+  const n = total(bag);
+  const parts = [
+    d.arrow(410, 210, 530, 210, { color: c.gray, width: 3, head: 16 }),
+    d.arrow(1150, 210, 1270, 210, { color: c.gray, width: 3, head: 16 }),
+    rect(40, 90, 360, 240, "none", { stroke: c.blue, width: 3, rx: 16 }),
+    rect(540, 90, 600, 240, "none", { stroke: c.light, width: 3, rx: 16 }),
+    rect(1280, 90, 360, 240, "none", { stroke: c.light, width: 3, rx: 16 }),
+    d.label(220, 0, "context", { size: 32, color: c.gray, anchor: "middle", centerY: 40 }),
+    d.label(840, 0, "count", { size: 32, color: c.gray, anchor: "middle", centerY: 40 }),
+    d.label(1460, 0, "next word", { size: 32, color: c.gray, anchor: "middle", centerY: 40 }),
+    mono(220, 210, "in the", { size: 48, anchor: "middle", color: c.blue }),
+    d.label(840, 0, "what followed it\nin the training data", { size: 32, anchor: "middle", centerY: 210 }),
+  ];
+  bag.forEach(([w, k], i) => {
+    const cy = 144 + i * 44;
+    parts.push(mono(1330, cy, w), mono(1590, cy, `${k}/${n}`, { anchor: "end" }));
+  });
+  parts.push(
+    d.formula(840, 0, "P(next | context) = count(context, next) / count(context)", { size: 48, anchor: "middle", centerY: 470 }),
+    d.label(840, 0, "a conditional probability, estimated by counting", { size: 32, color: c.gray, anchor: "middle", centerY: 560 }));
+  return d.svg(1680, 620, ...parts);
+}
 
 /* ------------------------------------------------------------------ */
 /* the corpus: 22 sentences in two columns                             */
@@ -141,6 +172,8 @@ function figTokens() {
 /* no context: how often each word occurs                              */
 /* ------------------------------------------------------------------ */
 // Ten most frequent words of 104; 31 counts are 899 wide (29 per count).
+// Step 0 shows the counts, step 1 the same rows as percentages, steps 2 and
+// 3 what a model writes from them: drawn at random, or always the top word.
 function figUnigram(step) {
   const c = C();
   const counts = new Map();
@@ -150,15 +183,17 @@ function figUnigram(step) {
   const parts = [];
   all.slice(0, 10).forEach(([w, k], i) => {
     const cy = 40 + i * 46, len = k * 29;
-    const col = i === 0 ? c.blue : c.light;
-    parts.push(mono(300, cy, w, { anchor: "end", color: col }),
-      rect(330, cy - 15, len, 30, col),
-      mono(350 + len, cy, `${k}  ${(k / n).toFixed(2)}`, { color: c.gray }));
+    parts.push(mono(300, cy, w, { anchor: "end", color: c.light }),
+      rect(330, cy - 15, len, 30, c.light),
+      mono(350 + len, cy, step >= 1 ? `${Math.round((k / n) * 100)} %` : String(k), { color: c.gray }));
   });
-  parts.push(d.label(330, 0, `… and ${all.length - 10} more words, 104 in all`, { size: 32, color: c.gray, centerY: 506 }));
-  if (step >= 1) parts.push(
-    d.label(840, 0, "a model without context writes", { size: 32, color: c.gray, anchor: "middle", centerY: 600 }),
-    mono(840, 672, "the is the cow in the hen the …", { size: 48, anchor: "middle" }));
+  parts.push(d.label(330, 0, `… and ${all.length - 10} more words, ${n} in all`, { size: 32, color: c.gray, centerY: 506 }));
+  if (step >= 2) parts.push(
+    d.label(560, 0, "drawn at random", { size: 32, color: c.gray, anchor: "end", centerY: 600 }),
+    mono(600, 600, "the is the cow in the hen the …", { size: 48 }));
+  if (step >= 3) parts.push(
+    d.label(560, 0, "always the most likely", { size: 32, color: c.gray, anchor: "end", centerY: 680 }),
+    mono(600, 680, "the the the the the the …", { size: 48, color: c.yellow }));
   return d.svg(1680, 720, ...parts);
 }
 function showUnigram(slide, step) { put("fig-unigram", figUnigram(step)); }
@@ -181,7 +216,7 @@ function figPairs() {
     });
   });
   parts.push(
-    d.formula(840, 0, "P(next | eats) = count(eats, next) / count(eats, any)", { size: 32, anchor: "middle", centerY: 560, color: c.light }),
+    d.formula(840, 0, "P(next | eats) = count(eats, next) / count(eats)", { size: 32, anchor: "middle", centerY: 560, color: c.light }),
     d.formula(840, 0, "P(grass | eats) = 2 / 3", { size: 48, anchor: "middle", centerY: 640 }));
   return d.svg(1680, 700, ...parts);
 }
@@ -220,7 +255,7 @@ function figBags() {
 // The written tokens run along the top in mono 48, the newest in yellow.
 // Below them the bag of the last word: bars from 400, a probability of 1 is
 // 1000 wide; the card drawn in yellow. At most 8 rows, from 300 every 52.
-const WALK = ["<s>", "the", "sheep", "gives", "milk", "</s>"];
+const WALK = ["<s>", "the", "milk", "is", "green", "</s>"];
 function bagRows(word) {
   const bag = BAGS[word], n = total(bag);
   if (bag.length <= 8) return bag.map(([w, k]) => [w, k, n]);
@@ -268,7 +303,7 @@ function figKinds() {
   const kinds = [
     ["copied from the corpus", ["the hen lays eggs", "the farmer milks the cow"]],
     ["new and plausible", ["the bee lives in the barn", "the hen eats grass"]],
-    ["new, fluent and false", ["the sheep gives milk", "the cow is sweet"]],
+    ["new, fluent and false", ["the milk is green", "the farmer milks the hen"]],
     ["it runs on", ["the cow gives milk is green", "the farmer sells the bee is small"]],
   ];
   const parts = [];
@@ -285,7 +320,8 @@ function figKinds() {
 /* ------------------------------------------------------------------ */
 // 14 rows from 110 every 42 (last at 656). Bars from 260, a probability of
 // 0.26 is about 1030 wide (4000 per unit). The counted distribution stays as
-// a dark outline behind the bars of another temperature.
+// a white outline on top of the bars of another temperature, so it shows
+// where a bar has grown beyond it.
 const TEMPS = [1, 0.5, 2];
 function figTemp(step) {
   const c = C();
@@ -298,10 +334,10 @@ function figTemp(step) {
   bag.forEach(([word], i) => {
     const cy = 110 + i * 42, q = w[i] / z;
     const len = Math.round(q * 4000), base = Math.round(p[i] * 4000);
-    parts.push(mono(230, cy, word, { anchor: "end", color: c.light }));
-    if (step > 0) parts.push(rect(260, cy - 15, base, 30, "none", { stroke: c.dark, width: 2 }));
-    parts.push(rect(260, cy - 15, len, 30, c.blue, { opacity: 0.85 }),
-      mono(280 + Math.max(len, base), cy, `${Math.round(q * 100)} %`, { color: c.gray }));
+    parts.push(mono(230, cy, word, { anchor: "end", color: c.light }),
+      rect(260, cy - 15, len, 30, c.blue, { opacity: 0.85 }));
+    if (step > 0) parts.push(rect(260, cy - 15, base, 30, "none", { stroke: c.white, width: 2 }));
+    parts.push(mono(280 + Math.max(len, base), cy, `${Math.round(q * 100)} %`, { color: c.gray }));
   });
   parts.push(d.formula(1640, 0, "p^{1/T}", { size: 48, anchor: "end", centerY: 380 }),
     d.label(1640, 0, "then divided\nby the sum", { size: 32, color: c.gray, anchor: "end", centerY: 470 }));
@@ -331,6 +367,44 @@ function figCircle() {
     d.label(590, 0, "5 of 5", { size: 32, color: c.gray, anchor: "end", centerY: 190 }),
     mono(840, 690, "the cow sleeps in the cow sleeps in the cow …", { anchor: "middle", color: c.light }));
 }
+
+/* ------------------------------------------------------------------ */
+/* a penalty for repeating: the bag "the" after "the cow sleeps in the" */
+/* ------------------------------------------------------------------ */
+// A simplified picture: every word already in the text has its count
+// divided by 1.3 before the model takes the top word. Five rows from 250
+// every 56; bars from 400, 120 per count. Step 1 shrinks "cow" and leaves
+// its counted bar as a white outline; step 2 shows both written sentences.
+const PENALTY = 1.3;
+function figRepeat(step) {
+  const c = C();
+  const text = ["the", "cow", "sleeps", "in", "the"];
+  const rows = BAGS.the.slice(0, 5);
+  const score = (w, k) => (step >= 1 && text.includes(w) ? k / PENALTY : k);
+  const best = rows.reduce((b, [w, k]) => (score(w, k) > score(b[0], b[1]) ? [w, k] : b));
+  const parts = [
+    d.label(40, 0, "written so far", { size: 32, color: c.gray, centerY: 60 }),
+    mono(400, 60, text.join(" "), { size: 48, color: c.blue }),
+    d.label(40, 0, "bag", { size: 32, color: c.gray, centerY: 160 }),
+    mono(110, 160, "the", { color: c.blue }),
+    d.label(220, 0, "at temperature 0 the top word wins", { size: 32, color: c.gray, centerY: 160 }),
+  ];
+  rows.forEach(([w, k], i) => {
+    const cy = 250 + i * 56, s = score(w, k);
+    const len = Math.round(s * 120), base = k * 120;
+    const col = w === best[0] ? c.yellow : c.light;
+    parts.push(mono(370, cy, w, { anchor: "end", color: col }), rect(400, cy - 15, len, 30, col));
+    if (s !== k) parts.push(rect(400, cy - 15, base, 30, "none", { stroke: c.white, width: 2 }));
+    parts.push(mono(420 + base, cy, s !== k ? `${k} ÷ ${PENALTY} = ${s.toFixed(1)}` : String(k), { color: c.gray }));
+  });
+  if (step >= 2) parts.push(
+    d.label(370, 0, "without penalty", { size: 32, color: c.gray, anchor: "end", centerY: 590 }),
+    mono(400, 590, "the cow sleeps in the cow sleeps in the …", { color: c.light }),
+    d.label(370, 0, "with penalty", { size: 32, color: c.gray, anchor: "end", centerY: 660 }),
+    mono(400, 660, "the cow sleeps in the hen lays eggs"));
+  return d.svg(1680, 700, ...parts);
+}
+function showRepeat(slide, step) { put("fig-repeat", figRepeat(step)); }
 
 /* ------------------------------------------------------------------ */
 /* two words of context                                                */
@@ -386,15 +460,15 @@ function showCopy(slide, step) { put("fig-copy", figCopy(step)); }
 /* ------------------------------------------------------------------ */
 /* fluent and false: every pair of the sentence was counted            */
 /* ------------------------------------------------------------------ */
-// "the sheep gives milk" in mono 80, 20 characters of 48 = 960, from 360.
+// "the milk is green" in mono 80, 17 characters of 48 = 816, from 432.
 // Each pair gets a pink line under its two words and the sentence it was
-// counted in; words start at characters 0, 4, 10 and 16.
+// counted in; words start at characters 0, 4, 9 and 12.
 function figFalse() {
   const c = C();
-  const x0 = 360, ch = 48;
+  const x0 = 432, ch = 48;
   const at = (k) => x0 + k * ch;
-  const pairs = [[0, 9, "the sheep gives wool"], [4, 15, "the sheep gives wool"], [10, 20, "the cow gives milk"]];
-  const parts = [mono(x0, 110, "the sheep gives milk", { size: 80 })];
+  const pairs = [[0, 8, "the milk is white"], [4, 11, "the milk is white"], [9, 17, "the grass is green"]];
+  const parts = [mono(x0, 110, "the milk is green", { size: 80 })];
   pairs.forEach(([a, b, from], i) => {
     const y = 220 + i * 130;
     parts.push(d.line(at(a), y, at(b), y, { color: c.blue, width: 4 }),
@@ -496,14 +570,15 @@ function figCompare() {
 /* ------------------------------------------------------------------ */
 /* draw the still figures once, on load                                */
 /* ------------------------------------------------------------------ */
-[["fig-corpus", figCorpus], ["fig-tokens", figTokens], ["fig-pairs", figPairs], ["fig-bags", figBags],
+[["fig-count", figCount], ["fig-corpus", figCorpus], ["fig-tokens", figTokens], ["fig-pairs", figPairs], ["fig-bags", figBags],
  ["fig-kinds", figKinds], ["fig-circle", figCircle], ["fig-tri", figTri], ["fig-false", figFalse],
  ["fig-zero", figZero], ["fig-compare", figCompare]].forEach(([id, fn]) => put(id, fn()));
 put("fig-guess", figGuess(0));
 put("fig-unigram", figUnigram(0));
 put("fig-walk", figWalk(0));
 put("fig-temp", figTemp(0));
+put("fig-repeat", figRepeat(0));
 put("fig-copy", figCopy(0));
 put("fig-grid", figGrid(0));
 
-Object.assign(window, { showGuess, showUnigram, showWalk, showTemp, showCopy, showGrid });
+Object.assign(window, { showGuess, showUnigram, showWalk, showTemp, showRepeat, showCopy, showGrid });

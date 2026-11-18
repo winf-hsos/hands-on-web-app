@@ -15,11 +15,10 @@
       mask-composite: intersect;
     }
     /* label left, value right: the size of the corpus */
-    .values { display: grid; grid-template-columns: auto auto; gap: 56px 100px; align-items: baseline; }
-    .values .label { font-size: var(--small); color: var(--gray-light); }
-    .values .value { font-size: var(--large); color: var(--white); font-family: var(--mono); }
-    .values .value.small { font-size: var(--normal); }
-    .values .about { font-family: var(--font); font-size: var(--small); color: var(--gray-light); }
+    /* our corpus next to GPT-3: label, then one column each */
+    .values { display: grid; grid-template-columns: auto auto auto; gap: 64px 120px; align-items: baseline; }
+    .values .label, .values .head, .values .unit { font-size: var(--small); color: var(--gray-light); }
+    .values .value { font-size: var(--large); line-height: 1.1; color: var(--white); font-family: var(--mono); }
     .footnote a { color: inherit; }
   </style>
 </head>
@@ -48,15 +47,22 @@
     <h2>what comes next?</h2>
     <div class="figure" id="fig-guess"></div>
     <span data-step="1"></span><span data-step="2"></span>
-    <aside class="notes">Bevor gezählt wird, seid ihr das Sprachmodell. Raten lassen, laut in den Raum. Erster Klick: Die meisten sagen „barn“, weil sie wissen, dass Hühner im Stall schlafen. Zweiter Klick: Ein Modell, das nur 22 Sätze über denselben Hof kennt, sagt „hive“, weil nach „in the“ in seinen Sätzen am häufigsten „hive“ kam, zweimal, und „barn“, „field“ und „nest“ nur je einmal. Ihr wisst etwas über die Welt; das Modell weiß nur, was in seinen Sätzen worauf folgte. Im Experiment spielt ihr das Spiel für acht Sätze und vergleicht euch mit diesem Modell.</aside>
+    <aside class="notes">Bevor gezählt wird, seid ihr das Sprachmodell. Raten lassen, laut in den Raum. Erster Klick: Die meisten sagen „barn“, weil sie wissen, dass Hühner im Stall schlafen. Zweiter Klick: Die Trainingsdaten, unsere 22 Sätze über denselben Hof, sagen „hive“, denn nach „in the“ kam dort am häufigsten „hive“, zweimal, und „barn“, „field“ und „nest“ nur je einmal. Ein Modell sagt voraus, was es in seinen Trainingsdaten gesehen hat. Ihr wisst etwas über die Welt; die Daten enthalten nur, was worauf folgte. Im Experiment spielt ihr das Spiel für acht Sätze und vergleicht euch mit den Daten.</aside>
   </section>
 
   <section class="slide">
     <h2>key idea</h2>
     <div class="content">
-      <div class="statement">a language model answers one question over and over: how likely is each <span class="b">possible next word</span>, given what came before?</div>
+      <div class="statement">a language model answers one question over and over: how likely is each <span class="b">possible next word</span>*, given what came before?</div>
     </div>
-    <aside class="notes">Das ist die ganze Frage. Alles Weitere im Experiment zeigt, wie weit man kommt, wenn man sie nur durch Zählen beantwortet, und wo das Zählen scheitert.</aside>
+    <div class="footnote">* strictly, the model predicts a token, which is a word or a piece of a word</div>
+    <aside class="notes">Das ist die ganze Frage. Genau genommen sagt das Modell kein Wort voraus, sondern ein Token, also ein Wort oder ein Stück davon; bei uns ist ein Token immer ein ganzes Wort. Alles Weitere im Experiment zeigt, wie weit man kommt, wenn man die Frage nur durch Zählen beantwortet, und wo das Zählen scheitert.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>the naive idea: count what followed</h2>
+    <div class="figure" id="fig-count"></div>
+    <aside class="notes">Die naheliegende Idee: Man schaut in den Trainingsdaten nach, was auf den Kontext folgte, und zählt. Nach „in the“ kam fünfmal etwas, davon zweimal „hive“, also ist die Wahrscheinlichkeit für „hive“ zwei Fünftel. Das ist eine bedingte Wahrscheinlichkeit: die Wahrscheinlichkeit des nächsten Worts unter der Bedingung, dass dieser Kontext davorsteht, geschätzt durch Zählen. Genau dieses Modell bauen wir im Experiment, und wir werden sehen, wie weit es trägt.</aside>
   </section>
 
   <!-- ==================== 2 · the training data ==================== -->
@@ -78,13 +84,19 @@
     <h2>how large is the corpus?</h2>
     <div class="content">
       <div class="values">
-        <div class="label">words, every occurrence counted</div><div class="value" data-step="1">104</div>
-        <div class="label">different words: the vocabulary</div><div class="value" data-step="1">33</div>
-        <div class="label">tokens <span class="keep-case">GPT-3</span> was trained on</div><div class="value small" data-step="2"><span class="about">about </span>300,000,000,000</div>
+        <div></div>
+        <div class="head" data-step="1">our corpus</div>
+        <div class="head keep-case" data-step="2">GPT-3</div>
+        <div class="label">training data</div>
+        <div data-step="1"><div class="value">104</div><div class="unit">words</div></div>
+        <div data-step="2"><div class="value">300,000,000,000</div><div class="unit">tokens, about 300 billion</div></div>
+        <div class="label">vocabulary</div>
+        <div data-step="1"><div class="value">33</div><div class="unit">different words</div></div>
+        <div data-step="2"><div class="value">50,257</div><div class="unit">different tokens</div></div>
       </div>
     </div>
-    <div class="footnote" data-step="2">brown et al. (2020): <a href="https://arxiv.org/abs/2005.14165" target="_blank" rel="noopener">language models are few-shot learners</a></div>
-    <aside class="notes">Erst schätzen lassen, dann zählen. Erster Klick: Der Korpus hat 104 Wörter, Anfang und Ende nicht mitgezählt, und 33 verschiedene Wörter; diese Menge heißt Vokabular. Zweiter Klick: GPT-3 wurde auf etwa 300 Milliarden Tokens trainiert, rund drei Milliarden Mal so viel wie unser Korpus, und heutige Modelle auf mehreren Billionen.</aside>
+    <div class="footnote" data-step="2">brown et al. (2020): <a href="https://arxiv.org/abs/2005.14165" target="_blank" rel="noopener">language models are few-shot learners</a>; the vocabulary is that of <span class="keep-case">GPT-2</span></div>
+    <aside class="notes">Erst schätzen lassen, dann zählen. Erster Klick: Der Korpus hat 104 Wörter, Anfang und Ende nicht mitgezählt, und 33 verschiedene Wörter; diese Menge heißt Vokabular. Zweiter Klick: GPT-3 wurde auf etwa 300 Milliarden Tokens trainiert, rund drei Milliarden Mal so viel wie unser Korpus, und heutige Modelle auf mehreren Billionen. Sein Vokabular hat 50.257 verschiedene Tokens, darunter ganze Wörter, Wortstücke und Satzzeichen, also rund 1.500 Mal so viele wie unseres.</aside>
   </section>
 
   <!-- ==================== 3 · counting pairs ==================== -->
@@ -93,8 +105,8 @@
   <section class="slide" data-on-show="showUnigram" data-on-step="showUnigram">
     <h2>no context: only how often</h2>
     <div class="figure" id="fig-unigram"></div>
-    <span data-step="1"></span>
-    <aside class="notes">Das einfachste Modell ignoriert alles, was vorher kam, und kennt nur, wie oft jedes Wort vorkommt. Teilt man jede Zahl durch 104, wird sie zur Wahrscheinlichkeit: „the“ hat 31 von 104, also 0,30. Erst fragen, was ein Modell schreibt, das jedes Wort nur aus dieser Verteilung zieht. Klick: Die richtigen Wörter im richtigen Verhältnis, aber in keiner Ordnung, und es hört nie auf, weil es ohne Kontext auch kein Satzende vorhersagen kann.</aside>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span>
+    <aside class="notes">Das einfachste Modell ignoriert alles, was vorher kam, und kennt nur, wie oft jedes Wort vorkommt: „the“ 31-mal, „is“ 6-mal und so weiter. Erster Klick: Teilt man jede Zahl durch 104, wird sie zur Wahrscheinlichkeit, „the“ hat 30 Prozent. Erst fragen, was ein Modell schreibt, das jedes Wort aus dieser Verteilung zieht. Zweiter Klick: die richtigen Wörter im richtigen Verhältnis, aber in keiner Ordnung, und es hört nie auf, weil es ohne Kontext auch kein Satzende vorhersagen kann. Fragen, was passiert, wenn es stattdessen immer das wahrscheinlichste Wort nimmt. Dritter Klick: „the the the“ ohne Ende. Deshalb zieht ein Sprachmodell, statt immer das wahrscheinlichste Wort zu nehmen; darauf kommen wir beim Schreiben zurück.</aside>
   </section>
 
   <section class="slide">
@@ -124,7 +136,7 @@
     <h2>writing is drawing, one word at a time</h2>
     <div class="figure" id="fig-walk"></div>
     <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span><span data-step="4"></span><span data-step="5"></span>
-    <aside class="notes">Ein Sprachmodell nimmt nicht immer das wahrscheinlichste Wort, sonst schriebe es jedes Mal denselben Text. Es zieht das nächste Wort zufällig, jedes mit seiner eigenen Wahrscheinlichkeit, und genau das macht das Ziehen einer Karte aus dem Beutel. Wir beginnen beim Anfangszeichen: Nach dem Anfang kommt immer „the“. Erster Klick: Aus dem Beutel „the“ ziehen wir „sheep“, drei von 31 Karten. Zweiter Klick: Nach „sheep“ kommen „gives“, „eats“ und „sleeps“ je zu einem Drittel; wir ziehen „gives“. Dritter Klick: Nach „gives“ ziehen wir „milk“. Vierter Klick: Nach „milk“ kommt in zwei von drei Fällen das Satzende. Fünfter Klick: Fertig ist „the sheep gives milk“, ein neuer Satz, flüssig und falsch.</aside>
+    <aside class="notes">Ein Sprachmodell nimmt nicht immer das wahrscheinlichste Wort, sonst schriebe es jedes Mal denselben Text. Es zieht das nächste Wort zufällig, jedes mit seiner eigenen Wahrscheinlichkeit, und genau das macht das Ziehen einer Karte aus dem Beutel. Wir beginnen beim Anfangszeichen: Nach dem Anfang kommt immer „the“. Erster Klick: Aus dem Beutel „the“ ziehen wir „milk“, zwei von 31 Karten. Zweiter Klick: Nach „milk“ endet der Satz in zwei von drei Fällen, aber wir ziehen „is“. Dritter Klick: Nach „is“ kommen sechs Wörter je einmal; wir ziehen „green“. Vierter Klick: Nach „green“ kommt immer das Satzende. Fünfter Klick: Fertig ist „the milk is green“, ein neuer Satz, flüssig und falsch.</aside>
   </section>
 
   <section class="slide">
@@ -137,7 +149,7 @@
     <h2>temperature</h2>
     <div class="figure" id="fig-temp"></div>
     <span data-step="1"></span><span data-step="2"></span>
-    <aside class="notes">Echte Sprachmodelle haben eine Einstellung namens Temperatur, die regelt, wie abenteuerlich sie schreiben. Jede Wahrscheinlichkeit wird mit 1 durch T potenziert, danach bringt man die Summe wieder auf 1. Zu sehen ist der Beutel „the“ bei Temperatur 1, also so, wie gezählt. Erst fragen, was bei 0,5 passiert. Erster Klick: Die häufigen Wörter gewinnen, die seltenen verlieren; „cow“ steigt von 16 auf 26 Prozent, „barn“ fällt von 3 auf 1. Zweiter Klick: Bei 2 wird die Verteilung flacher, seltene Wörter kommen öfter, und der Text wird abwechslungsreicher und öfter Unsinn. Die grauen Umrisse zeigen jeweils die gezählte Verteilung.</aside>
+    <aside class="notes">Echte Sprachmodelle haben eine Einstellung namens Temperatur, die regelt, wie abenteuerlich sie schreiben. Jede Wahrscheinlichkeit wird mit 1 durch T potenziert, danach bringt man die Summe wieder auf 1. Zu sehen ist der Beutel „the“ bei Temperatur 1, also so, wie gezählt. Erst fragen, was bei 0,5 passiert. Erster Klick: Die häufigen Wörter gewinnen, die seltenen verlieren; „cow“ steigt von 16 auf 26 Prozent, „barn“ fällt von 3 auf 1. Zweiter Klick: Bei 2 wird die Verteilung flacher, seltene Wörter kommen öfter, und der Text wird abwechslungsreicher und öfter Unsinn. Die weißen Umrisse zeigen jeweils die gezählte Verteilung, so sieht man, wo ein Balken gewachsen oder geschrumpft ist.</aside>
   </section>
 
   <section class="slide">
@@ -146,13 +158,21 @@
     <aside class="notes">Bei Temperatur 0 nimmt das Modell immer das häufigste Wort: nach „the“ immer „cow“, nach „in“ immer „the“, nach „sleeps“ immer „in“. Nach „cow“ ist es ein Unentschieden aus fünf Wörtern, und landet es bei „sleeps“, läuft es im Kreis, bis der Demonstrator abbricht. Echte Modelle neigen bei niedriger Temperatur ebenfalls dazu, sich zu wiederholen.</aside>
   </section>
 
+  <section class="slide" data-on-show="showRepeat" data-on-step="showRepeat">
+    <h2>a penalty for repeating</h2>
+    <div class="figure" id="fig-repeat"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <div class="footnote">simplified: real models lower the score of every token in the recent text; in <span class="keep-case">LM Studio</span> the setting is called repeat penalty, and 1 switches it off</div>
+    <aside class="notes">Gegen das Kreisen haben echte Modelle eine Wiederholungsstrafe, in LM Studio heißt sie „Repeat Penalty“. Wir sind wieder bei Temperatur 0 und haben „the cow sleeps in the“ geschrieben; im Beutel „the“ gewinnt „cow“ mit 5. Erster Klick: Jedes Wort, das schon im Text steht, zählt weniger, hier geteilt durch 1,3. Aus 5 wird 3,8, und „hen“ mit 4 gewinnt. Zweiter Klick: Ohne Strafe läuft das Modell im Kreis, mit Strafe schreibt es weiter und kommt zu einem Ende. Sinnvoll ist das, weil ein Modell sonst gerade bei niedriger Temperatur dieselben Wörter und Sätze immer wieder schreibt. Zu hoch gesetzt, meidet es aber auch Wörter, die sich wiederholen müssen, etwa „the“, und der Text wird holprig. Das Bild ist vereinfacht: Echte Modelle senken den Wert jedes Tokens aus dem letzten Stück Text, bevor sie die Wahrscheinlichkeiten ausrechnen; 1 schaltet die Strafe aus.</aside>
+  </section>
+
   <!-- ==================== 5 · more context ==================== -->
   <section class="slide part" data-part="more context"></section>
 
   <section class="slide">
     <h2>two words of context</h2>
     <div class="figure" id="fig-tri"></div>
-    <aside class="notes">Ein Trigramm nimmt die beiden Wörter davor als Kontext. Nach „gives“ allein kommen „milk“ und „wool“; nach „cow gives“ bleibt nur „milk“, also kann das Modell „the sheep gives milk“ nicht mehr schreiben. Aber nach „in the“ kommen noch „hive“, „barn“, „field“ und „nest“: Zwei Wörter sagen nicht, wer da schläft, und „the cow sleeps in the hive“ bleibt möglich.</aside>
+    <aside class="notes">Ein Trigramm nimmt die beiden Wörter davor als Kontext. Nach „gives“ allein kommen „milk“ und „wool“; nach „cow gives“ bleibt nur „milk“, das Modell schreibt also genau das, was im Korpus auf „cow gives“ folgte. Ebenso folgt auf „milk is“ nur „white“, und „the milk is green“ ist nicht mehr möglich. Aber nach „in the“ kommen noch „hive“, „barn“, „field“ und „nest“: Zwei Wörter sagen nicht, wer da schläft, und „the cow sleeps in the hive“ bleibt möglich.</aside>
   </section>
 
   <section class="slide" data-on-show="showCopy" data-on-step="showCopy">
@@ -176,7 +196,7 @@
   <section class="slide">
     <h2>fluent and false</h2>
     <div class="figure" id="fig-false"></div>
-    <aside class="notes">„The sheep gives milk“ besteht nur aus Paaren, die im Korpus vorkommen: „the sheep“ und „sheep gives“ aus dem Satz über die Wolle, „gives milk“ aus dem Satz über die Kuh. Das Modell findet daran nichts Falsches, denn es hat nie eine Tatsache geprüft, es kennt nur Nachbarschaften von Wörtern. Schreibt ein echtes Modell eine flüssige, falsche Aussage, nennt man das Halluzination.</aside>
+    <aside class="notes">„The milk is green“ besteht nur aus Paaren, die im Korpus vorkommen: „the milk“ und „milk is“ aus dem Satz über die weiße Milch, „is green“ aus dem Satz über das Gras. Das Modell findet daran nichts Falsches, denn es hat nie eine Tatsache geprüft, es kennt nur Nachbarschaften von Wörtern. Schreibt ein echtes Modell eine flüssige, falsche Aussage, nennt man das Halluzination.</aside>
   </section>
 
   <section class="slide">
@@ -203,15 +223,15 @@
 
   <section class="slide">
     <img class="photo fade" src="img/closing.jpg" alt="" style="height: 80%; top: 108px">
-    <div class="photo-text"><div>a table of counts<br>stays almost empty,<br>however much text<br>you put into it.</div></div>
+    <div class="photo-text"><div><span class="keep-case">LLMs</span> compute the<br>same probabilities,<br>but in a completely<br>different way.</div></div>
     <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
-    <aside class="notes">Mehr Text füllt mehr Zellen, aber die leeren wachsen viel schneller; beim Buch „Alice im Wunderland“ im letzten Schritt des Experiments seht ihr das selbst. Deshalb zählen echte Modelle nicht, sondern lernen, welche Wörter einander ähneln, und genau das bleibt die Grundlage: die Frage nach dem nächsten Wort, beantwortet als Verteilung, aus der gezogen wird.</aside>
+    <aside class="notes">Die Idee trägt: Auch ein großes Sprachmodell berechnet bedingte Wahrscheinlichkeiten, die Wahrscheinlichkeit jedes möglichen nächsten Tokens unter der Bedingung des Textes davor, und schreibt, indem es daraus zieht. Wie es sie berechnet, ist aber etwas völlig anderes als unser Zählen. Eine Tabelle mit Zählungen bliebe fast leer, wie viel Text man auch hineinsteckt; beim Buch „Alice im Wunderland“ im letzten Schritt des Experiments seht ihr das selbst. Deshalb zählt ein großes Sprachmodell nicht, sondern lernt in einem neuronalen Netz, welche Tokens einander ähneln, und rechnet die Verteilung für einen Kontext aus, den es so nie gesehen hat.</aside>
   </section>
 
 </div>
 <!-- order matters: deck.js before stagekit.js -->
 <script src="../../stagekit/draw.js?v=0.8.0-4c35e9"></script>
-<script src="deck.js?v=20261118a"></script>
+<script src="deck.js?v=20261118b"></script>
 <script src="../../stagekit/stagekit.js?v=0.8.0-4c35e9"></script>
 </body>
 </html>
