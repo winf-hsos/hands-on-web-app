@@ -14,7 +14,7 @@ relations:
 modules: [aai]
 areas: [ai]
 questions: [mm-001, mm-002, mm-003, mm-004, mm-005, mm-006, mm-007, mm-008, mm-009, mm-010]
-status: draft
+status: published
 updated: 2026-11-19
 ---
 

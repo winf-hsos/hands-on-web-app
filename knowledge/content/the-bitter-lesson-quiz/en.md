@@ -14,7 +14,7 @@ relations:
 modules: [aai]
 areas: [ai]
 questions: [bl-001, bl-002, bl-003, bl-004, bl-005, bl-006, bl-007, bl-008]
-status: draft
+status: published
 updated: 2026-11-19
 ---
 

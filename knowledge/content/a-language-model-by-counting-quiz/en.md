@@ -14,7 +14,7 @@ relations:
 modules: [aai]
 areas: [ai]
 questions: [wd-001, wd-002, wd-003, wd-004, wd-005, wd-006, wd-007, wd-008, wd-009, wd-010]
-status: draft
+status: published
 updated: 2026-11-19
 ---
 
