@@ -22,7 +22,7 @@ relations:
 modules: [aai]
 areas: [ai]
 status: published
-updated: 2026-11-05
+updated: 2026-11-19
 ---
 
 A language model answers one question over and over: given what came before,
@@ -526,6 +526,8 @@ rarely seen. Its context is not two words but thousands of tokens, and its
 parameters are not counts but numbers adjusted during training until its
 predictions on trillions of tokens are as good as possible, as
 [[next-token-prediction]] describes.
+
+![Quiz: Word distributions](item:a-language-model-by-counting-quiz)
 
 ## Extensions
 

@@ -25,7 +25,7 @@ relations:
 modules: [aai]
 areas: [ai]
 status: published
-updated: 2026-11-04
+updated: 2026-11-19
 ---
 
 Rich Sutton, one of the founders of reinforcement learning and winner of the
@@ -90,3 +90,5 @@ In an earlier post, [The Bitter Lesson versus The Garbage
 Can](https://www.oneusefulthing.org/p/the-bitter-lesson-versus-the-garbage),
 Mollick asks what the lesson means for companies whose processes are
 anything but tidy.
+
+![Quiz: The Bitter Lesson](item:the-bitter-lesson-quiz)

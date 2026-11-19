@@ -24,7 +24,7 @@ relations:
 modules: [aai]
 areas: [ai]
 status: published
-updated: 2026-11-05
+updated: 2026-11-19
 ---
 
 Type "cheap flights to Lisbon" into a search engine, and it shows you a page
@@ -515,6 +515,8 @@ language model, the first thing that happens to each token is that it is
 replaced by a list of numbers like these, with everything after that working
 on numbers, as [[next-token-prediction]] describes and as you saw in Steps 2
 and 3.
+
+![Quiz: A map of meaning](item:a-map-of-meaning-quiz)
 
 ## Extensions
 

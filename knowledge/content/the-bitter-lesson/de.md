@@ -12,7 +12,7 @@ objectives:
     - "an Schach, Go, Spracherkennung oder Bilderkennung erklären, warum eingebautes menschliches Wissen zuerst geholfen und den Fortschritt später gebremst hat"
     - "sagen, was aus der Lektion für Sprachmodelle und Agenten folgt und wo sie an Grenzen stoßen könnte"
 translation_of: en
-based_on: 2026-11-04
+based_on: 2026-11-19
 ---
 
 Rich Sutton, einer der Begründer des Reinforcement Learning und Träger des
@@ -79,3 +79,5 @@ In einem früheren Beitrag, [The Bitter Lesson versus The Garbage
 Can](https://www.oneusefulthing.org/p/the-bitter-lesson-versus-the-garbage),
 fragt Mollick, was die Lektion für Unternehmen bedeutet, deren Abläufe alles
 andere als aufgeräumt sind.
+
+![Quiz: The Bitter Lesson](item:the-bitter-lesson-quiz)
