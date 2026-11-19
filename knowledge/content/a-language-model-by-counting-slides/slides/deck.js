@@ -66,6 +66,28 @@ const BAGS = (() => {
 const total = (bag) => bag.reduce((s, [, n]) => s + n, 0);
 
 /* ------------------------------------------------------------------ */
+/* the question behind every language model: P(next | context)         */
+/* ------------------------------------------------------------------ */
+// "P(next | context)" in mono 80 is 17 characters of 48 = 816, from 432;
+// "next" is centred on character 4 (624), "context" on 12.5 (1032). The
+// next token is yellow, the context pink, as in the rest of the deck.
+function figFormula(step) {
+  const c = C();
+  const parts = [
+    rich(840, 150, [["P(", c.white], ["next", c.yellow], [" | ", c.gray], ["context", c.blue], [")", c.white]],
+      { size: 80, mono: true, anchor: "middle", keepCase: true }),
+    d.line(528, 240, 720, 240, { color: c.yellow, width: 4 }),
+    d.line(864, 240, 1200, 240, { color: c.blue, width: 4 }),
+    d.label(624, 0, "the next token", { size: 32, color: c.gray, anchor: "middle", centerY: 290 }),
+    d.label(1032, 0, "everything before it", { size: 32, color: c.gray, anchor: "middle", centerY: 290 }),
+  ];
+  if (step >= 1) parts.push(
+    d.label(840, 0, "a large language model computes exactly this,\nfor every possible next token, over and over", { size: 48, anchor: "middle", centerY: 490 }));
+  return d.svg(1680, 600, ...parts);
+}
+function showFormula(slide, step) { put("fig-formula", figFormula(step)); }
+
+/* ------------------------------------------------------------------ */
 /* what comes next? the guess of the room and of a counting model      */
 /* ------------------------------------------------------------------ */
 // "the hen sleeps in the " is 22 characters in mono 80, 22 x 48 = 1056,
@@ -118,7 +140,7 @@ function figCount() {
   });
   parts.push(
     d.formula(840, 0, "P(next | context) = count(context, next) / count(context)", { size: 48, anchor: "middle", centerY: 470 }),
-    d.label(840, 0, "a conditional probability, estimated by counting", { size: 32, color: c.gray, anchor: "middle", centerY: 560 }));
+    d.label(840, 0, "the same conditional probability, estimated by counting", { size: 32, color: c.gray, anchor: "middle", centerY: 560 }));
   return d.svg(1680, 620, ...parts);
 }
 
@@ -573,6 +595,7 @@ function figCompare() {
 [["fig-count", figCount], ["fig-corpus", figCorpus], ["fig-tokens", figTokens], ["fig-pairs", figPairs], ["fig-bags", figBags],
  ["fig-kinds", figKinds], ["fig-circle", figCircle], ["fig-tri", figTri], ["fig-false", figFalse],
  ["fig-zero", figZero], ["fig-compare", figCompare]].forEach(([id, fn]) => put(id, fn()));
+put("fig-formula", figFormula(0));
 put("fig-guess", figGuess(0));
 put("fig-unigram", figUnigram(0));
 put("fig-walk", figWalk(0));
@@ -581,4 +604,4 @@ put("fig-repeat", figRepeat(0));
 put("fig-copy", figCopy(0));
 put("fig-grid", figGrid(0));
 
-Object.assign(window, { showGuess, showUnigram, showWalk, showTemp, showRepeat, showCopy, showGrid });
+Object.assign(window, { showFormula, showGuess, showUnigram, showWalk, showTemp, showRepeat, showCopy, showGrid });

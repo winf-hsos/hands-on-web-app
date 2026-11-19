@@ -40,6 +40,14 @@
     <aside class="notes">Ein Sprachmodell beantwortet immer wieder dieselbe Frage: Welches Wort kommt als Nächstes, nach allem, was schon dasteht? Echte Modelle rechnen die Antwort mit einem neuronalen Netz aus, das auf Billionen Wörtern trainiert wurde. Die Frage selbst ist aber so einfach, dass man sie mit Bleistift, Wortkarten und ein paar Beuteln beantworten kann, und genau das machen wir heute, für 22 Sätze über einen Bauernhof. Es ist ein stark vereinfachtes Bild der Grundidee und nicht das, was in ChatGPT steckt; die Frage und die Art, Wort für Wort zu schreiben, sind aber dieselben, und mehrere Schwächen auch.</aside>
   </section>
 
+  <section class="slide" data-on-show="showFormula" data-on-step="showFormula">
+    <h2>the question behind every language model</h2>
+    <div class="figure" id="fig-formula"></div>
+    <span data-step="1"></span>
+    <div class="footnote">a token is a word or a piece of a word; in our corpus every token is a whole word</div>
+    <aside class="notes">Das ist eine bedingte Wahrscheinlichkeit, gelesen: die Wahrscheinlichkeit des nächsten Tokens, gegeben alles, was davorsteht. Ein Token ist ein Wort oder ein Stück davon; bei uns ist es immer ein ganzes Wort. Klick: Die Behauptung für heute lautet, dass ein großes Sprachmodell genau das berechnet, für jedes mögliche nächste Token, und zwar immer wieder, ein Token nach dem anderen. Wir bauen heute ein Modell, das dieselbe Wahrscheinlichkeit berechnet, nur durch Zählen, und sehen, wie weit es damit kommt.</aside>
+  </section>
+
   <!-- ==================== 1 · you first ==================== -->
   <section class="slide part" data-part="you first"></section>
 
@@ -51,18 +59,9 @@
   </section>
 
   <section class="slide">
-    <h2>key idea</h2>
-    <div class="content">
-      <div class="statement">a language model answers one question over and over: how likely is each <span class="b">possible next word</span>*, given what came before?</div>
-    </div>
-    <div class="footnote">* strictly, the model predicts a token, which is a word or a piece of a word</div>
-    <aside class="notes">Das ist die ganze Frage. Genau genommen sagt das Modell kein Wort voraus, sondern ein Token, also ein Wort oder ein Stück davon; bei uns ist ein Token immer ein ganzes Wort. Alles Weitere im Experiment zeigt, wie weit man kommt, wenn man die Frage nur durch Zählen beantwortet, und wo das Zählen scheitert.</aside>
-  </section>
-
-  <section class="slide">
     <h2>the naive idea: count what followed</h2>
     <div class="figure" id="fig-count"></div>
-    <aside class="notes">Die naheliegende Idee: Man schaut in den Trainingsdaten nach, was auf den Kontext folgte, und zählt. Nach „in the“ kam fünfmal etwas, davon zweimal „hive“, also ist die Wahrscheinlichkeit für „hive“ zwei Fünftel. Das ist eine bedingte Wahrscheinlichkeit: die Wahrscheinlichkeit des nächsten Worts unter der Bedingung, dass dieser Kontext davorsteht, geschätzt durch Zählen. Genau dieses Modell bauen wir im Experiment, und wir werden sehen, wie weit es trägt.</aside>
+    <aside class="notes">Jetzt passt es zusammen: Die Trainingsdaten haben gerade „hive“ gesagt, weil man darin nur nachzählen muss, was auf den Kontext folgte. Nach „in the“ kam fünfmal etwas, davon zweimal „hive“, also ist die Wahrscheinlichkeit für „hive“ zwei Fünftel. Das ist genau die bedingte Wahrscheinlichkeit vom Anfang, P von next gegeben context, nur geschätzt durch Zählen. Dieses Modell bauen wir im Experiment, und wir werden sehen, wie weit es trägt und wo es scheitert.</aside>
   </section>
 
   <!-- ==================== 2 · the training data ==================== -->
@@ -223,15 +222,15 @@
 
   <section class="slide">
     <img class="photo fade" src="img/closing.jpg" alt="" style="height: 80%; top: 108px">
-    <div class="photo-text"><div><span class="keep-case">LLMs</span> compute the<br>same probabilities,<br>but in a completely<br>different way.</div></div>
+    <div class="photo-text"><div><div class="mono keep-case" style="margin-bottom: 0.7em">P(<span class="y">next</span> <span class="gr">|</span> <span class="b">context</span>)</div><span class="keep-case">LLMs</span> compute it, too,<br>but in a completely<br>different way.</div></div>
     <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
-    <aside class="notes">Die Idee trägt: Auch ein großes Sprachmodell berechnet bedingte Wahrscheinlichkeiten, die Wahrscheinlichkeit jedes möglichen nächsten Tokens unter der Bedingung des Textes davor, und schreibt, indem es daraus zieht. Wie es sie berechnet, ist aber etwas völlig anderes als unser Zählen. Eine Tabelle mit Zählungen bliebe fast leer, wie viel Text man auch hineinsteckt; beim Buch „Alice im Wunderland“ im letzten Schritt des Experiments seht ihr das selbst. Deshalb zählt ein großes Sprachmodell nicht, sondern lernt in einem neuronalen Netz, welche Tokens einander ähneln, und rechnet die Verteilung für einen Kontext aus, den es so nie gesehen hat.</aside>
+    <aside class="notes">Zurück zur Formel vom Anfang. Die Idee trägt: Auch ein großes Sprachmodell berechnet bedingte Wahrscheinlichkeiten, die Wahrscheinlichkeit jedes möglichen nächsten Tokens unter der Bedingung des Textes davor, und schreibt, indem es daraus zieht. Wie es sie berechnet, ist aber etwas völlig anderes als unser Zählen. Eine Tabelle mit Zählungen bliebe fast leer, wie viel Text man auch hineinsteckt; beim Buch „Alice im Wunderland“ im letzten Schritt des Experiments seht ihr das selbst. Deshalb zählt ein großes Sprachmodell nicht, sondern lernt in einem neuronalen Netz, welche Tokens einander ähneln, und rechnet die Verteilung für einen Kontext aus, den es so nie gesehen hat.</aside>
   </section>
 
 </div>
 <!-- order matters: deck.js before stagekit.js -->
 <script src="../../stagekit/draw.js?v=0.8.0-4c35e9"></script>
-<script src="deck.js?v=20261118b"></script>
+<script src="deck.js?v=20261119a"></script>
 <script src="../../stagekit/stagekit.js?v=0.8.0-4c35e9"></script>
 </body>
 </html>
