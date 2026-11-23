@@ -88,7 +88,7 @@ function drawStream(slide, step) {
   put("fig-stream", d.svg(1680, 600, ...parts));
 }
 
-/* ---- cause one: no two clocks run alike --------------------------------------
+/* ---- problem one: no two clocks run alike --------------------------------------
  * Twelve time slots of the sender, 110 wide from x 240, with a tick under the
  * middle of each slot; below them the readings of a receiver whose clock runs
  * 8 % slow, so reading i lands at (i + 0.5) * 110 * 1.08. From the seventh
@@ -125,7 +125,7 @@ function drawStream(slide, step) {
   a.step(a.seq(...[4, 5, 6, 7, 8, 9].map((i) => a.show("r" + i, { dur: 400 }))));
 })();
 
-/* ---- cause two: the sensor needs time to look ---------------------------------
+/* ---- problem two: the sensor needs time to look ---------------------------------
  * Two panels on the same time scale, 2 units per ms. Left, symbols of 100 ms
  * (200 units) and a measuring window of 50 ms (100 units, yellow: the window
  * that is measuring now) inside one bright symbol. Right, symbols of 40 ms

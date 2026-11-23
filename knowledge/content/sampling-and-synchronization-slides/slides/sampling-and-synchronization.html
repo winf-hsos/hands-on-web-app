@@ -27,7 +27,7 @@
   <!-- ================= part 1: why fast breaks ================= -->
 
   <section class="slide part" data-part="why fast breaks">
-    <aside class="notes">Wir beginnen beim Orchester und landen bei zwei Ursachen, die beide auf dieselbe Frage hinauslaufen.</aside>
+    <aside class="notes">Wir beginnen beim Orchester und landen bei zwei Problemen, die beide auf dieselbe Frage hinauslaufen.</aside>
   </section>
 
   <section class="slide fullbleed">
@@ -46,14 +46,14 @@
   </section>
 
   <section class="slide has-punch">
-    <h2>cause one: no two clocks run alike</h2>
+    <h2>problem one: no two clocks run alike</h2>
     <div class="figure" id="fig-drift"></div>
     <div class="punch" data-step="2">the error per symbol is tiny, but it adds up until the receiver reads the neighbor.</div>
     <aside class="notes">Oben die Zeitschlitze des Senders, darunter die Messpunkte des Empfängers. Beide haben dieselbe Rate vereinbart, aber die Uhr des Empfängers läuft etwas langsamer, hier stark übertrieben mit acht Prozent, damit man es nach wenigen Symbolen sieht. Die ersten Punkte liegen fast in der Mitte ihres Schlitzes. Dann wandern sie mit jedem Symbol weiter nach rechts, bis sie im Nachbarschlitz landen; ab da liest der Empfänger das falsche Symbol, rot markiert. Der Fehler pro Symbol ist harmlos, seine Summe nicht. Und weil der Fehler mit der Zeit wächst, während der Schlitz mit der Rate schrumpft, hängt das Problem an der Geschwindigkeit.</aside>
   </section>
 
   <section class="slide has-punch" data-on-show="drawWindow" data-on-step="drawWindow">
-    <h2>cause two: the sensor needs time to look</h2>
+    <h2>problem two: the sensor needs time to look</h2>
     <div class="figure" id="fig-window"></div>
     <span data-step="1"></span><span data-step="2"></span>
     <div class="punch" data-step="2">there is no error message, just a number that matches no symbol.</div>
@@ -62,13 +62,13 @@
 
   <section class="slide">
     <div class="content">
-      <div class="statement">both causes ask one question:<br>when does the next symbol begin?</div>
+      <div class="statement">both problems ask one question:<br>when does the next symbol begin?</div>
       <div class="lines">
         <div data-step="1">a clock can tell the receiver,</div>
         <div data-step="2">or a change in the light can.</div>
       </div>
     </div>
-    <aside class="notes">Beide Ursachen sind Fassungen derselben Frage. Der Sender weiß, wann ein neues Symbol beginnt, denn er schaltet selbst um; der Empfänger sieht nur Licht. Es gibt zwei grundsätzlich verschiedene Antworten: Entweder sagt es ihm die Zeit, oder es sagt ihm der Wechsel. Beide haben ein Preisschild, und die nächsten zwei Teile lesen es vor.</aside>
+    <aside class="notes">Beide Probleme sind Fassungen derselben Frage. Der Sender weiß, wann ein neues Symbol beginnt, denn er schaltet selbst um; der Empfänger sieht nur Licht. Es gibt zwei grundsätzlich verschiedene Antworten: Entweder sagt es ihm die Zeit, oder es sagt ihm der Wechsel. Beide haben ein Preisschild, und die nächsten zwei Teile lesen es vor.</aside>
   </section>
 
   <!-- ================= part 2: a shared beat ================= -->
@@ -297,7 +297,7 @@
 </div>
 <script src="../../stagekit/draw.js?v=0.13.0-cf50bd"></script>
 <script src="../../stagekit/anim.js?v=0.13.0-cf50bd"></script>
-<script src="deck.js?v=10"></script>
+<script src="deck.js?v=11"></script>
 <script src="../../stagekit/stagekit.js?v=0.13.0-cf50bd"></script>
 </body>
 </html>

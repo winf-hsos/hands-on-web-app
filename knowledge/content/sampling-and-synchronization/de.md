@@ -85,7 +85,7 @@ ist. Der Fehler pro Symbol ist klein und harmlos, seine Summe ist es nicht.
 
 ## Der Sensor braucht Zeit zum Hinsehen
 
-Es gibt eine zweite Ursache, und sie liegt im Sensor. Ein Sensor liefert
+Es gibt ein zweites Problem, und es liegt im Sensor. Ein Sensor liefert
 keinen Augenblickswert, sondern sammelt Licht über ein Messfenster und meldet
 den Durchschnitt, seine **Integrationszeit**, die
 [[signal-and-noise|Signal und Rauschen]] als Mittel gegen unruhige Messwerte
@@ -102,7 +102,7 @@ lässt die Messwerte aber stärker streuen, was derselbe Tausch ist wie beim
 Rauschen, und so setzt die Integrationszeit der Länge eines Symbols eine
 Untergrenze.
 
-Beide Ursachen laufen auf dieselbe Frage hinaus, nämlich wann das nächste
+Beide Probleme laufen auf dieselbe Frage hinaus, nämlich wann das nächste
 Symbol beginnt. Eine Uhr kann es dem Empfänger sagen oder ein Wechsel im
 Licht, und der Rest dieser Lektion sieht sich beide Antworten und ihren Preis
 an.

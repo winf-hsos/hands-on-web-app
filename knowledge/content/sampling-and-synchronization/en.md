@@ -88,7 +88,7 @@ The error per symbol is small and harmless, while its sum is not.
 
 ## The sensor needs time to look
 
-There is a second cause, and it lies in the sensor. A sensor does not deliver
+There is a second problem, and it lies in the sensor. A sensor does not deliver
 an instantaneous value but collects light over a measuring window and reports
 the average, its **integration time**, which [[signal-and-noise]] introduced
 as a way of calming the readings. That works as long as the window fits
@@ -104,7 +104,7 @@ to the wrong symbol. A shorter window helps against the mixing but makes the
 readings scatter more, which is the same trade as with noise, so the
 integration time puts a lower limit on the length of a symbol.
 
-Both causes come down to the same question, namely when the next symbol
+Both problems come down to the same question, namely when the next symbol
 begins. A clock can tell the receiver, or a change in the light can, and the
 rest of this lesson looks at both answers and their price.
 
