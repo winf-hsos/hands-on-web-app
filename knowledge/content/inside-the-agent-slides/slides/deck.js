@@ -362,26 +362,6 @@ function showAgent(slide, step) {
   el("fig-tools").innerHTML = d.svg(W, H, ...parts);
 }
 
-// Skills: a list in the context, the whole file only when a task needs it.
-{
-  const parts = [
-    d.box(0, 0, 780, 760, "", { border: c.blue }),
-    d.label(30, 56, "context window", { size: 32, color: c.blue }),
-    card(30, 90, 720, 70, "instructions and goal", {}),
-    d.box(30, 180, 720, 170, "", { border: c.dark }),
-    d.label(54, 230, "list of skills, one line each:\nfood-bank: how to book a pickup\npricing: when to mark down", { size: 32, lineHeight: 1.4 }),
-    d.label(1000, 140, "skills/", { size: 48, mono: true, keepCase: true }),
-    d.label(1040, 220, "food-bank.md\npricing.md\nordering.md", { size: 32, mono: true, keepCase: true, lineHeight: 1.8 }),
-    d.g("load", d.arrow(1000, 210, 770, 470, { color: c.yellow }) +
-      d.box(30, 380, 720, 350, "", { border: c.yellow }) +
-      d.label(54, 430, "food-bank.md, the whole file:\n1. book before 21:00\n2. at most 15 kg\n3. no goods with a use-by date\n4. …", { size: 32, lineHeight: 1.4 }) +
-      d.label(1000, 560, "loaded only when a task\nneeds it, so the context\nstays small", { size: 32, color: c.yellow })),
-  ];
-  el("fig-skills").innerHTML = d.svg(W, H, ...parts);
-  const a = d.anim("fig-skills", { back: "play" });
-  a.step(a.show("load", { dur: 600 }));
-}
-
 // METR time horizon: task length (time a human expert needs) an agent finishes in half of the cases.
 {
   const ch = d.chart({

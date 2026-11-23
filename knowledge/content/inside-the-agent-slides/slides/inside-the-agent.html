@@ -15,7 +15,9 @@
 <body>
 <!-- For the students, shown after the game. It may reveal Friday: the hidden text, the approval and the replay. -->
 <div class="deck" data-title="Inside the Agent" data-subtitle="prof. dr. nicolas meseth"
-     data-parts='["the language model", "text as numbers", "training", "reasoning", "the agent", "be careful"]'>
+     data-parts='["the language model", "text as numbers", "training", "reasoning", "the agent", "be careful"]'
+     data-live-url="https://live.hsos.uber.space"
+     data-live-series="inside-the-agent">
 
   <section class="slide title"></section>
   <section class="slide agenda"></section>
@@ -42,7 +44,7 @@
     <h2>one token is drawn, appended, and the model starts again</h2>
     <div class="figure" id="aai-fig-loop"></div>
     <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span><span data-step="4"></span>
-    <aside class="notes">Das ist der ganze Kreislauf: Der Kontext geht ins Modell, das Modell berechnet die Wahrscheinlichkeiten, ein Programm zieht ein Token, und das Token wird an den Text gehängt. Dann beginnt alles von vorn mit dem etwas längeren Text: erst „food“, dann „bank“, dann der Punkt. Jede Ausgabe wird zur Eingabe; das nennt man autoregressiv. Jede Runde ist ein Durchgang durch das ganze Modell, deshalb misst man die Geschwindigkeit in Tokens pro Sekunde. Auch die Begründungen, die ihr am Beamer gelesen habt, sind so entstanden, Token für Token. Im letzten Schritt die Frage in den Raum geben und Vermutungen sammeln: Die Schleife endet, wenn das Modell ein besonderes End-Token zieht oder eine eingestellte Höchstlänge erreicht ist; dann bricht die Antwort auch mitten im Satz ab.</aside>
+    <aside class="notes">Das ist der ganze Kreislauf: Der Kontext geht ins Modell, das Modell berechnet die Wahrscheinlichkeiten, ein Programm zieht ein Token, und das Token wird an den Text gehängt. Dann beginnt alles von vorn mit dem etwas längeren Text: erst „food“, dann „bank“, dann der Punkt, und die kleine Liste über „probabilities“ zeigt jedes Mal die Wahrscheinlichkeiten für das nächste Token: nach „food“ liegt „bank“ weit vorn, nach „bank“ der Punkt. Jede Ausgabe wird zur Eingabe; das nennt man autoregressiv. Jede Runde ist ein Durchgang durch das ganze Modell, deshalb misst man die Geschwindigkeit in Tokens pro Sekunde. Auch die Begründungen, die ihr am Beamer gelesen habt, sind so entstanden, Token für Token. Im letzten Schritt die Frage in den Raum geben und Vermutungen sammeln: Die Schleife endet, wenn das Modell ein besonderes End-Token zieht oder eine eingestellte Höchstlänge erreicht ist; dann bricht die Antwort auch mitten im Satz ab.</aside>
   </section>
 
   <section class="slide" data-on-show="ntp_showTemp" data-on-step="ntp_showTemp">
@@ -178,11 +180,22 @@
   <!-- ============================================================ reasoning -->
   <section class="slide part" data-part="reasoning" data-subtitle="the model writes before it answers"></section>
 
+  <section class="slide poll" data-poll="yoghurt-price">
+    <div class="poll-q">yoghurt and milk cost 1.10 € together, and the milk costs 1.00 € more than the yoghurt. what does the yoghurt cost?</div>
+    <ol class="poll-opts">
+      <li data-correct>0.05 €</li>
+      <li>0.10 €</li>
+      <li>0.15 €</li>
+      <li>1.00 €</li>
+    </ol>
+    <aside class="notes">Abstimmen lassen, ohne Papier und ohne lange zu überlegen. Die meisten nehmen 10 Cent; dann kostete die Milch 1,10 Euro und beides zusammen 1,20 Euro. Richtig sind 5 Cent: Joghurt 0,05, Milch 1,05, zusammen 1,10 Euro. Noch nicht auflösen, die nächste Folie zeigt, wie ein Sprachmodell an die Aufgabe geht.</aside>
+  </section>
+
   <section class="slide" data-on-show="rs_showAnswer" data-on-step="rs_showAnswer">
     <h2>answer at once, or think first</h2>
     <div class="figure" id="aai-fig-answer"></div>
     <span data-step="1"></span>
-    <aside class="notes">Joghurt und Milch kosten zusammen 1,10 Euro, die Milch kostet einen Euro mehr als der Joghurt; was kostet der Joghurt? Oben das Modell, das die Antwort ins allernächste Token setzen muss: Es nimmt die naheliegende Zahl, 10 Cent, aber dann kostete die Milch 1,10 Euro und beides zusammen 1,20 Euro. Unten dasselbe Modell, dessen Ausgabe zuerst Gedanken sind und das auf 5 Cent kommt; der Pfeil zeigt, dass diese Gedanken wieder ins Modell zurückgehen, weil jedes neue Token aus allem Geschriebenen vorhergesagt wird. Beim Antworten liest es seine eigenen Notizen mit. Das heißt Reasoning, und unser gpt-6-luna ist ein solches Reasoning-Modell.</aside>
+    <aside class="notes">Dieselbe Aufgabe für ein Sprachmodell. Oben das Modell, das die Antwort ins allernächste Token setzen muss: Es nimmt die naheliegende Zahl, 10 Cent, aber dann kostete die Milch 1,10 Euro und beides zusammen 1,20 Euro. Unten dasselbe Modell, dessen Ausgabe zuerst Gedanken sind und das auf 5 Cent kommt; der Pfeil zeigt, dass diese Gedanken wieder ins Modell zurückgehen, weil jedes neue Token aus allem Geschriebenen vorhergesagt wird. Beim Antworten liest es seine eigenen Notizen mit. Das heißt Reasoning, und unser gpt-6-luna ist ein solches Reasoning-Modell.</aside>
   </section>
 
   <section class="slide" data-on-show="rs_showPaper" data-on-step="rs_showPaper">
@@ -249,12 +262,6 @@
     <h2>our night shift agent had eleven tools, and nothing else</h2>
     <div class="figure" id="fig-tools"></div>
     <aside class="notes">Das waren alle Werkzeuge unseres Agenten: drei zum Nachsehen (Regal, Hausregeln, Verkäufe), sechs zum Handeln (Preis senken, Tafel buchen und übergeben, der Kassiererin mitgeben, wegwerfen, bestellen) und zwei, um sich etwas zu merken und den Check-in zu beenden. Was nicht auf der Liste steht, kann er nicht tun; er kann zum Beispiel keine Mail schreiben und nichts bezahlen. Die Liste der Werkzeuge ist damit die wichtigste Stellschraube dafür, was ein Agent anrichten kann.</aside>
-  </section>
-
-  <section class="slide">
-    <h2>skills are instructions the agent loads when a task needs them</h2>
-    <div class="figure" id="fig-skills"></div>
-    <aside class="notes">Neben Werkzeugen haben heutige Agenten Skills: Anleitungen in Textdateien, wie man eine bestimmte Aufgabe erledigt. Im Kontext steht nur eine Zeile je Skill; braucht eine Aufgabe einen, lädt der Agent die ganze Datei, so bleibt der Kontext klein. Unser Agent hatte keine Skills, nur ein Werkzeug read_policy für die Hausregeln, im Grunde ein einziger kleiner Skill; die Folie zeigt, wie es mit Skills aussähe, mit den echten Regeln der Tafel aus dem Spiel. Ein Verbrauchsdatum tragen dort Hackfleisch, Sushi und Salat; Joghurt und Milch haben ein Mindesthaltbarkeitsdatum und hätten an die Tafel gehen dürfen. Wichtig ist das, weil die Agenten, mit denen ihr arbeiten werdet, Skills haben, und jeder Skill ist wieder Text, dem das Modell folgt. Ein Skill ist kein Code, sondern Text, und genau wie bei allem anderen im Kontext entscheidet das Modell, ob es ihm folgt.</aside>
   </section>
 
   <section class="slide" data-on-show="ag_showWhere" data-on-step="ag_showWhere">
@@ -346,8 +353,8 @@
 </div>
 <script src="../../stagekit/draw.js?v=0.13.0-cf50bd"></script>
 <script src="../../stagekit/anim.js?v=0.13.0-cf50bd"></script>
-<script src="deck.js?v=2026-11-23-2"></script>
-<script src="aai.js?v=2026-11-23-2"></script>
+<script src="deck.js?v=2026-11-23-3"></script>
+<script src="aai.js?v=2026-11-23-3"></script>
 <script src="../../stagekit/stagekit.js?v=0.13.0-cf50bd"></script>
 </body>
 </html>

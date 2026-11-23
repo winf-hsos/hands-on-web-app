@@ -32,6 +32,14 @@ SUBS = {
          '"every token in the vocabulary gets a share, most of them almost zero"'),
         ('const basis = "the farmer drove the tractor into the";', 'const basis = "milk that expires tonight goes to the";'),
         ('const neu = [" field", ",", " where"];', 'const neu = [" food", " bank", "."];'),
+        # the small list above "probabilities" follows the text: after "food" it is the list for the
+        # next token, and so on (Nicolas, 2026-11-23); probabilities for illustration
+        ('labels.push(...balken(xs[2], 14, mitTemperatur(1), { lw: 100, bw: 430, rh: 28, size: 20, wsize: 20, punkte: true }));',
+         'const LISTEN = [mitTemperatur(1),\n'
+         '    [["bank", 0.62], ["waste", 0.09], ["shelf", 0.06], [",", 0.05], ["court", 0.03], ["all others", 0.15]],\n'
+         '    [[".", 0.48], [",", 0.17], ["at", 0.09], ["today", 0.07], ["tonight", 0.05], ["all others", 0.14]],\n'
+         '    [["the", 0.14], ["it", 0.11], ["yoghurt", 0.06], ["so", 0.05], ["but", 0.04], ["all others", 0.60]]];\n'
+         '  labels.push(...balken(xs[2], 14, LISTEN[Math.min(step, 3)], { lw: 100, bw: 430, rh: 28, size: 20, wsize: 20, punkte: true }));'),
         ('const ende = step >= 2 ? "narrow" : "wide";', 'const ende = step >= 2 ? "full" : "big";'),
         ('const woerter = ["the", "tractor", "did", "not", "fit", "through", "the", "gate", "because", "it", "was", "too", ende];',
          'const woerter = ["the", "crate", "did", "not", "fit", "into", "the", "fridge", "because", "it", "was", "too", ende];'),
@@ -59,7 +67,29 @@ SUBS = {
 }
 
 
+# Whole functions taken from another deck, where Nicolas revised the drawing: "chatbot vs. agent" with
+# the tools below the model and the result in line with the answer (deck "AI agents in research").
+FUNCS = {
+    "ag": [("figChatAgent", "ai-agents-in-research-slides/slides/deck.js",
+            [('"you copy, run, paste back"', '"you take the next step"')])],
+}
+
+
+def function(src: str, name: str) -> str:
+    m = re.search(rf"^function {name}\(.*?^}}\n", src, flags=re.M | re.S)
+    if not m:
+        raise SystemExit(f"function {name} not found")
+    return m.group(0)
+
+
 def adapt(prefix: str, src: str) -> str:
+    for name, rel, subs in FUNCS.get(prefix, []):
+        new = function((REPO / rel).read_text(encoding="utf-8"), name)
+        for old, rep in subs:
+            if new.count(old) != 1:
+                raise SystemExit(f"{name}: expected one match: {old}")
+            new = new.replace(old, rep)
+        src = src.replace(function(src, name), new)
     for old, new in SUBS.get(prefix, []):
         n = src.count(old)
         if n != 1:

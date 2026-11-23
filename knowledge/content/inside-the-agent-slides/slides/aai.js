@@ -187,7 +187,11 @@ function figLoop(step) {
   namen.forEach((n, i) => boxes.push(d.box(xs[i], y, w, h, n, { border: i === 1 ? c.blue : c.light, size: 32, width: 3 })));
   // kleine Verteilung ueber "probabilities" (Nicolas, 22.10.2026): sechs Zeilen à 28 = 168, von y 14 bis 182,
   // 18 ueber dem Kasten. Token-Spalte 100 ("field" 5 × 20 × 0,6 = 60), 41 % → 176, Wert "41%" ≈ 40: 100 + 176 + 10 + 40 = 326 < 330
-  labels.push(...balken(xs[2], 14, mitTemperatur(1), { lw: 100, bw: 430, rh: 28, size: 20, wsize: 20, punkte: true }));
+  const LISTEN = [mitTemperatur(1),
+    [["bank", 0.62], ["waste", 0.09], ["shelf", 0.06], [",", 0.05], ["court", 0.03], ["all others", 0.15]],
+    [[".", 0.48], [",", 0.17], ["at", 0.09], ["today", 0.07], ["tonight", 0.05], ["all others", 0.14]],
+    [["the", 0.14], ["it", 0.11], ["yoghurt", 0.06], ["so", 0.05], ["but", 0.04], ["all others", 0.60]]];
+  labels.push(...balken(xs[2], 14, LISTEN[Math.min(step, 3)], { lw: 100, bw: 430, rh: 28, size: 20, wsize: 20, punkte: true }));
 
   // die Zeile darunter waechst je Schritt um ein Token; Codeschrift, also Breite = Zeichen × 28,8
   const basis = "milk that expires tonight goes to the";
@@ -1368,7 +1372,7 @@ function figChatAgent(step) {
   const wires = [], boxes = [], labels = [];
   const bw = 220, bh = 100;
 
-  // oben: der Chatbot. Nach der Antwort ist der Mensch wieder dran.
+  // top: the chatbot. After the answer it is your turn again.
   const y1 = 40;
   labels.push(d.label(0, 0, "chatbot", { size: 48, color: c.white, centerY: y1 + bh / 2 }));
   const xs1 = [360, 760, 1160];
@@ -1378,7 +1382,6 @@ function figChatAgent(step) {
   labels.push(d.label(670, 0, "prompt", { size: 20, color: c.gray, anchor: "middle", centerY: y1 + bh / 2 - 26 }));
   wires.push(d.arrow(xs1[0] + bw, y1 + bh / 2, xs1[1] - 4, y1 + bh / 2, { color: c.gray, width: 3 }));
   wires.push(d.arrow(xs1[1] + bw, y1 + bh / 2, xs1[2] - 4, y1 + bh / 2, { color: c.gray, width: 3 }));
-  // Rueckweg answer -> you, unten herum: der Mensch traegt den naechsten Schritt
   const ry = y1 + bh + 50;
   wires.push(d.line(xs1[2] + bw / 2, y1 + bh, xs1[2] + bw / 2, ry, { color: c.gray, width: 3 }));
   wires.push(d.line(xs1[2] + bw / 2, ry, xs1[0] + bw / 2, ry, { color: c.gray, width: 3 }));
@@ -1387,23 +1390,21 @@ function figChatAgent(step) {
 
   if (step < 1) return d.svg(1680, 640, ...d.layers(wires, boxes, labels));
 
-  // unten: der Agent. Die Schleife laeuft zwischen Modell und Werkzeugen.
-  const y2 = 400;
+  // bottom: the agent, as wide as the chatbot. The loop runs between the
+  // model and the tools below it, and at the end there is a result.
+  const y2 = 330, ty = y2 + bh + 100;
   labels.push(d.label(0, 0, "agent", { size: 48, color: c.white, centerY: y2 + bh / 2 }));
-  const xs2 = [360, 760, 1160, 1460];
-  boxes.push(d.box(xs2[0], y2, bw, bh, "you", { border: c.light, color: c.white }));
-  boxes.push(d.box(xs2[1], y2, bw, bh, "LLM", { border: c.blue, color: c.white, keepCase: true }));
-  boxes.push(d.box(xs2[2], y2, bw, bh, "tools", { border: c.yellow, color: c.white }));
+  boxes.push(d.box(xs1[0], y2, bw, bh, "you", { border: c.light, color: c.white }));
+  boxes.push(d.box(xs1[1], y2, bw, bh, "LLM", { border: c.blue, color: c.white, keepCase: true }));
+  boxes.push(d.box(xs1[2], y2, bw, bh, "result", { border: c.light, color: c.white }));
+  boxes.push(d.box(xs1[1], ty, bw, bh, "tools", { border: c.yellow, color: c.white }));
   labels.push(d.label(670, 0, "goal", { size: 20, color: c.gray, anchor: "middle", centerY: y2 + bh / 2 - 26 }));
-  wires.push(d.arrow(xs2[0] + bw, y2 + bh / 2, xs2[1] - 4, y2 + bh / 2, { color: c.gray, width: 3 }));
-  // Schleife LLM <-> tools, gelb
-  wires.push(d.arrow(xs2[1] + bw, y2 + 30, xs2[2] - 4, y2 + 30, { color: c.yellow, width: 3 }));
-  wires.push(d.arrow(xs2[2], y2 + 70, xs2[1] + bw + 4, y2 + 70, { color: c.yellow, width: 3 }));
-  labels.push(d.icon(1034, y2 + bh + 16, 64, ICON_ARROW_REPEAT, { color: c.yellow }));
-  labels.push(d.label(1066, 0, "until the goal is reached", { size: 32, color: c.yellow, anchor: "middle", centerY: y2 + bh + 124 }));
-  // Ergebnis: nur ein Pfeil hinaus, als Text statt Kasten (sonst reicht die Breite nicht)
-  wires.push(d.arrow(xs2[2] + bw, y2 + bh / 2, xs2[3] + 20, y2 + bh / 2, { color: c.gray, width: 3 }));
-  labels.push(d.label(xs2[3] + 36, 0, "result", { size: 32, color: c.white, centerY: y2 + bh / 2 }));
+  wires.push(d.arrow(xs1[0] + bw, y2 + bh / 2, xs1[1] - 4, y2 + bh / 2, { color: c.gray, width: 3 }));
+  wires.push(d.arrow(xs1[1] + bw, y2 + bh / 2, xs1[2] - 4, y2 + bh / 2, { color: c.gray, width: 3 }));
+  wires.push(d.arrow(xs1[1] + 80, y2 + bh, xs1[1] + 80, ty - 4, { color: c.yellow, width: 3 }));
+  wires.push(d.arrow(xs1[1] + 140, ty, xs1[1] + 140, y2 + bh + 4, { color: c.yellow, width: 3 }));
+  labels.push(d.icon(xs1[1] + bw + 40, y2 + bh + 18, 64, ICON_ARROW_REPEAT, { color: c.yellow }));
+  labels.push(d.label(xs1[1] + bw + 124, 0, "until the goal is reached", { size: 32, color: c.yellow, centerY: y2 + bh + 50 }));
   return d.svg(1680, 640, ...d.layers(wires, boxes, labels));
 }
 

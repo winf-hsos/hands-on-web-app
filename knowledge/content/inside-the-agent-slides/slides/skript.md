@@ -10,7 +10,7 @@ Am Freitag hat unser Agent allen Joghurt und alle Milch weggeworfen, frische War
 
 **Ein Schritt.** In jedem Schritt berechnet das Modell eine Wahrscheinlichkeit für jedes Token seiner Liste, etwa nach „milk that expires tonight goes to the“ 31 Prozent für „food“ und 24 Prozent für „bin“ (ausgedachte Zahlen). Das ist alles, was ein Modell ausgibt; die Antwort entsteht erst, wenn ein Programm daraus ein Token zieht.
 
-**Der Kreislauf.** Kontext, Modell, Wahrscheinlichkeiten, ein Token ziehen: Das gezogene Token wird an den Text gehängt, und das Modell rechnet mit dem längeren Text weiter, erst „food“, dann „bank“, dann der Punkt. Jede Runde ist ein Durchgang durch das ganze Modell. Die Schleife endet mit einem besonderen End-Token oder an einer eingestellten Höchstlänge. Auch die Begründungen auf dem Beamer sind so entstanden.
+**Der Kreislauf.** Kontext, Modell, Wahrscheinlichkeiten, ein Token ziehen: Das gezogene Token wird an den Text gehängt, und das Modell rechnet mit dem längeren Text weiter, erst „food“, dann „bank“, dann der Punkt; die kleine Liste über „probabilities“ zeigt jedes Mal die Wahrscheinlichkeiten für das nächste Token. Jede Runde ist ein Durchgang durch das ganze Modell. Die Schleife endet mit einem besonderen End-Token oder an einer eingestellten Höchstlänge. Auch die Begründungen auf dem Beamer sind so entstanden.
 
 **Die Temperatur.** Wie aus der Liste gezogen wird, stellt das Programm um das Modell ein. Bei Temperatur 0 kommt immer das wahrscheinlichste Token, hier „food“, und damit immer dieselbe Antwort, bei 1 gilt die Liste, wie das Modell sie berechnet hat, und bei 2 holen die vielen unwahrscheinlichen Tokens zusammen fast alles, sodass der Text in Unsinn kippt. Deshalb lief keiner unserer Abende zweimal gleich.
 
@@ -48,7 +48,9 @@ Am Freitag hat unser Agent allen Joghurt und alle Milch weggeworfen, frische War
 
 ## Reasoning
 
-**Sofort antworten oder erst denken.** Joghurt und Milch kosten zusammen 1,10 Euro, die Milch kostet einen Euro mehr als der Joghurt. Wer sofort antwortet, sagt 10 Cent, dann kostete beides zusammen aber 1,20 Euro. Ein Reasoning-Modell schreibt zuerst Gedanken, die als Tokens wieder in den Kontext gehen, und kommt auf 5 Cent; beim Antworten liest es seine eigenen Notizen mit. Unser gpt-6-luna ist ein solches Modell.
+**Eine Frage an den Saal.** Joghurt und Milch kosten zusammen 1,10 Euro, die Milch kostet einen Euro mehr als der Joghurt; was kostet der Joghurt? Abgestimmt wird aus dem Bauch heraus.
+
+**Sofort antworten oder erst denken.** Wer sofort antwortet, sagt 10 Cent, dann kostete beides zusammen aber 1,20 Euro. Ein Reasoning-Modell schreibt zuerst Gedanken, die als Tokens wieder in den Kontext gehen, und kommt auf 5 Cent; beim Antworten liest es seine eigenen Notizen mit. Unser gpt-6-luna ist ein solches Modell.
 
 **Der Kontext ist das Papier.** Zwischenergebnisse bleiben im Kontext liegen und werden für das nächste Token gelesen, wie Notizen beim Rechnen auf Papier: Das Modell liest „2x = 0.10“ und schreibt 0.05.
 
@@ -67,8 +69,6 @@ Am Freitag hat unser Agent allen Joghurt und alle Milch weggeworfen, frische War
 **Ein Werkzeug.** Der Harness beschreibt es im Kontext (hier `mark_down` aus dem Spiel, leicht gekürzt: reduzieren in Schritten von 5 bis 90 Prozent), das Modell schreibt einen Aufruf als Text, und nur der Harness führt ihn aus: elf Sushi-Boxen für 1,65 Euro. Im Spiel öffnet ein Klick auf ein Werkzeug am Beamer seine Karte mit Beschreibung und Beispiel.
 
 **Elf Werkzeuge.** Drei zum Nachsehen, sechs zum Handeln, zwei zum Merken und Beenden; was nicht auf der Liste steht, kann der Agent nicht.
-
-**Skills.** Anleitungen in Textdateien, im Kontext nur eine Zeile je Skill, die ganze Datei erst, wenn eine Aufgabe sie braucht. Unser Agent hatte keine, nur `read_policy`; die Folie zeigt, wie es mit Skills aussähe, mit den Tafelregeln aus dem Spiel. Joghurt und Milch tragen ein Mindesthaltbarkeitsdatum und hätten an die Tafel gehen dürfen.
 
 **Wo es läuft.** Der Harness mit seinen Werkzeugen läuft bei uns, bei Shelf Life auf dem Spielserver, das Modell im Rechenzentrum des Anbieters; dazwischen geht nur Text. Alles, was der Agent liest, landet also beim Anbieter.
 
