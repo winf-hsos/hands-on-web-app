@@ -120,4 +120,4 @@ modules:
   bda: { de: Big Data Analytics, en: Big Data Analytics }
   aai: { de: Applications of Artificial Intelligence, en: Applications of Artificial Intelligence, handbook: "https://www.hs-osnabrueck.de/module/44m0509/" }
   psai: { de: Problem Solving with AI, en: Problem Solving with AI }
-  sscai: { de: Sustainable Supply Chains and AI, en: Sustainable Supply Chains and AI }
+  st: { de: Sustainable Transformation, en: Sustainable Transformation, handbook: "https://www.hs-osnabrueck.de/module/44m0566/" }

@@ -10,7 +10,7 @@ deck_lang: en
 level: 1
 duration: 10
 topics: [ai-agents, applying-ai]
-modules: [sscai]
+modules: [st]
 areas: [ai]
 relations:
   see_also: [shelf-life, inside-the-agent-slides]

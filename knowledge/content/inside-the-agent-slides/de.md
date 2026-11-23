@@ -11,7 +11,7 @@ deck_lang: en
 level: 1
 duration: 45
 topics: [ai-agents, language-models, consequences-of-ai]
-modules: [sscai]
+modules: [st]
 areas: [ai]
 relations:
   requires: [shelf-life]

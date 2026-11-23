@@ -17,7 +17,7 @@ license: MIT
 level: 1
 duration: 30
 topics: [ai-agents, applying-ai]
-modules: [sscai]
+modules: [st]
 areas: [ai]
 relations:
   see_also: [shelf-life-slides, inside-the-agent-slides]
