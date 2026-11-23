@@ -4,7 +4,7 @@ summary: >-
   Vierzehn Fragen zu Stellenwert, Binär- und Hexadezimalzahlen, Bit und Byte und
   den beiden Leitern der Einheiten. Jede Antwort kommt mit ihrer Begründung.
 translation_of: en
-based_on: 2026-11-04
+based_on: 2026-11-23
 ---
 
 ## Warum bedeutet die Ziffernfolge 123 einhundertdreiundzwanzig? {#ns-001}
@@ -73,7 +73,7 @@ based_on: 2026-11-04
 - [ ] 1100
   > Das sind 8 + 4 = 12. Der Rest von 1 ist unterschlagen worden; nach der 4 bleibt genau eine 1 übrig, und die braucht die letzte Stelle.
 
-## Im LiFi-Projekt überträgt euer Team Buchstaben als Folgen aus vier Farben, etwa rot-blau-grün. Inwiefern habt ihr damit bereits ein Stellenwertsystem gebaut? {#ns-012}
+## Im LiFi-Projekt überträgt euer Team jeden Buchstaben als drei Farben hintereinander, jede aus einem Vorrat von vier, etwa rot-blau-grün. Inwiefern habt ihr damit bereits ein Stellenwertsystem gebaut? {#ns-012}
 
 - [ ] Gar nicht: Ein Stellenwertsystem braucht Ziffern mit Zahlenwerten, und Farben haben keinen Wert.
   > Ziffern müssen nicht wie Zahlen aussehen. Sobald jede Farbe für einen Wert steht und die Position zählt, ist es ein Stellenwertsystem, egal wie die Ziffern aussehen.

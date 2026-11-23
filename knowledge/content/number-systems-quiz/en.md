@@ -14,7 +14,7 @@ relations:
   checks: [place-value-systems, bit, byte]
 questions: [ns-001, ns-002, ns-003, ns-004, ns-005, ns-013, ns-012, ns-014, ns-010, ns-006, ns-007, ns-008, ns-009, ns-011]
 status: published
-updated: 2026-11-04
+updated: 2026-11-23
 ---
 
 ## Why does the digit sequence 123 mean one hundred and twenty-three? {#ns-001}
@@ -83,7 +83,7 @@ updated: 2026-11-04
 - [ ] 1100
   > That is 8 + 4 = 12. The remainder of 1 has been dropped; after the 4 exactly one is left over, and it needs the last place.
 
-## In the LiFi project your team transmits letters as sequences of four colours, say red-blue-green. In what sense have you already built a place value system? {#ns-012}
+## In the LiFi project your team transmits each letter as three colours in a row, each chosen from a palette of four, say red-blue-green. In what sense have you already built a place value system? {#ns-012}
 
 - [ ] Not at all: a place value system needs digits with numeric values, and colours have no value.
   > Digits do not have to look like numbers. As soon as each colour stands for a value and position matters, it is a place value system, whatever the digits look like.
