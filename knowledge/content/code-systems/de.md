@@ -15,7 +15,7 @@ objectives:
     - "an einem Beispiel zeigen, warum der Empfänger eines Codes mit verschieden langen Wörtern die Grenzen nicht findet, und drei Auswege nennen"
     - "erklären, warum dieselben Bytes als Text, Grauwerte oder Ton gelesen werden können und was entscheidet, welche Lesart gilt"
 translation_of: en
-based_on: 2026-11-06
+based_on: 2026-11-23
 ---
 
 ![Folien: Codesysteme](item:code-systems-slides)
@@ -65,7 +65,7 @@ print(format(ord("A"), "08b"))
 ### Derselbe Buchstabe, drei Codesysteme
 
 Wenn ein Code eine Tabelle ist, kann es mehrere davon geben, und es gibt sie.
-Dasselbe A ist in ASCII eine Folge von acht Bits, im Morsecode ein Punkt und
+Dasselbe A ist in ASCII eine Folge von acht Bits, im [[morse-code|Morsecode]] ein Punkt und
 ein Strich und in einem Alphabet aus Farben drei Farben hintereinander.
 
 ![Links ein großes A, von dem drei Pfeile zu drei Kästen führen: 0100 0001 mit der Beschriftung ASCII, Punkt Strich mit Morse und red green green mit ein Farbcode.](media/code-as-agreement.de.svg "Derselbe Buchstabe unter drei Vereinbarungen: Keine ist richtiger als die anderen, jede ist eine Tabelle, die jemand aufgeschrieben hat und andere übernommen haben.")

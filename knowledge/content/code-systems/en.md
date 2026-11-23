@@ -24,7 +24,7 @@ relations:
   requires: [place-value-systems, symbols-and-information]
   see_also: [morse-code, byte, place-value-systems, petzold-code]
 status: published
-updated: 2026-11-06
+updated: 2026-11-23
 ---
 
 ![Slides: Code systems](item:code-systems-slides)
@@ -73,7 +73,7 @@ print(format(ord("A"), "08b"))
 ### The same letter, three code systems
 
 If a code is a table, there can be several of them, and there are. The same
-A is a sequence of eight bits in ASCII, a dot and a dash in Morse code, and
+A is a sequence of eight bits in ASCII, a dot and a dash in [[morse-code|Morse code]], and
 three colours in a row in an alphabet of colours.
 
 ![On the left a large A, with three arrows to three boxes: 0100 0001 marked ascii, dot dash marked morse, and red green green marked a colour code.](media/code-as-agreement.en.svg "The same letter under three agreements: none of them is more correct than the others, each one is a table someone wrote down and others adopted.")

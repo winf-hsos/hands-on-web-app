@@ -21,15 +21,14 @@ phases:
       - measuring-your-noise
   - id: word
     challenge: lifi-challenge-2
-    items: [place-value-systems, code-systems, invent-a-code, lifi-codebook-warmup, morse-code]
+    items: [place-value-systems, code-systems, invent-a-code, lifi-codebook-warmup]
   - id: protocol
     challenge: lifi-challenge-3
-    items: [morse-code]
   - id: packet
     challenge: lifi-challenge-4
-    items: [byte, logic-gates]
+    items: [logic-gates]
 status: published
-updated: 2026-11-08
+updated: 2026-11-23
 ---
 
 Jede Person im Team bekommt ein kleines Gerät mit einer RGB-LED und einem
