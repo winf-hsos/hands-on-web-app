@@ -106,17 +106,6 @@ based_on: 2026-11-23
 - [ ] Weil ein internationaler Standard die Basis 2 vorschreibt, an den sich alle Computer halten müssen, damit sie miteinander kommunizieren können.
   > Einen solchen Standard gibt es nicht: Computer rechneten schon binär, lange bevor sie miteinander vernetzt wurden, und Netzprotokolle legen Formate fest, nicht die Basis im Rechenwerk. Den Ausschlag gibt die Physik, denn zwei Zustände lassen sich am sichersten unterscheiden.
 
-## Das Wort „Bit“ hat zwei Bedeutungen: Maß für Information (eine Ja/Nein-Antwort) und Binärziffer (eine 0 oder 1). Wie passen die beiden zusammen? {#ns-006}
-
-- [ ] Gar nicht: Das Maß stammt aus der Nachrichtentechnik, die Ziffer aus der Mathematik, und der gleiche Name ist Zufall.
-  > Kein Zufall: Eine Binärziffer kann genau zwei Werte annehmen und trägt damit genau die Information einer Ja/Nein-Antwort. Die Ziffer ist der Behälter, die Information der Inhalt.
-- [x] Eine Binärziffer hat zwei mögliche Werte und fasst darum genau eine Ja/Nein-Antwort: Der Behälter ist nach dem Inhalt benannt.
-  > Genau. Und die Unterscheidung bleibt nützlich: Ein Behälter kann auch halb leer sein. Eine Binärziffer, deren Wert fast sicher feststeht, trägt weniger als ein Bit Information, und genau dort spart Kompression Ziffern ein.
-- [ ] Das Informationsmaß war die ursprüngliche Bedeutung; seit Computer in Binärziffern rechnen, meint Bit nur noch die Ziffer.
-  > Beide Bedeutungen sind lebendig. Wer Kompression verstehen will, braucht sogar beide gleichzeitig: Dort werden Ziffern gespart, weil sie weniger als ein Bit Information trugen.
-- [ ] Eine Ziffer speichert nur einen Zustand; für eine ganze Ja/Nein-Antwort braucht es zwei Ziffern, eine je Möglichkeit.
-  > Eine Ziffer speichert nicht einen Zustand, sondern hat zwei mögliche Werte, und die decken die zwei Möglichkeiten der Antwort ab. Eine Ziffer fasst deshalb genau ein Bit; mehrere Ziffern braucht, wer mehr als ein Bit übertragen will.
-
 ## Was ist ein Byte, und wie viele verschiedene Werte kann es annehmen? {#ns-007}
 
 - [ ] Ein Paket aus acht Bit, also acht verschiedene Werte, einer je Bit.

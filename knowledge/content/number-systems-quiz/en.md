@@ -12,7 +12,7 @@ topics: [representing-information]
 modules: [dup]
 relations:
   checks: [place-value-systems, bit, byte]
-questions: [ns-001, ns-002, ns-003, ns-004, ns-005, ns-013, ns-012, ns-014, ns-010, ns-006, ns-007, ns-008, ns-009, ns-011]
+questions: [ns-001, ns-002, ns-003, ns-004, ns-005, ns-013, ns-012, ns-014, ns-010, ns-007, ns-008, ns-009, ns-011]
 status: published
 updated: 2026-11-23
 ---
@@ -115,17 +115,6 @@ updated: 2026-11-23
   > The opposite is true: binary numbers are longer, 255 needs eight digits instead of three. The price is happily paid because each digit is nearly indestructible.
 - [ ] Because an international standard prescribes base 2, and all computers must follow it so that they can communicate with each other.
   > No such standard exists: computers calculated in binary long before they were networked, and network protocols define formats, not the base inside the arithmetic unit. The deciding factor is physics, because two states can be told apart most reliably.
-
-## The word "bit" has two meanings: a measure of information (one yes/no answer) and a binary digit (a 0 or 1). How do the two fit together? {#ns-006}
-
-- [ ] They do not: the measure comes from communications engineering, the digit from mathematics, and the shared name is coincidence.
-  > No coincidence: a binary digit can take exactly two values and thus carries exactly the information of one yes/no answer. The digit is the container, the information the content.
-- [x] A binary digit has two possible values and therefore holds exactly one yes/no answer: the container is named after its content.
-  > Exactly. And the distinction stays useful: a container can be half empty. A binary digit whose value is almost certain carries less than one bit of information, and compression saves digits exactly there.
-- [ ] The information measure was the original meaning; since computers calculate in binary digits, bit only means the digit.
-  > Both meanings are alive. To understand compression you even need both at once: digits get saved there precisely because they carried less than one bit of information.
-- [ ] One digit stores only one state; a full yes/no answer needs two digits, one per possibility.
-  > A digit does not store one state, it has two possible values, and those cover the two possibilities of the answer. One digit therefore holds exactly one bit; you need several digits to carry more than one bit.
 
 ## What is a byte, and how many different values can it take? {#ns-007}
 
