@@ -135,8 +135,8 @@ updated: 2026-11-23
   > Exactly, and that is why hex is the shorthand for bytes: people read AC more easily than 10101100, and both are 172. The colour #AC8909 is simply three bytes, two digits each.
 - [ ] Because the six letters A to F supply exactly the bits that the ten digits lack to make a byte.
   > A to F are not bits but ordinary digits with the values 10 to 15. They are needed because base 16 requires sixteen different digits and our ten are not enough. Their number has nothing to do with the byte.
-- [ ] Because one hex digit represents half a byte, namely 8 values, and two halves make a whole.
-  > Half a byte is right, the number is not: half a byte is 4 bits, so 2 to the power of 4, that is 16 values, not 8. With 8 values per digit two digits would only reach 64, and the byte with its 256 values would not fit.
+- [ ] Because one byte consists of 16 bits, and each hex digit represents exactly 8 of them.
+  > A byte has 8 bits, not 16. One hex digit holds 16 values, which is 4 bits; two digits make 8 bits and thus the 256 values of a byte.
 
 ## What is the value of the hexadecimal number FF? {#ns-009}
 

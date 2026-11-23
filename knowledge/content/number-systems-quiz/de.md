@@ -125,8 +125,8 @@ based_on: 2026-11-23
   > Genau, und deshalb ist Hex die Kurzschrift für Bytes: Menschen lesen AC leichter als 10101100, und beides ist die 172. Die Farbe #AC8909 ist schlicht drei Bytes, je zwei Stellen.
 - [ ] Weil die sechs Buchstaben A bis F genau die Bits ergänzen, die den zehn Ziffern zum Byte fehlen.
   > A bis F sind keine Bits, sondern gewöhnliche Ziffern mit den Werten 10 bis 15. Sie werden gebraucht, weil die Basis 16 sechzehn verschiedene Ziffern verlangt und unsere zehn nicht reichen. Mit dem Byte hat ihre Anzahl nichts zu tun.
-- [ ] Weil eine Hexziffer ein halbes Byte darstellt, nämlich 8 Werte, und zwei Hälften ein Ganzes ergeben.
-  > Das halbe Byte stimmt, die Zahl nicht: Ein halbes Byte sind 4 Bit, also 2 hoch 4 gleich 16 Werte, nicht 8. Mit 8 Werten je Ziffer kämen zwei Ziffern nur auf 64, und das Byte mit seinen 256 Werten passte nicht hinein.
+- [ ] Weil ein Byte aus 16 Bit besteht und jede Hexziffer genau 8 davon darstellt.
+  > Ein Byte hat 8 Bit, nicht 16. Eine Hexziffer fasst 16 Werte, das sind 4 Bit; zwei Ziffern ergeben 8 Bit und damit die 256 Werte eines Bytes.
 
 ## Welchen Wert hat die Hexadezimalzahl FF? {#ns-009}
 
