@@ -81,8 +81,8 @@ function showSplit(slide, step) { if ($("fig-split")) $("fig-split").innerHTML =
 /* ------------------------------------------------------------------ */
 /* Wahrscheinlichkeiten fuer das naechste Token                         */
 /* ------------------------------------------------------------------ */
-const NAECHSTE = [["field", 0.41], ["barn", 0.22], ["yard", 0.09], ["shed", 0.06], ["mud", 0.04]];
-const REST = 0.18, REST_N = 1000;
+const NAECHSTE = [["food", 0.31], ["bin", 0.24], ["fridge", 0.09], ["shelf", 0.07], ["cashier", 0.04]];
+const REST = 0.25, REST_N = 1000;
 
 function mitTemperatur(T) {
   if (T === 0) return [...NAECHSTE.map(([t], i) => [t, i === 0 ? 1 : 0]), ["all others", 0]];
@@ -113,14 +113,14 @@ function balken(x, y, werte, o) {
 
 // Geometrie der grossen Fassung, gleich auf "field, barn or yard" und "top k and top p"
 const GROSS = { lw: 300, bw: 1100, rh: 84, size: 48, punkte: true };
-const KONTEXT = "the farmer drove the tractor into the …";
+const KONTEXT = "milk that expires tonight goes to the …";
 
 function figProbs(step) {
   const c = C();
   const W = 1680, H = 640;
   const parts = [d.label(0, 0, KONTEXT, { size: 48, mono: true, centerY: 40 })];
   parts.push(...balken(0, 110, mitTemperatur(1), GROSS));
-  if (step >= 1) parts.push(d.label(GROSS.lw, 0, "262,000 tokens in the vocabulary, most of them almost zero", { size: 32, color: c.gray, centerY: 110 + 6 * GROSS.rh + 40 }));
+  if (step >= 1) parts.push(d.label(GROSS.lw, 0, "every token in the vocabulary gets a share, most of them almost zero", { size: 32, color: c.gray, centerY: 110 + 6 * GROSS.rh + 40 }));
   return d.svg(W, H, ...parts);
 }
 function showProbs(slide, step) { if ($("fig-probs")) $("fig-probs").innerHTML = figProbs(step || 0); }
@@ -190,8 +190,8 @@ function figLoop(step) {
   labels.push(...balken(xs[2], 14, mitTemperatur(1), { lw: 100, bw: 430, rh: 28, size: 20, wsize: 20, punkte: true }));
 
   // die Zeile darunter waechst je Schritt um ein Token; Codeschrift, also Breite = Zeichen × 28,8
-  const basis = "the farmer drove the tractor into the";
-  const neu = [" field", ",", " where"];
+  const basis = "milk that expires tonight goes to the";
+  const neu = [" food", " bank", "."];
   const zy = 630;
   let text = basis;
   labels.push(d.label(0, 0, basis, { size: 48, mono: true, centerY: zy }));
@@ -251,12 +251,12 @@ function showStack(slide, step) { if ($("fig-stack")) $("fig-stack").innerHTML =
 function figIt(step) {
   const c = C();
   const W = 1680, H = 520, size = 48, zy = 330;
-  const ende = step >= 2 ? "narrow" : "wide";
-  const woerter = ["the", "tractor", "did", "not", "fit", "through", "the", "gate", "because", "it", "was", "too", ende];
+  const ende = step >= 2 ? "full" : "big";
+  const woerter = ["the", "crate", "did", "not", "fit", "into", "the", "fridge", "because", "it", "was", "too", ende];
   // Satz in Arial 48, Woerter einzeln gesetzt, Positionen im Browser gemessen; mittig auf 1680
   const leer = breite(" ", size);
   const ws = woerter.map((w) => breite(w, size));
-  const gesamt = breite(woerter.slice(0, -1).join(" ") + " wide", size);
+  const gesamt = breite(woerter.slice(0, -1).join(" ") + " full", size);
   let x = (W - gesamt) / 2;
   const mitte = {};
   const ziel = step >= 2 ? 7 : 1;           // gate oder tractor
@@ -284,7 +284,7 @@ function showIt(slide, step) { if ($("fig-it")) $("fig-it").innerHTML = figIt(st
    Die Werte sind ausgedacht (Fussnote). Nur die untere Haelfte ist gefuellt:
    ein Token schaut nur auf die Tokens davor; die obere Haelfte bleibt als leere
    Kaestchen stehen, damit man das ganze n × n sieht. */
-const SATZ_IT = ["the", "tractor", "did", "not", "fit", "through", "the", "gate", "because", "it", "was", "too", "wide"];
+const SATZ_IT = ["the", "crate", "did", "not", "fit", "into", "the", "fridge", "because", "it", "was", "too", "big"];
 const STARK = { "9,1": 0.95, "12,1": 0.7, "12,9": 0.6, "4,1": 0.55, "7,5": 0.6, "5,4": 0.5, "3,2": 0.6, "11,10": 0.5, "12,11": 0.55, "8,4": 0.45, "1,0": 0.5, "7,6": 0.5 };
 
 function staerke(r, s) {
@@ -662,14 +662,14 @@ function figAnswer(step) {
   ];
   const boxes = [
     d.box(370, A - 60, 300, 120, "language model", { size: 32, border: c.light }),
-    d.box(1400, A - 55, 200, 110, "1,000 €", { size: 48, border: c.light }),
+    d.box(1400, A - 55, 200, 110, "0.10 €", { size: 48, border: c.light }),
     d.mark(1640, A, false),
   ];
   const labels = [
     ...ipoHeads([150, 520, 1190]),
     d.label(150, 0, "question", { size: 32, anchor: "middle", centerY: A }),
     d.label(1030, 0, "answers right away", { size: 32, color: c.gray, anchor: "middle", centerY: A - 30 }),
-    d.label(1600, 0, "then together: 12,000 €", { size: 32, color: c.gray, anchor: "end", centerY: A + 90 }),
+    d.label(1600, 0, "then together: 1.20 €", { size: 32, color: c.gray, anchor: "end", centerY: A + 90 }),
   ];
   if (step >= 1) {
     wires.push(
@@ -683,12 +683,12 @@ function figAnswer(step) {
     boxes.push(
       d.box(370, B - 60, 300, 120, "language model", { size: 32, border: c.light }),
       d.box(780, 270, 520, 240, "", { border: c.blue, width: 3 }),
-      d.box(1400, B - 55, 200, 110, "500 €", { size: 48, border: c.light }),
+      d.box(1400, B - 55, 200, 110, "0.05 €", { size: 48, border: c.light }),
       d.mark(1640, B, true));
     labels.push(
       d.label(150, 0, "question", { size: 32, anchor: "middle", centerY: B }),
       d.label(1040, 0, "thinks in writing first", { size: 32, color: c.blue, anchor: "middle", centerY: 245 }),
-      ...zeilen(820, 308, 55, ["trailer: x", "tractor: x + 10,000", "x + x + 10,000 = 11,000", "x = 500"], { color: c.white }),
+      ...zeilen(820, 308, 55, ["yoghurt: x", "milk: x + 1.00", "x + x + 1.00 = 1.10", "x = 0.05"], { color: c.white }),
       d.label(780, 0, "the model reads its own thoughts again", { size: 32, color: c.blue, anchor: "middle", centerY: 610 }));
   }
   return d.svg(1680, 640, ...d.layers(wires, boxes, labels));
@@ -755,12 +755,12 @@ function figPaper(step) {
     d.box(60, 70, 640, 430, "", { border: c.gray }),
     d.box(180, 422, 100, 46, "", { border: c.blue, dashed: true }),
     d.box(1080, 230, 300, 120, "language model", { size: 32, border: c.light }),
-    d.box(1470, 245, 140, 90, step >= 1 ? "500" : "?", { size: 48, mono: true, border: c.blue, color: c.blue, width: 3 }),
+    d.box(1470, 245, 140, 90, step >= 1 ? "0.05" : "?", { size: 48, mono: true, border: c.blue, color: c.blue, width: 3 }),
   ];
   const labels = [
     d.label(60, 0, "context", { size: 32, color: c.gray, centerY: 35 }),
-    ...zeilen(100, 120, 50, ["tractor + trailer = 11,000 €", "tractor = trailer + 10,000 €"], { ...m, color: c.gray }),
-    ...zeilen(100, 245, 50, ["trailer: x", "tractor: x + 10,000", "x + x + 10,000 = 11,000", "2x = 1,000", "x ="], { ...m, color: c.white }),
+    ...zeilen(100, 120, 50, ["yoghurt + milk = 1.10 €", "milk = yoghurt + 1.00 €"], { ...m, color: c.gray }),
+    ...zeilen(100, 245, 50, ["yoghurt: x", "milk: x + 1.00", "x + x + 1.00 = 1.10", "2x = 0.10", "x ="], { ...m, color: c.white }),
     d.label(730, 0, "question", { size: 32, color: c.gray, centerY: 145 }),
     d.label(730, 0, "thoughts", { size: 32, color: c.gray, centerY: 320 }),
     d.label(730, 0, "so far", { size: 32, color: c.gray, centerY: 360 }),
@@ -771,8 +771,8 @@ function figPaper(step) {
     wires.push(d.line(1540, 335, 1540, 540, { color: c.blue, width: 3 }),
                d.line(1540, 540, 230, 540, { color: c.blue, width: 3 }),
                d.arrow(230, 540, 230, 472, { color: c.blue, width: 3, head: 14 }));
-    boxes.push(d.highlight(100, breite("2x = 1,000", 32, true), 395, 32, { color: c.blue, opacity: 0.25 }));
-    labels.push(d.label(230, 0, "500", { ...m, color: c.blue, anchor: "middle", centerY: 445 }),
+    boxes.push(d.highlight(100, breite("2x = 0.10", 32, true), 395, 32, { color: c.blue, opacity: 0.25 }));
+    labels.push(d.label(230, 0, "0.05", { ...m, color: c.blue, anchor: "middle", centerY: 445 }),
                 d.label(1000, 0, "the new token is written down and read again", { size: 32, color: c.blue, anchor: "middle", centerY: 580 }));
   }
   return d.svg(1680, 610, ...d.layers(wires, boxes, labels));
@@ -1040,14 +1040,14 @@ function showStages(slide, step) { put("fig-stages", figStages(step || 0)); }
 function figRewards() {
   const c = C();
   const MID = 300, ys = [105, 235, 365, 495];
-  const versuche = [["attempt 1: … 500 €", true], ["attempt 2: … 1,000 €", false], ["attempt 3: … 400 €", false], ["attempt 4: … 500 €", true]];
+  const versuche = [["attempt 1: … 0.05 €", true], ["attempt 2: … 0.10 €", false], ["attempt 3: … 0.55 €", false], ["attempt 4: … 0.05 €", true]];
   return d.svg(1680, 690, shift(
     d.arrow(340, MID, 405, MID, { color: c.gray, width: 3, head: 16 }),
     d.g("fan", ...ys.map((y) => d.arrow(640, MID, 745, y, { color: c.gray, width: 2, head: 14 }))),
     d.g("back", d.line(1400, 540, 1400, 610, { color: c.blue, width: 3 }),
                 d.line(1400, 610, 530, 610, { color: c.blue, width: 3 }),
                 d.arrow(530, 610, 530, 375, { color: c.blue, width: 3, head: 16 })),
-    d.box(40, MID - 80, 300, 160, "problem with a\nknown answer", { size: 32, border: c.gray }),
+    d.box(40, MID - 60, 300, 120, "problem with a\nknown answer", { size: 32, border: c.gray }),
     d.box(420, MID - 60, 220, 120, "model", { size: 48, border: c.white }),
     d.g("attempts", ...versuche.map(([t], i) => d.box(760, ys[i] - 45, 420, 90, t, { size: 32, border: c.light }))),
     d.g("checks", ...versuche.map(([, ok], i) => d.mark(1240, ys[i], ok)),

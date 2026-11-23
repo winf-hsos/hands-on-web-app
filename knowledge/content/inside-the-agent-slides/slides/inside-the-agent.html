@@ -14,7 +14,7 @@
 </head>
 <body>
 <!-- For the students, shown after the game. It may reveal Friday: the hidden text, the approval and the replay. -->
-<div class="deck" data-title="Inside the Agent" data-subtitle="what happened behind the night shift: language models and AI agents, Nicolas Meseth"
+<div class="deck" data-title="Inside the Agent" data-subtitle="prof. dr. nicolas meseth"
      data-parts='["the language model", "text as numbers", "training", "reasoning", "the agent", "be careful"]'>
 
   <section class="slide title"></section>
@@ -28,20 +28,21 @@
   </section>
 
   <!-- ============================================================ the language model -->
-  <section class="slide part" data-part="the language model" data-subtitle="it writes one token at a time"></section>
+  <section class="slide part" data-part="the language model" data-subtitle="it predicts the next token, again and again"></section>
 
-  <section class="slide">
-    <h2>a language model reads and writes tokens, pieces of text with a number</h2>
-    <div class="figure" id="fig-tokens"></div>
-    <div class="footnote">splits and numbers for illustration; a real tokenizer: tiktokenizer.vercel.app</div>
-    <aside class="notes">Ein Sprachmodell sieht keine Buchstaben, sondern Zahlen aus einer festen Liste. Ein Programm, der Tokenizer, schneidet den Text in Stücke und ersetzt jedes Stück durch seine Nummer. Häufige Wörter sind ein einziges Token, meist mitsamt dem Leerzeichen davor; seltene oder lange Wörter zerfallen in mehrere Stücke, deutsche Fachwörter besonders stark, weil die Liste vor allem aus englischen Texten gebaut wurde. Große Modelle kennen zwischen 100.000 und rund 260.000 Tokens; im Englischen ist ein Token im Schnitt etwa drei Viertel eines Wortes. Aufteilung und Nummern auf der Folie sind zur Veranschaulichung.</aside>
+  <section class="slide" data-on-show="ntp_showProbs" data-on-step="ntp_showProbs">
+    <h2>in each step, the model computes a probability for every token</h2>
+    <div class="figure" id="aai-fig-probs"></div>
+    <span data-step="1"></span>
+    <div class="footnote">probabilities for illustration</div>
+    <aside class="notes">Kurze Frage an den Saal: Was berechnet ein Sprachmodell in einem Schritt? Nicht das nächste Wort und nicht die ganze Antwort, sondern eine Wahrscheinlichkeit für jedes Stück Text, das es kennt; diese Stücke heißen Tokens, dazu gleich mehr. Nach „milk that expires tonight goes to the“ bekommt „food“ vielleicht 31 Prozent, „bin“ 24 Prozent und jedes andere Token einen kleinen Rest. Die Zahlen sind ausgedacht, aber genau so eine Liste ist alles, was ein Modell ausgibt. Die Antwort entsteht erst, wenn ein Programm daraus ein Token zieht.</aside>
   </section>
 
-  <section class="slide">
-    <h2>in each step, the model computes a probability for every token</h2>
-    <div class="figure" id="fig-next"></div>
-    <div class="footnote">probabilities for illustration; every other token gets a small share, too</div>
-    <aside class="notes">Kurze Frage an den Saal: Was berechnet das Modell in einem Schritt? Nicht das nächste Wort und nicht die ganze Antwort, sondern eine Wahrscheinlichkeit für jedes Token seiner Liste. Nach „milk that expires tonight goes to the“ bekommt „food“ vielleicht 31 Prozent, „bin“ 24 Prozent und jedes andere Token einen kleinen Rest; die Zahlen sind ausgedacht, aber genau so eine Liste ist alles, was ein Modell ausgibt. Die Antwort entsteht erst, wenn ein Programm daraus ein Token zieht, meist ein wahrscheinliches, manchmal ein anderes. Deshalb bekommt man auf dieselbe Frage zwei verschiedene Antworten.</aside>
+  <section class="slide" data-on-show="ntp_showLoop" data-on-step="ntp_showLoop">
+    <h2>one token is drawn, appended, and the model starts again</h2>
+    <div class="figure" id="aai-fig-loop"></div>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span><span data-step="4"></span>
+    <aside class="notes">Das ist der ganze Kreislauf: Der Kontext geht ins Modell, das Modell berechnet die Wahrscheinlichkeiten, ein Programm zieht ein Token, und das Token wird an den Text gehängt. Dann beginnt alles von vorn mit dem etwas längeren Text: erst „food“, dann „bank“, dann der Punkt. Jede Ausgabe wird zur Eingabe; das nennt man autoregressiv. Jede Runde ist ein Durchgang durch das ganze Modell, deshalb misst man die Geschwindigkeit in Tokens pro Sekunde. Auch die Begründungen, die ihr am Beamer gelesen habt, sind so entstanden, Token für Token. Im letzten Schritt die Frage in den Raum geben und Vermutungen sammeln: Die Schleife endet, wenn das Modell ein besonderes End-Token zieht oder eine eingestellte Höchstlänge erreicht ist; dann bricht die Antwort auch mitten im Satz ab.</aside>
   </section>
 
   <section class="slide" data-on-show="ntp_showTemp" data-on-step="ntp_showTemp">
@@ -49,13 +50,7 @@
     <div class="figure" id="aai-fig-temp"></div>
     <span data-step="1"></span><span data-step="2"></span>
     <div class="footnote">probabilities for illustration, temperature calculated</div>
-    <aside class="notes">Wie gezogen wird, stellt das Programm um das Modell ein, und der wichtigste Regler heißt Temperatur. Das Beispiel ist ein anderer Satz, das Prinzip ist dasselbe. Bei 0 wird immer das wahrscheinlichste Token genommen, also kommt immer dieselbe Antwort. Bei 1 gilt die Liste so, wie das Modell sie berechnet hat. Bei 2 holen die vielen unwahrscheinlichen Tokens zusammen fast alles, und der Text kippt in Unsinn. Ein Agent läuft meist irgendwo dazwischen; deshalb lief auch keiner unserer Abende zweimal gleich.</aside>
-  </section>
-
-  <section class="slide">
-    <h2>the drawn token is appended, and the model starts again</h2>
-    <div class="figure" id="fig-loop"></div>
-    <aside class="notes">Das gezogene Token wird an den Text gehängt, und das Modell berechnet die nächste Liste aus dem etwas längeren Text: erst „food“, dann „bank“, dann der Punkt. Jede Ausgabe wird zur Eingabe; das nennt man autoregressiv. Es endet, wenn das Modell ein besonderes Endtoken zieht oder eine Längengrenze erreicht ist. Jede Runde ist ein Durchgang durch das ganze Modell, deshalb misst man die Geschwindigkeit in Tokens pro Sekunde. Auch die Begründungen, die ihr am Beamer gelesen habt, sind so entstanden, Token für Token.</aside>
+    <aside class="notes">Wie gezogen wird, stellt das Programm um das Modell ein, und der wichtigste Regler heißt Temperatur. Bei 0 wird immer das wahrscheinlichste Token genommen, hier „food“, also kommt immer dieselbe Antwort. Bei 1 gilt die Liste so, wie das Modell sie berechnet hat. Bei 2 holen die vielen unwahrscheinlichen Tokens zusammen fast alles, und der Text kippt in Unsinn. Ein Agent läuft meist irgendwo dazwischen; deshalb lief auch keiner unserer Abende zweimal gleich.</aside>
   </section>
 
   <section class="slide">
@@ -71,17 +66,24 @@
   </section>
 
   <section class="slide">
+    <h2>what it reads and writes are tokens, pieces of text with a number</h2>
+    <div class="figure" id="fig-tokens"></div>
+    <div class="footnote">splits and numbers for illustration; a real tokenizer: tiktokenizer.vercel.app</div>
+    <aside class="notes">Bisher war von Tokens die Rede, ohne dass wir genau hingesehen haben. Ein Sprachmodell sieht keine Buchstaben, sondern Zahlen aus einer festen Liste. Ein Programm, der Tokenizer, schneidet den Text in Stücke und ersetzt jedes Stück durch seine Nummer. Häufige Wörter sind ein einziges Token, meist mitsamt dem Leerzeichen davor; seltene oder lange Wörter zerfallen in mehrere Stücke, deutsche Fachwörter besonders stark, weil die Liste vor allem aus englischen Texten gebaut wurde. Große Modelle kennen zwischen 100.000 und rund 260.000 Tokens; im Englischen ist ein Token im Schnitt etwa drei Viertel eines Wortes. Aufteilung und Nummern auf der Folie sind zur Veranschaulichung.</aside>
+  </section>
+
+  <section class="slide">
     <h2>the context window is everything the model sees</h2>
     <div class="figure" id="fig-context"></div>
-    <aside class="notes">Der Kontext ist alles, was das Modell sieht, wenn es das nächste Token berechnet. Bei unserem Agenten war das ein Abend: oben seine Anweisungen und sein Ziel, dann der Zettel vom Vortag, die Weckmeldung um 20 Uhr, jeder Werkzeugaufruf und jede Antwort darauf, bis 22 Uhr. Das Modell selbst merkt sich nichts; das Programm schickt ihm bei jedem Schritt den ganzen Stapel neu. Das Fenster ist begrenzt, je nach Modell auf rund 100.000 bis eine Million Tokens; ist es voll, muss das Programm etwas weglassen oder zusammenfassen. Am nächsten Abend bekam unser Agent wieder seine Anweisungen und sein Ziel, aber vom Abend davor blieb nur der Zettel, den er sich selbst geschrieben hatte, etwa dass die Brötchen um 21 Uhr ausverkauft waren.</aside>
+    <aside class="notes">Der Kontext ist alles, was das Modell sieht, wenn es das nächste Token berechnet. Bei unserem Agenten war das ein Abend: oben seine Anweisungen und sein Ziel, dann der Zettel vom Vortag, die Weckmeldung um 20 Uhr, jeder Werkzeugaufruf und jede Antwort darauf, bis 22 Uhr. Das Modell selbst merkt sich nichts; das Programm schickt ihm bei jedem Schritt den ganzen Stapel neu. Das Fenster ist begrenzt, je nach Modell auf rund 100.000 bis eine Million Tokens; ist es voll, muss das Programm etwas weglassen oder zusammenfassen. Am nächsten Abend beginnt der Kontext von vorn: wieder Anweisungen und Ziel, und vom Abend davor bleiben nur der Zettel, den der Agent sich selbst geschrieben hat, etwa dass die Brötchen um 21 Uhr ausverkauft waren, und die Zahlen früherer Abende im Verkaufsbericht. So bleibt jede Anfrage kurz und schnell. Im Spiel zeigt die Taste C am Beamer genau diesen Stapel, als JSON, so wie er an das Modell geht.</aside>
   </section>
 
   <section class="slide" data-on-show="ntp_showIt" data-on-step="ntp_showIt">
-    <h2>the tractor or the gate? the model weighs every token in the context</h2>
+    <h2>the crate or the fridge? the model weighs every token in the context</h2>
     <div class="figure" id="aai-fig-it"></div>
     <span data-step="1"></span><span data-step="2"></span>
     <div class="footnote">a. vaswani et al.: attention is all you need, 2017</div>
-    <aside class="notes">Was „it“ meint, hängt von einem Wort ganz am Ende ab: „too wide“ meint den Traktor, „too narrow“ das Tor. Frühere Modelle lasen Wort für Wort und trugen eine Zusammenfassung mit, die nach hinten verschwamm. Der Transformer, auf dem alle heutigen Sprachmodelle beruhen, betrachtet bei jedem Schritt alle Tokens des Kontexts zugleich und lernt, welche gerade wichtig sind; das heißt Attention. Für unseren Agenten heißt das: Jede Zeile im Kontext kann das nächste Token beeinflussen, auch eine, die weit oben steht oder von einer fremden Webseite kommt.</aside>
+    <aside class="notes">Was „it“ meint, hängt von einem Wort ganz am Ende ab: „too big“ meint die Kiste, „too full“ den Kühlschrank. Frühere Modelle lasen Wort für Wort und trugen eine Zusammenfassung mit, die nach hinten verschwamm. Der Transformer, auf dem alle heutigen Sprachmodelle beruhen, betrachtet bei jedem Schritt alle Tokens des Kontexts zugleich und lernt, welche gerade wichtig sind; das heißt Attention. Für unseren Agenten heißt das: Jede Zeile im Kontext kann das nächste Token beeinflussen, auch eine, die weit oben steht oder von einer fremden Webseite kommt.</aside>
   </section>
 
   <section class="slide" data-on-show="ntp_showMatrix" data-on-step="ntp_showMatrix">
@@ -89,7 +91,7 @@
     <div class="figure" id="aai-fig-matrix"></div>
     <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span><span data-step="4"></span><span data-step="5"></span>
     <div class="footnote">words instead of tokens and strengths for illustration</div>
-    <aside class="notes">Jede Zelle sagt, wie stark ein Wort bei der Berechnung auf ein anderes zurückgreift; Wörter stehen hier vereinfachend für Tokens. Die Zeile „it“ greift am stärksten auf „tractor“ zurück, das ist der Bogen von der Folie davor. Die obere Hälfte bleibt leer, weil ein Token nur auf die Tokens davor schaut. Die Zahl der Zellen wächst mit dem Quadrat der Länge: doppelter Kontext, vierfache Arbeit, und das in jeder Schicht des Modells. Deshalb ist das Kontextfenster begrenzt.</aside>
+    <aside class="notes">Jede Zelle sagt, wie stark ein Wort bei der Berechnung auf ein anderes zurückgreift; Wörter stehen hier vereinfachend für Tokens. Die Zeile „it“ greift am stärksten auf „crate“ zurück, das ist der Bogen von der Folie davor. Die obere Hälfte bleibt leer, weil ein Token nur auf die Tokens davor schaut. Die Zahl der Zellen wächst mit dem Quadrat der Länge: doppelter Kontext, vierfache Arbeit, und das in jeder Schicht des Modells. Deshalb ist das Kontextfenster begrenzt.</aside>
   </section>
 
   <section class="slide">
@@ -102,21 +104,7 @@
         <div data-step="3" style="color: var(--blue)">when the context is full, something has to go.</div>
       </div>
     </div>
-    <aside class="notes">Drei Gründe für die Grenze: Das Modell hat nur Texte bis zu einer bestimmten Länge gesehen, jedes neue Token wird mit allen davor verrechnet, und jedes Token im Kontext belegt Arbeitsspeicher. Was weg muss, wenn der Kontext voll ist, entscheidet nicht das Modell, sondern das Programm drumherum.</aside>
-  </section>
-
-  <section class="slide">
-    <h2>when the context is full</h2>
-    <div class="content">
-      <div class="strategies">
-        <div class="name">stop at limit</div><div>the answer ends when the window is full.</div>
-        <div class="name" data-step="1">rolling window</div><div data-step="1">the oldest messages are dropped.</div>
-        <div class="name" data-step="2">truncate middle</div><div data-step="2">the beginning and the latest messages stay.</div>
-        <div class="name" data-step="3">summarize</div><div data-step="3">the old part is replaced by a short summary.</div>
-      </div>
-      <div class="sidenote" data-step="4" style="margin-top: 40px">whatever is dropped no longer exists for the model.</div>
-    </div>
-    <aside class="notes">Das Modell selbst kann nichts weglassen, es bekommt einfach weniger zu sehen; welche Strategie gilt, legt das Programm fest. Agenten wie Claude Code fassen zusammen, wenn ihr Kontext voll läuft. Unser Night Shift Agent hatte eine eigene Lösung: Jeden Abend begann sein Kontext von vorn, und vom Vortag blieb nur der Zettel, den er sich mit note_for_tomorrow selbst geschrieben hatte. Was nicht auf dem Zettel stand, gab es für ihn am nächsten Abend nicht mehr.</aside>
+    <aside class="notes">Drei Gründe für die Grenze: Das Modell hat nur Texte bis zu einer bestimmten Länge gesehen, jedes neue Token wird mit allen davor verrechnet, und jedes Token im Kontext belegt Arbeitsspeicher. Was weg muss, wenn der Kontext voll ist, entscheidet nicht das Modell, sondern das Programm drumherum: anhalten, die ältesten Nachrichten weglassen oder zusammenfassen. Was wegfällt, gibt es für das Modell nicht mehr. Unser Night Shift Agent begann jeden Abend mit einem frischen Kontext, und vom Vortag blieben nur sein Zettel und die Verkaufszahlen.</aside>
   </section>
 
   <!-- ============================================================ text as numbers -->
@@ -129,19 +117,19 @@
     <aside class="notes">Wie kann ein Programm, das nur rechnet, mit Bedeutung umgehen? Indem es jedem Token einen Ort auf einer Landkarte der Bedeutung gibt. Was Ähnliches bedeutet, liegt nah beieinander: Joghurt, Milch und Käse, Erdbeeren und Salat, die Tonne neben Kompost, die Tafel neben Spende. Es gibt keine festen Gruppen, nur Nähe; die Ringe sind unsere Lesart.</aside>
   </section>
 
+  <section class="slide" data-on-show="showAxes" data-on-step="showAxes">
+    <h2>a place on the map is a pair of numbers</h2>
+    <div class="figure" id="fig-axes"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <div class="footnote">positions for illustration</div>
+    <aside class="notes">Legt man ein Koordinatensystem über die Karte, lässt sich jeder Ort als zwei Zahlen ablesen: Joghurt liegt bei minus 7 und 3, die Tafel bei 4 und minus 2. Zwei Wörter mit ähnlicher Bedeutung haben ähnliche Zahlen, zwei Wörter mit verschiedener Bedeutung verschiedene. Damit kann ein Programm, das nur rechnet, mit Bedeutung umgehen.</aside>
+  </section>
+
   <section class="slide">
-    <h2>a place on the map is a list of numbers, called an embedding</h2>
-    <div class="content" style="top: 170px">
-      <div class="statement">on our map, yoghurt lies at (260, 150)</div>
-      <div class="lines mono" style="margin-top: 50px">
-        <div data-step="1">yoghurt → (0.12, −0.40, 0.07, 0.31, −0.18, …)</div>
-      </div>
-      <div class="lines" style="margin-top: 50px">
-        <div data-step="2">a small model uses 384 numbers per token, a large one several thousand, and every number is one more direction in which meanings can differ</div>
-      </div>
-    </div>
+    <h2>a place is a list of numbers, called an embedding</h2>
+    <div class="figure" id="fig-embed"></div>
     <div class="footnote">numbers for illustration</div>
-    <aside class="notes">Auf unserer Karte ist ein Ort einfach zwei Zahlen. Zwei Richtungen reichen aber nicht, um alles auseinanderzuhalten, worin sich Wörter unterscheiden; ein Modell nimmt deshalb viel mehr Zahlen pro Token, ein kleines 384, ein großes mehrere tausend. So eine Zahlenliste heißt Embedding. Niemand hat diese Zahlen von Hand geschrieben; sie entstehen im Training, dazu gleich mehr.</aside>
+    <aside class="notes">Auf unserer Karte sind es zwei Zahlen. Zwei Richtungen reichen aber nicht, um alles auseinanderzuhalten, worin sich Wörter unterscheiden; ein Modell nimmt deshalb viel mehr Zahlen pro Token, ein kleines 384, ein großes mehrere tausend, und jede Zahl ist eine weitere Richtung, in der sich Bedeutungen unterscheiden können. So eine Zahlenliste heißt Embedding. Niemand hat diese Zahlen von Hand geschrieben; sie entstehen im Training, dazu gleich mehr.</aside>
   </section>
 
   <section class="slide">
@@ -187,14 +175,6 @@
     <aside class="notes">Nach dem Training ist ein Modell kein Programm mit Regeln und keine Datenbank mit Texten, sondern eine sehr lange Liste von Zahlen, die Parameter oder Gewichte heißen. Darin steckt alles, was es aus dem Training mitgenommen hat. Niemand hat dort hineingeschrieben, dass Ware mit Verbrauchsdatum nicht an die Tafel darf; das stand bei uns in den Anweisungen, also im Kontext.</aside>
   </section>
 
-  <section class="slide has-punch" data-on-show="om_showInference" data-on-step="om_showInference">
-    <h2>what happens when you press enter</h2>
-    <div class="figure" id="aai-fig-inference"></div>
-    <span data-step="1"></span><span data-step="2"></span>
-    <div class="punch" data-step="2">bigger models are slower, because every token passes through more numbers.</div>
-    <aside class="notes">Inferenz heißt: das Modell anwenden, nicht trainieren. Beim Laden wandert die Datei in den Arbeits- oder Grafikspeicher, und jedes neue Token kostet einen Durchgang durch alle Parameter. Darum hängen die Tokens pro Sekunde an Speicher und Rechenleistung, und darum laufen die großen Modelle in Rechenzentren.</aside>
-  </section>
-
   <!-- ============================================================ reasoning -->
   <section class="slide part" data-part="reasoning" data-subtitle="the model writes before it answers"></section>
 
@@ -202,14 +182,14 @@
     <h2>answer at once, or think first</h2>
     <div class="figure" id="aai-fig-answer"></div>
     <span data-step="1"></span>
-    <aside class="notes">Oben das Modell, das die Antwort ins allernächste Token setzen muss: Es nimmt die naheliegende Zahl. Unten dasselbe Modell, dessen Ausgabe zuerst Gedanken sind; der Pfeil zeigt, dass diese Gedanken wieder ins Modell zurückgehen, weil jedes neue Token aus allem Geschriebenen vorhergesagt wird. Beim Antworten liest es seine eigenen Notizen mit. Das heißt Reasoning, und unser gpt-6-luna ist ein solches Reasoning-Modell.</aside>
+    <aside class="notes">Joghurt und Milch kosten zusammen 1,10 Euro, die Milch kostet einen Euro mehr als der Joghurt; was kostet der Joghurt? Oben das Modell, das die Antwort ins allernächste Token setzen muss: Es nimmt die naheliegende Zahl, 10 Cent, aber dann kostete die Milch 1,10 Euro und beides zusammen 1,20 Euro. Unten dasselbe Modell, dessen Ausgabe zuerst Gedanken sind und das auf 5 Cent kommt; der Pfeil zeigt, dass diese Gedanken wieder ins Modell zurückgehen, weil jedes neue Token aus allem Geschriebenen vorhergesagt wird. Beim Antworten liest es seine eigenen Notizen mit. Das heißt Reasoning, und unser gpt-6-luna ist ein solches Reasoning-Modell.</aside>
   </section>
 
   <section class="slide" data-on-show="rs_showPaper" data-on-step="rs_showPaper">
     <h2>the context is the paper</h2>
     <div class="figure" id="aai-fig-paper"></div>
     <span data-step="1"></span>
-    <aside class="notes">Auf Papier ist Rechnen leichter, weil die Zwischenergebnisse liegen bleiben. Für ein Sprachmodell ist der Kontext das Papier: Links steht, was im Kontext ist, die Frage und die Gedanken bis hierher. Hier liest das Modell „2x = 1,000“ und schreibt 500, statt die ganze Aufgabe neu zu rechnen. Danach steht die 500 selbst im Kontext und wird für das nächste Token wieder gelesen.</aside>
+    <aside class="notes">Auf Papier ist Rechnen leichter, weil die Zwischenergebnisse liegen bleiben. Für ein Sprachmodell ist der Kontext das Papier: Links steht, was im Kontext ist, die Frage und die Gedanken bis hierher. Hier liest das Modell „2x = 0.10“ und schreibt 0.05, statt die ganze Aufgabe neu zu rechnen. Danach steht die 0.05 selbst im Kontext und wird für das nächste Token wieder gelesen.</aside>
   </section>
 
   <section class="slide">
@@ -241,13 +221,6 @@
     <aside class="notes">Gezählt wurden nur die Fälle, in denen der Hinweis die Antwort verändert hat; dann wurde geprüft, ob die Gedanken ihn erwähnen. Claude 3.7 Sonnet tat das in einem Viertel der Fälle, DeepSeek-R1 in 39 Prozent; sonst lieferten die Gedanken eine plausible Begründung, die den eigentlichen Grund wegließ. Das gilt auch für die Sätze in Anführungszeichen, die ihr am Beamer gelesen habt: Sie klingen nach dem Grund für eine Entscheidung, müssen es aber nicht sein. Dass man sie lesen kann, bleibt trotzdem eine Chance, Fehler zu bemerken.</aside>
   </section>
 
-  <section class="slide" data-on-show="rs_showLoop" data-on-step="rs_showLoop">
-    <h2>thinking inside the loop</h2>
-    <div class="figure" id="aai-fig-loop"></div>
-    <span data-step="1"></span>
-    <aside class="notes">Ein Agent arbeitet in einer Schleife: denken, ein Werkzeug aufrufen, das Ergebnis lesen, entscheiden, wie es weitergeht. Die Idee heißt ReAct und stammt von 2022, aber Agenten mit den damaligen Modellen kamen selten weit, weil jeder Schritt einer langen Aufgabe eine Gelegenheit für einen Fehler ist und sie es nicht merkten. Reasoning liefert genau, was die Schleife braucht: Heutige Modelle denken auch zwischen zwei Werkzeugaufrufen, so wie unser Agent zwischen look_at_shelf und mark_down.</aside>
-  </section>
-
   <!-- ============================================================ the agent -->
   <section class="slide part" data-part="the agent" data-subtitle="a language model with tools, in a loop"></section>
 
@@ -258,24 +231,18 @@
     <aside class="notes">Oben: Prompt, Antwort, und der nächste Schritt liegt bei mir. Unten: Ich gebe ein Ziel, und das Modell ruft selbst Werkzeuge auf, sieht das Ergebnis an und macht weiter, bis das Ziel erreicht ist. Unter der Haube steckt dasselbe Sprachmodell; der Unterschied ist, was drumherum gebaut ist.</aside>
   </section>
 
-  <section class="slide">
+  <section class="slide" data-on-show="showAgent" data-on-step="showAgent">
     <h2>an agent is a language model that runs tools in a loop to reach a goal</h2>
     <div class="figure" id="fig-agent"></div>
+    <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span><span data-step="4"></span><span data-step="5"></span>
     <div class="footnote">definition after Simon Willison, 2025</div>
-    <aside class="notes">Ein Sprachmodell allein kann nur Text schreiben; es kann kein Regal ansehen und keinen Preis ändern. Ein Agent bekommt ein Ziel, bei uns „gut verdienen und möglichst wenig wegwerfen“, und dazu Werkzeuge. Das Modell ruft ein Werkzeug auf, liest das Ergebnis und entscheidet über den nächsten Schritt, immer wieder, bis das Ziel erreicht ist: die Schleife, die ihr vor dem Spiel als Reason, Act, Observe gesehen habt. Alles um das Modell herum nennt man den Harness, wie das Geschirr, das ein Pferd vor den Wagen spannt: Er führt die Schleife, ruft die Werkzeuge auf, verwaltet den Kontext und fragt im Zweifel nach. Ein Agent ist also ein Sprachmodell plus Harness; Programme wie Claude Code oder Codex, mit denen heute viele programmieren, sind solche Harnesses.</aside>
-  </section>
-
-  <section class="slide">
-    <h2>workflow or agent?</h2>
-    <div class="figure" id="aai-fig-workflow"></div>
-    <div class="footnote">anthropic: building effective agents, 2024</div>
-    <aside class="notes">Nicht alles, wo KI drinsteckt, ist ein Agent. Auch im Workflow kann ein Sprachmodell arbeiten, aber die Schritte stehen fest, weil jemand sie vorher festgelegt hat; ein Agent entscheidet selbst, welcher Schritt als Nächstes kommt. Unser Spiel hat für den Fall, dass das Modell ausfällt, eine feste Regel, die etwa alles reduziert, was heute abläuft. Das ist ein Workflow, berechenbar und langweilig. Anthropics Rat lautet: so einfach wie möglich, und Agenten nur dort, wo es sie braucht.</aside>
+    <aside class="notes">Ein Sprachmodell allein kann nur Text schreiben; es kann kein Regal ansehen und keinen Preis ändern. Ein Agent bekommt ein Ziel, bei uns „gut verdienen und möglichst wenig wegwerfen“, und dazu Werkzeuge, hier sechs der elf aus dem Spiel, mit denen er im Laden handelt. Das Modell ruft ein Werkzeug auf, liest das Ergebnis und entscheidet über den nächsten Schritt, immer wieder, bis das Ziel erreicht ist: die Schleife, die ihr vor dem Spiel als Reason, Act, Observe gesehen habt. Alles davon landet im Kontextfenster, das sich über einen Abend füllt. Am Ende des Abends schreibt der Agent sich einen Zettel für morgen, und der ist am nächsten Abend wieder im Kontext. Alles um das Modell herum nennt man den Harness, wie das Geschirr, das ein Pferd vor den Wagen spannt: Er führt die Schleife, ruft die Werkzeuge auf, verwaltet den Kontext und fragt im Zweifel nach. Ein Agent ist also ein Sprachmodell plus Harness; Programme wie Claude Code oder Codex sind solche Harnesses.</aside>
   </section>
 
   <section class="slide">
     <h2>a tool is a description the model reads, and a call it writes</h2>
     <div class="figure" id="fig-tool"></div>
-    <aside class="notes">Wie benutzt ein Modell, das nur Text schreibt, ein Werkzeug? Der Harness beschreibt jedes Werkzeug im Kontext: Name, was es tut, welche Angaben es braucht; hier die echte Beschreibung von mark_down aus unserem Spiel, leicht gekürzt. Das Modell schreibt dann einen Aufruf als Text: mark_down, Sushi, 70 Prozent, mit Begründung. Erst der Harness führt ihn aus und gibt das Ergebnis zurück, hier elf Sushi-Boxen für 1,65 Euro. Das Modell selbst handelt also nie; es schreibt nur, und das Programm drumherum tut es.</aside>
+    <aside class="notes">Wie benutzt ein Modell, das nur Text schreibt, ein Werkzeug? Der Harness beschreibt jedes Werkzeug im Kontext: Name, was es tut, welche Angaben es braucht; hier die Beschreibung von mark_down aus unserem Spiel, leicht gekürzt: reduzieren in Schritten von 5 bis 90 Prozent. Das Modell schreibt dann einen Aufruf als Text: mark_down, Sushi, 70 Prozent, mit Begründung. Erst der Harness führt ihn aus und gibt das Ergebnis zurück, hier elf Sushi-Boxen für 1,65 Euro. Das Modell selbst handelt also nie; es schreibt nur, und das Programm drumherum führt es aus. Im Spiel öffnet ein Klick auf ein Werkzeug am Beamer seine Karte mit Beschreibung und Beispiel.</aside>
   </section>
 
   <section class="slide">
@@ -379,8 +346,8 @@
 </div>
 <script src="../../stagekit/draw.js?v=0.13.0-cf50bd"></script>
 <script src="../../stagekit/anim.js?v=0.13.0-cf50bd"></script>
-<script src="deck.js?v=2026-11-23-1"></script>
-<script src="aai.js?v=2026-11-23-1"></script>
+<script src="deck.js?v=2026-11-23-2"></script>
+<script src="aai.js?v=2026-11-23-2"></script>
 <script src="../../stagekit/stagekit.js?v=0.13.0-cf50bd"></script>
 </body>
 </html>

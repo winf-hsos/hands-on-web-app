@@ -32,65 +32,6 @@ const card = (x, y, w, h, text, o = {}) =>
   a.step(a.show("two", { dur: 600 }));
 }
 
-// One step: a probability for every token, then the program draws one.
-{
-  const ch = d.chart({
-    type: "hbar", x: 0, y: 110, width: 1680, height: 690,
-    labels: ["food", "bin", "fridge", "shelf", "cashier"],
-    series: [{ name: "p", values: [31, 24, 9, 7, 4] }],
-    unit: " %",
-    states: [
-      { show: [] },
-      { show: ["p"], values: "all" },
-      { highlight: ["food"], note: { at: "food", text: "drawn this time" } },
-    ],
-  });
-  el("fig-next").innerHTML = d.svg(W, H,
-    d.label(0, 60, "milk that expires tonight goes to the …", { size: 48 }), ch.svg());
-  ch.steps("fig-next");
-}
-
-// The loop: the drawn token is appended, and the model starts again with the longer text.
-{
-  const words = ["milk", "that", "expires", "tonight", "goes", "to", "the", "food", "bank", "."];
-  const widths = words.map((w) => Math.round(w.length * 27 + 40));
-  const total = widths.reduce((s, w) => s + w, 0) + 14 * (words.length - 1);
-  let x = Math.round((W - total) / 2);
-  const xs = [];
-  const parts = [d.box(640, 40, 400, 130, "language model", { size: 48, border: c.blue })];
-  const ys = 560;
-  words.forEach((w, i) => {
-    xs.push(x);
-    const box = d.box(x, ys, widths[i], 90, w, { size: 48, border: i < 7 ? c.light : c.yellow });
-    parts.push(i < 7 ? box : d.g(`t${i}`, box));
-    x += widths[i] + 14;
-  });
-  // "everything so far": a bracket over the first n tokens, with an arrow from its middle up to the model
-  const sofar = (n) => {
-    const x1 = xs[0], x2 = xs[n - 1] + widths[n - 1], y = 520, o = { color: c.gray, width: 3 };
-    return d.line(x1, y, x2, y, o) + d.line(x1, y, x1, 545, o) + d.line(x2, y, x2, 545, o) +
-      d.arrow((x1 + x2) / 2, y - 6, 760, 190, { color: c.gray });
-  };
-  // "one new token": an arrow from the model down to the token it has just written
-  const fresh = (i) => {
-    const tx = xs[i] + widths[i] / 2;
-    return d.arrow(940, 190, tx, 540, { color: c.yellow }) +
-      d.label((940 + tx) / 2 + 40, 0, "one new token", { size: 32, color: c.yellow, centerY: 365 });
-  };
-  parts.push(
-    d.g("b0", sofar(7)), d.g("b1", sofar(8)), d.g("b2", sofar(9)),
-    d.label(640, 380, "everything so far", { size: 32, color: c.gray, anchor: "end" }),
-    d.g("n7", fresh(7)), d.g("n8", fresh(8)), d.g("n9", fresh(9)),
-    d.g("end", d.label(840, 770, "… until it draws a special end token, or a length limit is reached", { size: 32, color: c.gray, anchor: "middle" })));
-  el("fig-loop").innerHTML = d.svg(W, H, ...parts);
-  const a = d.anim("fig-loop", { back: "play" });
-  a.step(a.show("t7", { dur: 500 }), a.show("n7", { dur: 500 }));
-  a.step(a.hide("b0", { dur: 300 }), a.hide("n7", { dur: 300 }), a.show("b1", { dur: 300 }),
-         a.show("t8", { dur: 500 }), a.show("n8", { dur: 500 }));
-  a.step(a.hide("b1", { dur: 300 }), a.hide("n8", { dur: 300 }), a.show("b2", { dur: 300 }),
-         a.show("t9", { dur: 500 }), a.show("n9", { dur: 500 }), a.show("end", { dur: 500 }));
-}
-
 // The context window: one evening of our agent as a stack of cards. With `injected`, the Friday version.
 function contextStack(id, injected) {
   const cards = injected ? [
@@ -129,7 +70,7 @@ function contextStack(id, injected) {
     return;
   }
   parts.push(d.g("bracket", bracket("the context window:\neverything the model\nsees when it writes\nthe next token", c.yellow)));
-  parts.push(d.g("next", d.label(0, 790, "the next evening, instructions and goal come again, but of tonight only the note is left", { size: 32, color: c.green })));
+  parts.push(d.g("next", d.label(0, 790, "the next evening starts afresh: of tonight, only the note and the sales figures are left", { size: 32, color: c.green })));
   el(id).innerHTML = d.svg(W, H, ...parts);
   const a = d.anim(id, { back: "play" });
   a.step(a.show("c3", { dur: 300 }), a.show("c4", { dur: 300 }), a.show("c5", { dur: 300 }));
@@ -143,21 +84,82 @@ contextStack("fig-stream", true);
 
 // ------------------------------------------------------------ text as numbers
 
-// The words of the game on a map of meaning, positions for illustration.
+// The words of the game on a map of meaning, positions for illustration. The map has a grid of
+// 80 per unit around (840, 410), so yoghurt sits at (-7, 3) and the food bank at (4, -2).
+const MX = (u) => 840 + u * 80, MY = (v) => 410 - v * 80;
 const MAP = [
-  ["yoghurt", 260, 150], ["milk", 420, 230], ["cheese", 190, 290], ["butter", 380, 340],
+  ["yoghurt", MX(-7), MY(3)], ["milk", 440, 250], ["cheese", 140, 310], ["butter", 380, 340],
   ["strawberries", 1020, 120], ["salad", 1240, 210], ["apples", 1060, 290],
   ["bin", 330, 600], ["compost", 160, 690], ["landfill", 480, 720],
-  ["food bank", 1130, 600], ["charity", 1360, 560], ["donation", 1240, 720],
+  ["food bank", MX(4), MY(-2)], ["charity", 1420, 580], ["donation", 1240, 720],
 ];
-const dots = (words) => words.map(([w, x, y]) =>
-  `<circle cx="${x}" cy="${y}" r="9" fill="${c.blue}"/>` + d.label(x + 22, y + 11, w, { size: 32 })).join("");
+const dots = (words, dim) => words.map(([w, x, y]) => {
+  const off = dim && !dim.includes(w);
+  return `<circle cx="${x}" cy="${y}" r="9" fill="${off ? c.gray : c.blue}"/>` +
+    d.label(x + 22, y + 11, w, { size: 32, color: off ? c.gray : c.white });
+}).join("");
 {
   const ring = (cx, cy, rx, ry) => `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="none" stroke="${c.yellow}" stroke-width="3" stroke-dasharray="10 10"/>`;
   el("fig-map").innerHTML = d.svg(W, H, dots(MAP),
-    d.g("rings", ring(330, 245, 290, 160) + ring(1170, 205, 300, 140) + ring(350, 650, 320, 130) + ring(1270, 645, 300, 130)));
+    d.g("rings", ring(330, 245, 290, 160) + ring(1170, 205, 300, 140) + ring(350, 650, 320, 130) + ring(1290, 640, 320, 140)));
   const a = d.anim("fig-map", { back: "play" });
   a.step(a.show("rings", { dur: 600 }));
+}
+
+// A place on the map is a pair of numbers: axes laid over the same map, two words read off
+// (after "a place is a list of numbers" in the deck a map of meaning). Ticks every unit, numbers at
+// ±5 and ±10 below the x axis and at ±4 left of the y axis. The reading lines run under the labels:
+// the horizontal one of yoghurt starts behind its label at 440, the coordinates stand above the label
+// ("(−7, 3)" in mono 48 is 202 wide, 302 to 504) and below the label of the food bank (1182 to 1384).
+function showAxes(slide, step) {
+  const f = el("fig-axes");
+  if (!f) return;
+  const lines = [], labels = [];
+  lines.push(d.arrow(MX(-10), MY(0), MX(10), MY(0), { color: c.light, width: 2 }));
+  lines.push(d.arrow(MX(0), MY(-4.8), MX(0), MY(4.8), { color: c.light, width: 2 }));
+  for (let u = -9; u <= 9; u++) if (u) lines.push(d.line(MX(u), MY(0) - 6, MX(u), MY(0) + 6, { color: c.light, width: 2 }));
+  for (let v = -4; v <= 4; v++) if (v) lines.push(d.line(MX(0) - 6, MY(v), MX(0) + 6, MY(v), { color: c.light, width: 2 }));
+  [-10, -5, 5, 10].forEach((u) => labels.push(d.label(MX(u), 0, String(u).replace("-", "−"), { size: 32, color: c.gray, anchor: "middle", centerY: MY(0) + 34 })));
+  [-4, 4].forEach((v) => labels.push(d.label(MX(0) - 16, 0, String(v).replace("-", "−"), { size: 32, color: c.gray, anchor: "end", centerY: MY(v) })));
+  const dash = { color: c.white, width: 2, dashed: true };
+  const read = [];
+  if (step >= 1) {
+    read.push("yoghurt");
+    lines.push(d.line(MX(-7), MY(3) + 12, MX(-7), MY(0), dash), d.line(440, MY(3), MX(0), MY(3), dash));
+    labels.push(d.label(MX(-7) + 22, 0, "(−7, 3)", { size: 48, mono: true, centerY: MY(3) - 65 }));
+  }
+  if (step >= 2) {
+    read.push("food bank");
+    lines.push(d.line(MX(4), MY(-2) - 12, MX(4), MY(0), dash), d.line(MX(0), MY(-2), MX(4) - 12, MY(-2), dash));
+    labels.push(d.label(MX(4) + 22, 0, "(4, −2)", { size: 48, mono: true, centerY: MY(-2) + 65 }));
+  }
+  f.innerHTML = d.svg(W, H, ...lines, dots(MAP, step >= 1 ? read : null), ...labels);
+}
+
+// An embedding: the same word as two numbers on our map, as 384 in a small model, and as several
+// thousand in a large one, which run off the slide. Bars of the same pitch 3 in both long rows, so
+// the length of a row shows how many numbers it holds; the last 200 px of the third row fade out.
+{
+  const rnd = (seed, n) => {
+    let s = seed >>> 0;
+    return Array.from({ length: n }, () => { s = (s * 1664525 + 1013904223) >>> 0; return (s / 4294967296) * 2 - 1; });
+  };
+  const x0 = 300;
+  const bars = (cy, vals, pitch, bw, amp) => vals.map((v, k) => {
+    const x = x0 + k * pitch, h = Math.max(Math.abs(v) * amp, 1.5), op = Math.min(1, (W - x) / 200);
+    return `<rect x="${x}" y="${(v > 0 ? cy - h : cy).toFixed(1)}" width="${bw}" height="${h.toFixed(1)}" fill="${c.blue}" fill-opacity="${op.toFixed(2)}"/>`;
+  }).join("");
+  const word = (cy) => d.label(260, 0, "yoghurt", { size: 48, mono: true, anchor: "end", centerY: cy });
+  const r1 = word(110) + bars(110, [-1, 3 / 7], 70, 50, 70) +
+    d.label(480, 0, "on our map: 2 numbers, (−7, 3)", { size: 32, color: c.light, centerY: 110 });
+  const r2 = d.g("r2", word(360) + bars(360, rnd(7, 384), 3, 2, 60) +
+    d.label(x0, 0, "a small model: 384 numbers", { size: 32, color: c.light, centerY: 450 }));
+  const r3 = d.g("r3", word(610) + bars(610, rnd(11, Math.ceil((W - x0) / 3)), 3, 2, 60) +
+    d.label(x0, 0, "a large model: several thousand, far beyond the edge of this slide", { size: 32, color: c.light, centerY: 700 }));
+  el("fig-embed").innerHTML = d.svg(W, H, r1, r2, r3);
+  const a = d.anim("fig-embed", { back: "play" });
+  a.step(a.show("r2", { dur: 600 }));
+  a.step(a.show("r3", { dur: 600 }));
 }
 
 // king - man + woman: a parallelogram (a sketch, not to scale), next to three measured results.
@@ -185,15 +187,16 @@ const dots = (words) => words.map(([w, x, y]) =>
   const sx = 1060, sy = 500;
   const star = d.g("star", `<circle cx="${sx}" cy="${sy}" r="18" fill="${c.yellow}"/>` +
     d.label(sx - 30, sy - 40, "where the model points", { size: 32, color: c.yellow, anchor: "end" }));
-  const near = d.g("near", d.line(sx, sy, 1150, 560, { color: c.green, width: 4, dashed: true }) +
-    d.line(sx, sy, 440, 600, { color: c.gray, width: 2, dashed: true }) +
-    d.label(1180, 640, "closest: most likely", { size: 32, color: c.green }) +
+  // the dashed lines lie behind the dots and the yellow point, which cover their ends
+  const lines = d.g("lines", d.line(sx, sy, 1150, 560, { color: c.green, width: 4, dashed: true }) +
+    d.line(sx, sy, 440, 600, { color: c.gray, width: 2, dashed: true }));
+  const near = d.g("near", d.label(1180, 640, "closest: most likely", { size: 32, color: c.green }) +
     d.label(560, 690, "further away: less likely", { size: 32, color: c.gray }));
   el("fig-closest").innerHTML = d.svg(W, H,
-    d.label(0, 60, "milk that expires tonight goes to the …", { size: 48 }), dots(words), star, near);
+    d.label(0, 60, "milk that expires tonight goes to the …", { size: 48 }), lines, dots(words), star, near);
   const a = d.anim("fig-closest", { back: "play" });
   a.step(a.show("star", { dur: 600 }));
-  a.step(a.show("near", { dur: 600 }));
+  a.step(a.show("lines", { dur: 600 }), a.show("near", { dur: 600 }));
 }
 
 // ------------------------------------------------------------ training
@@ -244,26 +247,86 @@ const dots = (words) => words.map(([w, x, y]) =>
 
 // ------------------------------------------------------------ the agent
 
-// An agent: goal, model, tools, the loop between them, the harness around them, a result.
-{
-  // the harness comes first: a box has a filled background and would cover the model and the tools
-  const parts = [
-    d.g("harness", d.box(620, 20, 580, 700, "", { border: c.gray, dashed: true }) +
-      d.label(910, 780, "the harness: the program around the model", { size: 32, color: c.gray, anchor: "middle" })),
-    d.box(0, 270, 300, 130, "goal", { size: 48, border: c.blue }),
-    d.label(150, 470, "“make good money,\nwaste little food”", { size: 32, color: c.gray, anchor: "middle" }),
-    d.arrow(300, 320, 700, 160, { color: c.gray }),
-    d.box(700, 90, 420, 130, "language model", { size: 48, border: c.blue }),
-    d.g("tools", d.box(700, 530, 420, 130, "tools", { size: 48, border: c.light }) +
-      d.arrow(840, 225, 840, 525, { color: c.yellow }) + d.label(820, 390, "call", { size: 32, color: c.yellow, anchor: "end" }) +
-      d.arrow(980, 525, 980, 225, { color: c.yellow }) + d.label(1000, 390, "result", { size: 32, color: c.yellow })),
-    d.g("result", d.arrow(1120, 160, 1380, 320, { color: c.gray }) + d.box(1380, 270, 300, 130, "result", { size: 48, border: c.green })),
-  ];
-  el("fig-agent").innerHTML = d.svg(W, H, ...parts);
-  const a = d.anim("fig-agent", { back: "play" });
-  a.step(a.show("tools", { dur: 600 }));
-  a.step(a.show("harness", { dur: 600 }));
-  a.step(a.show("result", { dur: 600 }));
+// An agent, built up in six stages after the drawing "inside an agent" of the deck AI Agents, with the
+// tools of the night shift: 0 goal and model · 1 tools · 2 the loop · 3 the context window ·
+// 4 the note for tomorrow · 5 all of it, gray, only the loop in yellow, and the harness named.
+// What a stage adds is bright, what is known is gray. The model box is 360 wide (640 to 1000), so
+// "language model" in 32 fits; the tool boxes are 330 wide ("give_to_cashier" in mono 32 is 288).
+// Bootstrap Icons "arrow-repeat" 1.11.3 (MIT, (c) The Bootstrap Authors)
+const ICON_ARROW_REPEAT = '<path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/><path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>';
+function showAgent(slide, step) {
+  const f = el("fig-agent");
+  if (!f) return;
+  const stage = step || 0;
+  const wires = [], boxes = [], labels = [];
+  const alles = stage >= 5;
+  const col = (s) => (alles ? c.gray : s === stage ? c.white : c.gray);
+  const rand = (s) => (alles ? c.dark : s === stage ? c.blue : c.dark);
+  const loopCol = stage === 2 || alles ? c.yellow : c.gray;
+
+  const L = { x: 640, y: 190, w: 360, h: 140 };
+  labels.push(d.label(L.x + L.w / 2, 0, "goal: “make good money and waste as little food as possible”",
+    { size: 32, color: col(0), anchor: "middle", centerY: 40 }));
+  wires.push(d.arrow(L.x + L.w / 2, 70, L.x + L.w / 2, L.y - 4, { color: c.gray, width: 3 }));
+  boxes.push(d.box(L.x, L.y, L.w, L.h, "language model", { border: rand(0), color: col(0), size: 32, width: 3 }));
+
+  // 1 six of the eleven tools on a bus, and the shop they act on
+  if (stage >= 1) {
+    const tools = ["look_at_shelf", "mark_down", "food_bank_form", "give_to_cashier", "bin", "order"];
+    const tx = 1150, tw = 330, th = 64, tg = 18, ty = 110, bus = 1100;
+    wires.push(d.line(bus, ty + th / 2, bus, ty + 5 * (th + tg) + th / 2, { color: c.gray, width: 3 }));
+    tools.forEach((t, i) => {
+      const y = ty + i * (th + tg);
+      wires.push(d.line(bus, y + th / 2, tx, y + th / 2, { color: c.gray, width: 3 }));
+      boxes.push(d.box(tx, y, tw, th, t, { border: rand(1), color: col(1), mono: true, keepCase: true }));
+    });
+    labels.push(d.label(tx, 0, "+ 5 more", { size: 20, color: col(1), centerY: ty + 6 * (th + tg) + 10 }));
+    wires.push(d.arrow(L.x + L.w, 235, bus - 4, 235, { color: stage === 2 || alles ? c.yellow : c.gray, width: 3 }));
+    labels.push(d.label(1050, 0, "calls", { size: 20, color: col(1), anchor: "middle", centerY: 212 }));
+    // the shop: a shelf with two boards and a few packs
+    const sx = 1530, sy = 290, sc = col(1);
+    const packs = [[0, 0], [1, 0], [3, 0], [0, 1], [2, 1], [3, 1]].map(([k, r]) =>
+      `<rect x="${sx + 14 + k * 24}" y="${sy + 16 + r * 44}" width="18" height="26" rx="2" fill="${sc}"/>`).join("");
+    labels.push(`<rect x="${sx}" y="${sy}" width="124" height="104" rx="6" fill="none" stroke="${sc}" stroke-width="3"/>` +
+      `<line x1="${sx}" y1="${sy + 46}" x2="${sx + 124}" y2="${sy + 46}" stroke="${sc}" stroke-width="3"/>` + packs);
+    labels.push(d.label(sx + 62, 0, "the shop", { size: 32, color: col(1), anchor: "middle", centerY: 440 }));
+  }
+
+  // 2 the loop: results go back into the model
+  if (stage >= 2) {
+    wires.push(d.arrow(1100, 290, L.x + L.w + 4, 290, { color: loopCol, width: 3 }));
+    labels.push(d.label(1050, 0, "results", { size: 20, color: loopCol, anchor: "middle", centerY: 313 }));
+    labels.push(d.icon(1015, 340, 70, ICON_ARROW_REPEAT, { color: loopCol }));
+    labels.push(d.label(L.x + L.w / 2, 0, "reason → act → observe", { size: 32, color: loopCol, anchor: "middle", centerY: 385 }));
+  }
+
+  // 3 the context window below the model: one evening fills it
+  if (stage >= 3) {
+    const K = { x: 660, y: 450, w: 320, h: 180 };
+    boxes.push(d.box(K.x, K.y, K.w, K.h, "", { border: rand(3) }));
+    labels.push(d.label(K.x + K.w / 2, 0, "context window", { size: 32, color: col(3), anchor: "middle", centerY: K.y + 45 }));
+    boxes.push(d.box(K.x + 30, K.y + 85, K.w - 60, 36, "", { border: c.gray, rx: 4 }));
+    boxes.push(d.box(K.x + 30, K.y + 85, (K.w - 60) * 0.3, 36, "", { border: null, fill: stage === 3 ? c.yellow : c.gray, rx: 4 }));
+    labels.push(d.label(K.x + K.w / 2, 0, "one evening, 20:00 to 22:00", { size: 20, color: col(3), anchor: "middle", centerY: K.y + 150 }));
+  }
+
+  // 4 the note for tomorrow: written tonight, read again at the start of the next evening
+  if (stage >= 4) {
+    const P = { x: 20, y: 110, w: 420, h: 190 };
+    boxes.push(d.box(P.x, P.y, P.w, P.h, "", { border: rand(4) }));
+    labels.push(d.label(P.x + 30, 0, "note for tomorrow", { size: 32, color: col(4), centerY: P.y + 45 }));
+    ["rolls sold out by 21:00", "order more rolls"].forEach((t, i) =>
+      labels.push(d.label(P.x + 30, 0, t, { size: 20, color: col(4), centerY: P.y + 105 + i * 36 })));
+    wires.push(d.arrow(L.x, 220, P.x + P.w + 4, 220, { color: c.gray, width: 3 }));
+    labels.push(d.label(540, 0, "writes", { size: 20, color: col(4), anchor: "middle", centerY: 197 }));
+    wires.push(d.line(230, P.y + P.h, 230, 540, { color: c.gray, width: 3 }));
+    wires.push(d.arrow(230, 540, 656, 540, { color: c.gray, width: 3 }));
+    labels.push(d.label(440, 0, "read again the next evening", { size: 20, color: col(4), anchor: "middle", centerY: 515 }));
+  }
+
+  if (alles) labels.push(d.label(840, 0, "everything around the model is the harness: it runs the loop, calls the tools and fills the context",
+    { size: 32, color: c.white, anchor: "middle", centerY: 740 }));
+  f.innerHTML = d.svg(W, H, ...d.layers(wires, boxes, labels));
 }
 
 // A tool: the description the model reads, the call it writes, what the harness returns.
@@ -274,7 +337,7 @@ const dots = (words) => words.map(([w, x, y]) =>
       d.box(x, 80, 520, 440, "", { border: color }) +
       d.label(x + 28, 150, text, { size: 32, mono: true, keepCase: true, lineHeight: 1.45 });
   };
-  const one = col(0, "1  the harness describes it", "mark_down\nchange the price of the\noldest packs\nproduct: text\npercent: 0, 25, 50, 70\nwhy: one sentence", c.dark);
+  const one = col(0, "1  the harness describes it", "mark_down\nchange the price of the\noldest packs\nproduct: text\npercent: 5 to 90, step 5\nwhy: one sentence", c.dark);
   const two = d.g("two", col(1, "2  the model writes a call", 'mark_down(\n  product="Sushi",\n  percent=70,\n  why="expires\n       tonight")', c.yellow));
   const three = d.g("three", col(2, "3  the harness runs it", "11 sushi boxes\nnow €1.65", c.green));
   const rule = d.g("rule", d.label(840, 660, "the model only writes text, and only the harness acts", { size: 48, anchor: "middle" }));

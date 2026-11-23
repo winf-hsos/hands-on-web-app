@@ -220,9 +220,9 @@ screen("fig-ranking", "img/screens/20-ranking.png", [
   const c = d.colors();
   const ways = [
     ["sell", "at full price", c.green],
-    ["mark down", "25, 50 or\n70 % off", c.white],
+    ["mark down", "5 to 90 % off,\nin steps of 5", c.white],
     ["food bank", "booked by 21:00,\nup to 15 kg,\nno use-by goods", c.white],
-    ["cashier", "takes home up\nto 5 items\na night", c.white],
+    ["cashier", "takes up to\n5 items home\nat 22:00", c.white],
     ["bin", "what is left\nand will\nnot keep", c.red],
   ];
   // boxes 296 wide (longest title "mark down": 9 x 48 x 0.6 = 259 + 2 x 18), 345 apart, 2 inset at both edges:
