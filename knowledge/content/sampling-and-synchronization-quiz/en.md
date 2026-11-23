@@ -15,7 +15,7 @@ relations:
   checks: [sampling-and-synchronization]
   see_also: [sampling-and-synchronization-slides]
 questions: [ca-002, ca-001, ca-003, ca-011, ca-015, ca-010, ca-009, ca-012, ca-013, ca-007, ca-005, ca-006, ca-014, ca-008, ca-004]
-status: draft
+status: published
 updated: 2026-11-23
 ---
 
