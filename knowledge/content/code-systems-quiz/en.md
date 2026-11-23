@@ -12,7 +12,7 @@ topics: [representing-information]
 modules: [dup]
 relations:
   checks: [code-systems]
-questions: [cs-001, cs-002, cs-003, cs-004, cs-005, cs-006, cs-007, cs-008, cs-009, cs-010, cs-011, cs-012, cs-013, cs-014, cs-015, cs-016, cs-017, cs-018, cs-019]
+questions: [cs-001, cs-002, cs-003, cs-004, cs-005, cs-006, cs-007, cs-008, cs-009, cs-011, cs-012, cs-013, cs-014, cs-015, cs-016, cs-017, cs-018, cs-019]
 status: published
 updated: 2026-11-23
 ---
@@ -115,17 +115,6 @@ updated: 2026-11-23
   > A checksum would be computed from the data, while here it is simply the colour value itself, written in a different base.
 - [ ] The memory address at which the colour value is stored in RAM; hence the hash sign in front.
   > Addresses are also written in hex, hence the confusion. Here it is the content, not the location.
-
-## The same logo can be stored as a bitmap (one colour per pixel) or as vector graphics (instructions like "circle, centre, radius, colour"). Which statements are true? (Several answers may be correct.) {#cs-010}
-
-- [x] Both are code systems: they describe the same image under different agreements.
-  > Correct, and that is the core: there is no single right representation, only different mappings with different strengths.
-- [ ] The vector version gives the smaller file for any motif, because instructions take less space than pixels.
-  > For simple shapes usually, for a photo certainly not: describing a photo as vectors would be absurdly expensive. It depends on the content.
-- [x] Only the vector version can be enlarged arbitrarily without producing jagged edges.
-  > Correct: the instruction 'circle with radius r' can be redrawn at any size, a grid of pixels cannot.
-- [ ] The bitmap version needs no agreement of its own, because one colour per pixel is the natural form of an image anyway.
-  > It needs agreements too: width, height, pixel order, colour depth, channel order. Without those a bitmap is just a byte sequence.
 
 ## `encode("cab")` returns a bit sequence. What is it, and how does the receiver recover the characters? {#cs-011}
 

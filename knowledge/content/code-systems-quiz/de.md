@@ -107,17 +107,6 @@ based_on: 2026-11-23
 - [ ] Die Speicheradresse, an der der Farbwert im Arbeitsspeicher abgelegt ist; daher das Raute-Zeichen davor.
   > Adressen schreibt man auch hexadezimal, daher die Verwechslung. Hier ist es aber der Inhalt, nicht der Ort.
 
-## Dasselbe Logo lässt sich als Bitmap (eine Farbe je Bildpunkt) oder als Vektorgrafik (Anweisungen wie „Kreis, Mittelpunkt, Radius, Farbe“) speichern. Welche Aussagen treffen zu? (Mehrere richtige Antworten möglich.) {#cs-010}
-
-- [x] Beides sind Codesysteme: Sie beschreiben dasselbe Bild nach verschiedenen Vereinbarungen.
-  > Richtig, und das ist der Kern: Es gibt nicht die eine richtige Darstellung, sondern verschiedene Zuordnungen mit verschiedenen Stärken.
-- [ ] Die Vektorfassung ergibt bei jedem Motiv die kleinere Datei, weil Anweisungen weniger Platz brauchen als Bildpunkte.
-  > Bei einfachen Formen meistens, bei einem Foto keineswegs: Ein Foto als Vektorgrafik zu beschreiben, wäre absurd aufwendig. Es hängt am Motiv.
-- [x] Nur die Vektorfassung lässt sich beliebig vergrößern, ohne dass Treppenstufen entstehen.
-  > Richtig: Die Anweisung „Kreis mit Radius r“ lässt sich in jeder Größe neu zeichnen, ein Raster aus Bildpunkten dagegen nicht.
-- [ ] Die Bitmapfassung braucht keine eigene Vereinbarung, weil eine Farbe je Bildpunkt ohnehin die natürliche Form eines Bildes ist.
-  > Auch sie braucht Absprachen: Breite, Höhe, Reihenfolge der Bildpunkte, Farbtiefe, Kanalreihenfolge. Ohne die ist eine Bitmap nur eine Bytefolge.
-
 ## `encode("cab")` liefert eine Bitfolge. Wie lautet sie, und wie findet der Empfänger die Zeichen darin wieder? {#cs-011}
 
 ```python static
