@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Shelf Life</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="../../stagekit/stagekit.css?v=0.13.0-cf50bd">
+</head>
+<body>
+<!-- For the students, shown right before the first game. Friday stays a surprise: no word about the hidden text, the approval or the replay. -->
+<div class="deck" data-title="Shelf Life" data-subtitle="a week in a corner shop run by an AI agent: a game for the lecture series on food loss and waste, Nicolas Meseth"
+     data-parts='["the agent", "the shop", "your week"]'>
+
+  <section class="slide title"></section>
+  <section class="slide agenda"></section>
+
+  <section class="slide">
+    <img class="photo" src="img/opening.jpg" style="height: 48%; top: 26%">
+    <!-- .photo-text is a flex box: the text needs its own block, or the highlighted word becomes a second column -->
+    <div class="photo-text" style="width: 56%"><div>every evening at ten, someone in a shop decides which food is still good for tomorrow and which goes in the bin. this week, that someone is an <span class="b">AI agent</span>.</div></div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">Stellt euch einen kleinen Laden um die Ecke der Hochschule vor, abends von acht bis zehn geöffnet. Um zehn muss jemand entscheiden, was bis morgen hält, was reduziert, verschenkt oder weggeworfen wird. Diese Woche übernimmt das ein KI-Agent, der Night Shift Agent, und ihr kauft bei ihm ein, jede und jeder am eigenen Handy. Wir spielen eine Woche von Montag bis Samstag und schauen dabei, wie ein Agent arbeitet und wo Lebensmittel verloren gehen.</aside>
+  </section>
+
+  <!-- ============================================================ the agent -->
+  <section class="slide part" data-part="the agent" data-subtitle="a language model that acts on its own"></section>
+
+  <section class="slide">
+    <h2>an AI agent works in a loop: reason, act, observe</h2>
+    <div class="figure" id="fig-react"></div>
+    <aside class="notes">Ein Chatbot antwortet nur, ein Agent handelt selbst, bis sein Ziel erreicht ist. Die meisten Agenten arbeiten in einer Schleife, die man ReAct nennt, aus Reason und Act. Erstens Reason: Ein Sprachmodell liest die Lage und schreibt auf, was es tun will und warum. Zweitens Act: Es ruft eines seiner Werkzeuge auf, etwa „schau ins Regal“ oder „reduziere den Preis“. Drittens Observe: Es liest, was das Werkzeug zurückgibt, und beginnt die nächste Runde, bis die Aufgabe erledigt ist. Dazwischen sitzt kein Mensch. Unser Agent ist das Sprachmodell gpt-6-luna; nichts davon ist vorbereitet, jeder Abend läuft anders.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>on the projector you can follow every round of the loop</h2>
+    <div class="figure" id="fig-why"></div>
+    <aside class="notes">So sieht eine Runde der Schleife auf dem Beamer aus, rechts in der Liste seiner Schritte. Hier reduziert er die Sushi-Boxen, die heute ablaufen. Zuerst Reason: In Anführungszeichen steht, warum, in seinen eigenen Worten. Dann Act: das Werkzeug, das er aufruft, hier mark_down mit 70 Prozent. Dann Observe: was zurückkam, elf Boxen für 1,65 Euro. Ihr könnt also jederzeit mitlesen, was er denkt und was er tut.</aside>
+  </section>
+
+  <!-- ============================================================ the shop -->
+  <section class="slide part" data-part="the shop" data-subtitle="six evenings, monday to saturday, closed on sunday"></section>
+
+  <section class="slide">
+    <h2>the shop on the projector</h2>
+    <div class="figure" id="fig-room"></div>
+    <div class="footnote">game art: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">Das ist der Beamer während des Spiels. Links der Laden mit dem Regal, unten Tonne, Kiste der Tafel und Korb der Kassiererin, rechts der Agent. Zuerst der Agent mit seinem Ziel und seinen Werkzeugen. Dann das Regal: Jedes Fach zeigt Menge, Preis und für jede Charge ein Datum, rot heißt heute, gelb morgen, grün später. Eine Charge ist eine Lieferung; was am Montag kam, läuft früher ab als das vom Dienstag.</aside>
+  </section>
+
+  <section class="slide timeline">
+    <h2>one evening takes a few minutes and pauses after every check-in</h2>
+    <ol class="events">
+      <li data-date="morning">delivery<span class="sub">fresh goods arrive</span></li>
+      <li data-date="20:00" data-step="1">first check-in<span class="sub">it may cut prices, then we read along</span></li>
+      <li data-date="20–21" data-step="2">shop open<span class="sub">about 40 seconds on your phone</span></li>
+      <li data-date="21:00" data-step="3">second check-in<span class="sub">last chance to book the food bank</span></li>
+      <li data-date="21–22" data-step="4">shop open<span class="sub">about 40 seconds on your phone</span></li>
+      <li data-date="22:00" data-step="5">closing<span class="sub">give away, bin, order for tomorrow</span></li>
+    </ol>
+    <aside class="notes">Ein Abend dauert bei uns ein paar Minuten, und ihr kauft in zwei kurzen Fenstern von je etwa 40 Sekunden. Morgens kommt die Lieferung. Um 20 Uhr wird der Agent geweckt, das nennen wir Check-in: Er schaut ins Regal und senkt vielleicht Preise. Vor und nach jedem Check-in hält der Abend an, damit wir in Ruhe lesen können, was er getan hat und warum; weiter geht es erst, wenn ich auf den Knopf drücke. Dann ist der Laden offen, und ihr kauft am Handy ein, zusammen mit Stammkundschaft, die der Computer spielt und die dieselben Rabatte sieht wie ihr. Um 21 Uhr der zweite Check-in, die letzte Gelegenheit, die Tafel zu buchen. Um 22 Uhr entscheidet er über jeden Rest und bestellt die Lieferung für morgen.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>what can happen to food that cannot wait</h2>
+    <div class="figure" id="fig-ladder"></div>
+    <aside class="notes">Für Ware, die nicht bis morgen hält, hat der Agent fünf Wege, die er alle selbst wählt, vom besten zum schlechtesten: normal verkaufen, reduzieren, an die Tafel geben, die Kassiererin mitnehmen lassen, wegwerfen. Jeder Weg hat eine Regel: Die Tafel muss bis 21 Uhr gebucht werden, nimmt höchstens 15 Kilo und keine Ware mit Verbrauchsdatum, die Kassiererin nimmt höchstens fünf Teile mit. Was um 22 Uhr übrig ist und nicht bis zum nächsten Öffnungstag hält, landet in der Tonne. Achtet darauf, welchen Weg er wählt.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>the shop pays for every box, whatever happens to it</h2>
+    <div class="figure" id="fig-money"></div>
+    <aside class="notes">Der Laden kauft jede Ware zum halben Regalpreis ein und bezahlt sie, sobald sie das Regal verlässt, egal auf welchem Weg. Am Beispiel einer Sushi-Box für 5,49 Euro: Zum vollen Preis verdient der Laden 2,74 Euro, mit 25 Prozent Rabatt noch 1,37, mit 50 Prozent nichts, und mit 70 Prozent verliert er 1,10 Euro. Tafel, Kassiererin und Tonne kosten jeweils den vollen Einkaufspreis von 2,75 Euro. Für die Kasse ist die Tafel also genauso teuer wie die Tonne, und ein großer Rabatt ist besser als beides. Der Agent kennt diese Zahlen. Hier steckt der Konflikt in seinem Ziel: Gut verdienen und wenig wegwerfen ziehen nicht immer in dieselbe Richtung.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>every night ends with the balance</h2>
+    <div class="figure" id="fig-night"></div>
+    <aside class="notes">Nach jedem Abend zeigt der Beamer die Bilanz: links der Laden mit Gewinn, geretteten und weggeworfenen Kilo, rechts ihr, wie viele vollständig gekocht haben und was im Kühlschrank verdorben ist. Unten wachsen die Balken über die Woche.</aside>
+  </section>
+
+  <!-- ============================================================ your week -->
+  <section class="slide part" data-part="your week" data-subtitle="you shop at the corner shop for one week"></section>
+
+  <section class="slide">
+    <h2>two players: the agent and you</h2>
+    <div class="figure" id="fig-roles"></div>
+    <div class="footnote">game art: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">Im Spiel gibt es zwei Seiten. Der Agent führt den Laden allein, jeden Abend von acht bis zehn, mit einem Ziel, das einen Konflikt in sich trägt: gut verdienen und möglichst wenig wegwerfen. Ihr seid die andere Seite: Jedes Handy ist eine Studentin oder ein Student mit 28 Euro für die ganze Woche. Neben euch kauft Stammkundschaft ein, die der Computer spielt; das Spiel funktioniert also auch, wenn nur wenige mitmachen.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>how you score</h2>
+    <div class="figure" id="fig-score"></div>
+    <div class="footnote">game art: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">Ihr kauft nur ein, gekocht wird automatisch um 22 Uhr, und zwar mit dem, was zuerst abläuft. Ein vollständiges Abendessen braucht ein Hauptgericht, eine Beilage und etwas Frisches und bringt drei Punkte. Ein Frühstück aus Joghurt oder Milch und Brötchen oder Erdbeeren bringt einen Punkt. Was in eurem Kühlschrank verdirbt, kostet einen Punkt; was nicht gekocht wird, bleibt für den nächsten Abend im Kühlschrank. 28 Euro für sechs Abende sind knapp fünf Euro pro Abend; wer klug einkauft, wartet auf Rabatte, riskiert aber leere Regale. Am Ende gewinnt, wer die meisten Punkte hat.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>on your phone</h2>
+    <div class="figure" id="fig-phones"></div>
+    <aside class="notes">Das sieht ihr am Handy: links der Laden mit Preisen und Datum, und ein Tipp auf Buy kauft ein Stück. Was ihr kauft, landet oben in den Fächern für Abendessen und Frühstück, die sich so füllen. In der Mitte nach jedem Abend, was ihr gekocht habt und was verdorben ist. Rechts am Ende der Woche die Rangliste: Es gewinnt, wer die meisten Punkte hat.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>after any evening, the ranking of all students can come up on the projector</h2>
+    <div class="figure" id="fig-ranking"></div>
+    <aside class="notes">Nach jedem Abend kann ich die Rangliste von euch allen auf den Beamer holen: Punkte, Abendessen, Frühstücke, Verdorbenes und das Geld, das noch übrig ist. So seht ihr zwischendurch, wo ihr steht. Die Namen auf diesem Bild stammen aus einem Probelauf.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>let's open the shop</h2>
+    <div class="figure" id="fig-go"></div>
+    <aside class="notes">Jetzt scannt ihr den QR-Code auf dem Beamer und wählt einen Spitznamen. Während ihr einkauft, schaut dem Agenten zu: Was macht er mit Ware, die nicht warten kann, und würdet ihr ihm euren Laden anvertrauen? Darüber reden wir am Ende der Woche.</aside>
+  </section>
+
+</div>
+<script src="../../stagekit/draw.js?v=0.13.0-cf50bd"></script>
+<script src="../../stagekit/anim.js?v=0.13.0-cf50bd"></script>
+<script src="deck.js?v=2026-11-23-1"></script>
+<script src="../../stagekit/stagekit.js?v=0.13.0-cf50bd"></script>
+</body>
+</html>
