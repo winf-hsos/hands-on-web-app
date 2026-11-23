@@ -382,3 +382,5 @@ dem Durchsatz und seinen Grenzen.
   stehen muss als mit Uhr.
 - Die Zeit für eine Datei ist t = n / (r · b), und die Wahl des Wegs
   entscheidet über beide Hebel.
+
+![Quiz: Abtastung und Synchronisation](item:sampling-and-synchronization-quiz)

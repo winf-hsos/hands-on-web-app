@@ -368,3 +368,5 @@ of its own, that of throughput and its limits.
 - The time for a file is t = n / (r · b), and the choice of a way decides
   about both levers.
 
+
+![Quiz: Sampling and synchronization](item:sampling-and-synchronization-quiz)
