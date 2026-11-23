@@ -113,8 +113,8 @@ updated: 2026-11-23
   > Exactly: the more levels you squeeze into the same range, the smaller the gaps and the sooner noise strikes. Base 10 would mean ten voltage levels instead of two, with correspondingly more errors. On and off is the most robust alphabet there is.
 - [ ] Because base 2 gives shorter numbers, so memory needs fewer digits.
   > The opposite is true: binary numbers are longer, 255 needs eight digits instead of three. The price is happily paid because each digit is nearly indestructible.
-- [ ] Historical accident: the first computers used relays, which only know two positions, and it stayed that way.
-  > Decimal computers actually existed, and they died out because they were more error-prone and more complex. Base 2 won for a physical reason, not out of habit.
+- [ ] Because an international standard prescribes base 2, and all computers must follow it so that they can communicate with each other.
+  > No such standard exists: computers calculated in binary long before they were networked, and network protocols define formats, not the base inside the arithmetic unit. The deciding factor is physics, because two states can be told apart most reliably.
 
 ## The word "bit" has two meanings: a measure of information (one yes/no answer) and a binary digit (a 0 or 1). How do the two fit together? {#ns-006}
 

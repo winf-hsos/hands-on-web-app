@@ -103,8 +103,8 @@ based_on: 2026-11-23
   > Genau: Je mehr Stufen auf denselben Wertebereich verteilt werden, desto kleiner die Abstände und desto eher schlägt das Rauschen zu. Basis 10 hieße zehn Spannungsstufen statt zwei, mit entsprechend mehr Fehlern. An und aus ist das robusteste Alphabet, das es gibt.
 - [ ] Weil sich zur Basis 2 kürzere Zahlen ergeben und der Speicher dadurch weniger Stellen braucht.
   > Das Gegenteil stimmt: Binärzahlen sind länger, die 255 braucht acht Stellen statt drei. Der Preis wird gern bezahlt, weil jede einzelne Stelle dafür fast unzerstörbar ist.
-- [ ] Historischer Zufall: Die ersten Computer arbeiteten mit Relais, die nur zwei Stellungen kennen, und dabei ist es geblieben.
-  > Es gab tatsächlich Dezimalrechner, und sie sind ausgestorben, weil sie fehleranfälliger und aufwendiger waren. Die Basis 2 hat sich aus einem physikalischen Grund durchgesetzt, nicht aus Gewohnheit.
+- [ ] Weil ein internationaler Standard die Basis 2 vorschreibt, an den sich alle Computer halten müssen, damit sie miteinander kommunizieren können.
+  > Einen solchen Standard gibt es nicht: Computer rechneten schon binär, lange bevor sie miteinander vernetzt wurden, und Netzprotokolle legen Formate fest, nicht die Basis im Rechenwerk. Den Ausschlag gibt die Physik, denn zwei Zustände lassen sich am sichersten unterscheiden.
 
 ## Das Wort „Bit“ hat zwei Bedeutungen: Maß für Information (eine Ja/Nein-Antwort) und Binärziffer (eine 0 oder 1). Wie passen die beiden zusammen? {#ns-006}
 
