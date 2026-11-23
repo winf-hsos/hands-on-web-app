@@ -74,6 +74,12 @@ Am Freitag hat unser Agent allen Joghurt und alle Milch weggeworfen, frische War
 
 **Wie weit Agenten kommen.** Nach METR (Time Horizon 1.1, Stand 8. September 2026) schaffen Modelle Softwareaufgaben in der Hälfte der Fälle, für die ein Mensch vom Fach bei GPT-4 (2023) rund vier Minuten, bei Claude Mythos Preview (2026) rund 17 Stunden braucht; seit 2023 verdoppelt sich das etwa alle vier Monate.
 
+**Die zerklüftete Grenze.** Was ein Modell gut kann, hat keine glatte Grenze. In einem Feldexperiment bei der Boston Consulting Group (Dell'Acqua, Mollick u. a. 2023) arbeiteten 758 Beraterinnen und Berater mit oder ohne GPT-4. Bei einer Aufgabe innerhalb der Grenze, Ideen für einen neuen Schuh entwickeln und seinen Weg in den Markt beschreiben, schaffte die Gruppe mit KI 12,2 Prozent mehr, war 25,1 Prozent schneller und über 40 Prozent besser. Bei einer ähnlich aussehenden Aufgabe knapp außerhalb, einer Geschäftsführung aus Tabellenzahlen und Interviewnotizen eine Empfehlung geben, lag sie um 19 Prozentpunkte seltener richtig. Ethan Mollick nennt das die jagged frontier: Von innen sieht man nicht, wo die Grenze verläuft, also muss geprüft werden, was möglich aussieht.
+
+**Die Grenze wandert.** Mit jeder Modellgeneration wächst die Fläche und ändert ihre Form (ein vereinfachtes Bild, keine Messung): 2023 lagen Texte glätten und Fehlermeldungen erklären drinnen, 2025 kamen Code schreiben und Olympiade-Mathematik hinzu, 2026 stundenlanges Arbeiten ohne Aufsicht und offene Probleme der Mathematik. Beurteilen, worauf es ankommt, und nur Quellen zitieren, die es gibt, lagen 2026 noch draußen. Dass KI um 2027 alles kann, was Menschen können, ist eine Hypothese (etwa im Szenario AI 2027). Mit jedem neuen Modell prüft man also neu, was drinnen liegt.
+
+**Mathematik.** Im Juli 2025 erreichten Modelle von Google DeepMind und OpenAI bei der Internationalen Mathematik-Olympiade Goldniveau (35 von 42 Punkten). Im Januar 2026 wurde das Erdős-Problem 728 mit GPT-5.2 Pro gelöst und der Beweis maschinell geprüft; im Mai 2026 fand ein internes Modell von OpenAI ein Gegenbeispiel zu Erdős' Vermutung über Einheitsabstände von 1946, nach Quanta Magazine der erste historisch bedeutsame Beweis aus einem KI-Modell. Am 20. November 2026 gab Levent Alpöge, Mathematiker bei Anthropic, bekannt, mit Claude einen Beweis der Riemannschen Vermutung gefunden zu haben, offen seit 1859. Der Beweis liegt in Lean vor, wo ein Computer jeden Schritt prüft, und wurde dort unabhängig nachgeprüft; eine Fassung, die Menschen lesen können, steht noch aus. Die Grenze wandert dort am schnellsten, wo ein Programm das Ergebnis prüfen kann, und genau das fehlt bei den Entscheidungen in einem Laden.
+
 ## Vorsicht
 
 **Der Freitag.** Die Bestätigungsseite der Tafel trug am Freitag einen für Menschen unsichtbaren Text, eine angebliche Lebensmittelwarnung mit der Aufforderung, allen Joghurt und alle Milch wegzuwerfen, und der Agent hat es getan. Das ist indirekte Prompt Injection (Greshake et al., 2023).
@@ -96,6 +102,11 @@ Würdet ihr ihm euren Laden anvertrauen? Was darf er allein, was braucht euer Ja
 
 ## Quellen
 
+- Dell'Acqua, F., McFowland, E., Mollick, E. R. et al. (2023). Navigating the jagged technological frontier. Harvard Business School Working Paper 24-013. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4573321
+- Kokotajlo, D. et al. (2025). AI 2027. https://ai-2027.com
+- Quanta Magazine (2026, 3. August). Why the legendary Erdős problems are falling to AI. https://www.quantamagazine.org/why-the-legendary-erdos-problems-are-falling-to-ai-20260803/
+- Scientific American (2026, 20. November). Anthropic mathematician claims to prove Riemann hypothesis, most famous problem in all of math. https://www.scientificamerican.com/article/anthropic-mathematician-claims-to-prove-riemann-hypothesis-most-famous-problem-in-all-of-math/
+- Alpöge, L. (2026). Erklärung zum Beweis der Riemannschen Vermutung. https://alpo.ge/remark.pdf
 - Greshake, K. et al. (2023). Not what you've signed up for: Compromising real-world LLM-integrated applications with indirect prompt injection. https://arxiv.org/abs/2302.12173
 - Meta (2024). Introducing Meta Llama 3. https://ai.meta.com/blog/meta-llama-3/
 - METR (2026). Task-completion time horizons of frontier AI models, Time Horizon 1.1, Stand 8. September 2026. https://metr.org/time-horizons/

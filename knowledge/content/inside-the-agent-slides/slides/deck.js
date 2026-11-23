@@ -476,3 +476,134 @@ iconList("fig-shop", WARN, c.yellow, [
   "who is responsible when it throws good food away?",
   "where in the food chain would you use an agent, and where not?",
 ], 180, 220);
+
+// ------------------------------------------------------------------
+// The jagged frontier, after the deck "ai as a copilot in empirical research" (ai-research-support-slides),
+// with tasks that are not about research: the two tasks of the study itself, and general tasks on the
+// moving frontier. Figures 1680 x 660 (slides with a punchline).
+// Sources:
+// - Dell'Acqua et al. (2023), HBS Working Paper 24-013: 758 BCG consultants, GPT-4. Inside the frontier
+//   (ideas for a new shoe and how to bring it to market) 12.2 % more tasks, 25.1 % faster, more than 40 %
+//   higher quality; outside it (advising a CEO from spreadsheet figures and interview notes) 19
+//   percentage points less often correct.
+// - The moving frontier is a simplified picture of the idea, not a measurement; 2027 is a hypothesis, as
+//   in Kokotajlo et al. (2025), AI 2027. Olympiad math: Google DeepMind and OpenAI at IMO 2025 (35 of 42
+//   points, July 2025). Work alone for hours: METR time horizon (previous slide). Open math problems:
+//   the headlines on the next slide.
+// - Headlines: Quanta Magazine, "Why the legendary Erdős problems are falling to AI" (3 August 2026):
+//   Erdős 728 with GPT-5.2 Pro, certified with Aristotle (January 2026); OpenAI's counterexample to the
+//   unit distance conjecture (20 May 2026), "the first historically significant proof to come from an AI
+//   model". Scientific American (20 November 2026) and the statement of Levent Alpöge
+//   (https://alpo.ge/remark.pdf): a proof of the Riemann hypothesis found with Claude, formalized in
+//   Lean; a write-up that humans can read is still to come.
+// ------------------------------------------------------------------
+const FH = 660;
+const F = { cx: 840, cy: 330, hx: 1.8 };
+const FRONTIER_YEARS = ["2023", "2025", "2026", "2027?"];
+const FRONTIER_SHAPES = [
+  // 2023
+  [230, 205, 232, 198, 226, 205, 140, 205, 228, 196, 232, 204, 230, 206, 228, 198, 226, 204, 214, 204, 230, 200, 232, 206],
+  // 2025: far out to the upper left and upper right
+  [300, 260, 300, 230, 270, 220, 150, 225, 265, 225, 290, 270, 320, [-3, 360], 410, 300, 270, 240, 225, 245, 280, 300, [4, 420], 370],
+  // 2026: out to the left, the right and the bottom corners
+  [420, 400, 420, 260, 300, 250, 150, 250, 300, 280, 420, 400, 420, 380, [6, 420], 320, 300, 250, 225, 260, 280, 330, 440, [-5, 400]],
+  // 2027?: around everything
+  [455, 430, 450, 400, 360, 320, 305, 325, 355, 410, 440, 420, 455, 430, 400, 330, 300, 290, 300, 320, 355, 410, 445, 425],
+];
+function frontierPoints(s) {
+  return FRONTIER_SHAPES[s].map((v, k) => {
+    const [shift, r] = Array.isArray(v) ? v : [0, v];
+    const a = ((k * 15 + shift) * Math.PI) / 180;
+    return [F.cx + r * Math.cos(a) * F.hx, F.cy + r * Math.sin(a)];
+  });
+}
+const pointsAttr = (pts) => pts.map((p) => p.map((v) => +v.toFixed(1)).join(",")).join(" ");
+// the frontier, blue because inside it the AI does the work; with `from` it morphs from that shape to
+// this one (only when stepping forward live)
+function frontierPolygon(pts, from) {
+  const morph = from ? `<animate attributeName="points" from="${pointsAttr(from)}" to="${pointsAttr(pts)}" dur="1.8s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.42 0 0.58 1"/>` : "";
+  return `<polygon points="${pointsAttr(pts)}" fill="${c.blue}" fill-opacity="0.2" stroke="${c.blue}" stroke-width="3" stroke-linejoin="round">${morph}</polygon>`;
+}
+// a dark outline behind the letters, so an edge of the frontier passing behind a label does not run
+// through its text
+const halo = (svgText) => svgText.replace(/<text /g, `<text paint-order="stroke" stroke="${c.bg}" stroke-width="10" stroke-linejoin="round" `);
+const fdot = (x, y, col, r = 10) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${col}"/>`;
+
+function figFrontier() {
+  const parts = [frontierPolygon(frontierPoints(0))];
+  parts.push(d.label(F.cx, 0, "inside the frontier", { size: 48, color: c.white, anchor: "middle", centerY: 215 }));
+  parts.push(d.label(F.cx, 0, "e.g. ideas for a new shoe and how to sell it", { size: 20, color: c.gray, anchor: "middle", centerY: 262 }));
+  ["12.2 % more tasks done", "25.1 % faster", "over 40 % higher quality"].forEach((t, i) => {
+    parts.push(d.label(F.cx, 0, t, { size: 32, color: c.green, anchor: "middle", centerY: 316 + i * 44 }));
+  });
+  parts.push(d.label(F.cx, 0, "with ai than without", { size: 20, color: c.gray, anchor: "middle", centerY: 444 }));
+  // the notch: a task that looks alike but lies outside
+  parts.push(fdot(F.cx, 500, c.yellow, 12));
+  parts.push(d.label(F.cx, 0, "a task that looks alike", { size: 32, color: c.yellow, anchor: "middle", centerY: 584 }));
+  parts.push(d.label(F.cx, 0, "e.g. advise a CEO from spreadsheet figures and interview notes", { size: 20, color: c.gray, anchor: "middle", centerY: 630, keepCase: true }));
+  // outside: everything around the shape
+  parts.push(d.label(0, 0, "outside\nthe frontier", { size: 48, color: c.white, centerY: 300 }));
+  parts.push(d.label(1290, 0, "19 percentage points\nless often correct", { size: 32, color: c.red, centerY: 300, lineHeight: 1.3 }));
+  parts.push(d.label(1290, 0, "with ai than without", { size: 20, color: c.gray, centerY: 376 }));
+  return d.svg(W, FH, ...parts);
+}
+
+// The frontier moves: tasks as dots, each coming inside in one year (step 0: 2023). Outside gray, just
+// come inside yellow, inside white. [label, x, y, step it comes inside, where the label sits]
+const GROW_TASKS = [
+  ["polish a text", 600, 340, 0, "right"],
+  ["explain an error", 1080, 420, 0, "left"],
+  ["write code", 250, 180, 1, "below"],
+  ["olympiad math", 1440, 180, 1, "below"],
+  ["work alone for hours", 200, 470, 2, "below"],
+  ["open math problems", 1470, 470, 2, "below"],
+  ["judge what matters", 840, 60, 3, "right"],
+  ["cite only real sources", 840, 500, 3, "far below"],
+];
+const PRINT = /[?&]print/.test(location.search);
+function figGrowth(step, from) {
+  const parts = [frontierPolygon(frontierPoints(step), from === undefined ? null : frontierPoints(from))];
+  parts.push(d.label(F.cx, 0, "inside the frontier", { size: 48, color: c.white, anchor: "middle", centerY: 245 }));
+  parts.push(d.label(0, 0, FRONTIER_YEARS[step], { size: 48, color: step === 3 ? c.yellow : c.white, centerY: 40 }));
+  if (step === 3) parts.push(d.label(170, 0, "a hypothesis: ai can do everything\nhumans can, and better", { size: 20, color: c.yellow, centerY: 40, lineHeight: 1.3 }));
+  GROW_TASKS.forEach(([t, x, y, k, at]) => {
+    const col = k > step ? c.gray : (k === step && step > 0 ? c.yellow : c.white);
+    parts.push(fdot(x, y, col));
+    const o = { size: 32, color: col, centerY: y };
+    const lab = at === "right" ? d.label(x + 22, 0, t, o)
+      : at === "left" ? d.label(x - 22, 0, t, { ...o, anchor: "end" })
+      : d.label(x, 0, t, { ...o, anchor: "middle", centerY: y + (at === "below" ? 42 : 100) });
+    parts.push(halo(lab));
+  });
+  return d.svg(W, FH, ...parts);
+}
+let growthShown = null;
+function showGrowth(slide, step) {
+  step = step || 0;
+  // morph only when stepping forward live, never in print or export
+  const from = !PRINT && growthShown === step - 1 ? step - 1 : undefined;
+  el("fig-growth").innerHTML = figGrowth(step, from);
+  growthShown = step;
+}
+el("fig-frontier").innerHTML = figFrontier();
+el("fig-growth").innerHTML = figGrowth(0);
+
+// Headlines from mathematics, one per step, the newest in yellow.
+(() => {
+  const ROWS = [
+    ["jul 2025", "Google DeepMind and OpenAI reach gold medal level at the International Mathematical Olympiad", "35 of 42 points, five of six problems solved"],
+    ["jan 2026", "Erdős problem 728 solved with GPT-5.2 Pro, the proof checked by a computer", "one of the open problems Paul Erdős left behind"],
+    ["may 2026", "an OpenAI model disproves Erdős's unit distance conjecture from 1946", "the first historically significant proof from an ai model, as Quanta Magazine puts it"],
+    ["nov 2026", "a mathematician and Claude announce a proof of the Riemann hypothesis", "open since 1859; checked by computer in Lean, a version humans can read is still to come"],
+  ];
+  const rows = ROWS.map(([when, head, sub], i) => {
+    const cy = 70 + i * 160, col = i === ROWS.length - 1 ? c.yellow : c.white;
+    const row = d.label(0, 0, when, { size: 32, color: i === ROWS.length - 1 ? c.yellow : c.gray, centerY: cy })
+      + d.label(220, 0, head, { size: 32, color: col, centerY: cy, keepCase: true })
+      + d.label(220, 0, sub, { size: 20, color: c.gray, centerY: cy + 44, keepCase: true });
+    return i ? d.g(`m${i}`, row) : row;
+  });
+  el("fig-math").innerHTML = d.svg(W, FH, ...rows);
+  const a = d.anim("fig-math", { back: "play" });
+  ROWS.slice(1).forEach((_, i) => a.step(a.show(`m${i + 1}`, { dur: 400 })));
+})();

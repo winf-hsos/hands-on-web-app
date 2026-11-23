@@ -277,6 +277,31 @@
     <aside class="notes">Unser Agent hatte kurze Abende mit drei Check-ins; heutige Agenten arbeiten viel länger allein, und mit jeder Stunde wächst, was ohne Kontrolle geschieht. Die Forschungsgruppe METR misst, wie lang eine Aufgabe sein darf, gemessen an der Zeit, die ein Mensch vom Fach braucht, damit ein Modell sie in der Hälfte der Fälle allein schafft. GPT-4 schaffte 2023 Aufgaben von rund vier Minuten, Anfang 2025 waren es rund eine Stunde, im Frühjahr 2026 rund 17 Stunden, also zwei Arbeitstage. Seit 2023 verdoppelt sich diese Länge etwa alle vier Monate. Es sind Softwareaufgaben, gut beschrieben und automatisch prüfbar, und „in der Hälfte der Fälle“ heißt auch: in der anderen Hälfte nicht. Je länger ein Agent allein arbeitet, desto mehr Gelegenheiten hat ein versteckter Text wie unser Freitag, und desto wichtiger ist es zu prüfen, was er abliefert.</aside>
   </section>
 
+  <section class="slide has-punch">
+    <h2>the jagged frontier</h2>
+    <div class="figure" id="fig-frontier"></div>
+    <div class="footnote"><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4573321" target="_blank" rel="noopener"><span class="keep-case">Dell'Acqua, Mollick et al.</span> (2023), <span class="keep-case">HBS</span> working paper 24-013</a>: 758 consultants, <span class="keep-case">GPT-4</span>; the term also in <span class="keep-case">Mollick, Co-Intelligence</span> (2024)</div>
+    <div class="punch">from the inside you cannot see where the frontier runs, so what looks possible still has to be checked.</div>
+    <aside class="notes">Wo ist ein Modell gut, wo nicht? In einem Feldexperiment bei der Boston Consulting Group bearbeiteten 758 Beraterinnen und Berater realistische Aufgaben, ein Teil mit GPT-4, ein Teil ohne. Die eine Aufgabe lag innerhalb der Grenze dessen, was das Modell gut kann: Ideen für einen neuen Schuh entwickeln und beschreiben, wie man ihn auf den Markt bringt. Dort schaffte die Gruppe mit KI 12,2 Prozent mehr Aufgaben, war 25,1 Prozent schneller und lieferte über 40 Prozent bessere Qualität. Die andere Aufgabe sah ähnlich aus, lag aber knapp außerhalb: aus Tabellenzahlen und Interviewnotizen einer Geschäftsführung raten, auf welche Marke sie setzen soll. Dort kam die Gruppe mit KI um 19 Prozentpunkte seltener zur richtigen Antwort, weil sie der überzeugend klingenden Antwort folgte. Ethan Mollick, einer der Autoren, nennt das die zerklüftete Grenze, die jagged frontier: Die blaue Fläche ist, was das Modell gut kann, und der gelbe Punkt sitzt in einer Kerbe, eine Aufgabe, die aussieht wie die drinnen, aber draußen liegt.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="showGrowth" data-on-step="showGrowth">
+    <h2>the frontier moves</h2>
+    <div class="figure" id="fig-growth"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <div class="footnote">a simplified picture of the idea, not a measurement; after <span class="keep-case">Mollick, Co-Intelligence</span> (2024); 2027 as a hypothesis, as in <a href="https://ai-2027.com" target="_blank" rel="noopener"><span class="keep-case">Kokotajlo et al. (2025), AI 2027</span></a></div>
+    <div class="punch" data-step="3">the frontier grows and changes its shape, so with every new model you test again what lies inside.</div>
+    <aside class="notes">Ein vereinfachtes Bild der Idee, keine Messung. Die Fläche ist dieselbe wie auf der letzten Folie, darum herum liegen Aufgaben. 2023 lagen einen Text glätten und eine Fehlermeldung erklären schon drinnen. Mit jeder Modellgeneration wächst die Grenze, aber sie wird nicht einfach größer, sie ändert ihre Form, und die Kerben wandern mit. 2025 kamen Code schreiben und Olympiade-Mathematik hinein: Im Juli 2025 erreichten Modelle von Google DeepMind und OpenAI bei der Internationalen Mathematik-Olympiade Goldniveau. 2026 kamen stundenlanges Arbeiten ohne Aufsicht hinzu, wie auf der METR-Folie, und offene Probleme der Mathematik, dazu gleich mehr; gelb ist, was gerade hineingekommen ist. Beurteilen, worauf es ankommt, und nur Quellen zitieren, die es wirklich gibt, lagen 2026 noch draußen. Der letzte Schritt ist eine Hypothese, keine Vorhersage: Manche, etwa die Autoren des Szenarios AI 2027 oder der Chef von Anthropic, Dario Amodei, erwarten, dass KI um 2027 alles kann, was Menschen können, und besser. Ob das eintritt oder nicht, die Grenze bleibt in Bewegung, und deshalb ist die Frage nie nur, ob KI eine Aufgabe im Allgemeinen kann, sondern ob genau diese Aufgabe innerhalb der Grenze des Modells liegt, das ihr gerade benutzt.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>the frontier now reaches famous open problems in mathematics</h2>
+    <div class="figure" id="fig-math"></div>
+    <div class="footnote"><a href="https://www.quantamagazine.org/why-the-legendary-erdos-problems-are-falling-to-ai-20260803/" target="_blank" rel="noopener"><span class="keep-case">Quanta Magazine</span>, 3 aug 2026</a> · <a href="https://www.scientificamerican.com/article/anthropic-mathematician-claims-to-prove-riemann-hypothesis-most-famous-problem-in-all-of-math/" target="_blank" rel="noopener"><span class="keep-case">Scientific American</span>, 20 nov 2026</a> · <a href="https://alpo.ge/remark.pdf" target="_blank" rel="noopener">statement by <span class="keep-case">Levent Alpöge</span></a></div>
+    <div class="punch" data-step="4">the frontier moves fastest where a program checks the result, and no program checks a shop's decisions.</div>
+    <aside class="notes">Ein paar Schlagzeilen aus der Mathematik, Schritt für Schritt. Im Juli 2025 erreichten Modelle von Google DeepMind und OpenAI bei der Internationalen Mathematik-Olympiade Goldniveau, 35 von 42 Punkten. Im Januar 2026 wurde das Erdős-Problem 728 mit GPT-5.2 Pro gelöst, der Beweis von einem Programm geprüft; Paul Erdős hat Hunderte offener Probleme hinterlassen, und seither fallen immer mehr davon. Im Mai 2026 fand ein internes Modell von OpenAI ein Gegenbeispiel zu Erdős' Vermutung über Einheitsabstände von 1946, laut Quanta Magazine der erste historisch bedeutsame Beweis, der von einem KI-Modell kommt. Und am 20. November 2026 hat Levent Alpöge, ein Mathematiker bei Anthropic, bekanntgegeben, dass er zusammen mit Claude einen Beweis der Riemannschen Vermutung gefunden hat, des wohl berühmtesten offenen Problems der Mathematik, offen seit 1859. Der Beweis liegt in Lean vor, einer Sprache, in der ein Computer jeden Schritt prüft, und unabhängige Fachleute haben ihn dort nachgeprüft. Was noch fehlt, ist eine Fassung, die Menschen lesen und verstehen können; Alpöge selbst schreibt, das Argument sei im Moment unglaublich lang. Dass gerade die Mathematik so schnell fällt, hat einen Grund, den wir im Teil Reasoning gesehen haben: Ein Beweis lässt sich von einem Programm prüfen, und wo eine Prüfung möglich ist, lässt sich ein Modell mit Belohnungen trainieren. Ob eine Abschrift auf das Brot richtig war oder ob die Tafel die Joghurts noch brauchen kann, prüft kein Programm, und deshalb bleibt dort eure Kontrolle gefragt.</aside>
+  </section>
+
   <!-- ============================================================ be careful -->
   <section class="slide part" data-part="be careful" data-subtitle="what happened on friday"></section>
 
@@ -353,8 +378,8 @@
 </div>
 <script src="../../stagekit/draw.js?v=0.13.0-cf50bd"></script>
 <script src="../../stagekit/anim.js?v=0.13.0-cf50bd"></script>
-<script src="deck.js?v=2026-11-23-3"></script>
-<script src="aai.js?v=2026-11-23-3"></script>
+<script src="deck.js?v=2026-11-23-4"></script>
+<script src="aai.js?v=2026-11-23-4"></script>
 <script src="../../stagekit/stagekit.js?v=0.13.0-cf50bd"></script>
 </body>
 </html>
