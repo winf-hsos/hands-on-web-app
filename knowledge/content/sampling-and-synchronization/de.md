@@ -11,7 +11,7 @@ objectives:
   intro: "Am Beispiel einer Strecke, die Farben mit einer LED sendet und mit einem Sensor misst, zeigt dir diese Lektion, wie Sender und Empfänger sich einigen, wann ein Symbol beginnt, und danach kannst du:"
   goals:
     - "erklären, warum ein Empfänger keine Grenzen zwischen Symbolen sieht und warum zwei gleiche Symbole hintereinander zu einem verschmelzen"
-    - "aus dem Unterschied zweier Uhren und der Symbolrate berechnen, nach wie vielen Sekunden der Empfänger das Nachbarsymbol liest, und begründen, warum dafür ein halbes Symbol Fehler genügt"
+    - "aus dem Unterschied zweier Uhren und der Symbolrate berechnen, nach wie vielen Sekunden der Empfänger das Nachbarsymbol liest, und begründen, warum der Spielraum für diesen Fehler höchstens ein halbes Symbol beträgt"
     - "erklären, warum Symbole, die kürzer sind als die Integrationszeit des Sensors, Messwerte liefern, die zu keinem Symbol passen"
     - "beschreiben, wie Marken den Uhrenfehler begrenzen und was sie an Rate kosten"
     - "Bits als Wechsel zwischen drei Farben kodieren und dekodieren, sodass es immer einen Wechsel zu sehen gibt"
@@ -22,7 +22,7 @@ translation_of: en
 based_on: 2026-11-23
 ---
 
-![Folien: Den Takt halten](item:sampling-and-synchronization-slides)
+![Folien: Abtastung und Synchronisation](item:sampling-and-synchronization-slides)
 
 Achtzig Musikerinnen und Musiker in einem Orchester können alle Takt halten,
 und trotzdem liefen sie ohne jemanden, der den Takt gibt, nach einer Minute
@@ -46,11 +46,11 @@ Farben aufeinandertreffen, sieht der Empfänger einen Wechsel, aber wo
 dieselbe Farbe auf sich selbst folgt, verschmelzen die beiden Symbole zu
 einem langen Stück, und nichts im Licht verrät, ob es eines war oder zwei.
 
-Der Empfänger liest ein Symbol außerdem nicht nur einmal. Er misst innerhalb
-eines Symbols viele Male und mittelt, weil einzelne Messwerte streuen, wie
-[[signal-and-noise|Signal und Rauschen]] gezeigt hat. Wenn diese Lektion von
-dem Messwert spricht, den der Empfänger in einem Symbol nimmt, meint sie
-diesen Mittelwert. Die Frage ist, wann er ihn nimmt: Der Empfänger muss
+Der Empfänger nimmt pro Symbol einen Messwert. Diesen mittelt der Sensor
+bereits über ein kurzes Messfenster, weil einzelne Werte streuen, wie
+[[signal-and-noise|Signal und Rauschen]] gezeigt hat, und wenn diese Lektion
+von dem Messwert spricht, den der Empfänger in einem Symbol nimmt, meint sie
+diesen einen Wert. Die Frage ist, wann er ihn nimmt: Der Empfänger muss
 wissen, wo ein Symbol beginnt und endet, und das Licht allein sagt es ihm
 nicht.
 
@@ -91,7 +91,7 @@ den Durchschnitt, seine **Integrationszeit**, die
 [[signal-and-noise|Signal und Rauschen]] als Mittel gegen unruhige Messwerte
 eingeführt hat. Das geht gut, solange das Fenster in ein Symbol passt.
 
-![Zwei Felder auf derselben Zeitachse. Links wechseln Symbole von 100 ms zwischen hell und dunkel, und ein gelbes Fenster von 50 ms liegt ganz in einem hellen Symbol; auf der Skala darunter sitzt der Messwert bei hell, und das Urteil lautet liest hell. Rechts Symbole von 40 ms, und dasselbe Fenster überdeckt einen Teil eines hellen und einen Teil eines dunklen Symbols; der Messwert sitzt bei einem Mischwert, und das Urteil lautet passt zu keinem Symbol.](figure:window "Dasselbe Messfenster von 50 ms bei Symbolen von 100 ms und von 40 ms. Sobald die Symbole kürzer sind als das Fenster, enthält jede Messung einen Wechsel.")
+![Zwei Felder auf derselben Zeitachse. Links wechseln Symbole von 100 ms zwischen hell und dunkel, und ein gelbes Fenster von 50 ms liegt ganz in einem hellen Symbol; das Kästchen darunter zeigt den Durchschnitt, den der Sensor meldet, reines Hell, und das Urteil lautet liest hell. Rechts Symbole von 40 ms, und dasselbe Fenster überdeckt einen Teil eines hellen und einen Teil eines dunklen Symbols; das Kästchen darunter zeigt ein Grau zwischen hell und dunkel, und das Urteil lautet passt zu keinem Symbol.](figure:window "Dasselbe Messfenster von 50 ms bei Symbolen von 100 ms und von 40 ms. Sobald die Symbole kürzer sind als das Fenster, enthält jede Messung einen Wechsel.")
 
 Bei Symbolen von 100 ms und einem Fenster von 50 ms kann jede Messung ganz in
 einem Symbol liegen, und der Wert passt. Bei Symbolen von 40 ms enthält jedes
@@ -112,11 +112,17 @@ an.
 Nimm zwei Uhren, die sich um ein halbes Prozent unterscheiden, ein
 realistischer Wert für zwei gewöhnliche Geräte. Nach einer Sekunde liegen sie
 5 ms auseinander, nach zehn Sekunden 50 ms, und der Fehler wächst in einer
-geraden Linie weiter. Der Empfänger braucht keinen ganzen Symbolfehler, um zu
-scheitern, ein halbes Symbol genügt: Seine Messung sitzt in der Mitte des
-Schlitzes und hat nach jeder Seite nur die halbe Breite Platz. Bei zehn
-Symbolen pro Sekunde dauert ein Symbol 100 ms, also erreicht der Fehler nach
-zehn Sekunden 50 ms, und der Empfänger liest den Nachbarn.
+geraden Linie weiter. Wie viel davon der Empfänger verträgt,
+folgt daraus, wo er misst. Er nimmt seinen Messwert in der Mitte eines
+Symbols, und bei zehn Symbolen pro Sekunde dauert ein Symbol 100 ms, also
+sind es nach jeder Seite 50 ms bis zum Rand. Sobald der Fehler diese 50 ms
+überschreitet, misst der Empfänger im Nachbarsymbol, und das geschieht nach
+zehn Sekunden. Ein halbes Symbol ist der größte Spielraum, den eine Messung
+hat, und oft hat sie weniger, weil das Messfenster des Sensors als Ganzes ins
+Symbol passen muss: Bei einem Fenster von 20 ms bleiben nach jeder Seite
+40 ms, und die Strecke kippt schon nach acht Sekunden. Die Rechnung unten
+nimmt den günstigsten Fall an, eine echte Strecke kippt also nicht später,
+als sie sagt.
 
 Je schneller die Strecke, desto kürzer die Symbole, während der Fehler gleich
 schnell wächst:
@@ -125,8 +131,8 @@ schnell wächst:
 drift = 0.005    # die beiden Uhren unterscheiden sich um 0,5 %
 
 for rate in [1, 2, 5, 10, 20]:
-    half = 1 / rate / 2          # ein halbes Symbol, in Sekunden
-    print(f"{rate:2} Symbole pro Sekunde: falsch nach {half / drift:.0f} s")
+    room = 1 / rate / 2          # Mitte bis Rand, in Sekunden
+    print(f"{rate:2} Symbole pro Sekunde: falsch nach {room / drift:.0f} s")
 ```
 
 Dieselben zwei Uhren halten bei einem Symbol pro Sekunde 100 Sekunden durch
@@ -262,7 +268,11 @@ verschwinden und wieder `100` herauskommt. Setz die Schwelle auf 1, und der
 Dekodierer stolpert über die Mischwerte. Zeit spielt außerdem noch auf eine
 zweite Art eine Rolle, denn wie viele Wechsel pro Sekunde die Strecke
 schafft, entscheidet, wie schnell sie ist, mit denselben Grenzen durch das
-Messfenster wie zuvor.
+Messfenster wie zuvor. Länger als mit Uhr muss eine Farbe dabei nicht
+stehen, denn die Schwelle zählt Messungen und keine Millisekunden: Ein
+Empfänger, der oft misst, bringt seine zwei Messungen in einem gleich langen
+Symbol unter, und auf beiden Wegen setzt das Messfenster das kürzeste
+Symbol.
 
 ## Was der Wechsel an Bits kostet
 
@@ -292,14 +302,16 @@ was jeder von ihnen kostet:
 |---|---|---|
 | der Empfänger erkennt das nächste Symbol an | seiner Uhr | einem Wechsel im Licht |
 | was schiefgehen kann | die Uhren laufen auseinander | Mischwerte zählen als Symbole |
-| was hilft | Marken in festen Abständen | eine Farbe muss stillstehen, bevor sie zählt |
+| was hilft | Marken in festen Abständen | Mischwerte werden herausgefiltert |
 | Preis | jede Marke ist ein Symbol ohne Daten | k Farben tragen nur log₂(k − 1) Bits |
 
 Welche Strategie auch immer, am Ende zählt eine Rechnung: Die Zeit *t* für
 eine Datei ist die Zahl der Bits *n* geteilt durch das Produkt aus Symbolen
 pro Sekunde *r* und Bits pro Symbol *b*, also t = n / (r · b). Sie hat genau
-zwei Hebel, und alles in dieser Lektion entscheidet über beide. Das Programm
-vergleicht die beiden Wege für eine Datei von 2 KiB mit vier Farben bei fünf
+zwei Hebel, und alles in dieser Lektion entscheidet über beide. In eine
+Datei von 2 KiB passt etwa ein Schwarz-Weiß-Bild aus 128 × 128 Pixeln mit
+einem Bit pro Pixel, das sind genau 16.384 Bits. Das Programm vergleicht die
+beiden Wege für eine Datei dieser Größe mit vier Farben bei fünf
 Symbolen pro Sekunde:
 
 ```python
@@ -328,8 +340,9 @@ dem Durchsatz und seinen Grenzen.
 - Der Empfänger sieht einen Strom aus Licht ohne Grenzen, und zwei gleiche
   Symbole hintereinander verschmelzen zu einem.
 - Keine zwei Uhren laufen gleich, und ihr Fehler summiert sich von Symbol zu
-  Symbol; ein halbes Symbol Fehler genügt, damit der Empfänger den Nachbarn
-  liest, also kippt eine schnellere Strecke früher.
+  Symbol; weil der Empfänger in der Mitte eines Symbols misst, hat er
+  höchstens ein halbes Symbol Spielraum, bevor er den Nachbarn liest, also
+  kippt eine schnellere Strecke früher.
 - Symbole, die kürzer sind als die Integrationszeit des Sensors, liefern
   Mischwerte, die zu keinem Symbol passen.
 - Marken in festen Abständen setzen den Uhrenfehler zurück, und jede Marke
@@ -340,7 +353,8 @@ dem Durchsatz und seinen Grenzen.
   nach 10BASE-T, RC-5 und USB mit Wechseln.
 - Als Wechsel tragen k Farben nur log₂(k − 1) Bits, also brauchen zwei Bit
   pro Wechsel fünf Farben.
-- Eine Farbe muss stillstehen, bevor sie zählt, also spielt Zeit auch ohne
-  Uhr eine Rolle.
+- Ohne Uhr müssen Mischwerte während eines Wechsels herausgefiltert werden,
+  also spielt Zeit weiter eine Rolle, auch wenn eine Farbe nicht länger
+  stehen muss als mit Uhr.
 - Die Zeit für eine Datei ist t = n / (r · b), und die Wahl des Wegs
   entscheidet über beide Hebel.

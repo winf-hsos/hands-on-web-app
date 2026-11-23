@@ -1,5 +1,5 @@
 ---
-title: Keeping time
+title: Sampling and synchronization
 summary: >-
   Why a transmission tips over above a certain speed: clocks drift apart, and
   the sensor mixes two symbols when one is shorter than its measuring window.

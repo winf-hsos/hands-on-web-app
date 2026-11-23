@@ -1,7 +1,7 @@
 ---
 type: slides
 code: 2879
-title: Den Takt halten
+title: Abtastung und Synchronisation
 summary: >-
   Warum eine Übertragung ab einer bestimmten Geschwindigkeit kippt: Uhren
   laufen auseinander, und der Sensor mischt zwei Symbole, wenn eines kürzer

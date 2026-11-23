@@ -12,7 +12,7 @@ objectives:
   intro: "Using a link that sends colors with an LED and reads them with a sensor, this lesson shows you how sender and receiver agree on when a symbol begins, and afterwards you can:"
   goals:
     - "explain why a receiver sees no borders between symbols and why two equal symbols in a row merge into one"
-    - "calculate from the difference between two clocks and the symbol rate after how many seconds the receiver reads the neighboring symbol, and explain why half a symbol of error is enough"
+    - "calculate from the difference between two clocks and the symbol rate after how many seconds the receiver reads the neighboring symbol, and explain why the room for this error is at most half a symbol"
     - "explain why symbols shorter than the sensor's integration time produce readings that match no symbol"
     - "describe how markers limit the clock error and what they cost in rate"
     - "encode and decode bits as changes between three colors so that there is always a change to see"
@@ -29,7 +29,7 @@ status: draft
 updated: 2026-11-23
 ---
 
-![Slides: Keeping time](item:sampling-and-synchronization-slides)
+![Slides: Sampling and synchronization](item:sampling-and-synchronization-slides)
 
 Eighty musicians in an orchestra can all keep time, and yet without someone
 giving the beat they would drift apart within a minute, because small
@@ -51,10 +51,10 @@ colors meet, the receiver sees a change, but where the same color follows
 itself, the two symbols merge into one long stretch, and nothing in the light
 says whether it was one symbol or two.
 
-The receiver also does not read a symbol once. It measures many times within
-a symbol and averages, because single readings scatter, as
-[[signal-and-noise]] showed. When this lesson speaks of the reading the
-receiver takes in a symbol, it means this average. The question is when to
+The receiver takes one reading per symbol. The sensor already averages that
+reading over a short measuring window, because single values scatter, as
+[[signal-and-noise]] showed, and when this lesson speaks of the reading the
+receiver takes in a symbol, it means this one value. The question is when to
 take it: the receiver has to know where a symbol begins and ends, and the
 light alone does not tell it.
 
@@ -94,7 +94,7 @@ the average, its **integration time**, which [[signal-and-noise]] introduced
 as a way of calming the readings. That works as long as the window fits
 inside one symbol.
 
-![Two panels on the same time scale. On the left symbols of 100 ms alternate between bright and dark, and a yellow window of 50 ms lies entirely inside a bright symbol; on the scale below, the reading sits at bright and the verdict says reads bright. On the right symbols of 40 ms, and the same window covers part of a bright and part of a dark symbol; the reading sits at a mixed value, and the verdict says matches neither symbol.](figure:window "The same measuring window of 50 ms with symbols of 100 ms and of 40 ms. Once the symbols are shorter than the window, every reading contains a change.")
+![Two panels on the same time scale. On the left symbols of 100 ms alternate between bright and dark, and a yellow window of 50 ms lies entirely inside a bright symbol; the box below shows the average the sensor reports, plain bright, and the verdict says reads bright. On the right symbols of 40 ms, and the same window covers part of a bright and part of a dark symbol; the box below shows a gray between bright and dark, and the verdict says matches neither symbol.](figure:window "The same measuring window of 50 ms with symbols of 100 ms and of 40 ms. Once the symbols are shorter than the window, every reading contains a change.")
 
 With symbols of 100 ms and a window of 50 ms, every reading can lie entirely
 inside one symbol and the value fits. With symbols of 40 ms, every window
@@ -112,11 +112,16 @@ rest of this lesson looks at both answers and their price.
 
 Take two clocks that differ by half a per cent, a realistic value for two
 ordinary devices. After one second they are 5 ms apart, after ten seconds
-50 ms, and the error keeps growing in a straight line. The receiver does not
-need a whole symbol of error to fail, since half a symbol is enough: its
-reading sits in the middle of the slot and has only half the width to spare
-on either side. At ten symbols per second a symbol lasts 100 ms, so after
-ten seconds the error reaches 50 ms and the receiver reads the neighbor.
+50 ms, and the error keeps growing in a straight line. How much of it the
+receiver can bear follows from where it reads. It takes its reading in the
+middle of a symbol, and at ten symbols per second a symbol lasts 100 ms, so it
+is 50 ms to either border. Once the error exceeds these 50 ms, the receiver
+reads in the neighboring symbol, which happens after ten seconds. Half a
+symbol is the most room a reading has, and often it has less, because the
+sensor's measuring window has to fit into the symbol as a whole: with a
+window of 20 ms, 40 ms remain on either side, and the link tips after eight
+seconds already. The calculation below assumes the most favorable case, so a
+real link tips no later than it says.
 
 The faster the link, the shorter the symbols, while the error grows at the
 same pace:
@@ -125,8 +130,8 @@ same pace:
 drift = 0.005    # the two clocks differ by 0.5 %
 
 for rate in [1, 2, 5, 10, 20]:
-    half = 1 / rate / 2          # half a symbol, in seconds
-    print(f"{rate:2} symbols per second: wrong after {half / drift:.0f} s")
+    room = 1 / rate / 2          # middle to border, in seconds
+    print(f"{rate:2} symbols per second: wrong after {room / drift:.0f} s")
 ```
 
 The same two clocks last 100 seconds at one symbol per second and only 5 at
@@ -254,7 +259,11 @@ readings count as a color, so the three mixed values disappear and the result
 is again `100`. Set the threshold to 1, and the decoder stumbles over the
 mixed values. Time still matters in a second way, because how many changes
 per second the link manages decides how fast it is, with the same limits from
-the measuring window as before.
+the measuring window as before. A color does not have to last longer than with
+a clock, though, since the threshold counts readings rather than
+milliseconds: a receiver that reads often fits its two readings into a symbol
+of the same length, and in both ways the measuring window sets the shortest
+symbol.
 
 ## What the change costs in bits
 
@@ -283,14 +292,16 @@ Neither way is right or wrong, and the table compares what each of them costs:
 |---|---|---|
 | the receiver knows the next symbol from | its clock | a change in the light |
 | what can go wrong | the clocks drift apart | mixed values count as symbols |
-| what helps | markers at fixed intervals | a color must hold still before it counts |
+| what helps | markers at fixed intervals | mixed readings are filtered out |
 | price | every marker is a symbol without data | k colors carry only log₂(k − 1) bits |
 
 Whatever the strategy, in the end one calculation counts: the time *t* for a
 file is the number of bits *n* divided by the product of symbols per second
 *r* and bits per symbol *b*, so t = n / (r · b). It has exactly two levers,
-and everything in this lesson decides about both. The program compares the
-two ways for a file of 2 KiB with four colors at five symbols per second:
+and everything in this lesson decides about both. A file of 2 KiB holds, for
+instance, a black-and-white picture of 128 × 128 pixels with one bit per
+pixel, which makes exactly 16,384 bits. The program compares the two ways for
+a file of this size with four colors at five symbols per second:
 
 ```python
 import math
@@ -317,8 +328,8 @@ of its own, that of throughput and its limits.
 - The receiver sees a stream of light without borders, and two equal symbols
   in a row merge into one.
 - No two clocks run alike, and their error adds up from symbol to symbol;
-  half a symbol of error is enough for the receiver to read the neighbor, so
-  a faster link breaks sooner.
+  since the receiver reads in the middle of a symbol, it has at most half a
+  symbol of room before it reads the neighbor, so a faster link breaks sooner.
 - Symbols shorter than the sensor's integration time produce mixed readings
   that match no symbol.
 - Markers at fixed intervals reset the clock error, and each marker costs a
@@ -329,8 +340,9 @@ of its own, that of throughput and its limits.
   RC-5 and USB work with changes.
 - As changes, k colors carry only log₂(k − 1) bits, so two bits per change
   need five colors.
-- A color has to hold still before it counts, so time still matters without
-  a clock.
+- Without a clock, mixed readings during a change have to be filtered out,
+  so time still matters, although a color need not last longer than with a
+  clock.
 - The time for a file is t = n / (r · b), and the choice of a way decides
   about both levers.
 

@@ -42,9 +42,10 @@
   // Two panels on the same time scale, 2 units per ms. Left, symbols of
   // 100 ms (200 units) and a measuring window of 50 ms (100 units, yellow)
   // inside one bright symbol. Right, symbols of 40 ms (80 units): the same
-  // window covers 60 units of bright and 40 of dark. Below each a scale from
-  // dark to bright with the reading on it, and a verdict. Bright and dark are
-  // gray levels, so green and red keep their meaning.
+  // window covers 60 units of bright and 40 of dark. Below each window a box
+  // of the same width with the average brightness the sensor reports, and a
+  // verdict. Bright and dark are gray levels, so green and red keep their
+  // meaning.
   const strip = (x0, x1, len, c) => {
     const parts = [];
     for (let x = x0, k = 0; x < x1; x += len, k += 1) {
@@ -52,13 +53,11 @@
     }
     return parts;
   };
-  const gauge = (x0, x1, f, t, c) => [
-    d.line(x0, 340, x1, 340, { color: c.gray, width: 3 }),
-    d.line(x0, 325, x0, 355, { color: c.gray, width: 3 }),
-    d.line(x1, 325, x1, 355, { color: c.gray, width: 3 }),
-    d.label(x0, 0, t('dunkel', 'dark'), { anchor: 'middle', centerY: 390, color: c.gray }),
-    d.label(x1, 0, t('hell', 'bright'), { anchor: 'middle', centerY: 390, color: c.gray }),
-    circle(x0 + f * (x1 - x0), 340, 17, c.yellow),
+  const average = (x, f, c) => [
+    d.arrow(x + 50, 222, x + 50, 270, { color: c.gray }),
+    rect(x, 280, 100, 100, c.dark),
+    rect(x, 280, 100, 100, c.light, f < 1 ? ` fill-opacity="${f}"` : ''),
+    rect(x, 280, 100, 100, 'none', ` stroke="${c.yellow}" stroke-width="5"`),
   ];
 
   figure('window', {
@@ -69,14 +68,15 @@
         d.label(400, 0, t('Symbole von 100 ms', 'symbols of 100 ms'), { anchor: 'middle', centerY: 50 }),
         ...strip(40, 760, 200, c),
         rect(490, 88, 100, 124, 'none', ` stroke="${c.yellow}" stroke-width="5"`),
-        d.label(540, 0, t('Fenster 50 ms', 'window 50 ms'), { anchor: 'middle', centerY: 245, color: c.yellow }),
-        ...gauge(100, 700, 1, t, c),
+        d.label(470, 0, t('Fenster 50 ms', 'window 50 ms'), { anchor: 'end', centerY: 245, color: c.yellow }),
+        ...average(490, 1, c),
+        d.label(470, 0, t('was der Sensor meldet', 'what the sensor reports'), { anchor: 'end', centerY: 330, color: c.light }),
         d.verdict(90, 440, 620, 130, t('liest hell', 'reads bright'), true, { size: 32 }),
         d.label(1200, 0, t('Symbole von 40 ms', 'symbols of 40 ms'), { anchor: 'middle', centerY: 50 }),
         ...strip(840, 1560, 80, c),
         rect(1180, 88, 100, 124, 'none', ` stroke="${c.yellow}" stroke-width="5"`),
-        d.label(1230, 0, t('Fenster 50 ms', 'window 50 ms'), { anchor: 'middle', centerY: 245, color: c.yellow }),
-        ...gauge(900, 1500, 0.6, t, c),
+        d.label(1160, 0, t('Fenster 50 ms', 'window 50 ms'), { anchor: 'end', centerY: 245, color: c.yellow }),
+        ...average(1180, 0.6, c),
         d.verdict(890, 440, 620, 130, t('passt zu keinem Symbol', 'matches neither symbol'), false, { size: 32 }));
     },
   });

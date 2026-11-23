@@ -2,26 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>keeping time</title>
+  <title>sampling and synchronization</title>
   <link rel="stylesheet" href="theme.css?v=1">
   <link rel="stylesheet" href="../../stagekit/stagekit.css?v=0.13.0-cf50bd">
   <style>
     /* deck-specific layout only, colours and sizes come from the theme */
     .photo-text.narrow { width: 820px; }
-    /* the tipping rates of the homework are collected live: the table body
-       is editable, so the rates can be typed in during the session */
-    table.results { position: absolute; left: var(--margin); top: 220px; width: calc(var(--slide-w) - 2 * var(--margin));
-      border-collapse: collapse; font-size: var(--small); }
-    table.results th { text-align: left; font-weight: normal; color: var(--gray); font-size: var(--tiny);
-      padding: 0 28px 14px 0; border-bottom: 2px solid var(--gray-dark); }
-    table.results td { padding: 0 28px 0 0; height: 76px; color: var(--white); border-bottom: 1px solid var(--gray-dark); }
-    table.results td.num { font-family: var(--mono); color: var(--yellow); }
-    table.results [contenteditable]:focus { outline: 2px solid var(--blue); outline-offset: 4px; }
   </style>
 </head>
 <body>
 <div class="deck"
-     data-title="keeping time"
+     data-title="sampling and synchronization"
      data-subtitle="prof. dr. nicolas meseth"
      data-parts='["why fast breaks", "a shared beat", "the change as the beat", "choosing a way"]'>
 
@@ -46,38 +37,12 @@
     <aside class="notes">Kurz halten. Jeder im Orchester kann Takt halten, und trotzdem wären ohne die Person mit dem Taktstock alle nach einer Minute auseinander, und zwar nicht aus Unfähigkeit: Kleine Unterschiede im Tempo summieren sich, und niemand bemerkt seinen eigenen Fehler. Zwei Rechner, die sich Licht zuschicken, haben genau dieses Problem, und es bekommt jetzt einen Namen.</aside>
   </section>
 
-  <section class="slide has-punch">
-    <h2>your homework: where did it tip?</h2>
-    <table class="results">
-      <thead>
-        <tr><th style="width: 16%">team</th><th style="width: 22%">symbols per second</th><th style="width: 22%">integration time</th><th>what broke</th></tr>
-      </thead>
-      <tbody contenteditable="true" spellcheck="false">
-        <tr><td></td><td class="num"></td><td class="num"></td><td></td></tr>
-        <tr><td></td><td class="num"></td><td class="num"></td><td></td></tr>
-        <tr><td></td><td class="num"></td><td class="num"></td><td></td></tr>
-        <tr><td></td><td class="num"></td><td class="num"></td><td></td></tr>
-        <tr><td></td><td class="num"></td><td class="num"></td><td></td></tr>
-      </tbody>
-    </table>
-    <div class="punch" data-step="1">everyone ran into a limit, and the way it broke tells you which of two causes was at work.</div>
-    <aside class="notes">Live sammeln: In die Tabelle lässt sich direkt hineintippen. Zwei, drei Teams erzählen lassen, wie es gekippt ist, schleichend mit verschobenen Buchstaben oder plötzlich mit Zeichensalat, und bei welcher Integrationszeit. Die beiden Fehlerbilder gehören zu zwei verschiedenen Ursachen: Verschobene Buchstaben, die erst nach einer Weile kommen, sprechen für auseinanderlaufende Uhren, Zeichensalat von Anfang an für Symbole, die kürzer sind als das Messfenster. Genau diese zwei Ursachen zeigen die nächsten Folien.</aside>
-  </section>
-
   <section class="slide has-punch" data-on-show="drawStream" data-on-step="drawStream">
     <h2>what the receiver sees</h2>
     <div class="figure" id="fig-stream"></div>
     <span data-step="1"></span><span data-step="2"></span>
     <div class="punch" data-step="2">the sender knows where each symbol begins, while the receiver has to find out from the light.</div>
     <aside class="notes">Oben das, was der Sender schaltet: sieben Symbole, jedes gleich lang, mit klaren Grenzen. Im nächsten Schritt das, was beim Empfänger ankommt: ein durchgehendes Band aus Licht ohne Grenzen. Wo zwei gleiche Farben aufeinander folgen, laufen sie zu einem langen Stück zusammen. Im letzten Schritt die Grenzen des Senders gestrichelt darüber: An den Fragezeichen sieht der Empfänger überhaupt keinen Wechsel. Woher soll er wissen, wann das nächste Symbol beginnt? Darum geht es im ganzen Foliensatz.</aside>
-  </section>
-
-  <section class="slide has-punch" data-on-show="drawSamples" data-on-step="drawSamples">
-    <h2>one dot stands for many readings</h2>
-    <div class="figure" id="fig-samples"></div>
-    <span data-step="1"></span>
-    <div class="punch" data-step="1">on the following slides a dot is the average of everything the receiver measured in one symbol.</div>
-    <aside class="notes">Eine Leseanleitung für die folgenden Bilder. Der Empfänger misst innerhalb eines Symbols viele Male und mittelt; die einzelnen Messwerte streuen, wie beim Thema Signal und Rauschen. Der eine Punkt auf den nächsten Folien steht für diesen Mittelwert und sitzt dort, wo die Mitte der Messungen liegt. Ohne diese Folie wären die Bilder eine kleine Lüge.</aside>
   </section>
 
   <section class="slide has-punch">
@@ -112,11 +77,27 @@
     <aside class="notes">Der Weg mit Takt: gemeinsam starten, dieselbe Rate, und jede Seite zählt für sich. Wie lange geht das gut, und wie hält man es länger?</aside>
   </section>
 
+  <section class="slide has-punch" data-on-show="drawRoom" data-on-step="drawRoom">
+    <h2>how much room does a reading have?</h2>
+    <div class="figure" id="fig-room"></div>
+    <span data-step="1"></span>
+    <div class="punch" data-step="1">half a symbol is the most room a reading has, and the sensor's window takes some of it away.</div>
+    <aside class="notes">Bevor wir fragen, wann es kippt, die Frage, wie viel Fehler ein Messwert verträgt. Bei zehn Symbolen pro Sekunde dauert ein Symbol 100 ms, und der Empfänger misst in der Mitte. Von dort sind es nach jeder Seite 50 ms bis zur Grenze: So weit darf sein Messzeitpunkt wandern, bevor er im Nachbarsymbol landet. Im zweiten Schritt kommt das Messfenster dazu, hier 20 ms. Der Sensor sammelt über das ganze Fenster, also muss das ganze Fenster im Symbol bleiben, und der Spielraum schrumpft auf 40 ms. Die Hälfte eines Symbols ist damit die Obergrenze; je länger der Sensor hinsieht, desto früher kippt es. Für die nächsten Folien rechnen wir mit der Obergrenze, 50 ms.</aside>
+  </section>
+
   <section class="slide has-punch">
     <h2>when does it tip?</h2>
     <div class="figure" id="fig-error"></div>
-    <div class="punch" data-step="2">the receiver does not need a whole symbol of error to fail, since half a symbol is enough.</div>
-    <aside class="notes">Die Linie ist der aufgelaufene Uhrenfehler über der Zeit, für zwei Uhren, die sich um ein halbes Prozent unterscheiden: fünf Millisekunden pro Sekunde, eine Gerade, die einfach weiter wächst. Die gestrichelte Linie ist die Schwelle, ein halbes Symbol, bei zehn Symbolen pro Sekunde also 50 ms. Sie kreuzen sich nach zehn Sekunden: Ab da misst der Empfänger im Nachbarsymbol. Nachrechnen ist eine Zeile, denn 0,5 % von 10 Sekunden sind 50 ms. Warum ein halbes Symbol und nicht ein ganzes? Der Messpunkt sitzt in der Mitte seines Schlitzes und hat nach jeder Seite nur die halbe Breite Platz.</aside>
+    <div class="punch" data-step="2">clocks that differ by 0.5 % move 5 ms apart every second, so the 50 ms of room are gone after ten seconds.</div>
+    <aside class="notes">Die Linie ist der aufgelaufene Uhrenfehler über der Zeit, für zwei Uhren, die sich um ein halbes Prozent unterscheiden: fünf Millisekunden pro Sekunde, eine Gerade, die einfach weiter wächst. Die gestrichelte Linie ist der Spielraum von der Folie davor, 50 ms bei zehn Symbolen pro Sekunde. Sie kreuzen sich nach zehn Sekunden: Ab da misst der Empfänger im Nachbarsymbol. Nachrechnen ist eine Zeile, denn 0,5 % von 10 Sekunden sind 50 ms. Mit einem Messfenster kippt es entsprechend früher, bei 20 ms Fenster schon nach acht Sekunden.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawTwoRates" data-on-step="drawTwoRates">
+    <h2>the same clocks at two rates</h2>
+    <div class="figure" id="fig-two-rates"></div>
+    <span data-step="1"></span>
+    <div class="punch" data-step="1">ten times the rate leaves a tenth of the room, while the error grows just as fast.</div>
+    <aside class="notes">Dieselben zwei Uhren, ein halbes Prozent auseinander, also 5 ms Fehler pro Sekunde, bei zwei Raten. Bei einem Symbol pro Sekunde dauert ein Symbol 1000 ms, der Spielraum ist 500 ms, und 500 geteilt durch 5 ergibt 100 Sekunden, bis es kippt. Bei zehn Symbolen pro Sekunde dauert ein Symbol 100 ms, der Spielraum ist 50 ms, und es kippt nach 10 Sekunden. Die Uhren sind dieselben, nur der Spielraum ist geschrumpft. Das Balkendiagramm danach zeigt dieselbe Rechnung für fünf Raten.</aside>
   </section>
 
   <section class="slide has-punch">
@@ -156,16 +137,31 @@
     <aside class="notes">Das Preisschild des Wegs mit Takt. Einmal gemeinsam starten kostet kein einziges Symbol, lässt den Fehler aber unbegrenzt wachsen. Marken begrenzen den Fehler, tragen aber keine Nutzdaten: Wer alle acht Symbole eine Marke sendet, gibt ein Achtel seiner Rate ab. Wie oft eine Marke nötig ist, hängt davon ab, wie stark die eigenen Uhren auseinanderlaufen, und das misst man, statt es zu glauben.</aside>
   </section>
 
-  <section class="slide">
-    <h2>markers in real links</h2>
-    <div class="content">
-      <div class="lines">
-        <div>a serial port (<span class="keep-case">UART</span>) puts a start bit before every character,</div>
-        <div data-step="1">a radio clock (<span class="keep-case">DCF77</span>) finds the minute by the pulse missing in second 59,</div>
-        <div data-step="2">and a <span class="keep-case">VGA</span> monitor gets a sync pulse after every line and every frame.</div>
-      </div>
-    </div>
-    <aside class="notes">Drei echte Beispiele für den Weg mit Takt, alle mit wiederkehrenden Marken. Die serielle Schnittstelle (UART, RS-232) ruht auf „1“; jedes Zeichen beginnt mit einem Startbit „0“, und an dessen fallender Flanke stellt der Empfänger seine Uhr neu, misst danach jedes Bit in der Mitte und erwartet am Ende ein Stoppbit. Weil die Marke vor jedem Zeichen kommt, dürfen die Uhren nur über etwa zehn Bit zusammenhalten, und dafür reichen ein paar Prozent Abweichung. Der Zeitzeichensender DCF77 bei Frankfurt senkt zu Beginn jeder Sekunde kurz die Amplitude, 100 ms für eine 0 und 200 ms für eine 1; in Sekunde 59 fehlt die Absenkung, und die Lücke ist die Marke für den Beginn der nächsten Minute. Ein VGA-Monitor bekommt nach jeder Bildzeile einen Puls auf einer eigenen Leitung (horizontale Synchronisation) und nach jedem Bild einen zweiten (vertikale Synchronisation); bei 640 × 480 Punkten und 60 Bildern pro Sekunde sind das rund 31.500 Zeilenmarken pro Sekunde.</aside>
+  <section class="slide has-punch" data-on-show="drawExample" data-on-step="drawExample">
+    <h2>a start bit before every character (<span class="keep-case">UART</span>)</h2>
+    <div class="figure" id="ex-uart"></div>
+    <span data-step="1"></span>
+    <div class="punch" data-step="1">the receiver restarts its clock at every start bit, so its clock only has to hold for ten bits.</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">Die serielle Schnittstelle, kurz UART, ist die einfachste Verbindung zwischen zwei Geräten: Über sie schickt etwa ein Mikrocontroller Text an den Laptop, und früher hingen Maus und Modem an solchen Steckern (RS-232). Wenn nichts gesendet wird, ruht die Leitung auf 1. Jedes Zeichen beginnt mit einem Startbit 0, danach kommen acht Datenbits und am Ende ein Stoppbit 1. Der Wechsel von 1 auf 0 am Startbit ist die Marke: Dort startet der Empfänger seine Uhr neu und misst dann jedes Bit in seiner Mitte. Weil das vor jedem Zeichen passiert, müssen die Uhren nur zehn Bit lang zusammenhalten, und dafür reichen ein paar Prozent Genauigkeit.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawExample" data-on-step="drawExample">
+    <h2>the missing second (<span class="keep-case">DCF77</span>)</h2>
+    <div class="figure" id="ex-dcf"></div>
+    <span data-step="1"></span>
+    <div class="punch" data-step="1">the gap in second 59 is a marker that tells every radio clock where the next minute begins.</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">Funkuhren stellen sich selbst, nach einem Zeitsignal, das der Sender DCF77 in Mainflingen bei Frankfurt aussendet. Zu Beginn jeder Sekunde senkt er sein Signal kurz ab: 100 ms bedeuten eine 0, 200 ms eine 1, und so kommen innerhalb einer Minute Uhrzeit und Datum Bit für Bit an. In Sekunde 59 bleibt die Absenkung aus. Diese Lücke ist die Marke: Die Uhr erkennt daran, dass mit dem nächsten Puls eine neue Minute beginnt, und weiß damit, welches Bit welche Stelle hat.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawExample" data-on-step="drawExample">
+    <h2>a pulse after every line (<span class="keep-case">VGA</span>)</h2>
+    <div class="figure" id="ex-vga"></div>
+    <span data-step="1"></span>
+    <div class="punch" data-step="1">the monitor resets its beat after every line and every picture, so the image never drifts sideways.</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">VGA ist der klassische Anschluss zwischen Rechner und Monitor, mit dem blauen Stecker und den zwei Schrauben. Das Bild wandert Zeile für Zeile über das Kabel, von links nach rechts und von oben nach unten. Nach jeder Zeile kommt ein Synchronisationspuls auf einer eigenen Leitung, und der Monitor beginnt die nächste Zeile wieder ganz links; nach der letzten Zeile kommt ein zweiter Puls, und er beginnt wieder oben. Bei 640 mal 480 Bildpunkten und 60 Bildern pro Sekunde sind das rund 31.500 Zeilenmarken pro Sekunde. Ohne sie liefe das Bild schief.</aside>
   </section>
 
   <!-- ================= part 3: the change as the beat ================= -->
@@ -190,6 +186,14 @@
     <aside class="notes">Die Lösung: Nicht die Farbe trägt die Information, sondern der Wechsel zur nächsten. Von jeder Farbe aus sind zwei Nachfolger erlaubt, einer steht für 1, einer für 0, und die Farbe selbst ist als Nachfolger verboten. Damit kann der Problemfall nicht mehr auftreten, weil es immer einen Wechsel gibt. Im Dreieck der drei Farben heißt der Schritt im Uhrzeigersinn 1 und der gegen den Uhrzeigersinn 0. Rot nach Grün ist im Uhrzeigersinn, also 1; Grün zurück nach Rot dagegen, also 0; Rot nach Blau ebenfalls dagegen, also 0. Der Empfänger misst, so oft er will, und dekodiert nur beim Wechsel.</aside>
   </section>
 
+  <section class="slide has-punch" data-on-show="drawChoices" data-on-step="drawChoices">
+    <h2>how many choices does a change have?</h2>
+    <div class="figure" id="fig-choices"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <div class="punch" data-step="2">the current color is never a choice, so k colors leave k − 1 choices for every change.</div>
+    <aside class="notes">Die Information steckt in der Zahl der Möglichkeiten, nicht in der Zahl der Farben. Bei drei Farben kann ich von Rot aus nur zu Grün oder Blau wechseln, also zwei Möglichkeiten, genau ein Bit. Bei vier Farben sind es von Rot aus drei Möglichkeiten. Zwei Wechsel hintereinander ergeben dann drei mal drei gleich neun Folgen: ein Stellenwertsystem zur Basis drei, nicht vier. Allgemein lassen k Farben k − 1 Möglichkeiten pro Wechsel, und die Tabelle auf der nächsten Folie rechnet das in Bits um.</aside>
+  </section>
+
   <section class="slide has-punch" data-on-show="drawBits" data-on-step="drawBits">
     <h2>what the change costs in bits</h2>
     <div class="figure" id="fig-bits"></div>
@@ -198,15 +202,31 @@
     <aside class="notes">Die Freiheit von der Uhr bezahlt man mit Kapazität. Als Zustände tragen k Farben log2(k) Bits, als Wechsel nur log2(k − 1), weil die aktuelle Farbe als Nachfolger wegfällt. Drei Farben tragen also 1 Bit statt 1,58, vier tragen 1,58 statt 2. Hier versteckt sich eine Falle für alle, die in Zweierpotenzen denken: Für saubere 2 Bit pro Wechsel braucht man fünf Farben, nicht vier. Wer über Wechsel kodiert, will ein Alphabet der Größe 2 hoch n plus 1.</aside>
   </section>
 
-  <section class="slide">
-    <h2>the change as the beat in real links</h2>
-    <div class="content">
-      <div class="lines">
-        <div><span class="keep-case">10BASE-T</span> ethernet and <span class="keep-case">RC-5</span> remotes change in the middle of every bit,</div>
-        <div data-step="1">and <span class="keep-case">USB</span> slips in an extra 0 after six 1s so that the line keeps changing.</div>
-      </div>
-    </div>
-    <aside class="notes">Zwei echte Beispiele für den Weg ohne eigenen Takt. Der Manchester-Code legt in die Mitte jedes Bits einen Wechsel, beim Ethernet nach 10BASE-T steht der Wechsel von niedrig nach hoch für 1 und der von hoch nach niedrig für 0. Der Empfänger gewinnt seinen Takt aus diesen Wechseln, bezahlt aber dafür: Für 10 Mbit/s muss die Leitung bis zu 20 Millionen Wechsel pro Sekunde schaffen. Dasselbe Verfahren nutzt die Infrarot-Fernbedienung nach RC-5, also Licht wie bei uns, mit Bits von knapp 1,8 ms. USB 1.x und 2.0 kodieren mit NRZI: Eine 0 ist ein Wechsel, eine 1 keiner. Lange Folgen von Einsen hätten damit keinen Wechsel, deshalb fügt der Sender nach sechs Einsen eine 0 ein, die der Empfänger wieder entfernt, das Bit-Stuffing. Es kostet im ungünstigsten Fall ein Siebtel der Rate, ganz ähnlich wie eine Marke.</aside>
+  <section class="slide has-punch" data-on-show="drawExample" data-on-step="drawExample">
+    <h2>a change in every bit (<span class="keep-case">10BASE-T</span> ethernet)</h2>
+    <div class="figure" id="ex-manchester"></div>
+    <span data-step="1"></span>
+    <div class="punch" data-step="1">the receiver takes its beat from the change in every bit, and pays with up to two changes per bit.</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">Ethernet ist das Netzwerkkabel mit dem breiten, durchsichtigen Stecker, über das Rechner im Netz hängen. In seiner frühen Form 10BASE-T, mit 10 Mbit/s, verwendet es den Manchester-Code: In der Mitte jedes Bits wechselt die Spannung, von niedrig nach hoch für eine 1 und von hoch nach niedrig für eine 0. Weil in jedem Bit ein Wechsel kommt, braucht der Empfänger keine eigene genaue Uhr; er stellt sich an den Wechseln ein. Der Preis: Folgen zwei gleiche Bits, braucht es an der Grenze dazwischen einen zusätzlichen Wechsel, also bis zu zwei Wechsel pro Bit.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawExample" data-on-step="drawExample">
+    <h2>light that changes in every bit (<span class="keep-case">RC-5</span>)</h2>
+    <div class="figure" id="ex-rc5"></div>
+    <span data-step="1"></span>
+    <div class="punch" data-step="1">a remote control sends light just like your <span class="keep-case">LED</span>, and the change in the middle of every bit keeps the <span class="keep-case">TV</span> in step.</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">Viele Fernbedienungen senden nach dem Verfahren RC-5 von Philips, mit unsichtbarem Infrarotlicht, also ganz ähnlich wie unsere LED. Ein Tastendruck schickt 14 Bit, jedes knapp 1,8 ms lang, und auch hier steckt in jedem Bit ein Wechsel: Für eine 1 ist die erste Hälfte dunkel und die zweite hell, für eine 0 umgekehrt. Der Fernseher braucht deshalb keine Uhr, die genau mit der Fernbedienung übereinstimmt.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawExample" data-on-step="drawExample">
+    <h2>an extra bit for a change (<span class="keep-case">USB</span>)</h2>
+    <div class="figure" id="ex-usb"></div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <div class="punch" data-step="2">after six ones the sender slips in a zero, so the line never stays unchanged for long.</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">USB ist der Anschluss für Tastatur, Stick und Telefon. Bei USB 1 und 2 bedeutet eine 0 einen Wechsel auf der Leitung und eine 1 keinen Wechsel. Lange Folgen von Einsen ließen die Leitung also lange unverändert, und der Empfänger verlöre den Takt. Deshalb fügt der Sender nach sechs Einsen eine zusätzliche 0 ein, die einen Wechsel erzwingt; der Empfänger nimmt sie wieder heraus. Dieses Bit-Stuffing kostet höchstens ein Siebtel der Rate, ganz ähnlich wie eine Marke.</aside>
   </section>
 
   <section class="slide">
@@ -230,7 +250,7 @@
     <h2>two ways, two price tags</h2>
     <div class="figure" id="fig-ways"></div>
     <span data-step="1"></span>
-    <aside class="notes">Mit Takt zählt der Empfänger die Zeit; Marken begrenzen die Drift, und jede Marke ist ein Symbol ohne Nutzdaten, dafür tragen alle Farben volle log2(k) Bits. Ohne Takt wartet der Empfänger auf den Wechsel; es gibt keine Uhr, die driften kann, aber eine Farbe muss kurz stehen bleiben, bevor sie zählt, und jede Farbe trägt nur log2(k − 1) Bits. Keiner der beiden Wege ist richtig oder falsch; welcher besser passt, hängt von der eigenen Strecke ab.</aside>
+    <aside class="notes">Mit Takt zählt der Empfänger die Zeit; Marken begrenzen die Drift, und jede Marke ist ein Symbol ohne Nutzdaten, dafür tragen alle Farben volle log2(k) Bits. Ohne Takt wartet der Empfänger auf den Wechsel; es gibt keine Uhr, die driften kann, Mischwerte beim Wechsel werden aussortiert, und jede Farbe trägt nur log2(k − 1) Bits. Länger stehen als mit Takt muss eine Farbe dafür nicht: In beiden Wegen setzt das Messfenster des Sensors die kürzeste Symboldauer. Keiner der beiden Wege ist richtig oder falsch; welcher besser passt, hängt von der eigenen Strecke ab.</aside>
   </section>
 
   <section class="slide" data-on-show="drawFormula" data-on-step="drawFormula">
@@ -238,6 +258,14 @@
     <div class="figure" id="fig-formula"></div>
     <span data-step="1"></span>
     <aside class="notes">Welche Strategie auch immer, am Ende zählt diese Rechnung: Die Zeit t für eine Datei ist die Zahl der Bits n geteilt durch Symbole pro Sekunde r mal Bits pro Symbol b. Die Rechnung hat genau zwei Hebel, b und r, und alles in diesem Foliensatz entscheidet über beide.</aside>
+  </section>
+
+  <section class="slide has-punch" data-on-show="drawKib" data-on-step="drawKib">
+    <h2>what 2 <span class="keep-case">KiB</span> look like</h2>
+    <div class="figure" id="fig-kib"></div>
+    <span data-step="1"></span>
+    <div class="punch" data-step="1">a small black-and-white picture is already 16,384 bits.</div>
+    <aside class="notes">Damit die Rechnung greifbar wird: Dieses Bild hat 128 mal 128 Bildpunkte, und jeder ist entweder schwarz oder weiß, braucht also genau ein Bit. Das sind 16.384 Bit oder 2 KiB, ein Bild in Briefmarkengröße. Mit Graustufen oder Farben wäre es ein Vielfaches davon.</aside>
   </section>
 
   <section class="slide has-punch">
@@ -258,7 +286,7 @@
 </div>
 <script src="../../stagekit/draw.js?v=0.13.0-cf50bd"></script>
 <script src="../../stagekit/anim.js?v=0.13.0-cf50bd"></script>
-<script src="deck.js?v=3"></script>
+<script src="deck.js?v=5"></script>
 <script src="../../stagekit/stagekit.js?v=0.13.0-cf50bd"></script>
 </body>
 </html>
