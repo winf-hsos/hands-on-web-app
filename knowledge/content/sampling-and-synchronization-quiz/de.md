@@ -23,14 +23,16 @@ based_on: 2026-11-23
 
 ## Eine Strecke sendet Farben mit einer LED und liest sie mit einem Farbsensor. Bei einem Symbol pro Sekunde läuft sie stabil, bei zehn pro Sekunde bricht sie zusammen. Welche Ursachen stecken dahinter? (Mehrere richtige Antworten möglich.) {#ca-001}
 
-- [x] Die Uhren von Sender und Empfänger laufen auseinander, und der Fehler summiert sich über die Symbole.
-  > Richtig: Zwei Uhren laufen nie exakt gleich. Bei zehn Symbolen pro Sekunde ist ein Symbol nur 100 ms lang, und schon eine kleine Abweichung je Symbol schiebt den Messzeitpunkt nach wenigen Sekunden ins Nachbarsymbol.
+- [ ] Die Uhren von Sender und Empfänger laufen auseinander, und der Fehler summiert sich über die Symbole.
+  > Das stimmt, aber es geschieht bei einem Symbol pro Sekunde genauso: Die Uhren laufen gleich schnell auseinander, egal wie schnell gesendet wird. Allein erklärt das also nicht, warum es erst bei zehn Symbolen bricht; den Unterschied macht, wie viel Spielraum ein Symbol dem Fehler lässt.
 - [ ] Die LED braucht Zeit zum Umschalten, und bei zehn Farbwechseln pro Sekunde kommt sie nicht mehr hinterher.
   > Eine LED schaltet in Mikrosekunden, zehn Wechsel pro Sekunde sind für sie nichts. Die Grenze liegt beim Messen, nicht beim Leuchten.
 - [x] Wird ein Symbol kürzer als das Messfenster des Sensors, mischt er zwei Symbole zu einem Wert.
   > Richtig, und das ist das zweite, oft übersehene Problem: Der Sensor mittelt über seine Integrationszeit. Liegt in diesem Fenster ein Farbwechsel, entsteht ein Wert, der zu keiner Farbe passt.
 - [ ] Der Rechner schafft zehn Messungen samt Vergleich pro Sekunde nicht mehr rechtzeitig, und die Verzögerung wächst mit jedem Symbol.
   > Zehn Vergleiche pro Sekunde sind für jeden Rechner nichts. Das Problem liegt in der Physik der Messung und im Auseinanderlaufen der Uhren.
+- [x] Der Messpunkt liegt in der Mitte eines Symbols und darf höchstens ein halbes Symbol verrutschen, bei zehn Symbolen pro Sekunde also nur 50 ms statt 500 ms.
+  > Richtig: Der Uhrenfehler wächst bei beiden Raten gleich schnell, aber bei zehn Symbolen pro Sekunde hat er nur ein Zehntel des Spielraums. Zwei Uhren, die um 0,5 % auseinandergehen, halten bei einem Symbol pro Sekunde 100 Sekunden durch, bei zehn nur 10.
 
 ## Ein Farbsensor misst mit 50 ms Integrationszeit. Der Sender schickt 25 Symbole pro Sekunde, jedes Symbol steht also 40 ms. Was kommt beim Empfänger an? {#ca-003}
 

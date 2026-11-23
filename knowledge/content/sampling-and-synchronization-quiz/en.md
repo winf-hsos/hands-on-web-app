@@ -32,14 +32,16 @@ updated: 2026-11-23
 
 ## A link sends colors with an LED and reads them with a color sensor. At one symbol per second it runs stably; at ten per second it breaks down. What causes this? (Several answers may be correct.) {#ca-001}
 
-- [x] The clocks of sender and receiver drift apart, and the error adds up over the symbols.
-  > Correct: two clocks never run exactly alike. At ten symbols per second a symbol lasts only 100 ms, and even a small deviation per symbol pushes the reading into the neighboring symbol within seconds.
+- [ ] The clocks of sender and receiver drift apart, and the error adds up over the symbols.
+  > That is true, but it happens just the same at one symbol per second: the clocks drift apart at the same pace however fast the link sends. On its own it therefore does not explain why the link only breaks at ten symbols; the difference lies in how much room a symbol leaves for the error.
 - [ ] The LED needs time to switch, and at ten color changes per second it can no longer keep up.
   > An LED switches in microseconds; ten changes per second are nothing for it. The limit lies in measuring, not in lighting.
 - [x] Once a symbol gets shorter than the sensor's measuring window, the sensor blends two symbols into one value.
   > Correct, and this is the second, often overlooked problem: the sensor averages over its integration time. If a color change falls inside that window, the result matches no color.
 - [ ] The computer can no longer finish ten readings plus comparisons per second in time, and the delay grows with every symbol.
   > Ten comparisons per second are trivial for any computer. The problem lies in the physics of measuring and in the drifting clocks.
+- [x] The reading sits in the middle of a symbol and may slip by half a symbol at most, which at ten symbols per second is only 50 ms instead of 500 ms.
+  > Correct: the clock error grows at the same pace at both rates, but at ten symbols per second it has only a tenth of the room. Two clocks that differ by 0.5 % last 100 seconds at one symbol per second and only 10 at ten.
 
 ## A color sensor uses a 50 ms integration time. The sender sends 25 symbols per second, so each symbol lasts 40 ms. What does the receiver get? {#ca-003}
 
