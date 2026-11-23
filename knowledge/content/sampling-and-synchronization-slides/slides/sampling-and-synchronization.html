@@ -119,7 +119,7 @@
   <section class="slide">
     <h2>how the receiver uses a marker</h2>
     <div class="figure" id="fig-anchor"></div>
-    <aside class="notes">Die Marke nur in seinem Raster zu sehen, hilft dem Empfänger nichts. Er misst schneller, als Symbole ankommen, hier fünfmal pro Symbol, und merkt sich, wann die Marke beginnt: Die erste Messung in der Pause wird gelb. Dort setzt er sein Raster neu an, die nächste Symbolgrenze ist Beginn der Marke plus eine Symboldauer. Sein Raster lag vorher deutlich daneben; danach ist der Fehler höchstens ein Messschritt. Das Orchester macht dasselbe: Es registriert nicht nur, dass ein Schlag kam, sondern wann. Und nebenbei borgt sich der Weg mit Takt hier die Idee des Wegs ohne Takt, die Reaktion auf einen Wechsel, nur einmal pro Block statt bei jedem Symbol.</aside>
+    <aside class="notes">Die blauen gestrichelten Linien sind nicht das Messfenster, sondern die Symbolgrenzen, wie die Uhr des Empfängers sie gerade berechnet: Dort glaubt er, dass ein Symbol endet und das nächste beginnt. Sie liegen etwas zu spät, weil seine Uhr gedriftet ist. Die Marke nur in diesem Raster zu sehen, hilft ihm nichts. Er misst schneller, als Symbole ankommen, hier fünfmal pro Symbol, und merkt sich, wann die Marke beginnt: Die erste Messung in der Pause wird gelb. Dort setzt er seine Symbolgrenzen neu an, die nächste Grenze ist Beginn der Marke plus eine Symboldauer, und danach ist der Fehler höchstens ein Messschritt. Das Orchester macht dasselbe: Es registriert nicht nur, dass ein Schlag kam, sondern wann.</aside>
   </section>
 
   <section class="slide">
@@ -143,16 +143,16 @@
     <span data-step="1"></span>
     <div class="punch" data-step="1">the receiver restarts its clock at every start bit, so its clock only has to hold for ten bits.</div>
     <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
-    <aside class="notes">Die serielle Schnittstelle, kurz UART, ist die einfachste Verbindung zwischen zwei Geräten. Ein Arduino schickt über sie seine Messwerte an den Laptop (der „Serial Monitor“), ein GPS-Modul seine Position, ein Kassenbondrucker bekommt so seinen Text, und früher hingen Maus und Modem an solchen Steckern (RS-232). Beide Seiten vereinbaren vorher, wie lange ein Bit dauert, etwa 9600 Bit pro Sekunde. Wenn nichts gesendet wird, ruht die Leitung auf 1 (hoch). Jedes Zeichen beginnt mit einem Startbit 0, dann kommen die acht Bits des Zeichens, hier das S (01010011, das niedrigste Bit zuerst): Die Leitung ist für jede 1 hoch und für jede 0 tief, jeweils für die vereinbarte Dauer. Am Ende steht ein Stoppbit 1. Der Wechsel von 1 auf 0 am Startbit ist die Marke: Dort startet der Empfänger seine Uhr neu und misst dann jedes Bit in seiner Mitte. Weil das vor jedem Zeichen passiert, müssen die Uhren nur zehn Bit lang zusammenhalten, und dafür reichen ein paar Prozent Genauigkeit.</aside>
+    <aside class="notes">Die serielle Schnittstelle, kurz UART, ist die einfachste Verbindung zwischen zwei Bausteinen. Im Alltag sieht man sie selten, weil sie meist im Inneren von Geräten liegt: Im WLAN-Router, im Fernseher oder im Auto reden Chips so miteinander, ein GPS- oder Bluetooth-Modul schickt seine Daten so an den Hauptprozessor, und an der Supermarktkasse bekommt der Bondrucker seine Bytes oft über ein serielles Kabel. Früher hingen Maus und Modem an solchen Steckern (RS-232). Übertragen werden beliebige Bytes, nicht nur Text; Text ist nur häufig. Ein Arduino hängt zwar per USB am Laptop, auf der Platine wandelt aber ein Baustein USB in UART um. Beide Seiten vereinbaren vorher, wie lange ein Bit dauert, etwa 9600 Bit pro Sekunde. Wenn nichts gesendet wird, ruht die Leitung auf 1 (hoch). Jedes Byte beginnt mit einem Startbit 0, dann kommen seine acht Bits, hier das S (01010011, das niedrigste Bit zuerst): Die Leitung ist für jede 1 hoch und für jede 0 tief, jeweils für die vereinbarte Dauer. Am Ende steht ein Stoppbit 1. Der Wechsel von 1 auf 0 am Startbit ist die Marke: Dort startet der Empfänger seine Uhr neu und misst dann jedes Bit in seiner Mitte. Weil das vor jedem Byte passiert, müssen die Uhren nur zehn Bit lang zusammenhalten, und dafür reichen ein paar Prozent Genauigkeit.</aside>
   </section>
 
   <section class="slide has-punch" data-on-show="drawExample" data-on-step="drawExample">
     <h2>the missing second (<span class="keep-case">DCF77</span>)</h2>
     <div class="figure" id="ex-dcf"></div>
-    <span data-step="1"></span>
-    <div class="punch" data-step="1">the gap in second 59 is a marker that tells every radio clock where the next minute begins.</div>
+    <span data-step="1"></span><span data-step="2"></span>
+    <div class="punch" data-step="2">after the gap the clock reads one minute of bits, sets itself, and counts the seconds on its own until the next gap.</div>
     <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
-    <aside class="notes">Funkuhren stellen sich selbst, nach einem Zeitsignal, das der Sender DCF77 in Mainflingen bei Frankfurt aussendet. Der Sender strahlt ständig, und zu Beginn jeder Sekunde senkt er sein Signal kurz ab: 0,1 s Absenkung bedeuten eine 0, 0,2 s eine 1. So kommt jede Sekunde ein Bit an, 59 Bits pro Minute, und darin stehen Minute, Stunde und Datum der nächsten Minute. Das Problem: Die Uhr empfängt nur eine Folge von Bits und weiß nicht, welches das erste ist. Deshalb bleibt in Sekunde 59 die Absenkung aus. Diese Lücke ist die Marke: Mit der nächsten Absenkung beginnt eine neue Minute, und von dort zählt die Uhr. Die Bits 21 bis 27 sind dann die Minute, 29 bis 34 die Stunde, danach kommen Tag, Wochentag, Monat und Jahr. Die Uhr hält also nur eine Minute lang den Takt, dann wird sie neu ausgerichtet.</aside>
+    <aside class="notes">Funkuhren stellen sich selbst, nach einem Zeitsignal, das der Sender DCF77 in Mainflingen bei Frankfurt aussendet. Er strahlt ständig, und zu Beginn jeder Sekunde senkt er sein Signal kurz ab: 0,1 s Absenkung bedeuten eine 0, 0,2 s eine 1. So kommt jede Sekunde ein Bit an, 59 Bits pro Minute. Die Uhr empfängt aber nur eine Folge von Bits und weiß nicht, welches das erste ist. Deshalb bleibt in Sekunde 59 die Absenkung aus; diese Lücke ist die Marke, und mit der nächsten Absenkung beginnt eine neue Minute. Eine Uhr, die gerade eingeschaltet wurde, wartet also auf die Lücke, liest danach eine ganze Minute lang die Bits mit und stellt sich dann. Die Sekunden dazwischen zählt sie mit ihrer eigenen Quarzuhr, und viele Funkuhren gleichen sich danach nur noch einmal am Tag ab. Unten stehen die 59 Bits für ein Beispiel: Gesendet ab 10:09 Uhr, kündigen sie 10:10 Uhr an, Montag, 23. November 2026. Die Bits 21 bis 27 tragen die Minute, 29 bis 34 die Stunde, jeweils als Dezimalziffern in Binärform mit dem niedrigsten Bit zuerst, und je ein Prüfbit dahinter; danach kommen Tag, Wochentag, Monat und Jahr. Die Bits 1 bis 14 tragen Wetter- und Warndaten, 17 und 18 die Zeitzone, hier Winterzeit.</aside>
   </section>
 
   <section class="slide has-punch">
@@ -169,7 +169,7 @@
     <span data-step="1"></span>
     <div class="punch" data-step="1">every bit keeps its agreed length, and the change in its middle resets the receiver's clock.</div>
     <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
-    <aside class="notes">Ethernet ist das Netzwerkkabel mit dem breiten, durchsichtigen Stecker, über das Rechner im Netz hängen. In seiner frühen Form 10BASE-T, mit 10 Mbit/s, verwendet es den Manchester-Code. Ein Takt bleibt: Jedes Bit dauert genau 100 ns, und der Empfänger hat eine eigene Uhr. Neu ist, dass in der Mitte jedes Bits die Spannung wechselt, von niedrig nach hoch für eine 1 und von hoch nach niedrig für eine 0. Jeder dieser Wechsel ist eine Marke, an der der Empfänger seine Uhr nachstellt, und weil sie in jedem Bit kommt, darf seine Uhr ziemlich ungenau sein. Das ist also der Weg mit Takt, nur mit der kürzesten denkbaren Strecke zwischen zwei Marken. Der Preis: Folgen zwei gleiche Bits, braucht es an der Grenze dazwischen einen zusätzlichen Wechsel, also bis zu zwei Wechsel pro Bit.</aside>
+    <aside class="notes">Ethernet ist das Netzwerkkabel mit dem breiten, durchsichtigen Stecker. In seiner frühen Form 10BASE-T, mit 10 Mbit/s, verwendet es den Manchester-Code. Ein Takt bleibt: Jedes Bit dauert genau 100 ns, die gestrichelten Linien sind die Bitgrenzen, und der Empfänger hat eine eigene Uhr. In der Mitte jedes Bits wechselt die Spannung, von niedrig nach hoch für eine 1 und von hoch nach niedrig für eine 0. Der Empfänger misst viel öfter als einmal pro Bit, hier achtmal, und achtet auf diesen Wechsel in der Mitte. Die erste Messung nach dem Wechsel, gelb, zeigt ihm, wann der Wechsel war: Dort stellt er seine Uhr nach, und die Richtung des Wechsels ist das Bit. Weil das in jedem Bit passiert, darf seine Uhr ziemlich ungenau sein. Das ist also der Weg mit Takt, mit der kürzesten denkbaren Strecke zwischen zwei Marken. Der Preis: Folgen zwei gleiche Bits, braucht es an der Grenze dazwischen einen zusätzlichen Wechsel, also bis zu zwei Wechsel pro Bit; diese Wechsel an der Grenze ignoriert der Empfänger, weil er weiß, wo ungefähr die Mitte liegt.</aside>
   </section>
 
   <section class="slide has-punch" data-on-show="drawExample" data-on-step="drawExample">
@@ -178,7 +178,7 @@
     <span data-step="1"></span>
     <div class="punch" data-step="1">a remote control sends light just like your <span class="keep-case">LED</span>, and the change in the middle of every bit keeps the <span class="keep-case">TV</span> in step.</div>
     <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
-    <aside class="notes">Viele Fernbedienungen senden nach dem Verfahren RC-5 von Philips, mit unsichtbarem Infrarotlicht, also ganz ähnlich wie unsere LED. Ein Tastendruck schickt 14 Bit, jedes knapp 1,8 ms lang; auch hier gibt es also einen festen Takt. Und wie bei Ethernet steckt in jedem Bit ein Wechsel: Für eine 1 ist die erste Hälfte dunkel und die zweite hell, für eine 0 umgekehrt. An jedem Wechsel stellt der Fernseher seine Uhr nach, deshalb muss sie nicht genau mit der Fernbedienung übereinstimmen, und billige Bauteile reichen.</aside>
+    <aside class="notes">Viele Fernbedienungen senden nach dem Verfahren RC-5 von Philips, mit unsichtbarem Infrarotlicht, also ganz ähnlich wie unsere LED. Ein Tastendruck schickt 14 Bit, jedes knapp 1,8 ms lang; auch hier gibt es einen festen Takt, die gestrichelten Linien sind die Bitgrenzen. Für eine 1 ist die erste Hälfte dunkel und die zweite hell, für eine 0 umgekehrt. Der Fernseher misst viel öfter als einmal pro Bit und achtet auf den Wechsel in der Mitte; die erste Messung danach, gelb, zeigt ihm, wann er war. Dort stellt er seine Uhr nach, und die Richtung des Wechsels, dunkel nach hell oder hell nach dunkel, ist das Bit. Deshalb muss seine Uhr nicht genau mit der Fernbedienung übereinstimmen, und billige Bauteile reichen.</aside>
   </section>
 
   <section class="slide has-punch" data-on-show="drawExample" data-on-step="drawExample">
@@ -187,7 +187,7 @@
     <span data-step="1"></span><span data-step="2"></span>
     <div class="punch" data-step="2">the receiver resets its clock at every change, and the extra zero makes sure one comes at least every seven bits.</div>
     <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
-    <aside class="notes">USB ist der Anschluss für Tastatur, Stick und Telefon. Auch hier hat jedes Bit eine feste Dauer, und der Empfänger zählt mit seiner eigenen Uhr. Bei USB 1 und 2 bedeutet eine 0 einen Wechsel auf der Leitung und eine 1 keinen Wechsel. Bei sieben Einsen in Folge muss der Empfänger also abzählen, wie viele Bitdauern die Leitung ruhig war, und genau dafür braucht er seine Uhr. Jeder Wechsel dient ihm als Marke, an der er sie nachstellt. Damit die Uhr nie zu lange allein zählen muss, fügt der Sender nach sechs Einsen eine zusätzliche 0 ein, die einen Wechsel erzwingt; der Empfänger nimmt sie wieder heraus. Dieses Bit-Stuffing kostet höchstens ein Siebtel der Rate, so wie eine Marke. Damit ist USB ein Weg mit Takt, dessen Marken in den Daten selbst stecken.</aside>
+    <aside class="notes">USB ist der Anschluss für Tastatur, Stick und Telefon. Jedes Bit hat eine feste Dauer, und der Empfänger zählt mit seiner eigenen Uhr. Bei USB 1 und 2 steckt das Bit nicht im Pegel, sondern in der Frage, ob sich der Pegel ändert: Eine 0 heißt Wechsel, eine 1 heißt kein Wechsel. Oben die Folge 1 0 0 1 1 0: bei jeder 0 springt die Leitung, bei jeder 1 bleibt sie, wo sie ist. Im zweiten Schritt das Problem: Bei sieben Einsen in Folge bleibt die Leitung sieben Bitdauern lang gleich, und der Empfänger muss mit seiner Uhr abzählen, wie viele Bits das waren. Jeder Wechsel dient ihm als Marke, an der er seine Uhr nachstellt, aber hier kommt lange keiner. Deshalb fügt der Sender nach sechs Einsen eine zusätzliche 0 ein, die einen Wechsel erzwingt; der Empfänger weiß, dass nach sechs Einsen immer eine eingefügte 0 kommt, und nimmt sie wieder heraus. Dieses Bit-Stuffing kostet höchstens ein Siebtel der Rate, so wie eine Marke. Damit ist USB ein Weg mit Takt, dessen Marken in den Daten selbst stecken.</aside>
   </section>
 
   <!-- ================= part 3: the change as the beat ================= -->
@@ -229,12 +229,12 @@
   </section>
 
   <section class="slide has-punch" data-on-show="drawExample" data-on-step="drawExample">
-    <h2>no letter twice in a row (<span class="keep-case">DNA</span> storage)</h2>
-    <div class="figure" id="ex-dna"></div>
+    <h2>the change carries the direction (mouse wheel)</h2>
+    <div class="figure" id="ex-wheel"></div>
     <span data-step="1"></span>
-    <div class="punch" data-step="1">a run of equal letters is hard to count, so four letters that never repeat leave three choices, just as four colors do.</div>
-    <div class="footnote">image: ai-generated (gpt-image-2)</div>
-    <aside class="notes">Ein echtes Beispiel für den Weg ganz ohne Uhr kommt aus der Biologie. Man kann Daten in künstlich hergestellter DNA speichern, als Folge der vier Buchstaben A, C, G und T. Beim Herstellen und beim Auslesen verzählt sich die Technik aber leicht bei Läufen gleicher Buchstaben: Ob da vier oder fünf A hintereinander standen, ist schwer zu sagen, genau wie zwei gleiche Farben in unserem Lichtstrom verschmelzen. Eine Forschungsgruppe am European Bioinformatics Institute hat deshalb 2013 Texte und Bilder so gespeichert, dass nie zwei gleiche Buchstaben aufeinanderfolgen: Jeder nächste Buchstabe ist einer der drei anderen. Das ist genau unser Code mit Wechseln: vier Buchstaben, drei Möglichkeiten pro Schritt, ein Stellenwertsystem zur Basis drei. Vereinfacht dargestellt; im Original kam noch eine Komprimierung davor.</aside>
+    <div class="punch" data-step="1">the direction sits in which neighbor comes next, so the wheel needs no clock, just like the colors on the triangle.</div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">Ein echtes Beispiel für den Weg ganz ohne Uhr hat jeder in der Hand: das Mausrad, und genauso der Lautstärkeknopf am Autoradio. Darin sitzt ein Drehgeber mit zwei Sensoren, A und B, die beim Drehen abwechselnd 0 oder 1 melden. Zusammen durchlaufen sie die Zustände 00, 01, 11, 10 im Kreis, und es ändert sich immer nur einer der beiden Sensoren. Welche Richtung gedreht wurde, steckt allein darin, welcher Nachbar als Nächstes kommt: im Uhrzeigersinn eine Raste weiter, dagegen eine zurück. Der gegenüberliegende Zustand kommt nie direkt, weil sich nie beide Sensoren zugleich ändern. Von jedem Zustand gibt es also zwei erlaubte Nachfolger, genau wie beim Dreieck mit drei Farben, und jeder Wechsel trägt ein Bit, die Richtung. Eine Uhr braucht es nicht: Wie schnell oder langsam die Hand dreht, ist egal, der Rechner reagiert nur auf Wechsel. Unten ein Beispiel: zweimal vor, dreimal zurück.</aside>
   </section>
 
 
@@ -297,7 +297,7 @@
 </div>
 <script src="../../stagekit/draw.js?v=0.13.0-cf50bd"></script>
 <script src="../../stagekit/anim.js?v=0.13.0-cf50bd"></script>
-<script src="deck.js?v=7"></script>
+<script src="deck.js?v=8"></script>
 <script src="../../stagekit/stagekit.js?v=0.13.0-cf50bd"></script>
 </body>
 </html>

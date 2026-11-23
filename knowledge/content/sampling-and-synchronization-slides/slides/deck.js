@@ -278,16 +278,16 @@ function drawMarkers(slide, step) {
   }
   const grid = [];
   for (let j = 0; j < 7; j += 1) grid.push(d.line(300 + 200 * j, 70, 300 + 200 * j, 330, { color: c.blue, width: 3, dashed: true }));
-  grid.push(d.label(300, 0, "the receiver's grid", { centerY: 370, color: c.blue }));
+  grid.push(d.label(300, 0, "where the receiver's clock puts the symbol borders", { centerY: 370, color: c.blue }));
   put("fig-anchor", d.svg(1680, 560,
     d.label(210, 0, "sender", { anchor: "end", centerY: 150, color: c.light }),
-    d.label(210, 0, "samples", { anchor: "end", centerY: 270, color: c.light }),
+    d.label(210, 0, "readings", { anchor: "end", centerY: 270, color: c.light }),
     ...cells, ...ticks,
     d.line(660, 250, 660, 290, { color: c.light, width: 3 }),
     d.g("first", circle(660, 312, 11, c.yellow)),
     d.g("grid", ...grid),
-    d.g("found", d.label(660, 0, "the first sample in the pause", { anchor: "middle", centerY: 450, color: c.yellow })),
-    d.g("result", d.label(840, 0, "the grid now starts there, off by less than one sample step", { anchor: "middle", centerY: 515 }))));
+    d.g("found", d.label(660, 0, "the first reading in the pause", { anchor: "middle", centerY: 450, color: c.yellow })),
+    d.g("result", d.label(840, 0, "its borders now start there, off by less than one reading", { anchor: "middle", centerY: 515 }))));
   const a = d.anim("fig-anchor");
   a.step(a.show("first", { dur: 400 }), a.show("found", { dur: 400 }));
   a.step(a.move("grid", -40, 0, { dur: 1200 }), a.show("result", { dur: 500 }));
@@ -550,7 +550,7 @@ function signalLine(points, c, color) {
 }
 
 const EXAMPLES = {
-  "ex-uart": { photo: "img/serial.jpg", about: ["UART, the serial port: an Arduino sends its", "readings to the laptop over it"],
+  "ex-uart": { photo: "img/serial.jpg", about: ["UART, the serial port: inside devices chips talk", "this way, and a receipt printer gets its bytes"],
     draw(step, c) {
       // idle, start, the eight bits of "S" (01010011, lowest bit first:
       // 1 1 0 0 1 0 1 0), stop, idle; cells 80 wide from x 640, high at 260
@@ -575,29 +575,56 @@ const EXAMPLES = {
       }
       return parts;
     } },
-  "ex-dcf": { photo: "img/radio-clock.jpg", about: ["a radio clock sets itself from DCF77, a time", "signal sent from near Frankfurt"],
+  "ex-dcf": { photo: "img/radio-clock.jpg", photoSize: 400, about: ["a radio clock sets itself from DCF77, a time", "signal sent from near Frankfurt"],
     draw(step, c) {
-      // seconds 56 to 59 and 0 to 2, 140 wide from x 650; at the start of
-      // each second the signal drops, briefly for 0 and twice as long for 1
-      // (widths not to scale), and not at all in second 59
-      const secs = [56, 57, 58, 59, 0, 1, 2], bits = [0, 1, 0, null, 0, 1, 1];
-      const x0 = 650, w = 140, hi = 270, lo = 360;
+      // top: seconds 56 to 59 and 0, 1 of the signal, 160 wide from x 640;
+      // the signal drops at the start of each second, briefly for 0 and
+      // twice as long for 1 (not to scale), and not at all in second 59.
+      // Bottom (step 2): the 59 bits sent from 10:09:00 on, announcing
+      // 10:10 on Monday 2026-11-23 in central European time.
+      const secs = [56, 57, 58, 59, 0, 1], bits = [0, 0, 1, null, 0, 0];
+      const x0 = 640, w = 160, hi = 230, lo = 300;
       const pts = [[x0, hi]];
-      secs.forEach((s, i) => {
+      secs.forEach((sec, i) => {
         const x = x0 + i * w;
         if (bits[i] !== null) { const len = bits[i] ? 60 : 30; pts.push([x, hi], [x, lo], [x + len, lo], [x + len, hi]); }
         pts.push([x + w, hi]);
       });
       const parts = [signalLine(pts, c)];
-      secs.forEach((s, i) => {
-        parts.push(d.label(x0 + i * w + 10, 0, String(s), { centerY: 405, mono: true, color: c.gray }));
-        if (bits[i] !== null) parts.push(d.label(x0 + i * w + 15, 0, String(bits[i]), { anchor: "middle", centerY: 220, mono: true }));
+      secs.forEach((sec, i) => {
+        parts.push(d.label(x0 + i * w + 10, 0, String(sec), { centerY: 340, mono: true, color: c.gray }));
+        if (bits[i] !== null) parts.push(d.label(x0 + i * w + 15, 0, String(bits[i]), { anchor: "middle", centerY: 190, mono: true }));
       });
-      parts.push(d.label(x0, 0, "one bit per second: a short dip is 0, a long one 1", { centerY: 470, color: c.light }));
+      parts.push(d.label(x0, 0, "one bit per second: a short dip is 0, a long one 1", { centerY: 385, color: c.light }));
       if (step >= 1) {
-        parts.push(rect(x0 + 3 * w, 240, w, 140, "none", ` stroke="${c.yellow}" stroke-width="5"`));
-        parts.push(d.label(x0, 0, "no dip in second 59: the next dip starts a minute", { centerY: 530, color: c.yellow }));
-        parts.push(d.label(x0, 0, "from there, bits 21 to 27 give the minute", { centerY: 580, color: c.yellow }));
+        parts.push(rect(x0 + 3 * w, 205, w, 115, "none", ` stroke="${c.yellow}" stroke-width="5"`));
+        parts.push(d.label(x0, 0, "no dip in second 59: the next dip starts a minute", { centerY: 430, color: c.yellow }));
+      }
+      if (step >= 2) {
+        const minute = [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 0 to 14: start, weather and warnings
+          0, 0, 0, 1, 0, 1,                            // 15 to 20: call, time zone (CET), leap second, start of time
+          0, 0, 0, 0, 1, 0, 0, 1,                      // 21 to 28: minute 10, parity
+          0, 0, 0, 0, 1, 0, 1,                         // 29 to 35: hour 10, parity
+          1, 1, 0, 0, 0, 1,                            // 36 to 41: day 23
+          1, 0, 0,                                     // 42 to 44: Monday
+          1, 0, 0, 0, 1,                               // 45 to 49: month 11
+          0, 1, 1, 0, 0, 1, 0, 0,                      // 50 to 57: year 26
+          1,                                           // 58: parity of the date
+        ];
+        const bx = 40, bw = 27, by = 480;
+        const focus = (i) => (i >= 21 && i <= 27) || (i >= 29 && i <= 34);
+        minute.forEach((b, i) => {
+          parts.push(rect(bx + i * bw + 1, by, bw - 2, 40, "none", ` stroke="${focus(i) ? c.yellow : c.gray}" stroke-width="2"`));
+          parts.push(d.label(bx + i * bw + bw / 2, 0, String(b), { anchor: "middle", centerY: by + 20, size: 20, mono: true, color: focus(i) ? c.yellow : c.light }));
+        });
+        [0, 10, 20, 30, 40, 50].forEach((i) => parts.push(d.label(bx + i * bw + bw / 2, 0, String(i), { anchor: "middle", centerY: by - 18, size: 20, mono: true, color: c.gray })));
+        const group = (a, b, text, color) => [
+          d.line(bx + a * bw + 2, by + 55, bx + (b + 1) * bw - 2, by + 55, { color, width: 3 }),
+          d.label(bx + ((a + b + 1) / 2) * bw, 0, text, { anchor: "middle", centerY: by + 90, color }),
+        ];
+        parts.push(...group(1, 20, "weather, time zone", c.gray), ...group(21, 27, "minute: 10", c.yellow),
+          ...group(29, 34, "hour: 10", c.yellow), ...group(36, 57, "date: monday, 23 november 2026", c.gray));
       }
       return parts;
     } },
@@ -605,8 +632,10 @@ const EXAMPLES = {
     draw(step, c) {
       // Manchester code, bits 1 0 1 1 0 in cells 200 wide from x 640: low to
       // high in the middle for 1, high to low for 0, and an extra change at a
-      // border between two equal bits
-      const bits = [1, 0, 1, 1, 0], x0 = 640, w = 200, hi = 280, lo = 400;
+      // border between two equal bits. Dashed: bit borders. Below, the
+      // receiver's readings, eight per bit; in step 1 the first reading after
+      // each change in the middle turns yellow.
+      const bits = [1, 0, 1, 1, 0], x0 = 640, w = 200, hi = 260, lo = 360;
       const pts = [];
       bits.forEach((b, i) => {
         const x = x0 + i * w, first = b ? lo : hi, second = b ? hi : lo;
@@ -614,37 +643,47 @@ const EXAMPLES = {
       });
       const parts = [signalLine(pts, c)];
       bits.forEach((b, i) => {
-        parts.push(d.label(x0 + i * w + w / 2, 0, String(b), { anchor: "middle", centerY: 210, size: 48, mono: true, color: b ? c.yellow : c.white }));
-        if (i) parts.push(d.line(x0 + i * w, 250, x0 + i * w, 430, { color: c.gray, width: 2, dashed: true }));
+        parts.push(d.label(x0 + i * w + w / 2, 0, String(b), { anchor: "middle", centerY: 205, size: 48, mono: true, color: b ? c.yellow : c.white }));
+        for (let k = 0; k < 8; k += 1) {
+          const hit = step >= 1 && k === 4;
+          parts.push(circle(x0 + i * w + (k + 0.5) * w / 8, 420, hit ? 9 : 5, hit ? c.yellow : c.gray));
+        }
       });
-      parts.push(d.label(x0, 0, "1: low to high, 0: high to low", { centerY: 490, color: c.light }));
-      if (step >= 1) bits.forEach((b, i) => parts.push(circle(x0 + i * w + w / 2, (hi + lo) / 2, 12, c.yellow)));
-      if (step >= 1) parts.push(d.label(x0, 0, "a change in the middle of every bit", { centerY: 545, color: c.yellow }));
+      for (let i = 0; i <= bits.length; i += 1) parts.push(d.line(x0 + i * w, 240, x0 + i * w, 380, { color: c.gray, width: 2, dashed: true }));
+      parts.push(d.label(x0, 0, "dashed: bit borders; dots: the receiver's readings", { centerY: 480, color: c.gray }));
+      parts.push(d.label(x0, 0, "1: low to high in the middle, 0: high to low", { centerY: 530, color: c.light }));
+      if (step >= 1) parts.push(d.label(x0, 0, "the first reading after the middle change resets the clock", { centerY: 580, color: c.yellow }));
       return parts;
     } },
   "ex-rc5": { photo: "img/remote.jpg", about: ["a TV remote control sends infrared light,", "14 bits per key press"],
     draw(step, c) {
       // the same code as light: for 1 the first half dark and the second lit,
-      // for 0 the other way round; cells 200 wide from x 640
+      // for 0 the other way round; cells 200 wide from x 640. Dashed: bit
+      // borders. Below, the TV's readings, eight per bit, the first after the
+      // change in the middle yellow in step 1.
       const bits = [1, 1, 0, 1, 0], x0 = 640, w = 200;
-      const parts = [d.box(x0, 260, 1000, 120, "", { border: c.gray })];
+      const parts = [d.box(x0, 260, 1000, 100, "", { border: c.gray })];
       bits.forEach((b, i) => {
         const x = x0 + i * w;
-        parts.push(rect(b ? x + w / 2 : x, 262, w / 2, 116, c.light));
-        parts.push(d.label(x + w / 2, 0, String(b), { anchor: "middle", centerY: 210, size: 48, mono: true, color: b ? c.yellow : c.white }));
+        parts.push(rect(b ? x + w / 2 : x, 262, w / 2, 96, c.light));
+        parts.push(d.label(x + w / 2, 0, String(b), { anchor: "middle", centerY: 205, size: 48, mono: true, color: b ? c.yellow : c.white }));
+        for (let k = 0; k < 8; k += 1) {
+          const hit = step >= 1 && k === 4;
+          parts.push(circle(x + (k + 0.5) * w / 8, 420, hit ? 9 : 5, hit ? c.yellow : c.gray));
+        }
       });
-      parts.push(d.label(x0, 0, "1: dark, then light; 0: light, then dark", { centerY: 430, color: c.light }));
-      if (step >= 1) {
-        bits.forEach((b, i) => parts.push(d.line(x0 + i * w + w / 2, 240, x0 + i * w + w / 2, 400, { color: c.yellow, width: 6 })));
-        parts.push(d.label(x0, 0, "the light changes in the middle of every bit", { centerY: 490, color: c.yellow }));
-      }
+      for (let i = 1; i < bits.length; i += 1) parts.push(d.line(x0 + i * w, 240, x0 + i * w, 380, { color: c.gray, width: 2, dashed: true }));
+      parts.push(d.label(x0, 0, "dashed: bit borders; dots: the TV's readings", { centerY: 480, color: c.gray, keepCase: true }));
+      parts.push(d.label(x0, 0, "1: dark, then light; 0: light, then dark", { centerY: 530, color: c.light }));
+      if (step >= 1) parts.push(d.label(x0, 0, "the first reading after the middle change resets the clock", { centerY: 580, color: c.yellow }));
       return parts;
     } },
-  "ex-usb": { photo: "img/usb.jpg", about: ["USB: the plug for keyboards, sticks and phones;", "a 0 is a change on the line, a 1 is none"],
+  "ex-usb": { photo: "img/usb.jpg", about: ["USB: the plug for keyboards, sticks and phones;", "every bit has a fixed length here too"],
     draw(step, c) {
-      // NRZI: 0 changes the level, 1 keeps it. Top: 0 1 1 1 1 1 1 1 0 runs
-      // flat for seven bits. Bottom: after six ones a 0 (yellow) is slipped
-      // in and forces a change. Cells 100 wide from x 640.
+      // NRZI: 0 changes the level, 1 keeps it. Top: 1 0 0 1 1 0, the rule.
+      // Bottom, step 1: 0 1 1 1 1 1 1 1 0 runs flat for seven bits; step 2:
+      // after six ones a 0 (yellow) is slipped in and forces a change.
+      // Cells 100 wide from x 640.
       const row = (bits, y, stuffed) => {
         const x0 = 640, w = 100, hi = y, lo = y + 60;
         let level = hi;
@@ -654,39 +693,52 @@ const EXAMPLES = {
           const x = x0 + i * w;
           if (b === 0) { level = level === hi ? lo : hi; pts.push([x, level === hi ? lo : hi], [x, level]); }
           pts.push([x + w, level]);
-          parts.push(d.label(x + w / 2, 0, String(b), { anchor: "middle", centerY: y - 40, mono: true, color: i === stuffed ? c.yellow : c.light }));
+          parts.push(d.label(x + w / 2, 0, String(b), { anchor: "middle", centerY: y - 35, mono: true, color: i === stuffed ? c.yellow : c.light }));
         });
         return [signalLine(pts, c), ...parts];
       };
       const parts = [
-        d.label(640, 0, "seven ones: no change for a long time", { centerY: 190, color: c.gray }),
-        ...row([0, 1, 1, 1, 1, 1, 1, 1, 0], 290),
+        ...row([1, 0, 0, 1, 1, 0], 210),
+        d.label(640, 0, "0: the line changes, 1: it stays as it is", { centerY: 315, color: c.light }),
       ];
-      if (step >= 1) {
-        parts.push(d.label(640, 0, "after six ones the sender slips in a 0", { centerY: 430, color: c.yellow }));
-        parts.push(...row([0, 1, 1, 1, 1, 1, 1, 0, 1, 0], 530, 7));
+      if (step === 1) {
+        parts.push(...row([0, 1, 1, 1, 1, 1, 1, 1, 0], 425));
+        parts.push(d.label(640, 0, "seven ones: the line stays flat for seven bits", { centerY: 530, color: c.gray }));
+      }
+      if (step >= 2) {
+        parts.push(...row([0, 1, 1, 1, 1, 1, 1, 0, 1, 0], 425, 7));
+        parts.push(d.label(640, 0, "after six ones the sender slips in a 0", { centerY: 530, color: c.yellow }));
       }
       return parts;
     } },
 };
 
-EXAMPLES["ex-dna"] = { photo: "img/dna.jpg", about: ["DNA as storage: data written in the letters", "A, C, G and T of synthetic DNA"],
+EXAMPLES["ex-wheel"] = { photo: "img/scroll-wheel.jpg", about: ["a mouse wheel reports every notch with two", "sensors, A and B, each 0 or 1"],
   draw(step, c) {
-    // letter boxes 90 wide from x 640; on top a run of four A that a reading
-    // machine easily miscounts, below a strand in which no letter follows
-    // itself, so every next letter is one of three
-    const boxes = (letters, y, color) => letters.map((l, i) => [
-      d.box(640 + i * 100, y, 84, 84, "", { border: color(i) }),
-      d.label(640 + i * 100 + 42, 0, l, { anchor: "middle", centerY: y + 42, size: 48, mono: true, keepCase: true }),
-    ]).flat();
-    const parts = [
-      ...boxes(["G", "A", "A", "A", "A", "C"], 170, (i) => (i >= 1 && i <= 4 ? c.red : c.gray)),
-      d.label(640, 0, "a run of equal letters: how many A were there?", { centerY: 300, color: c.red, keepCase: true }),
-    ];
+    // the four states AB on a cycle, 00 01 11 10 clockwise; a step to the
+    // next state clockwise is +1 notch, anticlockwise -1, and the state
+    // across is never next. In step 1 an example of readings with the
+    // notch each change means.
+    const pos = { "00": [700, 190], "01": [960, 190], "11": [960, 370], "10": [700, 370] };
+    const parts = [];
+    for (const [st, [x, y]] of Object.entries(pos)) {
+      parts.push(d.box(x, y, 120, 70, "", { border: c.gray }));
+      parts.push(d.label(x + 60, 0, st, { anchor: "middle", centerY: y + 35, mono: true }));
+    }
+    parts.push(
+      d.arrow(830, 225, 950, 225, { color: c.light }),
+      d.arrow(1020, 270, 1020, 360, { color: c.light }),
+      d.arrow(950, 405, 830, 405, { color: c.light }),
+      d.arrow(760, 360, 760, 270, { color: c.light }),
+      d.label(1130, 0, "clockwise: +1 notch", { centerY: 210, color: c.light }),
+      d.label(1130, 0, "anticlockwise: −1", { centerY: 260, color: c.light }),
+      d.label(1130, 0, "never across", { centerY: 310, color: c.gray }),
+      d.label(1130, 0, "(00 to 11)", { centerY: 355, mono: true, color: c.gray }));
     if (step >= 1) {
-      parts.push(...boxes(["G", "A", "T", "A", "C", "G"], 380, () => c.gray));
-      for (let i = 1; i < 6; i += 1) parts.push(d.label(640 + i * 100 - 8, 0, "3", { anchor: "middle", centerY: 500, mono: true, color: c.yellow }));
-      parts.push(d.label(640, 0, "no letter twice in a row: 3 choices each time", { centerY: 560, color: c.yellow }));
+      const seq = ["00", "01", "11", "01", "00", "10"], moves = ["+1", "+1", "−1", "−1", "−1"];
+      seq.forEach((st, i) => parts.push(d.label(670 + i * 160, 0, st, { anchor: "middle", centerY: 500, mono: true })));
+      moves.forEach((m, i) => parts.push(d.label(750 + i * 160, 0, m, { anchor: "middle", centerY: 550, mono: true, color: c.yellow })));
+      parts.push(d.label(640, 0, "the speed of the hand does not matter", { centerY: 605, color: c.yellow }));
     }
     return parts;
   } };
@@ -696,7 +748,7 @@ function drawExample(slide, step) {
   const ex = EXAMPLES[fig.id];
   const c = d.colors();
   const parts = [
-    `<image href="${ex.photo}" x="0" y="40" width="560" height="560" preserveAspectRatio="xMidYMid slice"/>`,
+    `<image href="${ex.photo}" x="0" y="40" width="${ex.photoSize || 560}" height="${ex.photoSize || 560}" preserveAspectRatio="xMidYMid slice"/>`,
     ...ex.about.map((t, i) => d.label(640, 0, t, { centerY: 60 + i * 48, color: c.gray, keepCase: true })),
     ...ex.draw(step, c),
   ];

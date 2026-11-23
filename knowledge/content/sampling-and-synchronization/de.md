@@ -15,7 +15,7 @@ objectives:
     - "erklären, warum Symbole, die kürzer sind als die Integrationszeit des Sensors, Messwerte liefern, die zu keinem Symbol passen"
     - "beschreiben, wie Marken den Uhrenfehler begrenzen und was sie an Rate kosten"
     - "Bits als Wechsel zwischen drei Farben kodieren und dekodieren, sodass es immer einen Wechsel zu sehen gibt"
-    - "echte Strecken für beide Wege nennen, etwa das Startbit der seriellen Schnittstelle, den Manchester-Code des Ethernets und den rotierenden Code der DNA-Speicherung"
+    - "echte Strecken für beide Wege nennen, etwa das Startbit der seriellen Schnittstelle, den Manchester-Code des Ethernets und den Drehgeber eines Mausrads"
     - "mit `math.log2()` vergleichen, wie viele Bits k Farben als Zustände und als Wechsel tragen, und erklären, warum zwei Bit pro Wechsel fünf Farben brauchen"
     - "mit t = n / (r · b) berechnen, wie lange eine Datei mit und ohne gemeinsamen Takt braucht"
 translation_of: en
@@ -171,8 +171,9 @@ gegensteuerst und dabei verfolgst, wie viel Rate sie kosten.
 
 ![Der Drift-Simulator](item:drift-simulator-demo)
 
-Viele echte Strecken arbeiten so. Eine serielle Schnittstelle (UART, wie bei
-RS-232) ruht zwischen den Zeichen auf 1, und jedes Zeichen beginnt mit einem
+Viele echte Strecken arbeiten so. Eine serielle Schnittstelle (UART, wie bei RS-232), über die Chips in Routern,
+Fernsehern oder Autos miteinander reden und ein Bondrucker seine Bytes
+bekommt, ruht zwischen den Zeichen auf 1, und jedes Zeichen beginnt mit einem
 Startbit 0: An dessen fallender Flanke startet der Empfänger seine Uhr neu
 und liest danach jedes Bit in seiner Mitte. Weil diese Marke vor jedem
 Zeichen kommt, müssen die Uhren nur über etwa zehn Bit zusammenhalten, und
@@ -245,14 +246,15 @@ Aus den Bits `100` werden Rot, Grün, Rot, Blau, und der Dekodierer liefert
 wieder `100`. `encode` braucht eine Startfarbe, die kein Bit trägt, also
 werden für drei Bits vier Farben gesendet.
 
-Ein echtes Beispiel für diesen Weg kommt aus der Speicherung von Daten in
-künstlich hergestellter DNA, als Folge der vier Buchstaben A, C, G und T. Beim
-Herstellen und Auslesen verzählt sich die Technik leicht bei Läufen gleicher
-Buchstaben, so wie zwei gleiche Farben in einem Lichtstrom verschmelzen. Eine
-Forschungsgruppe am European Bioinformatics Institute hat deshalb 2013 Texte
-und Bilder so gespeichert, dass nie ein Buchstabe auf sich selbst folgt: Jeder
-nächste Buchstabe ist einer der drei anderen, also lassen vier Buchstaben drei
-Möglichkeiten pro Schritt, ein Stellenwertsystem zur Basis 3.
+Ein echtes Beispiel für diesen Weg hat jeder in der Hand: das Mausrad, und
+genauso der Lautstärkeknopf am Autoradio. Darin sitzt ein Drehgeber mit zwei
+Sensoren, A und B, die beim Drehen abwechselnd 0 oder 1 melden. Zusammen
+durchlaufen sie die Zustände 00, 01, 11 und 10 im Kreis, und es ändert sich
+immer nur ein Sensor, also kommt der gegenüberliegende Zustand nie als
+nächster. Die Richtung steckt allein darin, welcher Nachbar folgt, eine Raste
+weiter im Uhrzeigersinn und eine zurück dagegen, so wie ein Schritt auf dem
+Dreieck ein Bit trägt. Wie schnell oder langsam die Hand dreht, spielt keine
+Rolle, weil der Rechner nur auf Wechsel reagiert.
 
 ## Ohne Uhr heißt nicht ohne Zeit
 
@@ -371,8 +373,8 @@ dem Durchsatz und seinen Grenzen.
   gibt es immer einen Wechsel zu sehen, und der Empfänger braucht keine Uhr.
 - Die serielle Schnittstelle, DCF77 und VGA stellen die Uhr des Empfängers
   mit Marken nach, das Ethernet nach 10BASE-T, RC-5 und USB mit Wechseln in
-  den Daten, während die DNA-Speicherung ohne Uhr auskommt und nie einen
-  Buchstaben wiederholt.
+  den Daten, während ein Mausrad ohne Uhr auskommt und die Richtung am
+  nächsten Zustand abliest.
 - Als Wechsel tragen k Farben nur log₂(k − 1) Bits, also brauchen zwei Bit
   pro Wechsel fünf Farben.
 - Ohne Uhr müssen Mischwerte während eines Wechsels herausgefiltert werden,

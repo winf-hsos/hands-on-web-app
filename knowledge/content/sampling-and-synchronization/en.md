@@ -16,7 +16,7 @@ objectives:
     - "explain why symbols shorter than the sensor's integration time produce readings that match no symbol"
     - "describe how markers limit the clock error and what they cost in rate"
     - "encode and decode bits as changes between three colors so that there is always a change to see"
-    - "name real links for both ways, such as the start bit of a serial port, the Manchester code of ethernet and the rotating code of DNA storage"
+    - "name real links for both ways, such as the start bit of a serial port, the Manchester code of ethernet and the rotary encoder of a mouse wheel"
     - "compare with `math.log2()` how many bits k colors carry as states and as changes, and explain why two bits per change need five colors"
     - "calculate with t = n / (r · b) how long a file takes with and without a shared beat"
 level: 1
@@ -167,7 +167,8 @@ markers, keeping an eye on how much rate they cost.
 
 ![The drift simulator](item:drift-simulator-demo)
 
-Many real links work this way. A serial port (UART, as in RS-232) rests at 1
+Many real links work this way. A serial port (UART, as in RS-232), over which chips inside routers, TVs
+or cars talk and a receipt printer gets its bytes, rests at 1
 between characters, and every character begins with a start bit 0: at its
 falling edge the receiver restarts its clock and then reads each bit in its
 middle. Since this marker comes before every character, the clocks only have
@@ -236,13 +237,15 @@ The bits `100` become red, green, red, blue, and the decoder returns `100`.
 Note that `encode` needs a starting color that carries no bit, so four colors
 are sent for three bits.
 
-A real example of this way comes from storing data in synthetic DNA, as a
-sequence of the four letters A, C, G and T. Making and reading DNA easily
-miscounts runs of equal letters, just as two equal colors merge in a stream
-of light. A research group at the European Bioinformatics Institute therefore
-stored texts and pictures in 2013 such that no letter ever follows itself:
-every next letter is one of the three others, so four letters leave three
-choices per step, a place value system with base 3.
+A real example of this way is in everybody's hand: the mouse wheel, and
+likewise the volume knob of a car radio. Inside sits a rotary encoder with
+two sensors, A and B, which report 0 or 1 in turn as the wheel rotates.
+Together they run through the states 00, 01, 11 and 10 in a circle, and only
+one sensor changes at a time, so the state across never comes next. The
+direction lies only in which neighbor follows, one notch on for clockwise and
+one back for anticlockwise, just as a step on the triangle carries a bit.
+However fast or slowly the hand turns does not matter, because the computer
+reacts only to changes.
 
 ## Without a clock is not without time
 
@@ -355,8 +358,8 @@ of its own, that of throughput and its limits.
 - When the change carries the bit and no color may follow itself, there is
   always a change to see and the receiver needs no clock.
 - Serial ports, DCF77 and VGA reset the receiver's clock with markers,
-  10BASE-T ethernet, RC-5 and USB with changes inside the data, while DNA
-  storage does without a clock and never repeats a letter.
+  10BASE-T ethernet, RC-5 and USB with changes inside the data, while a mouse
+  wheel does without a clock and reads the direction from the next state.
 - As changes, k colors carry only log₂(k − 1) bits, so two bits per change
   need five colors.
 - Without a clock, mixed readings during a change have to be filtered out,
