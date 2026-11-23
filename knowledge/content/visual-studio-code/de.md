@@ -22,7 +22,7 @@ topics: [working-with-the-computer, programming-with-python]
 modules: [dup]
 relations:
   see_also: [positron, python-on-the-command-line]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

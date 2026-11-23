@@ -18,7 +18,7 @@ modules: [dup]
 relations:
   checks: [python-error-messages, python-exceptions]
 questions: [hcs-032, hcs-033, hcs-034, hcs-035, hcs-036, hcs-037, hcs-038, hcs-039]
-status: draft
+status: published
 updated: 2026-11-09
 ---
 

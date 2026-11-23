@@ -20,7 +20,7 @@ modules: [dup]
 relations:
   requires: [python-functions]
   see_also: [python-first-program, programming-principles]
-status: draft
+status: published
 updated: 2026-11-01
 ---
 

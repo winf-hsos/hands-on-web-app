@@ -11,7 +11,7 @@ modules: [dup]
 project: lifi
 relations:
   see_also: [lifi-hardware, lifi-cockpit]
-status: draft
+status: published
 updated: 2026-11-08
 ---
 
