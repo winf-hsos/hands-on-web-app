@@ -21,7 +21,7 @@ phases:
       - measuring-your-noise
   - id: word
     challenge: lifi-challenge-2
-    items: [place-value-systems, code-systems, invent-a-code, lifi-codebook-warmup]
+    items: [place-value-systems, code-systems, invent-a-code, lifi-codebook-warmup, sampling-and-synchronization]
   - id: protocol
     challenge: lifi-challenge-3
   - id: packet

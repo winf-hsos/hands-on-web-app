@@ -9,7 +9,7 @@ objectives:
     - "keep sender and receiver in step with a fixed symbol rate, without a shared clock"
     - "explain why a transmission fails beyond a certain symbol rate"
 translation_of: de
-based_on: 2026-11-16
+based_on: 2026-11-23
 ---
 
 With an alphabet of colours you can send words as soon as two things are
@@ -345,6 +345,22 @@ Raise `SYMBOL_RATE` step by step and note at every step whether three
 sentences still arrive without an error. Keep this series of measurements,
 because you will need it again in challenge 3.
 
+Write every step on a line of its own: the rate you set, the integration
+time of your sensor (`INTEGRATION_TIME`) and the result, that is whether the
+three sentences arrived without an error and, if not, how it broke, slowly
+with shifted characters or at once with garbled ones. The first rate at
+which it breaks is your **tipping rate**, and it goes into the course's
+collection together with the integration time and the pattern of errors.
+The lesson [[sampling-and-synchronization]] explains why it breaks.
+
+| `SYMBOL_RATE` | `INTEGRATION_TIME` | Result |
+|---|---|---|
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+
 **File:** `word.py`, the value `SYMBOL_RATE`; in the template:
 
 ```python static
@@ -366,13 +382,24 @@ at your setup, asks to see your code now and then, and ticks off passed runs. Yo
 without an error, at any symbol rate.
 
 The [challenge board](https://lifi.hsos.uber.space/challenges) shows for every
-team how many characters and how many bits per second it transmits. For every
-sentence the clock runs from the shared start until `send_text` returns.
-Characters per second are the characters of the three sentences divided by
-this time, and bits per second are all colours sent divided by the same time,
-times log2 of the number of your colours in `COLORS`. The ranking goes by
-characters per second, and in a tie the team that reached the
-value first comes first. In the competition the best teams show their run
+team how many characters and how many bits per second it transmits, and
+both are measured, not calculated from `SYMBOL_RATE`. For every sentence the
+clock runs from the shared start until `send_text` returns. Characters per
+second are the characters of the three sentences divided by this time. For
+bits per second the **measured symbol rate** counts, that is all colours sent
+divided by the same time, and every colour carries log2 of the number of your
+colours in `COLORS` bits:
+
+> bits per second = colours sent / measured time · log2(number of colours)
+
+An example: a team with four colours sends 180 colours in three sentences
+and needs 40 seconds for them. Its measured symbol rate is 180 / 40 = 4.5
+colours per second, even if `SYMBOL_RATE` is set to 5, and it transmits
+4.5 · log2 4 = 9 bits per second. The measured rate is usually a little below
+the one you set, because every pause, every calculation and every marker
+costs time, and that is exactly why it counts rather than the one you set.
+The ranking goes by characters per second, and in a tie the team that
+reached the value first comes first. In the competition the best teams show their run
 live; there is no live change in challenge 2.
 
 ## Pitfalls and more

@@ -15,7 +15,7 @@ topics: [representing-information, transferring-information]
 modules: [dup]
 project: lifi
 status: published
-updated: 2026-11-16
+updated: 2026-11-23
 ---
 
 Mit einem Alphabet aus Farben lassen sich Wörter übertragen, sobald zwei Dinge
@@ -351,6 +351,22 @@ Erhöht `SYMBOL_RATE` Schritt für Schritt und notiert bei jeder Stufe, ob drei
 Sätze noch fehlerfrei ankommen. Diese Messreihe hebt ihr auf, denn in
 Challenge 3 braucht ihr sie wieder.
 
+Schreibt jede Stufe in eine Zeile: die eingestellte Rate, die
+Integrationszeit eures Sensors (`INTEGRATION_TIME`) und das Ergebnis, also
+ob die drei Sätze fehlerfrei ankamen und, wenn nicht, wie es gekippt ist,
+schleichend mit verschobenen Zeichen oder sofort mit Zeichensalat. Die erste
+Rate, bei der es kippt, ist eure **Kipp-Rate**; sie gehört mit
+Integrationszeit und Fehlerbild in die Sammlung des Kurses. Warum es kippt,
+erklärt die Lektion [[sampling-and-synchronization]].
+
+| `SYMBOL_RATE` | `INTEGRATION_TIME` | Ergebnis |
+|---|---|---|
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+
 **Datei:** `word.py`, der Wert `SYMBOL_RATE`; in der Vorlage:
 
 ```python static
@@ -373,13 +389,24 @@ zeigen und hakt bestandene Läufe ab. Bestanden habt ihr mit einem gewerteten La
 also drei Sätzen hintereinander ohne Fehler, bei beliebiger Symbolrate.
 
 Auf der [Challenge-Tafel](https://lifi.hsos.uber.space/challenges) steht zu
-jedem Team, wie viele Zeichen und wie viele Bit pro Sekunde es überträgt. Die
-Uhr läuft bei jedem Satz vom gemeinsamen Start, bis `send_text` zurückkehrt.
-Zeichen pro Sekunde sind die Zeichen der drei Sätze geteilt durch diese Zeit,
-und Bit pro Sekunde sind alle gesendeten Farben geteilt durch dieselbe Zeit,
-mal log2 der Zahl eurer Farben in `COLORS`. Die Rangfolge richtet sich nach
-den Zeichen pro Sekunde, und bei Gleichstand liegt
-das Team vorn, das den Wert früher erreicht hat. Im Wettbewerb zeigen die
+jedem Team, wie viele Zeichen und wie viele Bit pro Sekunde es überträgt, und
+beides ist gemessen, nicht aus `SYMBOL_RATE` ausgerechnet. Die Uhr läuft bei
+jedem Satz vom gemeinsamen Start, bis `send_text` zurückkehrt. Zeichen pro
+Sekunde sind die Zeichen der drei Sätze geteilt durch diese Zeit. Für die Bit
+pro Sekunde zählt die **gemessene Symbolrate**, also alle gesendeten Farben
+geteilt durch dieselbe Zeit, und jede Farbe trägt log2 der Zahl eurer Farben
+in `COLORS` Bit:
+
+> Bit pro Sekunde = gesendete Farben / gemessene Zeit · log2(Zahl der Farben)
+
+Ein Beispiel: Ein Team mit vier Farben sendet in drei Sätzen 180 Farben und
+braucht dafür 40 Sekunden. Seine gemessene Symbolrate ist 180 / 40 = 4,5
+Farben pro Sekunde, auch wenn `SYMBOL_RATE` auf 5 steht, und es überträgt
+4,5 · log2 4 = 9 Bit pro Sekunde. Die gemessene Rate liegt meist etwas unter
+der eingestellten, weil jede Pause, jede Berechnung und jede Marke Zeit
+kostet, und genau deshalb zählt sie und nicht die eingestellte. Die
+Rangfolge richtet sich nach den Zeichen pro Sekunde, und bei Gleichstand
+liegt das Team vorn, das den Wert früher erreicht hat. Im Wettbewerb zeigen die
 besten Teams ihren Lauf live; eine Live-Änderung gibt es in Challenge 2 nicht.
 
 ## Stolpersteine und mehr

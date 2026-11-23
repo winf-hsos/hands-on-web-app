@@ -1,0 +1,470 @@
+// Drawings and animations of "keeping time" (sampling and synchronization).
+// Every figure is 1680 units wide, the width of a figure on the 1920 canvas,
+// so text sizes come out as written (20, 32, 48, 80); on slides with a
+// punchline a figure is at most 660 high, otherwise it would be scaled down.
+// Static figures are redrawn per build-up step (data-on-show, data-on-step);
+// animated ones are drawn once when the deck loads, and their segments are
+// the build-up steps of the slide. Random scatter comes from a generator with
+// a fixed seed, so a figure looks the same in the talk, in the PDF and on
+// every reload.
+"use strict";
+
+const d = window.draw;
+const $ = (id) => document.getElementById(id);
+const put = (id, svg) => { const el = $(id); if (el) el.innerHTML = svg; return svg; };
+
+function rect(x, y, w, h, fill, extra = "") {
+  return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}"${extra}/>`;
+}
+
+function circle(x, y, r, fill, extra = "") {
+  return `<circle cx="${x}" cy="${y}" r="${r}" fill="${fill}"${extra}/>`;
+}
+
+/* uniform numbers in [0, 1) and normally distributed ones (Box-Muller) from a
+ * linear congruential generator with a fixed seed */
+function rng(seed) {
+  let s = seed >>> 0;
+  const u = () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; };
+  const g = () => Math.sqrt(-2 * Math.log(Math.max(u(), 1e-9))) * Math.cos(2 * Math.PI * u());
+  return { u, g };
+}
+
+/* The colours of the light. They stand for themselves (red, green and blue
+ * light), so on these figures labels and marks are white or gray, and the
+ * judgement goes into the punchline (design rule on real colours). */
+const light = (c, name) => ({ red: c.red, green: c.green, blue: c.blue })[name];
+
+/* ---- part 1: what the receiver sees ---------------------------------------
+ * Seven symbols as the sender switches them (cells with gaps between them) and
+ * as the receiver sees them: one band of light without boundaries, in which
+ * two equal neighbours run into one. Cells 150 wide from x 330, so the rows
+ * end at 1380; row names right-aligned at 300 ("seen" is 4 x 19.2 = 77 wide). */
+function drawStream(slide, step) {
+  const c = d.colors();
+  const seq = ["red", "green", "green", "blue", "red", "red", "green"];
+  const x0 = 330, w = 150, end = x0 + seq.length * w;
+  const parts = [
+    d.label(300, 0, "sent", { anchor: "end", centerY: 145, color: c.light }),
+    ...seq.map((s, i) => rect(x0 + i * w + 3, 90, w - 6, 110, light(c, s))),
+    d.arrow(x0, 545, end + 30, 545, { color: c.gray }),
+    d.label(end + 50, 0, "time", { centerY: 545, color: c.gray }),
+  ];
+  if (step >= 1) {
+    parts.push(d.label(300, 0, "seen", { anchor: "end", centerY: 395, color: c.light }));
+    let i = 0;
+    while (i < seq.length) {
+      let j = i;
+      while (j + 1 < seq.length && seq[j + 1] === seq[i]) j += 1;
+      parts.push(rect(x0 + i * w, 340, (j - i + 1) * w, 110, light(c, seq[i])));
+      i = j + 1;
+    }
+  }
+  if (step >= 2) {
+    // every boundary of the sender, dashed over the band; a question mark
+    // where the band shows no change at all
+    for (let k = 1; k < seq.length; k += 1) {
+      const x = x0 + k * w;
+      parts.push(d.line(x, 325, x, 465, { color: c.white, width: 3, dashed: true }));
+      if (seq[k] === seq[k - 1]) parts.push(d.label(x, 0, "?", { size: 48, anchor: "middle", centerY: 490, color: c.white }));
+    }
+  }
+  put("fig-stream", d.svg(1680, 600, ...parts));
+}
+
+/* ---- one dot is many readings -----------------------------------------------
+ * One symbol as a frame 1000 wide; inside it 24 readings that scatter, and in
+ * step 1 their average as one dot on the dashed level. The readings stay,
+ * dimmed, so the dot is visibly made of them. */
+function drawSamples(slide, step) {
+  const c = d.colors();
+  const r = rng(20261123);
+  const level = 280;
+  const parts = [
+    d.box(340, 120, 1000, 320, "", { border: c.gray }),
+    d.label(840, 0, "one symbol", { anchor: "middle", centerY: 80, color: c.light }),
+  ];
+  for (let i = 0; i < 24; i += 1) {
+    const x = 390 + i * (900 / 23);
+    const y = level + Math.max(-110, Math.min(110, r.g() * 45));
+    parts.push(circle(x.toFixed(1), y.toFixed(1), 10, c.light, step >= 1 ? ' fill-opacity="0.35"' : ""));
+  }
+  if (step >= 1) {
+    parts.push(d.line(350, level, 1330, level, { color: c.yellow, width: 3, dashed: true }));
+    parts.push(circle(840, level, 22, c.yellow));
+    parts.push(d.label(840, 0, "the average of all readings in the symbol", { anchor: "middle", centerY: 500, color: c.white }));
+  }
+  put("fig-samples", d.svg(1680, 540, ...parts));
+}
+
+/* ---- cause one: no two clocks run alike --------------------------------------
+ * Twelve time slots of the sender, 110 wide from x 240, with a tick under the
+ * middle of each slot; below them the readings of a receiver whose clock runs
+ * 8 % slow, so reading i lands at (i + 0.5) * 110 * 1.08. From the seventh
+ * reading on the error passes half a slot (55): the dot sits in the next slot
+ * and is red. The drift is exaggerated so it shows within ten readings; the
+ * caption says so. The readings appear one after another, a process in time:
+ * four in the first segment, six in the second (2.4 s). */
+(function () {
+  if (!$("fig-drift")) return;
+  const c = d.colors();
+  const x0 = 240, w = 110, drift = 1.08;
+  const slots = [];
+  for (let i = 0; i < 12; i += 1) {
+    const x = x0 + i * w;
+    slots.push(d.box(x + 3, 110, w - 6, 110, String(i + 1), { border: c.gray, color: c.light, size: 32 }));
+    slots.push(d.line(x + w / 2, 228, x + w / 2, 248, { color: c.gray, width: 3 }));
+  }
+  const readings = [];
+  for (let i = 0; i < 10; i += 1) {
+    const x = x0 + (i + 0.5) * w * drift;
+    const wrong = (i + 0.5) * w * (drift - 1) > w / 2;
+    readings.push(d.g("r" + i,
+      d.line(x, 252, x, 300, { color: c.gray, width: 2, dashed: true }),
+      circle(x.toFixed(1), 320, 15, wrong ? c.red : c.white)));
+  }
+  put("fig-drift", d.svg(1680, 520,
+    d.label(210, 0, "sender", { anchor: "end", centerY: 165, color: c.light }),
+    d.label(210, 0, "receiver", { anchor: "end", centerY: 320, color: c.light }),
+    ...slots, ...readings,
+    d.label(840, 0, "the receiver's clock runs 8 % slow, exaggerated so it shows after a few symbols",
+      { anchor: "middle", centerY: 450, color: c.gray })));
+  const a = d.anim("fig-drift");
+  a.step(a.seq(...[0, 1, 2, 3].map((i) => a.show("r" + i, { dur: 350 }))));
+  a.step(a.seq(...[4, 5, 6, 7, 8, 9].map((i) => a.show("r" + i, { dur: 400 }))));
+})();
+
+/* ---- cause two: the sensor needs time to look ---------------------------------
+ * Two panels on the same time scale, 2 units per ms. Left, symbols of 100 ms
+ * (200 units) and a measuring window of 50 ms (100 units, yellow: the window
+ * that is measuring now) inside one bright symbol. Right, symbols of 40 ms
+ * (80 units): the same window covers 60 units of bright and 40 of dark. Below
+ * each panel a scale from dark to bright with the reading on it, and a
+ * verdict. Bright and dark are gray levels, not colours of the light, so the
+ * verdict colours keep their meaning here. */
+function strip(x0, x1, len, firstBright, c) {
+  const parts = [];
+  for (let x = x0, k = 0; x < x1; x += len, k += 1) {
+    const bright = (k % 2 === 0) === firstBright;
+    parts.push(rect(x, 130, Math.min(len, x1 - x), 100, bright ? c.light : c.dark));
+  }
+  return parts;
+}
+
+function gauge(x0, x1, f, c) {
+  const x = x0 + f * (x1 - x0);
+  return [
+    d.line(x0, 380, x1, 380, { color: c.gray, width: 3 }),
+    d.line(x0, 365, x0, 395, { color: c.gray, width: 3 }),
+    d.line(x1, 365, x1, 395, { color: c.gray, width: 3 }),
+    d.label(x0, 0, "dark", { anchor: "middle", centerY: 425, color: c.gray }),
+    d.label(x1, 0, "bright", { anchor: "middle", centerY: 425, color: c.gray }),
+    circle(x, 380, 17, c.yellow),
+  ];
+}
+
+function drawWindow(slide, step) {
+  const c = d.colors();
+  const parts = [
+    d.label(430, 0, "symbols of 100 ms", { anchor: "middle", centerY: 85 }),
+    ...strip(60, 800, 200, true, c),
+    rect(510, 118, 100, 124, "none", ` stroke="${c.yellow}" stroke-width="5"`),
+    d.label(560, 0, "window 50 ms", { anchor: "middle", centerY: 280, color: c.yellow }),
+    ...gauge(120, 740, 1, c),
+    d.verdict(110, 470, 640, 130, "reads bright", true, { size: 32 }),
+  ];
+  if (step >= 1) {
+    parts.push(
+      d.label(1250, 0, "symbols of 40 ms", { anchor: "middle", centerY: 85 }),
+      ...strip(880, 1620, 80, true, c),
+      rect(1220, 118, 100, 124, "none", ` stroke="${c.yellow}" stroke-width="5"`),
+      d.label(1270, 0, "window 50 ms", { anchor: "middle", centerY: 280, color: c.yellow }));
+  }
+  if (step >= 2) {
+    parts.push(...gauge(940, 1560, 0.6, c),
+      d.verdict(930, 470, 640, 130, "matches neither symbol", false, { size: 32 }));
+  }
+  put("fig-window", d.svg(1680, 640, ...parts));
+}
+
+/* ---- part 2: error over time ---------------------------------------------------
+ * Shared axes of the two error figures, so both sit pixel for pixel in the
+ * same place: time 0 to 20 s from x 260 (62 units per second), clock error 0
+ * to 100 ms from y 500 upwards (4.2 units per ms). The dashed line is half a
+ * symbol at ten symbols per second, 50 ms. */
+const ex = (t) => 260 + t * 62;
+const ey = (ms) => 500 - ms * 4.2;
+
+function errorAxes(c) {
+  return [
+    d.line(260, 500, 1520, 500, { color: c.light, width: 3 }),
+    d.line(260, 502, 260, 70, { color: c.light, width: 3 }),
+    ...[0, 5, 10, 15, 20].map((t) => d.label(ex(t), 0, String(t), { anchor: "middle", centerY: 535, color: c.gray })),
+    ...[0, 50, 100].map((ms) => d.label(235, 0, String(ms), { anchor: "end", centerY: ey(ms), color: c.gray })),
+    d.label(880, 0, "seconds since the shared start", { anchor: "middle", centerY: 585, color: c.gray }),
+    d.label(260, 0, "clock error in ms", { centerY: 40, color: c.gray }),
+    d.line(260, ey(50), 1520, ey(50), { color: c.light, width: 2, dashed: true }),
+    d.label(1520, 0, "half a symbol", { anchor: "end", centerY: ey(50) - 30, color: c.light }),
+  ];
+}
+
+/* Clocks that differ by 0.5 % drift 5 ms apart per second. The line draws
+ * itself, a process in time: up to the crossing at 10 s white, beyond it red,
+ * where the receiver reads the neighbouring symbol. */
+(function () {
+  if (!$("fig-error")) return;
+  const c = d.colors();
+  put("fig-error", d.svg(1680, 610,
+    ...errorAxes(c),
+    d.g("e1", d.line(ex(0), ey(0), ex(10), ey(50), { color: c.white, width: 5 })),
+    d.g("e2", d.line(ex(10), ey(50), ex(20), ey(100), { color: c.red, width: 5 })),
+    d.g("hit",
+      circle(ex(10), ey(50), 12, c.red),
+      d.label(ex(10) + 40, 0, "from here on it reads the neighbor", { centerY: 380, color: c.red }))));
+  const a = d.anim("fig-error");
+  a.step(a.draw("e1", { dur: 2000, ease: "linear" }));
+  a.step(a.draw("e2", { dur: 1600, ease: "linear" }), a.show("hit"));
+})();
+
+/* ---- faster breaks sooner -----------------------------------------------------
+ * Seconds until two clocks that differ by 0.5 % are half a symbol apart:
+ * half a symbol is 0.5 / rate seconds, the drift 0.005 s per second, so the
+ * time is 100 / rate. */
+(function () {
+  if (!$("fig-rate")) return;
+  const c = d.colors();
+  const chart = d.chart({
+    type: "bar", width: 1680, height: 560, unit: " s",
+    labels: ["1", "2", "5", "10", "20"],
+    values: [100, 50, 20, 10, 5],
+    states: [
+      { values: "all" },
+      { highlight: ["10"], note: { at: "10", text: "the example" } },
+    ],
+  });
+  put("fig-rate", d.svg(1680, 620, chart.svg(),
+    d.label(840, 0, "symbols per second", { anchor: "middle", centerY: 600, color: c.gray })));
+  chart.steps("fig-rate");
+})();
+
+/* ---- markers reset the error ------------------------------------------------------
+ * The axes of the figure before. Step 0: the error line from before. Step 1:
+ * the same line dashed and gray, and in white the error with a marker every
+ * four seconds (yellow ticks on the time axis): it grows to 20 ms and starts
+ * again from zero, a sawtooth that never reaches the dashed line. */
+function drawMarkers(slide, step) {
+  const c = d.colors();
+  const parts = [...errorAxes(c)];
+  if (step === 0) {
+    parts.push(d.line(ex(0), ey(0), ex(20), ey(100), { color: c.white, width: 5 }));
+  } else {
+    parts.push(d.line(ex(0), ey(0), ex(20), ey(100), { color: c.gray, width: 3, dashed: true }));
+    const pts = [];
+    for (let k = 0; k < 5; k += 1) pts.push(`${ex(4 * k)},${ey(0)}`, `${ex(4 * k + 4)},${ey(20)}`);
+    parts.push(`<polyline points="${pts.join(" ")}" fill="none" stroke="${c.white}" stroke-width="5" stroke-linejoin="round"/>`);
+    for (let k = 1; k < 5; k += 1) parts.push(d.line(ex(4 * k), 486, ex(4 * k), 514, { color: c.yellow, width: 6 }));
+    parts.push(d.label(ex(14), 0, "at most 20 ms between two markers", { anchor: "middle", centerY: 380 }));
+  }
+  put("fig-markers", d.svg(1680, 610, ...parts));
+}
+
+/* ---- the receiver anchors its grid on a marker ------------------------------------
+ * Six symbols of 200 units from x 240; the third is the marker, a dark pause.
+ * The receiver samples five times per symbol (every 40 units from x 260) and
+ * its grid of symbol boundaries (blue, dashed) is 60 units late. Segment 1:
+ * the first sample inside the pause, at 660, gets a yellow dot below it. Segment 2: the
+ * grid moves 40 to the left and now starts at that sample; it is 20 units off
+ * the true boundary, less than one sample step. */
+(function () {
+  if (!$("fig-anchor")) return;
+  const c = d.colors();
+  const cells = [];
+  for (let j = 0; j < 6; j += 1) {
+    const x = 240 + 200 * j;
+    cells.push(j === 2
+      ? d.box(x + 3, 90, 194, 120, "marker", { border: c.gray, fill: c.dark, color: c.white, size: 32 })
+      : d.box(x + 3, 90, 194, 120, "data", { border: c.gray, color: c.gray, size: 32 }));
+  }
+  const ticks = [];
+  for (let k = 0; k < 30; k += 1) {
+    const x = 260 + 40 * k;
+    if (x !== 660) ticks.push(d.line(x, 250, x, 290, { color: c.light, width: 3 }));
+  }
+  const grid = [];
+  for (let j = 0; j < 7; j += 1) grid.push(d.line(300 + 200 * j, 70, 300 + 200 * j, 330, { color: c.blue, width: 3, dashed: true }));
+  grid.push(d.label(300, 0, "the receiver's grid", { centerY: 370, color: c.blue }));
+  put("fig-anchor", d.svg(1680, 560,
+    d.label(210, 0, "sender", { anchor: "end", centerY: 150, color: c.light }),
+    d.label(210, 0, "samples", { anchor: "end", centerY: 270, color: c.light }),
+    ...cells, ...ticks,
+    d.line(660, 250, 660, 290, { color: c.light, width: 3 }),
+    d.g("first", circle(660, 312, 11, c.yellow)),
+    d.g("grid", ...grid),
+    d.g("found", d.label(660, 0, "the first sample in the pause", { anchor: "middle", centerY: 450, color: c.yellow })),
+    d.g("result", d.label(840, 0, "the grid now starts there, off by less than one sample step", { anchor: "middle", centerY: 515 }))));
+  const a = d.anim("fig-anchor");
+  a.step(a.show("first", { dur: 400 }), a.show("found", { dur: 400 }));
+  a.step(a.move("grid", -40, 0, { dur: 1200 }), a.show("result", { dur: 500 }));
+})();
+
+/* ---- part 3: a change means "next" ---------------------------------------------
+ * Six symbols, two pairs of equal neighbours. The band the receiver sees has
+ * only three changes, marked by white triangles above it. Real colours, so
+ * the marks are white and the judgement is in the punchline. */
+function drawNaive(slide, step) {
+  const c = d.colors();
+  const seq = ["red", "red", "green", "blue", "blue", "red"];
+  const x0 = 330, w = 170;
+  const parts = [
+    d.label(300, 0, "sent", { anchor: "end", centerY: 145, color: c.light }),
+    ...seq.map((s, i) => rect(x0 + i * w + 3, 90, w - 6, 110, light(c, s))),
+  ];
+  if (step >= 1) {
+    parts.push(d.label(300, 0, "seen", { anchor: "end", centerY: 375, color: c.light }));
+    let i = 0;
+    while (i < seq.length) {
+      let j = i;
+      while (j + 1 < seq.length && seq[j + 1] === seq[i]) j += 1;
+      parts.push(rect(x0 + i * w, 320, (j - i + 1) * w, 110, light(c, seq[i])));
+      if (i > 0) {
+        const x = x0 + i * w;
+        parts.push(`<path d="M${x - 14},280 L${x + 14},280 L${x},304 Z" fill="${c.white}"/>`);
+      }
+      i = j + 1;
+    }
+    parts.push(d.label(840, 0, "six symbols, but only three changes", { anchor: "middle", centerY: 500 }));
+  }
+  put("fig-naive", d.svg(1680, 540, ...parts));
+}
+
+/* ---- the change carries the bit ---------------------------------------------------
+ * Three colours on a triangle, clockwise red, green, blue. A clockwise step
+ * means 1, an anticlockwise one 0, and a colour never follows itself. On the
+ * right the example red, green, red, blue, one change per build-up step; the
+ * edge of the current change turns yellow on the triangle, and the bits are
+ * yellow for 1 and white for 0 (yellow means 1, as everywhere). */
+function drawTriangle(slide, step) {
+  const c = d.colors();
+  const pos = { red: [460, 120], green: [700, 500], blue: [220, 500] };
+  const seq = ["red", "green", "red", "blue"];
+  const edges = [];
+  for (const [a, b] of [["red", "green"], ["green", "blue"], ["blue", "red"]]) {
+    edges.push(d.line(...pos[a], ...pos[b], { color: c.gray, width: 4 }));
+  }
+  if (step >= 1) {
+    const [a, b] = [seq[step - 1], seq[step]];
+    edges.push(d.line(...pos[a], ...pos[b], { color: c.yellow, width: 10 }));
+  }
+  // a clockwise arrow in the middle of the triangle (SVG arc, sweep flag 1)
+  const cx = 460, cy = 380, r = 70;
+  const at = (deg) => [cx + r * Math.cos((deg * Math.PI) / 180), cy + r * Math.sin((deg * Math.PI) / 180)];
+  const [sx, sy] = at(-120), [tx, ty] = at(150);
+  const th = (150 * Math.PI) / 180;
+  const tan = [-Math.sin(th), Math.cos(th)], nor = [Math.cos(th), Math.sin(th)];
+  const P = (k, m) => `${(tx + tan[0] * k + nor[0] * m).toFixed(1)},${(ty + tan[1] * k + nor[1] * m).toFixed(1)}`;
+  const turn = `<path d="M${sx.toFixed(1)},${sy.toFixed(1)} A${r},${r} 0 1 1 ${tx.toFixed(1)},${ty.toFixed(1)}" fill="none" stroke="${c.light}" stroke-width="4"/>` +
+    `<path d="M${P(16, 0)} L${P(-8, 13)} L${P(-8, -13)} Z" fill="${c.light}"/>`;
+  const nodes = Object.entries(pos).map(([n, [x, y]]) => circle(x, y, 60, light(c, n)));
+  const parts = [...edges, turn, ...nodes,
+    d.label(900, 0, "clockwise step = 1", { centerY: 130 }),
+    d.label(900, 0, "anticlockwise step = 0", { centerY: 195 }),
+    d.label(900, 0, "a color never follows itself", { centerY: 260, color: c.gray }),
+  ];
+  const sx0 = 900, sw = 100, sg = 60;
+  const bits = ["1", "0", "0"];
+  for (let k = 0; k <= Math.min(step, 3); k += 1) {
+    if (step === 0) break;
+    parts.push(rect(sx0 + k * (sw + sg), 360, sw, sw, light(c, seq[k])));
+    if (k >= 1) {
+      const bx = sx0 + k * (sw + sg) - sg / 2;
+      parts.push(d.label(bx, 0, bits[k - 1], { anchor: "middle", centerY: 530, size: 48, mono: true, color: bits[k - 1] === "1" ? c.yellow : c.white }));
+    }
+  }
+  put("fig-triangle", d.svg(1680, 600, ...parts));
+}
+
+/* ---- what the change costs in bits -------------------------------------------------
+ * k colours carry log2(k) bits as states and log2(k - 1) as changes. Columns
+ * centred at 420, 840 and 1260; step 1 highlights the row of five colours,
+ * the smallest alphabet that gives a clean two bits per change. */
+function drawBits(slide, step) {
+  const c = d.colors();
+  const rows = [["3", "1.58", "1"], ["4", "2", "1.58"], ["5", "2.32", "2"]];
+  const ys = [300, 390, 480];
+  const parts = [
+    d.label(840, 0, "as states", { anchor: "middle", centerY: 70, color: c.gray }),
+    d.label(1260, 0, "as changes", { anchor: "middle", centerY: 70, color: c.gray }),
+    d.label(420, 0, "k colors", { anchor: "middle", centerY: 150, size: 48 }),
+    d.formula(840, 0, "b = log_2(k)", { size: 48, anchor: "middle", centerY: 150 }),
+    d.formula(1260, 0, "b = log_2(k − 1)", { size: 48, anchor: "middle", centerY: 150 }),
+    d.line(260, 215, 1420, 215, { color: c.dark, width: 2 }),
+  ];
+  if (step >= 1) parts.push(d.highlight(260, 1160, ys[2], 48, { color: c.yellow }));
+  rows.forEach((row, i) => {
+    const color = step >= 1 && i === 2 ? c.yellow : c.white;
+    [420, 840, 1260].forEach((x, k) => parts.push(d.label(x, 0, row[k], { anchor: "middle", centerY: ys[i], size: 48, mono: true, color })));
+  });
+  put("fig-bits", d.svg(1680, 540, ...parts));
+}
+
+/* ---- part 4: two ways side by side --------------------------------------------------
+ * Two boxes 780 wide; the longest line, "a color must hold still to count"
+ * (32 characters x 19.2 = 614), starts at the box edge + 40 and ends well
+ * inside. Neither box is judged: both ways work, at different prices. */
+function drawWays(slide, step) {
+  const c = d.colors();
+  const column = (x, title, lines) => [
+    d.box(x, 30, 780, 500, "", { border: c.gray }),
+    d.label(x + 390, 0, title, { anchor: "middle", centerY: 100, size: 48 }),
+    ...lines.map((t, i) => d.label(x + 40, 0, t, { centerY: 210 + i * 80, color: c.light })),
+  ];
+  const parts = column(40, "with a clock", [
+    "the receiver counts time",
+    "markers limit the drift",
+    "each marker costs a symbol",
+    "k colors carry log₂ k bits",
+  ]);
+  if (step >= 1) {
+    parts.push(...column(860, "without a clock", [
+      "the receiver waits for a change",
+      "there is no clock to drift",
+      "a color must hold still to count",
+      "k colors carry log₂(k − 1) bits",
+    ]));
+  }
+  put("fig-ways", d.svg(1680, 560, ...parts));
+}
+
+/* ---- the formula -------------------------------------------------------------------
+ * The time a file takes, and its three quantities left-aligned at x 600
+ * (letters in code type, explanations at 700). */
+function drawFormula(slide, step) {
+  const c = d.colors();
+  const parts = [d.formula(840, 0, "t = n / (r · b)", { size: 80, anchor: "middle", centerY: 140 })];
+  if (step >= 1) {
+    [["n", "bits to send"], ["r", "symbols per second"], ["b", "bits per symbol"]].forEach(([v, t], i) => {
+      parts.push(d.label(600, 0, v, { centerY: 300 + i * 85, size: 48, mono: true, color: c.yellow }));
+      parts.push(d.label(700, 0, t, { centerY: 300 + i * 85, size: 48 }));
+    });
+  }
+  put("fig-formula", d.svg(1680, 520, ...parts));
+}
+
+/* ---- what a file costs ---------------------------------------------------------------
+ * 2 KiB = 16,384 bits at five symbols per second with four colours: 2 bits
+ * per symbol with a clock (1,638 s = 27.3 min), log2(3) = 1.58 bits per
+ * change without one (2,067 s = 34.5 min). */
+(function () {
+  if (!$("fig-file")) return;
+  const chart = d.chart({
+    type: "hbar", width: 1680, height: 420, unit: " min", decimals: 0,
+    labels: ["with a clock", "without a clock"],
+    values: [27.3, 34.4],
+    states: [
+      { values: "all" },
+      { highlight: ["without a clock"], note: { at: "without a clock", text: "7 minutes more" } },
+    ],
+  });
+  put("fig-file", d.svg(1680, 420, chart.svg()));
+  chart.steps("fig-file");
+})();
