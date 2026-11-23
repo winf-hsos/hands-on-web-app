@@ -567,11 +567,12 @@ const EXAMPLES = {
         d.label(x0 + 10.5 * w, 0, "stop", { anchor: "middle", centerY: 430, color: c.light }),
         d.line(x0 + 2 * w, 405, x0 + 2 * w, 455, { color: c.gray, width: 2 }),
         d.line(x0 + 10 * w, 405, x0 + 10 * w, 455, { color: c.gray, width: 2 }),
-        d.label(x0, 0, "high for 1, low for 0, each bit for an agreed time", { centerY: 500, color: c.light }));
+        d.label(x0, 0, "high for 1, low for 0, each bit for an agreed time", { centerY: 495, color: c.light }),
+        d.label(x0, 0, "one byte at a time: stop, rest, then a new start bit", { centerY: 545, color: c.light }));
       if (step >= 1) {
         parts.push(d.line(x0 + w, 220, x0 + w, 410, { color: c.yellow, width: 6 }));
         for (let i = 2; i < 10; i += 1) parts.push(circle(x0 + (i + 0.5) * w, bits[i] ? hi : lo, 9, c.yellow));
-        parts.push(d.label(x0, 0, "the clock restarts at the start bit and reads each bit in its middle", { centerY: 570, color: c.yellow }));
+        parts.push(d.label(x0, 0, "the clock restarts at the start bit and reads each bit in its middle", { centerY: 600, color: c.yellow }));
       }
       return parts;
     } },
@@ -612,16 +613,19 @@ const EXAMPLES = {
           0, 1, 1, 0, 0, 1, 0, 0,                      // 50 to 57: year 26
           1,                                           // 58: parity of the date
         ];
-        const bx = 40, bw = 27, by = 480;
+        const bx = 40, bw = 27, by = 530;
         const focus = (i) => (i >= 21 && i <= 27) || (i >= 29 && i <= 34);
         minute.forEach((b, i) => {
           parts.push(rect(bx + i * bw + 1, by, bw - 2, 40, "none", ` stroke="${focus(i) ? c.yellow : c.gray}" stroke-width="2"`));
           parts.push(d.label(bx + i * bw + bw / 2, 0, String(b), { anchor: "middle", centerY: by + 20, size: 20, mono: true, color: focus(i) ? c.yellow : c.light }));
         });
-        [0, 10, 20, 30, 40, 50].forEach((i) => parts.push(d.label(bx + i * bw + bw / 2, 0, String(i), { anchor: "middle", centerY: by - 18, size: 20, mono: true, color: c.gray })));
+        [0, 10, 40, 50].forEach((i) => parts.push(d.label(bx + i * bw + bw / 2, 0, "bit " + i, { anchor: i ? "middle" : "start", centerY: by - 20, size: 20, color: c.gray })));
+        // the value of each bit of minute and hour: units 1 2 4 8, tens 10 20 40
+        [[21, [1, 2, 4, 8, 10, 20, 40]], [29, [1, 2, 4, 8, 10, 20]]].forEach(([first, values]) =>
+          values.forEach((v, k) => parts.push(d.label(bx + (first + k) * bw + bw / 2, 0, String(v), { anchor: "middle", centerY: by - 20 - (k % 2) * 24, size: 20, mono: true, color: c.yellow }))));
         const group = (a, b, text, color) => [
-          d.line(bx + a * bw + 2, by + 55, bx + (b + 1) * bw - 2, by + 55, { color, width: 3 }),
-          d.label(bx + ((a + b + 1) / 2) * bw, 0, text, { anchor: "middle", centerY: by + 90, color }),
+          d.line(bx + a * bw + 2, by + 52, bx + (b + 1) * bw - 2, by + 52, { color, width: 3 }),
+          d.label(bx + ((a + b + 1) / 2) * bw, 0, text, { anchor: "middle", centerY: by + 82, color }),
         ];
         parts.push(...group(1, 20, "weather, time zone", c.gray), ...group(21, 27, "minute: 10", c.yellow),
           ...group(29, 34, "hour: 10", c.yellow), ...group(36, 57, "date: monday, 23 november 2026", c.gray));
@@ -758,7 +762,8 @@ function drawExample(slide, step) {
 /* ---- VGA, animated ------------------------------------------------------------
  * A picture of 10 x 6 pixels (cells 44 wide from x 660, y 160) fills row by
  * row. Below it, what travels over the cable: one small cell per pixel in the
- * order it is sent, and after every row a yellow sync pulse on its own wire.
+ * order it is sent, and after every row a yellow sync pulse on its own wire;
+ * after the last row a longer pulse on a second wire starts the next picture.
  * The pixel colours are the picture's colours: sky, sun, grass. */
 (function () {
   if (!$("ex-vga")) return;
@@ -794,8 +799,13 @@ function drawExample(slide, step) {
     parts.push(d.g(`s${r}`, rect(tx + 2, 500, 10, 60, c.yellow)));
     tx += 18;
   }
-  parts.push(d.g("sync", d.label(x0 + W * s + 40, 0, "pulse: next line", { centerY: y0 + 120, color: c.yellow }),
-    d.label(x0 + W * s + 40, 0, "on its own wire", { centerY: y0 + 160, color: c.yellow })));
+  // the second wire: one pulse after the last line, for the next picture
+  parts.push(d.line(640, 605, 1640, 605, { color: c.gray, width: 2 }));
+  parts.push(d.g("frame", rect(tx + 2, 585, 26, 40, c.yellow)));
+  parts.push(d.label(640, 0, "second wire", { centerY: 580, size: 20, color: c.gray }));
+  parts.push(d.g("sync", d.label(x0 + W * s + 40, 0, "short pulse: next line", { centerY: y0 + 110, color: c.yellow }),
+    d.label(x0 + W * s + 40, 0, "long pulse: next picture", { centerY: y0 + 160, color: c.yellow }),
+    d.label(x0 + W * s + 40, 0, "each on its own wire", { centerY: y0 + 210, color: c.yellow })));
   put("ex-vga", d.svg(1680, 640, ...parts));
   const a = d.anim("ex-vga");
   const run = [];
@@ -803,6 +813,7 @@ function drawExample(slide, step) {
     for (let k = 0; k < W; k += 1) run.push(a.par(a.show(`p${r}-${k}`, { dur: 70 }), a.show(`t${r}-${k}`, { dur: 70 })));
     run.push(a.show(`s${r}`, { dur: 200 }));
   }
+  run.push(a.show("frame", { dur: 300 }));
   a.step(...run);
   a.step(a.show("sync"));
 })();
