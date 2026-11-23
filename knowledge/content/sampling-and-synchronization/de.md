@@ -347,9 +347,9 @@ for name, b in [("mit Takt", 2), ("ohne Takt", math.log2(3))]:
 
 Mit Takt braucht die Datei 27,3 Minuten, ohne 34,5, die Freiheit von der Uhr
 kostet bei dieser Datei also etwa sieben Minuten. Der Vergleich lässt
-allerdings die Marken weg: Bei einer Marke alle acht Symbole tragen nur
-sieben von acht Symbolen Daten, und die Zeit mit Takt wächst auf
-31,2 Minuten. Welcher Weg sich lohnt, hängt davon ab, wie weit deine Uhren
+allerdings die Marken weg: Bei einer Marke nach je acht Datensymbolen tragen
+nur acht von neun Symbolen Daten, und die Zeit mit Takt wächst auf
+30,7 Minuten. Welcher Weg sich lohnt, hängt davon ab, wie weit deine Uhren
 driften und wie sauber dein Sensor einen Wechsel sieht, und beides sind
 Fragen für eine Messung an der eigenen Strecke. Wie weit sich die beiden
 Hebel *r* und *b* überhaupt drehen lassen, ist eine eigene Frage, die nach

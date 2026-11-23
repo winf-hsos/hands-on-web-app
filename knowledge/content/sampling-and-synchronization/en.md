@@ -334,8 +334,8 @@ for name, b in [("with a beat", 2), ("without a beat", math.log2(3))]:
 
 With a beat the file takes 27.3 minutes, without one 34.5, so the freedom
 from the clock costs about seven minutes on this file. The comparison leaves
-out the markers, though: with a marker every eight symbols only seven in
-eight symbols carry data, and the time with a beat grows to 31.2 minutes.
+out the markers, though: with a marker after every eight data symbols only eight in nine
+symbols carry data, and the time with a beat grows to 30.7 minutes.
 Which way pays off depends on how far your clocks drift and how cleanly your
 sensor sees a change, and both are questions for a measurement on your own
 link. How far the two levers *r* and *b* can be turned at all is a question
