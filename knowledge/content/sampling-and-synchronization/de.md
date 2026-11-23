@@ -15,7 +15,7 @@ objectives:
     - "erklären, warum Symbole, die kürzer sind als die Integrationszeit des Sensors, Messwerte liefern, die zu keinem Symbol passen"
     - "beschreiben, wie Marken den Uhrenfehler begrenzen und was sie an Rate kosten"
     - "Bits als Wechsel zwischen drei Farben kodieren und dekodieren, sodass es immer einen Wechsel zu sehen gibt"
-    - "echte Strecken für beide Wege nennen, etwa das Startbit der seriellen Schnittstelle, den Manchester-Code des Ethernets und das Bit-Stuffing von USB"
+    - "echte Strecken für beide Wege nennen, etwa das Startbit der seriellen Schnittstelle, den Manchester-Code des Ethernets und den rotierenden Code der DNA-Speicherung"
     - "mit `math.log2()` vergleichen, wie viele Bits k Farben als Zustände und als Wechsel tragen, und erklären, warum zwei Bit pro Wechsel fünf Farben brauchen"
     - "mit t = n / (r · b) berechnen, wie lange eine Datei mit und ohne gemeinsamen Takt braucht"
 translation_of: en
@@ -174,8 +174,24 @@ eine Abweichung von wenigen Prozent schadet nicht. Das Zeitsignal DCF77, das
 Funkuhren empfangen, senkt zu Beginn jeder Sekunde seine Amplitude ab, für
 100 ms bei einer 0 und für 200 ms bei einer 1, und lässt die Absenkung in
 Sekunde 59 aus, sodass die Lücke den Beginn der nächsten Minute markiert. Ein
-VGA-Monitor bekommt nach jeder Bildzeile einen Synchronisationspuls und nach
-jedem Bild einen weiteren.
+VGA-Monitor bekommt Rot, Grün und Blau eines Bildpunkts nach dem anderen, und
+nach jeder Zeile sagt ihm ein Synchronisationspuls auf einer eigenen Leitung,
+dass die nächste Zeile wieder am linken Rand beginnt.
+
+Manche Strecken stellen die Uhr viel öfter nach, mit einem Wechsel in jedem
+Bit. Der **Manchester-Code** des Ethernets nach 10BASE-T legt in die Mitte
+jedes Bits einen Wechsel, von niedrig nach hoch für eine 1 und von hoch nach
+niedrig für eine 0, und Infrarot-Fernbedienungen nach RC-5 machen dasselbe mit
+Licht, wie eine LED. Jedes Bit dauert weiter eine vereinbarte Zeit, aber jeder
+dieser Wechsel stellt die Uhr des Empfängers nach, sodass sie nur ein Bit lang
+halten muss; der Preis sind bis zu zwei Wechsel pro Bit. USB 1.x und 2.0
+verwenden **NRZI**, wobei eine 0 ein Wechsel ist und eine 1 keiner, sodass der
+Empfänger bei einer Folge von Einsen die Bitdauern mit seiner Uhr abzählt.
+Nach sechs Einsen fügt der Sender deshalb eine zusätzliche 0 ein, die einen
+Wechsel erzwingt und die der Empfänger wieder entfernt. Dieses
+**Bit-Stuffing** kostet höchstens ein Siebtel der Rate, ganz ähnlich wie eine
+Marke. Alle diese Strecken behalten einen Takt und unterscheiden sich nur
+darin, wie oft sie ihn nachstellen.
 
 ## Der Wechsel als Takt
 
@@ -223,17 +239,14 @@ Aus den Bits `100` werden Rot, Grün, Rot, Blau, und der Dekodierer liefert
 wieder `100`. `encode` braucht eine Startfarbe, die kein Bit trägt, also
 werden für drei Bits vier Farben gesendet.
 
-Echte Strecken verwenden dieselbe Idee mit zwei Pegeln statt drei Farben.
-Der **Manchester-Code** legt in die Mitte jedes Bits einen Wechsel, von
-niedrig nach hoch für eine 1 und von hoch nach niedrig für eine 0, so beim
-Ethernet nach 10BASE-T und bei Infrarot-Fernbedienungen nach RC-5, die wie
-eine LED Licht senden. Der Empfänger nimmt seinen Takt aus diesen Wechseln,
-und der Preis ist, dass die Leitung zwei Wechsel pro Bit schaffen muss.
-USB 1.x und 2.0 verwenden **NRZI**, wobei eine 0 ein Wechsel ist und eine 1
-keiner, sodass eine lange Folge von Einsen die Leitung ohne Wechsel ließe;
-nach sechs Einsen fügt der Sender deshalb eine zusätzliche 0 ein, die der
-Empfänger wieder entfernt. Dieses **Bit-Stuffing** kostet höchstens ein
-Siebtel der Rate, ganz ähnlich wie eine Marke.
+Ein echtes Beispiel für diesen Weg kommt aus der Speicherung von Daten in
+künstlich hergestellter DNA, als Folge der vier Buchstaben A, C, G und T. Beim
+Herstellen und Auslesen verzählt sich die Technik leicht bei Läufen gleicher
+Buchstaben, so wie zwei gleiche Farben in einem Lichtstrom verschmelzen. Eine
+Forschungsgruppe am European Bioinformatics Institute hat deshalb 2013 Texte
+und Bilder so gespeichert, dass nie ein Buchstabe auf sich selbst folgt: Jeder
+nächste Buchstabe ist einer der drei anderen, also lassen vier Buchstaben drei
+Möglichkeiten pro Schritt, ein Stellenwertsystem zur Basis 3.
 
 ## Ohne Uhr heißt nicht ohne Zeit
 
@@ -308,9 +321,10 @@ was jeder von ihnen kostet:
 Welche Strategie auch immer, am Ende zählt eine Rechnung: Die Zeit *t* für
 eine Datei ist die Zahl der Bits *n* geteilt durch das Produkt aus Symbolen
 pro Sekunde *r* und Bits pro Symbol *b*, also t = n / (r · b). Sie hat genau
-zwei Hebel, und alles in dieser Lektion entscheidet über beide. In eine
-Datei von 2 KiB passt etwa ein Schwarz-Weiß-Bild aus 128 × 128 Pixeln mit
-einem Bit pro Pixel, das sind genau 16.384 Bits. Das Programm vergleicht die
+zwei Hebel, und alles in dieser Lektion entscheidet über beide. Eine Datei
+von 2 KiB ist klein: Ein Farbfoto aus 128 × 128 Pixeln mit drei Byte pro Pixel
+braucht unkomprimiert 48 KiB und passt nur als komprimiertes JPEG von rund
+2.000 Byte in 2 KiB. Das Programm vergleicht die
 beiden Wege für eine Datei dieser Größe mit vier Farben bei fünf
 Symbolen pro Sekunde:
 
@@ -349,8 +363,10 @@ dem Durchsatz und seinen Grenzen.
   kostet ein Symbol ohne Daten.
 - Wenn der Wechsel das Bit trägt und keine Farbe auf sich selbst folgen darf,
   gibt es immer einen Wechsel zu sehen, und der Empfänger braucht keine Uhr.
-- Die serielle Schnittstelle, DCF77 und VGA arbeiten mit Marken, das Ethernet
-  nach 10BASE-T, RC-5 und USB mit Wechseln.
+- Die serielle Schnittstelle, DCF77 und VGA stellen die Uhr des Empfängers
+  mit Marken nach, das Ethernet nach 10BASE-T, RC-5 und USB mit Wechseln in
+  den Daten, während die DNA-Speicherung ohne Uhr auskommt und nie einen
+  Buchstaben wiederholt.
 - Als Wechsel tragen k Farben nur log₂(k − 1) Bits, also brauchen zwei Bit
   pro Wechsel fünf Farben.
 - Ohne Uhr müssen Mischwerte während eines Wechsels herausgefiltert werden,

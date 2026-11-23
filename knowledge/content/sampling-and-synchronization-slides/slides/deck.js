@@ -191,7 +191,8 @@ function errorAxes(c) {
 
 /* Clocks that differ by 0.5 % drift 5 ms apart per second. The line draws
  * itself, a process in time: up to the crossing at 10 s white, beyond it red,
- * where the receiver reads the neighbouring symbol. */
+ * where the receiver reads the neighbouring symbol. The gray line is the room
+ * left with a sensor window of 20 ms, 40 ms, which the error reaches at 8 s. */
 (function () {
   if (!$("fig-error")) return;
   const c = d.colors();
@@ -201,10 +202,14 @@ function errorAxes(c) {
     d.g("e2", d.line(ex(10), ey(50), ex(20), ey(100), { color: c.red, width: 5 })),
     d.g("hit",
       circle(ex(10), ey(50), 12, c.red),
-      d.label(ex(10) + 40, 0, "from here on it reads the neighbor", { centerY: 380, color: c.red }))));
+      d.label(ex(10) + 40, 0, "from here on it reads the neighbor", { centerY: 380, color: c.red })),
+    d.g("win",
+      d.line(260, ey(40), 1520, ey(40), { color: c.gray, width: 2, dashed: true }),
+      circle(ex(8), ey(40), 10, c.gray),
+      d.label(280, 0, "20 ms window: 40 ms", { centerY: ey(40) + 30, color: c.gray }))));
   const a = d.anim("fig-error");
   a.step(a.draw("e1", { dur: 2000, ease: "linear" }));
-  a.step(a.draw("e2", { dur: 1600, ease: "linear" }), a.show("hit"));
+  a.step(a.draw("e2", { dur: 1600, ease: "linear" }), a.show("hit"), a.show("win"));
 })();
 
 /* ---- faster breaks sooner -----------------------------------------------------
@@ -545,69 +550,54 @@ function signalLine(points, c, color) {
 }
 
 const EXAMPLES = {
-  "ex-uart": { photo: "img/serial.jpg", about: ["a serial port: the cable through which a", "microcontroller sends text to a laptop"],
+  "ex-uart": { photo: "img/serial.jpg", about: ["UART, the serial port: an Arduino sends its", "readings to the laptop over it"],
     draw(step, c) {
-      // idle, start, eight data bits of "A" (01000001, least significant
-      // bit first), stop, idle; cells 80 wide from x 640, high at 260
-      const bits = [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1];
+      // idle, start, the eight bits of "S" (01010011, lowest bit first:
+      // 1 1 0 0 1 0 1 0), stop, idle; cells 80 wide from x 640, high at 260
+      const bits = [1, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1];
       const x0 = 640, w = 80, hi = 260, lo = 380;
       const pts = [];
       bits.forEach((b, i) => { const y = b ? hi : lo; pts.push([x0 + i * w, y], [x0 + (i + 1) * w, y]); });
-      const parts = [
-        signalLine(pts, c),
-        d.label(x0 + w / 2, 0, "idle", { anchor: "middle", centerY: 440, color: c.gray }),
-        d.label(x0 + 1.5 * w, 0, "start", { anchor: "middle", centerY: 440, color: c.light }),
-        d.label(x0 + 6 * w, 0, "8 data bits", { anchor: "middle", centerY: 440, color: c.light }),
-        d.label(x0 + 10.5 * w, 0, "stop", { anchor: "middle", centerY: 440, color: c.light }),
-        d.line(x0 + 2 * w, 410, x0 + 2 * w, 470, { color: c.gray, width: 2 }),
-        d.line(x0 + 10 * w, 410, x0 + 10 * w, 470, { color: c.gray, width: 2 }),
-        d.label(x0 - 20, 0, "1", { anchor: "end", centerY: hi, mono: true, color: c.gray }),
-        d.label(x0 - 20, 0, "0", { anchor: "end", centerY: lo, mono: true, color: c.gray }),
-      ];
+      const parts = [signalLine(pts, c)];
+      bits.forEach((b, i) => parts.push(d.label(x0 + (i + 0.5) * w, 0, String(b), { anchor: "middle", centerY: 210, mono: true, color: i >= 2 && i < 10 ? c.white : c.gray })));
+      parts.push(
+        d.label(x0 + w / 2, 0, "idle", { anchor: "middle", centerY: 430, color: c.gray }),
+        d.label(x0 + 1.5 * w, 0, "start", { anchor: "middle", centerY: 430, color: c.light }),
+        d.label(x0 + 6 * w, 0, "letter S, lowest bit first", { anchor: "middle", centerY: 430, color: c.light, keepCase: true }),
+        d.label(x0 + 10.5 * w, 0, "stop", { anchor: "middle", centerY: 430, color: c.light }),
+        d.line(x0 + 2 * w, 405, x0 + 2 * w, 455, { color: c.gray, width: 2 }),
+        d.line(x0 + 10 * w, 405, x0 + 10 * w, 455, { color: c.gray, width: 2 }),
+        d.label(x0, 0, "high for 1, low for 0, each bit for an agreed time", { centerY: 500, color: c.light }));
       if (step >= 1) {
-        parts.push(d.line(x0 + w, 220, x0 + w, 420, { color: c.yellow, width: 6 }));
+        parts.push(d.line(x0 + w, 220, x0 + w, 410, { color: c.yellow, width: 6 }));
         for (let i = 2; i < 10; i += 1) parts.push(circle(x0 + (i + 0.5) * w, bits[i] ? hi : lo, 9, c.yellow));
-        parts.push(d.label(x0 + w + 20, 0, "the clock restarts here, then it reads every bit in its middle", { centerY: 540, color: c.yellow }));
+        parts.push(d.label(x0, 0, "the clock restarts at the start bit and reads each bit in its middle", { centerY: 570, color: c.yellow }));
       }
       return parts;
     } },
-  "ex-dcf": { photo: "img/radio-clock.jpg", about: ["a radio clock sets itself from a time signal", "sent from near Frankfurt"],
+  "ex-dcf": { photo: "img/radio-clock.jpg", about: ["a radio clock sets itself from DCF77, a time", "signal sent from near Frankfurt"],
     draw(step, c) {
-      // seconds 55 to 59 and 0 to 2, 125 wide from x 640; at the start of
-      // each second a dip, short for 0 and long for 1 (widths not to scale),
-      // none in second 59
-      const secs = [55, 56, 57, 58, 59, 0, 1, 2], bits = [1, 0, 0, 1, null, 0, 1, 0];
-      const x0 = 640, w = 125, hi = 260, lo = 360;
+      // seconds 56 to 59 and 0 to 2, 140 wide from x 650; at the start of
+      // each second the signal drops, briefly for 0 and twice as long for 1
+      // (widths not to scale), and not at all in second 59
+      const secs = [56, 57, 58, 59, 0, 1, 2], bits = [0, 1, 0, null, 0, 1, 1];
+      const x0 = 650, w = 140, hi = 270, lo = 360;
       const pts = [[x0, hi]];
       secs.forEach((s, i) => {
         const x = x0 + i * w;
-        if (bits[i] !== null) { const len = bits[i] ? 44 : 22; pts.push([x, hi], [x, lo], [x + len, lo], [x + len, hi]); }
+        if (bits[i] !== null) { const len = bits[i] ? 60 : 30; pts.push([x, hi], [x, lo], [x + len, lo], [x + len, hi]); }
         pts.push([x + w, hi]);
       });
       const parts = [signalLine(pts, c)];
-      secs.forEach((s, i) => parts.push(d.label(x0 + i * w + 10, 0, String(s), { centerY: 410, mono: true, color: c.gray })));
-      parts.push(d.label(x0, 0, "short dip = 0, long dip = 1", { centerY: 200, color: c.light }));
+      secs.forEach((s, i) => {
+        parts.push(d.label(x0 + i * w + 10, 0, String(s), { centerY: 405, mono: true, color: c.gray }));
+        if (bits[i] !== null) parts.push(d.label(x0 + i * w + 15, 0, String(bits[i]), { anchor: "middle", centerY: 220, mono: true }));
+      });
+      parts.push(d.label(x0, 0, "one bit per second: a short dip is 0, a long one 1", { centerY: 470, color: c.light }));
       if (step >= 1) {
-        parts.push(rect(x0 + 4 * w, 230, w, 150, "none", ` stroke="${c.yellow}" stroke-width="5"`));
-        parts.push(d.label(x0, 0, "no dip in second 59: a new minute follows", { centerY: 480, color: c.yellow }));
-      }
-      return parts;
-    } },
-  "ex-vga": { photo: "img/vga.jpg", about: ["VGA: the classic cable between a computer", "and its monitor"],
-    draw(step, c) {
-      // a screen 560 wide; six lines drawn left to right; a sync pulse after
-      // every line (short yellow tick) and after the last line one for the
-      // whole picture (long tick)
-      const x0 = 660, x1 = 1220, ys = [200, 250, 300, 350, 400, 450];
-      const parts = [d.box(640, 170, 600, 310, "", { border: c.gray })];
-      ys.forEach((y) => parts.push(d.arrow(x0, y, x1, y, { color: c.light })));
-      parts.push(d.label(640, 0, "the picture travels line by line", { centerY: 530, color: c.light }));
-      if (step >= 1) {
-        ys.forEach((y) => parts.push(d.line(1270, y - 14, 1270, y + 14, { color: c.yellow, width: 8 })));
-        parts.push(d.line(1300, 186, 1300, 464, { color: c.yellow, width: 8 }));
-        parts.push(d.label(1330, 0, "a pulse after", { centerY: 290, color: c.yellow }));
-        parts.push(d.label(1330, 0, "every line and", { centerY: 330, color: c.yellow }));
-        parts.push(d.label(1330, 0, "every picture", { centerY: 370, color: c.yellow }));
+        parts.push(rect(x0 + 3 * w, 240, w, 140, "none", ` stroke="${c.yellow}" stroke-width="5"`));
+        parts.push(d.label(x0, 0, "no dip in second 59: the next dip starts a minute", { centerY: 530, color: c.yellow }));
+        parts.push(d.label(x0, 0, "from there, bits 21 to 27 give the minute", { centerY: 580, color: c.yellow }));
       }
       return parts;
     } },
@@ -680,6 +670,27 @@ const EXAMPLES = {
     } },
 };
 
+EXAMPLES["ex-dna"] = { photo: "img/dna.jpg", about: ["DNA as storage: data written in the letters", "A, C, G and T of synthetic DNA"],
+  draw(step, c) {
+    // letter boxes 90 wide from x 640; on top a run of four A that a reading
+    // machine easily miscounts, below a strand in which no letter follows
+    // itself, so every next letter is one of three
+    const boxes = (letters, y, color) => letters.map((l, i) => [
+      d.box(640 + i * 100, y, 84, 84, "", { border: color(i) }),
+      d.label(640 + i * 100 + 42, 0, l, { anchor: "middle", centerY: y + 42, size: 48, mono: true, keepCase: true }),
+    ]).flat();
+    const parts = [
+      ...boxes(["G", "A", "A", "A", "A", "C"], 170, (i) => (i >= 1 && i <= 4 ? c.red : c.gray)),
+      d.label(640, 0, "a run of equal letters: how many A were there?", { centerY: 300, color: c.red, keepCase: true }),
+    ];
+    if (step >= 1) {
+      parts.push(...boxes(["G", "A", "T", "A", "C", "G"], 380, () => c.gray));
+      for (let i = 1; i < 6; i += 1) parts.push(d.label(640 + i * 100 - 8, 0, "3", { anchor: "middle", centerY: 500, mono: true, color: c.yellow }));
+      parts.push(d.label(640, 0, "no letter twice in a row: 3 choices each time", { centerY: 560, color: c.yellow }));
+    }
+    return parts;
+  } };
+
 function drawExample(slide, step) {
   const fig = slide.querySelector(".figure");
   const ex = EXAMPLES[fig.id];
@@ -692,19 +703,75 @@ function drawExample(slide, step) {
   put(fig.id, d.svg(1680, 640, ...parts));
 }
 
+/* ---- VGA, animated ------------------------------------------------------------
+ * A picture of 10 x 6 pixels (cells 44 wide from x 660, y 160) fills row by
+ * row. Below it, what travels over the cable: one small cell per pixel in the
+ * order it is sent, and after every row a yellow sync pulse on its own wire.
+ * The pixel colours are the picture's colours: sky, sun, grass. */
+(function () {
+  if (!$("ex-vga")) return;
+  const c = d.colors();
+  const W = 10, H = 6, x0 = 660, y0 = 150, s = 44;
+  const pic = [
+    "bbbbbbbyyb",
+    "bbbbbbbyyb",
+    "bbbbbbbbbb",
+    "bbbrrbbbbb",
+    "ggrrrrgggg",
+    "gggggggggg",
+  ];
+  const col = { b: c.blue, y: c.yellow, r: c.red, g: c.green };
+  const parts = [
+    `<image href="img/vga.jpg" x="0" y="40" width="560" height="560" preserveAspectRatio="xMidYMid slice"/>`,
+    d.label(640, 0, "VGA: the classic cable between a computer", { centerY: 60, color: c.gray, keepCase: true }),
+    d.label(640, 0, "and its monitor, sending one pixel after another", { centerY: 108, color: c.gray, keepCase: true }),
+    rect(x0 - 4, y0 - 4, W * s + 8, H * s + 8, "none", ` stroke="${c.gray}" stroke-width="3"`),
+    d.label(x0 + W * s + 40, 0, "the screen", { centerY: y0 + 30, color: c.gray }),
+    d.label(640, 0, "over the cable: red, green, blue of each pixel, then a sync pulse", { centerY: 470, color: c.light }),
+  ];
+  // the cable: 60 pixel cells 14 wide and 6 pulses 18 wide, from x 640
+  let tx = 640;
+  const cells = [];
+  for (let r = 0; r < H; r += 1) {
+    for (let k = 0; k < W; k += 1) {
+      parts.push(d.g(`p${r}-${k}`, rect(x0 + k * s, y0 + r * s, s - 2, s - 2, col[pic[r][k]])));
+      parts.push(d.g(`t${r}-${k}`, rect(tx, 510, 13, 40, col[pic[r][k]])));
+      cells.push([r, k]);
+      tx += 14;
+    }
+    parts.push(d.g(`s${r}`, rect(tx + 2, 500, 10, 60, c.yellow)));
+    tx += 18;
+  }
+  parts.push(d.g("sync", d.label(x0 + W * s + 40, 0, "pulse: next line", { centerY: y0 + 120, color: c.yellow }),
+    d.label(x0 + W * s + 40, 0, "on its own wire", { centerY: y0 + 160, color: c.yellow })));
+  put("ex-vga", d.svg(1680, 640, ...parts));
+  const a = d.anim("ex-vga");
+  const run = [];
+  for (let r = 0; r < H; r += 1) {
+    for (let k = 0; k < W; k += 1) run.push(a.par(a.show(`p${r}-${k}`, { dur: 70 }), a.show(`t${r}-${k}`, { dur: 70 })));
+    run.push(a.show(`s${r}`, { dur: 200 }));
+  }
+  a.step(...run);
+  a.step(a.show("sync"));
+})();
+
 /* ---- what 2 KiB look like ----------------------------------------------------------
- * The closing photo at 128 x 128 pixels and one bit per pixel (black or
- * white), shown 512 wide with sharp pixels, and the sum beside it. */
+ * The parrot photo at 128 x 128 pixels, shown 512 wide with sharp pixels.
+ * Raw, three bytes per pixel, it would need 48 KiB; as the JPEG it is, 2,032
+ * bytes, so it fits into 2 KiB. */
 function drawKib(slide, step) {
   const c = d.colors();
   const parts = [
-    `<image href="img/two-kib.png" x="120" y="40" width="512" height="512" style="image-rendering: pixelated"/>`,
-    d.label(760, 0, "128 × 128 pixels", { centerY: 150, size: 48 }),
-    d.label(760, 0, "1 bit per pixel: black or white", { centerY: 230, color: c.light }),
+    `<image href="img/parrot.jpg" x="120" y="40" width="512" height="512" style="image-rendering: pixelated"/>`,
+    d.label(760, 0, "128 × 128 pixels", { centerY: 130, size: 48 }),
+    d.label(760, 0, "24-bit color: 3 bytes per pixel", { centerY: 210, color: c.light }),
   ];
   if (step >= 1) {
-    parts.push(d.formula(760, 0, "128 · 128 · 1 = 16,384 bits", { size: 48, centerY: 360 }));
-    parts.push(d.label(760, 0, "= 2 KiB", { centerY: 450, size: 48, color: c.yellow, keepCase: true }));
+    parts.push(d.formula(760, 0, "128 · 128 · 3 = 49,152 bytes", { size: 48, centerY: 320 }));
+    parts.push(d.label(760, 0, "= 48 KiB uncompressed", { centerY: 395, color: c.light, keepCase: true }));
+  }
+  if (step >= 2) {
+    parts.push(d.label(760, 0, "as JPEG: 2,032 bytes", { centerY: 490, size: 48, color: c.yellow, keepCase: true }));
   }
   put("fig-kib", d.svg(1680, 600, ...parts));
 }

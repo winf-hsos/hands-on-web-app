@@ -16,7 +16,7 @@ objectives:
     - "explain why symbols shorter than the sensor's integration time produce readings that match no symbol"
     - "describe how markers limit the clock error and what they cost in rate"
     - "encode and decode bits as changes between three colors so that there is always a change to see"
-    - "name real links for both ways, such as the start bit of a serial port, the Manchester code of ethernet and the bit stuffing of USB"
+    - "name real links for both ways, such as the start bit of a serial port, the Manchester code of ethernet and the rotating code of DNA storage"
     - "compare with `math.log2()` how many bits k colors carry as states and as changes, and explain why two bits per change need five colors"
     - "calculate with t = n / (r · b) how long a file takes with and without a shared beat"
 level: 1
@@ -169,8 +169,22 @@ to stay together for about ten bits, and a deviation of a few per cent does
 no harm. The German time signal DCF77, which radio clocks receive, lowers its
 amplitude at the start of every second, for 100 ms for a 0 and 200 ms for a 1,
 and leaves out the pulse in second 59, so the gap marks the start of the next
-minute. A VGA monitor gets a sync pulse after every row of the picture and
-another after every frame.
+minute. A VGA monitor receives the red, green and blue of one pixel after
+another, and after every row a sync pulse on a wire of its own tells it to
+start the next row at the left edge.
+
+Some links reset the clock far more often, with a change in every bit. The
+**Manchester code** of 10BASE-T ethernet puts a change in the middle of every
+bit, from low to high for a 1 and from high to low for a 0, and infrared
+remote controls following RC-5 do the same with light, just like an LED.
+Every bit still lasts an agreed time, but each of these changes resets the
+receiver's clock, so it only has to hold for one bit; the price is up to two
+changes per bit. USB 1.x and 2.0 use **NRZI**, where a 0 is a change and a 1
+none, so for a run of ones the receiver counts bit lengths with its clock.
+After six ones the sender therefore inserts an extra 0, which forces a change
+and which the receiver removes again. This **bit stuffing** costs at most a
+seventh of the rate, much like a marker. All of these links keep a beat and
+only differ in how often they reset it.
 
 ## The change as the beat
 
@@ -216,16 +230,13 @@ The bits `100` become red, green, red, blue, and the decoder returns `100`.
 Note that `encode` needs a starting color that carries no bit, so four colors
 are sent for three bits.
 
-Real links use the same idea with two levels instead of three colors. The
-**Manchester code** puts a change in the middle of every bit, from low to high
-for a 1 and from high to low for a 0, as in 10BASE-T ethernet and in infrared
-remote controls following RC-5, which send light just like an LED. The
-receiver takes its beat from these changes, and the price is that the line
-has to manage two changes per bit. USB 1.x and 2.0 use **NRZI**, where a 0 is a
-change and a 1 none, so a long run of ones would leave the line without a
-change; after six ones the sender therefore inserts an extra 0, which the
-receiver removes again. This **bit stuffing** costs at most a seventh of the
-rate, much like a marker.
+A real example of this way comes from storing data in synthetic DNA, as a
+sequence of the four letters A, C, G and T. Making and reading DNA easily
+miscounts runs of equal letters, just as two equal colors merge in a stream
+of light. A research group at the European Bioinformatics Institute therefore
+stored texts and pictures in 2013 such that no letter ever follows itself:
+every next letter is one of the three others, so four letters leave three
+choices per step, a place value system with base 3.
 
 ## Without a clock is not without time
 
@@ -298,9 +309,10 @@ Neither way is right or wrong, and the table compares what each of them costs:
 Whatever the strategy, in the end one calculation counts: the time *t* for a
 file is the number of bits *n* divided by the product of symbols per second
 *r* and bits per symbol *b*, so t = n / (r · b). It has exactly two levers,
-and everything in this lesson decides about both. A file of 2 KiB holds, for
-instance, a black-and-white picture of 128 × 128 pixels with one bit per
-pixel, which makes exactly 16,384 bits. The program compares the two ways for
+and everything in this lesson decides about both. A file of 2 KiB is small: a
+color photo of 128 × 128 pixels with three bytes per pixel needs 48 KiB
+uncompressed and fits into 2 KiB only as a compressed JPEG of about 2,000
+bytes. The program compares the two ways for
 a file of this size with four colors at five symbols per second:
 
 ```python
@@ -336,8 +348,9 @@ of its own, that of throughput and its limits.
   symbol without data.
 - When the change carries the bit and no color may follow itself, there is
   always a change to see and the receiver needs no clock.
-- Serial ports, DCF77 and VGA work with markers, while 10BASE-T ethernet,
-  RC-5 and USB work with changes.
+- Serial ports, DCF77 and VGA reset the receiver's clock with markers,
+  10BASE-T ethernet, RC-5 and USB with changes inside the data, while DNA
+  storage does without a clock and never repeats a letter.
 - As changes, k colors carry only log₂(k − 1) bits, so two bits per change
   need five colors.
 - Without a clock, mixed readings during a change have to be filtered out,
