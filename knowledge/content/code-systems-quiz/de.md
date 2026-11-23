@@ -5,7 +5,7 @@ summary: >-
   und variabler Länge, zur Präfix-Falle und zu Bytes, die je nach Lesart Text,
   Farbe oder Ton bedeuten. Jede Antwort kommt mit ihrer Begründung.
 translation_of: en
-based_on: 2026-11-09
+based_on: 2026-11-23
 ---
 
 ## Was ist ein Codesystem? {#cs-001}
@@ -63,15 +63,15 @@ based_on: 2026-11-09
 - [ ] Für die zwölf neuen Zeichen ein Trennzeichen einführen, weil sie keine Buchstaben sind.
   > Ein Trennzeichen braucht nur, wer verschieden lange Codewörter benutzt. Bei fester Länge zählt der Empfänger ab, und für ihn ist ein Punkt genauso ein Codewort wie ein Buchstabe.
 
-## ASCII kennt 128 Zeichen. Warum gibt es trotzdem noch Unicode und UTF-8? (Mehrere richtige Antworten möglich.) {#cs-006}
+## Was trifft auf Unicode und UTF-8 zu? (Mehrere richtige Antworten möglich.) {#cs-006}
 
-- [x] Weil 128 Zeichen für die Schriften der Welt bei weitem nicht reichen.
-  > Richtig: Umlaute, Griechisch, Kyrillisch, Chinesisch, Emoji. Unicode vergibt für jedes Zeichen eine Nummer, aktuell über 100.000 Stück.
-- [ ] Weil ASCII mit einem Byte je Zeichen für heutige Rechner zu langsam zu verarbeiten ist.
-  > ASCII ist denkbar schnell zu decodieren, ein Byte je Zeichen. Der Grund für Unicode ist der Vorrat, nicht das Tempo.
-- [x] Weil UTF-8 mit variabler Länge arbeitet: gängige Zeichen bleiben ein Byte, seltene brauchen mehr.
+- [x] Unicode gibt den Zeichen aller Schriften der Welt eine Nummer, weit mehr als die 128 Zeichen von ASCII.
+  > Richtig: Umlaute, Griechisch, Kyrillisch, Chinesisch, Emoji. Unicode umfasst heute weit über 100.000 Zeichen.
+- [ ] UTF-8 hat ASCII abgelöst, weil ein Byte je Zeichen für heutige Rechner zu langsam zu verarbeiten ist.
+  > ASCII ist denkbar schnell zu decodieren, ein Byte je Zeichen. Den Ausschlag für Unicode gab der Vorrat an Zeichen, nicht das Tempo.
+- [x] UTF-8 speichert Zeichen mit variabler Länge: Die 128 ASCII-Zeichen bleiben bei einem Byte, alle anderen brauchen zwei bis vier.
   > Richtig, und das ist derselbe Gedanke wie bei Morse: häufig heißt kurz. Deshalb ist ein englischer Text in UTF-8 fast so kompakt wie in ASCII, und deutsche Umlaute kosten je ein Byte mehr.
-- [ ] Weil Unicode neben Zeichen auch Bilder und Töne kodiert, die in ASCII fehlen.
+- [ ] Unicode kodiert neben Zeichen auch Bilder und Töne, die in ASCII fehlen.
   > Unicode kodiert Zeichen, auch Emoji, aber keine Bilder oder Töne. Dafür gibt es eigene Codesysteme.
 
 ## Auf einer Festplatte liegt die Bytefolge `48 65 6C 6C 6F`. Woher weiß ein Programm, ob das ein Text, ein Bildausschnitt oder ein Stück Ton ist? {#cs-007}

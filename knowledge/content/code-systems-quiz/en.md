@@ -14,7 +14,7 @@ relations:
   checks: [code-systems]
 questions: [cs-001, cs-002, cs-003, cs-004, cs-005, cs-006, cs-007, cs-008, cs-009, cs-010, cs-011, cs-012, cs-013, cs-014, cs-015, cs-016, cs-017, cs-018, cs-019]
 status: published
-updated: 2026-11-09
+updated: 2026-11-23
 ---
 
 ## What is a code system? {#cs-001}
@@ -72,15 +72,15 @@ updated: 2026-11-09
 - [ ] Introduce a separator for the twelve new characters, because they are not letters.
   > A separator is only needed with code words of different lengths. With fixed length the receiver simply counts, and to it a full stop is just as much a code word as a letter.
 
-## ASCII has 128 characters. So why do Unicode and UTF-8 exist as well? (Several answers may be correct.) {#cs-006}
+## What is true about Unicode and UTF-8? (Several answers may be correct.) {#cs-006}
 
-- [x] Because 128 characters are nowhere near enough for the world's writing systems.
-  > Correct: umlauts, Greek, Cyrillic, Chinese, emoji. Unicode assigns a number to every character, currently over 100,000 of them.
-- [ ] Because ASCII, at one byte per character, is too slow for today's computers to process.
-  > ASCII is as fast to decode as it gets, one byte per character. The reason for Unicode is the repertoire, not speed.
-- [x] Because UTF-8 uses variable length: common characters stay one byte, rare ones need more.
+- [x] Unicode gives a number to the characters of all the world's writing systems, far more than the 128 characters of ASCII.
+  > Correct: umlauts, Greek, Cyrillic, Chinese, emoji. Unicode today covers well over 100,000 characters.
+- [ ] UTF-8 replaced ASCII because one byte per character is too slow for today's computers to process.
+  > ASCII is as fast to decode as it gets, one byte per character. What made Unicode necessary was the repertoire of characters, not speed.
+- [x] UTF-8 stores characters with variable length: the 128 ASCII characters keep their single byte, all others need two to four.
   > Correct, and it is the same idea as Morse: frequent means short. That is why English text in UTF-8 is almost as compact as ASCII, while German umlauts cost one extra byte each.
-- [ ] Because Unicode encodes images and sound alongside characters, which ASCII lacks.
+- [ ] Unicode encodes images and sound as well as characters, which ASCII lacks.
   > Unicode encodes characters, emoji included, but not images or sound. Those have code systems of their own.
 
 ## A disk holds the byte sequence `48 65 6C 6C 6F`. How does a program know whether this is text, part of an image, or a piece of sound? {#cs-007}
