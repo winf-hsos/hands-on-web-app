@@ -13,7 +13,7 @@ topics: [transferring-information]
 modules: [dup]
 relations:
   example_of: [sampling-and-synchronization]
-status: draft
+status: published
 updated: 2026-11-23
 ---
 

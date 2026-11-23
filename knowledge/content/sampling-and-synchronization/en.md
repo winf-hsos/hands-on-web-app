@@ -25,7 +25,7 @@ topics: [transferring-information]
 modules: [dup]
 relations:
   requires: [signal-and-noise]
-status: draft
+status: published
 updated: 2026-11-23
 ---
 

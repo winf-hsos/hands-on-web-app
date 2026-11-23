@@ -13,6 +13,6 @@ level: 1
 duration: 30
 topics: [transferring-information]
 modules: [dup]
-status: draft
+status: published
 updated: 2026-11-23
 ---
