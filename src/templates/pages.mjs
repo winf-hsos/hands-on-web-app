@@ -231,6 +231,7 @@ const scriptsFor = (body) =>
     body.includes('data-hex-viewer') && 'hex-viewer',
     body.includes('data-noisy-sensor') && 'noisy-sensor',
     body.includes('data-distinguishability-lab') && 'distinguishability-lab',
+    body.includes('data-drift-simulator') && 'drift-simulator',
     body.includes('data-next-word') && 'next-word',
     body.includes('data-word-guess') && 'word-guess',
     body.includes('data-meaning-map') && 'meaning-map',

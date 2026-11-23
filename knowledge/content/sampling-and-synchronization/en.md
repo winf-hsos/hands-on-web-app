@@ -161,6 +161,12 @@ costs an eighth of the rate. Starting together once costs nothing but lets
 the error grow without limit, and how often a marker is needed depends on how
 far your own clocks drift apart, which is a question for a measurement.
 
+In the demonstrator below you let the receiver's clock run off yourself and
+watch its sampling points wander out of the slots until you counter it with
+markers, keeping an eye on how much rate they cost.
+
+![The drift simulator](item:drift-simulator-demo)
+
 Many real links work this way. A serial port (UART, as in RS-232) rests at 1
 between characters, and every character begins with a start bit 0: at its
 falling edge the receiver restarts its clock and then reads each bit in its

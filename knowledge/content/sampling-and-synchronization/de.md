@@ -165,6 +165,12 @@ lässt den Fehler aber unbegrenzt wachsen, und wie oft eine Marke nötig ist,
 hängt davon ab, wie weit die eigenen Uhren auseinanderlaufen, was eine Frage
 für eine Messung ist.
 
+Im Demonstrator unten lässt du die Uhr des Empfängers selbst falsch gehen und
+siehst zu, wie seine Abtastpunkte aus den Schlitzen wandern, bis du mit Marken
+gegensteuerst und dabei verfolgst, wie viel Rate sie kosten.
+
+![Der Drift-Simulator](item:drift-simulator-demo)
+
 Viele echte Strecken arbeiten so. Eine serielle Schnittstelle (UART, wie bei
 RS-232) ruht zwischen den Zeichen auf 1, und jedes Zeichen beginnt mit einem
 Startbit 0: An dessen fallender Flanke startet der Empfänger seine Uhr neu
