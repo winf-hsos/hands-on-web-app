@@ -39,7 +39,9 @@ const light = (c, name) => ({ red: c.red, green: c.green, blue: c.blue })[name];
  * Seven symbols as the sender switches them (cells with gaps between them) and
  * as the receiver sees them: one band of light without boundaries, in which
  * two equal neighbours run into one and each change is a short blend. Cells 150 wide from x 330, so the rows
- * end at 1380; row names right-aligned at 300 ("seen" is 4 x 19.2 = 77 wide). */
+ * end at 1380; row names right-aligned at 300 ("seen" is 4 x 19.2 = 77 wide).
+ * The last step shows the idea that works as long as both clocks agree: one
+ * reading in the middle of every interval, numbered below the band. */
 function drawStream(slide, step) {
   const c = d.colors();
   const seq = ["red", "green", "green", "blue", "red", "red", "green"];
@@ -71,8 +73,17 @@ function drawStream(slide, step) {
     for (let k = 1; k < seq.length; k += 1) {
       const x = x0 + k * w;
       parts.push(d.line(x, 325, x, 465, { color: c.white, width: 3, dashed: true }));
-      if (seq[k] === seq[k - 1]) parts.push(d.label(x, 0, "?", { size: 48, anchor: "middle", centerY: 490, color: c.white }));
+      if (step === 2 && seq[k] === seq[k - 1]) parts.push(d.label(x, 0, "?", { size: 48, anchor: "middle", centerY: 490, color: c.white }));
     }
+  }
+  if (step >= 3) {
+    // the idea that works in principle: agree on the length of a symbol and
+    // read once in the middle of every interval, so two equal colors count twice
+    parts.push(d.label(x0, 0, "the idea: agree on the length and read in the middle of each interval", { centerY: 270, color: c.yellow }));
+    seq.forEach((s, i) => {
+      parts.push(circle(x0 + (i + 0.5) * w, 395, 12, c.yellow));
+      parts.push(d.label(x0 + (i + 0.5) * w, 0, String(i + 1), { size: 32, anchor: "middle", centerY: 490, color: c.yellow }));
+    });
   }
   put("fig-stream", d.svg(1680, 600, ...parts));
 }
