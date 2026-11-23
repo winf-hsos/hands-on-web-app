@@ -156,8 +156,8 @@ is at most one measuring step. Here the way with a beat borrows the idea of
 the other way, reacting to a change, but only once per block instead of at
 every symbol.
 
-Markers carry no data, and that is their price: a marker every eight symbols
-costs an eighth of the rate. Starting together once costs nothing but lets
+Markers carry no data, and that is their price: a marker after every eight data
+symbols makes one symbol in nine, about 11 % of the rate. Starting together once costs nothing but lets
 the error grow without limit, and how often a marker is needed depends on how
 far your own clocks drift apart, which is a question for a measurement.
 

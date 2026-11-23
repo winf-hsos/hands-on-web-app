@@ -32,7 +32,7 @@ The core message: a receiver only sees light and has to find out by itself when 
 
 **Try it: the drift simulator (Frame 32).** In the embedded simulator the receiver's clock runs 2 % slow. Left alone, it shows after how many symbols the readings are half a slot off and when the first red rings, the wrong reads, appear. Setting the slider "sync marker every" to eight symbols keeps the error small, and the display "marker overhead" shows what that costs.
 
-**The price of markers (Frame 33).** Starting together once costs no symbol at all but lets the error grow without limit. Markers limit the error but carry no data, so a marker every eight symbols costs an eighth of the rate. How often a marker is needed depends on how far your own clocks drift apart, and that is measured rather than believed.
+**The price of markers (Frame 33).** Starting together once costs no symbol at all but lets the error grow without limit. Markers limit the error but carry no data, so a marker after every eight data symbols makes one symbol in nine a marker and costs about 11 % of the rate, which is what the simulator shows as its marker overhead. How often a marker is needed depends on how far your own clocks drift apart, and that is measured rather than believed.
 
 The real links that follow all keep a beat: every bit lasts an agreed time, and the receiver counts with a clock of its own. They differ in how often they reset that clock, from once a minute down to once a bit.
 

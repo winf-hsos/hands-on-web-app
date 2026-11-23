@@ -159,8 +159,8 @@ einer Symboldauer, und der verbleibende Fehler ist höchstens ein Messschritt.
 Hier borgt sich der Weg mit Takt die Idee des anderen Wegs, die Reaktion auf
 einen Wechsel, nur einmal pro Block statt bei jedem Symbol.
 
-Marken tragen keine Daten, und das ist ihr Preis: Eine Marke alle acht
-Symbole kostet ein Achtel der Rate. Einmal gemeinsam zu starten kostet nichts,
+Marken tragen keine Daten, und das ist ihr Preis: Eine Marke nach je acht
+Datensymbolen ist jedes neunte Symbol, rund 11 % der Rate. Einmal gemeinsam zu starten kostet nichts,
 lässt den Fehler aber unbegrenzt wachsen, und wie oft eine Marke nötig ist,
 hängt davon ab, wie weit die eigenen Uhren auseinanderlaufen, was eine Frage
 für eine Messung ist.
