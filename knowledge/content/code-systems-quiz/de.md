@@ -5,7 +5,7 @@ summary: >-
   und variabler Länge, zur Präfix-Falle und zu Bytes, die je nach Lesart Text,
   Farbe oder Ton bedeuten. Jede Antwort kommt mit ihrer Begründung.
 translation_of: en
-based_on: 2026-11-23
+based_on: 2026-11-24
 ---
 
 ## Was ist ein Codesystem? {#cs-001}
@@ -19,11 +19,11 @@ based_on: 2026-11-23
 - [ ] Die Programmiersprache, in der ein Programm geschrieben ist.
   > Das Wort „Code“ hat im Alltag mehrere Bedeutungen. Hier geht es nicht um Quelltext, sondern um die Zuordnung von Zeichen zu Bitfolgen.
 
-## In ASCII steht das große A für die Zahl 65, B für 66, C für 67. Was folgt daraus? {#cs-002}
+## In ASCII steht das große A für die Dezimalzahl 65, B für 66, C für 67. Was folgt daraus? {#cs-002}
 
 - [ ] Dass Buchstaben im Rechner als Buchstaben gespeichert werden, nur mit einer Nummer daneben.
   > Gespeichert wird nur die Zahl. Ein Buchstabe existiert im Rechner nicht als Form, sondern erst dann, wenn ein Programm die Zahl nach derselben Vereinbarung wieder darstellt.
-- [ ] Dass sich die 65 aus der Stellung von A im Alphabet ergibt, sobald man Ziffern und Satzzeichen mitzählt.
+- [ ] Dass sich die Dezimalzahl 65 aus der Stellung von A im Alphabet ergibt, sobald man Ziffern und Satzzeichen mitzählt.
   > Die Zahl folgt aus keiner Rechnung. Sie wurde in der ASCII-Tabelle festgelegt, deren Anfang für Steuerzeichen und Satzzeichen reserviert ist; man hätte A ebenso gut die 1 oder die 200 geben können.
 - [x] Dass ein Buchstabe im Rechner nichts anderes ist als eine Zahl, der jemand diese Bedeutung zugewiesen hat.
   > Genau, und das ist die Pointe des ganzen Konzepts: Dieselben Bits sind Text, Bild oder Ton, je nachdem, welche Vereinbarung man auf sie anwendet.

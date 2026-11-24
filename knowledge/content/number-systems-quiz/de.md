@@ -4,19 +4,19 @@ summary: >-
   Vierzehn Fragen zu Stellenwert, Binär- und Hexadezimalzahlen, Bit und Byte und
   den beiden Leitern der Einheiten. Jede Antwort kommt mit ihrer Begründung.
 translation_of: en
-based_on: 2026-11-23
+based_on: 2026-11-24
 ---
 
-## Warum bedeutet die Ziffernfolge 123 einhundertdreiundzwanzig? {#ns-001}
+## Warum bedeutet die Ziffernfolge 123 im Dezimalsystem einhundertdreiundzwanzig? {#ns-001}
 
 - [ ] Weil die Ziffern zusammen ein festes Symbol für diese Zahl bilden.
   > Dann bräuchte jede Zahl ihr eigenes Symbol, und du müsstest unendlich viele lernen. Der Trick des Stellenwertsystems ist gerade, mit zehn Ziffern jede Zahl zu schreiben.
 - [x] Weil jede Stelle eine Zehnerpotenz wert ist: 1 mal 100 plus 2 mal 10 plus 3 mal 1.
   > Genau: Die Ziffer sagt wie oft, die Stelle sagt was. Dieselbe Ziffer 1 ist vorn hundert wert und hinten eins. Diese Bauanleitung heißt Stellenwertsystem, und sie funktioniert mit jeder Basis, nicht nur mit der Zehn.
 - [ ] Weil die Ziffern von links nach rechts der Größe nach aufsteigen und so die Zahl aufbauen.
-  > Zufall dieses Beispiels. 321 funktioniert nach derselben Regel: 3 mal 100 plus 2 mal 10 plus 1 mal 1.
+  > Zufall dieses Beispiels. Die Dezimalzahl 321 funktioniert nach derselben Regel: 3 mal 100 plus 2 mal 10 plus 1 mal 1.
 - [ ] Weil jede Stelle zehnmal so viel zählt wie die davor: 1 mal 1 plus 2 mal 10 plus 3 mal 100.
-  > Die Zehnerpotenzen stimmen, die Richtung nicht: Diese Rechnung ergibt 321. Die Stellenwerte wachsen von rechts nach links, die Einer stehen ganz rechts.
+  > Die Zehnerpotenzen stimmen, die Richtung nicht: Diese Rechnung ergibt die Dezimalzahl 321. Die Stellenwerte wachsen von rechts nach links, die Einer stehen ganz rechts.
 
 ## Was ist an der Basis 10 unseres Zahlensystems besonders? {#ns-002}
 
@@ -29,49 +29,49 @@ based_on: 2026-11-23
 - [ ] Nur zur Basis 10 gibt es die Ziffer 0, die eine leere Stelle markiert.
   > Jede Basis braucht die Null, sonst ließe sich eine leere Stelle nicht von einer fehlenden unterscheiden. Zur Basis R gibt es die Ziffern 0 bis R minus 1.
 
-## Welche Zahl bedeutet die Binärfolge 110? {#ns-003}
+## Welche Dezimalzahl bedeutet die Binärzahl 110? {#ns-003}
 
-- [ ] 110, die Schreibweise ändert nichts am Wert.
+- [ ] Die Dezimalzahl 110, die Schreibweise ändert nichts am Wert.
   > Die Schreibweise ändert alles: Dieselben Ziffern bedeuten je nach Basis verschiedene Zahlen. Binär gelesen sind die Stellen 4, 2 und 1 wert.
-- [x] 6, denn 1 mal 4 plus 1 mal 2 plus 0 mal 1.
+- [x] Die Dezimalzahl 6, denn 1 mal 4 plus 1 mal 2 plus 0 mal 1.
   > Genau, dieselbe Bauanleitung wie im Dezimalsystem, nur mit Zweierpotenzen als Stellenwerten: 4, 2, 1 statt 100, 10, 1.
-- [ ] 3, denn 1 mal 1 plus 1 mal 2 plus 0 mal 4.
+- [ ] Die Dezimalzahl 3, denn 1 mal 1 plus 1 mal 2 plus 0 mal 4.
   > Die Stellenwerte stimmen, die Richtung nicht: Die Einerstelle steht ganz rechts, nicht links. Von rechts gelesen sind die Stellen 1, 2 und 4 wert, also 0 plus 2 plus 4.
-- [ ] 220, denn jede Ziffer wird mit der Basis 2 multipliziert.
+- [ ] Die Dezimalzahl 220, denn jede Ziffer wird mit der Basis 2 multipliziert.
   > Nicht die Basis wird an jede Ziffer multipliziert, sondern der Stellenwert, und der ist je Stelle ein anderer: ganz rechts 1, dann 2, dann 4. Die Produkte werden anschließend addiert, nicht nebeneinander geschrieben.
 
-## Du zählst binär: 0, 1, 10, 11, 100, 101, und dann? Welche Zahl kommt als nächstes, und warum? {#ns-004}
+## Du zählst binär: 0, 1, 10, 11, 100, 101, und dann? Welche Binärzahl kommt als nächstes, und warum? {#ns-004}
 
-- [ ] 102, denn die letzte Stelle zählt wie im Zehnersystem eine Ziffer weiter.
+- [ ] Die Binärzahl 102, denn die letzte Stelle zählt wie im Dezimalsystem eine Ziffer weiter.
   > Zur Basis 2 gibt es nur die Ziffern 0 und 1. Eine 2 kann in keiner Binärzahl vorkommen, genau wie das Dezimalsystem keine eigene Ziffer für die Zehn hat.
-- [ ] 1000, denn mit 101 sind die drei Stellen ausgeschöpft und eine vierte kommt hinzu.
-  > Zu früh übergelaufen: 101 ist die 5, danach kommt die 6, und die braucht noch keine vierte Stelle. Erst nach 111 (der 7) geht es mit 1000 weiter.
-- [x] 110: Die letzte Stelle läuft über und reicht eine 1 weiter, wie beim Zählen von 09 auf 10.
+- [ ] Die Binärzahl 1000, denn mit der Binärzahl 101 sind die drei Stellen ausgeschöpft und eine vierte kommt hinzu.
+  > Zu früh übergelaufen: Die Binärzahl 101 ist die Dezimalzahl 5, danach kommt die Dezimalzahl 6, und die braucht binär noch keine vierte Stelle. Erst nach der Binärzahl 111 (dezimal 7) geht es mit 1000 weiter.
+- [x] Die Binärzahl 110: Die letzte Stelle läuft über und reicht eine 1 weiter, wie beim dezimalen Zählen von 09 auf 10.
   > Genau: Zählen funktioniert in jeder Basis gleich. Ist die höchste Ziffer erreicht, springt die Stelle auf 0, und die nächste Stelle zählt eins hoch. Binär passiert das nur viel öfter, weil nach der 1 schon Schluss ist.
-- [ ] 111, denn nach 101 werden die verbliebenen Nullen der Reihe nach zu Einsen.
-  > Damit wäre eine Zahl übersprungen: 111 ist die 7, gesucht ist die 6. Beim Zählen wird nur die letzte Stelle um eins erhöht, und die 1 dort läuft über: 101 wird 110.
+- [ ] Die Binärzahl 111, denn nach der Binärzahl 101 werden die verbliebenen Nullen der Reihe nach zu Einsen.
+  > Damit wäre eine Zahl übersprungen: Die Binärzahl 111 ist die Dezimalzahl 7, gesucht ist die Dezimalzahl 6, binär 110. Beim Zählen wird nur die letzte Stelle um eins erhöht, und die 1 dort läuft über: Aus der Binärzahl 101 wird 110.
 
-## Ein Wesen mit acht Fingern schreibt die Zahl 123 in seinem Achtersystem. Welche Zahl ist das in unserem Zehnersystem? {#ns-005}
+## Ein Wesen mit acht Fingern schreibt die Ziffernfolge 123 in seinem Achtersystem, also zur Basis 8. Welche Dezimalzahl ist das? {#ns-005}
 
-- [ ] 123, denn eine Zahl bleibt dieselbe, egal mit wie vielen Fingern gezählt wird.
+- [ ] Die Dezimalzahl 123, denn eine Zahl bleibt dieselbe, egal mit wie vielen Fingern gezählt wird.
   > Die Zahl dahinter ist überall gleich, ihre Schreibweise nicht. Dieselben Ziffern bedeuten zur Basis 8 etwas anderes, weil die Stellen 64, 8 und 1 wert sind.
-- [x] 83, denn 1 mal 64 plus 2 mal 8 plus 3 mal 1.
+- [x] Die Dezimalzahl 83, denn 1 mal 64 plus 2 mal 8 plus 3 mal 1.
   > Genau: gleiche Bauanleitung, andere Stellenwerte. Statt 100, 10, 1 sind die Stellen 64, 8, 1 wert, also Achterpotenzen. Wer das einmal gerechnet hat, kann jede Basis lesen.
-- [ ] 48, denn die Ziffernsumme 1 plus 2 plus 3, multipliziert mit der Basis 8.
+- [ ] Die Dezimalzahl 48, denn die Ziffernsumme 1 plus 2 plus 3, multipliziert mit der Basis 8.
   > Die Ziffern werden nicht erst addiert und dann mit der Basis verrechnet. Jede Ziffer wird einzeln mit ihrem eigenen Stellenwert multipliziert (64, 8, 1), erst dann wird summiert.
-- [ ] Das Achtersystem kann die Zahl 123 gar nicht darstellen.
+- [ ] Zur Basis 8 lässt sich die Ziffernfolge 123 gar nicht schreiben.
   > Jede Basis ab 2 kann jede Zahl darstellen. Die Ziffern 1, 2 und 3 sind zur Basis 8 sogar alle erlaubt, verboten wären erst 8 und 9.
 
-## Bisher hast du Binärzahlen gelesen. Jetzt andersherum: Wie schreibst du die Zahl 13 im Binärsystem? {#ns-013}
+## Bisher hast du Binärzahlen gelesen. Jetzt andersherum: Wie schreibst du die Dezimalzahl 13 im Binärsystem? {#ns-013}
 
-- [ ] 1011
-  > Das sind 8 + 2 + 1 = 11. Die Ziffern stimmen, aber die Reihenfolge nicht: Wer die Stellenwerte von rechts nach links abarbeitet und das Ergebnis dann so hinschreibt, wie er es gefunden hat, dreht die Zahl um.
-- [x] 1101
-  > 8 + 4 + 0 + 1 = 13. Der bequemste Weg geht von der größten Zweierpotenz abwärts: 16 ist zu groß, 8 passt (Rest 5), 4 passt (Rest 1), 2 passt nicht, 1 passt. Das ergibt von links nach rechts 1, 1, 0, 1.
-- [ ] 1110
-  > Das sind 8 + 4 + 2 = 14, also eins zu viel. Ein Blick auf die letzte Stelle genügt zur Kontrolle: Sie trägt die 1, und ungerade Zahlen haben dort immer eine Eins.
-- [ ] 1100
-  > Das sind 8 + 4 = 12. Der Rest von 1 ist unterschlagen worden; nach der 4 bleibt genau eine 1 übrig, und die braucht die letzte Stelle.
+- [ ] 1011 (binär)
+  > Das ist die Dezimalzahl 11, denn 8 + 2 + 1 = 11. Die Ziffern stimmen, aber die Reihenfolge nicht: Wer die Stellenwerte von rechts nach links abarbeitet und das Ergebnis dann so hinschreibt, wie er es gefunden hat, dreht die Zahl um.
+- [x] 1101 (binär)
+  > 8 + 4 + 0 + 1 ergibt die Dezimalzahl 13. Der bequemste Weg geht von der größten Zweierpotenz abwärts: 16 ist zu groß, 8 passt (Rest 5), 4 passt (Rest 1), 2 passt nicht, 1 passt. Das ergibt von links nach rechts 1, 1, 0, 1.
+- [ ] 1110 (binär)
+  > Das ist die Dezimalzahl 14, denn 8 + 4 + 2 = 14, also eins zu viel. Ein Blick auf die letzte Stelle genügt zur Kontrolle: Sie trägt die 1, und ungerade Zahlen haben dort immer eine Eins.
+- [ ] 1100 (binär)
+  > Das ist die Dezimalzahl 12, denn 8 + 4 = 12. Der Rest von 1 ist unterschlagen worden; nach der 4 bleibt genau eine 1 übrig, und die braucht die letzte Stelle.
 
 ## Im LiFi-Projekt überträgt euer Team jeden Buchstaben als drei Farben hintereinander, jede aus einem Vorrat von vier, etwa rot-blau-grün. Inwiefern habt ihr damit bereits ein Stellenwertsystem gebaut? {#ns-012}
 
@@ -102,7 +102,7 @@ based_on: 2026-11-23
 - [x] Weil zwei Zustände den größten Abstand haben und sich darum am zuverlässigsten unterscheiden lassen, milliardenfach und fehlerfrei.
   > Genau: Je mehr Stufen auf denselben Wertebereich verteilt werden, desto kleiner die Abstände und desto eher schlägt das Rauschen zu. Basis 10 hieße zehn Spannungsstufen statt zwei, mit entsprechend mehr Fehlern. An und aus ist das robusteste Alphabet, das es gibt.
 - [ ] Weil sich zur Basis 2 kürzere Zahlen ergeben und der Speicher dadurch weniger Stellen braucht.
-  > Das Gegenteil stimmt: Binärzahlen sind länger, die 255 braucht acht Stellen statt drei. Der Preis wird gern bezahlt, weil jede einzelne Stelle dafür fast unzerstörbar ist.
+  > Das Gegenteil stimmt: Binärzahlen sind länger, die Dezimalzahl 255 braucht binär acht Stellen statt drei. Der Preis wird gern bezahlt, weil jede einzelne Stelle dafür fast unzerstörbar ist.
 - [ ] Weil ein internationaler Standard die Basis 2 vorschreibt, an den sich alle Computer halten müssen, damit sie miteinander kommunizieren können.
   > Einen solchen Standard gibt es nicht: Computer rechneten schon binär, lange bevor sie miteinander vernetzt wurden, und Netzprotokolle legen Formate fest, nicht die Basis im Rechenwerk. Den Ausschlag gibt die Physik, denn zwei Zustände lassen sich am sichersten unterscheiden.
 
@@ -111,9 +111,9 @@ based_on: 2026-11-23
 - [ ] Ein Paket aus acht Bit, also acht verschiedene Werte, einer je Bit.
   > Acht Bit stimmt, aber die Werte multiplizieren sich: Jede der acht Stellen verdoppelt die Möglichkeiten. 2 hoch 8 sind 256, nicht 8.
 - [ ] Die kleinste Zahl, die ein Computer speichern kann, mit 2 hoch 8 gleich 256 als größtem Wert.
-  > Das Byte ist eine Verpackungseinheit, keine Zahl. Es ist die übliche kleinste adressierbare Einheit im Speicher, und was die acht Bit darin bedeuten, entscheidet die Vereinbarung. Als Zahl gelesen reicht es außerdem von 0 bis 255, nicht bis 256.
+  > Das Byte ist eine Verpackungseinheit, keine Zahl. Es ist die übliche kleinste adressierbare Einheit im Speicher, und was die acht Bit darin bedeuten, entscheidet die Vereinbarung. Als Binärzahl gelesen reicht es außerdem von dezimal 0 bis 255, nicht bis 256.
 - [x] Ein Paket aus acht Bit, mit 2 hoch 8 gleich 256 möglichen Werten.
-  > Genau: acht Stellen zur Basis 2, jede verdoppelt die Möglichkeiten, zusammen 256. Als Zahl gelesen reicht ein Byte von 0 bis 255, und genau deshalb laufen Farbkanäle in der Bildbearbeitung von 0 bis 255.
+  > Genau: acht Stellen zur Basis 2, jede verdoppelt die Möglichkeiten, zusammen 256. Als Binärzahl gelesen reicht ein Byte von dezimal 0 bis 255, und genau deshalb laufen Farbkanäle in der Bildbearbeitung von 0 bis 255.
 - [ ] Ein Paket aus tausend Bit, daher die Vorsilbe Kilo im Kilobyte, mit tausend möglichen Werten.
   > Ein Byte sind acht Bit. Das Kilobyte ist die nächste Verpackungsstufe darüber, tausend Byte, nicht tausend Bit. Und selbst bei tausend Bit wären die Werte 2 hoch 1000, nicht tausend.
 
@@ -122,21 +122,21 @@ based_on: 2026-11-23
 - [ ] Zufall der Geschichte: Die ersten Rechner hatten zweistellige Anzeigen, und die Basis 16 wurde daran angepasst.
   > Es ist Arithmetik, kein Zufall: 16 mal 16 ist genau 256. Gerade deshalb hat sich die Basis 16 als Kurzschrift für Bytes durchgesetzt.
 - [x] Eine Hexziffer fasst 16 Werte, also genau 4 Bit; zwei Ziffern fassen 8 Bit, und 16 mal 16 ist 256.
-  > Genau, und deshalb ist Hex die Kurzschrift für Bytes: Menschen lesen AC leichter als 10101100, und beides ist die 172. Die Farbe #AC8909 ist schlicht drei Bytes, je zwei Stellen.
+  > Genau, und deshalb ist Hex die Kurzschrift für Bytes: Menschen lesen die Hexadezimalzahl AC leichter als die Binärzahl 10101100, und beides ist die Dezimalzahl 172. Die Farbe #AC8909 ist schlicht drei Bytes, je zwei Stellen.
 - [ ] Weil die sechs Buchstaben A bis F genau die Bits ergänzen, die den zehn Ziffern zum Byte fehlen.
   > A bis F sind keine Bits, sondern gewöhnliche Ziffern mit den Werten 10 bis 15. Sie werden gebraucht, weil die Basis 16 sechzehn verschiedene Ziffern verlangt und unsere zehn nicht reichen. Mit dem Byte hat ihre Anzahl nichts zu tun.
 - [ ] Weil ein Byte aus 16 Bit besteht und jede Hexziffer genau 8 davon darstellt.
   > Ein Byte hat 8 Bit, nicht 16. Eine Hexziffer fasst 16 Werte, das sind 4 Bit; zwei Ziffern ergeben 8 Bit und damit die 256 Werte eines Bytes.
 
-## Welchen Wert hat die Hexadezimalzahl FF? {#ns-009}
+## Welche Dezimalzahl bedeutet die Hexadezimalzahl FF? {#ns-009}
 
-- [ ] 1515, denn F ist die 15, und beide Ziffernwerte werden hintereinander geschrieben.
+- [ ] Die Dezimalzahl 1515, denn F ist die 15, und beide Ziffernwerte werden hintereinander geschrieben.
   > Die Ziffernwerte werden nicht hintereinander geschrieben, sondern mit den Stellenwerten verrechnet: 15 mal 16 plus 15 mal 1.
-- [ ] 30, denn F ist die 15, und die beiden Stellen werden addiert.
+- [ ] Die Dezimalzahl 30, denn F ist die 15, und die beiden Stellen werden addiert.
   > Die linke Stelle ist Sechzehner wert, nicht Einer: 15 mal 16 plus 15 mal 1, nicht 15 plus 15.
-- [x] 255, denn 15 mal 16 plus 15 mal 1, der größte Wert eines Bytes.
+- [x] Die Dezimalzahl 255, denn 15 mal 16 plus 15 mal 1, der größte Wert eines Bytes.
   > Genau. FF ist das volle Byte, binär 11111111. Deshalb bedeutet die Farbe #FF0000 volles Rot: erster Kanal auf Maximum, die anderen auf null.
-- [ ] 240, denn F ist die 15, und 15 mal 16 ergibt 240.
+- [ ] Die Dezimalzahl 240, denn F ist die 15, und 15 mal 16 ergibt 240.
   > Die linke Stelle stimmt, die rechte fehlt: Das zweite F ist noch einmal 15 mal 1. Zusammen 240 plus 15 gleich 255.
 
 ## Eine Festplatte ist mit 1 Terabyte beschriftet, das Betriebssystem zeigt aber nur 931 Gigabyte an. Wo sind die restlichen 69 Gigabyte? {#ns-011}

@@ -14,7 +14,7 @@ relations:
   checks: [code-systems]
 questions: [cs-001, cs-002, cs-003, cs-004, cs-005, cs-006, cs-007, cs-008, cs-009, cs-011, cs-012, cs-013, cs-014, cs-015, cs-016, cs-017, cs-018, cs-019]
 status: published
-updated: 2026-11-23
+updated: 2026-11-24
 ---
 
 ## What is a code system? {#cs-001}
@@ -28,11 +28,11 @@ updated: 2026-11-23
 - [ ] The programming language a program is written in.
   > The word 'code' has several everyday meanings. Here it is not source code but the mapping from characters to bit sequences.
 
-## In ASCII, capital A stands for the number 65, B for 66, C for 67. What follows from that? {#cs-002}
+## In ASCII, capital A stands for the decimal number 65, B for 66, C for 67. What follows from that? {#cs-002}
 
 - [ ] That letters are stored as letters in the computer, just with a number next to them.
   > Only the number is stored. A letter does not exist as a shape inside the computer; it appears only when a program renders the number using the same agreement.
-- [ ] That the 65 follows from A's position in the alphabet once you count digits and punctuation as well.
+- [ ] That the decimal number 65 follows from A's position in the alphabet once you count digits and punctuation as well.
   > The number does not follow from any calculation. It was fixed in the ASCII table, whose beginning is reserved for control and punctuation characters; A could just as well have been given 1 or 200.
 - [x] That a letter in a computer is nothing but a number to which someone assigned this meaning.
   > Exactly, and that is the point of the whole concept: the same bits are text, image, or sound depending on which agreement you apply to them.
