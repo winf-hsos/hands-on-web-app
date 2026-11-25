@@ -14,8 +14,9 @@ const ICON_WRENCH = '<path d="M.102 2.223A3.004 3.004 0 0 0 3.78 5.897l6.341 6.2
 
 // ------------------------------------------------------------ chats
 
-// A chat as OpenCode shows it: Jeff on the right, the agent on the left, a tool call with its result in
-// between, dashed and in the code font. Each row is [who, text, color]; who is "jeff", "agent" or "tool".
+// A chat as OpenCode shows it: Jeff on the right, the agent on the left, and the agent's tool calls with
+// their results on its side, dashed and in the code font. Each row is [who, text, color]; who is "jeff",
+// "agent" or "tool". Texts keep their case as written, so names stay capitalized.
 function chat(rows, h, gap = 56) {
   const parts = [];
   let y = 34;
@@ -23,14 +24,14 @@ function chat(rows, h, gap = 56) {
     const lines = text.split("\n").length;
     const bh = 44 + lines * 42;
     const tool = who === "tool", jeff = who === "jeff";
-    const x = jeff ? 470 : tool ? 300 : 100, w = jeff ? 1110 : tool ? 1280 : 1110;
+    const x = jeff ? 470 : 100, w = jeff ? 1110 : tool ? 1280 : 1110;
     const icon = jeff ? ICON_PERSON : tool ? ICON_WRENCH : ICON_ROBOT;
-    const ix = jeff ? W - 64 : tool ? 220 : 12;
+    const ix = jeff ? W - 64 : 12;
     const cy = y + 10 + bh / 2;
     parts.push(d.icon(ix, cy - 30, 60, icon, { color: jeff ? c.light : tool ? c.gray : c.blue }));
-    parts.push(d.label(jeff ? x + w : x, y - 6, jeff ? "jeff" : tool ? "tool call and result" : "agent", { size: 20, color: c.gray, anchor: jeff ? "end" : "start" }));
+    parts.push(d.label(jeff ? x + w : x, y - 6, jeff ? "Jeff" : tool ? "tool call and result" : "agent", { size: 20, color: c.gray, anchor: jeff ? "end" : "start", keepCase: jeff }));
     parts.push(d.box(x, y + 10, w, bh, "", { border: col || (jeff ? c.light : tool ? c.dark : c.blue), dashed: tool, rx: 14 }));
-    parts.push(d.label(x + 32, 0, text, { size: 32, color: tool ? c.light : c.white, mono: tool, centerY: cy, keepCase: tool }));
+    parts.push(d.label(x + 32, 0, text, { size: 32, color: tool ? c.light : c.white, mono: tool, centerY: cy, keepCase: true }));
     y += bh + gap;
   });
   return d.svg(W, h, ...parts);
@@ -42,7 +43,7 @@ function chat(rows, h, gap = 56) {
 function figSetup() {
   const parts = [];
   parts.push(d.icon(70, 190, 140, ICON_PERSON, { color: c.light }));
-  parts.push(d.label(140, 0, "jeff", { size: 32, color: c.light, anchor: "middle", centerY: 370 }));
+  parts.push(d.label(140, 0, "Jeff", { keepCase: true, size: 32, color: c.light, anchor: "middle", centerY: 370 }));
   parts.push(d.arrow(260, 260, 450, 260, { color: c.light, width: 3, head: 16 }));
   parts.push(d.box(470, 80, 1210, 360, "", { border: c.blue, width: 3, rx: 12 }));
   parts.push(d.icon(520, 120, 96, ICON_ROBOT, { color: c.blue }));
@@ -50,8 +51,8 @@ function figSetup() {
   parts.push(d.label(520, 0, "model", { size: 20, color: c.gray, centerY: 270 }));
   parts.push(d.label(700, 0, "gpt-6-luna, in the cloud", { size: 32, color: c.white, centerY: 270 }));
   parts.push(d.label(520, 0, "role", { size: 20, color: c.gray, centerY: 360 }));
-  parts.push(d.label(700, 0, "“you are the assistant of the lindenhof farm shop.\nyou help the owner with the daily work.”", { size: 32, color: c.white, centerY: 360 }));
-  parts.push(d.label(W / 2, 0, "the only rule takes away everything opencode brings along:\nno files, no shell, no web", { size: 32, color: c.light, anchor: "middle", centerY: 590 }));
+  parts.push(d.label(700, 0, "“you are the assistant of the Lindenhof farm shop.\nyou help the owner with the daily work.”", { size: 32, color: c.white, centerY: 360, keepCase: true }));
+  parts.push(d.label(W / 2, 0, "the only rule takes away everything OpenCode brings along:\nno files, no shell, no web", { size: 32, color: c.light, anchor: "middle", centerY: 590, keepCase: true }));
   return d.svg(W, H, ...parts);
 }
 
@@ -61,7 +62,8 @@ function figSetup() {
 function figTool() {
   const parts = [];
   const rows = [
-    ["name", 70, () => d.label(360, 0, "sales", { size: 48, mono: true, keepCase: true, centerY: 70 })],
+    ["name", 70, () => d.label(360, 0, "shop_sales", { size: 48, mono: true, keepCase: true, centerY: 58 }) +
+      d.label(360, 0, "the tool sales in the group shop", { size: 20, color: c.gray, centerY: 112 })],
     ["inputs", 230, () => d.label(360, 0, "from_date, to_date", { size: 32, mono: true, keepCase: true, centerY: 210 }) +
       d.label(360, 0, "two dates in the form YYYY-MM-DD, filled in by the model", { size: 20, color: c.gray, centerY: 262, keepCase: true })],
     ["description", 410, () => d.label(360, 0, "“Units sold of each product between two dates\n(YYYY-MM-DD), both included.”", { size: 32, keepCase: true, centerY: 390 }) +
@@ -70,7 +72,7 @@ function figTool() {
       d.label(360, 0, "what the tool gives back to the agent", { size: 20, color: c.gray, centerY: 652 })],
   ];
   rows.forEach(([what, cy, draw], i) => {
-    parts.push(d.label(0, 0, what, { size: 32, color: c.blue, centerY: i === 0 ? 70 : i === 1 ? 210 : i === 2 ? 370 : 600 }));
+    parts.push(d.label(0, 0, what, { size: 32, color: c.blue, centerY: i === 0 ? 58 : i === 1 ? 210 : i === 2 ? 370 : 600 }));
     parts.push(draw());
     if (i < rows.length - 1) parts.push(d.line(0, [140, 310, 520][i], W, [140, 310, 520][i], { color: c.dark }));
   });
@@ -81,13 +83,15 @@ function figTool() {
 // step appears in that build step.
 function stack(id, cards, cardH = 86, gap = 18) {
   const parts = [], groups = {};
-  cards.forEach(([what, text, border, step, mono], i) => {
-    const y = 10 + i * (cardH + gap);
+  let y = 10;
+  cards.forEach(([what, text, border, step, mono]) => {
     const lines = text.split("\n").length;
-    const g = d.box(0, y, W, cardH, "", { border }) +
-      d.label(30, 0, what, { size: 20, color: border === c.dark ? c.gray : border, centerY: y + cardH / 2 }) +
-      d.label(250, 0, text, { size: lines > 1 ? 20 : 32, color: c.white, centerY: y + cardH / 2, mono: !!mono, keepCase: !!mono });
+    const h = Math.max(cardH, 34 + lines * 28);
+    const g = d.box(0, y, W, h, "", { border }) +
+      d.label(30, 0, what, { size: 20, color: border === c.dark ? c.gray : border, centerY: y + h / 2, keepCase: what === "Jeff" }) +
+      d.label(250, 0, text, { size: lines > 1 ? 20 : 32, color: c.white, centerY: y + h / 2, mono: !!mono, keepCase: true });
     if (step) { groups[step] = (groups[step] || "") + g; } else parts.push(g);
+    y += h + gap;
   });
   Object.entries(groups).forEach(([step, g]) => parts.push(d.g("s" + step, g)));
   el(id).innerHTML = d.svg(W, H, ...parts);
@@ -97,9 +101,9 @@ function stack(id, cards, cardH = 86, gap = 18) {
 
 function figContext() {
   stack("fig-context", [
-    ["role", "you are the assistant of the lindenhof farm shop", c.dark],
-    ["tools", "shop_products: all products of the lindenhof farm shop …\nshop_stock: how many units of each product are on the shelf right now\nshop_sales: units sold of each product between two dates …", c.dark],
-    ["jeff", "how many bottles of milk did we sell in the last four weeks?", c.light],
+    ["role", "you are the assistant of the Lindenhof farm shop", c.dark],
+    ["tools", "shop_products: all products of the Lindenhof farm shop …\nshop_stock: how many units of each product are on the shelf right now\nshop_sales: units sold of each product between two dates …", c.dark],
+    ["Jeff", "how many bottles of milk did we sell in the last four weeks?", c.light],
     ["tool call", 'shop_sales(from_date="2026-10-29", to_date="2026-11-25")', c.dark, 1, true],
     ["result", '{"days_open": 24, "units_sold": {"milk": 163, "yoghurt": 96, …}}', c.dark, 1, true],
     ["agent", "we sold 163 bottles of milk in the last four weeks.", c.blue, 2],
@@ -109,26 +113,27 @@ function figContext() {
 // Why MCP: every agent app reaches every server through the same protocol.
 function figMcp() {
   const parts = [];
-  const apps = ["opencode", "claude code", "chatgpt", "lm studio"];
-  const servers = [["shop", true], ["orders", true], ["till", true], ["github", false], ["calendar", false]];
+  const apps = ["OpenCode", "Claude Code", "ChatGPT", "LM Studio"];
+  const servers = [["shop", true], ["orders", true], ["till", true], ["GitHub", false], ["calendar", false]];
   const busX = 840;
   apps.forEach((a, i) => {
     const y = 120 + i * 140;
-    parts.push(d.line(400, y + 45, busX - 60, y + 45, { color: c.dark, width: 3 }));
+    parts.push(d.line(400, y + 45, busX - 90, y + 45, { color: c.dark, width: 3 }));
     parts.push(d.box(0, y, 400, 90, "", { border: c.light }));
-    parts.push(d.label(200, 0, a, { size: 32, anchor: "middle", centerY: y + 45 }));
+    parts.push(d.label(200, 0, a, { size: 32, anchor: "middle", centerY: y + 45, keepCase: true }));
   });
   servers.forEach(([s, ours], i) => {
     const y = 60 + i * 140;
-    parts.push(d.line(busX + 60, y + 45, 1280, y + 45, { color: c.dark, width: 3 }));
+    parts.push(d.line(busX + 90, y + 45, 1280, y + 45, { color: c.dark, width: 3 }));
     parts.push(d.box(1280, y, 400, 90, "", { border: ours ? c.blue : c.dark, dashed: !ours }));
-    parts.push(d.label(1480, 0, s, { size: 32, anchor: "middle", centerY: y + 45, color: ours ? c.white : c.gray, mono: ours, keepCase: ours }));
+    parts.push(d.label(1480, 0, s, { size: 32, anchor: "middle", centerY: y + 45, color: ours ? c.white : c.gray, mono: ours, keepCase: true }));
   });
-  parts.push(d.box(busX - 60, 40, 120, 680, "", { border: c.blue, width: 3, rx: 60 }));
-  parts.push(d.label(busX, 0, "mcp", { size: 48, anchor: "middle", centerY: 380, color: c.blue }));
+  parts.push(d.box(busX - 90, 40, 180, 680, "", { border: c.blue, width: 3, rx: 90 }));
+  parts.push(d.label(busX, 0, "MCP", { size: 48, anchor: "middle", centerY: 380, color: c.blue, keepCase: true }));
+  parts.push(d.label(busX, 0, "Model Context Protocol", { size: 20, anchor: "middle", centerY: 770, color: c.blue, keepCase: true }));
   parts.push(d.label(200, 0, "agent apps", { size: 20, color: c.gray, anchor: "middle", centerY: 70 }));
   parts.push(d.label(1480, 0, "servers: small programs that offer tools", { size: 20, color: c.gray, anchor: "middle", centerY: 20 }));
-  parts.push(d.label(1480, 0, "ours, in python", { size: 20, color: c.blue, anchor: "middle", centerY: 770 }));
+  parts.push(d.label(1480, 0, "ours, in Python", { size: 20, color: c.blue, anchor: "middle", centerY: 770, keepCase: true }));
   return d.svg(W, H, ...parts);
 }
 
@@ -164,7 +169,7 @@ function outcomes(cols, rows, h, x0 = 520, rh = 92) {
   parts.push(d.line(0, top + 70, W, top + 70, { color: c.dark }));
   rows.forEach(([name, ...cells], i) => {
     const cy = top + 70 + rh * i + rh / 2 + 6;
-    parts.push(d.label(0, 0, name, { size: 32, color: c.light, centerY: cy, mono: name.startsWith("/"), keepCase: name.startsWith("/") }));
+    parts.push(d.label(0, 0, name, { size: 32, color: c.light, centerY: cy, mono: name.startsWith("/"), keepCase: true }));
     // a cell is a tool name in the code font, optionally followed by a second line saying what came of it
     cells.forEach(([text, ok], j) => {
       const lines = text.split("\n"), col = ok === null ? c.light : ok ? c.green : c.yellow;
@@ -183,7 +188,7 @@ function outcomes(cols, rows, h, x0 = 520, rh = 92) {
 function figFlow() {
   const steps = [
     "sales of the\nlast four weeks", "average\nper week", "target stock:\naverage × 1.5,\nperishable × 1.0",
-    "need =\ntarget − stock", "round up\nto whole packs", "one order per supplier,\nnever the own farm,\nask jeff first",
+    "need =\ntarget − stock", "round up\nto whole packs", "one order per supplier,\nnever the own farm,\nask Jeff first",
   ];
   const parts = [];
   const bw = 440, bh = 200, gx = 180;
@@ -192,7 +197,7 @@ function figFlow() {
     const x = col * (bw + (W - 3 * bw) / 2), y = 20 + row * 380;
     parts.push(d.box(x, y, bw, bh, "", { border: i === 5 ? c.blue : c.light, rx: 14 }));
     parts.push(d.label(x + 24, y + 36, String(i + 1), { size: 20, color: c.gray }));
-    parts.push(d.label(x + bw / 2, 0, s, { size: 32, anchor: "middle", centerY: y + bh / 2 + 6 }));
+    parts.push(d.label(x + bw / 2, 0, s, { size: 32, anchor: "middle", centerY: y + bh / 2 + 6, keepCase: true }));
     if (i === 2) parts.push(d.arrow(x + bw / 2, y + bh + 10, x + bw / 2, y + 370, { color: c.light, width: 3, head: 16 }));
     else if (i < 5) {
       const gap = (W - 3 * bw) / 2;
@@ -207,10 +212,10 @@ function figFlow() {
 // The context of the agent: the skill is only a name and a description until the agent loads it.
 function figSkill() {
   stack("fig-skill", [
-    ["role", "you are the assistant of the lindenhof farm shop", c.dark],
+    ["role", "you are the assistant of the Lindenhof farm shop", c.dark],
     ["tools", "shop_products · shop_stock · shop_sales · orders_place_order", c.dark, 0, true],
-    ["skills", "weekly-order: how the lindenhof farm shop works out its weekly order …", c.blue],
-    ["jeff", "please place this week's order with our suppliers.", c.light],
+    ["skills", "weekly-order: how the Lindenhof farm shop works out its weekly order …", c.blue],
+    ["Jeff", "please place this week's order with our suppliers.", c.light],
     ["tool call", 'skill("weekly-order")', c.dark, 1, true],
     ["skill text", "1. sales of the last four weeks, average per week = units / 4\n2. target = average × 1.5, perishable (7 days or less) × 1.0\n3. need = target − stock · 4. round up to whole packs\n5. one order per supplier, never the own farm · 6. show the table first", c.yellow, 1],
   ], 92, 22);
@@ -234,16 +239,16 @@ function figCommandIdea() {
 // What OpenCode makes of one typed line: the file's prompt with $ARGUMENTS replaced.
 function figCommand() {
   const parts = [];
-  parts.push(d.label(0, 0, "jeff types", { size: 20, color: c.gray, centerY: 30 }));
+  parts.push(d.label(0, 0, "Jeff types", { size: 20, color: c.gray, centerY: 30, keepCase: true }));
   parts.push(d.label(0, 0, "/weekly-order Bee Garden", { size: 48, color: c.yellow, mono: true, keepCase: true, centerY: 90 }));
   parts.push(d.arrow(200, 140, 200, 220, { color: c.light, width: 3, head: 16 }));
-  parts.push(d.label(240, 0, "opencode reads .opencode/commands/weekly-order.md and sends this prompt to the agent", { size: 20, color: c.gray, centerY: 180 }));
+  parts.push(d.label(240, 0, "OpenCode reads .opencode/commands/weekly-order.md and sends this prompt to the agent", { size: 20, color: c.gray, centerY: 180, keepCase: true }));
   parts.push(d.box(0, 240, W, 380, "", { border: c.light }));
   parts.push(d.label(40, 0, "Work out this week's order with the skill weekly-order, for these suppliers:", { size: 32, color: c.light, keepCase: true, mono: true, centerY: 300 }));
   parts.push(d.highlight(40, 184, 360, 32, { color: c.yellow, opacity: 0.25 }));
   parts.push(d.label(40, 0, "Bee Garden", { size: 32, color: c.yellow, keepCase: true, mono: true, centerY: 360 }));
   parts.push(d.label(40, 0, "If no supplier is named, do it for all of them. Show me the table first and\nplace one order per supplier only after I have agreed.", { size: 32, color: c.light, keepCase: true, mono: true, centerY: 500 }));
-  parts.push(d.label(0, 0, "the agent loads the skill, calls the tools and shows its table for bee garden", { size: 32, color: c.white, centerY: 700 }));
+  parts.push(d.label(0, 0, "the agent loads the skill, calls the tools and shows its table for Bee Garden", { size: 32, color: c.white, centerY: 700, keepCase: true }));
   return d.svg(W, H, ...parts);
 }
 
@@ -258,7 +263,7 @@ el("fig-tool").innerHTML = figTool();
 el("fig-tool-chat").innerHTML = chat([
   ["jeff", "how many bottles of milk did we sell in the last four weeks?"],
   ["tool", 'shop_sales(from_date="2026-10-29", to_date="2026-11-25")\n→ {"days_open": 24, "units_sold": {"milk": 163, …}}'],
-  ["agent", "we sold 163 bottles of milk in the last four weeks\n(october 29–november 25)."],
+  ["agent", "we sold 163 bottles of milk in the last four weeks\n(October 29–November 25)."],
 ], H);
 figContext();
 el("fig-mcp").innerHTML = figMcp();
@@ -275,7 +280,7 @@ el("fig-skill-chat").innerHTML = chat([
   ["jeff", "please place this week's order with our suppliers."],
   ["tool", 'skill("weekly-order") → the six steps of the skill'],
   ["tool", 'shop_products() · shop_stock()\nshop_sales(from_date="2026-10-28", to_date="2026-11-24")'],
-  ["agent", "here's the proposed order for this week …\nmeadow dairy: milk 36, yoghurt 30, butter 20 …\nplease confirm and i'll place it."],
+  ["agent", "here's the proposed order for this week …\nMeadow Dairy: milk 36, yoghurt 30, butter 20 …\nplease confirm and i'll place it."],
 ], H, 44);
 figSkill();
 el("fig-with-skill").innerHTML = quantities(["run 3", "run 4", "shop's rules"], [
@@ -291,19 +296,19 @@ el("fig-command").innerHTML = figCommand();
 el("fig-first-attempt").innerHTML = chat([
   ["jeff", "/daily-closing 2026-11-19"],
   ["tool", 'till_cash_count(date="2026-11-19") · till_register_log(date="2026-11-19")'],
-  ["agent", "for 19 nov: cash sales €83.10, card sales €30.80, 6 bottles/jars\nreturned, and €177.70 counted. i can't safely close the cashbook\nwithout the opening float and the value of those deposit refunds.", c.yellow],
+  ["agent", "for 19 Nov: cash sales €83.10, card sales €30.80, 6 bottles/jars\nreturned, and €177.70 counted. i can't safely close the cashbook\nwithout the opening float and the value of those deposit refunds.", c.yellow],
 ], HP, 50);
 el("fig-choice").innerHTML = outcomes(["gpt-6-luna", "gemma-4-e4b", "gemma-4-e2b"], [
   ["honey on the shelf", ["shop_stock", true], ["shop_stock", true], ["shop_stock", true]],
-  ["cash taken on 19 nov", ["till_register_log", true], ["till_cash_count", false], ["till_cash_count", false]],
-  ["milk sold 10–23 nov", ["shop_sales", true], ["shop_sales", true], ["shop_sales", true]],
+  ["cash taken on 19 Nov", ["till_register_log", true], ["till_cash_count", false], ["till_cash_count", false]],
+  ["milk sold 10–23 Nov", ["shop_sales", true], ["shop_sales", true], ["shop_sales", true]],
   ["is the cash box right?", ["skill daily-closing\n−4.50 found", true], ["till_cash_count\nonly, no answer", false], ["till_cash_count\nonly, no answer", false]],
   ["order 12 jars of honey", ["orders_place_order\nrejection reported", true], ["orders_place_order\nclaims it ordered", false], ["orders_place_order\nrejection reported", true]],
 ], HP, 480, 104);
 el("fig-phantom").innerHTML = chat([
-  ["jeff", "order 12 jars of honey from bee garden."],
+  ["jeff", "order 12 jars of honey from Bee Garden."],
   ["tool", 'orders_place_order(supplier="Bee Garden",\n  items=[{"product": "honey", "quantity": 12}])\n→ rejected by the person'],
-  ["agent", "the order for 12 jars of honey from bee garden has been placed.", c.yellow],
+  ["agent", "the order for 12 jars of honey from Bee Garden has been placed.", c.yellow],
 ], HP, 50);
 el("fig-local").innerHTML = quantities(["gpt-6-luna", "gemma-4-e4b", "gemma-4-e2b", "shop's rules"], [
   ["milk", 36, 30, 36, 36],
@@ -314,7 +319,7 @@ el("fig-local").innerHTML = quantities(["gpt-6-luna", "gemma-4-e4b", "gemma-4-e2
   ["eggs (own farm)", "–", 72, "–", "–"],
 ], HP, "units in the order proposal of /weekly-order, one new session per model, the same skill and tools");
 el("fig-briefed").innerHTML = outcomes(["gemma-4-e4b", "gemma-4-e2b"], [
-  ["cash taken on 19 nov", ["till_register_log", true], ["till_register_log", true]],
+  ["cash taken on 19 Nov", ["till_register_log", true], ["till_register_log", true]],
   ["is the cash box right?", ["skill daily-closing\n−4.50 found", true], ["till_cash_count\nonly, no answer", false]],
   ["order 12 jars of honey", ["orders_place_order\nrejection reported", true], ["orders_place_order\nrejection reported", true]],
   ["/weekly-order", ["stock read, no eggs\n6 of 9 quantities wrong", false], ["all 9 quantities right\nwaits for approval", true]],

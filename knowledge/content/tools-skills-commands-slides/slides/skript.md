@@ -36,15 +36,15 @@ guess, because it cannot see anything of the shop.
 **A tool is a function the agent may call.** Like a function in mathematics,
 it has a name, inputs and a result. It also has a description in words, and
 that description is the only thing the language model learns about the tool;
-it never sees the code behind it. The tool `sales` takes two dates and gives
-back the units sold of each product between them.
+it never sees the code behind it. The tool `shop_sales`, the tool `sales` in
+the group `shop`, takes two dates and gives back the units sold of each
+product between them.
 
 **In the chat: the agent calls a tool.** Asked how many bottles of milk were
 sold in the last four weeks, `gpt-6-luna` works out the two dates itself and
 writes the call `shop_sales(from_date="2026-10-29", to_date="2026-11-25")`.
 OpenCode runs it, not the model, and hands back the result, and only then does
-the model answer: 163 bottles. The name `shop_sales` joins the group `shop`
-and the tool `sales`.
+the model answer: 163 bottles.
 
 **Everything becomes part of the context.** The model remembers nothing by
 itself. What it sees is one long text, the context: the role, the list of tools
@@ -69,10 +69,11 @@ experiment, the servers offer only tools.
 **An MCP server in Python.** `tools/shop.py` is one group of tools in one file.
 `FastMCP("shop")` makes the file a server named `shop`, and `lindenhof` is the
 file in the starter folder that holds the shop's data. Every function with
-`@mcp.tool()` above it becomes a tool: its name becomes the tool's name, its
-parameters the inputs, and the text in triple quotes the description that the
-model reads. What the function returns is the tool's result, and `mcp.run()`
-starts the server. `FastMCP` has the same name as in the official Python
+`@mcp.tool()` above it becomes a tool: OpenCode puts the server's name in front
+of the function's name, so `sales` becomes `shop_sales`, its parameters become
+the inputs, and the text in triple quotes the description that the model
+reads. What the function returns is the tool's result, and `mcp.run()` starts
+the server. `FastMCP` has the same name as in the official Python
 package `mcp`; the starter folder brings a small copy so that nobody has to
 install anything.
 
