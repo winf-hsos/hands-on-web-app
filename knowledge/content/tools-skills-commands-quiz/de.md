@@ -90,7 +90,7 @@ based_on: 2026-11-25
   > Richtig: Der Agent darf genau die Dateien schreiben, die er für Skills und Commands braucht, und du siehst jede Datei, bevor sie entsteht.
 - [ ] `edit` für `*` mit `allow`, damit der Agent nicht bei jeder Datei unterbrochen wird.
   > Damit dürfte der Agent jede Datei im Ordner ändern, auch `opencode.jsonc` mit seinen eigenen Rechten und das Kassenbuch, ohne dass du es siehst.
-- [ ] `bash` mit `allow`, damit der Agent die Datei mit einem Befehl anlegen kann.
+- [ ] `shell` mit `allow`, damit der Agent die Datei mit einem Befehl anlegen kann.
   > Eine Shell erlaubt weit mehr als das Schreiben eines Skills, bis hin zum Löschen von Dateien. Für eine Textdatei genügt das Recht `edit` auf einen Ordner.
 - [ ] Keine neue Regel; der Agent schreibt den Skill mit dem Werkzeug `skill`.
   > Das Werkzeug `skill` lädt einen vorhandenen Skill, es schreibt keinen. Ohne Schreibrecht kann der Agent den Text nur anzeigen.
@@ -113,19 +113,19 @@ based_on: 2026-11-25
 - [ ] Die Kartenumsätze, die zum Bargeld in der Kasse addiert werden müssen.
   > Die Kartenumsätze liefert das Werkzeug schon, und sie erreichen die Kasse nie. Wer sie addiert, rechnet falsch.
 - [ ] Nichts; der Sollbestand ist das gezählte Bargeld, und die Differenz ist immer null.
-  > Genau das hat ein kleines Modell im Test geraten. Dann findet der Abschluss nie eine Differenz und verfehlt seinen Zweck.
+  > Ein Abschluss, der das annimmt, findet nie eine Differenz und verfehlt seinen Zweck.
 - [ ] Ein Werkzeug, das die Differenz ausrechnet, weil ein Sprachmodell keine Zahlen subtrahieren kann.
   > Mit ein paar Zahlen rechnet ein gutes Modell richtig. Ihm fehlen nicht die Rechenschritte, sondern zwei Werte, die nur die Inhaberin kennt.
 
-## Alle drei Werkzeuggruppen sind eingeschaltet. Auf die Frage, wie viele Gläser Honig noch im Regal stehen, ruft `gpt-6-luna` sofort `shop_stock` auf, ein kleines lokales Modell fragt dagegen zurück, ob es den Bestand nachsehen soll. Wie erklärst du den Unterschied? {#tsc-013}
+## Alle drei Werkzeuggruppen sind eingeschaltet. Auf die Frage, wie viel Bargeld der Laden am 19. November eingenommen hat, ruft `gpt-6-luna` `till_register_log` auf und nennt die Bareinnahmen, ein kleines lokales Modell ruft dagegen `till_cash_count` auf und nennt den gezählten Kassenbestand. Wie erklärst du den Unterschied? {#tsc-013}
 
 - [ ] Das kleine Modell sieht weniger Werkzeuge, weil sein Kontext kleiner ist.
-  > Beide Modelle bekommen dieselben neun Werkzeugbeschreibungen. Der Unterschied liegt darin, was sie daraus machen.
-- [ ] Das kleine Modell darf `shop_stock` nicht aufrufen, weil lokale Modelle andere Rechte haben.
+  > Beide Modelle bekommen dieselben sieben Werkzeugbeschreibungen. Der Unterschied liegt darin, was sie daraus machen.
+- [ ] Das kleine Modell darf `till_register_log` nicht aufrufen, weil lokale Modelle andere Rechte haben.
   > Die Rechte hängen am Agenten, nicht am Modell. Mit denselben Regeln darf jedes Modell dieselben Werkzeuge aufrufen.
-- [ ] Das starke Modell kennt den Honigbestand aus dem Training und ruft das Werkzeug nur zur Bestätigung auf.
-  > Den Bestand eines erfundenen Ladens kennt kein Modell. Das starke Modell hat das Werkzeug aufgerufen, weil nur so die Zahl zu bekommen war.
-- [x] Aus einer Frage in Alltagssprache das passende Werkzeug abzuleiten, ist selbst eine Leistung des Modells, und ein kleines Modell erkennt seltener, dass „im Regal“ dasselbe meint wie `shop_stock`.
+- [ ] Das starke Modell kennt die Einnahmen aus dem Training und ruft das Werkzeug nur zur Bestätigung auf.
+  > Die Einnahmen eines erfundenen Ladens kennt kein Modell. Das starke Modell hat das Werkzeug aufgerufen, weil nur so die Zahl zu bekommen war.
+- [x] Aus einer Frage in Alltagssprache das passende Werkzeug abzuleiten, ist selbst eine Leistung des Modells, und ein kleines Modell geht eher nach dem Wort „cash“ im Namen eines Werkzeugs als nach dessen Beschreibung.
   > Richtig: Die Werkzeugwahl ist keine Mechanik des Programms, sondern eine Entscheidung des Modells. Ein Skill, der sagt, welches Werkzeug bei welcher Frage dran ist, nimmt dem kleinen Modell diese Entscheidung ab.
 
 ## Ein Agent auf einem kleinen lokalen Modell soll 12 Gläser Honig bei Bee Garden bestellen. Er ruft `orders_place_order` auf, du lehnst die Rückfrage von OpenCode ab, und er antwortet: „Ich habe 12 Gläser Honig bei Bee Garden bestellt.“ Was lernst du daraus? {#tsc-010}

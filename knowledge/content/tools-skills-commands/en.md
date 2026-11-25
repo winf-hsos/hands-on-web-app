@@ -3,20 +3,21 @@ type: experiment
 code: 7292
 title: Tools, skills and commands
 summary: >-
-  You give the agent of a small farm shop a task it cannot do, then add tools,
-  skills and commands one at a time, let the agent write a skill itself, and
-  find out how much more exact the instructions have to be for a small model.
+  You give the agent of a small farm shop a task it cannot do, then build its
+  tools, skills and commands one at a time, let the agent write a skill
+  itself, and find out how much more exact the instructions have to be for a
+  small model.
 objectives:
   intro: "In this experiment you equip an agent step by step for two processes of an invented farm shop, and afterwards you can:"
   goals:
     - "explain why an agent without tools can only ask back or guess"
     - "tell a tool, a skill and a command apart by what each one adds: access to the world, knowledge of how the work is done, and a short way for a person to start it"
-    - "switch on tools in OpenCode and decide which of them have to ask before they act"
+    - "write a tool as a Python function, offer it to OpenCode through an MCP server and decide whether it has to ask before it acts"
     - "write a skill and a command for a process, and have an agent write them from a description in plain words"
-    - "compare how a strong and a small model choose their tools, and explain why a small model needs more exact instructions"
-    - "use a strong agent to rewrite skills and commands for a small model"
+    - "compare how a cloud model and a small model on your laptop choose their tools, and explain why a small model needs more exact instructions"
+    - "use a frontier model to rewrite skills and commands for a small model"
 level: 2
-duration: 135
+duration: 150
 topics: [ai-agents]
 relations:
   see_also: [ai-agents, be-the-agent, opencode]
@@ -26,22 +27,29 @@ status: published
 updated: 2026-11-25
 ---
 
-The Lindenhof farm shop is a small self-service shop on a farm: the shelves
-are stocked by the owner, the customers weigh, pay and take their goods
+Farmer Jeff runs the Lindenhof farm shop, a small self-service shop on his
+farm: he stocks the shelves, the customers weigh, pay and take their goods
 themselves, and two jobs come back again and again. Every week someone has to
 work out what to order from the suppliers, and every evening someone has to
 count the cash box and write the day into the cash book. An
 [[ai-agents|AI agent]] could do both, but only once it has what it needs:
 tools that reach the shop's data, a skill that says how this shop does the
 job, and a command with which a person starts the job in one line. In this
-experiment you give the agent these things one at a time and watch what each
-of them changes. Then you let the agent write a skill by itself, move it to a
-small model that runs on your own computer, and use a strong model to prepare
-the instructions so that the small one can follow them.
+experiment you build these things one at a time and watch what each of them
+changes. Then you let the agent write a skill by itself, move it to a small
+model that runs on your own computer, and use a frontier model to prepare the
+instructions so that the small one can follow them.
 
 The shop, its products and its numbers are invented for the experiment. The
 sales are generated from the date, so everyone who asks on the same day gets
 the same numbers and you can compare your results with your neighbors'.
+
+You start with an almost empty folder and add every file yourself. Each file
+is on this page to copy, or to save with the button above its box, and each
+change to the configuration comes with the whole file as it should look
+afterwards. After each process you can download the complete folder in its
+state at that point, so that a mistake in one process does not hold you up in
+the next.
 
 The slides lead through the experiment, from the naked agent to the briefing
 of a small model.
@@ -64,13 +72,13 @@ the next one.
 
 2. Check that Python 3 is installed: open a terminal and type
    `python --version`. If the command is unknown, install Python as
-   described in [[python-on-the-command-line]]. The shop's tools are a
-   Python script that needs no extra packages.
+   described in [[python-on-the-command-line]]. The shop's tools are small
+   Python programs that need no extra packages.
 
 > [!EXPECTED]
 > The terminal shows a version such as `Python 3.13.1`. If only
-> `python3 --version` works, as on some Macs, you will change `python` to
-> `python3` in `opencode.jsonc` in step 5.
+> `python3 --version` works, as on some Macs, write `python3` instead of
+> `python` wherever `opencode.jsonc` starts a tool.
 
 3. Connect the model. The folder is set up for OpenAI's `gpt-6-luna`, which
    needs an OpenAI API key. In OpenCode, click **Settings** below the project
@@ -90,44 +98,38 @@ the next one.
 
 > [!EXPECTED]
 > A folder `farm-shop` with the files `opencode.jsonc` and `README.md` and
-> the folder `tools` with `farm_shop.py` in it.
+> the folder `tools`, which holds `lindenhof.py` and `mcp_lite.py`.
 
 5. Open the folder in OpenCode: click the folder icon with the plus
    (*Add project*) next to **Projects**, choose `farm-shop` and click
-   **New session**. If your computer only knows `python3`, open
-   `opencode.jsonc` in an editor first and change `"python"` to `"python3"`
-   in the three lines that start the tools.
+   **New session**.
 
 > [!EXPECTED]
 > A new session opens, and below the input field the agent `shop` with
 > the model `gpt-6-luna` is selected. The folder sets this up, so you
 > choose nothing yourself.
 
-The folder holds two files that matter:
+The folder holds three files that matter:
 
 | file | what it does |
 |---|---|
-| `opencode.jsonc` | sets up two agents: `shop` with its model, a short role and the rules for what it may do, and `coach`, a second agent with a strong model for process 4; it also lists three groups of tools, all of them switched off |
-| `tools/farm_shop.py` | the shop's tools: `shop` reads products, stock and sales, `orders` sends an order, `till` reads the self-service till and the cash box and writes the cash book |
+| `opencode.jsonc` | sets up the agent `shop` with its model, a role in one sentence and the rules for what it may do; it has no tools yet |
+| `tools/lindenhof.py` | stands in for the shop's database and its till: products, stock, sales and the cash box; you don't need to read it |
+| `tools/mcp_lite.py` | a small MCP server that offers your Python functions to OpenCode as tools, without anything to install |
 
-The agent `shop` starts naked. The first rule in `opencode.jsonc` takes away
-every tool OpenCode brings along, so it can neither read files nor run
-commands nor search the web, and the rules after it give back only the shop's
-tools and two skills:
+The agent `shop` starts naked. Its only rule takes away every tool OpenCode
+brings along, so it can neither read files nor run commands nor search the
+web:
 
 ```json
 "permissions": [
-  { "action": "*", "resource": "*", "effect": "deny" },
-  { "action": "shop_*", "resource": "*", "effect": "allow" },
-  { "action": "till_*", "resource": "*", "effect": "allow" },
-  { "action": "orders_*", "resource": "*", "effect": "ask" },
-  { "action": "skill", "resource": "weekly-order", "effect": "allow" },
-  { "action": "skill", "resource": "daily-closing", "effect": "allow" }
+  { "action": "*", "resource": "*", "effect": "deny" }
 ]
 ```
 
-Start a new session for every step, so that the agent does not remember the
-step before.
+Every tool, skill and right the agent gets from here on is a rule that you add
+below this one, and the last rule that matches decides. Start a new session
+for every step, so that the agent does not remember the step before.
 
 ## Process 1: the weekly order
 
@@ -150,20 +152,80 @@ the pattern stays the same.
 > quantities should I order, and from which suppliers?" It places no
 > order and calls no tool.
 
-2. Give it tools to read the shop. In `opencode.jsonc`, set `"disabled"` to
-   `false` for the server `shop` and save the file. OpenCode notices the
-   change and starts `python tools/farm_shop.py shop` in the background; if
-   the tools do not show up in a new session, close and reopen OpenCode. Ask
-   the same question in two new sessions and write down the quantities of
-   milk, yoghurt and butter both times.
+2. Give the agent tools to read the shop. A tool is a Python function: its
+   name becomes the tool's name, its parameters become what the agent has to
+   fill in, and the text in quotes below the first line becomes the
+   description, the only thing the model reads about the tool. Create the file
+   `tools/shop.py` with three tools:
+
+   ```python static file=shop.py
+   """The tools of the group shop: they read the products, the stock and the sales."""
+
+   from mcp_lite import FastMCP
+   import lindenhof
+
+   mcp = FastMCP("shop")
+
+
+   @mcp.tool()
+   def products() -> list:
+       """All products of the Lindenhof farm shop: id, name, unit, price, supplier, pack size and shelf life."""
+       return lindenhof.products()
+
+
+   @mcp.tool()
+   def stock() -> dict:
+       """How many units of each product are on the shelf right now."""
+       return lindenhof.stock()
+
+
+   @mcp.tool()
+   def sales(from_date: str, to_date: str) -> dict:
+       """Units sold of each product between two dates (YYYY-MM-DD), both included."""
+       return lindenhof.sales(from_date, to_date)
+
+
+   mcp.run()
+   ```
+
+   `FastMCP("shop")` makes the file an MCP server named `shop`,
+   `@mcp.tool()` marks each function below it as a tool, and `mcp.run()`
+   waits for OpenCode to call one. Then tell OpenCode to start the server and
+   let the agent use it. In `opencode.jsonc`, put the server between the
+   braces after `"servers":`
+
+   ```json
+   "shop": {
+     "type": "local",
+     "command": ["python", "tools/shop.py"],
+     "codemode": false
+   }
+   ```
+
+   and add a rule after the first one under `"permissions"`, with a comma
+   after the line before it:
+
+   ```json
+   { "action": "shop_*", "resource": "*", "effect": "allow" }
+   ```
+
+   OpenCode puts the server's name in front of each tool, so the tools are
+   called `shop_products`, `shop_stock` and `shop_sales`, and the rule allows
+   all three. The whole file after this step:
+   [opencode.jsonc](media/steps/1-2/opencode.jsonc). Save the file, start a
+   new session, ask the same question as in step 1 and write down the
+   quantities of milk, yoghurt and butter. Do this twice, each time in a new
+   session.
 
 > [!EXPECTED]
 > The agent now calls `shop_products`, `shop_stock` and `shop_sales` and
 > shows an order as a table, but it cannot send it, because it has no
-> tool for ordering yet. The two sessions disagree. In our test, both
-> looked at the sales of only the last week; one wanted 30 bottles of
-> milk, 18 jars of yoghurt and 10 packs of butter, the other 36, 18 and
-> 20, and the first also ordered eggs, which come from the own farm.
+> tool for ordering yet. If no tool is called, close and reopen OpenCode,
+> and check `opencode.jsonc` for a missing or extra comma. The two
+> sessions disagree. In our test, both looked at the sales of only the
+> last week; one wanted 30 bottles of milk, 18 jars of yoghurt and 10
+> packs of butter, the other 36, 18 and 20, and the first also ordered
+> eggs, which come from the own farm.
 
 3. Compare your two answers with each other and with your neighbors': which
    weeks did the agent look at, how much stock did it want to keep, and did
@@ -178,7 +240,7 @@ the pattern stays the same.
 4. Write down how the shop really orders, as a skill. Create the file
    `.agents/skills/weekly-order/SKILL.md` in the folder with this content:
 
-   ```markdown
+   ```markdown file=SKILL.md
    ---
    name: weekly-order
    description: How the Lindenhof farm shop works out its weekly order to the suppliers. Use it whenever an order or restocking is due.
@@ -201,6 +263,13 @@ the pattern stays the same.
       quantity, and place it only after the owner has agreed.
    ```
 
+   The first rule forbids loading skills, too, so add a rule that allows this
+   one ([opencode.jsonc](media/steps/1-4/opencode.jsonc) after this step):
+
+   ```json
+   { "action": "skill", "resource": "weekly-order", "effect": "allow" }
+   ```
+
    Ask the same question again in two new sessions. Before it calls any of
    the shop's tools, the agent now loads the skill; only its name and its
    description were in its context until then.
@@ -212,11 +281,39 @@ the pattern stays the same.
 > milk, 30 jars of yoghurt and 20 packs of butter from Meadow Dairy and
 > 20 bags of carrots from Green Valley Growers.
 
-5. Let the agent act. Switch on the server `orders` the same way and ask
-   again. When the agent has shown its table, answer `yes, place it`.
-   OpenCode now stops before every order and asks you, because the rule for
-   `orders_*` says `ask`: allow the order to Bee Garden and reject the one to
-   Meadow Dairy.
+5. Let the agent act. Create the file `tools/orders.py` with the tool that
+   sends an order:
+
+   ```python static file=orders.py
+   """The tool of the group orders: it sends an order to a supplier."""
+
+   from mcp_lite import FastMCP
+   import lindenhof
+
+   mcp = FastMCP("orders")
+
+
+   @mcp.tool()
+   def place_order(supplier: str, items: list[dict]) -> dict:
+       """Send an order to one supplier. Items are product ids with a whole number of units, such as [{"product": "honey", "quantity": 12}]."""
+       return lindenhof.place_order(supplier, items)
+
+
+   mcp.run()
+   ```
+
+   Add the server `orders` next to `shop` the same way, with
+   `"command": ["python", "tools/orders.py"]`, and a rule that makes the agent
+   ask before every order, because an order costs money and cannot be taken
+   back ([opencode.jsonc](media/steps/1-5/opencode.jsonc) after this step):
+
+   ```json
+   { "action": "orders_*", "resource": "*", "effect": "ask" }
+   ```
+
+   Ask again in a new session. When the agent has shown its table, answer
+   `yes, place it`. OpenCode now stops before every order and asks you: allow
+   the order to Bee Garden and reject the one to Meadow Dairy.
 
 > [!EXPECTED]
 > OpenCode asks once per supplier before `orders_place_order` runs. The
@@ -229,9 +326,9 @@ the pattern stays the same.
 6. Turn the process into a command. Create the file
    `.opencode/commands/weekly-order.md`:
 
-   ```markdown
+   ```markdown file=weekly-order.md
    ---
-   description: Work out this week's order and place it after you agree
+   description: Work out this week's order and place it once the owner has agreed
    agent: shop
    ---
 
@@ -242,9 +339,11 @@ the pattern stays the same.
    place one order per supplier only after I have agreed.
    ```
 
-   In a new session, type `/weekly-order Bee Garden`. OpenCode replaces
-   `$ARGUMENTS` with what you typed after the command and sends the whole text
-   to the agent.
+   The description is what you see in OpenCode's list of commands, and the
+   text below the line is the prompt the agent gets. In a new session, type
+   `/weekly-order Bee Garden`. OpenCode replaces `$ARGUMENTS` with what you
+   typed after the command and sends the whole text to the agent. A command
+   needs no rule, because only you can start it.
 
 > [!EXPECTED]
 > The agent loads the skill and shows a table for Bee Garden alone, honey
@@ -253,7 +352,7 @@ the pattern stays the same.
 7. Check the agent's numbers. In a terminal in the folder, run:
 
    ```text
-   python tools/farm_shop.py solution
+   python tools/lindenhof.py
    ```
 
    The script works out the order with the rules of the skill, without any
@@ -264,9 +363,12 @@ the pattern stays the same.
 > average per week, target, stock and quantity, and below it the daily
 > closing of the day. Its quantities match the agent's table from step 4.
 
+The folder after process 1:
+[farm-shop-after-process-1.zip](media/farm-shop-after-process-1.zip).
+
 ## Process 2: the agent writes its own skill
 
-For the second process you write nothing yourself. This is how the owner
+For the second process you write no skill yourself. This is how Jeff
 describes it:
 
 > Every morning the cash box starts with 100 euros of change. Customers pay
@@ -276,7 +378,44 @@ describes it:
 > what should be in it. A difference of up to two euros either way is fine,
 > anything more I want to hear about. Then the day goes into the cash book.
 
-1. Switch on the server `till` the same way and ask in a new session:
+1. Give the agent the tools of the till. Create the file `tools/till.py`:
+
+   ```python static file=till.py
+   """The tools of the group till: they read the self-service till and the cash box and write the cash book."""
+
+   from mcp_lite import FastMCP
+   import lindenhof
+
+   mcp = FastMCP("till")
+
+
+   @mcp.tool()
+   def register_log(date: str) -> dict:
+       """What the self-service till recorded on one day (YYYY-MM-DD): receipts, cash and card sales, and how many deposit bottles and jars were returned."""
+       return lindenhof.register_log(date)
+
+
+   @mcp.tool()
+   def cash_count(date: str) -> dict:
+       """The cash counted in the cash box at the end of one day (YYYY-MM-DD)."""
+       return lindenhof.cash_count(date)
+
+
+   @mcp.tool()
+   def write_cashbook(date: str, cash_sales_eur: float, card_sales_eur: float, deposit_refunds_eur: float,
+                      expected_cash_eur: float, counted_cash_eur: float, difference_eur: float, note: str) -> dict:
+       """Add the closing of one day (YYYY-MM-DD) to the cash book, with all amounts in euros and a short note."""
+       return lindenhof.write_cashbook(date, cash_sales_eur, card_sales_eur, deposit_refunds_eur,
+                                       expected_cash_eur, counted_cash_eur, difference_eur, note)
+
+
+   mcp.run()
+   ```
+
+   Add the server `till` with `"command": ["python", "tools/till.py"]` and
+   the rule `{ "action": "till_*", "resource": "*", "effect": "allow" }`
+   ([opencode.jsonc](media/steps/2-1/opencode.jsonc) after this step). Then
+   ask in a new session:
 
    ```text
    Please do the daily closing for today.
@@ -291,28 +430,31 @@ describes it:
 > the deposit, so it asks you for both or guesses. In our test
 > `gpt-6-luna` asked for them and wrote nothing into the cash book.
 
-2. Let the agent write into two folders. In `opencode.jsonc`, two rules under
-   the agent `shop` are switched off with `//`; remove the slashes and put a
-   comma after the rule before them:
+2. Let the agent write into two folders. Add three rules under the agent
+   `shop` ([opencode.jsonc](media/steps/2-2/opencode.jsonc) after this step):
 
    ```json
+   { "action": "skill", "resource": "daily-closing", "effect": "allow" },
    { "action": "edit", "resource": ".agents/skills/**", "effect": "ask" },
    { "action": "edit", "resource": ".opencode/commands/**", "effect": "ask" }
    ```
 
-   The agent may now write files, but only skills and commands, and only after
-   you have allowed each one.
+   The first one allows the skill the agent is about to write. The other two
+   give it a tool to write files, but only skills and commands, and only after
+   you have allowed each file. The cash book, the tools and its own
+   configuration stay out of its reach; otherwise it could widen its own
+   rights.
 
 > [!EXPECTED]
 > Nothing visible changes until you ask the agent to write. If OpenCode
 > reports an error in `opencode.jsonc` when a session starts, a comma is
 > missing or one too many.
 
-3. In a new session, paste the owner's description and ask the agent to turn
-   it into a skill and a command:
+3. In a new session, paste Jeff's description and ask the agent to turn it
+   into a skill and a command:
 
    ```text
-   This is how I do the daily closing: <the owner's description>
+   This is how I do the daily closing: <Jeff's description>
    Write this down as a skill called daily-closing in
    .agents/skills/daily-closing/SKILL.md, so that you can do it on your own
    from now on, and add a command /daily-closing in
@@ -320,70 +462,120 @@ describes it:
    ```
 
    OpenCode shows you each file before it is written. Read it before you
-   allow it: is everything from the owner's description in it, and does it
-   name the tools?
+   allow it: does it start with a header with `name` and `description`, like
+   your skill `weekly-order`, is everything from Jeff's description in it,
+   and does it name the tools? If something is missing, tell the agent in the
+   same session and let it fix the file.
 
 > [!EXPECTED]
 > OpenCode asks twice, once for the skill and once for the command. The
-> skill should name the tools, the 100 euros of change, the 15 cents per
-> bottle or jar, the two euros of tolerance and the entry in the cash
-> book. In our test, `gpt-6-luna` wrote this skill on the first attempt:
+> result differs from run to run. In one of our tests, `gpt-6-luna`
+> wrote a complete skill with its header on the first attempt. In
+> another, it left out the header of both files, so the agent never
+> learned what its new skill was for: with `/daily-closing 2026-11-19` it
+> read the till and the cash box and then asked for the change and the
+> deposit, as in step 1. We told it in a new session:
+>
+> ```text
+> The skill daily-closing and the command /daily-closing do not work.
+> Compare both files with the skill weekly-order and the command
+> weekly-order in this folder and fix them.
+> ```
+>
+> It added the headers, and the closing worked. This is the skill after
+> the fix:
 >
 > ```markdown
 > ---
 > name: daily-closing
-> description: Close a day in the Lindenhof farm shop cash book using the till log and cash count.
+> description: Close the Lindenhof farm shop for one day, reconcile the till, and record the closing in the cash book.
 > ---
 >
 > # Daily closing
 >
-> When asked to close a day, use the supplied day in `YYYY-MM-DD` format.
+> Use this workflow to close the Lindenhof farm shop for one day.
 >
-> 1. Retrieve that day's till register log and cash-box count using
->    `till_register_log` and `till_cash_count`.
-> 2. Calculate deposit refunds as `(returned bottles + returned jars) × €0.15`.
-> 3. Calculate expected closing cash as `€100 opening float + cash sales −
->    deposit refunds`. Card sales do not go into the cash box and must not be
->    included. Receipts are informational only.
-> 4. Calculate the difference as `counted cash − expected cash`.
-> 5. Write the day to the cash book with `till_write_cashbook`, supplying cash
->    sales, card sales, deposit refunds, expected cash, counted cash, and
->    difference in euros. Add a brief note with the returned bottle/jar count
->    and any relevant details.
-> 6. If the absolute difference is greater than €2.00, tell the owner the date
->    and amount/direction of the discrepancy. A difference of exactly €2.00, or
->    less, either way is acceptable. Still record every closing in the cash
->    book.
+> ## Rules
 >
-> Use euro amounts (including cents) and do not round away cents. If required
-> source information is missing or inconsistent, ask the owner rather than
-> guessing or recording an invented closing.
+> - The cash box starts each morning with **€100.00** in change.
+> - Cash sales go into the box; card sales do not.
+> - Each returned deposit bottle or jar is refunded from the box at **€0.15 per item**.
+> - Expected closing cash = €100.00 + cash sales − deposit refunds.
+> - Difference = counted cash − expected closing cash. A difference within **±€2.00**, inclusive, is acceptable. Report a difference greater than €2.00 in either direction.
+> - Record every closing in the cash book, including acceptable differences.
+>
+> ## Procedure
+>
+> 1. Get the day's till register log and the counted cash amount for the same date. If either is unavailable, ask the owner rather than inventing figures.
+> 2. From the register log, use the recorded cash sales and card sales. Calculate deposit refunds as the total returned bottles and jars multiplied by €0.15. Use the till's recorded return counts; do not treat card sales as cash in the box.
+> 3. Calculate expected cash and the difference using the rules above. Keep euro amounts to cents.
+> 4. Write the closing to the cash book with the date, cash sales, card sales, deposit refunds, expected cash, counted cash, difference, and a short note. Mention whether the difference is within tolerance; if it exceeds €2.00 in either direction, clearly flag it for the owner.
+> 5. Briefly report the closing figures and whether the difference needs attention. Do not alter or omit a closing because of a discrepancy.
 > ```
 >
-> Compared with a skill written by hand, the agent named the tools with
-> their full names, wrote the calculation as formulas and added a rule for
-> missing data. What it left out was a fixed answer for the owner, and it
-> gave its command no `agent:` line, so the command runs with whichever
-> agent is selected.
+> Compared with the skill you wrote by hand, the agent wrote the
+> calculation as formulas and added a rule for missing data, but it named
+> none of the tools, and its command has no `agent:` line, so the command
+> runs with whichever agent is selected. Our two files after the fix:
+> [SKILL.md](media/steps/2-3/SKILL.md) and
+> [daily-closing.md](media/steps/2-3/daily-closing.md).
 
 4. In a new session, close last Thursday with the agent's own command, for
    example `/daily-closing 2026-11-19`, and compare the result with
-   `python tools/farm_shop.py solution 2026-11-19` and with the row the agent
-   wrote into `cashbook.csv`.
+   `python tools/lindenhof.py 2026-11-19` and with the row the agent wrote
+   into `cashbook.csv`.
 
 > [!EXPECTED]
 > For 19 November the till shows 83.10 euros in cash and 30.80 by card,
 > and 6 bottles and jars came back, so 0.90 euros of deposit went out.
 > The box should hold 100.00 + 83.10 − 0.90 = 182.20 euros but holds
-> 177.70, a difference of −4.50 euros, more than the two euros the owner
+> 177.70, a difference of −4.50 euros, more than the two euros Jeff
 > accepts, so the agent should point it out. `cashbook.csv` has a new row
 > with these numbers. On Thursdays the box always lacks 4.50 euros.
 
-## Process 3: a strong and a small model
+5. *Optional:* a report to check. An answer in the chat is gone with the
+   session, while Jeff wants a page that shows every step of the closing.
+   Install [Typst](https://typst.app), a program that turns a text file into
+   a PDF: on Windows type `winget install --id Typst.Typst` in a terminal, on
+   a Mac `brew install typst`, and check with `typst --version`. Then let the
+   agent write reports and run exactly one command, `typst compile`, for files
+   in the folder `reports` ([opencode.jsonc](media/steps/2-5/opencode.jsonc)
+   after this step):
 
-So far a strong model has done the work. Now the same agent runs on a small
-model that fits on your laptop, and you find out what changes. If your laptop
-is too slow for it, work in pairs with someone whose laptop manages it.
+   ```json
+   { "action": "edit", "resource": "reports/**", "effect": "allow" },
+   { "action": "shell", "resource": "typst compile reports/*", "effect": "allow" }
+   ```
+
+   In a new session, ask the agent to extend its skill, then run
+   `/daily-closing 2026-11-19` again in another new session:
+
+   ```text
+   Extend the skill daily-closing: after the closing, write a clear one-page
+   report of the day as reports/closing-<date>.typ in Typst, with every step
+   and every intermediate result, so that I can check the closing, and turn
+   it into a PDF with typst compile.
+   ```
+
+> [!EXPECTED]
+> The skill gets a new section on the report, and after the closing the
+> folder `reports` holds `closing-2026-11-19.typ` and
+> `closing-2026-11-19.pdf`, a page with the till's figures, the deposit,
+> the expected cash, the difference and the entry in the cash book. In
+> our test the agent then tried to check the PDF with other commands,
+> and OpenCode refused each one, because only `typst compile` is allowed.
+> Our extended skill: [SKILL.md](media/steps/2-5/SKILL.md).
+
+The folder after process 2, without the optional step:
+[farm-shop-after-process-2.zip](media/farm-shop-after-process-2.zip).
+
+## Process 3: a cloud model and a small model
+
+So far a model in the cloud has done the work. `gpt-6-luna` is one of
+OpenAI's smaller models, but it is still far larger than a model that fits on
+a laptop. Now the same agent runs on such a small model, and you find out what
+changes. If your laptop is too slow for it, work in pairs with someone whose
+laptop manages it.
 
 1. Install [[lm-studio|LM Studio]] as described on its page and download the
    small model `google/gemma-4-e2b` (about 4.4 GB) under *Model Search*.
@@ -396,9 +588,9 @@ is too slow for it, work in pairs with someone whose laptop manages it.
 > marked *READY*. In OpenCode, the model `lmstudio/google/gemma-4-e2b` now
 > appears in the list below the input field.
 
-2. Switch on all three groups of tools, so that the agent has to choose among
-   nine tools. Ask each of these questions in a new session and note which
-   tool the agent calls first:
+2. The agent now has all three groups of tools, so it has to choose among
+   the shop's seven tools. Ask each of these questions in a new session,
+   still with `gpt-6-luna`, and note which tool the agent calls first:
 
    | question | tool you expect |
    |---|---|
@@ -414,50 +606,83 @@ is too slow for it, work in pairs with someone whose laptop manages it.
 > The tools to expect are `shop_stock`, `till_register_log`, `shop_sales`,
 > `till_register_log` together with `till_cash_count`, and
 > `orders_place_order`. In our test `gpt-6-luna` chose the right one every
-> time. For the cash box it read both tools and then asked for the change
-> and the deposit, and it reported the honey order as rejected when we
-> rejected it. Both commands gave the same result as the solution.
+> time. For the cash box it loaded the skill `daily-closing` and found
+> the −4.50 euros without writing anything, it reported the honey order
+> as rejected when we rejected it, and both commands gave the same result
+> as `python tools/lindenhof.py`.
 
 3. Switch the agent to the small model: in `opencode.jsonc`, change the
-   `"model"` of the agent `shop` to `"lmstudio/google/gemma-4-e2b"`, keep LM
-   Studio running with the model loaded, and ask the same five questions and
-   both commands again, each in a new session.
+   `"model"` of the agent `shop` to `"lmstudio/google/gemma-4-e2b"`
+   ([opencode.jsonc](media/steps/3-3/opencode.jsonc) after this step), keep
+   LM Studio running with the model loaded, and ask the same five questions
+   and both commands again, each in a new session.
 
 > [!EXPECTED]
-> Expect mistakes, and expect them in different places from run to run.
-> In our tests, one run per question, the two small Gemma models did this:
->
-> | question | `gemma-4-e4b` | `gemma-4-e2b` |
-> |---|---|---|
-> | honey on the shelf | asks back instead | `shop_stock` |
-> | cash taken on 19 November | `till_register_log` | `till_cash_count`, and reports the counted 177.70 including the change |
-> | milk sold | `shop_sales` | `shop_sales` |
-> | is the cash box right | `till_cash_count` only | `till_cash_count` only |
-> | order 12 jars of honey | `orders_place_order`, reports the order as placed although it was rejected | no tool, answers "I will place an order" |
-> | `/weekly-order` | loads the skill, but looks at five weeks, orders too much and orders jam | does not load the skill and calls `orders_place_order` at once with an empty list |
-> | `/daily-closing 2026-11-19` | correct | correct |
+> In our test we ran `gemma-4-e2b` and, for comparison, the somewhat larger
+> `gemma-4-e4b`. Both chose `shop_stock` and `shop_sales` correctly, but for
+> the cash taken on 19 November they called `till_cash_count` and reported
+> the 177.70 euros counted in the box instead of the 83.10 euros of cash
+> sales. For the cash box neither loaded the skill `daily-closing`; both read
+> only the count and gave no verdict. Asked to order honey, `gemma-4-e2b`
+> reported the rejection, while `gemma-4-e4b` claimed that the order had been
+> placed, although the folder `outbox` stayed empty. With `/weekly-order`,
+> `gemma-4-e2b` came to the right quantities but tried to send a single order
+> with all products to Meadow Dairy before anyone had agreed, and
+> `gemma-4-e4b` never called `shop_stock`, invented the stock and proposed 72
+> eggs from the own farm. With `/daily-closing 2026-11-19`, `gemma-4-e2b`
+> found the −4.50 euros, while `gemma-4-e4b` expected 183.20 instead of 182.20
+> euros and wrote a difference of −5.50 euros into the cash book. Your results
+> may differ, because small models vary a lot from run to run.
 
 4. Compare the two models question by question: where did the small model
    choose the wrong tool, call no tool at all, or break a rule of the skill?
-   Check its numbers against `python tools/farm_shop.py solution`.
+   Check its numbers against `python tools/lindenhof.py`.
 
 > [!EXPECTED]
-> The small models mostly call a tool that fits the words of the question,
-> but not always the one that answers it. The short skill for the daily
-> closing is enough for them, while the weekly order, with its four rules
-> and its rounding, is too much. Most worth remembering is the order that
-> was never placed: an agent's answer is not a receipt, and only the folder
-> `outbox` shows what was really ordered.
+> The small models fail where the cloud model fills a gap by itself: they
+> choose a tool by a word in its name, do not connect a question to the
+> description of a skill, skip or miscalculate a step of the skill, and report
+> what they meant to do instead of what the tool returned. The commands help,
+> because they name the skill, but the skill itself leaves too much open for
+> a small model. Two safeguards held throughout: the rule `ask` stopped every
+> order, and the files in `outbox` and `cashbook.csv` showed what had really
+> happened.
 
-## Process 4: a strong model prepares the small one
+The folder after process 3:
+[farm-shop-after-process-3.zip](media/farm-shop-after-process-3.zip).
 
-The small model needs more exact instructions than the strong one. Writing
-them is work that a strong model does well, so you let one do it.
+## Process 4: a frontier model prepares the small one
 
-1. Switch to the agent `coach` with the Tab key or below the input field. It
-   runs on `gpt-6-luna`, may read every file in the folder and may rewrite
-   skills and commands, but it cannot run anything and asks before every
-   change. Tell it what you saw in process 3, for example:
+The small model needs more exact instructions than the cloud model. Writing
+them is work that a frontier model, one of the largest models a provider
+offers, does well, so you let one do it.
+
+1. Add a second agent, `coach`, to `opencode.jsonc`: after the closing brace
+   of the agent `shop`, put a comma and this block
+   ([opencode.jsonc](media/steps/4-1/opencode.jsonc) after this step):
+
+   ```json
+   "coach": {
+     "description": "Prepares the shop agent for a smaller model",
+     "mode": "primary",
+     "model": "openai/gpt-6.2-sol",
+     "system": "You help the owner of the Lindenhof farm shop to prepare the agent \"shop\" in this folder for a smaller language model. Its role and rules are in opencode.jsonc, its tools in tools/shop.py, tools/orders.py and tools/till.py, its skills in .agents/skills and its commands in .opencode/commands.",
+     "permissions": [
+       { "action": "*", "resource": "*", "effect": "deny" },
+       { "action": "read", "resource": "*", "effect": "allow" },
+       { "action": "glob", "resource": "*", "effect": "allow" },
+       { "action": "grep", "resource": "*", "effect": "allow" },
+       { "action": "list", "resource": "*", "effect": "allow" },
+       { "action": "edit", "resource": ".agents/skills/**", "effect": "ask" },
+       { "action": "edit", "resource": ".opencode/commands/**", "effect": "ask" }
+     ]
+   }
+   ```
+
+   The coach runs on `gpt-6.2-sol`, may read every file in the folder and may
+   rewrite skills and commands, but it cannot run anything and asks before
+   every change. Switch to it with the Tab key or below the input field and
+   tell it what you saw in process 3, for example:
 
    ```text
    The agent shop is going to run on a small local model, gemma-4-e2b,
@@ -471,53 +696,59 @@ them is work that a strong model does well, so you let one do it.
    Read every change before you allow it.
 
 > [!EXPECTED]
-> The coach reads the skills, the commands, `opencode.jsonc` and the
-> tools, and then asks you once for each file it wants to change. In our
-> test it rewrote both skills and both commands in one go: it named every
-> tool call with its arguments, wrote the calculations as formulas with
-> rounding up, stated that yoghurt with its 14 days uses the factor 1.5,
-> excluded the own farm explicitly and gave the answer a fixed form of
-> three lines.
+> In our test the coach read the configuration, the three tool files, both
+> skills and both commands, and then rewrote all four files in about a minute.
+> Every step now names the tool with its arguments, the stock has to come from
+> `shop_stock`, and the order goes out only after an explicit approval in a
+> later message, once per supplier. The daily closing calculates in whole
+> cents and checks its result against the values of the tools. The
+> description of `daily-closing` now also names the questions about the cash
+> taken and about the cash box, so that a small model loads the skill there.
+> The shop's rules stayed the same. Our coach's files:
+> [weekly-order/SKILL.md](media/steps/4-2/weekly-order/SKILL.md),
+> [daily-closing/SKILL.md](media/steps/4-2/daily-closing/SKILL.md),
+> [weekly-order.md](media/steps/4-2/weekly-order.md) and
+> [daily-closing.md](media/steps/4-2/daily-closing.md).
 
 2. Switch back to `shop`, which still runs on the small model, and repeat the
    five questions and both commands in new sessions.
 
 > [!EXPECTED]
-> Some mistakes are gone and others are not. In our test, one run per
-> task:
->
-> | task | `gemma-4-e4b` before | after | `gemma-4-e2b` before | after |
-> |---|---|---|---|---|
-> | `/weekly-order` | five weeks, 6 of 9 quantities wrong | four weeks, own farm left out, 8 of 9 right (yoghurt 36 instead of 30) | no table, empty order | all 9 quantities right, but lists eggs and potatoes from the own farm |
-> | `/daily-closing 2026-11-19` | correct | correct | correct | expects 182.10 instead of 182.20 and does not write the cash book |
-> | honey on the shelf | asks back | `shop_stock` | `shop_stock` | `shop_stock` |
-> | cash taken | `till_register_log` | `till_register_log` | `till_cash_count` | `till_cash_count` |
-> | milk sold | `shop_sales` | answers that it has no access | `shop_sales` | `shop_sales` |
-> | is the cash box right | count only | count only | count only | count only |
-> | order 12 jars of honey | reports the order as placed | reports the order as placed | no tool | reports the rejection |
+> In our test both small models now answered the question about the cash
+> taken with `till_register_log`, and neither claimed an order that had been
+> rejected. `gemma-4-e4b` loaded the skill for the cash box and found the
+> −4.50 euros without writing anything. With `/weekly-order` it read the stock
+> with `shop_stock`, left out the own farm and waited for approval, but still
+> got six of nine quantities wrong, such as 48 instead of 30 jars of yoghurt;
+> its daily closing was right and went into the cash book. `gemma-4-e2b` now
+> got all nine quantities right and waited for approval, but it still did not
+> load the skill for the cash box, and in the daily closing it worked out the
+> −4.50 euros without writing them into the cash book.
 
 3. Put the old and the new skill side by side: what did the coach make more
    exact, and which of the small model's mistakes are gone?
 
 > [!EXPECTED]
-> The coach fixed what it had been told about: the weekly order, the
-> failure described to it, went from unusable to nearly right. What
-> nobody had told it about stayed as it was, such as checking the cash
-> box with only one of the two tools, and a few things got worse, such as
-> the daily closing on `gemma-4-e2b`, which the longer skill now leads
-> astray. Small models also vary from run to run, so one good run is not
-> yet a test. Report every mistake you see to the coach, run each task
-> several times, and move the steps that keep going wrong, such as
-> arithmetic, out of the skill and into a tool (extension 1).
+> The coach made exact what the cloud model had filled in by itself: which
+> tool comes at which step with which arguments, that the stock has to come
+> from `shop_stock`, that nothing is ordered before a later approval, and the
+> calculation as a formula in whole numbers. Most of the small models'
+> mistakes are gone. What is left is arithmetic and holding out to the last
+> step, and no instruction makes a small model reliable at those. What can be
+> stated exactly belongs in code: a tool that works out the order quantities
+> itself, as in extension 1, takes the arithmetic away from the model.
 
 Instead of the agent `coach` you can use any strong agent on the folder, such
 as Claude Code: open it in the folder and give it the same request. It can
 read everything in the folder and asks before it changes a file.
 
+The folder after process 4, with the skills and commands our coach wrote:
+[farm-shop-after-process-4.zip](media/farm-shop-after-process-4.zip).
+
 ## Extensions
 
 1. **A rule as code.** Ask yourself which step of the weekly order the small
-   model still gets wrong most easily, and add a tool to `tools/farm_shop.py`
+   model still gets wrong most easily, and add a tool to `tools/shop.py`
    that does exactly this step, such as the rounding to whole packs. Then
    rerun `/weekly-order` on the small model.
 2. **Too much freedom.** Change the rule for `orders_*` from `ask` to

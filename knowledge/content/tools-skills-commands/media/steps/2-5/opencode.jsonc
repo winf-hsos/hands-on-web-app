@@ -1,0 +1,59 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "default_agent": "shop",
+  "agents": {
+    // The agent of the Lindenhof farm shop: a model, a role and the rules
+    // for what it may do.
+    "shop": {
+      "description": "Assistant of the Lindenhof farm shop",
+      "mode": "primary",
+      "model": "openai/gpt-6-luna",
+      "system": "You are the assistant of the Lindenhof farm shop, a small self-service shop on a farm. You help the owner with the daily work. Answer briefly.",
+      "permissions": [
+        // The first rule takes away everything OpenCode brings along:
+        // no files, no shell, no web. Later rules win over earlier ones.
+        { "action": "*", "resource": "*", "effect": "deny" },
+        // read products, stock and sales freely
+        { "action": "shop_*", "resource": "*", "effect": "allow" },
+        // load the skill weekly-order
+        { "action": "skill", "resource": "weekly-order", "effect": "allow" },
+        // ordering costs money: ask the person first
+        { "action": "orders_*", "resource": "*", "effect": "ask" },
+        // read the till and the cash box, write the cash book
+        { "action": "till_*", "resource": "*", "effect": "allow" },
+        // load the skill daily-closing
+        { "action": "skill", "resource": "daily-closing", "effect": "allow" },
+        // write skills, after asking
+        { "action": "edit", "resource": ".agents/skills/**", "effect": "ask" },
+        // write commands, after asking
+        { "action": "edit", "resource": ".opencode/commands/**", "effect": "ask" },
+        // write reports
+        { "action": "edit", "resource": "reports/**", "effect": "allow" },
+        // turn a report into a PDF
+        { "action": "shell", "resource": "typst compile reports/*", "effect": "allow" }
+      ]
+    }
+  },
+  // The tools: each group is a small Python program, an MCP server, that
+  // OpenCode starts with the command given. On macOS and Linux, write
+  // "python3" instead of "python".
+  "mcp": {
+    "servers": {
+      "shop": {
+        "type": "local",
+        "command": ["python", "tools/shop.py"],
+        "codemode": false
+      },
+      "orders": {
+        "type": "local",
+        "command": ["python", "tools/orders.py"],
+        "codemode": false
+      },
+      "till": {
+        "type": "local",
+        "command": ["python", "tools/till.py"],
+        "codemode": false
+      }
+    }
+  }
+}

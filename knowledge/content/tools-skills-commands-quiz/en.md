@@ -101,7 +101,7 @@ updated: 2026-11-25
   > Correct: the agent may write exactly the files it needs for skills and commands, and you see each file before it is created.
 - [ ] `edit` for `*` with `allow`, so that the agent is not interrupted for every file.
   > This would let the agent change every file in the folder, including `opencode.jsonc` with its own permissions and the cash book, without you seeing it.
-- [ ] `bash` with `allow`, so that the agent can create the file with a command.
+- [ ] `shell` with `allow`, so that the agent can create the file with a command.
   > A shell allows far more than writing a skill, up to deleting files. For a text file, the permission `edit` on one folder is enough.
 - [ ] No new rule; the agent writes the skill with the tool `skill`.
   > The tool `skill` loads an existing skill; it does not write one. Without a write permission the agent can only show the text.
@@ -124,19 +124,19 @@ updated: 2026-11-25
 - [ ] The card sales, which have to be added to the cash in the box.
   > The tool already supplies the card sales, and they never reach the box. Adding them gives the wrong result.
 - [ ] Nothing; the expected cash is the counted cash, and the difference is always zero.
-  > That is exactly what a small model guessed in our tests. The closing then never finds a difference and misses its purpose.
+  > A closing that assumes this never finds a difference and misses its purpose.
 - [ ] A tool that works out the difference, because a language model cannot subtract numbers.
   > A good model calculates correctly with a few numbers. What it lacks is not the arithmetic but two values that only the owner knows.
 
-## All three groups of tools are switched on. Asked how many jars of honey are left on the shelf, `gpt-6-luna` calls `shop_stock` at once, while a small local model asks back whether it should look up the stock. How do you explain the difference? {#tsc-013}
+## All three groups of tools are switched on. Asked how much cash the shop took on 19 November, `gpt-6-luna` calls `till_register_log` and reports the cash sales, while a small local model calls `till_cash_count` and reports the cash counted in the box. How do you explain the difference? {#tsc-013}
 
 - [ ] The small model sees fewer tools because its context is smaller.
-  > Both models receive the same nine tool descriptions. The difference lies in what they make of them.
-- [ ] The small model may not call `shop_stock`, because local models have different permissions.
+  > Both models receive the same seven tool descriptions. The difference lies in what they make of them.
+- [ ] The small model may not call `till_register_log`, because local models have different permissions.
   > Permissions belong to the agent, not to the model. With the same rules, every model may call the same tools.
-- [ ] The strong model knows the honey stock from training and only calls the tool to confirm it.
-  > No model knows the stock of an invented shop. The strong model called the tool because that was the only way to get the number.
-- [x] Working out the right tool from a question in everyday words is itself an achievement of the model, and a small model recognizes less often that "on the shelf" means the same as `shop_stock`.
+- [ ] The strong model knows the takings from training and only calls the tool to confirm them.
+  > No model knows the takings of an invented shop. The strong model called the tool because that was the only way to get the number.
+- [x] Working out the right tool from a question in everyday words is itself an achievement of the model, and a small model goes by the word "cash" in a tool's name rather than by its description.
   > Correct: choosing a tool is not a mechanism of the program but a decision of the model. A skill that says which tool fits which question takes this decision off the small model.
 
 ## An agent on a small local model is asked to order 12 jars of honey from Bee Garden. It calls `orders_place_order`, you reject OpenCode's request, and it answers: "I've placed an order for 12 jars of honey from Bee Garden." What do you learn from this? {#tsc-010}
