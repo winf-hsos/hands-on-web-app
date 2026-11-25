@@ -14,7 +14,7 @@ relations:
 modules: [aai]
 areas: [ai]
 questions: [tsc-001, tsc-002, tsc-003, tsc-004, tsc-005, tsc-006, tsc-007, tsc-012, tsc-008, tsc-009, tsc-013, tsc-010, tsc-011]
-status: draft
+status: published
 updated: 2026-11-25
 ---
 

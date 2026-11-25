@@ -22,7 +22,7 @@ relations:
   see_also: [ai-agents, be-the-agent]
 modules: [aai]
 areas: [ai]
-status: draft
+status: published
 updated: 2026-11-25
 ---
 

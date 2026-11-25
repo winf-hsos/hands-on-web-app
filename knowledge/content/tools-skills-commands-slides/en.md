@@ -13,6 +13,6 @@ duration: 35
 topics: [ai-agents]
 modules: [aai]
 areas: [ai]
-status: draft
+status: published
 updated: 2026-11-25
 ---
