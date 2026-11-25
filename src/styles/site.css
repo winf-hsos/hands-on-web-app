@@ -1623,10 +1623,14 @@ details.callout[open] > summary::before {
   color: var(--accent-ink);
 }
 
-/* the expected result of a step sits inside the band of the tasks */
-.prose.has-tasks > ol .callout {
-  margin: 0.75rem 0 0.25rem;
-  background: var(--paper);
+/* The expected result of a step stands between the bands of the tasks, so
+   that each step of an experiment is a band of its own (Nicolas, 2026-11-25). */
+.prose.has-tasks > details.callout-expected {
+  margin: 0.75rem 0 1.25rem;
+}
+
+.prose.has-tasks > details.callout-expected + ol {
+  margin-top: 1.25rem;
 }
 
 .path-section {

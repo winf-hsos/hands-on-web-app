@@ -287,7 +287,8 @@ The body is plain Markdown with a few conventions:
   bulb), "WICHTIG" (circle), "ACHTUNG" (warning sign), "VORSICHT" (octagon),
   "TIPP ANZEIGEN" (light bulb), "LÖSUNG ANZEIGEN" (tick). Warnings are not
   red, which marks errors. `> [!EXPECTED]` ("WAS SOLLTE PASSIEREN?", eye)
-  follows a step of an experiment, indented into its list item, and holds the
+  follows a step of an experiment, not indented, so that it ends the list and
+  the next step starts a new one with its number (`3.`); it holds the
   result the step should lead to (Nicolas, 2026-11-25). `> [!HINT]`,
   `> [!SOLUTION]` and `> [!EXPECTED]` render folded, so
   that a learner opens them only when needed; several hints in one text are
