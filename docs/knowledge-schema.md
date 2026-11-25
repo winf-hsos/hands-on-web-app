@@ -286,7 +286,10 @@ The body is plain Markdown with a few conventions:
   icon of its kind (Nicolas, 2026-11-02): "HINWEIS" (info), "TIPP" (light
   bulb), "WICHTIG" (circle), "ACHTUNG" (warning sign), "VORSICHT" (octagon),
   "TIPP ANZEIGEN" (light bulb), "LÖSUNG ANZEIGEN" (tick). Warnings are not
-  red, which marks errors. `> [!HINT]` and `> [!SOLUTION]` render folded, so
+  red, which marks errors. `> [!EXPECTED]` ("WAS SOLLTE PASSIEREN?", eye)
+  follows a step of an experiment, indented into its list item, and holds the
+  result the step should lead to (Nicolas, 2026-11-25). `> [!HINT]`,
+  `> [!SOLUTION]` and `> [!EXPECTED]` render folded, so
   that a learner opens them only when needed; several hints in one text are
   numbered.
 - **Tasks in an experiment or exercise** are the numbered lists at the top

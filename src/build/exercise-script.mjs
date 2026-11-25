@@ -108,7 +108,7 @@ function convert(lines, { language, labels, titleOf, inCallout = false }) {
       const body = [];
       for (; i < lines.length && lines[i].startsWith('>'); i += 1) body.push(lines[i].replace(/^> ?/, ''));
       const kind = body[0].match(/^\[!(\w+)\]\s*(.*)$/);
-      if (kind?.[1] === 'SOLUTION') continue;
+      if (kind?.[1] === 'SOLUTION' || kind?.[1] === 'EXPECTED') continue;
       if (kind) body[0] = kind[2];
       const inner = convert(body, { language, labels, titleOf, inCallout: true }).lines;
       blank();

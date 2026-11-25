@@ -1,6 +1,6 @@
 // Remark plugin for the conventions of docs/knowledge-schema.md, sections 6–7:
-// [[id]] and [[id|text]] links, GitHub-style callouts (HINT and SOLUTION
-// fold away), Python and R code that runs in the browser, result tables to
+// [[id]] and [[id|text]] links, GitHub-style callouts (HINT, SOLUTION and
+// EXPECTED fold away), Python and R code that runs in the browser, result tables to
 // fill in, and quiz questions.
 // Options: lang, quiz (boolean), resolve(id) -> { url, title } | null; a url of null keeps only the text;
 // sourceMap (boolean) marks where each block stands in the source.
@@ -9,8 +9,10 @@ import yaml from 'js-yaml';
 import { tokenize } from '../client/highlight.js';
 import { iconShapes } from './icons.mjs';
 
-const CALLOUT = /^\[!(NOTE|TIP|WARNING|IMPORTANT|CAUTION|HINT|SOLUTION)\]\s*/;
-const FOLDED = new Set(['HINT', 'SOLUTION']);
+const CALLOUT = /^\[!(NOTE|TIP|WARNING|IMPORTANT|CAUTION|HINT|SOLUTION|EXPECTED)\]\s*/;
+// EXPECTED is the result a step of an experiment should lead to, folded after
+// the step so that learners check their own result first (Nicolas, 2026-11-25).
+const FOLDED = new Set(['HINT', 'SOLUTION', 'EXPECTED']);
 const WIKI = /\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g;
 
 /** A title as Markdown nodes: text, and `code` in backticks as inline code. */
@@ -22,8 +24,8 @@ const titleNodes = (title) =>
 // Every callout title stands in capitals after an icon of its kind (Nicolas,
 // 2026-11-02), as warnings did first; warnings are not red (2026-10-30).
 const CALLOUT_TITLES = {
-  de: { NOTE: 'HINWEIS', TIP: 'TIPP', WARNING: 'ACHTUNG', IMPORTANT: 'WICHTIG', CAUTION: 'VORSICHT', HINT: 'TIPP ANZEIGEN', SOLUTION: 'LÖSUNG ANZEIGEN' },
-  en: { NOTE: 'NOTE', TIP: 'TIP', WARNING: 'WARNING', IMPORTANT: 'IMPORTANT', CAUTION: 'CAUTION', HINT: 'SHOW A HINT', SOLUTION: 'SHOW THE SOLUTION' },
+  de: { NOTE: 'HINWEIS', TIP: 'TIPP', WARNING: 'ACHTUNG', IMPORTANT: 'WICHTIG', CAUTION: 'VORSICHT', HINT: 'TIPP ANZEIGEN', SOLUTION: 'LÖSUNG ANZEIGEN', EXPECTED: 'WAS SOLLTE PASSIEREN?' },
+  en: { NOTE: 'NOTE', TIP: 'TIP', WARNING: 'WARNING', IMPORTANT: 'IMPORTANT', CAUTION: 'CAUTION', HINT: 'SHOW A HINT', SOLUTION: 'SHOW THE SOLUTION', EXPECTED: 'WHAT SHOULD HAPPEN?' },
 };
 // Lucide icons (ISC license) by kind.
 const CALLOUT_ICONS = {
@@ -34,6 +36,7 @@ const CALLOUT_ICONS = {
   CAUTION: 'octagon-alert',
   HINT: 'lightbulb',
   SOLUTION: 'circle-check-big',
+  EXPECTED: 'eye',
 };
 // With several hints in one section they are numbered, since each builds on the one before.
 const NUMBERED_HINT = { de: (n) => `TIPP ${n} ANZEIGEN`, en: (n) => `SHOW HINT ${n}` };

@@ -1619,6 +1619,16 @@ details.callout[open] > summary::before {
   color: var(--accent-ink);
 }
 
+.callout-expected .callout-title {
+  color: var(--accent-ink);
+}
+
+/* the expected result of a step sits inside the band of the tasks */
+.prose.has-tasks > ol .callout {
+  margin: 0.75rem 0 0.25rem;
+  background: var(--paper);
+}
+
 .path-section {
   margin-top: 1.75rem;
 }
