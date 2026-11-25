@@ -54,7 +54,11 @@ of a small model.
   app, free for Windows, macOS and Linux.
 - Python 3, without any extra packages.
 - A strong language model that can call tools. The folder is set up for
-  OpenAI's `gpt-6-luna`, which needs an OpenAI account connected in OpenCode.
+  OpenAI's `gpt-6-luna`, which needs an OpenAI API key. If you get a key for
+  the class, connect it once before you start: run `opencode auth login
+  openai` in a terminal, choose to enter an API key and paste it. The key
+  stays on your laptop, so don't put it into the folder, a chat or a
+  screenshot, because anyone who has it can use it at the key owner's expense.
 - For processes 3 and 4, [LM Studio](https://lmstudio.ai) with the small model
   `google/gemma-4-e2b` (about 3 GB), which runs on most laptops. In LM Studio,
   download the model, load it and start the local server under *Developer*;
