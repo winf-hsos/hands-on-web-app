@@ -3,8 +3,8 @@
 Script for the experiment *From chat to agent*, in the order of the slides.
 The deck introduces OpenCode with two language models, one in the cloud and
 one on the laptop, and follows the experiment: from a chat to an agent with
-an `AGENTS.md`, three things a chat cannot do, a small model that fails where
-a large one succeeds, the context window, the most useful commands and the
+an `AGENTS.md`, three things the agent does in the folder, a small model that
+fails where a larger one succeeds, the context window, the most useful commands and the
 agent in a browser. The full steps and prompts are in the experiment itself.
 
 ## Opening
@@ -28,7 +28,7 @@ wants to call, and OpenCode carries the call out.
 
 **One app, two models.** OpenCode brings no language model of its own. It
 sends what you type to a provider and shows the answer. We connect two:
-OpenAI with `gpt-6-luna`, a large model in the cloud, which needs the key of
+OpenAI with `gpt-6-luna`, a larger model in the cloud, which needs the key of
 the class, and LM Studio with `gemma-4-e2b`, a small model on the laptop.
 LM Studio needs no connecting, since OpenCode finds its server at
 `127.0.0.1:1234` by itself. With `gpt-6-luna`, everything you type leaves the
@@ -38,8 +38,9 @@ makes more mistakes.
 **Four words you meet in OpenCode.** A *project* is a folder on the laptop,
 and the agent reads and writes only there. A *session* is one conversation
 in that folder with its own context, and a new session starts empty. The
-*agent* is a set of rules for the model: *Build* may do everything, *Plan*
-may only read. The *model* is chosen below the input field and can be
+*agent* is a role for the model with its own instructions and permissions:
+the built-in agent *Build* may change files and run commands, *Plan* may only
+read and plan. The *model* is chosen below the input field and can be
 switched in the middle of a session.
 
 ## The folder
@@ -67,8 +68,11 @@ characters typed. All of it goes to the model with every single request.
 
 ## The agent acts
 
-**Three things a chat cannot do.** The agent writes a file: the offers end
-up in `offers.md` in the folder rather than as text to copy. It looks
+**Three things the agent does in your folder.** A chat such as ChatGPT can
+search the web and run Python too, but in its own environment in the cloud,
+while the agent works on the laptop with your files and your programs. It
+reads and writes files: the offers end up in `offers.md` in the folder, with
+nothing to upload or download. It looks
 something up: in our test it searched twice, read the seasonal calendar of
 regional-saisonal.de and named kale, Brussels sprouts, leeks and lamb's
 lettuce, and whether it read the page correctly is for you to check. It
@@ -82,7 +86,7 @@ its result.
 
 **Poll: a flyer as a Typst file.** Typst turns a text file into a PDF, much
 like LaTeX but simpler, and it accepts no mistakes. A small model on the
-laptop and a large one in the cloud each get the task to make the flyer as a
+laptop and a larger one in the cloud each get the task to make the flyer as a
 Typst file and compile it.
 
 **The small model writes Markdown into a Typst file.** The first attempt of
@@ -96,12 +100,12 @@ got the error, rewrote the file five times without compiling, compiled again,
 rewrote it twice more and compiled a third time, always in Markdown. Its last
 answer put the blame on compiling the file through the tools rather than on
 the file. Switched to `gpt-6-luna` in the same session, the prompt *Fix the
-error.* was enough: the large model read the file, edited it and compiled it,
+error.* was enough: the larger model read the file, edited it and compiled it,
 and `flyer.pdf` was there after about 15 seconds. It needed no more
 explanation, because the whole session with every attempt and every error
 message was still in its context.
 
-**The flyer of the large model.** The PDF from our test is plain but
+**The flyer of the larger model.** The PDF from our test is plain but
 correct, with a title, a subtitle and three offers with their prices. One
 more sentence to the agent is enough for more design.
 

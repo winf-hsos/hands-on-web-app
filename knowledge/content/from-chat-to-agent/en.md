@@ -6,14 +6,14 @@ summary: >-
   You set up OpenCode with a model in the cloud and one on your laptop, chat
   with both as in ChatGPT, turn the chat into an agent that writes files,
   looks things up and runs programs, and watch a small model fail where a
-  large one succeeds.
+  larger one succeeds.
 objectives:
   intro: "In this experiment you take your first steps with OpenCode, and afterwards you can:"
   goals:
     - "connect OpenCode to OpenAI and to LM Studio, open a folder as a project and start a session"
     - "tell a chat from an agent by what the agent can do: read and write files, look things up and run programs"
     - "set up an agent for a folder with an AGENTS.md and find out which tools it has, in the session and in the log of LM Studio"
-    - "compare a small model on your laptop with a large model in the cloud on the same task, and switch the model in the middle of a session"
+    - "compare a small model on your laptop with a larger model in the cloud on the same task, and switch the model in the middle of a session"
     - "explain what the context window is, why an agent fills it before you have typed a word, and what happens when it is full"
     - "use the commands of OpenCode that you need every day, and let an agent work in a browser"
 level: 1
@@ -27,10 +27,11 @@ status: published
 updated: 2026-11-25
 ---
 
-A chat in the browser answers, but it cannot do anything: it does not see the
-files on your laptop, cannot look anything up on its own and cannot run a
-program to check its answer. An [[ai-agents|AI agent]] can, because it calls
-tools and looks at their results before it answers. In this experiment you
+A chat in the browser answers, and some chats can also search the web or run
+a little Python, but only in their own environment in the cloud: they do not
+see the files on your laptop and cannot use your programs. An
+[[ai-agents|AI agent]] works where your files are, because it calls tools on
+your computer and looks at their results before it answers. In this experiment you
 meet the agent you will work with from now on, [[opencode|OpenCode]], and use
 it with two very different language models: `gpt-6-luna` from OpenAI, which
 runs in the cloud, and `gemma-4-e2b` from Google, which runs in
@@ -109,7 +110,7 @@ OpenCode brings no language model of its own. It sends what you type to a
 provider and shows you the answer, so before the first question it has to
 know where the models are.
 
-1. Connect OpenAI. In OpenCode, open *Settings* (Ctrl + , or Cmd + ,), then
+6. Connect OpenAI. In OpenCode, open *Settings* (Ctrl + , or Cmd + ,), then
    *Providers*, click *+ Connect* next to OpenAI, choose *API key* and paste
    the key you got for the class. The key is like a password, and every
    answer costs money with it, so paste it nowhere else.
@@ -117,7 +118,7 @@ know where the models are.
 > [!EXPECTED]
 > Under *Connected providers*, OpenAI is listed.
 
-2. Look at the same list again with LM Studio's server running. You do not
+7. Look at the same list again with LM Studio's server running. You do not
    connect LM Studio yourself: OpenCode looks for its server at
    `127.0.0.1:1234` and lists every model it finds there.
 
@@ -128,7 +129,7 @@ know where the models are.
 > missing, its server was not running when OpenCode started: start the
 > server and restart OpenCode.
 
-3. Create a folder `lindenhof` in a place where you will find it again, such
+8. Create a folder `lindenhof` in a place where you will find it again, such
    as *Documents*. In OpenCode, click *Add project* (the folder icon with the
    plus), choose the folder and click *New session*.
 
@@ -139,7 +140,7 @@ know where the models are.
 
 ## A chat, as in ChatGPT
 
-1. Choose `GPT-6 Luna` in the model picker below the input field and ask:
+9. Choose `GPT-6 Luna` in the model picker below the input field and ask:
 
    ```text
    What could a small farm shop offer in December? Give me five products with a fair price each.
@@ -150,8 +151,8 @@ know where the models are.
 > At the top right of the window, OpenCode now shows how many tokens the
 > session holds and what it has cost so far.
 
-2. Click the model picker again, switch to `Gemma 4 E2B` under *LM Studio*
-   and ask the same question in the same session.
+10. Click the model picker again, switch to `Gemma 4 E2B` under *LM Studio*
+    and ask the same question in the same session.
 
 > [!EXPECTED]
 > The answer comes more slowly, and you may hear your laptop's fan, because
@@ -168,45 +169,45 @@ An agent works in a folder and should know what the folder is for. OpenCode
 reads a file `AGENTS.md` in the folder at the start of every session and puts
 its content in front of everything you type.
 
-1. Switch back to `GPT-6 Luna` and create the file with a command: type
-   `/init` in the input field and send it.
+11. Switch back to `GPT-6 Luna` and create the file with a command: type
+    `/init` in the input field and send it.
 
 > [!EXPECTED]
 > The agent looks around the folder, finds it empty and either asks you what
 > the project is about or writes a short `AGENTS.md` by itself. The file
 > appears in the folder.
 
-2. Replace what `/init` wrote with a description of your own. Open
-   `AGENTS.md` in an editor, or ask the agent to write it, and give it this
-   content:
+12. Replace what `/init` wrote with a description of your own. Open
+    `AGENTS.md` in an editor, or ask the agent to write it, and give it this
+    content:
 
-   ```markdown file=AGENTS.md
-   # Lindenhof farm shop
+    ```markdown file=AGENTS.md
+    # Lindenhof farm shop
 
-   You help Jeff, who runs the Lindenhof farm shop, a small self-service shop
-   on his farm. Customers weigh, pay and take their goods themselves.
+    You help Jeff, who runs the Lindenhof farm shop, a small self-service shop
+    on his farm. Customers weigh, pay and take their goods themselves.
 
-   - Answer in English and keep it short.
-   - Write every file into this folder.
-   - Prices are in euros with two decimals, such as 6.50.
-   ```
+    - Answer in English and keep it short.
+    - Write every file into this folder.
+    - Prices are in euros with two decimals, such as 6.50.
+    ```
 
-   Start a new session (Ctrl + T or *New session*) and ask:
+    Start a new session (Ctrl + T or *New session*) and ask:
 
-   ```text
-   Who are you working for, and what do you know about the shop?
-   ```
+    ```text
+    Who are you working for, and what do you know about the shop?
+    ```
 
 > [!EXPECTED]
 > The agent answers as Jeff's helper at the Lindenhof farm shop, without you
 > having said a word about it in this session. Everything it knows comes from
 > `AGENTS.md`.
 
-3. Ask the agent which tools it has:
+13. Ask the agent which tools it has:
 
-   ```text
-   Which tools do you have? List their exact names with one line each on what they do.
-   ```
+    ```text
+    Which tools do you have? List their exact names with one line each on what they do.
+    ```
 
 > [!EXPECTED]
 > A list of about a dozen tools, among them `read`, `write`, `edit`, `glob`,
@@ -215,12 +216,12 @@ its content in front of everything you type.
 > every tool along with every request. In the agent *Build*, all of them
 > are allowed.
 
-4. See for yourself what OpenCode sends. In LM Studio, open *Model Server*,
-   then the menu *…* above the *Server Logs* at the bottom, and switch on
-   *Verbose Logging*. Switch OpenCode to `Gemma 4 E2B`, send `hi` in a new
-   session and look at the log in LM Studio. The request starts with
-   `Received request: POST to /v1/chat/completions with body {`; search it for
-   `"tools"`.
+14. See for yourself what OpenCode sends. In LM Studio, open *Model Server*,
+    then the menu *…* above the *Server Logs* at the bottom, and switch on
+    *Verbose Logging*. Switch OpenCode to `Gemma 4 E2B`, send `hi` in a new
+    session and look at the log in LM Studio. The request starts with
+    `Received request: POST to /v1/chat/completions with body {`; search it for
+    `"tools"`.
 
 > [!EXPECTED]
 > The log shows the whole request: a long system prompt from OpenCode, your
@@ -232,27 +233,27 @@ its content in front of everything you type.
 
 ## The agent acts
 
-Now give the agent work that a chat cannot do. Use `GPT-6 Luna` for this
+Now give the agent work in your folder. Use `GPT-6 Luna` for this
 section, and look at the grey lines between your message and the answer,
 such as *Used 1 Write*: a click on them unfolds every tool call with what went
 in and what came out.
 
-1. Let the agent write a file:
+15. Let the agent write a file:
 
-   ```text
-   Write this week's offers into a file offers.md: fresh eggs 0.40 euros each, honey 6.50 euros a jar, potatoes 2.50 euros for 2.5 kg, kale 3.20 euros a kilo.
-   ```
+    ```text
+    Write this week's offers into a file offers.md: fresh eggs 0.40 euros each, honey 6.50 euros a jar, potatoes 2.50 euros for 2.5 kg, kale 3.20 euros a kilo.
+    ```
 
 > [!EXPECTED]
 > The file `offers.md` appears in the folder, and in the session you see the
-> call of `write` with the path and the content. A chat would have shown you
-> the text to copy; the agent put it where it belongs.
+> call of `write` with the path and the content. A chat would have given you
+> the text to copy or a file to download; the agent put it where it belongs.
 
-2. Let the agent look something up:
+16. Let the agent look something up:
 
-   ```text
-   Which vegetables are in season in Germany in December? Look it up on the web, name your source and add two of them to offers.md with a fair price.
-   ```
+    ```text
+    Which vegetables are in season in Germany in December? Look it up on the web, name your source and add two of them to offers.md with a fair price.
+    ```
 
 > [!EXPECTED]
 > The agent searches the web, opens a page and answers with a source. In our
@@ -261,31 +262,31 @@ in and what came out.
 > source yourself: the agent read a real page, but whether it read it
 > correctly is up to you to judge.
 
-3. Let the agent write and run a program:
+17. Let the agent write and run a program:
 
-   ```text
-   Write a Python program prices.py that reads the offers from offers.md, gives 10 percent off every product above 5 euros and prints the new price list. Run it and show me the output.
-   ```
+    ```text
+    Write a Python program prices.py that reads the offers from offers.md, gives 10 percent off every product above 5 euros and prints the new price list. Run it and show me the output.
+    ```
 
 > [!EXPECTED]
 > The agent writes `prices.py`, runs it with `shell` and shows what the
 > program printed. If the program fails at first, the agent reads the error
-> message, changes the file and runs it again, which a chat cannot do, since
-> it never sees whether its code works.
+> message, changes the file and runs it again, on your laptop and with the
+> Python you installed there.
 
-## A small and a large model
+## A small and a larger model
 
 A model on your laptop is free and private, but it is much smaller than the
 models in the cloud. You see the difference best on a task that has to be
 exactly right, such as a file for a program that accepts no mistakes.
 
-1. Switch to `Gemma 4 E2B` and ask in the same session:
+18. Switch to `Gemma 4 E2B` and ask in the same session:
 
-   ```text
-   Make a one-page flyer for this week's offers as a Typst document flyer.typ. Then compile it to a PDF with typst compile flyer.typ.
-   ```
+    ```text
+    Make a one-page flyer for this week's offers as a Typst document flyer.typ. Then compile it to a PDF with typst compile flyer.typ.
+    ```
 
-   Watch what the model does when Typst reports an error.
+    Watch what the model does when Typst reports an error.
 
 > [!EXPECTED]
 > In our tests, `gemma-4-e2b` wrote Markdown into the file, with `#` for
@@ -295,17 +296,17 @@ exactly right, such as a file for a program that accepts no mistakes.
 > said that the compiler or its tools were the problem, not its file. No PDF
 > came out.
 
-2. Switch to `GPT-6 Luna` in the same session and ask:
+19. Switch to `GPT-6 Luna` in the same session and ask:
 
-   ```text
-   Fix the error.
-   ```
+    ```text
+    Fix the error.
+    ```
 
 > [!EXPECTED]
 > OpenCode marks the switch in the session with *Switched to GPT-6 Luna*.
-> The large model reads `flyer.typ`, rewrites it in real Typst, compiles it
+> The larger model reads `flyer.typ`, rewrites it in real Typst, compiles it
 > and reports that `flyer.pdf` was created, in our test within about 15
-> seconds. Open the PDF. The large model needed no more explanation than
+> seconds. Open the PDF. The larger model needed no more explanation than
 > *Fix the error*, because the whole session, with the small model's
 > attempts and Typst's messages, was still in its context.
 
@@ -318,9 +319,9 @@ fit: the system prompt, the tool descriptions, `AGENTS.md`, the whole
 conversation so far and every file the agent has read. When you loaded
 `gemma-4-e2b`, you gave it 32,768 tokens.
 
-1. Make the window small. In LM Studio, under *Library*, set the *Context
-   Length* of `gemma-4-e2b` to `8192`, eject the model and load it again. Then
-   send `hi` to `Gemma 4 E2B` in a new session of OpenCode.
+20. Make the window small. In LM Studio, under *Library*, set the *Context
+    Length* of `gemma-4-e2b` to `8192`, eject the model and load it again. Then
+    send `hi` to `Gemma 4 E2B` in a new session of OpenCode.
 
 > [!EXPECTED]
 > No answer, but an error. In our test it read: `request (10581 tokens)
@@ -329,15 +330,15 @@ conversation so far and every file the agent has read. When you loaded
 > its system prompt and its tools along before your first word. A model that
 > is enough for a chat in LM Studio can be too small for an agent.
 
-2. Set the *Context Length* back to `32768`, load the model again and send
-   `hi` once more.
+21. Set the *Context Length* back to `32768`, load the model again and send
+    `hi` once more.
 
 > [!EXPECTED]
 > Now the model answers. At the top right, OpenCode shows that the session
 > already holds about ten thousand tokens.
 
-3. Switch to `GPT-6 Luna`, go back to the session with the flyer and type
-   `/compact`.
+22. Switch to `GPT-6 Luna`, go back to the session with the flyer and type
+    `/compact`.
 
 > [!EXPECTED]
 > OpenCode has the model summarize the session so far and continues with the
@@ -352,19 +353,19 @@ conversation so far and every file the agent has read. When you loaded
 Everything that begins with `/` in the input field is a command for
 OpenCode, not a message for the model. Type `/` to see all of them.
 
-1. Try the commands you will need most often, each in one of your sessions:
+23. Try the commands you will need most often, each in one of your sessions:
 
-   | command | what it does |
-   |---|---|
-   | `/init` | sets up `AGENTS.md` for the folder |
-   | `/undo` | takes back your last message, together with every file the agent changed for it |
-   | `/compact` | summarizes the session to make room in the context |
-   | `/fork` | starts a new session from an earlier message, for example to try the same request with another model |
-   | `/new` | starts a new session (also Ctrl + T) |
-   | `/export` | saves the whole session as a JSON file, with every request and every tool call |
-   | `/mcp` | shows the tool servers of the folder and switches them on and off |
+    | command | what it does |
+    |---|---|
+    | `/init` | sets up `AGENTS.md` for the folder |
+    | `/undo` | takes back your last message, together with every file the agent changed for it |
+    | `/compact` | summarizes the session to make room in the context |
+    | `/fork` | starts a new session from an earlier message, for example to try the same request with another model |
+    | `/new` | starts a new session (also Ctrl + T) |
+    | `/export` | saves the whole session as a JSON file, with every request and every tool call |
+    | `/mcp` | shows the tool servers of the folder and switches them on and off |
 
-   Ask the agent to delete `offers.md`, and then take it back with `/undo`.
+    Ask the agent to delete `offers.md`, and then take it back with `/undo`.
 
 > [!EXPECTED]
 > After `/undo`, your message is gone from the session and `offers.md` is
@@ -374,14 +375,14 @@ OpenCode, not a message for the model. Type `/` to see all of them.
 
 ## The agent in a browser
 
-The desktop app of OpenCode has a browser of its own, and a large model can
+The desktop app of OpenCode has a browser of its own, and a larger model can
 work in it: open pages, read them, follow links and fill in forms.
 
-1. With `GPT-6 Luna`, ask:
+24. With `GPT-6 Luna`, ask:
 
-   ```text
-   Open https://hands-on-computer-science.de in the browser and tell me what the start page offers.
-   ```
+    ```text
+    Open https://hands-on-computer-science.de in the browser and tell me what the start page offers.
+    ```
 
 > [!EXPECTED]
 > The browser opens on the right side of the window with the page. In the
@@ -389,17 +390,17 @@ work in it: open pages, read them, follow links and fill in forms.
 > for the browser and then wrote a small program that controls it. It
 > answers with the three areas of the site and what can be found there.
 
-2. Give it a task with several steps:
+25. Give it a task with several steps:
 
-   ```text
-   On hands-on-computer-science.de, find the experiment about tools, skills and commands and tell me how long it takes and what I need for it.
-   ```
+    ```text
+    On hands-on-computer-science.de, find the experiment about tools, skills and commands and tell me how long it takes and what I need for it.
+    ```
 
 > [!EXPECTED]
 > The agent searches or clicks its way to the page, which you can follow in
 > the browser, and answers with the duration and the setup. A small model
 > such as `gemma-4-e2b` usually gets lost in such a task, so leave the
-> browser to the large one.
+> browser to the larger one.
 
 Some agents go one step further and control the whole computer: they look at
 screenshots and move the mouse and type, in any program. OpenCode does not
@@ -437,3 +438,5 @@ careful with, because such an agent can do everything you can.
   work with `Gemma 4 E2B`?
 - Which of the agent's tools would you allow without asking, and which only
   after it asks you first?
+
+![Quiz: From chat to agent](item:from-chat-to-agent-quiz)

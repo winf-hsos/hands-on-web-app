@@ -26,7 +26,7 @@
     .toolgrid.one { grid-template-columns: auto 1fr; gap: 34px 70px; }
     .toolgrid .name { font-family: var(--mono); font-size: var(--small); color: var(--blue); }
     .toolgrid .what { font-size: var(--small); color: var(--white); }
-    /* three things a chat cannot do */
+    /* three things the agent does in the folder */
     .offers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 60px; }
     .offers > div { border-top: 3px solid var(--blue); padding-top: 30px; }
     .offers .kind { font-size: var(--normal); color: var(--white); margin-bottom: 24px; }
@@ -63,7 +63,7 @@
   </section>
 
   <!-- ==================== 1 · chat and agent ==================== -->
-  <section class="slide part" data-part="chat and agent" data-subtitle="what an agent can do that a chat cannot"></section>
+  <section class="slide part" data-part="chat and agent" data-subtitle="what turns a chat into an agent"></section>
 
   <section class="slide">
     <h2>a chat answers, an agent works on the task</h2>
@@ -83,11 +83,11 @@
       <div class="who">
         <div class="part">project</div><div class="rule">a folder on your laptop<span>the agent reads and writes only there</span></div>
         <div class="part" data-step="1">session</div><div class="rule" data-step="1">one conversation in that folder<span>it has its own context, a new session starts empty</span></div>
-        <div class="part" data-step="2">agent</div><div class="rule" data-step="2">the rules for the model<span>Build may do everything, Plan may only read</span></div>
+        <div class="part" data-step="2">agent</div><div class="rule" data-step="2">a role for the model with its own permissions<span>the built-in agent <span class="keep-case">Build</span> may change files and run commands, <span class="keep-case">Plan</span> may only read and plan</span></div>
         <div class="part" data-step="3">model</div><div class="rule" data-step="3">the language model that answers<span>chosen below the input field, and switchable in the middle of a session</span></div>
       </div>
     </div>
-    <aside class="notes">Vier Begriffe, die ihr in OpenCode ständig seht. Ein Projekt ist ein Ordner, für uns der Ordner lindenhof. Eine Sitzung ist ein Gespräch in diesem Ordner, mit eigenem Gedächtnis; eine neue Sitzung weiß nichts von der alten. Der Agent ist ein Satz von Regeln: Build darf alles, Plan darf nur lesen und Pläne machen. Und das Modell wählt ihr unter dem Eingabefeld, und zwar auch mitten in einer Sitzung; das brauchen wir später, wenn das kleine Modell scheitert.</aside>
+    <aside class="notes">Vier Begriffe, die ihr in OpenCode ständig seht. Ein Projekt ist ein Ordner, für uns der Ordner lindenhof. Eine Sitzung ist ein Gespräch in diesem Ordner, mit eigenem Gedächtnis; eine neue Sitzung weiß nichts von der alten. Ein Agent ist in OpenCode eine Rolle für das Modell: eigene Anweisungen und eigene Rechte, welche Werkzeuge es benutzen darf. Zwei sind eingebaut: Build darf Dateien ändern und Befehle ausführen, Plan darf nur lesen und Pläne vorschlagen. Eigene Agenten legt man in einer Konfigurationsdatei an, das machen wir im Hofladen-Experiment. Und das Modell wählt ihr unter dem Eingabefeld, und zwar auch mitten in einer Sitzung; das brauchen wir später, wenn das kleine Modell scheitert.</aside>
   </section>
 
   <!-- ==================== 2 · the folder ==================== -->
@@ -105,7 +105,7 @@ on his farm. Customers weigh, pay and take their goods themselves.
 - Answer in English and keep it short.
 - Write every file into this folder.
 - Prices are in euros with two decimals, such as 6.50.</div>
-      <div class="where" data-step="1"><span class="keep-case">OpenCode</span> puts this file in front of everything you type, in every session of the folder; /init writes a first version.</div>
+      <div class="where" data-step="1"><span class="keep-case">OpenCode</span> puts this file in front of everything you type, in every session of the folder; <span class="mono">/init</span> writes a first version.</div>
     </div>
     <aside class="notes">Die Datei AGENTS.md beschreibt dem Agenten den Ordner: wer hier arbeitet, worum es geht, welche Regeln gelten. OpenCode liest sie zu Beginn jeder Sitzung und stellt sie vor alles, was ihr schreibt. Den ersten Entwurf schreibt der Befehl /init; wir ersetzen ihn durch diesen Text. Fragt ihr danach in einer neuen Sitzung, für wen der Agent arbeitet, antwortet er als Helfer von Jeff, ohne dass ihr in dieser Sitzung ein Wort über den Laden gesagt habt.</aside>
   </section>
@@ -146,26 +146,26 @@ on his farm. Customers weigh, pay and take their goods themselves.
   <section class="slide part" data-part="the agent acts" data-subtitle="files, the web and programs"></section>
 
   <section class="slide">
-    <h2>three things a chat cannot do</h2>
+    <h2>three things the agent does in your folder</h2>
     <div class="content">
       <div class="offers">
-        <div><div class="kind">write a file</div><div class="tool">write</div><div class="text">the offers end up in offers.md in the folder, not as text to copy</div></div>
+        <div><div class="kind">read and write files</div><div class="tool">read · write</div><div class="text">it works with the files in your folder, such as offers.md, with nothing to upload or download</div></div>
         <div data-step="1"><div class="kind">look something up</div><div class="tool">websearch · webfetch</div><div class="text">the agent read a seasonal calendar on the web and named its source</div></div>
-        <div data-step="2"><div class="kind">run a program</div><div class="tool">write · shell</div><div class="text">it wrote prices.py, ran it and read the output, and fixes the file if the program fails</div></div>
+        <div data-step="2"><div class="kind">run a program</div><div class="tool">write · shell</div><div class="text">it wrote prices.py, ran it on your laptop and read the output, and fixes the file if the program fails</div></div>
       </div>
       <div class="where" data-step="3">a click on the grey lines in the session, such as “used 1 write”, shows every tool call with what went in and what came out.</div>
     </div>
-    <aside class="notes">Drei kleine Aufgaben, die ein Chat nicht kann. Erstens eine Datei schreiben: Der Agent legt offers.md im Ordner an, statt euch Text zum Kopieren zu geben. Zweitens nachschlagen: In unserem Test hat er zweimal gesucht, den Saisonkalender von regional-saisonal.de gelesen und Grünkohl, Rosenkohl, Lauch und Feldsalat genannt; ob er richtig gelesen hat, prüft ihr. Drittens ein Programm schreiben und ausführen: prices.py liest die Angebote, gibt zehn Prozent Rabatt über fünf Euro und druckt die Liste. Geht das Programm schief, liest der Agent die Fehlermeldung und versucht es noch einmal; ein Chat sieht nie, ob sein Code läuft.</aside>
+    <aside class="notes">Drei kleine Aufgaben im Ordner. ChatGPT kann inzwischen auch suchen und Python ausführen, aber in seiner eigenen Umgebung in der Cloud; der Agent arbeitet auf eurem Laptop, mit euren Dateien und euren Programmen. Erstens Dateien lesen und schreiben: Der Agent legt offers.md direkt im Ordner an, ohne Hochladen und Herunterladen. Zweitens nachschlagen: In unserem Test hat er zweimal gesucht, den Saisonkalender von regional-saisonal.de gelesen und Grünkohl, Rosenkohl, Lauch und Feldsalat genannt; ob er richtig gelesen hat, prüft ihr. Drittens ein Programm schreiben und auf eurem Laptop ausführen: prices.py liest die Angebote, gibt zehn Prozent Rabatt über fünf Euro und druckt die Liste. Geht das Programm schief, liest der Agent die Fehlermeldung und versucht es noch einmal; und zwar mit dem Python, das auf eurem Rechner installiert ist.</aside>
   </section>
 
   <!-- ==================== 4 · small and large ==================== -->
   <section class="slide part" data-part="small and large" data-subtitle="the same task for a model on the laptop and one in the cloud"></section>
 
   <section class="slide poll" data-poll="typst-flyer">
-    <div class="poll-q">a small model on your laptop and a large one in the cloud each get the task to make the flyer as a <span class="keep-case">Typst</span> file and compile it: what happens?</div>
+    <div class="poll-q">a small model on your laptop and a larger one in the cloud each get the task to make the flyer as a <span class="keep-case">Typst</span> file and compile it: what happens?</div>
     <ol class="poll-opts">
       <li>both make a <span class="keep-case">PDF</span></li>
-      <li>only the large one does</li>
+      <li>only the larger one does</li>
       <li>only the small one does</li>
       <li>neither of them</li>
     </ol>
@@ -206,13 +206,13 @@ on his farm. Customers weigh, pay and take their goods themselves.
   <section class="slide has-punch">
     <h2>the same session, two models</h2>
     <div class="figure" id="fig-attempts"></div>
-    <div class="punch">the large model needed only three words, because the whole session with every error message was still in its context.</div>
+    <div class="punch">the larger model needed only three words, because the whole session with every error message was still in its context.</div>
     <div class="footnote">real runs in <span class="keep-case">OpenCode</span> 2.4.1, the answer of gemma-4-e2b shortened</div>
     <aside class="notes">Oben, was gemma-4-e2b getan hat: Es schreibt die Datei, kompiliert, bekommt den Fehler, schreibt die Datei fünfmal neu, ohne zu kompilieren, kompiliert wieder, Fehler, schreibt zweimal neu, Fehler. Jedes Mal Markdown. Zum Schluss entschuldigt es sich und sucht den Fehler beim Compiler und bei den Werkzeugen, nicht bei sich. Dann wechseln wir in derselben Sitzung auf gpt-6-luna und schreiben nur „Fix the error.“ Luna liest die Datei, ändert sie, kompiliert, fertig, in etwa 15 Sekunden. Mehr Erklärung brauchte es nicht, weil die ganze Sitzung mit allen Versuchen und Fehlermeldungen im Kontext stand.</aside>
   </section>
 
   <section class="slide">
-    <h2>the flyer of the large model</h2>
+    <h2>the flyer of the larger model</h2>
     <div class="content">
       <img class="paper" src="img/flyer.png" alt="the flyer: Lindenhof Farm Shop, this week's offers, with eggs, honey and potatoes">
     </div>
@@ -311,7 +311,7 @@ on his farm. Customers weigh, pay and take their goods themselves.
 <!-- order matters: deck.js before stagekit.js -->
 <script src="../../stagekit/draw.js?v=0.14.0-73dd15"></script>
 <script src="../../stagekit/anim.js?v=0.14.0-73dd15"></script>
-<script src="deck.js?v=2026-11-25"></script>
+<script src="deck.js?v=2026-11-25b"></script>
 <script src="../../stagekit/stagekit.js?v=0.14.0-73dd15"></script>
 </body>
 </html>

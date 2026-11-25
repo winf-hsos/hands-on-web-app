@@ -11,6 +11,8 @@ const c = d.colors();
 
 // Bootstrap Icons 1.11.3 (MIT, (c) The Bootstrap Authors), from stagekit/tools/icon.py
 const ICON_PERSON = '<path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>';
+const ICON_CLOUD = '<path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383m.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/>';
+const ICON_LAPTOP = '<path d="M13.5 3a.5.5 0 0 1 .5.5V11H2V3.5a.5.5 0 0 1 .5-.5zm-11-1A1.5 1.5 0 0 0 1 3.5V12h14V3.5A1.5 1.5 0 0 0 13.5 2zM0 12.5h16a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 12.5"/>';
 
 // Parts that appear in a later build step are named groups; each step shows the next one.
 function steps(id, names) {
@@ -65,7 +67,10 @@ function figProviders() {
   parts.push(d.line(940, 210, 940, 380, { color: c.light, width: 3 }));
   parts.push(d.line(462, 380, 1238, 380, { color: c.light, width: 3 }));
   parts.push(d.box(600, 4, 1076, 500, "", { border: c.dark, dashed: true, rx: 18, fill: "none" }));
-  parts.push(d.label(630, 0, "your laptop", { size: 20, color: c.gray, centerY: 40 }));
+  // the two places: a laptop at the top left of its frame, a cloud above the model at OpenAI
+  parts.push(d.icon(630, 18, 56, ICON_LAPTOP, { color: c.gray }));
+  parts.push(d.label(700, 0, "your laptop", { size: 20, color: c.gray, centerY: 46 }));
+  parts.push(d.icon(172, 170, 120, ICON_CLOUD, { color: c.gray }));
   // "OpenCode": 8 x 48 x 0.6 = 230, box 360
   parts.push(d.box(760, 90, 360, 120, "", { border: c.blue, width: 3 }));
   parts.push(d.label(940, 0, "OpenCode", { size: 48, anchor: "middle", centerY: 150, keepCase: true }));
@@ -78,7 +83,7 @@ function figProviders() {
   parts.push(d.label(1448, 0, "gemma-4-e2b", { size: 48, mono: true, anchor: "middle", centerY: 362, keepCase: true }));
   parts.push(d.label(1448, 0, "in LM Studio at 127.0.0.1:1234", { size: 20, color: c.gray, anchor: "middle", centerY: 418, keepCase: true }));
   // "your text leaves the laptop": 27 x 19.2 = 518
-  ["large and strong", "costs money per token", "your text leaves the laptop"].forEach((t, i) =>
+  ["larger and stronger", "costs money per token", "your text leaves the laptop"].forEach((t, i) =>
     props.push(d.label(2, 0, t, { size: 32, color: c.white, centerY: 590 + i * 64 })));
   // "small, 4.4 GB on disk": 21 x 19.2 = 403, column 440
   ["small, 4.4 GB on disk", "free and private", "slower, more mistakes"].forEach((t, i) =>
@@ -90,16 +95,18 @@ function figProviders() {
 // ------------------------------------------------------------ the folder
 
 // One request for "hi", drawn to scale in characters: system prompt, tool descriptions, and the two
-// characters typed. Scale: 1666 units for 43,002 characters.
+// characters typed. Scale: 1628 units for 43,000 characters; the hi gets a small box of its own, since
+// to scale it would be a tenth of a unit wide.
 function figRequest() {
-  const k = 1666 / 43002;
-  const xSys = 2, wSys = Math.round(25000 * k);            // 969
-  const xTools = xSys + wSys, wTools = Math.round(18000 * k); // 697, ends at 1668
+  const k = 1628 / 43000;
+  const xSys = 2, wSys = Math.round(25000 * k);            // 947
+  const xTools = xSys + wSys, wTools = Math.round(18000 * k); // 681, ends at 1630
   const hi = [], sys = [], tools = [];
-  hi.push(`<rect x="1670" y="270" width="8" height="140" fill="${c.yellow}"/>`);
+  hi.push(d.box(1642, 280, 34, 120, "", { border: c.yellow, width: 3 }));
   // "your hi: 2 characters": 21 x 19.2 = 403
-  hi.push(d.label(1678, 0, "your hi: 2 characters", { size: 32, color: c.yellow, anchor: "end", centerY: 470 }));
-  hi.push(d.label(2, 0, "one request to the model, drawn to scale", { size: 20, color: c.gray, centerY: 470 }));
+  hi.push(d.label(1676, 0, "your hi: 2 characters", { size: 32, color: c.yellow, anchor: "end", centerY: 470 }));
+  // 59 x 12 = 708
+  hi.push(d.label(2, 0, "one request to the model, drawn to scale except for your hi", { size: 20, color: c.gray, centerY: 470 }));
   sys.push(d.box(xSys, 280, wSys, 120, "", { border: c.light }));
   sys.push(d.label(xSys + wSys / 2, 0, "system prompt", { size: 32, anchor: "middle", centerY: 170 }));
   sys.push(d.label(xSys + wSys / 2, 0, "how the agent works, with your AGENTS.md: about 25,000 characters", { size: 20, color: c.gray, anchor: "middle", centerY: 220, keepCase: true }));
