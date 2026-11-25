@@ -385,13 +385,16 @@ So far a strong model has done the work. Now the same agent runs on a small
 model that fits on your laptop, and you find out what changes. If your laptop
 is too slow for it, work in pairs with someone whose laptop manages it.
 
-1. Install [[lm-studio|LM Studio]] as described on its page, download the
-   small model `google/gemma-4-e2b` (about 3 GB), load it and start the local
-   server under *Developer*.
+1. Install [[lm-studio|LM Studio]] as described on its page and download the
+   small model `google/gemma-4-e2b` (about 4.4 GB) under *Model Search*.
+   Then open **Model Server** in the bar on the left, switch *Status* to
+   *Running* and load the model with **+ Load Model**.
 
 > [!EXPECTED]
-> LM Studio shows the server as running, and in OpenCode the model
-> `lmstudio/google/gemma-4-e2b` appears in the list below the input field.
+> The page *Model Server* shows *Status: Running*, the address
+> `http://127.0.0.1:1234` and, under *Loaded Models*, `google/gemma-4-e2b`
+> marked *READY*. In OpenCode, the model `lmstudio/google/gemma-4-e2b` now
+> appears in the list below the input field.
 
 2. Switch on all three groups of tools, so that the agent has to choose among
    nine tools. Ask each of these questions in a new session and note which
