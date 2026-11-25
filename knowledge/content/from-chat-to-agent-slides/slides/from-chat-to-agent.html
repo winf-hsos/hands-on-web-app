@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>From Chat to Agent</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="../../stagekit/stagekit.css?v=0.14.0-73dd15">
+  <style>
+    /* lines that appear one after another: more space between them */
+    .lines.spaced > div { margin-bottom: 36px; }
+    /* files shown on a slide: the small size, so that a whole file fits */
+    .code.small { font-size: var(--small); line-height: 1.3; color: var(--gray-light); }
+    .code.small .hl { color: var(--white); }
+    .code.small .bad { color: var(--red); }
+    .code.small .good { color: var(--green); }
+    /* the path of a file above its content */
+    .path { font-family: var(--mono); font-size: var(--tiny); color: var(--gray); margin-bottom: 18px; }
+    .where { margin-top: 60px; font-size: var(--small); color: var(--gray-light); max-width: 1500px; }
+    /* a term, then what it means */
+    .who { display: grid; grid-template-columns: auto 1fr; gap: 44px 70px; font-size: var(--normal); align-items: baseline; }
+    .who .part { color: var(--blue); }
+    .who .rule { color: var(--white); }
+    .who .rule span { display: block; margin-top: 8px; font-size: var(--small); color: var(--gray-light); }
+    /* a table of tools or commands: name in the code font, what it does */
+    .toolgrid { display: grid; grid-template-columns: auto 1fr auto 1fr; gap: 30px 50px; align-items: baseline; }
+    .toolgrid.one { grid-template-columns: auto 1fr; gap: 34px 70px; }
+    .toolgrid .name { font-family: var(--mono); font-size: var(--small); color: var(--blue); }
+    .toolgrid .what { font-size: var(--small); color: var(--white); }
+    /* three things a chat cannot do */
+    .offers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 60px; }
+    .offers > div { border-top: 3px solid var(--blue); padding-top: 30px; }
+    .offers .kind { font-size: var(--normal); color: var(--white); margin-bottom: 24px; }
+    .offers .tool { font-family: var(--mono); font-size: var(--small); color: var(--blue); margin-bottom: 24px; }
+    .offers .text { font-size: var(--small); color: var(--gray-light); line-height: 1.35; }
+    /* before and after: two files side by side */
+    .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 120px; width: 100%; }
+    .pair .label { font-size: var(--tiny); color: var(--gray); margin-bottom: 16px; }
+    .pair .result { margin-top: 30px; font-family: var(--mono); font-size: var(--tiny); }
+    .pair .result.bad { color: var(--red); }
+    .pair .result.good { color: var(--green); }
+    /* a page the agent produced, shown as paper */
+    .paper { display: block; max-height: 640px; max-width: 1300px; margin: 0 auto; border-radius: 6px; }
+  </style>
+</head>
+<body>
+<div class="deck"
+     data-title="from chat to agent"
+     data-subtitle='first steps with <span class="keep-case">OpenCode</span> · <span class="keep-case">Prof. Dr. Nicolas Meseth</span>'
+     data-parts='["chat and agent", "the folder", "the agent acts", "small and large", "the context window", "commands and browser"]'
+     data-part-colors='{"chat and agent": "#ff96c4", "the folder": "#ff62a7", "the agent acts": "#ff2d8a", "small and large": "#d92675", "the context window": "#b32061", "commands and browser": "#b32061"}'
+     data-live-url="https://live.hsos.uber.space"
+     data-live-series="from-chat-to-agent">
+
+  <section class="slide title"></section>
+  <section class="slide agenda"></section>
+
+  <!-- opening -->
+  <section class="slide">
+    <img class="photo" src="img/opening.jpg" alt="">
+    <div class="photo-text" style="width: 34%"><div>farmer <span class="keep-case">Jeff</span> wants a flyer with this week's offers: is a chat enough, or does it take an agent?</div></div>
+    <div class="footnote">image: <span class="keep-case">AI</span>-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">Jeff betreibt den Lindenhof, einen kleinen Hofladen mit Selbstbedienung. Diese Woche will er einen Flyer mit den Angeboten aushängen: Eier, Honig, Kartoffeln, Grünkohl. Ein Chat wie ChatGPT schreibt ihm einen schönen Text, aber den Flyer als Datei, die Preise aus einer Liste oder ein Programm, das die Rabatte rechnet, bekommt er dort nicht. Heute lernen wir das Werkzeug kennen, mit dem wir ab jetzt arbeiten, OpenCode, und sehen, was aus einem Chat einen Agenten macht. Laden und Preise sind ausgedacht.</aside>
+  </section>
+
+  <!-- ==================== 1 · chat and agent ==================== -->
+  <section class="slide part" data-part="chat and agent" data-subtitle="what an agent can do that a chat cannot"></section>
+
+  <section class="slide">
+    <h2>a chat answers, an agent works on the task</h2>
+    <div class="figure" id="fig-chat-agent"></div>
+    <aside class="notes">Links ein Chat, wie ihr ihn kennt: Ihr schreibt etwas, das Sprachmodell schreibt Text zurück, fertig. Rechts ein Agent. Er benutzt dasselbe Sprachmodell, aber das Modell darf Werkzeuge aufrufen: Dateien lesen und schreiben, Befehle ausführen, im Web suchen. Das Ergebnis jedes Aufrufs geht zurück ans Modell, und das Modell entscheidet, ob es fertig ist oder noch etwas tun muss. Diese Schleife ist der ganze Unterschied. Das Modell selbst tut nichts, es schreibt nur auf, welches Werkzeug es aufrufen will, und OpenCode führt den Aufruf aus.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>one app, two models</h2>
+    <div class="figure" id="fig-providers"></div>
+    <aside class="notes">OpenCode bringt kein eigenes Sprachmodell mit. Es schickt eure Eingaben an einen Anbieter und zeigt die Antwort. Wir verbinden zwei: OpenAI mit gpt-6-luna, ein großes Modell in der Cloud, dafür braucht ihr den Schlüssel aus dem Kurs; und LM Studio mit gemma-4-e2b, ein kleines Modell auf eurem eigenen Laptop. LM Studio müsst ihr nicht verbinden: Läuft sein Server, findet OpenCode ihn unter 127.0.0.1:1234 von selbst. Der gestrichelte Rahmen ist euer Laptop: Mit luna verlässt alles, was ihr schreibt, den Rechner, mit gemma bleibt es dort. Dafür ist gemma langsamer und macht mehr Fehler, wie wir gleich sehen.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>four words you meet in <span class="keep-case">OpenCode</span></h2>
+    <div class="content">
+      <div class="who">
+        <div class="part">project</div><div class="rule">a folder on your laptop<span>the agent reads and writes only there</span></div>
+        <div class="part" data-step="1">session</div><div class="rule" data-step="1">one conversation in that folder<span>it has its own context, a new session starts empty</span></div>
+        <div class="part" data-step="2">agent</div><div class="rule" data-step="2">the rules for the model<span>Build may do everything, Plan may only read</span></div>
+        <div class="part" data-step="3">model</div><div class="rule" data-step="3">the language model that answers<span>chosen below the input field, and switchable in the middle of a session</span></div>
+      </div>
+    </div>
+    <aside class="notes">Vier Begriffe, die ihr in OpenCode ständig seht. Ein Projekt ist ein Ordner, für uns der Ordner lindenhof. Eine Sitzung ist ein Gespräch in diesem Ordner, mit eigenem Gedächtnis; eine neue Sitzung weiß nichts von der alten. Der Agent ist ein Satz von Regeln: Build darf alles, Plan darf nur lesen und Pläne machen. Und das Modell wählt ihr unter dem Eingabefeld, und zwar auch mitten in einer Sitzung; das brauchen wir später, wenn das kleine Modell scheitert.</aside>
+  </section>
+
+  <!-- ==================== 2 · the folder ==================== -->
+  <section class="slide part" data-part="the folder" data-subtitle="what the agent knows and what it can use"></section>
+
+  <section class="slide">
+    <h2><span class="keep-case">AGENTS.md</span>: what the agent reads first</h2>
+    <div class="content">
+      <div class="path">lindenhof/AGENTS.md</div>
+<div class="code small"><span class="hl"># Lindenhof farm shop</span>
+
+You help Jeff, who runs the Lindenhof farm shop, a small self-service shop
+on his farm. Customers weigh, pay and take their goods themselves.
+
+- Answer in English and keep it short.
+- Write every file into this folder.
+- Prices are in euros with two decimals, such as 6.50.</div>
+      <div class="where" data-step="1"><span class="keep-case">OpenCode</span> puts this file in front of everything you type, in every session of the folder; /init writes a first version.</div>
+    </div>
+    <aside class="notes">Die Datei AGENTS.md beschreibt dem Agenten den Ordner: wer hier arbeitet, worum es geht, welche Regeln gelten. OpenCode liest sie zu Beginn jeder Sitzung und stellt sie vor alles, was ihr schreibt. Den ersten Entwurf schreibt der Befehl /init; wir ersetzen ihn durch diesen Text. Fragt ihr danach in einer neuen Sitzung, für wen der Agent arbeitet, antwortet er als Helfer von Jeff, ohne dass ihr in dieser Sitzung ein Wort über den Laden gesagt habt.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>the tools of the agent <span class="keep-case">Build</span></h2>
+    <div class="content">
+      <div class="toolgrid">
+        <div class="name">read</div><div class="what">reads a file</div>
+        <div class="name">shell</div><div class="what">runs a command</div>
+        <div class="name">write</div><div class="what">writes a file</div>
+        <div class="name">execute</div><div class="what">runs code that uses tools</div>
+        <div class="name">edit</div><div class="what">changes part of a file</div>
+        <div class="name">question</div><div class="what">asks you something</div>
+        <div class="name">glob</div><div class="what">finds files by name</div>
+        <div class="name">skill</div><div class="what">loads instructions</div>
+        <div class="name">grep</div><div class="what">searches in files</div>
+        <div class="name">subagent</div><div class="what">hands a task to a helper</div>
+        <div class="name">webfetch</div><div class="what">reads a web page</div>
+        <div class="name">generate_image</div><div class="what">creates an image</div>
+        <div class="name">websearch</div><div class="what">searches the web</div>
+        <div class="name">generate_video</div><div class="what">creates a video</div>
+      </div>
+    </div>
+    <div class="footnote">the 14 tools that <span class="keep-case">OpenCode</span> 2.4.1 sent along, as listed in the server log of <span class="keep-case">LM Studio</span></div>
+    <aside class="notes">Fragt den Agenten, welche Werkzeuge er hat, und er zählt sie auf. Er kennt sie, weil OpenCode mit jeder Anfrage eine Beschreibung jedes Werkzeugs mitschickt. In unserem Test waren es diese 14. Links die, mit denen der Agent im Ordner arbeitet: Dateien lesen, schreiben, ändern, finden und durchsuchen, dazu das Web. Rechts die übrigen: Befehle ausführen, Rückfragen stellen, Anleitungen laden, Teilaufgaben abgeben, Bilder erzeugen. Im Agenten Build sind alle erlaubt.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>what <span class="keep-case">OpenCode</span> sends when you type hi</h2>
+    <div class="figure" id="fig-request"></div>
+    <div class="punch">the agent sends its instructions and every tool description before you have typed a word.</div>
+    <div class="footnote">a new session of the agent <span class="keep-case">Build</span> with gemma-4-e2b, read in the server log of <span class="keep-case">LM Studio</span> with verbose logging</div>
+    <aside class="notes">Das sieht man in LM Studio, wenn man unter Model Server das ausführliche Protokoll einschaltet. Wir schicken nur „hi“. Im Protokoll steht die ganze Anfrage: vorn ein Systemprompt von OpenCode mit rund 25.000 Zeichen, darin die Regeln, wie der Agent arbeiten soll, und eure AGENTS.md; dann die Beschreibungen der 14 Werkzeuge, noch einmal rund 18.000 Zeichen; und ganz am Ende das „hi“, zwei Zeichen. Das alles geht mit jeder einzelnen Anfrage an das Modell.</aside>
+  </section>
+
+  <!-- ==================== 3 · the agent acts ==================== -->
+  <section class="slide part" data-part="the agent acts" data-subtitle="files, the web and programs"></section>
+
+  <section class="slide">
+    <h2>three things a chat cannot do</h2>
+    <div class="content">
+      <div class="offers">
+        <div><div class="kind">write a file</div><div class="tool">write</div><div class="text">the offers end up in offers.md in the folder, not as text to copy</div></div>
+        <div data-step="1"><div class="kind">look something up</div><div class="tool">websearch · webfetch</div><div class="text">the agent read a seasonal calendar on the web and named its source</div></div>
+        <div data-step="2"><div class="kind">run a program</div><div class="tool">write · shell</div><div class="text">it wrote prices.py, ran it and read the output, and fixes the file if the program fails</div></div>
+      </div>
+      <div class="where" data-step="3">a click on the grey lines in the session, such as “used 1 write”, shows every tool call with what went in and what came out.</div>
+    </div>
+    <aside class="notes">Drei kleine Aufgaben, die ein Chat nicht kann. Erstens eine Datei schreiben: Der Agent legt offers.md im Ordner an, statt euch Text zum Kopieren zu geben. Zweitens nachschlagen: In unserem Test hat er zweimal gesucht, den Saisonkalender von regional-saisonal.de gelesen und Grünkohl, Rosenkohl, Lauch und Feldsalat genannt; ob er richtig gelesen hat, prüft ihr. Drittens ein Programm schreiben und ausführen: prices.py liest die Angebote, gibt zehn Prozent Rabatt über fünf Euro und druckt die Liste. Geht das Programm schief, liest der Agent die Fehlermeldung und versucht es noch einmal; ein Chat sieht nie, ob sein Code läuft.</aside>
+  </section>
+
+  <!-- ==================== 4 · small and large ==================== -->
+  <section class="slide part" data-part="small and large" data-subtitle="the same task for a model on the laptop and one in the cloud"></section>
+
+  <section class="slide poll" data-poll="typst-flyer">
+    <div class="poll-q">a small model on your laptop and a large one in the cloud each get the task to make the flyer as a <span class="keep-case">Typst</span> file and compile it: what happens?</div>
+    <ol class="poll-opts">
+      <li>both make a <span class="keep-case">PDF</span></li>
+      <li>only the large one does</li>
+      <li>only the small one does</li>
+      <li>neither of them</li>
+    </ol>
+    <aside class="notes">Typst ist ein Programm, das aus einer Textdatei ein PDF macht, ähnlich wie LaTeX, aber einfacher. Es verzeiht keinen Fehler: Stimmt die Schreibweise nicht, kommt kein PDF heraus, sondern eine Fehlermeldung. Was glaubt ihr?</aside>
+  </section>
+
+  <section class="slide">
+    <h2>the small model writes <span class="keep-case">Markdown</span> into a <span class="keep-case">Typst</span> file</h2>
+    <div class="content">
+      <div class="pair">
+        <div>
+          <div class="label">flyer.typ by gemma-4-e2b, first attempt</div>
+<div class="code small"><span class="bad">#</span> Lindenhof Farm Shop Offers This Week!
+
+<span class="bad">##</span> Fresh Eggs
+0.40 euros each
+
+<span class="bad">##</span> Honey
+6.50 euros per jar</div>
+          <div class="result bad">error: expected expression</div>
+        </div>
+        <div data-step="1">
+          <div class="label">what <span class="keep-case">Typst</span> expects</div>
+<div class="code small"><span class="good">=</span> Lindenhof Farm Shop Offers This Week!
+
+<span class="good">==</span> Fresh Eggs
+0.40 euros each
+
+<span class="good">==</span> Honey
+6.50 euros per jar</div>
+          <div class="result good">flyer.pdf</div>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">Das ist der erste Versuch von gemma-4-e2b, wörtlich, nur gekürzt. Das Modell schreibt Markdown, wie es das aus unzähligen Texten kennt: Raute für Überschriften, Sternchen für Fettdruck. In Typst beginnt mit der Raute aber ein Befehl, deshalb bricht typst compile gleich in der ersten Zeile ab. Typst erwartet für Überschriften Gleichheitszeichen. Ein winziger Unterschied, den das kleine Modell nicht findet.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>the same session, two models</h2>
+    <div class="figure" id="fig-attempts"></div>
+    <div class="punch">the large model needed only three words, because the whole session with every error message was still in its context.</div>
+    <div class="footnote">real runs in <span class="keep-case">OpenCode</span> 2.4.1, the answer of gemma-4-e2b shortened</div>
+    <aside class="notes">Oben, was gemma-4-e2b getan hat: Es schreibt die Datei, kompiliert, bekommt den Fehler, schreibt die Datei fünfmal neu, ohne zu kompilieren, kompiliert wieder, Fehler, schreibt zweimal neu, Fehler. Jedes Mal Markdown. Zum Schluss entschuldigt es sich und sucht den Fehler beim Compiler und bei den Werkzeugen, nicht bei sich. Dann wechseln wir in derselben Sitzung auf gpt-6-luna und schreiben nur „Fix the error.“ Luna liest die Datei, ändert sie, kompiliert, fertig, in etwa 15 Sekunden. Mehr Erklärung brauchte es nicht, weil die ganze Sitzung mit allen Versuchen und Fehlermeldungen im Kontext stand.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>the flyer of the large model</h2>
+    <div class="content">
+      <img class="paper" src="img/flyer.png" alt="the flyer: Lindenhof Farm Shop, this week's offers, with eggs, honey and potatoes">
+    </div>
+    <div class="footnote">flyer.pdf from our test with gpt-6-luna, upper half</div>
+    <aside class="notes">Das ist das PDF, das luna erzeugt hat, die obere Hälfte. Schlicht, aber richtig: Titel, Untertitel, drei Angebote mit Preis. Für mehr Gestaltung genügt ein weiterer Satz an den Agenten. Wer Zeit hat, probiert in der Erweiterung, ob das kleine Modell es mit einem Hinweis auf die Schreibweise von Typst schafft.</aside>
+  </section>
+
+  <!-- ==================== 5 · the context window ==================== -->
+  <section class="slide part" data-part="the context window" data-subtitle="how much text the model can see at once"></section>
+
+  <section class="slide number">
+    <div class="number-value">10,581</div>
+    <div class="number-text">tokens went to the model for a plain hi</div>
+    <div class="footnote">agent <span class="keep-case">Build</span> of <span class="keep-case">OpenCode</span> 2.4.1 with gemma-4-e2b, counted by <span class="keep-case">LM Studio</span>; a token is about four characters of English text</div>
+    <aside class="notes">Sprachmodelle zählen nicht in Zeichen, sondern in Tokens, Wortstücken von etwa vier Zeichen. Die 43.000 Zeichen von eben sind gut zehntausend Tokens. So viel kostet jede Anfrage, bevor ihr irgendetwas gefragt habt.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>the context window has to hold everything</h2>
+    <div class="figure" id="fig-window"></div>
+    <div class="punch">a model that is enough for a chat in <span class="keep-case">LM Studio</span> can be too small for an agent.</div>
+    <div class="footnote">the error in <span class="keep-case">OpenCode</span>: <span class="keep-case">request (10581 tokens) exceeds the available context size (8192 tokens)</span></div>
+    <aside class="notes">Das Kontextfenster ist die Menge Text, die ein Modell auf einmal sehen kann. Beim Laden in LM Studio legt ihr es fest. Mit 8.192 Tokens, dem Standard, wenn man nichts einstellt, passt schon die Anfrage zu „hi“ nicht hinein: OpenCode zeigt einen Fehler statt einer Antwort. Mit 32.768 passt sie, und es bleibt Platz für das Gespräch und für die Dateien, die der Agent liest. Je größer das Fenster, desto mehr Speicher braucht das Modell auf eurem Laptop.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>/compact makes room</h2>
+    <div class="figure" id="fig-compact"></div>
+    <div class="punch">a long session costs more with every message, because the whole conversation goes to the model again each time.</div>
+    <aside class="notes">Ein Sprachmodell merkt sich nichts zwischen zwei Anfragen. Damit es weiß, worum es geht, schickt OpenCode jedes Mal die ganze Sitzung mit: Systemprompt, Werkzeuge, jede Nachricht, jeden Werkzeugaufruf und jedes Ergebnis. Die Sitzung wächst, bis sie nicht mehr ins Fenster passt. /compact lässt das Modell die Sitzung zusammenfassen und macht mit der Zusammenfassung weiter. Das schafft Platz und spart Geld, aber was nicht in der Zusammenfassung steht, ist weg. Kurz vor der Grenze macht OpenCode das von selbst.</aside>
+  </section>
+
+  <!-- ==================== 6 · commands and browser ==================== -->
+  <section class="slide part" data-part="commands and browser" data-subtitle="what you type for OpenCode, and what the agent does in a browser"></section>
+
+  <section class="slide">
+    <h2>commands are for <span class="keep-case">OpenCode</span>, not for the model</h2>
+    <div class="content">
+      <div class="toolgrid one">
+        <div class="name">/init</div><div class="what">sets up <span class="keep-case">AGENTS.md</span> for the folder</div>
+        <div class="name">/undo</div><div class="what">takes back your last message, and every file the agent changed for it</div>
+        <div class="name">/compact</div><div class="what">summarizes the session to make room in the context</div>
+        <div class="name">/fork</div><div class="what">starts a new session from an earlier message, for example with another model</div>
+        <div class="name">/new</div><div class="what">starts a new session, also with <kbd>ctrl</kbd> + <kbd>t</kbd></div>
+        <div class="name">/export</div><div class="what">saves the session with every request and every tool call</div>
+        <div class="name">/mcp</div><div class="what">shows the tool servers of the folder and switches them on and off</div>
+      </div>
+    </div>
+    <aside class="notes">Alles, was im Eingabefeld mit einem Schrägstrich beginnt, ist ein Befehl für OpenCode und geht nicht an das Modell. Ein Schrägstrich allein zeigt alle. Diese sieben braucht ihr am häufigsten. Probiert /undo aus: Lasst den Agenten offers.md löschen und nehmt es zurück; die Datei ist wieder da, weil OpenCode vor jeder Änderung einen Schnappschuss des Ordners anlegt. /mcp ist noch leer, Werkzeugserver bauen wir in einem eigenen Experiment.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>the agent in a browser</h2>
+    <div class="figure" id="fig-browser"></div>
+    <div class="footnote">desktop app of <span class="keep-case">OpenCode</span> with gpt-6-luna</div>
+    <aside class="notes">Die Desktop-App von OpenCode hat einen eigenen Browser, und ein großes Modell kann darin arbeiten: Seiten öffnen, lesen, Links folgen, Formulare ausfüllen. In der Sitzung seht ihr dabei zwei Aufrufe: skill lädt die Anleitung für den Browser, execute führt ein kleines Programm aus, das den Browser steuert. Rechts geht die Seite auf, und ihr könnt mitlesen. Ein kleines Modell wie gemma verirrt sich bei solchen Aufgaben meist, den Browser überlasst ihr dem großen.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>one step further: computer use</h2>
+    <div class="content">
+      <div class="lines spaced">
+        <div>some agents control the whole computer: they look at screenshots, move the mouse and type, in any program</div>
+        <div data-step="1"><span class="keep-case">OpenCode</span> does not have this built in, it needs an extra tool server</div>
+        <div data-step="2">such an agent can do everything you can, so give it only what the task needs</div>
+      </div>
+    </div>
+    <aside class="notes">Manche Agenten gehen noch weiter und bedienen den ganzen Rechner: Sie sehen Bildschirmfotos, bewegen die Maus und tippen, in jedem Programm, nicht nur im Browser. OpenCode hat das nicht eingebaut; man bräuchte einen zusätzlichen Werkzeugserver. Vorsicht ist angebracht, denn ein solcher Agent kann alles, was ihr auch könnt, einschließlich Dateien löschen und Mails verschicken.</aside>
+  </section>
+
+  <!-- closing -->
+  <section class="slide checklist">
+    <h2>what to take away</h2>
+    <ul class="checks">
+      <li data-check="1">an agent calls tools and reads their results until the job is done</li>
+      <li data-check="2"><span class="keep-case">AGENTS.md</span> tells it what the folder is for</li>
+      <li data-check="3">every request carries the system prompt and all tool descriptions</li>
+      <li data-check="4">a small model is free and private, but fails sooner on exact tasks</li>
+      <li data-check="5">the context window has to hold the whole session</li>
+      <li data-check="6">check what the agent wrote, read and ran</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <h2>reflect</h2>
+    <div class="content">
+      <div class="lines spaced">
+        <div>what could the agent do that a chat in the browser cannot, and where did you have to check its work?</div>
+        <div data-step="1">the small model blamed the compiler for its own mistake: what would have helped it?</div>
+        <div data-step="2">what leaves your laptop when you work with gpt-6-luna, and what when you work with gemma-4-e2b?</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+<!-- order matters: deck.js before stagekit.js -->
+<script src="../../stagekit/draw.js?v=0.14.0-73dd15"></script>
+<script src="../../stagekit/anim.js?v=0.14.0-73dd15"></script>
+<script src="deck.js?v=2026-11-25"></script>
+<script src="../../stagekit/stagekit.js?v=0.14.0-73dd15"></script>
+</body>
+</html>

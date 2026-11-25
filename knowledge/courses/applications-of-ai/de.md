@@ -5,7 +5,7 @@ summary: >-
   hinunter zum Training eines Modells und zum Lernen aus Daten, und wieder
   hinauf zu Anwendungen und ihren Folgen.
 translation_of: en
-based_on: 2026-11-04
+based_on: 2026-11-25
 ---
 
 Dieses Modul begleitet das Seminar. Es beginnt bei dem, was alle kennen, bei

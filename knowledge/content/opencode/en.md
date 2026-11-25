@@ -18,7 +18,7 @@ level: 1
 duration: 10
 topics: [ai-agents]
 relations:
-  see_also: [ai-agents, lm-studio]
+  see_also: [ai-agents, lm-studio, from-chat-to-agent]
 modules: [aai]
 areas: [ai]
 status: published
@@ -82,5 +82,5 @@ gets the same agent. OpenCode reads these files when a session starts:
 | `AGENTS.md` | general instructions for every session in this folder |
 
 If a change to `opencode.jsonc` does not show up in a new session, close and
-reopen OpenCode. The experiment [[tools-skills-commands]] builds such a folder
-step by step.
+reopen OpenCode. The experiment [[from-chat-to-agent]] takes the first steps
+with OpenCode, and [[tools-skills-commands]] builds such a folder step by step.
