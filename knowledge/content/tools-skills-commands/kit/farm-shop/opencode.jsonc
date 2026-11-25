@@ -1,0 +1,70 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "default_agent": "shop",
+  "agents": {
+    // The agent of the Lindenhof farm shop. It starts naked: the rule "*" takes
+    // away every tool OpenCode brings along (files, shell, web), and the rules
+    // after it give back only the farm shop's tools and two skills. Later rules win.
+    "shop": {
+      "description": "Assistant of the Lindenhof farm shop",
+      "mode": "primary",
+      "model": "openai/gpt-6-luna",
+      "system": "You are the assistant of the Lindenhof farm shop, a small self-service shop on a farm. You help the owner with the daily work. Answer briefly.",
+      "permissions": [
+        { "action": "*", "resource": "*", "effect": "deny" },
+        { "action": "shop_*", "resource": "*", "effect": "allow" },
+        { "action": "till_*", "resource": "*", "effect": "allow" },
+        { "action": "orders_*", "resource": "*", "effect": "ask" },
+        { "action": "skill", "resource": "weekly-order", "effect": "allow" },
+        { "action": "skill", "resource": "daily-closing", "effect": "allow" }
+        // Remove the two slashes in front of the next two lines (and put a comma
+        // after the line above) to let the agent write its own skills and commands.
+        // { "action": "edit", "resource": ".agents/skills/**", "effect": "ask" },
+        // { "action": "edit", "resource": ".opencode/commands/**", "effect": "ask" }
+      ]
+    },
+    // A second agent with a strong model that prepares "shop" for a smaller one.
+    // It may read every file in this folder and rewrite skills and commands, but
+    // it cannot run anything and asks before every change.
+    "coach": {
+      "description": "Prepares the shop agent for a smaller model",
+      "mode": "primary",
+      "model": "openai/gpt-6-luna",
+      "system": "You help the owner of the Lindenhof farm shop to prepare the agent \"shop\" in this folder for a smaller language model. Its role and rules are in opencode.jsonc, its tools in tools/farm_shop.py, its skills in .agents/skills and its commands in .opencode/commands.",
+      "permissions": [
+        { "action": "*", "resource": "*", "effect": "deny" },
+        { "action": "read", "resource": "*", "effect": "allow" },
+        { "action": "glob", "resource": "*", "effect": "allow" },
+        { "action": "grep", "resource": "*", "effect": "allow" },
+        { "action": "list", "resource": "*", "effect": "allow" },
+        { "action": "edit", "resource": ".agents/skills/**", "effect": "ask" },
+        { "action": "edit", "resource": ".opencode/commands/**", "effect": "ask" }
+      ]
+    }
+  },
+  "mcp": {
+    "servers": {
+      // Each group of tools is its own server. Switch one on by setting
+      // "disabled" to false; OpenCode then starts it with the command below.
+      // On macOS and Linux write "python3" instead of "python".
+      "shop": {
+        "type": "local",
+        "command": ["python", "tools/farm_shop.py", "shop"],
+        "codemode": false,
+        "disabled": true
+      },
+      "orders": {
+        "type": "local",
+        "command": ["python", "tools/farm_shop.py", "orders"],
+        "codemode": false,
+        "disabled": true
+      },
+      "till": {
+        "type": "local",
+        "command": ["python", "tools/farm_shop.py", "till"],
+        "codemode": false,
+        "disabled": true
+      }
+    }
+  }
+}

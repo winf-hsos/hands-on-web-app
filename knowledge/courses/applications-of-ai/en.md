@@ -11,7 +11,7 @@ summary: >-
   applications and their consequences.
 sections:
   - title: { de: KI-Agenten, en: AI agents }
-    items: [a-brief-history-of-ai, ai-agents, be-the-agent]
+    items: [a-brief-history-of-ai, ai-agents, be-the-agent, tools-skills-commands]
   - title: { de: Sprachmodelle, en: Language models }
     items: [open-models, next-token-prediction, a-map-of-meaning, a-language-model-by-counting, the-bitter-lesson, reasoning]
   - title: { de: Wie Maschinen lernen, en: How machines learn }

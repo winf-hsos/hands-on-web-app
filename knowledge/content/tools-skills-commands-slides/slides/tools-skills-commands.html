@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Tools, Skills and Commands</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="../../stagekit/stagekit.css?v=0.13.0-cf50bd">
+  <style>
+    /* lines that appear one after another: more space between them */
+    .lines.spaced > div { margin-bottom: 36px; }
+    /* files and configuration shown on a slide: the small size, so that a whole file fits */
+    .code.small { font-size: var(--small); line-height: 1.3; color: var(--gray-light); }
+    .code.small .hl { color: var(--white); }
+    /* who decides: three columns, the part, who starts it, what it adds */
+    .who { display: grid; grid-template-columns: auto 1fr; gap: 40px 70px; font-size: var(--normal); align-items: baseline; }
+    .who .part { color: var(--blue); }
+    .who .rule { color: var(--white); }
+    .who .rule span { color: var(--gray-light); }
+    /* allow, ask, deny: the effect in the code font, its meaning next to it */
+    .effects { display: grid; grid-template-columns: auto 1fr; gap: 36px 60px; font-size: var(--normal); align-items: baseline; }
+    .effects .effect { font-family: var(--mono); color: var(--blue); }
+    /* before and after: two files side by side */
+    .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 140px; width: 100%; }
+    .pair .label { font-size: var(--tiny); color: var(--gray); margin-bottom: 16px; }
+    /* the owner's own words */
+    .quote { font-size: var(--small); line-height: 1.45; color: var(--white); max-width: 1500px; }
+  </style>
+</head>
+<body>
+<div class="deck"
+     data-title="tools, skills and commands"
+     data-subtitle="artificial intelligence · prof. dr. nicolas meseth"
+     data-parts='["the naked agent", "tools", "skills", "commands", "the agent writes", "small models"]'
+     data-part-colors='{"the naked agent": "#ff96c4", "tools": "#ff62a7", "skills": "#ff2d8a", "commands": "#d92675", "the agent writes": "#b32061", "small models": "#b32061"}'
+     data-live-url="https://live.hsos.uber.space"
+     data-live-series="tools-skills-commands">
+
+  <section class="slide title"></section>
+  <section class="slide agenda"></section>
+
+  <!-- opening -->
+  <section class="slide">
+    <img class="photo" src="img/opening.jpg" alt="">
+    <div class="photo-text" style="width: 38%"><div>a farm shop with two jobs that come back every week and every evening, and an agent that cannot do either of them yet.</div></div>
+    <div class="footnote">image: ai-generated (gpt-image-2.5-flare)</div>
+    <aside class="notes">Der Lindenhof ist ein kleiner Hofladen mit Selbstbedienung: Die Inhaberin füllt die Regale, die Kundschaft wiegt, zahlt und nimmt selbst. Zwei Arbeiten kommen immer wieder: jede Woche die Bestellung bei den Lieferanten und jeden Abend der Kassenabschluss. Ein KI-Agent könnte beides übernehmen, aber noch kann er keine der beiden. Heute rüsten wir ihn Stück für Stück aus und sehen jedes Mal nach, was sich ändert. Laden und Zahlen sind ausgedacht.</aside>
+  </section>
+
+  <!-- ==================== 1 · the naked agent ==================== -->
+  <section class="slide part" data-part="the naked agent" data-subtitle="a language model with a role and nothing else"></section>
+
+  <section class="slide">
+    <h2>one agent, three groups of tools</h2>
+    <div class="figure" id="fig-setup"></div>
+    <aside class="notes">Das ist der Startordner des Experiments. In opencode.jsonc steht ein Agent namens shop mit einem Modell, einer Rolle in einem Satz und den Regeln, was er darf. Daneben drei Gruppen von Werkzeugen in einem kleinen Python-Programm: shop liest Produkte, Bestand und Verkäufe, orders schickt eine Bestellung, till liest Kasse und Kassenbox und schreibt das Kassenbuch. Zu Beginn sind alle drei ausgeschaltet, und die erste Regel nimmt dem Agenten alles, was OpenCode sonst mitbringt: keine Dateien, keine Shell, kein Web.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>the naked agent</h2>
+    <div class="figure" id="fig-naked"></div>
+    <div class="punch">without tools, a model can only ask back or guess, because it cannot see anything of the shop.</div>
+    <aside class="notes">Das ist die echte Antwort von gpt-6-luna. Sie ist vernünftig: Das Modell weiß nichts über den Laden und fragt nach. Ein kleineres Modell rät an dieser Stelle gern und erfindet Produkte und Mengen. Beides ist keine Bestellung. Frage an den Saal: Was bräuchte der Agent als Erstes?</aside>
+  </section>
+
+  <!-- ==================== 2 · tools ==================== -->
+  <section class="slide part" data-part="tools" data-subtitle="access to the shop's data"></section>
+
+  <section class="slide">
+    <h2>a tool is a function the agent may call</h2>
+    <div class="content">
+<div class="code small"><span class="hl">sales(from_date, to_date)</span>
+  Units sold of each product between two dates, both included.
+
+<span class="hl">call</span>    sales(from_date="2026-10-27", to_date="2026-11-23")
+<span class="hl">result</span>  {"days_open": 24,
+         "units_sold": {"milk": 162, "yoghurt": 96, "butter": 61, …}}</div>
+    </div>
+    <aside class="notes">Ein Werkzeug ist eine Funktion mit Namen, Parametern und einer Beschreibung in Worten. Das Modell sieht nur diese Beschreibung, nicht den Code. Es schreibt einen Aufruf, OpenCode führt ihn aus und legt das Ergebnis zurück in den Kontext. Die Zahlen hier sind die Verkäufe der vier Wochen vor dem Testtag; sie werden aus dem Datum erzeugt, deshalb bekommt jede Gruppe am selben Tag dieselben.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>switching a group of tools on</h2>
+    <div class="content">
+<div class="code small">"mcp": {
+  "servers": {
+    "shop": {
+      "type": "local",
+      "command": ["python", "tools/farm_shop.py", "shop"],
+      <span class="hl">"disabled": false</span>
+    },
+    …</div>
+    </div>
+    <aside class="notes">Die Werkzeuge laufen als MCP-Server, also als eigenes Programm, das OpenCode startet und mit dem es über ein festes Protokoll spricht. Eingeschaltet wird eine Gruppe, indem man disabled auf false setzt. OpenCode merkt die Änderung selbst; in einer neuen Sitzung sind die Werkzeuge da. Unter macOS und Linux steht dort python3.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>what a tool may do</h2>
+    <div class="content">
+      <div class="effects">
+        <div class="effect">allow</div><div>the agent calls the tool whenever it decides to</div>
+        <div class="effect" data-step="1">ask</div><div data-step="1">opencode stops before every call and asks the person</div>
+        <div class="effect" data-step="2">deny</div><div data-step="2">the tool is gone, the model does not even see it</div>
+      </div>
+    </div>
+    <aside class="notes">Die Regeln stehen als Liste in opencode.jsonc, und die letzte passende Regel gilt. Lesen darf der Agent frei, shop und till stehen auf allow. Bestellen kostet Geld und lässt sich nicht zurücknehmen, deshalb steht orders auf ask. Deny ist mehr als ein Verbot: Ein verweigertes Werkzeug verschwindet aus dem Kontext, das Modell weiß nicht einmal, dass es existiert. So startet der nackte Agent.</aside>
+  </section>
+
+  <section class="slide poll" data-poll="same-order">
+    <div class="poll-q">two new sessions, the same tools, the same data and the same question: will the agent place the same order twice?</div>
+    <ol class="poll-opts">
+      <li>yes, exactly the same</li>
+      <li>almost, with small differences</li>
+      <li>no, clearly different</li>
+    </ol>
+    <aside class="notes">Abstimmen lassen, bevor die Gruppen es selbst ausprobieren. Keine richtige Antwort vorgeben; die nächste Folie zeigt zwei echte Läufe.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>same tools, same data, two different orders</h2>
+    <div class="figure" id="fig-tools-only"></div>
+    <div class="punch">the tools give the agent the shop's data, but not the rules by which the shop orders.</div>
+    <aside class="notes">Zwei Läufe mit gpt-6-luna, nur mit den Werkzeugen von shop. Gelb ist, was von den Regeln des Ladens abweicht. Beide haben nur die letzte Woche angesehen statt vier, beide haben beim Joghurt zu knapp bestellt, und der erste Lauf wollte Eier vom eigenen Hof bestellen, die der Laden nie bestellt. Das Modell rechnet nicht falsch; es kennt die Regeln nicht und erfindet jedes Mal eigene.</aside>
+  </section>
+
+  <!-- ==================== 3 · skills ==================== -->
+  <section class="slide part" data-part="skills" data-subtitle="how this shop does the job"></section>
+
+  <section class="slide">
+    <h2>a skill is a file with know-how</h2>
+    <div class="content">
+<div class="code small">.agents/skills/weekly-order/SKILL.md
+
+---
+<span class="hl">name: weekly-order</span>
+<span class="hl">description: How the Lindenhof farm shop works out its weekly order
+  to the suppliers. Use it whenever an order or restocking is due.</span>
+---
+
+1. Get the sales of the last four weeks with `sales` …
+2. The target stock is the average per week times 1.5 …</div>
+    </div>
+    <aside class="notes">Ein Skill ist eine Markdown-Datei in einem Ordner mit festem Namen. Oben stehen Name und Beschreibung, darunter die Schritte in normaler Sprache, so wie die Inhaberin sie einer Aushilfe erklären würde. Kein Code, keine neue Fähigkeit, nur Wissen darüber, wie dieser Laden die Arbeit macht. Die vollständige Datei steht im Experiment.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>the agent loads a skill only when it needs it</h2>
+    <div class="figure" id="fig-skill"></div>
+    <aside class="notes">Das ist der Kontext des Agenten zu Beginn: Rolle, Werkzeuge, und vom Skill nur Name und Beschreibung, eine Zeile. Erst wenn die Frage zur Beschreibung passt, ruft das Modell das Werkzeug skill auf, und dann kommt der ganze Text in den Kontext. So kann ein Agent Dutzende Skills kennen, ohne dass sein Kontext voll wird. Deshalb ist die Beschreibung so wichtig: Sie entscheidet, wann der Skill geladen wird.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>with the skill, both runs follow the shop's rules</h2>
+    <div class="figure" id="fig-with-skill"></div>
+    <div class="punch">a skill turns a model that invents its own rules into one that follows the rules of this shop.</div>
+    <aside class="notes">Dieselbe Frage, zwei neue Sitzungen, jetzt mit dem Skill: Beide Läufe sehen vier Wochen an, beide kommen auf genau die Mengen, die das Lösungsskript ohne Sprachmodell ausrechnet, und beide lassen den eigenen Hof weg. Nichts an den Werkzeugen hat sich geändert.</aside>
+  </section>
+
+  <!-- ==================== 4 · commands ==================== -->
+  <section class="slide part" data-part="commands" data-subtitle="a short way for a person to start the job"></section>
+
+  <section class="slide">
+    <h2>a command is a prompt with a short name</h2>
+    <div class="content">
+<div class="code small">.opencode/commands/weekly-order.md
+
+---
+description: Work out this week's order and place it after you agree
+agent: shop
+---
+
+Work out this week's order with the skill weekly-order, for these suppliers:
+<span class="hl">$ARGUMENTS</span>
+
+If no supplier is named, do it for all of them. Show me the table first and
+place one order per supplier only after I have agreed.</div>
+    </div>
+    <aside class="notes">Ein Command ist eine Markdown-Datei mit einem Prompt, den man sonst jede Woche neu tippen würde. Der Dateiname wird zum Befehl, $ARGUMENTS ist der Platz für das, was hinter dem Befehl steht. Der Command nennt den Skill ausdrücklich; so muss sich das Modell nicht darauf verlassen, dass es ihn selbst findet.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>what opencode sends to the agent</h2>
+    <div class="figure" id="fig-command"></div>
+    <aside class="notes">Man tippt eine Zeile, OpenCode liest die Datei, setzt den Rest der Zeile für $ARGUMENTS ein und schickt den ganzen Text an den Agenten. Das Modell sieht keinen Befehl, sondern nur einen ausführlichen Prompt. Danach läuft alles wie vorher: Skill laden, Werkzeuge aufrufen, Tabelle zeigen, und bei der Bestellung fragt OpenCode nach, weil orders auf ask steht.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>who decides when each part comes in</h2>
+    <div class="content">
+      <div class="who">
+        <div class="part">tool</div><div class="rule">the model decides when to call it <span>· the permission decides whether it may</span></div>
+        <div class="part" data-step="1">skill</div><div class="rule" data-step="1">the model loads it when the description fits <span>· or a command names it</span></div>
+        <div class="part" data-step="2">command</div><div class="rule" data-step="2">a person types it <span>· the model never starts one by itself</span></div>
+      </div>
+    </div>
+    <aside class="notes">Das ist der eigentliche Unterschied zwischen den drei Teilen. Werkzeuge und Skills setzt das Modell selbst ein, eingeschränkt durch die Regeln in der Konfiguration. Einen Command startet nur ein Mensch. Wer einen Ablauf zuverlässig in Gang setzen will, schreibt einen Command; wer will, dass der Agent etwas von selbst richtig macht, schreibt einen Skill.</aside>
+  </section>
+
+  <!-- ==================== 5 · the agent writes ==================== -->
+  <section class="slide part" data-part="the agent writes" data-subtitle="the daily closing, from the owner's words"></section>
+
+  <section class="slide">
+    <h2>the daily closing, in the owner's words</h2>
+    <div class="content">
+      <div class="quote">every morning the cash box starts with 100 euros of change. customers pay cash into the box or by card at the self-service till; card payments never reach the box. whoever brings back a glass bottle or jar takes 15 cents of deposit out of the box. in the evening i count the box and compare it with what should be in it. a difference of up to two euros either way is fine, anything more i want to hear about. then the day goes into the cash book.</div>
+    </div>
+    <aside class="notes">Für den zweiten Ablauf schreibt niemand mehr selbst einen Skill. Die Gruppen bekommen nur diese Beschreibung der Inhaberin und lassen den Agenten daraus Skill und Command schreiben. Die Werkzeuge der Gruppe till sind da: register_log für die Umsätze, cash_count für das gezählte Geld und write_cashbook für das Kassenbuch.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>two rules let the agent write, but only skills and commands</h2>
+    <div class="content">
+<div class="code small">{ "action": "edit", "resource": "<span class="hl">.agents/skills/**</span>", "effect": "<span class="hl">ask</span>" },
+{ "action": "edit", "resource": "<span class="hl">.opencode/commands/**</span>", "effect": "<span class="hl">ask</span>" }</div>
+    </div>
+    <aside class="notes">Die beiden Regeln stehen im Startordner schon in opencode.jsonc, auskommentiert. Sie geben dem Agenten ein Schreibwerkzeug, aber nur für zwei Ordner, und mit ask zeigt OpenCode jede Datei, bevor sie entsteht. Kassenbuch, Werkzeuge und die eigene Konfiguration bleiben für den Agenten tabu; sonst könnte er sich seine Rechte selbst erweitern.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>the skill the agent wrote</h2>
+    <div class="content">
+<div class="code small">1. Retrieve that day's till register log and cash-box count using
+   <span class="hl">`till_register_log` and `till_cash_count`</span>.
+2. Calculate deposit refunds as <span class="hl">`(returned bottles + returned jars) × €0.15`</span>.
+3. Calculate expected closing cash as <span class="hl">`€100 opening float + cash sales −
+   deposit refunds`</span>. Card sales do not go into the cash box …
+4. Calculate the difference as `counted cash − expected cash`.
+5. Write the day to the cash book with `till_write_cashbook` …
+6. If the absolute difference is greater than €2.00, tell the owner …
+
+<span class="hl">If required source information is missing or inconsistent, ask the owner
+rather than guessing or recording an invented closing.</span></div>
+    </div>
+    <div class="footnote">written by gpt-6-luna from the owner's words, shortened</div>
+    <aside class="notes">Das hat gpt-6-luna im ersten Versuch geschrieben. Es nennt die Werkzeuge mit vollem Namen, schreibt die Rechnung als Formel und ergänzt eine Regel, die die Inhaberin nicht gesagt hat: bei fehlenden Daten nachfragen statt raten. Mit dem eigenen Command hat der Agent den Donnerstag richtig abgeschlossen, minus 4,50 Euro. Was fehlt: eine feste Form der Antwort, und der Command trägt keine Zeile agent: shop. Deshalb liest man einen Skill, den ein Agent geschrieben hat, bevor man ihn jeden Abend laufen lässt.</aside>
+  </section>
+
+  <!-- ==================== 6 · small models ==================== -->
+  <section class="slide part" data-part="small models" data-subtitle="the same agent on your laptop"></section>
+
+  <section class="slide poll" data-poll="small-model">
+    <div class="poll-q">the same agent, the same tools and skills, but a small model that runs on your laptop: what goes wrong first?</div>
+    <ol class="poll-opts">
+      <li>it calls the wrong tool</li>
+      <li>it calls no tool at all</li>
+      <li>it breaks a rule of the skill</li>
+      <li>nothing, it does the same as the large model</li>
+    </ol>
+    <aside class="notes">Abstimmen lassen, bevor die Gruppen das Modell wechseln. Keine richtige Antwort vorgeben; die nächsten Folien zeigen, was in unseren Läufen passiert ist.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>five questions, nine tools: which one does the model call?</h2>
+    <div class="figure" id="fig-choice"></div>
+    <div class="punch">choosing the right tool from a question in everyday words is itself work that the model has to do.</div>
+    <div class="footnote">one run each; gemma models in lm studio</div>
+    <aside class="notes">Alle drei Werkzeuggruppen sind an, das Modell wählt also aus neun Werkzeugen. gpt-6-luna trifft jedes Mal das richtige Werkzeug, und bei der Kasse fragt es nach Wechselgeld und Pfand, statt zu raten. Die beiden Gemma-Modelle scheitern an verschiedenen Stellen: E4B fragt beim Honig zurück, statt nachzusehen; E2B nimmt für die Bareinnahmen das gezählte Geld und meldet damit 177,70 Euro samt Wechselgeld. Beide prüfen die Kasse nur halb. Bei der Bestellung meldet E4B Erfolg, obwohl die Anfrage abgelehnt wurde, und E2B ruft gar kein Werkzeug auf und kündigt die Bestellung nur an. Ein Lauf je Frage; bei einem zweiten Lauf kann es an anderer Stelle hängen, das zeigt der Unterschied zwischen E2B und E4B beim Honig.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>the order that was never placed</h2>
+    <div class="figure" id="fig-phantom"></div>
+    <div class="punch">an agent's answer is not a receipt, so check the result where the tool leaves it.</div>
+    <aside class="notes">Gemma 4 E4B ruft orders_place_order auf, OpenCode fragt nach, die Anfrage wird abgelehnt, und das Modell meldet trotzdem, die Bestellung sei aufgegeben. Es berichtet, was es vorhatte, nicht was das Werkzeug zurückgegeben hat. Im Ordner outbox liegt nichts. gpt-6-luna hat im selben Fall gemeldet, dass die Bestellung abgelehnt wurde.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>the same skill on small models</h2>
+    <div class="figure" id="fig-local"></div>
+    <div class="punch">a skill that is enough for a strong model leaves a small one too much to decide for itself.</div>
+    <div class="footnote">one run each with the skill written by hand; gemma models in lm studio</div>
+    <aside class="notes">Derselbe Command /weekly-order mit dem Skill, den wir von Hand geschrieben haben. Gemma 4 E4B lädt den Skill, nimmt aber fünf Wochen statt vier, rechnet mit zu hohen Durchschnitten und bestellt Marmelade, obwohl genug im Regal steht; bei der Milch passen Menge und Packungen nicht zusammen. Gemma 4 E2B lädt den Skill gar nicht und ruft sofort orders_place_order mit einer leeren Liste auf, bevor es irgendetwas gerechnet hat. Den Kassenabschluss mit /daily-closing haben dagegen beide richtig gemacht: Der Skill dafür ist kurz und rechnet nur einmal.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>a strong model prepares the small one</h2>
+    <div class="content">
+      <div class="effects">
+        <div class="effect">shop</div><div>runs on <span class="mono">gemma-4-e2b</span> on the laptop and does the daily work</div>
+        <div class="effect" data-step="1">coach</div><div data-step="1">runs on <span class="mono">gpt-6-luna</span>, reads the whole folder and rewrites skills and commands for the small model</div>
+      </div>
+    </div>
+    <aside class="notes">Der Startordner hat einen zweiten Agenten, coach, mit einem starken Modell. Er darf alles im Ordner lesen und Skills und Commands umschreiben, aber nichts ausführen, und er fragt vor jeder Änderung. Man erzählt ihm, was beim kleinen Modell schiefging, und bittet ihn, die Anweisungen so genau zu machen, dass ein kleines Modell sie Schritt für Schritt befolgen kann. Statt coach geht jeder starke Agent, etwa Claude Code im selben Ordner.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>the same rule, written for a small model</h2>
+    <div class="content">
+      <div class="pair">
+        <div><div class="label">by hand, for gpt-6-luna</div>
+<div class="code small">The target stock is the average per
+week times 1.5. For perishable
+products, with a shelf life of 7 days
+or less, it is the average times 1.0,
+so that nothing spoils.</div></div>
+        <div data-step="1"><div class="label">by the coach, for gemma-4-e2b</div>
+<div class="code small">Use <span class="hl">`shelf_life_days` from
+`shop_products`</span>, not the product name
+or your intuition. If it is 7 or less,
+set <span class="hl">`target = ceil(average_per_week)`</span>.
+If it is greater than 7, set
+<span class="hl">`target = ceil(average_per_week * 1.5)`</span>.
+In particular, <span class="hl">yoghurt has a 14-day
+shelf life and uses the 1.5 multiplier</span>.</div></div>
+      </div>
+    </div>
+    <aside class="notes">Links der Satz aus dem Skill, den wir von Hand geschrieben haben; gpt-6-luna kommt damit aus. Rechts dieselbe Regel, wie der Coach sie für das kleine Modell geschrieben hat: welches Feld aus welchem Werkzeug, die Rechnung als Formel, und ausdrücklich der Fall, an dem das kleine Modell gescheitert ist. Die Regeln des Ladens sind dieselben; nur bleibt nichts mehr dem Urteil des Modells überlassen.</aside>
+  </section>
+
+  <section class="slide has-punch">
+    <h2>the small model with the coach's instructions</h2>
+    <div class="figure" id="fig-briefed"></div>
+    <div class="punch">the coach fixed what it was told about, while the rest stayed as unreliable as before, so one good run is not yet a test.</div>
+    <div class="footnote">one run each; gemma models in lm studio</div>
+    <aside class="notes">Dieselben Aufgaben auf beiden kleinen Modellen, links vor, rechts nach dem Umschreiben durch den Coach. Die Wochenbestellung, über die wir dem Coach berichtet hatten, ist fast richtig: E4B schaut jetzt vier Wochen zurück und lässt den eigenen Hof weg, nur Joghurt stimmt nicht; E2B hat alle neun Mengen richtig, listet aber Eier und Kartoffeln vom eigenen Hof mit auf. E4B findet den Honig jetzt mit shop_stock, E2B meldet die abgelehnte Bestellung als abgelehnt. Was der Coach nicht wusste, bleibt: beide prüfen die Kasse nur mit dem Zählwerkzeug, und E2B hält das gezählte Geld weiter für den Umsatz. Manches wird sogar schlechter: E4B behauptet plötzlich, keinen Zugriff auf die Verkäufe zu haben, und E2B verrechnet sich beim Kassenabschluss und schreibt das Kassenbuch nicht. Die Lehre: jeden Fehler dem Coach melden, jede Aufgabe mehrmals laufen lassen, und Rechnungen, die immer wieder schiefgehen, in ein Werkzeug verlegen statt in den Skill.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>what each part adds</h2>
+    <div class="content">
+      <div class="statement">tools give the agent access to the shop, a skill tells it how the shop does the job, and a command gives a person a short way to start it, and the smaller the model, the more exactly all three have to be written.</div>
+    </div>
+    <aside class="notes">Zusammen mit dem Modell und der Schleife, die Werkzeugaufrufe ausführt und Ergebnisse zurückgibt, ist das ein Agent, der eine echte Arbeit übernehmen kann, und zwar so, wie dieser Laden sie macht. Ein großes Modell füllt Lücken in den Anweisungen selbst, ein kleines nicht; deshalb lohnt es sich, ein großes Modell die Anweisungen für ein kleines schreiben zu lassen.</aside>
+  </section>
+
+  <section class="slide">
+    <h2>reflect</h2>
+    <div class="content">
+      <div class="lines spaced">
+        <div>why did the answers differ with tools alone, although the agent read exactly the same data?</div>
+        <div data-step="1">what would you check in a skill that an agent wrote before you let it run every evening?</div>
+        <div data-step="2">why does a small model need instructions that a strong model can do without, and who pays for writing them?</div>
+      </div>
+    </div>
+    <aside class="notes">Erst jede und jeder für sich, dann in der Gruppe. Die übrigen Fragen stehen im Experiment.</aside>
+  </section>
+
+</div>
+<!-- order matters: deck.js before stagekit.js -->
+<script src="../../stagekit/draw.js?v=0.13.0-cf50bd"></script>
+<script src="../../stagekit/anim.js?v=0.13.0-cf50bd"></script>
+<script src="deck.js"></script>
+<script src="../../stagekit/stagekit.js?v=0.13.0-cf50bd"></script>
+</body>
+</html>
